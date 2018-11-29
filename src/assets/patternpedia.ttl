@@ -1,0 +1,128 @@
+@prefix : <http://purl.org/patternpedia#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://purl.org/patternpedia> .
+
+<http://purl.org/patternpedia> rdf:type owl:Ontology ;
+                                owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> ,
+                                            <http://purl.org/patternpedia/internetofthingspatterns> .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://purl.org/patternpedia#containsPattern
+:containsPattern rdf:type owl:ObjectProperty ;
+                 rdfs:domain :PatternLanguage ;
+                 rdfs:range :Pattern .
+
+
+###  http://purl.org/patternpedia#containsPatternLanguage
+:containsPatternLanguage rdf:type owl:ObjectProperty ;
+                         rdfs:domain :PatternPedia ;
+                         rdfs:range :PatternLanguage .
+
+
+###  http://purl.org/patternpedia#hasPatternRelation
+:hasPatternRelation rdf:type owl:ObjectProperty ;
+                    rdfs:domain :Pattern ;
+                    rdfs:range :PatternRelationDescriptor .
+
+
+###  http://purl.org/patternpedia#hasRelatedPattern
+:hasRelatedPattern rdf:type owl:ObjectProperty .
+
+
+###  http://purl.org/patternpedia#hasSource
+:hasSource rdf:type owl:ObjectProperty ;
+           rdfs:domain :PatternRelationDescriptor ;
+           rdfs:range :Pattern .
+
+
+###  http://purl.org/patternpedia#hasTarget
+:hasTarget rdf:type owl:ObjectProperty ;
+           rdfs:domain :PatternRelationDescriptor ;
+           rdfs:range :Pattern .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://purl.org/patternpedia#hasLogo
+:hasLogo rdf:type owl:DatatypeProperty .
+
+
+###  http://purl.org/patternpedia#hasName
+:hasName rdf:type owl:DatatypeProperty .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://purl.org/patternpedia#Pattern
+:Pattern rdf:type owl:Class ;
+         rdfs:subClassOf [ rdf:type owl:Restriction ;
+                           owl:onProperty :hasName ;
+                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                           owl:onDataRange xsd:string
+                         ] .
+
+
+###  http://purl.org/patternpedia#PatternLanguage
+:PatternLanguage rdf:type owl:Class ;
+                 rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                   owl:onProperty :hasLogo ;
+                                   owl:allValuesFrom xsd:anyURI
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty :hasName ;
+                                   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                   owl:onDataRange xsd:string
+                                 ] .
+
+
+###  http://purl.org/patternpedia#PatternPedia
+:PatternPedia rdf:type owl:Class ;
+              rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                owl:onProperty :containsPatternLanguage ;
+                                owl:allValuesFrom :PatternLanguage
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty :hasName ;
+                                owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                owl:onDataRange xsd:string
+                              ] .
+
+
+###  http://purl.org/patternpedia#PatternRelationDescriptor
+:PatternRelationDescriptor rdf:type owl:Class ;
+                           rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                             owl:onProperty :hasSource ;
+                                             owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                             owl:onClass :Pattern
+                                           ] ,
+                                           [ rdf:type owl:Restriction ;
+                                             owl:onProperty :hasTarget ;
+                                             owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                             owl:onClass :Pattern
+                                           ] .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://purl.org/patternpedia#LinkedOpenPatterns
+:LinkedOpenPatterns rdf:type owl:NamedIndividual ,
+                             :PatternPedia ;
+                    :containsPatternLanguage <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPatterns> ,
+                                             <http://purl.org/patternpedia/internetofthingspatterns#InternetOfThingsPatterns> ;
+                    :hasName "PatternPedia - Linked Open Patterns"^^xsd:string .
+
+
+###  Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi

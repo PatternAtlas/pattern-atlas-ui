@@ -1,0 +1,43 @@
+<!--
+  ~ Copyright (c) 2018 University of Stuttgart.
+  ~
+  ~ See the NOTICE file(s) distributed with this work for additional
+  ~ information regarding copyright ownership.
+  ~
+  ~ This program and the accompanying materials are made available under the
+  ~ terms of the Eclipse Public License 2.0 which is available at
+  ~ http://www.eclipse.org/legal/epl-2.0, or the Apache Software License 2.0
+  ~ which is available at https://www.apache.org/licenses/LICENSE-2.0.
+  ~
+  ~ SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
+  -->
+<button style="margin-bottom: 20px" mat-raised-button color="primary" (click)="navigateBack()"><i class="material-icons">keyboard_backspace</i></button>
+
+<div class="container">
+    <mat-card class="landing-card" *ngFor="let pattern of patterns">
+        <mat-card-header>
+            <!--<img *ngIf="pattern.icon.value; else noImageAvatar" mat-card-avatar [src]="pattern.icon.value">-->
+            <!--<ng-template #noImageAvatar><img mat-card-avatar [src]="'https://placekitten.com/200/300'"></ng-template>-->
+
+            <mat-card-title *ngIf="pattern.name && '' !== pattern.name; else noPatternName" style="width: 10rem">
+                {{pattern.name}}
+            </mat-card-title>
+            <ng-template #noPatternName>
+                <mat-card-title style="width: 10rem">
+                    No Name Provided
+                </mat-card-title>
+            </ng-template>
+        </mat-card-header>
+        <img mat-card-image *ngIf="pattern.icon.value; else noImage" [src]="pattern.icon.value" style="width: 12rem; margin: 0 -16px 16px 0">
+        <ng-template #noImage><img mat-card-image [src]="'https://placekitten.com/200/300'"></ng-template>
+        <mat-card-content>
+            {{pattern.intent.value}}
+        </mat-card-content>
+        <mat-card-actions>
+            <div style="text-align: center">
+                <button mat-stroked-button color="primary" (click)="navigate(pattern.id)"><i class="material-icons">pageview</i>View
+                </button>
+            </div>
+        </mat-card-actions>
+    </mat-card>
+</div>

@@ -1,0 +1,12 @@
+<button mat-raised-button color="primary" (click)="navigateBack()"><i class="material-icons">keyboard_backspace</i></button>
+<h1>{{pattern?.name}}</h1>
+<p>{{pattern?.intent.value}}</p>
+<h2>{{pattern?.drivingQuestion.label}}</h2>
+<p>{{pattern?.drivingQuestion.value}}</p>
+<h2>{{pattern?.context.label}}</h2>
+<p>{{pattern?.context.value}}</p>
+<h2>{{pattern?.solution.label}}</h2>
+<p>{{pattern?.solution.value}}</p>
+<img *ngFor="let sketch of pattern?.solutionSketches.value" [src]="sketch">
+<h2>{{pattern?.result.label}}</h2>
+<p>{{pattern?.result.value}}</p>

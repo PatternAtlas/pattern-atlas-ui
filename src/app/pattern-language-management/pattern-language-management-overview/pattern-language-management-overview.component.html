@@ -1,0 +1,49 @@
+<!--
+  ~ Copyright (c) 2018 University of Stuttgart.
+  ~
+  ~ See the NOTICE file(s) distributed with this work for additional
+  ~ information regarding copyright ownership.
+  ~
+  ~ This program and the accompanying materials are made available under the
+  ~ terms of the Eclipse Public License 2.0 which is available at
+  ~ http://www.eclipse.org/legal/epl-2.0, or the Apache Software License 2.0
+  ~ which is available at https://www.apache.org/licenses/LICENSE-2.0.
+  ~
+  ~ SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
+  -->
+
+<mat-card>
+    <mat-card-title>Pattern Languages
+        <button style="padding: 0 0; margin-left: 10px" mat-stroked-button color="accent" (click)="reloadPatternRepo()"><i
+                class="material-icons">autorenew</i> Reload
+        </button>
+        <button style="padding: 0 0; margin-left: 10px" mat-stroked-button color="accent" (click)="addPatternLanguageIndividual()"><i
+                class="material-icons">add_circle_outline</i> Add
+        </button>
+    </mat-card-title>
+    <div class="container">
+        <mat-card class="landing-card" *ngFor="let patternLanguage of patternLanguages">
+            <mat-card-header>
+                <img *ngIf="patternLanguage.logos[0]; else noImageAvatar" mat-card-avatar [src]="patternLanguage.logos[0]">
+                <ng-template #noImageAvatar><img mat-card-avatar [src]="'https://placekitten.com/200/300'"></ng-template>
+
+                <mat-card-title *ngIf="patternLanguage.name && '' !== patternLanguage.name; else noPLName" style="width: 10rem">
+                    {{patternLanguage.name}}
+                </mat-card-title>
+                <ng-template #noPLName>
+                    <mat-card-title style="width: 10rem">
+                        No Name Provided
+                    </mat-card-title>
+                </ng-template>
+            </mat-card-header>
+            <img mat-card-image *ngIf="patternLanguage.logos[0]; else noImage" [src]="patternLanguage.logos[0]">
+            <ng-template #noImage><img mat-card-image [src]="'https://placekitten.com/200/300'"></ng-template>
+            <mat-card-actions>
+                <div style="text-align: center">
+                    <button matBadge="{{patternLanguage.patternIRIs.length}}" mat-stroked-button color="primary" [routerLink]="patternLanguage.id"><i class="material-icons">pageview</i>View
+                    </button>
+                </div>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</mat-card>
