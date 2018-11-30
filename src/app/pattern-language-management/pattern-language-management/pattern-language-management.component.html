@@ -13,11 +13,15 @@
   -->
 
 <mat-card>
-    <mat-card-title>Pattern Languages
-        <button style="padding: 0 0; margin-left: 10px" mat-stroked-button color="accent" (click)="reloadPatternRepo()"><i
+    <mat-card-title>
+        <button mat-raised-button color="primary" (click)="navigateBack()">
+            <i class="material-icons">keyboard_backspace</i>
+        </button>
+        Pattern Languages
+        <button style="margin-left: 10px" mat-stroked-button color="accent" (click)="reloadPatternRepo()"><i
                 class="material-icons">autorenew</i> Reload
         </button>
-        <button style="padding: 0 0; margin-left: 10px" mat-stroked-button color="accent" (click)="addPatternLanguageIndividual()"><i
+        <button style="margin-left: 10px" mat-stroked-button color="accent" (click)="addPatternLanguageIndividual()"><i
                 class="material-icons">add_circle_outline</i> Add
         </button>
     </mat-card-title>

@@ -53,6 +53,12 @@ export class PatternLanguageManagementComponent implements OnInit {
             });
     }
 
+    navigateBack(): void {
+        this.zone.run(() => {
+            this.router.navigate(['..'], {relativeTo: this.activatedRoute});
+        });
+    }
+
     loadLocallyHostedOntos() {
         const observables = [
             this.pos.loadOntologyToStore('assets/patternpedia.ttl'),
