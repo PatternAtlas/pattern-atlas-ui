@@ -16,12 +16,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { PatternLanguageManagementRoutingModule } from './pattern-language-management-routing.module';
-import { PatternLanguageManagementOverviewComponent } from './pattern-language-management-overview/pattern-language-management-overview.component'; // tslint:disable-line:max-line-length
+import { PatternLanguageManagementComponent } from './pattern-language-management/pattern-language-management.component'; // tslint:disable-line:max-line-length
 import { CoreModule } from '../core/core.module';
 import { PatternLanguageContainerComponent } from './pattern-language-container/pattern-language-container.component';
-import { PatternLanguageContainerDirective } from './pattern-language-container.directive';
+import { PatternLanguageContainerDirective } from './pattern-language-container/pattern-language-container.directive';
 import { PatternContainerComponent } from './pattern-container/pattern-container.component';
-import { PatternContainerDirective } from './pattern-container.directive';
+import { PatternContainerDirective } from './pattern-container/pattern-container.directive';
 import {
     MatBadgeModule,
     MatButtonModule,
@@ -48,7 +48,7 @@ import {
         CoreModule,
     ],
     declarations: [
-        PatternLanguageManagementOverviewComponent,
+        PatternLanguageManagementComponent,
         PatternLanguageContainerComponent,
         PatternLanguageContainerDirective,
         PatternContainerComponent,

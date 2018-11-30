@@ -14,8 +14,8 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PatternLanguageManagementOverviewComponent } from './pattern-language-management-overview/pattern-language-management-overview.component'; // tslint:disable-line:max-line-length
-import { PatternLanguageManagementOverviewResolverService } from './pattern-language-management-overview/pattern-language-management-overview-resolver.service'; // tslint:disable-line:max-line-length
+import { PatternLanguageManagementComponent } from './pattern-language-management/pattern-language-management.component'; // tslint:disable-line:max-line-length
+import { PatternLanguageManagementResolverService } from './pattern-language-management/pattern-language-management-resolver.service'; // tslint:disable-line:max-line-length
 import { PatternLanguageContainerComponent } from './pattern-language-container/pattern-language-container.component';
 import { PatternContainerComponent } from './pattern-container/pattern-container.component'; // tslint:disable-line:max-line-length
 
@@ -23,12 +23,12 @@ const routes: Routes = [
     {
         path: 'patternlanguages',
         resolve: {
-            patternlanguages: PatternLanguageManagementOverviewResolverService
+            patternlanguages: PatternLanguageManagementResolverService
         },
         children: [
             {
                 path: '',
-                component: PatternLanguageManagementOverviewComponent
+                component: PatternLanguageManagementComponent
             },
             {
                 path: ':plid',

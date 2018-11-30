@@ -20,11 +20,11 @@ import { forkJoin } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-    selector: 'pp-pattern-language-management-overview',
-    templateUrl: './pattern-language-management-overview.component.html',
-    styleUrls: ['./pattern-language-management-overview.component.scss']
+    selector: 'pp-pattern-language-management',
+    templateUrl: './pattern-language-management.component.html',
+    styleUrls: ['./pattern-language-management.component.scss']
 })
-export class PatternLanguageManagementOverviewComponent implements OnInit {
+export class PatternLanguageManagementComponent implements OnInit {
 
     private urlPatternPedia = 'http://purl.org/patternpedia';
     private patternPediaInstance = 'http://purl.org/patternpedia#LinkedOpenPatterns';

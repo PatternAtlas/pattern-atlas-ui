@@ -13,17 +13,17 @@
  */
 
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import PatternLanguageModel from '../../core/model/pattern-language.model';
 import { forkJoin, Observable, of } from 'rxjs';
 import { PatternOntologyService } from '../../core/service/pattern-ontology.service';
 import { LoaderRegistryService } from '../../core/service/loader/pattern-language-loader/loader-registry.service';
-import { map, mergeMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
-export class PatternLanguageManagementOverviewResolverService implements Resolve<Map<string, PatternLanguageModel>> {
+export class PatternLanguageManagementResolverService implements Resolve<Map<string, PatternLanguageModel>> {
     private urlPatternPedia = 'http://purl.org/patternpedia';
     private patternPediaInstance = 'http://purl.org/patternpedia#LinkedOpenPatterns';
 

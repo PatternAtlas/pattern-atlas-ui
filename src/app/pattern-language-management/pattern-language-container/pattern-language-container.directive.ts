@@ -13,7 +13,7 @@
  */
 
 import { ComponentFactoryResolver, Directive, Input, OnInit, ViewContainerRef } from '@angular/core';
-import { ComponentRegistryService } from '../core/service/component-registry.service';
+import { ComponentRegistryService } from '../../core/service/component-registry.service';
 
 @Directive({
     selector: '[ppPatternLanguageContainer]'
