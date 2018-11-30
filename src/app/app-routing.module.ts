@@ -13,14 +13,19 @@
  */
 
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent } from './page-not-found.component';
-import { LandingPageComponent } from './landing-page.component';
+import { AdministrationComponent } from './administration.component';
 
 const routes: Routes = [
     {
         path: '',
-        component: LandingPageComponent
+        redirectTo: 'patternlanguages',
+        pathMatch: 'full'
+    },
+    {
+        path: 'administration',
+        component: AdministrationComponent
     },
     {
         path: '**',

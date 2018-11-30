@@ -16,15 +16,25 @@
     <mat-icon>library_books</mat-icon>
     <span style="margin-left: 1rem">PatternPedia</span>
 </mat-toolbar>
-<!--<mat-tab-group>-->
-    <!--<mat-tab label="One">-->
-        <!--<h1>Some tab content</h1>-->
-        <!--<p>...</p>-->
-    <!--</mat-tab>-->
-    <!--<mat-tab label="Two">-->
-        <!--<h1>Some more tab content</h1>-->
-        <!--<p>...</p>-->
-    <!--</mat-tab>-->
-<!--</mat-tab-group>-->
+<nav mat-tab-nav-bar>
+    <a mat-tab-link
+       [routerLink]="'/patternlanguages'"
+       routerLinkActive #rla1="routerLinkActive"
+       [active]="rla1.isActive">
+        Pattern Languages
+    </a>
+    <a mat-tab-link
+       [routerLink]="'/solutionlanguages'"
+       routerLinkActive #rla2="routerLinkActive"
+       [active]="rla2.isActive">
+        Solution Languages
+    </a>
+    <a mat-tab-link
+       [routerLink]="'/administration'"
+       routerLinkActive #rla3="routerLinkActive"
+       [active]="rla3.isActive">
+        Administration
+    </a>
+</nav>
 
 <router-outlet></router-outlet>

@@ -25,7 +25,9 @@ import { LandingPageComponent } from './landing-page.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ExtensionsModule } from './extensions/extensions.module';
 import { AdministrationComponent } from './administration.component';
-import { MatButtonModule, MatCardModule, MatIconModule, MatToolbarModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatIconModule, MatTabNav, MatTabsModule, MatToolbarModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SolutionLanguageManagementModule } from './solution-language-management/solution-language-management.module';
 
 @NgModule({
     declarations: [
@@ -36,14 +38,16 @@ import { MatButtonModule, MatCardModule, MatIconModule, MatToolbarModule } from 
     ],
     imports: [
         BrowserModule,
-        // NOTE: Removed BrowserAnimationsModule due to issue https://github.com/angular/angular/issues/20290
-        // BrowserAnimationsModule,
+        // NOTE: BrowserAnimationsModule issue https://github.com/angular/angular/issues/20290
+        BrowserAnimationsModule,
         PatternLanguageManagementModule,
+        SolutionLanguageManagementModule,
         MatToolbarModule,
         MatIconModule,
         MatCardModule,
         MatButtonModule,
         MatIconModule,
+        MatTabsModule,
         CoreModule,
         HttpClientModule,
         AppRoutingModule,

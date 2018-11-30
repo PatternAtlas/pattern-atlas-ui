@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, Input, NgZone, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { PatternRenderingComponentInterface } from '../../../../../core/model/pattern-rendering-component.interface';
 import { CloudComputingPatternsLoader } from '../../loader/cloud-computing-patterns-loader';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -29,11 +29,4 @@ export class CloudComputingPatternComponent implements PatternRenderingComponent
                 this.cdr.detectChanges();
             });
     }
-
-    navigateBack(): void {
-        this.zone.run(() => {
-            this.router.navigate(['..'], {relativeTo: this.activatedRoute});
-        });
-    }
-
 }
