@@ -18,7 +18,6 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PatternLanguageManagementModule } from './pattern-language-management/pattern-language-management.module';
-import { MaterialImportModule } from './material-import/material-import.module';
 import { CoreModule } from './core/core.module';
 import { PageNotFoundComponent } from './page-not-found.component';
 import { LandingPageComponent } from './landing-page.component';
@@ -26,6 +25,7 @@ import { LandingPageComponent } from './landing-page.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ExtensionsModule } from './extensions/extensions.module';
 import { AdministrationComponent } from './administration.component';
+import { MatButtonModule, MatCardModule, MatIconModule, MatToolbarModule } from '@angular/material';
 
 @NgModule({
     declarations: [
@@ -39,7 +39,11 @@ import { AdministrationComponent } from './administration.component';
         // NOTE: Removed BrowserAnimationsModule due to issue https://github.com/angular/angular/issues/20290
         // BrowserAnimationsModule,
         PatternLanguageManagementModule,
-        MaterialImportModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatCardModule,
+        MatButtonModule,
+        MatIconModule,
         CoreModule,
         HttpClientModule,
         AppRoutingModule,

@@ -14,7 +14,7 @@
 
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
-import PatternLanguage from '../../extensions/repository/pattern-pedia/model/pattern-language';
+import PatternLanguageModel from '../../core/model/pattern-language.model';
 import { forkJoin, Observable, of } from 'rxjs';
 import { PatternOntologyService } from '../../core/service/pattern-ontology.service';
 import { LoaderRegistryService } from '../../core/service/loader/pattern-language-loader/loader-registry.service';
@@ -23,16 +23,15 @@ import { map, mergeMap } from 'rxjs/operators';
 @Injectable({
     providedIn: 'root'
 })
-export class PatternLanguageManagementOverviewResolverService implements Resolve<Map<string, PatternLanguage>> {
+export class PatternLanguageManagementOverviewResolverService implements Resolve<Map<string, PatternLanguageModel>> {
     private urlPatternPedia = 'http://purl.org/patternpedia';
     private patternPediaInstance = 'http://purl.org/patternpedia#LinkedOpenPatterns';
 
     constructor(private pos: PatternOntologyService,
-                private lr: LoaderRegistryService,
-                private router: Router) {
+                private lr: LoaderRegistryService) {
     }
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Map<string, PatternLanguage>> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Map<string, PatternLanguageModel>> {
         const debug = false;
         if (!debug) {
             const locally = true;
@@ -43,13 +42,13 @@ export class PatternLanguageManagementOverviewResolverService implements Resolve
             }
         } else {
             const m = new Map();
-            m.set('cloudcomputingpatterns', new PatternLanguage('cloudcomputingpatterns', 'Cloud Computing Patterns', [], []));
-            m.set('internetofthingspatterns', new PatternLanguage('internetofthingspatterns', 'IoT Patterns', [], []));
+            m.set('cloudcomputingpatterns', new PatternLanguageModel('cloudcomputingpatterns', 'Cloud Computing Patterns', [], []));
+            m.set('internetofthingspatterns', new PatternLanguageModel('internetofthingspatterns', 'IoT Patterns', [], []));
             return of(m);
         }
     }
 
-    loadLocallyHostedOntos(): Observable<Map<string, PatternLanguage>> {
+    loadLocallyHostedOntos(): Observable<Map<string, PatternLanguageModel>> {
         const observables = [
             this.pos.loadOntologyToStore('assets/patternpedia.ttl'),
             this.pos.loadOntologyToStore('assets/cloudcomputingpatterns.ttl'),
@@ -59,17 +58,17 @@ export class PatternLanguageManagementOverviewResolverService implements Resolve
             .pipe(
                 mergeMap(result => {
                     console.log('LOADED ONTOS LOCALLY: ', result);
-                    return this.lr.getContentLoader<PatternLanguage>(this.patternPediaInstance)
+                    return this.lr.getContentLoader<PatternLanguageModel>(this.patternPediaInstance)
                         .loadContentFromStore();
                 })
             );
     }
 
-    loadPatternPedia(): Observable<Map<string, PatternLanguage>> {
+    loadPatternPedia(): Observable<Map<string, PatternLanguageModel>> {
         return this.pos.loadOntologyWithImportsToStore(this.urlPatternPedia)
             .pipe(mergeMap(value => {
                 // Todo: here we go wit this.pll
-                return this.lr.getContentLoader<PatternLanguage>(this.patternPediaInstance)
+                return this.lr.getContentLoader<PatternLanguageModel>(this.patternPediaInstance)
                     .loadContentFromStore();
             }));
     }

@@ -16,15 +16,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
-import PatternLanguage from '../../extensions/repository/pattern-pedia/model/pattern-language';
-import { SparqlExecutor } from './sparql-executor';
-import { LoaderRegistryService } from './loader/pattern-language-loader/loader-registry.service';
+import PatternLanguageModel from '../model/pattern-language.model';
+import { SparqlExecutorInterface } from '../model/sparql-executor.interface';
 
 @Injectable()
-export class PatternOntologyService implements SparqlExecutor {
+export class PatternOntologyService implements SparqlExecutorInterface {
     private _store;
 
-    constructor(private http: HttpClient, private loaderRegistry: LoaderRegistryService) {
+    constructor(private http: HttpClient) {
         this.createNewStore()
             .subscribe(store => this._store = store);
     }
@@ -176,9 +175,9 @@ export class PatternOntologyService implements SparqlExecutor {
      * Selects triples that suffice { <${ppInstanceIRI}> pp:containsPatternLanguage ?patternlanguage } and converts them into
      * PatternLanguage objects.
      * @param {string} ppInstanceIRI
-     * @returns {Observable<Array<PatternLanguage>>}
+     * @returns {Observable<Array<PatternLanguageModel>>}
      */
-    getPatternLanguages(ppInstanceIRI: string): Observable<Array<PatternLanguage>> {
+    getPatternLanguages(ppInstanceIRI: string): Observable<Array<PatternLanguageModel>> {
         return Observable.create(observer => {
             this.store.execute(`SELECT ?patternlanguage WHERE { <${ppInstanceIRI}> pp:containsPatternLanguage ?patternlanguage }`,
                 (execErr, sparqlResult) => {
@@ -190,7 +189,7 @@ export class PatternOntologyService implements SparqlExecutor {
                                 .pipe(
                                     map(loadPLDetailsResult => {
                                         console.log('--->', loadPLDetailsResult);
-                                        const pl = new PatternLanguage(entry.patternlanguage.value, null, []);
+                                        const pl = new PatternLanguageModel(entry.patternlanguage.value, null, []);
                                         for (const propEntry of loadPLDetailsResult) {
                                             if ('http://purl.org/patternpedia#hasLogo' === propEntry.p.value) {
                                                 pl.logos.push(propEntry.o.value);
@@ -210,12 +209,6 @@ export class PatternOntologyService implements SparqlExecutor {
                     }
                 });
         });
-    }
-
-    loadPatternsOfPatternLanguage<T>(patternLanguageIRI: string): Observable<Map<string, T>> {
-        // Look up loader in loader dictionary and delegate loading to it
-        return this.loaderRegistry.getContentLoader<T>(patternLanguageIRI)
-            .loadContentFromStore();
     }
 
     /**
@@ -347,9 +340,16 @@ export class PatternOntologyService implements SparqlExecutor {
         });
     }
 
-    getOntologyAsTurtle(): void {
-        this.store.graph((err, result) => {
-            console.log(err, result.toNT());
+    getOntologyAsTurtle(): Observable<string> {
+        return Observable.create(observer => {
+            this.store.graph((err, result) => {
+                if (!err) {
+                    observer.next(result.toNT());
+                    observer.complete();
+                } else {
+                    observer.error(err);
+                }
+            });
         });
     }
 
@@ -358,14 +358,14 @@ export class PatternOntologyService implements SparqlExecutor {
      * @param pl Pattern language to insert
      * @param store Store the new pattern language is inserted to
      */
-    insertNewPatternLanguageIndividual(pl: PatternLanguage, store: any = null): Observable<boolean> {
+    insertNewPatternLanguageIndividual(pl: PatternLanguageModel, store: any = null): Observable<boolean> {
         // TODO: Add tripple that connect pattern language individual with a PatternPedia Instance
         // (plId pp:containsPatternLanguage NewPatternLanguageIndividualIRI)
         if (!store) {
             console.log('Use default store');
             store = this.store;
         }
-        pl = !pl ? new PatternLanguage(
+        pl = !pl ? new PatternLanguageModel(
             'http://purl.org/patternpedia#InternetOfThingsPatterns',
             'Internet of Things Patterns',
             new Array<string>('http://placekitten.com/150/151')

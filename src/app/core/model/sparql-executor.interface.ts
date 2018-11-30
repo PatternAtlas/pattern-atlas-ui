@@ -14,7 +14,7 @@
 
 import { Observable } from 'rxjs';
 
-export interface SparqlExecutor {
+export interface SparqlExecutorInterface {
     exec(qry: string): Observable<Array<any>>;
     ask(qry: string): Observable<boolean>;
 }

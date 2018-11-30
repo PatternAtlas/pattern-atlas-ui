@@ -22,11 +22,29 @@ import { PatternLanguageContainerComponent } from './pattern-language-container/
 import { PatternLanguageContainerDirective } from './pattern-language-container.directive';
 import { PatternContainerComponent } from './pattern-container/pattern-container.component';
 import { PatternContainerDirective } from './pattern-container.directive';
+import {
+    MatBadgeModule,
+    MatButtonModule,
+    MatCardModule,
+    MatDialogModule,
+    MatIconModule, MatInputModule,
+    MatSidenavModule, MatTabsModule,
+    MatToolbarModule
+} from '@angular/material';
 
 @NgModule({
     imports: [
         CommonModule,
         PatternLanguageManagementRoutingModule,
+        MatBadgeModule,
+        MatButtonModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatSidenavModule,
+        MatCardModule,
+        MatDialogModule,
+        MatTabsModule,
+        MatInputModule,
         CoreModule,
     ],
     declarations: [

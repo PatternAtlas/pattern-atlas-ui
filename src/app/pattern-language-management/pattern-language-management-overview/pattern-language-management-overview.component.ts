@@ -12,8 +12,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import PatternLanguage from '../../extensions/repository/pattern-pedia/model/pattern-language';
+import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
+import PatternLanguageModel from '../../core/model/pattern-language.model';
 import { PatternOntologyService } from '../../core/service/pattern-ontology.service';
 import { LoaderRegistryService } from '../../core/service/loader/pattern-language-loader/loader-registry.service';
 import { forkJoin } from 'rxjs';
@@ -28,20 +28,21 @@ export class PatternLanguageManagementOverviewComponent implements OnInit {
 
     private urlPatternPedia = 'http://purl.org/patternpedia';
     private patternPediaInstance = 'http://purl.org/patternpedia#LinkedOpenPatterns';
-    patternLanguages: Array<PatternLanguage>;
+    patternLanguages: Array<PatternLanguageModel>;
 
     constructor(private pos: PatternOntologyService,
                 private cdr: ChangeDetectorRef,
                 private lr: LoaderRegistryService,
                 private router: Router,
-                private activatedRoute: ActivatedRoute) {
+                private activatedRoute: ActivatedRoute,
+                private zone: NgZone) {
     }
 
     ngOnInit() {
         // this.loadPatternPedia();
 
-        this.patternLanguages = Array.from<PatternLanguage>(this.activatedRoute.snapshot.data.patternlanguages.values())
-            .sort((pl1: PatternLanguage, pl2: PatternLanguage) => {
+        this.patternLanguages = Array.from<PatternLanguageModel>(this.activatedRoute.snapshot.data.patternlanguages.values())
+            .sort((pl1: PatternLanguageModel, pl2: PatternLanguageModel) => {
                 if (pl1.name > pl2.name) {
                     return 1;
                 }
@@ -61,11 +62,11 @@ export class PatternLanguageManagementOverviewComponent implements OnInit {
         forkJoin(observables)
             .subscribe(result => {
                 console.log('LOADED ONTOS LOCALLY: ', result);
-                this.lr.getContentLoader<PatternLanguage>(this.patternPediaInstance)
+                this.lr.getContentLoader<PatternLanguageModel>(this.patternPediaInstance)
                     .loadContentFromStore()
                     .subscribe(async (languages) => {
-                        this.patternLanguages = await Array.from<PatternLanguage>(languages.values())
-                            .sort((pl1: PatternLanguage, pl2: PatternLanguage) => {
+                        this.patternLanguages = await Array.from<PatternLanguageModel>(languages.values())
+                            .sort((pl1: PatternLanguageModel, pl2: PatternLanguageModel) => {
                                 if (pl1.name > pl2.name) {
                                     return 1;
                                 }
@@ -83,11 +84,17 @@ export class PatternLanguageManagementOverviewComponent implements OnInit {
         this.loadLocallyHostedOntos();
     }
 
+    navigateToPL(id: string): void {
+        this.zone.run(() => {
+            this.router.navigate([id], {relativeTo: this.activatedRoute});
+        });
+    }
+
     loadPatternPedia() {
         this.pos.loadOntologyWithImportsToStore(this.urlPatternPedia)
             .subscribe(value => {
                 // Todo: here we go wit this.pll
-                this.lr.getContentLoader<PatternLanguage>(this.patternPediaInstance)
+                this.lr.getContentLoader<PatternLanguageModel>(this.patternPediaInstance)
                     .loadContentFromStore()
                     .subscribe(async (result) => {
                         this.patternLanguages = Array.from(result.values());

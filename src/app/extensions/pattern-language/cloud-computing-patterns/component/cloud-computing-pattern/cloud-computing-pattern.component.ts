@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Input, NgZone, OnInit } from '@angular/core';
-import { PatternRenderingComponent } from '../../../../../core/model/pattern-rendering-component';
+import { PatternRenderingComponentInterface } from '../../../../../core/model/pattern-rendering-component.interface';
 import { CloudComputingPatternsLoader } from '../../loader/cloud-computing-patterns-loader';
 import { ActivatedRoute, Router } from '@angular/router';
 import CloudComputingPattern from '../../model/cloud-computing-pattern';
@@ -10,7 +10,7 @@ import { IriConverter } from '../../../../../core/util/iri-converter';
     templateUrl: './cloud-computing-pattern.component.html',
     styleUrls: ['./cloud-computing-pattern.component.scss']
 })
-export class CloudComputingPatternComponent implements PatternRenderingComponent, OnInit {
+export class CloudComputingPatternComponent implements PatternRenderingComponentInterface, OnInit {
 
     pId: string;
     pattern: CloudComputingPattern;

@@ -14,7 +14,7 @@
 
 import { Observable } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
-import { SparqlExecutor } from '../../sparql-executor';
+import { SparqlExecutorInterface } from '../../../model/sparql-executor.interface';
 
 abstract class Loader<T> {
     // How does a loader work?
@@ -23,9 +23,9 @@ abstract class Loader<T> {
     //      The loader has corresponding logic to convert the selected triples to an array of the correct type
 
     supportedIRI: string;
-    executor: SparqlExecutor;
+    executor: SparqlExecutorInterface;
 
-    protected constructor(supportedIRI: string, executor: SparqlExecutor) {
+    protected constructor(supportedIRI: string, executor: SparqlExecutorInterface) {
         this.supportedIRI = supportedIRI;
         this.executor = executor;
     }

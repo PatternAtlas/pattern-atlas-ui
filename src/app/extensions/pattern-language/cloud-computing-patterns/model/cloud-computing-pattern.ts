@@ -12,9 +12,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import Pattern from '../../../repository/pattern-pedia/model/pattern';
+import PatternModel from '../../../../core/model/pattern.model';
 
-class CloudComputingPattern extends Pattern {
+class CloudComputingPattern extends PatternModel {
     /*
         From Pattern:
             private _id: string;

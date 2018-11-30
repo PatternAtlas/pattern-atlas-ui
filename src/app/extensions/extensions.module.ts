@@ -14,13 +14,11 @@
 
 import { NgModule } from '@angular/core';
 import { CloudComputingPatternsModule } from './pattern-language/cloud-computing-patterns/cloud-computing-patterns.module';
-import { PatternPediaModule } from './repository/pattern-pedia/pattern-pedia.module';
 
 @NgModule({
     // here we import all specific extensions and make them available for the app
     imports: [
-        CloudComputingPatternsModule,
-        PatternPediaModule
+        CloudComputingPatternsModule
     ],
     declarations: [],
     exports: []

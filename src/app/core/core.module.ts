@@ -14,19 +14,15 @@
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MaterialImportModule } from '../material-import/material-import.module';
 import { PatternOntologyService } from './service/pattern-ontology.service';
-import { CloudComputingPatternsLoader } from '../extensions/pattern-language/cloud-computing-patterns/loader/cloud-computing-patterns-loader'; // tslint:disable-line:max-line-length
 import { LoaderRegistryService } from './service/loader/pattern-language-loader/loader-registry.service';
-import { PatternLanguageLoader } from '../extensions/repository/pattern-pedia/loader/pattern-language-loader';
+import { PatternLanguageLoader } from './service/loader/pattern-language-loader/pattern-language-loader';
 
 @NgModule({
     imports: [
         CommonModule,
-        MaterialImportModule
     ],
     exports: [
-        MaterialImportModule
     ],
     providers: [
         PatternOntologyService

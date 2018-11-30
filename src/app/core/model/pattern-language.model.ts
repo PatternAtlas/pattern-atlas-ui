@@ -12,13 +12,14 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { IriConverter } from '../../../../core/util/iri-converter';
+import { IriConverter } from '../util/iri-converter';
 
-class PatternPedia {
+class PatternLanguageModel {
     private _id: string;
-    iri: string;
     name: string;
-    logo: string;
+    logos: Array<string>;
+    iri: string;
+    patternIRIs: Array<string>;
 
     set id(iri: string) {
         this._id = IriConverter.convertIriToId(iri);
@@ -28,12 +29,13 @@ class PatternPedia {
         return this._id;
     }
 
-    public constructor(iri: string = null, name: string = null, logo: string = null) {
+    public constructor(iri: string = null, name: string = null, logos: Array<string> = null, patternIRIs: Array<string> = null) {
         this.name = name;
-        this.logo = logo;
+        this.logos = logos || [];
+        this.patternIRIs = patternIRIs || [];
         this.iri = iri;
         this.id = iri;
     }
 }
 
-export default PatternPedia;
+export default PatternLanguageModel;
