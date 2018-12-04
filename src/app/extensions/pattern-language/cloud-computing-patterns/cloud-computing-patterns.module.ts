@@ -45,9 +45,7 @@ import { IriConverter } from '../../../core/util/iri-converter';
     ]
 })
 export class CloudComputingPatternsModule {
-    constructor(private lr: LoaderRegistryService,
-                private pos: PatternOntologyService,
-                private cr: ComponentRegistryService) {
+    constructor(private cr: ComponentRegistryService) {
         this.cr.registerComponent(IriConverter.convertIriToId('http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPatterns'), {plcomponent: CloudComputingPatternsComponent, pcomponent: CloudComputingPatternComponent}); // tslint:disable-line:max-line-length
     }
 }

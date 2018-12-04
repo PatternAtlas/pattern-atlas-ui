@@ -13,7 +13,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import Loader from './loader';
+import Loader from '../../../model/loader';
 
 @Injectable({
     providedIn: 'root'
@@ -26,6 +26,7 @@ export class LoaderRegistryService {
     }
 
     getContentLoader<T>(contentIRI): Loader<T> {
+        console.log(this.dictionary.entries());
         return this.dictionary.get(contentIRI);
     }
 

@@ -16,22 +16,39 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PatternOntologyService } from './service/pattern-ontology.service';
 import { LoaderRegistryService } from './service/loader/pattern-language-loader/loader-registry.service';
-import { PatternLanguageLoader } from './service/loader/pattern-language-loader/pattern-language-loader';
+import { DefaultPlRendererComponent } from './default-pl-renderer/default-pl-renderer.component';
+import { DefaultPatternRendererComponent } from './default-pattern-renderer/default-pattern-renderer.component';
+import { ComponentRegistryService } from './service/component-registry.service';
+import { LinkedOpenPatternsLoader } from './service/loader/pattern-language-loader/linked-open-patterns-loader.service';
+import {PrettyJsonModule} from 'angular2-prettyjson';
+import { MatButtonModule } from '@angular/material';
+import { TextFieldModule } from '@angular/cdk/text-field';
 
 @NgModule({
     imports: [
         CommonModule,
+        PrettyJsonModule,
+        MatButtonModule,
+        TextFieldModule
     ],
-    exports: [
-    ],
+    exports: [],
     providers: [
-        PatternOntologyService
+        PatternOntologyService,
+        LinkedOpenPatternsLoader
     ],
     declarations: [
+        DefaultPlRendererComponent,
+        DefaultPatternRendererComponent
+    ],
+    entryComponents: [
+        DefaultPlRendererComponent,
+        DefaultPatternRendererComponent
     ]
 })
 export class CoreModule {
-    constructor(private lr: LoaderRegistryService, pos: PatternOntologyService) {
-        this.lr.registerContentLoader(new PatternLanguageLoader('http://purl.org/patternpedia#LinkedOpenPatterns', pos));
+    constructor(private lr: LoaderRegistryService,
+                private pos: PatternOntologyService,
+                private cr: ComponentRegistryService) {
+        this.cr.registerComponent('default', {plcomponent: DefaultPlRendererComponent, pcomponent: DefaultPatternRendererComponent});
     }
 }

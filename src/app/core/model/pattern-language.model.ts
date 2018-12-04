@@ -14,7 +14,7 @@
 
 import { IriConverter } from '../util/iri-converter';
 
-class PatternLanguageModel {
+class PatternLanguage {
     private _id: string;
     name: string;
     logos: Array<string>;
@@ -38,4 +38,4 @@ class PatternLanguageModel {
     }
 }
 
-export default PatternLanguageModel;
+export default PatternLanguage;

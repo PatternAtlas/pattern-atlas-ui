@@ -13,16 +13,16 @@
  */
 
 import { Observable, of } from 'rxjs';
-import Loader from './loader';
-import { SparqlExecutorInterface } from '../../../model/sparql-executor.interface';
-import PatternLanguageModel from '../../../model/pattern-language.model';
+import PatternLanguage from '../../../model/pattern-language.model';
 import { Injectable } from '@angular/core';
+import Loader from '../../../model/loader';
+import { PatternOntologyService } from '../../pattern-ontology.service';
 
 @Injectable()
-export class PatternLanguageLoader extends Loader<PatternLanguageModel> {
+export class LinkedOpenPatternsLoader extends Loader<PatternLanguage> {
 
-    constructor(iri: string, executor: SparqlExecutorInterface) {
-        super(iri, executor);
+    constructor(private pos: PatternOntologyService) {
+        super('http://purl.org/patternpedia#LinkedOpenPatterns', pos);
     }
 
     selectContentFromStore(): Observable<any> {
@@ -32,8 +32,8 @@ export class PatternLanguageLoader extends Loader<PatternLanguageModel> {
         return this.executor.exec(qry);
     }
 
-    mapTriplesToObjects(triples: any): Observable<Map<string, PatternLanguageModel>> {
-        const result = new Map<string, PatternLanguageModel>();
+    mapTriples(triples: any): Observable<Map<string, PatternLanguage>> {
+        const result = new Map<string, PatternLanguage>();
 
         // we first iterate the triples and generate an intermediate format to create afterwards pattern objects
         const rawLanguages = {};
@@ -83,7 +83,7 @@ export class PatternLanguageLoader extends Loader<PatternLanguageModel> {
             }
             result.set(
                 key,
-                new PatternLanguageModel(
+                new PatternLanguage(
                     key,
                     rawLanguages[key]['http://purl.org/patternpedia#hasName'].value,
                     logos,

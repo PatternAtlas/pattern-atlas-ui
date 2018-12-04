@@ -16,11 +16,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
-import PatternLanguageModel from '../model/pattern-language.model';
-import { SparqlExecutorInterface } from '../model/sparql-executor.interface';
+import PatternLanguage from '../model/pattern-language.model';
+import { SparqlExecutor } from '../model/sparql.executor';
 
 @Injectable()
-export class PatternOntologyService implements SparqlExecutorInterface {
+export class PatternOntologyService implements SparqlExecutor {
     private _store;
 
     constructor(private http: HttpClient) {
@@ -172,12 +172,30 @@ export class PatternOntologyService implements SparqlExecutorInterface {
     }
 
     /**
+     * This function loads ontologies locally hosted for development
+     */
+    loadLocallyHostedOntos(): Observable<any> {
+        console.log('Loading locally hosted Ontologies');
+        const observables = [
+            this.loadOntologyToStore('assets/patternpedia.ttl'),
+            this.loadOntologyToStore('assets/cloudcomputingpatterns.ttl'),
+            this.loadOntologyToStore('assets/internetofthingspatterns.ttl')
+        ];
+        return forkJoin(observables)
+            .pipe(
+                map(result => {
+                    console.log('Loaded locally hosted Ontologies: ', result);
+                    return result;
+                }));
+    }
+
+    /**
      * Selects triples that suffice { <${ppInstanceIRI}> pp:containsPatternLanguage ?patternlanguage } and converts them into
      * PatternLanguage objects.
      * @param {string} ppInstanceIRI
-     * @returns {Observable<Array<PatternLanguageModel>>}
+     * @returns {Observable<Array<PatternLanguage>>}
      */
-    getPatternLanguages(ppInstanceIRI: string): Observable<Array<PatternLanguageModel>> {
+    getPatternLanguages(ppInstanceIRI: string): Observable<Array<PatternLanguage>> {
         return Observable.create(observer => {
             this.store.execute(`SELECT ?patternlanguage WHERE { <${ppInstanceIRI}> pp:containsPatternLanguage ?patternlanguage }`,
                 (execErr, sparqlResult) => {
@@ -189,7 +207,7 @@ export class PatternOntologyService implements SparqlExecutorInterface {
                                 .pipe(
                                     map(loadPLDetailsResult => {
                                         console.log('--->', loadPLDetailsResult);
-                                        const pl = new PatternLanguageModel(entry.patternlanguage.value, null, []);
+                                        const pl = new PatternLanguage(entry.patternlanguage.value, null, []);
                                         for (const propEntry of loadPLDetailsResult) {
                                             if ('http://purl.org/patternpedia#hasLogo' === propEntry.p.value) {
                                                 pl.logos.push(propEntry.o.value);
@@ -358,14 +376,14 @@ export class PatternOntologyService implements SparqlExecutorInterface {
      * @param pl Pattern language to insert
      * @param store Store the new pattern language is inserted to
      */
-    insertNewPatternLanguageIndividual(pl: PatternLanguageModel, store: any = null): Observable<boolean> {
+    insertNewPatternLanguageIndividual(pl: PatternLanguage, store: any = null): Observable<boolean> {
         // TODO: Add tripple that connect pattern language individual with a PatternPedia Instance
         // (plId pp:containsPatternLanguage NewPatternLanguageIndividualIRI)
         if (!store) {
             console.log('Use default store');
             store = this.store;
         }
-        pl = !pl ? new PatternLanguageModel(
+        pl = !pl ? new PatternLanguage(
             'http://purl.org/patternpedia#InternetOfThingsPatterns',
             'Internet of Things Patterns',
             new Array<string>('http://placekitten.com/150/151')

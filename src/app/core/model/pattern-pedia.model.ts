@@ -14,7 +14,7 @@
 
 import { IriConverter } from '../util/iri-converter';
 
-class PatternPediaModel {
+class PatternPedia {
     private _id: string;
     iri: string;
     name: string;
@@ -36,4 +36,4 @@ class PatternPediaModel {
     }
 }
 
-export default PatternPediaModel;
+export default PatternPedia;

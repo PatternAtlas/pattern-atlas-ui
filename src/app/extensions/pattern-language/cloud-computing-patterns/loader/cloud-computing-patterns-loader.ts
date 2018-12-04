@@ -14,7 +14,7 @@
 
 import { Observable, of } from 'rxjs';
 import CloudComputingPattern from '../model/cloud-computing-pattern';
-import Loader from '../../../../core/service/loader/pattern-language-loader/loader';
+import Loader from '../../../../core/model/loader';
 import { Injectable } from '@angular/core';
 import { PatternOntologyService } from '../../../../core/service/pattern-ontology.service';
 
@@ -37,7 +37,7 @@ export class CloudComputingPatternsLoader extends Loader<CloudComputingPattern> 
         return this.executor.exec(qry);
     }
 
-    mapTriplesToObjects(triples: any): Observable<Map<string, CloudComputingPattern>> {
+    mapTriples(triples: any): Observable<Map<string, CloudComputingPattern>> {
         const result = new Map<string, CloudComputingPattern>();
         // we first iterate the triples and generate an intermediate format to create afterwards pattern objects
         const patterns = {};

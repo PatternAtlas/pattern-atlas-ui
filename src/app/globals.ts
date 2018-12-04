@@ -12,26 +12,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { IriConverter } from '../util/iri-converter';
-
-class Pattern {
-    protected _id: string;
-    iri: string;
-    name: string;
-
-    set id(iri: string) {
-        this._id = IriConverter.convertIriToId(iri);
-    }
-
-    get id(): string {
-        return this._id;
-    }
-
-    constructor(iri: string = null, name: string = null) {
-        this.name = name;
-        this.iri = iri;
-        this.id = iri;
-    }
-}
-
-export default Pattern;
+export const globals = {
+    urlPatternRepoOntology: 'http://purl.org/patternpedia',
+    iriPatternRepoInstance: 'http://purl.org/patternpedia#LinkedOpenPatterns',
+    loadOntologyLocally: true
+};

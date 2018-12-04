@@ -14,62 +14,43 @@
 
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import PatternLanguageModel from '../../core/model/pattern-language.model';
-import { forkJoin, Observable, of } from 'rxjs';
+import PatternLanguage from '../../core/model/pattern-language.model';
+import { Observable } from 'rxjs';
 import { PatternOntologyService } from '../../core/service/pattern-ontology.service';
 import { LoaderRegistryService } from '../../core/service/loader/pattern-language-loader/loader-registry.service';
 import { mergeMap } from 'rxjs/operators';
+import { globals } from '../../globals';
+import { LinkedOpenPatternsLoader } from '../../core/service/loader/pattern-language-loader/linked-open-patterns-loader.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class PatternLanguageManagementResolverService implements Resolve<Map<string, PatternLanguageModel>> {
-    private urlPatternPedia = 'http://purl.org/patternpedia';
-    private patternPediaInstance = 'http://purl.org/patternpedia#LinkedOpenPatterns';
+export class PatternLanguageManagementResolverService implements Resolve<Map<string, PatternLanguage>> {
+    private urlPatternPedia = globals.urlPatternRepoOntology;
+    private patternPediaInstance = globals.iriPatternRepoInstance;
+    private loadLocally = globals.loadOntologyLocally;
 
     constructor(private pos: PatternOntologyService,
-                private lr: LoaderRegistryService) {
+                private loader: LinkedOpenPatternsLoader) {
     }
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Map<string, PatternLanguageModel>> {
-        const debug = false;
-        if (!debug) {
-            const locally = true;
-            if (locally) {
-                return this.loadLocallyHostedOntos();
-            } else {
-                return this.loadPatternPedia();
-            }
-        } else {
-            const m = new Map();
-            m.set('cloudcomputingpatterns', new PatternLanguageModel('cloudcomputingpatterns', 'Cloud Computing Patterns', [], []));
-            m.set('internetofthingspatterns', new PatternLanguageModel('internetofthingspatterns', 'IoT Patterns', [], []));
-            return of(m);
-        }
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Map<string, PatternLanguage>> {
+        return this.loadLocally ? this.loadLocallyHostedOntos() : this.loadPatternPedia();
     }
 
-    loadLocallyHostedOntos(): Observable<Map<string, PatternLanguageModel>> {
-        const observables = [
-            this.pos.loadOntologyToStore('assets/patternpedia.ttl'),
-            this.pos.loadOntologyToStore('assets/cloudcomputingpatterns.ttl'),
-            this.pos.loadOntologyToStore('assets/internetofthingspatterns.ttl')
-        ];
-        return forkJoin(observables)
+    loadLocallyHostedOntos(): Observable<Map<string, PatternLanguage>> {
+        return this.pos.loadLocallyHostedOntos()
             .pipe(
-                mergeMap(result => {
-                    console.log('LOADED ONTOS LOCALLY: ', result);
-                    return this.lr.getContentLoader<PatternLanguageModel>(this.patternPediaInstance)
-                        .loadContentFromStore();
+                mergeMap(() => {
+                    return this.loader.loadContentFromStore();
                 })
             );
     }
 
-    loadPatternPedia(): Observable<Map<string, PatternLanguageModel>> {
+    loadPatternPedia(): Observable<Map<string, PatternLanguage>> {
         return this.pos.loadOntologyWithImportsToStore(this.urlPatternPedia)
-            .pipe(mergeMap(value => {
-                // Todo: here we go wit this.pll
-                return this.lr.getContentLoader<PatternLanguageModel>(this.patternPediaInstance)
-                    .loadContentFromStore();
+            .pipe(mergeMap(() => {
+                return this.loader.loadContentFromStore();
             }));
     }
 }

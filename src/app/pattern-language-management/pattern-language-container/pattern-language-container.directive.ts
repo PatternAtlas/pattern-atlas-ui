@@ -28,7 +28,10 @@ export class PatternLanguageContainerDirective implements OnInit {
     }
 
     ngOnInit(): void {
-        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.compRegistry.getPLRenderingComponents(this.plId).plcomponent);
+        const componentFactory = this.compRegistry.getPLRenderingComponents(this.plId) ?
+            this.componentFactoryResolver.resolveComponentFactory(this.compRegistry.getPLRenderingComponents(this.plId).plcomponent) :
+            this.componentFactoryResolver.resolveComponentFactory(this.compRegistry.getPLRenderingComponents('default').plcomponent);
+
         this.viewContainerRef.clear();
         this.viewContainerRef.createComponent(componentFactory);
     }

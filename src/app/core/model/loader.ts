@@ -14,7 +14,7 @@
 
 import { Observable } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
-import { SparqlExecutorInterface } from '../../../model/sparql-executor.interface';
+import { SparqlExecutor } from './sparql.executor';
 
 abstract class Loader<T> {
     // How does a loader work?
@@ -22,12 +22,20 @@ abstract class Loader<T> {
     //      The loader knows the proper SELECT statement
     //      The loader has corresponding logic to convert the selected triples to an array of the correct type
 
-    supportedIRI: string;
-    executor: SparqlExecutorInterface;
+    _supportedIRI: string;
+    executor: SparqlExecutor;
 
-    protected constructor(supportedIRI: string, executor: SparqlExecutorInterface) {
-        this.supportedIRI = supportedIRI;
+    protected constructor(supportedIRI: string, executor: SparqlExecutor) {
+        this._supportedIRI = supportedIRI;
         this.executor = executor;
+    }
+
+    set supportedIRI(iri: string) {
+        this._supportedIRI = iri;
+    }
+
+    get supportedIRI(): string {
+        return this._supportedIRI;
     }
 
     /**
@@ -36,13 +44,13 @@ abstract class Loader<T> {
     loadContentFromStore(): Observable<Map<string, T>> {
         return this.selectContentFromStore()
             .pipe(
-                flatMap(triples => this.mapTriplesToObjects(triples))
+                flatMap(triples => this.mapTriples(triples))
             );
     }
 
     abstract selectContentFromStore(): Observable<any>;
 
-    abstract mapTriplesToObjects(triples: any): Observable<Map<string, T>>;
+    abstract mapTriples(triples: any): Observable<Map<string, T>>;
 }
 
 export default Loader;
