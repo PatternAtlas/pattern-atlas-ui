@@ -8,7 +8,9 @@
 @base <http://purl.org/patternpedia/cloudcomputingpatterns> .
 
 <http://purl.org/patternpedia/cloudcomputingpatterns> rdf:type owl:Ontology ;
-                                                       owl:imports <http://purl.org/patternpedia> .
+                                                      owl:imports <http://purl.org/patternpedia> ,
+                                                                  <http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer> ,
+                                                                  <http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure> .
 
 #################################################################
 #    Data properties
@@ -81,6 +83,11 @@
                                          owl:onDataRange xsd:string
                                        ] ,
                                        [ rdf:type owl:Restriction ;
+                                         owl:onProperty :hasContext ;
+                                         owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                         owl:onDataRange xsd:string
+                                       ] ,
+                                       [ rdf:type owl:Restriction ;
                                          owl:onProperty :hasResult ;
                                          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
                                          owl:onDataRange xsd:string
@@ -109,42 +116,14 @@
 ###  http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPatterns
 :CloudComputingPatterns rdf:type owl:NamedIndividual ,
                                  pp:PatternLanguage ;
-                        pp:containsPattern :ElasticInfrastructure ,
-                                           :ElasticLoadBalancer ;
+                        pp:containsPattern <http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure#ElasticInfrastructure> ,
+                                           <http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer#ElasticLoadBalancer> ;
                         pp:hasLogo "http://www.cloudcomputingpatterns.org/img/book.png"^^xsd:anyURI ;
                         pp:hasName "Cloud Computing Patterns"^^xsd:string .
-
 
 ###  http://purl.org/patternpedia/cloudcomputingpatterns#ELBtoEI
 :ELBtoEI rdf:type owl:NamedIndividual ,
                   :CloudComputingPatternRelationDescriptor ;
-         pp:hasSource :ElasticLoadBalancer ;
-         pp:hasTarget :ElasticInfrastructure ;
+         pp:hasSource <http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure#ElasticLoadBalancer> ;
+         pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure#ElasticInfrastructure> ;
          :hasExplanation "This is an Explanation."^^xsd:string .
-
-
-###  http://purl.org/patternpedia/cloudcomputingpatterns#ElasticInfrastructure
-:ElasticInfrastructure rdf:type owl:NamedIndividual ,
-                                :CloudComputingPattern ;
-                       pp:hasName "Elastic Infrastructure"^^xsd:string ;
-                       :hasContext "An application experiences Periodic Workload, Once-in-a-lifetime Workload, Unpredictable Workload, or Continuously Changing Workload, the number of IT resources, such as servers, should be adjusted dynamically. In scope of the IaaS service model, the applications’ runtime infrastructure, thus, must support dynamic provisioning and decommissioning of virtual servers, disk storage and network connectivity."^^xsd:string ;
-                       :hasDrivingQuestion "How do Cloud Offerings providing infrastructure resources behave and how should they be used in applications?"^^xsd:string ;
-                       :hasIcon "http://www.cloudcomputingpatterns.org/icons/elastic_infrastructure_icon.png"^^xsd:anyURI ;
-                       :hasIntent "Hosting of virtual servers, disk storage, and configuration of network connectivity is offered via a self-service interface over a network."^^xsd:string ;
-                       :hasSolution "An Elastic Infrastructure provides preconfigured virtual server images, storage and network connectivity that may be provisioned by customers using a self-service interface. Monitoring information is provided to inform about resource utilization required for traceable billing and automation of management tasks."^^xsd:string ;
-                       :hasSolutionSketch "http://www.cloudcomputingpatterns.org/sketches/elastic_infrastructure_sketch.png"^^xsd:anyURI .
-
-
-###  http://purl.org/patternpedia/cloudcomputingpatterns#ElasticLoadBalancer
-:ElasticLoadBalancer rdf:type owl:NamedIndividual ,
-                              :CloudComputingPattern ;
-                     pp:hasName "Elastic Load Balancer"^^xsd:string ;
-                     :hasContext "Application components of a Distributed Application shall be scaled out automatically. Requests sent to an application shall be used as an indicator for the currently experienced workload from which the required number of components instances shall be deducted."^^xsd:string ;
-                     :hasDrivingQuestion "How can the number of required application component instances be determined based on monitored synchronous accesses?"^^xsd:string ;
-                     :hasIcon "http://www.cloudcomputingpatterns.org/icons/elastic_load_balancer_icon.png"^^xsd:anyURI ;
-                     :hasIntent "The number of synchronous accesses to an elastically scaled-out application is used to determine the number of required application component instances."^^xsd:string ;
-                     :hasSolution "Based on the number of synchronous requests handled by a load balancer and possibly other utilization information, the required number of required component instances is determined."^^xsd:string ;
-                     :hasSolutionSketch "http://www.cloudcomputingpatterns.org/sketches/elastic_load_balancer_sketch.png"^^xsd:anyURI .
-
-
-###  Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi
