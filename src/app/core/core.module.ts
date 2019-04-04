@@ -20,16 +20,19 @@ import { DefaultPlRendererComponent } from './default-pl-renderer/default-pl-ren
 import { DefaultPatternRendererComponent } from './default-pattern-renderer/default-pattern-renderer.component';
 import { ComponentRegistryService } from './service/component-registry.service';
 import { LinkedOpenPatternsLoader } from './service/loader/pattern-language-loader/linked-open-patterns-loader.service';
-import {PrettyJsonModule} from 'angular2-prettyjson';
+import { PrettyJsonModule } from 'angular2-prettyjson';
 import { MatButtonModule } from '@angular/material';
 import { TextFieldModule } from '@angular/cdk/text-field';
+import { MdEditorComponent } from './component/md-editor/md-editor.component';
+import { CovalentTextEditorModule } from '@covalent/text-editor';
 
 @NgModule({
     imports: [
         CommonModule,
         PrettyJsonModule,
         MatButtonModule,
-        TextFieldModule
+        TextFieldModule,
+        CovalentTextEditorModule
     ],
     exports: [],
     providers: [
@@ -38,11 +41,13 @@ import { TextFieldModule } from '@angular/cdk/text-field';
     ],
     declarations: [
         DefaultPlRendererComponent,
-        DefaultPatternRendererComponent
+        DefaultPatternRendererComponent,
+        MdEditorComponent
     ],
     entryComponents: [
         DefaultPlRendererComponent,
-        DefaultPatternRendererComponent
+        DefaultPatternRendererComponent,
+        MdEditorComponent
     ]
 })
 export class CoreModule {

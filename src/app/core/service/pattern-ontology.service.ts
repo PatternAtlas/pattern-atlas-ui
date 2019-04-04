@@ -14,7 +14,7 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { forkJoin, Observable, of, throwError } from 'rxjs';
+import { forkJoin, from, Observable, of, throwError } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
 import PatternLanguage from '../model/pattern-language.model';
 import { SparqlExecutor } from '../model/sparql.executor';
@@ -25,7 +25,7 @@ export class PatternOntologyService implements SparqlExecutor {
 
     constructor(private http: HttpClient) {
         this.createNewStore()
-            .subscribe(store => this._store = store);
+            .then(() => console.log('Created new Store'));
     }
 
     /**
@@ -51,15 +51,16 @@ export class PatternOntologyService implements SparqlExecutor {
     /**
      * Creates a new store with registered default namespaces.
      */
-    createNewStore(): Observable<any> {
-        return Observable.create(observer => {
+    async createNewStore(): Promise<any> {
+        console.log('Creating new store');
+        return new Promise((resolve, reject) => {
             rdfstore.create((err, store) => {
                 if (!err) {
                     this.registerDefaultNameSpaces(store);
-                    observer.next(store);
-                    observer.complete();
+                    this._store = store;
+                    resolve(store);
                 } else {
-                    observer.error(err);
+                    reject(err);
                 }
             });
         });
@@ -76,12 +77,13 @@ export class PatternOntologyService implements SparqlExecutor {
     }
 
     /**
-     * Loads the ontology at the given IRI to the give store if it is not yet present. The default store is used if no store is given.
+     * Loads the ontology at the given URL to the give store if it is not yet present. The default store is used if no store is given.
      * All imported ontologies are checked and are also loaded recursively with this function.
-     * @param iri
+     * @param url URL of the ontology file
+     * @param iri IRI of the represented entity in ontology file
      * @param store
      */
-    loadOntologyWithImportsToStore(iri: string, store: any = null): Observable<any> {
+    loadOntologyWithImportsToStore(url: string, iri: string, store: any = null): Promise<any> {
         // 1. check if ontology is not yet loaded
         // 2. load ontology to store
         // 3. load owl:imports triple {?s owl:imports ?o}
@@ -91,24 +93,22 @@ export class PatternOntologyService implements SparqlExecutor {
             store = this.store;
         }
         return this.ontologyAlreadyLoaded(iri, store)
-            .pipe(
-                flatMap(alreadyLoaded => {
-                    return !alreadyLoaded.loaded ? this.loadOntologyToStore(iri, store) : of(null);
-                }),
-                flatMap(result => result ? this.loadImportTriple(store) : of(result)),
-                flatMap(importTriple => {
+            .then(alreadyLoaded => {
+                    return !alreadyLoaded.loaded ? this.loadOntologyToStore(url, iri, store) : Promise.resolve(null);
+                })
+            .then(result => result ? this.loadImportTriple(store) : Promise.resolve(result))
+            .then(importTriple => {
                     const triples = importTriple as Array<any>;
                     if (importTriple && triples.length > 0) {
-                        const observables = [];
+                        const promises = [];
                         for (const it of importTriple as Array<any>) {
-                            observables.push(this.loadOntologyWithImportsToStore(it.o.value, store));
+                            promises.push(this.loadOntologyWithImportsToStore(it.o.value, store));
                         }
-                        return forkJoin(observables);
+                        return Promise.all(promises);
                     } else {
-                        return of(null);
+                        return Promise.resolve(null);
                     }
-                })
-            );
+                });
     }
 
     /**
@@ -117,16 +117,16 @@ export class PatternOntologyService implements SparqlExecutor {
      * @param store
      * @returns {Observable<{iri: string; loaded: boolean}>}
      */
-    ontologyAlreadyLoaded(iri: string, store: any = null): Observable<{ iri: string, loaded: boolean }> {
+    ontologyAlreadyLoaded(iri: string, store: any = null): Promise<{ iri: string, loaded: boolean }> {
         if (!store) {
             console.log('Using default store');
             store = this.store;
         }
         return this.ask(`ASK { <${iri}> a owl:Ontology }`, store)
-            .pipe(
-                map(result => {
+            .then(
+                result => {
                     return {iri: iri, loaded: result};
-                })
+                }
             );
     }
 
@@ -135,29 +135,30 @@ export class PatternOntologyService implements SparqlExecutor {
      * @param store
      * @returns {Observable<Array<any>>}
      */
-    loadImportTriple(store): Observable<Array<any>> {
+    loadImportTriple(store): Promise<Array<any>> {
         return this.exec('SELECT ?s ?o WHERE { ?s owl:imports ?o }', store);
     }
 
     /**
      * Loads an turtle ontology located at the given IRI and stores it to the given store.
      * If no store is given the default store is used.
-     * @param {string} iri
+     * @param {string} url URL of the file to be loaded
+     * @param {string} graphIri IRI of graph to store triples to
      * @param store
      * @returns {Observable<number>}
      */
-    loadOntologyToStore(iri: string, store: any = null): Observable<number> {
-        console.log('Loading Ontology:', iri);
+    loadOntologyToStore(url: string, graphIri: string, store: any = null): Observable<number> {
+        console.log('Loading ontology:', url, 'for entity ', graphIri, ' from ', url);
         if (!store) {
             console.log('Using default store');
             store = this.store;
         }
-        return this.loadRawOntology(iri).pipe(
+        return this.loadRawOntology(url).pipe(
             flatMap(rawText => {
                 return Observable.create(observer => {
-                        store.load('text/turtle', rawText, (loadErr, loadResult) => {
+                        store.load('text/turtle', rawText, graphIri, (loadErr, loadResult) => {
                             if (!loadErr) {
-                                console.log('Loading succeded', loadResult);
+                                console.log('Loading of ', url, 'succeeded: ', loadResult);
                                 observer.next(loadResult);
                                 observer.complete();
                             } else {
@@ -174,19 +175,75 @@ export class PatternOntologyService implements SparqlExecutor {
     /**
      * This function loads ontologies locally hosted for development
      */
-    loadLocallyHostedOntos(): Observable<any> {
-        console.log('Loading locally hosted Ontologies');
+    // loadLocallyHostedOntos(): Observable<any> {
+    //     console.log('Loading locally hosted Ontologies');
+    //     const observables = [
+    //         this.loadOntologyToStore('assets/patternpedia.ttl', 'http://purl.org/patternpedia'),
+    //         // this.loadOntologyToStore('assets/cloudcomputingpatterns.ttl', 'http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPatterns'),
+    //         // this.loadOntologyToStore('assets/internetofthingspatterns.ttl',
+    //              'http://purl.org/patternpedia/internetofthingspatterns#InternetOfThingsPatterns')
+    //     ];
+    //     return forkJoin(observables)
+    //         .pipe(
+    //             map(result => {
+    //                 console.log('Loaded locally hosted Ontologies: ', result);
+    //                 return result;
+    //             }));
+    // }
+    /**
+     * This function loads ontologies locally hosted for development
+     */
+    loadLocallyHostedOntosRaw(): Observable<any> {
         const observables = [
-            this.loadOntologyToStore('assets/patternpedia.ttl'),
-            this.loadOntologyToStore('assets/cloudcomputingpatterns.ttl'),
-            this.loadOntologyToStore('assets/internetofthingspatterns.ttl')
+            this.http.get('assets/patternpedia.ttl', {responseType: 'text'}),
+            this.http.get('assets/cloudcomputingpatterns/cloudcomputingpatterns.ttl', {responseType: 'text'}),
+            this.http.get('assets/cloudcomputingpatterns/elasticinfrastructure.ttl', {responseType: 'text'}),
+            this.http.get('assets/cloudcomputingpatterns/elasticloadbalancer.ttl', {responseType: 'text'}),
+            this.http.get('assets/internetofthingspatterns/internetofthingspatterns.ttl', {responseType: 'text'}),
+            this.http.get('assets/internetofthingspatterns/deviceshadow.ttl', {responseType: 'text'}),
+            this.http.get('assets/internetofthingspatterns/devicegateway.ttl', {responseType: 'text'})
         ];
-        return forkJoin(observables)
-            .pipe(
-                map(result => {
-                    console.log('Loaded locally hosted Ontologies: ', result);
-                    return result;
-                }));
+        return forkJoin(observables);
+    }
+
+    async loadLocallyHostedOntos() {
+        console.log('LOADING Ontologies...');
+        const loadResult = await this.loadLocallyHostedOntosRaw().toPromise();
+        console.log('LOADED Ontologies!');
+        const store = this.store;
+        this.registerDefaultNameSpaces(store);
+        console.log('LOADING http://purl.org/patternpedia to store');
+        console.log('Result: ', await this.loadToStore('text/turtle',
+            loadResult[0], 'http://purl.org/patternpedia'));
+        console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns to store');
+        console.log('Result: ', await this.loadToStore('text/turtle',
+            loadResult[1], 'http://purl.org/patternpedia/cloudcomputingpatterns'));
+        console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure to store');
+        console.log('Result: ', await this.loadToStore('text/turtle',
+            loadResult[2], 'http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure'));
+        console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer to store');
+        console.log('Result: ', await this.loadToStore('text/turtle',
+            loadResult[3], 'http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer'));
+        console.log('LOADING http://purl.org/patternpedia/internetofthingspatterns/ to store');
+        console.log('Result: ', await this.loadToStore('text/turtle',
+            loadResult[4], 'http://purl.org/patternpedia/internetofthingspatterns'));
+        console.log('LOADING http://purl.org/patternpedia/internetofthingspatterns/deviceshadow to store');
+        console.log('Result: ', await this.loadToStore('text/turtle',
+            loadResult[5], 'http://purl.org/patternpedia/internetofthingspatterns/devicegateway'));
+        console.log('Result: ', await this.loadToStore('text/turtle',
+            loadResult[6], 'http://purl.org/patternpedia/internetofthingspatterns/devicegateway'));
+    }
+
+    loadToStore(mediaType: string, data: string, graphIri: string): Promise<number> {
+        return new Promise((resolve, reject) => {
+            this.store.load(mediaType, data, graphIri, (err, result) => {
+                if (!err) {
+                    resolve(result);
+                } else {
+                    reject(err);
+                }
+            });
+        });
     }
 
     /**
@@ -203,7 +260,7 @@ export class PatternOntologyService implements SparqlExecutor {
                         console.log('Found following pattern languages:', sparqlResult);
                         const observables = [];
                         for (const entry of sparqlResult) {
-                            observables.push(this.exec(`SELECT * WHERE { <${entry.patternlanguage.value}> ?p ?o }`)
+                            observables.push(from(this.exec(`SELECT * WHERE { <${entry.patternlanguage.value}> ?p ?o }`, [ppInstanceIRI]))
                                 .pipe(
                                     map(loadPLDetailsResult => {
                                         console.log('--->', loadPLDetailsResult);
@@ -239,7 +296,7 @@ export class PatternOntologyService implements SparqlExecutor {
             console.log('Using default store');
             store = this.store;
         }
-        return this.exec(
+        return from(this.exec(
             `SELECT DISTINCT ?type ?pattern ?predicate ?property
                  WHERE {
                     <${patternLanguageIRI}> pp:containsPattern ?pattern .
@@ -248,7 +305,7 @@ export class PatternOntologyService implements SparqlExecutor {
                     FILTER (?type != owl:NamedIndividual && ?predicate != rdf:type)
                     }
                  ORDER BY ?pattern`
-            , store)
+            , store))
             .pipe(
                 map(result => {
                         if (result && result.length > 0) {
@@ -316,21 +373,20 @@ export class PatternOntologyService implements SparqlExecutor {
     /**
      * Executes the given query on the given store. If no store is given the default store is used.
      * @param {string} qry
+     * @param {Array<string>} graphs
      * @param store
-     * @returns {Observable<Array<any>> | Observable<boolean>}
+     * @returns {Promise<Array<any>> | Promise<boolean>}
      */
-    exec(qry: string, store: any = null): Observable<Array<any>> {
-        return new Observable<Array<any>>(observer => {
-            if (!store) {
-                console.log('Using default store for query execution');
-                store = this.store;
-            }
-            store.execute(qry, (execErr, execResult) => {
+    async exec(qry: string, graphs: Array<string>): Promise<Array<any>> {
+        if (!this.store) {
+            await this.createNewStore();
+        }
+        return new Promise<Array<any>>((resolve, reject) => {
+            this.store.execute(qry, graphs, [], (execErr, execResult) => {
                 if (!execErr) {
-                    observer.next(execResult);
-                    observer.complete();
+                    resolve(execResult);
                 } else {
-                    observer.error(execErr);
+                    reject(execErr);
                 }
             });
         });
@@ -339,20 +395,20 @@ export class PatternOntologyService implements SparqlExecutor {
     /**
      * Execute an ask query on the give store. If no store is given the default store is used.
      * @param askStatement
+     * @param {Array<string>} graphs
      * @param store
+     * @returns {Promise<boolean>}
      */
-    ask(askStatement: string, store: any = null): Observable<boolean> {
-        return new Observable<boolean>(observer => {
-            if (!store) {
-                console.log('Using default store for query execution');
-                store = this.store;
-            }
-            store.execute(askStatement, (execErr, execResult) => {
+    async ask(askStatement: string, graphs: Array<string>): Promise<boolean> {
+        if (!this.store) {
+            await this.createNewStore();
+        }
+        return new Promise<boolean>((resolve, reject) => {
+            this.store.execute(askStatement, graphs, (execErr, execResult) => {
                 if (!execErr) {
-                    observer.next(execResult);
-                    observer.complete();
+                    resolve(execResult);
                 } else {
-                    observer.error(execErr);
+                    reject(execErr);
                 }
             });
         });

@@ -26,7 +26,7 @@ export class DefaultPlRendererComponent implements OnInit {
         this.loader.supportedIRI = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
         this.plName = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
         this.loader.loadContentFromStore()
-            .subscribe(result => {
+            .then(result => {
                 this.patterns = Array.from(result.entries());
                 this.cdr.detectChanges();
             });

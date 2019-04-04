@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2018 University of Stuttgart.
+  ~ Copyright (c) 2019 University of Stuttgart.
   ~
   ~ See the NOTICE file(s) distributed with this work for additional
   ~ information regarding copyright ownership.
@@ -11,14 +11,12 @@
   ~
   ~ SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
   -->
-<button style="margin-bottom: 20px" mat-raised-button color="primary" (click)="navigateBack()"><i class="material-icons">keyboard_backspace</i></button>
+<button style="margin-bottom: 20px" mat-raised-button color="primary" (click)="navigateBack()"><i
+        class="material-icons">keyboard_backspace</i></button>
 
 <div class="container">
     <mat-card class="landing-card" *ngFor="let pattern of patterns">
         <mat-card-header>
-            <!--<img *ngIf="pattern.icon.value; else noImageAvatar" mat-card-avatar [src]="pattern.icon.value">-->
-            <!--<ng-template #noImageAvatar><img mat-card-avatar [src]="'https://placekitten.com/200/300'"></ng-template>-->
-
             <mat-card-title *ngIf="pattern.name && '' !== pattern.name; else noPatternName" style="width: 10rem">
                 {{pattern.name}}
             </mat-card-title>
@@ -28,9 +26,10 @@
                 </mat-card-title>
             </ng-template>
         </mat-card-header>
-        <img mat-card-image *ngIf="pattern.icon.value; else noImage" [src]="pattern.icon.value" style="width: 12rem; margin: 0 -16px 16px 0">
+        <img mat-card-image *ngIf="pattern.icon.value; else noImage" [src]="pattern.icon.value"
+             style="width: 12rem; margin: 0 -16px 16px 0">
         <ng-template #noImage><img mat-card-image [src]="'https://placekitten.com/200/300'"></ng-template>
-        <mat-card-content style="height: 120px; overflow: scroll">
+        <mat-card-content style="height: 120px; overflow: scroll;font-size: 12px">
             {{pattern.intent.value}}
         </mat-card-content>
         <mat-card-actions>

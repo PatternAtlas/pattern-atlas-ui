@@ -18,6 +18,7 @@ import { PatternOntologyService } from '../../core/service/pattern-ontology.serv
 import { LoaderRegistryService } from '../../core/service/loader/pattern-language-loader/loader-registry.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { globals } from '../../globals';
+import { LinkedOpenPatternsLoader } from '../../core/service/loader/pattern-language-loader/linked-open-patterns-loader.service';
 
 @Component({
     selector: 'pp-pattern-language-management',
@@ -38,7 +39,15 @@ export class PatternLanguageManagementComponent implements OnInit {
                 private lr: LoaderRegistryService,
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
-                private zone: NgZone) {
+                private zone: NgZone,
+                private loader: LinkedOpenPatternsLoader) {
+    }
+
+    getTurtle(): void {
+        this.pos.getOntologyAsTurtle()
+            .subscribe((turtle) => {
+                console.log(turtle);
+            });
     }
 
     ngOnInit() {
@@ -54,38 +63,42 @@ export class PatternLanguageManagementComponent implements OnInit {
             });
     }
 
-    loadLocallyHostedOntos(): void {
-        this.pos.loadLocallyHostedOntos()
-            .subscribe(() => {
-                this.lr.getContentLoader<PatternLanguage>(this.patternPediaInstance)
-                    .loadContentFromStore()
-                    .subscribe(async (languages) => {
-                        this.patternLanguages = await Array.from<PatternLanguage>(languages.values())
-                            .sort((pl1: PatternLanguage, pl2: PatternLanguage) => {
-                                if (pl1.name > pl2.name) {
-                                    return 1;
-                                }
-                                if (pl1.name < pl2.name) {
-                                    return -1;
-                                }
-                                return 0;
-                            });
-                        this.cdr.detectChanges();
+    async loadLocallyHostedOntos(): Promise<void> {
+        await this.pos.loadLocallyHostedOntos();
+        return this.loader.loadContentFromStore()
+            .then(async (languages) => {
+                this.patternLanguages = await Array.from<PatternLanguage>(languages.values())
+                    .sort((pl1: PatternLanguage, pl2: PatternLanguage) => {
+                        if (pl1.name > pl2.name) {
+                            return 1;
+                        }
+                        if (pl1.name < pl2.name) {
+                            return -1;
+                        }
+                        return 0;
                     });
+                this.cdr.detectChanges();
             });
     }
 
     loadPatternPedia(): void {
-        this.pos.loadOntologyWithImportsToStore(this.urlPatternPedia)
-            .subscribe(() => {
-                // Todo: here we go wit this.pll
-                this.lr.getContentLoader<PatternLanguage>(this.patternPediaInstance)
-                    .loadContentFromStore()
-                    .subscribe(async (result) => {
-                        this.patternLanguages = Array.from(result.values());
-                        this.cdr.detectChanges();
-                    });
-            }, error1 => console.error(error1));
+        this.pos.loadOntologyWithImportsToStore(this.urlPatternPedia, this.urlPatternPedia)
+            .then(() => {
+                    return this.loader.loadContentFromStore();
+                }
+            ).then(async (languages) => {
+            this.patternLanguages = await Array.from<PatternLanguage>(languages.values())
+                .sort((pl1: PatternLanguage, pl2: PatternLanguage) => {
+                    if (pl1.name > pl2.name) {
+                        return 1;
+                    }
+                    if (pl1.name < pl2.name) {
+                        return -1;
+                    }
+                    return 0;
+                });
+            this.cdr.detectChanges();
+        });
     }
 
     reloadPatternRepo() {

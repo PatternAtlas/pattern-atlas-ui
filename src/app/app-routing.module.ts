@@ -16,6 +16,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent } from './page-not-found.component';
 import { AdministrationComponent } from './administration.component';
+import { TestComponent } from './test/test.component';
 
 const routes: Routes = [
     {
@@ -26,6 +27,10 @@ const routes: Routes = [
     {
         path: 'administration',
         component: AdministrationComponent
+    },
+    {
+        path: 'test',
+        component: TestComponent
     },
     {
         path: '**',

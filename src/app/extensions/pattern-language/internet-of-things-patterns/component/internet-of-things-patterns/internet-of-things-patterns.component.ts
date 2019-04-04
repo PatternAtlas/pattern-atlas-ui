@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 University of Stuttgart.
+ * Copyright (c) 2019 University of Stuttgart.
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -13,21 +13,21 @@
  */
 
 import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
-import CloudComputingPattern from '../../model/cloud-computing-pattern';
-import { CloudComputingPatternsLoaderService } from '../../loader/cloud-computing-patterns-loader.service';
+import InternetOfThingsPattern from '../../model/internet-of-things-pattern';
+import { InternetOfThingsPatternsLoaderService } from '../../loader/internet-of-things-patterns-loader.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-    selector: 'pp-cloud-computing-patterns',
-    templateUrl: './cloud-computing-patterns.component.html',
-    styleUrls: ['./cloud-computing-patterns.component.scss']
+    selector: 'pp-internet-of-things-patterns',
+    templateUrl: './internet-of-things-patterns.component.html',
+    styleUrls: ['./internet-of-things-patterns.component.scss']
 })
-export class CloudComputingPatternsComponent implements OnInit {
+export class InternetOfThingsPatternsComponent implements OnInit {
 
-    patterns: Array<CloudComputingPattern>;
-    patternMap: Map<string, CloudComputingPattern>;
+    patterns: Array<InternetOfThingsPattern>;
+    patternMap: Map<string, InternetOfThingsPattern>;
 
-    constructor(private loader: CloudComputingPatternsLoaderService,
+    constructor(private loader: InternetOfThingsPatternsLoaderService,
                 private cdr: ChangeDetectorRef,
                 private router: Router,
                 private activatedRoute: ActivatedRoute,

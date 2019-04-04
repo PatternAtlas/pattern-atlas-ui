@@ -12,9 +12,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { Observable } from 'rxjs';
-
 export interface SparqlExecutor {
-    exec(qry: string): Observable<Array<any>>;
-    ask(qry: string): Observable<boolean>;
+    exec(qry: string, graphs: Array<string>): Promise<Array<any>>;
+    ask(qry: string, graphs: Array<string>): Promise<boolean>;
 }

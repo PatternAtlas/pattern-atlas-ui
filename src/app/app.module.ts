@@ -25,16 +25,20 @@ import { LandingPageComponent } from './landing-page.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ExtensionsModule } from './extensions/extensions.module';
 import { AdministrationComponent } from './administration.component';
-import { MatButtonModule, MatCardModule, MatIconModule, MatTabNav, MatTabsModule, MatToolbarModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatIconModule, MatTabsModule, MatToolbarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SolutionLanguageManagementModule } from './solution-language-management/solution-language-management.module';
+import { NgxMdModule } from 'ngx-md';
+import { CovalentTextEditorModule } from '@covalent/text-editor';
+import { TestComponent } from './test/test.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         PageNotFoundComponent,
         LandingPageComponent,
-        AdministrationComponent
+        AdministrationComponent,
+        TestComponent
     ],
     imports: [
         BrowserModule,
@@ -48,6 +52,8 @@ import { SolutionLanguageManagementModule } from './solution-language-management
         MatButtonModule,
         MatIconModule,
         MatTabsModule,
+        NgxMdModule,
+        CovalentTextEditorModule,
         CoreModule,
         HttpClientModule,
         AppRoutingModule,

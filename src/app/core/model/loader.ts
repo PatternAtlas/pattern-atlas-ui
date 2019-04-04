@@ -12,8 +12,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { Observable } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
 import { SparqlExecutor } from './sparql.executor';
 
 abstract class Loader<T> {
@@ -41,16 +39,16 @@ abstract class Loader<T> {
     /**
      * Orchestrates Loading and Conversion
      */
-    loadContentFromStore(): Observable<Map<string, T>> {
+    loadContentFromStore(): Promise<Map<string, T>> {
         return this.selectContentFromStore()
-            .pipe(
-                flatMap(triples => this.mapTriples(triples))
+            .then(
+                triples => this.mapTriples(triples)
             );
     }
 
-    abstract selectContentFromStore(): Observable<any>;
+    abstract selectContentFromStore(): Promise<any>;
 
-    abstract mapTriples(triples: any): Observable<Map<string, T>>;
+    abstract mapTriples(triples: any): Promise<Map<string, T>>;
 }
 
 export default Loader;

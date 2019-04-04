@@ -14,7 +14,6 @@
 
 import { Injectable } from '@angular/core';
 import { PatternOntologyService } from '../pattern-ontology.service';
-import { Observable, of } from 'rxjs';
 import Loader from '../../model/loader';
 import { selectPatternLanguage } from './pl-selector.function';
 
@@ -27,11 +26,11 @@ export class DefaultPlLoaderService extends Loader<any> {
         super(null, pos);
     }
 
-    selectContentFromStore(): Observable<any> {
+    selectContentFromStore(): Promise<any> {
         return selectPatternLanguage(this.supportedIRI, this.executor);
     }
 
-    mapTriples(triples: any): Observable<Map<string, any>> {
+    mapTriples(triples: any): Promise<Map<string, any>> {
         const patterns = new Map<string, any>();
         for (const row of triples) {
             if (!patterns.get(row.pattern.value)) {
@@ -59,6 +58,6 @@ export class DefaultPlLoaderService extends Loader<any> {
                 });
             }
         }
-        return of(patterns);
+        return Promise.resolve(patterns);
     }
 }

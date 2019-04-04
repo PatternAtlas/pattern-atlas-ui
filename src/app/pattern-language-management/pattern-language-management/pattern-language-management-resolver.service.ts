@@ -15,9 +15,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import PatternLanguage from '../../core/model/pattern-language.model';
-import { Observable } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { PatternOntologyService } from '../../core/service/pattern-ontology.service';
-import { LoaderRegistryService } from '../../core/service/loader/pattern-language-loader/loader-registry.service';
 import { mergeMap } from 'rxjs/operators';
 import { globals } from '../../globals';
 import { LinkedOpenPatternsLoader } from '../../core/service/loader/pattern-language-loader/linked-open-patterns-loader.service';
@@ -35,22 +34,18 @@ export class PatternLanguageManagementResolverService implements Resolve<Map<str
     }
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Map<string, PatternLanguage>> {
-        return this.loadLocally ? this.loadLocallyHostedOntos() : this.loadPatternPedia();
+        return this.loadLocally ? from(this.loadLocallyHostedOntos()) : this.loadPatternPedia();
     }
 
-    loadLocallyHostedOntos(): Observable<Map<string, PatternLanguage>> {
-        return this.pos.loadLocallyHostedOntos()
-            .pipe(
-                mergeMap(() => {
-                    return this.loader.loadContentFromStore();
-                })
-            );
+    async loadLocallyHostedOntos(): Promise<Map<string, PatternLanguage>> {
+        await this.pos.loadLocallyHostedOntos();
+        return this.loader.loadContentFromStore();
     }
 
     loadPatternPedia(): Observable<Map<string, PatternLanguage>> {
-        return this.pos.loadOntologyWithImportsToStore(this.urlPatternPedia)
+        return from(this.pos.loadOntologyWithImportsToStore(this.urlPatternPedia, this.urlPatternPedia))
             .pipe(mergeMap(() => {
-                return this.loader.loadContentFromStore();
+                return from(this.loader.loadContentFromStore());
             }));
     }
 }

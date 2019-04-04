@@ -12,20 +12,25 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { Observable, of } from 'rxjs';
 import CloudComputingPattern from '../model/cloud-computing-pattern';
 import Loader from '../../../../core/model/loader';
 import { Injectable } from '@angular/core';
 import { PatternOntologyService } from '../../../../core/service/pattern-ontology.service';
+import { IriConverter } from '../../../../core/util/iri-converter';
 
 @Injectable()
-export class CloudComputingPatternsLoader extends Loader<CloudComputingPattern> {
+export class CloudComputingPatternsLoaderService extends Loader<CloudComputingPattern> {
 
     constructor(private pos: PatternOntologyService) {
         super('http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPatterns', pos);
     }
 
-    selectContentFromStore(): Observable<any> {
+    async selectContentFromStore(): Promise<any> {
+        const qryPatterns = `SELECT DISTINCT ?pattern
+                                      WHERE {
+                                          <${this.supportedIRI}> <http://purl.org/patternpedia#containsPattern> ?pattern
+                                      }`;
+        const patterns = await this.executor.exec(qryPatterns, [IriConverter.getFileName(this.supportedIRI)]);
         const qry = `SELECT DISTINCT ?type ?pattern ?predicate ?property
                  WHERE {
                     <${this.supportedIRI}> pp:containsPattern ?pattern .
@@ -34,10 +39,14 @@ export class CloudComputingPatternsLoader extends Loader<CloudComputingPattern> 
                     FILTER (?type != owl:NamedIndividual && ?predicate != rdf:type)
                     }
                  ORDER BY ?pattern`;
-        return this.executor.exec(qry);
+        const graphs = [IriConverter.getFileName(this.supportedIRI)];
+        for (const entry of patterns) {
+            graphs.push(IriConverter.getFileName(entry.pattern.value));
+        }
+        return this.executor.exec(qry, graphs);
     }
 
-    mapTriples(triples: any): Observable<Map<string, CloudComputingPattern>> {
+    mapTriples(triples: any): Promise<Map<string, CloudComputingPattern>> {
         const result = new Map<string, CloudComputingPattern>();
         // we first iterate the triples and generate an intermediate format to create afterwards pattern objects
         const patterns = {};
@@ -69,74 +78,52 @@ export class CloudComputingPatternsLoader extends Loader<CloudComputingPattern> 
             }
         }
         for (const key of Object.keys(patterns)) {
-            const sketches = [];
+            const p = new CloudComputingPattern(key);
             if (Array.isArray(patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasSolutionSketch'])) {
                 for (const entry of patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasSolutionSketch']) {
-                    sketches.push(entry.value);
+                    p.solutionSketches.value.push(entry.value);
                 }
             } else if (patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasSolutionSketch']
                 && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasSolutionSketch'].value) {
-                sketches.push(patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasSolutionSketch'].value);
+                p.solutionSketches.value.push(patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasSolutionSketch'].value);
             }
-            const variations = [];
             if (Array.isArray(patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasVariation'])) {
                 for (const entry of patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasVariation']) {
-                    variations.push(entry.value);
+                    p.variations.value.push(entry.value);
                 }
             } else if (patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasVariation']
                 && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasVariation'].value) {
-                variations.push(patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasVariation'].value);
+                p.variations.value.push(patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasVariation'].value);
             }
-            let name = '';
             if (patterns[key] && patterns[key]['http://purl.org/patternpedia#hasName'] && patterns[key]['http://purl.org/patternpedia#hasName'].value) {
-                name = patterns[key]['http://purl.org/patternpedia#hasName'].value;
+                p.name = patterns[key]['http://purl.org/patternpedia#hasName'].value;
             }
-            let icon = '';
             if (patterns[key] && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasIcon']
                 && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasIcon'].value) {
-                icon = patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasIcon'].value;
+                p.icon.value = patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasIcon'].value;
             }
-            let intent = '';
             if (patterns[key] && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasIntent']
                 && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasIntent'].value) {
-                intent = patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasIntent'].value;
+                p.intent.value = patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasIntent'].value;
             }
-            let drivingQuestion = '';
             if (patterns[key] && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasDrivingQuestion']
                 && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasDrivingQuestion'].value) {
-                drivingQuestion = patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasDrivingQuestion'].value;
+                p.drivingQuestion.value = patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasDrivingQuestion'].value;
             }
-            let solution = '';
             if (patterns[key] && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasSolution']
                 && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasSolution'].value) {
-                solution = patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasSolution'].value;
+                p.solution.value = patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasSolution'].value;
             }
-            let patternResult = '';
             if (patterns[key] && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasResult']
                 && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasResult'].value) {
-                patternResult = patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasResult'].value;
+                p.result.value = patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasResult'].value;
             }
-            let context = '';
             if (patterns[key] && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasContext']
                 && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasContext'].value) {
-                context = patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasContext'].value;
+                p.context.value = patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasContext'].value;
             }
-            result.set(
-                key,
-                new CloudComputingPattern(
-                    key,
-                    name,
-                    icon,
-                    intent,
-                    context,
-                    drivingQuestion,
-                    solution,
-                    sketches,
-                    patternResult,
-                    variations)
-            );
+            result.set(p.iri, p);
         }
-
-        return of(result);
+        return Promise.resolve(result);
     }
 }

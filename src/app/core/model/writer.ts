@@ -12,16 +12,27 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-export class IriConverter {
-    static convertIriToId(iri: string): string {
-        return encodeURIComponent(encodeURIComponent(iri));
+import { SparqlExecutor } from './sparql.executor';
+
+abstract class Writer<T> {
+    _supportedIRI: string;
+    executor: SparqlExecutor;
+
+    protected constructor(supportedIRI: string, executor: SparqlExecutor) {
+        this._supportedIRI = supportedIRI;
+        this.executor = executor;
     }
 
-    static convertIdToIri(id: string): string {
-        return decodeURIComponent(decodeURIComponent(id));
+    set supportedIRI(iri: string) {
+        this._supportedIRI = iri;
     }
 
-    static getFileName(iri: string): string {
-        return iri.split('#')[0];
+    get supportedIRI(): string {
+        return this._supportedIRI;
+
     }
+
+    abstract writePatternToStore(pattern: T): Promise<void>;
 }
+
+export default Writer;

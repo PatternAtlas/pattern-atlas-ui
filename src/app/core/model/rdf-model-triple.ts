@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 University of Stuttgart.
+ * Copyright (c) 2019 University of Stuttgart.
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -12,16 +12,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-export class IriConverter {
-    static convertIriToId(iri: string): string {
-        return encodeURIComponent(encodeURIComponent(iri));
-    }
+import { RdfModelNode } from './rdf-model-node';
 
-    static convertIdToIri(id: string): string {
-        return decodeURIComponent(decodeURIComponent(id));
-    }
-
-    static getFileName(iri: string): string {
-        return iri.split('#')[0];
+export class RdfModelTriple {
+    constructor(public subject?: RdfModelNode, public predicate?: RdfModelNode, public object?: RdfModelNode) {
     }
 }

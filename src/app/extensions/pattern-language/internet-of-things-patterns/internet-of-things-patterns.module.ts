@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 University of Stuttgart.
+ * Copyright (c) 2019 University of Stuttgart.
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -14,15 +14,15 @@
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CloudComputingPatternsLoaderService } from './loader/cloud-computing-patterns-loader.service';
-import { CloudComputingPatternsComponent } from './component/cloud-computing-patterns/cloud-computing-patterns.component';
+import { InternetOfThingsPatternsLoaderService } from './loader/internet-of-things-patterns-loader.service';
+import { InternetOfThingsPatternsComponent } from './component/internet-of-things-patterns/internet-of-things-patterns.component';
 import { ComponentRegistryService } from '../../../core/service/component-registry.service';
-import { MatButtonModule, MatCardModule, MatDialogModule, MatIconModule, MatTooltipModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatDialogModule, MatFormFieldModule, MatTooltipModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
-import { CloudComputingPatternComponent } from './component/cloud-computing-pattern/cloud-computing-pattern.component';
+import { InternetOfThingsPatternComponent } from './component/internet-of-things-pattern/internet-of-things-pattern.component';
 import { IriConverter } from '../../../core/util/iri-converter';
 import { NgxMdModule } from 'ngx-md';
-import { CloudComputingPatternsWriterService } from './writer/cloud-computing-patterns-writer.service';
+import { TextFieldModule } from '@angular/cdk/text-field';
 import { CoreModule } from '../../../core/core.module';
 
 @NgModule({
@@ -32,30 +32,30 @@ import { CoreModule } from '../../../core/core.module';
         MatButtonModule,
         MatTooltipModule,
         MatDialogModule,
-        MatIconModule,
+        MatFormFieldModule,
+        TextFieldModule,
         NgxMdModule.forRoot(),
         CoreModule,
         RouterModule
     ],
     declarations: [
-        CloudComputingPatternComponent,
-        CloudComputingPatternsComponent,
+        InternetOfThingsPatternComponent,
+        InternetOfThingsPatternsComponent
     ],
     providers: [
-        CloudComputingPatternsLoaderService,
-        CloudComputingPatternsWriterService
+        InternetOfThingsPatternsLoaderService
     ],
     exports: [],
     entryComponents: [
-        CloudComputingPatternComponent,
-        CloudComputingPatternsComponent,
+        InternetOfThingsPatternComponent,
+        InternetOfThingsPatternsComponent
     ]
 })
-export class CloudComputingPatternsModule {
+export class InternetOfThingsPatternsModule {
     constructor(private cr: ComponentRegistryService) {
-        this.cr.registerComponent(IriConverter.convertIriToId('http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPatterns'), {
-            plcomponent: CloudComputingPatternsComponent,
-            pcomponent: CloudComputingPatternComponent
+        this.cr.registerComponent(IriConverter.convertIriToId('http://purl.org/patternpedia/internetofthingspatterns#InternetOfThingsPatterns'), {
+            plcomponent: InternetOfThingsPatternsComponent,
+            pcomponent: InternetOfThingsPatternComponent
         }); // tslint:disable-line:max-line-length
     }
 }

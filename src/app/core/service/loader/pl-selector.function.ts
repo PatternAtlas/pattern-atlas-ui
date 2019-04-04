@@ -23,5 +23,5 @@ export function selectPatternLanguage(plIri: string, executor: SparqlExecutor): 
                     FILTER (?type != owl:NamedIndividual && ?predicate != rdf:type)
                     }
                  ORDER BY ?pattern`;
-    return executor.exec(qry);
+    return executor.exec(qry, [plIri]);
 }

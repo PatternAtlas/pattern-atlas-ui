@@ -16,11 +16,14 @@
     <button style="margin-left: 10px" mat-raised-button color="accent" (click)="reloadPatternRepo()"><i
             class="material-icons">autorenew</i> Reload
     </button>
+    <button style="margin-left: 10px" mat-raised-button color="accent" (click)="getTurtle()"><i
+            class="material-icons">info</i> Test
+    </button>
 </mat-toolbar>
 <div class="container">
     <mat-card class="landing-card" *ngFor="let patternLanguage of patternLanguages">
         <mat-card-header>
-            <img *ngIf="patternLanguage.logos[0]; else noImageAvatar" mat-card-avatar [src]="patternLanguage.logos[0]">
+            <img *ngIf="patternLanguage.logos && patternLanguage.logos[0]; else noImageAvatar" mat-card-avatar [src]="patternLanguage.logos[0]">
             <ng-template #noImageAvatar><img mat-card-avatar [src]="'https://placekitten.com/200/300'"></ng-template>
 
             <mat-card-title *ngIf="patternLanguage.name && '' !== patternLanguage.name; else noPLName" style="width: 10rem">

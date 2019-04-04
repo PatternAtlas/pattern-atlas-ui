@@ -12,11 +12,11 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { Observable, of } from 'rxjs';
 import PatternLanguage from '../../../model/pattern-language.model';
 import { Injectable } from '@angular/core';
 import Loader from '../../../model/loader';
 import { PatternOntologyService } from '../../pattern-ontology.service';
+import { IriConverter } from '../../../util/iri-converter';
 
 @Injectable()
 export class LinkedOpenPatternsLoader extends Loader<PatternLanguage> {
@@ -25,73 +25,64 @@ export class LinkedOpenPatternsLoader extends Loader<PatternLanguage> {
         super('http://purl.org/patternpedia#LinkedOpenPatterns', pos);
     }
 
-    selectContentFromStore(): Observable<any> {
-        const qry = `SELECT DISTINCT *
-                     WHERE { <${this.supportedIRI}> pp:containsPatternLanguage ?patternlanguage .
-                     ?patternlanguage ?predicate ?property . FILTER ( ?predicate != rdf:type ) }`;
-        return this.executor.exec(qry);
+    async selectContentFromStore(): Promise<any> {
+        const qryPatternGraphs = `SELECT DISTINCT ?patterngraph
+                                      WHERE {
+                                          <${this.supportedIRI}> <http://purl.org/patternpedia#containsPatternGraph> ?patterngraph
+                                      }`;
+        const patternGraphs = await this.executor.exec(qryPatternGraphs, [IriConverter.getFileName(this.supportedIRI)]);
+        const qry = `SELECT ?patterngraph ?type ?name ?logo ?pattern
+                                         WHERE {
+                                            <${this.supportedIRI}> <http://purl.org/patternpedia#containsPatternGraph> ?patterngraph .
+                                            ?patterngraph a ?type .
+                                            ?patterngraph <http://purl.org/patternpedia#containsPattern> ?pattern .
+                                            ?patterngraph <http://purl.org/patternpedia#hasName> ?name .
+                                            ?patterngraph <http://purl.org/patternpedia#hasLogo> ?logo .
+                                            FILTER (?type != owl:NamedIndividual)
+                                          }
+                                ORDER BY ?patterngraph`;
+        const graphs = [IriConverter.getFileName(this.supportedIRI)];
+        for (const entry of patternGraphs) {
+            graphs.push(IriConverter.getFileName(entry.patterngraph.value));
+        }
+        return this.executor.exec(qry, graphs);
     }
 
-    mapTriples(triples: any): Observable<Map<string, PatternLanguage>> {
+    mapTriples(triples: any): Promise<Map<string, PatternLanguage>> {
         const result = new Map<string, PatternLanguage>();
-
         // we first iterate the triples and generate an intermediate format to create afterwards pattern objects
-        const rawLanguages = {};
+        const rawPatternGraphs = {};
         for (const row of triples) {
-            // row.patternlanguage.value = PatternLanguageIndividual IRI
-            if (!rawLanguages[row.patternlanguage.value]) {
-                rawLanguages[row.patternlanguage.value] = {iri: row.patternlanguage.value};
+            if (!rawPatternGraphs[row.patterngraph.value]) {
+                rawPatternGraphs[row.patterngraph.value] = {patterngraph: row.patterngraph.value};
             }
-            if (!rawLanguages[row.patternlanguage.value][row.predicate.value]) {
-                rawLanguages[row.patternlanguage.value][row.predicate.value] = {
-                    name: row.predicate.value,
-                    value: row.property.value,
-                    type: row.property.type
-                };
-            } else if (!Array.isArray(rawLanguages[row.patternlanguage.value][row.predicate.value])) {
-                const temp = rawLanguages[row.patternlanguage.value][row.predicate.value];
-                rawLanguages[row.patternlanguage.value][row.predicate.value] = [temp,
-                    {
-                        name: row.predicate.value,
-                        value: row.property.value,
-                        type: row.property.type
-                    }];
-            } else if (Array.isArray(rawLanguages[row.patternlanguage.value][row.predicate.value])) {
-                rawLanguages[row.patternlanguage.value][row.predicate.value].push({
-                    name: row.predicate.value,
-                    value: row.property.value,
-                    type: row.property.type
-                });
+            if (!rawPatternGraphs[row.patterngraph.value]['type']) {
+                rawPatternGraphs[row.patterngraph.value]['type'] = row.type.value;
+            }
+            if (!rawPatternGraphs[row.patterngraph.value]['name']) {
+                rawPatternGraphs[row.patterngraph.value]['name'] = row.name.value;
+            }
+            // Todo incorporate to allow more than one logo
+            if (!rawPatternGraphs[row.patterngraph.value]['logo']) {
+                rawPatternGraphs[row.patterngraph.value]['logo'] = row.logo.value;
+            }
+            if (!rawPatternGraphs[row.patterngraph.value]['patterns']) {
+                rawPatternGraphs[row.patterngraph.value]['patterns'] = [row.pattern.value];
+            } else {
+                rawPatternGraphs[row.patterngraph.value]['patterns'].push(row.pattern.value);
             }
         }
-        for (const key of Object.keys(rawLanguages)) {
-            const logos = [];
-            if (Array.isArray(rawLanguages[key]['http://purl.org/patternpedia#hasLogo'])) {
-                for (const entry of rawLanguages[key]['http://purl.org/patternpedia#hasLogo']) {
-                    logos.push(entry.value);
-                }
-            } else if (rawLanguages[key]['http://purl.org/patternpedia#hasLogo']) {
-                logos.push(rawLanguages[key]['http://purl.org/patternpedia#hasLogo'].value);
-            }
-            const patterns = [];
-            if (Array.isArray(rawLanguages[key]['http://purl.org/patternpedia#containsPattern'])) {
-                for (const entry of rawLanguages[key]['http://purl.org/patternpedia#containsPattern']) {
-                    patterns.push(entry.value);
-                }
-            } else if (rawLanguages[key]['http://purl.org/patternpedia#containsPattern']) {
-                patterns.push(rawLanguages[key]['http://purl.org/patternpedia#containsPattern'].value);
-            }
+        for (const key of Object.keys(rawPatternGraphs)) {
             result.set(
                 key,
                 new PatternLanguage(
-                    key,
-                    rawLanguages[key]['http://purl.org/patternpedia#hasName'].value,
-                    logos,
-                    patterns
+                    rawPatternGraphs[key].patterngraph,
+                    rawPatternGraphs[key].name,
+                    [rawPatternGraphs[key].logo],
+                    rawPatternGraphs[key].patterns
                 )
             );
         }
-
-        return of(result);
+        return Promise.resolve(result);
     }
 }

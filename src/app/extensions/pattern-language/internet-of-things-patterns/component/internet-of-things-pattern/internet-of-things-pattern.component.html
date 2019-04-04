@@ -1,7 +1,22 @@
+<!--
+  ~ Copyright (c) 2019 University of Stuttgart.
+  ~
+  ~ See the NOTICE file(s) distributed with this work for additional
+  ~ information regarding copyright ownership.
+  ~
+  ~ This program and the accompanying materials are made available under the
+  ~ terms of the Eclipse Public License 2.0 which is available at
+  ~ http://www.eclipse.org/legal/epl-2.0, or the Apache Software License 2.0
+  ~ which is available at https://www.apache.org/licenses/LICENSE-2.0.
+  ~
+  ~ SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
+  -->
+
 <button style="margin-bottom: 20px" mat-raised-button color="primary" (click)="navigateBack()">
     <i class="material-icons">keyboard_backspace</i>
 </button>
 <h1>{{pattern?.name}}</h1>
+<h3>{{pattern?.aliases.label}}: {{pattern?.aliases.value}}</h3>
 <mat-card>
     <div style="display: flex; align-items: center;" (mouseenter)="editMode.intent.showActionButtons = true"
          (mouseleave)="editMode.intent.showActionButtons = false">
@@ -11,13 +26,13 @@
                 (click)="openEditor('intent')" matTooltip="Edit"><i class="material-icons">mode_edit</i></button>
     </div>
 </mat-card>
-<h2>{{pattern?.drivingQuestion.label}}</h2>
-<div style="display: flex; align-items: center;" (mouseenter)="editMode.drivingQuestion.showActionButtons = true"
-     (mouseleave)="editMode.drivingQuestion.showActionButtons = false">
-    <ngx-md [data]="pattern?.drivingQuestion.value"></ngx-md>
-    <button *ngIf="editMode.drivingQuestion.showActionButtons" mat-stroked-button
+<h2>{{pattern?.problem.label}}</h2>
+<div style="display: flex; align-items: center;" (mouseenter)="editMode.problem.showActionButtons = true"
+     (mouseleave)="editMode.problem.showActionButtons = false">
+    <ngx-md [data]="pattern?.problem.value"></ngx-md>
+    <button *ngIf="editMode.problem.showActionButtons" mat-stroked-button
             style="margin-left: 5px" color="primary"
-            (click)="openEditor('drivingQuestion')" matTooltip="Edit"><i class="material-icons">mode_edit</i></button>
+            (click)="openEditor('problem')" matTooltip="Edit"><i class="material-icons">mode_edit</i></button>
 </div>
 <h2>{{pattern?.context.label}}</h2>
 <div style="display: flex; align-items: center;" (mouseenter)="editMode.context.showActionButtons = true"
@@ -27,6 +42,12 @@
             style="margin-left: 5px" color="primary"
             (click)="openEditor('context')" matTooltip="Edit"><i class="material-icons">mode_edit</i></button>
 </div>
+<h2>{{pattern?.forces.label}}</h2>
+<ul>
+    <li *ngFor="let force of pattern?.forces.value">
+        {{force}}
+    </li>
+</ul>
 <h2>{{pattern?.solution.label}}</h2>
 <div style="display: flex; align-items: center;" (mouseenter)="editMode.solution.showActionButtons = true"
      (mouseleave)="editMode.solution.showActionButtons = false">
@@ -35,22 +56,22 @@
             style="margin-left: 5px" color="primary"
             (click)="openEditor('solution')" matTooltip="Edit"><i class="material-icons">mode_edit</i></button>
 </div>
-<!-- Todo How can we handle arrays in md editor?
-     We should not use a md editor for entering URLs!
-     We edit directly in view,
-     (i) add + button shown on mouseenter, hidden on mouseleave
-     (ii) add - button shown on mouseenter, hidden on mouseleave
- -->
-<div style="display: flex" (mouseenter)="editMode.solutionSketches.showActionButtons = true"
-     (mouseleave)="editMode.solutionSketches.showActionButtons = false">
-    <h2>{{pattern?.solutionSketches.label}}</h2>
-    <button *ngIf="editMode.solutionSketches.showActionButtons" mat-button
-            style="margin-left: 5px" color="primary"
-            matTooltip="Add"><i class="material-icons">add_circle</i></button>
-</div>
+<h2>{{pattern?.solutionSketches.label}}</h2>
 <div style="display: flex; align-items: center;flex-wrap: wrap">
     <img style="width: 500px; height: auto" *ngFor="let sketch of pattern?.solutionSketches.value" [src]="sketch">
 </div>
+<h2>{{pattern?.benefits.label}}</h2>
+<ul>
+    <li *ngFor="let entry of pattern?.benefits.value">
+        {{entry}}
+    </li>
+</ul>
+<h2>{{pattern?.drawbacks.label}}</h2>
+<ul>
+    <li *ngFor="let entry of pattern?.drawbacks.value">
+        {{entry}}
+    </li>
+</ul>
 <h2>{{pattern?.result.label}}</h2>
 <div style="display: flex; align-items: center;" (mouseenter)="editMode.result.showActionButtons = true"
      (mouseleave)="editMode.result.showActionButtons = false">
@@ -59,3 +80,17 @@
             style="margin-left: 5px" color="primary"
             (click)="openEditor('result')" matTooltip="Edit"><i class="material-icons">mode_edit</i></button>
 </div>
+<h2>{{pattern?.examples.label}}</h2>
+<div style="display: flex; align-items: center;" (mouseenter)="editMode.examples.showActionButtons = true"
+     (mouseleave)="editMode.examples.showActionButtons = false">
+    <ngx-md [data]="pattern?.examples.value"></ngx-md>
+    <button *ngIf="editMode.examples.showActionButtons" mat-stroked-button
+            style="margin-left: 5px" color="primary"
+            (click)="openEditor('examples')" matTooltip="Edit"><i class="material-icons">mode_edit</i></button>
+</div>
+<h2>{{pattern?.variants.label}}</h2>
+<ul>
+    <li *ngFor="let entry of pattern?.variants.value">
+        {{entry}}
+    </li>
+</ul>
