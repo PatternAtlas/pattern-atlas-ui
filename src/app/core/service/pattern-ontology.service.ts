@@ -147,7 +147,7 @@ export class PatternOntologyService implements SparqlExecutor {
      * @param store
      * @returns {Observable<number>}
      */
-    loadOntologyToStore(url: string, graphIri: string, store: any = null): Observable<number> {
+    loadOntologyToStore(url: string, graphIri: string, store: any = null): Observable<any> {
         console.log('Loading ontology:', url, 'for entity ', graphIri, ' from ', url);
         if (!store) {
             console.log('Using default store');
