@@ -25,6 +25,9 @@
     url(../node_modules/material-design-icons/iconfont/MaterialIcons-Regular.woff) format('woff'),
     url(../node_modules/material-design-icons/iconfont/MaterialIcons-Regular.ttf) format('truetype');
 }
+body{
+  font-family: sans-serif;
+}
 
 .material-icons {
     font-family: 'Material Icons';
@@ -96,3 +99,14 @@
     display: flex;
     flex-wrap: wrap;
 }
+
+.center-content{
+  display: flex !important;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  justify-content: center;
+  align-items: center;
+}
+

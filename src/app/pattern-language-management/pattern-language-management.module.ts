@@ -31,6 +31,8 @@ import {
     MatSidenavModule, MatTabsModule,
     MatToolbarModule
 } from '@angular/material';
+import { CreateEditPatternLanguageComponent } from './create-edit-pattern-language/create-edit-pattern-language.component';
+import {CovalentTextEditorModule} from '@covalent/text-editor';
 
 @NgModule({
     imports: [
@@ -45,7 +47,7 @@ import {
         MatDialogModule,
         MatTabsModule,
         MatInputModule,
-        CoreModule,
+        CoreModule
     ],
     declarations: [
         PatternLanguageManagementComponent,
@@ -53,6 +55,7 @@ import {
         PatternLanguageContainerDirective,
         PatternContainerComponent,
         PatternContainerDirective,
+        CreateEditPatternLanguageComponent,
     ]
 })
 export class PatternLanguageManagementModule {

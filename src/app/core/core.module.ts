@@ -34,7 +34,7 @@ import { CovalentTextEditorModule } from '@covalent/text-editor';
         TextFieldModule,
         CovalentTextEditorModule
     ],
-    exports: [],
+    exports: [CovalentTextEditorModule],
     providers: [
         PatternOntologyService,
         LinkedOpenPatternsLoader

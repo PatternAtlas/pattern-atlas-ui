@@ -116,4 +116,8 @@ export class PatternLanguageManagementComponent implements OnInit {
         this.pos.insertNewPatternLanguageIndividual(null)
             .subscribe(() => this.ngOnInit());
     }
+
+  goToPatternLanguageCreation(): void{
+    this.router.navigate(['create'], {relativeTo: this.activatedRoute});
+  }
 }
