@@ -2,5 +2,12 @@
   Create a new Patternlanguage
 </h2>
 <h3>Start by defining your structure: </h3>
-<td-text-editor [value]="'Some Text'" ></td-text-editor>
+<mat-grid-list cols="2" rowHeight="2:1">
+  <mat-grid-tile><td-text-editor class="markdownEditor" [value]="'# Some Text'" [options]="options" #textEditor id="textEditor" ></td-text-editor></mat-grid-tile>
+  <mat-grid-tile>
+    <div><h2>Preview:</h2><div id="preview"></div>
+
+  </div></mat-grid-tile>
+</mat-grid-list>
+
 

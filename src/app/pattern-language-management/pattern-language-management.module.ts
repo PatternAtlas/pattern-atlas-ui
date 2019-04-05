@@ -23,16 +23,18 @@ import { PatternLanguageContainerDirective } from './pattern-language-container/
 import { PatternContainerComponent } from './pattern-container/pattern-container.component';
 import { PatternContainerDirective } from './pattern-container/pattern-container.directive';
 import {
-    MatBadgeModule,
-    MatButtonModule,
-    MatCardModule,
-    MatDialogModule,
-    MatIconModule, MatInputModule,
-    MatSidenavModule, MatTabsModule,
-    MatToolbarModule
+  MatBadgeModule,
+  MatButtonModule,
+  MatCardModule,
+  MatDialogModule,
+  MatGridListModule,
+  MatIconModule,
+  MatInputModule,
+  MatSidenavModule,
+  MatTabsModule,
+  MatToolbarModule
 } from '@angular/material';
 import { CreateEditPatternLanguageComponent } from './create-edit-pattern-language/create-edit-pattern-language.component';
-import {CovalentTextEditorModule} from '@covalent/text-editor';
 
 @NgModule({
     imports: [
@@ -47,7 +49,8 @@ import {CovalentTextEditorModule} from '@covalent/text-editor';
         MatDialogModule,
         MatTabsModule,
         MatInputModule,
-        CoreModule
+      CoreModule,
+      MatGridListModule
     ],
     declarations: [
         PatternLanguageManagementComponent,
@@ -55,7 +58,7 @@ import {CovalentTextEditorModule} from '@covalent/text-editor';
         PatternLanguageContainerDirective,
         PatternContainerComponent,
         PatternContainerDirective,
-        CreateEditPatternLanguageComponent,
+      CreateEditPatternLanguageComponent
     ]
 })
 export class PatternLanguageManagementModule {
