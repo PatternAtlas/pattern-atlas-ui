@@ -32,6 +32,7 @@
     "parse-uri": "^1.0.0",
     "rdfstore": "https://github.com/fakepk/rdfstore-js.git",
     "rxjs": "^6.3.3",
+    "simplemde": "^1.11.2",
     "zone.js": "^0.8.29"
   },
   "devDependencies": {
