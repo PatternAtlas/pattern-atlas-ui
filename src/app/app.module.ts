@@ -31,6 +31,7 @@ import { SolutionLanguageManagementModule } from './solution-language-management
 import { NgxMdModule } from 'ngx-md';
 import { CovalentTextEditorModule } from '@covalent/text-editor';
 import { TestComponent } from './test/test.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
     declarations: [
@@ -57,7 +58,8 @@ import { TestComponent } from './test/test.component';
         CoreModule,
         HttpClientModule,
         AppRoutingModule,
-        ExtensionsModule
+      ExtensionsModule,
+      FlexLayoutModule
     ],
     providers: [],
     bootstrap: [AppComponent]

@@ -110,3 +110,6 @@ body{
   align-items: center;
 }
 
+.preview-tile > figure {
+  align-items: flex-start !important;
+}
