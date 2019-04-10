@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { TdTextEditorComponent } from '@covalent/text-editor';
 import SimpleMDE from 'simplemde/src/js/simplemde.js';
+import { PatternOntologyService } from '../../core/service/pattern-ontology.service';
+import PatternLanguage from '../../core/model/pattern-language.model';
 
 @Component({
   selector: 'pp-create-edit-pattern-language',
@@ -9,7 +11,8 @@ import SimpleMDE from 'simplemde/src/js/simplemde.js';
 })
 export class CreateEditPatternLanguageComponent implements OnInit, AfterViewInit {
 
-  constructor() { }
+  constructor(private _patternOntologieService: PatternOntologyService) {
+  }
 
   @ViewChild('textEditor') private _textEditor: TdTextEditorComponent;
   patternLanguageStructure = `# Patternlanguage name 
@@ -31,7 +34,6 @@ export class CreateEditPatternLanguageComponent implements OnInit, AfterViewInit
     // unfortunately there is no change method in the angular wrapper, so we have to access the unterlying javascript component
     const markdownEditor = this._textEditor;
     this._textEditor.simpleMDE.codemirror.on('change', function(){
-      console.log(SimpleMDE.prototype.markdown(markdownEditor.value));
       document.getElementById('preview').innerHTML = SimpleMDE.prototype.markdown(markdownEditor.value);
     });
     // trigger on change initially to set preview
@@ -40,9 +42,32 @@ export class CreateEditPatternLanguageComponent implements OnInit, AfterViewInit
 
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
 
 
+  }
+
+  getPatternLanguageDefinition(): PatternLanguage {
+    const linesWithText = this._textEditor.value.split('\n').filter((line) => this.containsMoreThanWhitespace(line));
+    const plName = linesWithText.filter((line) => this.matchPatternLanguageName(line))[0].replace('#', '').trim();
+    return new PatternLanguage('http://purl.org/patternpedia/patternlanguages/' + plName, plName, [], []);
+  }
+
+  containsMoreThanWhitespace(teststring: string): boolean {
+    return !teststring.match(new RegExp('^\\s*$', 'g'));
+  }
+
+  matchPatternLanguageName(teststring: string): boolean {
+    return /^(\s)?#\s.*$/.test(teststring);
+  }
+
+  matchSectionLabel(teststring: string): boolean {
+    return /^(\s)?##\s.*$/.test(teststring);
+  }
+
+  save(): void {
+    this._patternOntologieService.insertNewPatternLanguageIndividual(this.getPatternLanguageDefinition());
+    // TODO: persist save
   }
 
 

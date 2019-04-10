@@ -8,11 +8,12 @@
                     id="textEditor"></td-text-editor>
   </mat-grid-tile>
   <mat-grid-tile class="preview-tile">
+
     <div fxLayout="column" fxLayoutAlign="space-around center">
       <mat-card>
         <div id="preview"></div>
       </mat-card>
-      <button class="save-button" mat-raised-button color="accent" style="float: right"><i
+      <button (click)="save()" class="save-button" mat-raised-button color="accent" style="float: right"><i
         class="material-icons">save</i>Save
       </button>
     </div>
