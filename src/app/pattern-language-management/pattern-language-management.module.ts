@@ -23,9 +23,11 @@ import { PatternLanguageContainerDirective } from './pattern-language-container/
 import { PatternContainerComponent } from './pattern-container/pattern-container.component';
 import { PatternContainerDirective } from './pattern-container/pattern-container.directive';
 import {
+  MatAutocompleteModule,
   MatBadgeModule,
   MatButtonModule,
   MatCardModule,
+  MatChipsModule,
   MatDialogModule,
   MatGridListModule,
   MatIconModule,
@@ -36,6 +38,8 @@ import {
 } from '@angular/material';
 import { CreateEditPatternLanguageComponent } from './create-edit-pattern-language/create-edit-pattern-language.component';
 import { CreatePatternComponent } from './create-pattern/create-pattern.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
     imports: [
@@ -50,8 +54,12 @@ import { CreatePatternComponent } from './create-pattern/create-pattern.componen
         MatDialogModule,
         MatTabsModule,
         MatInputModule,
+      MatChipsModule,
+      MatAutocompleteModule,
       CoreModule,
-      MatGridListModule
+      MatGridListModule,
+      ReactiveFormsModule,
+      FlexLayoutModule
     ],
     declarations: [
         PatternLanguageManagementComponent,

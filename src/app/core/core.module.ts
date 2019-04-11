@@ -32,9 +32,10 @@ import { CovalentTextEditorModule } from '@covalent/text-editor';
         PrettyJsonModule,
         MatButtonModule,
         TextFieldModule,
-        CovalentTextEditorModule
+      CovalentTextEditorModule
+
     ],
-    exports: [CovalentTextEditorModule],
+  exports: [CovalentTextEditorModule],
     providers: [
         PatternOntologyService,
         LinkedOpenPatternsLoader

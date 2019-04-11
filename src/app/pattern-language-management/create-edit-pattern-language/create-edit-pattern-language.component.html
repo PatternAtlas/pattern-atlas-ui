@@ -2,21 +2,52 @@
   Create a new Patternlanguage
 </h2>
 <h3>Start by defining your structure: </h3>
-<mat-grid-list cols="2">
-  <mat-grid-tile>
-    <td-text-editor class="markdownEditor" [(value)]="patternLanguageStructure" [options]="options" #textEditor
-                    id="textEditor"></td-text-editor>
-  </mat-grid-tile>
-  <mat-grid-tile class="preview-tile">
+<div fxLayout="column" fxLayoutAlign="space-around center">
+  <mat-card fxLayout="column" fxLayoutAlign="space-around center">
+    <mat-form-field appearance="outline">
+      <mat-label>Pattern language name</mat-label>
+      <input matInput placeholder="Enter the name of your Pattern Language">
+    </mat-form-field>
 
-    <div fxLayout="column" fxLayoutAlign="space-around center">
-      <mat-card>
-        <div id="preview"></div>
-      </mat-card>
-      <button (click)="save()" class="save-button" mat-raised-button color="accent" style="float: right"><i
-        class="material-icons">save</i>Save
-      </button>
+    <div fxLayout="row" fxLayoutAlign="space-around center">
+      <mat-form-field class="full-width" appearance="outline" fxFill>
+        <mat-label>Icon URL</mat-label>
+        <input matInput placeholder="Enter URL of your icon" type="url">
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+          <span class="label-preview">Icon-Preview: </span>
+          <div mat-card-avatar class="example-header-image"></div>
+        </div>
+
+
+      </mat-form-field>
+
     </div>
-  </mat-grid-tile>
-</mat-grid-list>
-
+    <mat-form-field appearance="outline">
+      <mat-label>Sections</mat-label>
+      <mat-chip-list #chipList>
+        <mat-chip
+          *ngFor="let section of fruits"
+          [selectable]="selectable"
+          [removable]="removable"
+          (removed)="remove(section)">
+          {{section}}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input
+          placeholder="Type here to add a section, create your own section with enter"
+          #fruitInput
+          [matAutocomplete]="auto"
+          [formControl]="sectionCtrl"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="addOnBlur"
+          (matChipInputTokenEnd)="add($event)">
+      </mat-chip-list>
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+        <mat-option *ngFor="let fruit of filteredSections | async" [value]="fruit">
+          {{fruit}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </mat-card>
+</div>
