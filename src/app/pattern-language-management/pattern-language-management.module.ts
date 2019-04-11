@@ -35,6 +35,7 @@ import {
   MatToolbarModule
 } from '@angular/material';
 import { CreateEditPatternLanguageComponent } from './create-edit-pattern-language/create-edit-pattern-language.component';
+import { CreatePatternComponent } from './create-pattern/create-pattern.component';
 
 @NgModule({
     imports: [
@@ -58,7 +59,8 @@ import { CreateEditPatternLanguageComponent } from './create-edit-pattern-langua
         PatternLanguageContainerDirective,
         PatternContainerComponent,
         PatternContainerDirective,
-      CreateEditPatternLanguageComponent
+      CreateEditPatternLanguageComponent,
+      CreatePatternComponent
     ]
 })
 export class PatternLanguageManagementModule {
