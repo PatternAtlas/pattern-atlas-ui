@@ -18,7 +18,6 @@ import { PatternLanguageManagementComponent } from './pattern-language-managemen
 import { PatternLanguageContainerComponent } from './pattern-language-container/pattern-language-container.component';
 import { PatternContainerComponent } from './pattern-container/pattern-container.component';
 import { PatternLanguageManagementResolverService } from './pattern-language-management/pattern-language-management-resolver.service';
-import {CreateEditPatternLanguageComponent} from './create-edit-pattern-language/create-edit-pattern-language.component'; // tslint:disable-line:max-line-length
 
 const routes: Routes = [
     {
@@ -31,10 +30,6 @@ const routes: Routes = [
             {
                 path: '',
                 component: PatternLanguageManagementComponent
-            },
-            {
-                path: 'create',
-                component: CreateEditPatternLanguageComponent,
             }, {
                 path: ':plid',
                 component: PatternLanguageContainerComponent,

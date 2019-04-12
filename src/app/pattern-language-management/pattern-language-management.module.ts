@@ -69,7 +69,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         PatternContainerDirective,
       CreateEditPatternLanguageComponent,
       CreatePatternComponent
-    ]
+    ],
+  entryComponents: [
+    CreateEditPatternLanguageComponent
+  ]
 })
 export class PatternLanguageManagementModule {
 }

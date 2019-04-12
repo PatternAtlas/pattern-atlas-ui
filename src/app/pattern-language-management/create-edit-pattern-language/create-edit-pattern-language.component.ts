@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { PatternOntologyService } from '../../core/service/pattern-ontology.service';
-import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
+import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatDialogRef } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/internal/operators';
@@ -33,10 +32,10 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   @ViewChild('sectionInput') sectionInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
-  constructor(private _patternOntologieService: PatternOntologyService) {
+  constructor(public dialogRef: MatDialogRef<CreateEditPatternLanguageComponent>) {
     this.filteredSections = this.sectionCtrl.valueChanges.pipe(
       startWith(null),
-      map((fruit: string | null) => fruit ? this._filter(fruit) : this.sectionNames.slice()));
+      map((section: string | null) => section ? this._filter(section) : this.sectionNames.slice()));
   }
 
 
@@ -84,5 +83,8 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     return this.sectionNames.filter(section => section.toLowerCase().indexOf(filterValue) === 0);
   }
 
+  close(): void {
+    this.dialogRef.close(); // {field: this.data.field, content: this.intialContent});
+  }
 
 }

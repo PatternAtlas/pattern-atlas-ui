@@ -19,6 +19,9 @@ import { LoaderRegistryService } from '../../core/service/loader/pattern-languag
 import { ActivatedRoute, Router } from '@angular/router';
 import { globals } from '../../globals';
 import { LinkedOpenPatternsLoader } from '../../core/service/loader/pattern-language-loader/linked-open-patterns-loader.service';
+import { CreateEditPatternLanguageComponent } from '../create-edit-pattern-language/create-edit-pattern-language.component';
+import { MatDialog } from '@angular/material';
+import { DialogData } from '../../core/component/md-editor/md-editor.component';
 
 @Component({
     selector: 'pp-pattern-language-management',
@@ -40,7 +43,8 @@ export class PatternLanguageManagementComponent implements OnInit {
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private zone: NgZone,
-                private loader: LinkedOpenPatternsLoader) {
+                private loader: LinkedOpenPatternsLoader,
+                private dialog: MatDialog) {
     }
 
     getTurtle(): void {
@@ -118,6 +122,10 @@ export class PatternLanguageManagementComponent implements OnInit {
     }
 
   goToPatternLanguageCreation(): void{
-    this.router.navigate(['create'], {relativeTo: this.activatedRoute});
+    const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent);
+    dialogRef.afterClosed().subscribe(async (result: DialogData) => {
+      // this.pattern[field].value = result.content;
+      // await this.writer.writePatternToStore(this.pattern).catch(err => console.error(err));
+    });
   }
 }
