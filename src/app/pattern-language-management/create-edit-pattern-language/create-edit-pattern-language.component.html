@@ -26,7 +26,7 @@
       <mat-label>Sections</mat-label>
       <mat-chip-list #chipList>
         <mat-chip
-          *ngFor="let section of fruits"
+          *ngFor="let section of sections"
           [selectable]="selectable"
           [removable]="removable"
           (removed)="remove(section)">
@@ -35,7 +35,7 @@
         </mat-chip>
         <input
           placeholder="Type here to add a section, create your own section with enter"
-          #fruitInput
+          #sectionInput
           [matAutocomplete]="auto"
           [formControl]="sectionCtrl"
           [matChipInputFor]="chipList"
@@ -44,8 +44,8 @@
           (matChipInputTokenEnd)="add($event)">
       </mat-chip-list>
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-        <mat-option *ngFor="let fruit of filteredSections | async" [value]="fruit">
-          {{fruit}}
+        <mat-option *ngFor="let section of filteredSections | async" [value]="section">
+          {{section}}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>

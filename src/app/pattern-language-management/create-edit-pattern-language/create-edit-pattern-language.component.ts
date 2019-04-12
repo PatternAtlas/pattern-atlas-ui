@@ -21,7 +21,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   sectionCtrl = new FormControl();
   filteredSections: Observable<string[]>;
-  fruits: string[] = ['Icon', 'Context', 'Driving Question', 'Solution'];
+  sections: string[] = ['Icon', 'Context', 'Driving Question', 'Solution'];
   sectionNames: string[] = ['Icon', 'Context', 'Driving Question', 'Solution', 'Solution Sketches'];
 
 
@@ -30,7 +30,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
 
   }
 
-  @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
+  @ViewChild('sectionInput') sectionInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   constructor(private _patternOntologieService: PatternOntologyService) {
@@ -41,15 +41,15 @@ export class CreateEditPatternLanguageComponent implements OnInit {
 
 
   add(event: MatChipInputEvent): void {
-    // Add fruit only when MatAutocomplete is not open
+    // Add chip only when MatAutocomplete is not open
     // To make sure this does not conflict with OptionSelected Event
     if (!this.matAutocomplete.isOpen) {
       const input = event.input;
       const value = event.value;
 
-      // Add our fruit
+      // Add our section
       if ((value || '').trim()) {
-        this.fruits.push(value.trim());
+        this.sections.push(value.trim());
       }
 
       // Reset the input value
@@ -61,27 +61,27 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     }
   }
 
-  remove(fruit: string): void {
-    const index = this.fruits.indexOf(fruit);
+  remove(section: string): void {
+    const index = this.sections.indexOf(section);
 
     if (index >= 0) {
-      this.fruits.splice(index, 1);
+      this.sections.splice(index, 1);
     }
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    if (this.fruits.indexOf(event.option.viewValue) !== -1) {
+    if (this.sections.indexOf(event.option.viewValue) !== -1) {
       return;
     }
-    this.fruits.push(event.option.viewValue);
-    this.fruitInput.nativeElement.value = '';
+    this.sections.push(event.option.viewValue);
+    this.sectionInput.nativeElement.value = '';
     this.sectionCtrl.setValue(null);
   }
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.sectionNames.filter(fruit => fruit.toLowerCase().indexOf(filterValue) === 0);
+    return this.sectionNames.filter(section => section.toLowerCase().indexOf(filterValue) === 0);
   }
 
 
