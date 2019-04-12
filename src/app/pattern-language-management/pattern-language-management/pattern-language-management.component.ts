@@ -22,6 +22,7 @@ import { LinkedOpenPatternsLoader } from '../../core/service/loader/pattern-lang
 import { CreateEditPatternLanguageComponent } from '../create-edit-pattern-language/create-edit-pattern-language.component';
 import { MatDialog } from '@angular/material';
 import { DialogData } from '../../core/component/md-editor/md-editor.component';
+import { UploadDocumentsService } from '../../core/service/upload-documents.service';
 
 @Component({
     selector: 'pp-pattern-language-management',
@@ -44,7 +45,8 @@ export class PatternLanguageManagementComponent implements OnInit {
                 private activatedRoute: ActivatedRoute,
                 private zone: NgZone,
                 private loader: LinkedOpenPatternsLoader,
-                private dialog: MatDialog) {
+                private dialog: MatDialog,
+                private uploadService: UploadDocumentsService) {
     }
 
     getTurtle(): void {
@@ -126,6 +128,7 @@ export class PatternLanguageManagementComponent implements OnInit {
     dialogRef.afterClosed().subscribe(async (result: DialogData) => {
       // this.pattern[field].value = result.content;
       // await this.writer.writePatternToStore(this.pattern).catch(err => console.error(err));
+      this.uploadService.uploadPatternLanguage(null);
     });
   }
 }
