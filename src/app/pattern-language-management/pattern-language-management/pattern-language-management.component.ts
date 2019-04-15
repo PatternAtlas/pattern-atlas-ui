@@ -126,9 +126,7 @@ export class PatternLanguageManagementComponent implements OnInit {
   goToPatternLanguageCreation(): void{
     const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent);
     dialogRef.afterClosed().subscribe(async (result: DialogData) => {
-      // this.pattern[field].value = result.content;
-      // await this.writer.writePatternToStore(this.pattern).catch(err => console.error(err));
-      this.uploadService.uploadPatternLanguage(null);
+      this.uploadService.uploadPatternLanguage(null).subscribe(res => console.log(res));
     });
   }
 }
