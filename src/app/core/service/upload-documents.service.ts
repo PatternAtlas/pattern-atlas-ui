@@ -16,7 +16,7 @@ export class UploadDocumentsService {
   uploadPatternLanguage(patternlanguage: PatternLanguage): Observable<any>{
     return this.getGithubUserConfig().pipe(
       flatMap(res =>  {
-      return this.httpClient.put('https://api.github.com/repos/manuwei/Test/contents/test' + '/test1234.json', {
+        return this.httpClient.put('https://api.github.com/repos/PatternPedia/patternpediacontent/contents/test2' + '/test123456.json', {
         message: 'test github api',
         committer: {
           name: res.committer.name,

@@ -124,6 +124,7 @@ export class PatternLanguageManagementComponent implements OnInit {
     }
 
   goToPatternLanguageCreation(): void{
+    this.pos.getOntologyAsTurtle().subscribe(res => console.log(res));
     const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent);
     dialogRef.afterClosed().subscribe(async (result: DialogData) => {
       this.uploadService.uploadPatternLanguage(null).subscribe(res => console.log(res));
