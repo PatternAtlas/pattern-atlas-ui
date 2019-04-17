@@ -1,9 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatDialogRef } from '@angular/material';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/internal/operators';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
 
 @Component({
   selector: 'pp-create-edit-pattern-language',
@@ -24,6 +25,8 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   sectionNames: string[] = ['Icon', 'Context', 'Driving Question', 'Solution', 'Solution Sketches'];
   patternLanguageForm: FormGroup;
   iconPreviewVisible = false;
+
+  @Output() onSaveClicked = new EventEmitter<DialogPatternLanguageResult>();
 
   get name(): AbstractControl {
     return this.patternLanguageForm.get('name');
@@ -102,7 +105,8 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   }
 
   save(): void {
-    this.dialogRef.close({sections: this.sections, name: this.name.value, url: this.url.value});
+    this.onSaveClicked.emit({sections: this.sections, name: this.name.value, url: this.url.value});
+    this.dialogRef.close();
   }
 
 }
