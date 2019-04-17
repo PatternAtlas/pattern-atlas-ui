@@ -21,14 +21,16 @@ import { globals } from '../../globals';
 import { LinkedOpenPatternsLoader } from '../../core/service/loader/pattern-language-loader/linked-open-patterns-loader.service';
 import { CreateEditPatternLanguageComponent } from '../create-edit-pattern-language/create-edit-pattern-language.component';
 import { MatDialog } from '@angular/material';
-import { DialogData } from '../../core/component/md-editor/md-editor.component';
 import { UploadDocumentsService } from '../../core/service/upload-documents.service';
+import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
 
 @Component({
     selector: 'pp-pattern-language-management',
     templateUrl: './pattern-language-management.component.html',
     styleUrls: ['./pattern-language-management.component.scss']
 })
+
+
 export class PatternLanguageManagementComponent implements OnInit {
 
     // NOTE: These are currently the config params
@@ -126,8 +128,9 @@ export class PatternLanguageManagementComponent implements OnInit {
   goToPatternLanguageCreation(): void{
     this.pos.getOntologyAsTurtle().subscribe(res => console.log(res));
     const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent);
-    dialogRef.afterClosed().subscribe(async (result: DialogData) => {
-      this.uploadService.uploadPatternLanguage(null).subscribe(res => console.log(res));
+    dialogRef.afterClosed().subscribe(async (result: DialogPatternLanguageResult) => {
+      console.log(result);
+      // this.uploadService.uploadPatternLanguage(null).subscribe(res => console.log(res));
     });
   }
 }

@@ -1,8 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatDialogRef } from '@angular/material';
-import { FormControl } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/internal/operators';
+import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/internal/operators';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
 @Component({
@@ -22,17 +22,32 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   filteredSections: Observable<string[]>;
   sections: string[] = ['Icon', 'Context', 'Driving Question', 'Solution'];
   sectionNames: string[] = ['Icon', 'Context', 'Driving Question', 'Solution', 'Solution Sketches'];
+  patternLanguageForm: FormGroup;
+  iconPreviewVisible = false;
 
+  get name(): AbstractControl {
+    return this.patternLanguageForm.get('name');
+  }
+
+  get url(): AbstractControl {
+    return this.patternLanguageForm.get('url');
+  }
 
   ngOnInit(): void {
-
-
+    this.patternLanguageForm = this._fb.group({
+      name: ['', [Validators.required]],
+      url: ['', [Validators.required]]
+    });
+    this.url.valueChanges.pipe(debounceTime(1000), distinctUntilChanged()).subscribe((urlValue) => {
+      this.iconPreviewVisible = urlValue && (urlValue.startsWith('https://') || urlValue.startsWith('http://'));
+      // this.iconPreview.nativeElement.style.backgroundUrl = urlValue;
+    });
   }
 
   @ViewChild('sectionInput') sectionInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
-  constructor(public dialogRef: MatDialogRef<CreateEditPatternLanguageComponent>) {
+  constructor(public dialogRef: MatDialogRef<CreateEditPatternLanguageComponent>, private  _fb: FormBuilder) {
     this.filteredSections = this.sectionCtrl.valueChanges.pipe(
       startWith(null),
       map((section: string | null) => section ? this._filter(section) : this.sectionNames.slice()));
@@ -85,6 +100,10 @@ export class CreateEditPatternLanguageComponent implements OnInit {
 
   close(): void {
     this.dialogRef.close(); // {field: this.data.field, content: this.intialContent});
+  }
+
+  save(): void {
+    this.dialogRef.close({sections: this.sections, name: this.name.value, url: this.url.value});
   }
 
 }
