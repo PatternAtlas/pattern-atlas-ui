@@ -130,6 +130,8 @@ export class PatternLanguageManagementComponent implements OnInit {
     const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent);
     dialogRef.afterClosed().subscribe(async (result: DialogPatternLanguageResult) => {
       console.log(result);
+      const patternlanguage = new PatternLanguage(null, result.name, null, null, result.sections);
+      console.log(patternlanguage.toTurtle());
       // this.uploadService.uploadPatternLanguage(null).subscribe(res => console.log(res));
     });
   }

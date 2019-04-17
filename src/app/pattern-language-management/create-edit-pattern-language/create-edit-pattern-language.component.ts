@@ -40,7 +40,6 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     });
     this.url.valueChanges.pipe(debounceTime(1000), distinctUntilChanged()).subscribe((urlValue) => {
       this.iconPreviewVisible = urlValue && (urlValue.startsWith('https://') || urlValue.startsWith('http://'));
-      // this.iconPreview.nativeElement.style.backgroundUrl = urlValue;
     });
   }
 
