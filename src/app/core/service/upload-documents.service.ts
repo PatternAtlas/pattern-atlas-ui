@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import PatternLanguage from '../model/pattern-language.model';
 import { Observable } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
 import { GithubConfigFile } from './data/GithubConfigFile.interface';
@@ -13,16 +12,17 @@ export class UploadDocumentsService {
   constructor(private httpClient: HttpClient) { }
 
 
-  uploadPatternLanguage(patternlanguage: PatternLanguage): Observable<any>{
+  uploadPatternLanguage(patternlanguageName: string, patternlanguageTtlContent: string): Observable<any> {
     return this.getGithubUserConfig().pipe(
       flatMap(res =>  {
-        return this.httpClient.put('https://api.github.com/repos/PatternPedia/patternpediacontent/contents/test2' + '/test123456.json', {
-        message: 'test github api',
+        return this.httpClient.put(`https://api.github.com/repos/PatternPedia/patternpediacontent/contents/patternlanguages/${patternlanguageName}/${patternlanguageName}.ttl`, {
+            message: `upload the new patternlanguage ${patternlanguageName} that was created with the UI`,
         committer: {
           name: res.committer.name,
           email: res.committer.email
         },
-        'content': btoa('{"testcontent":' + 'Hello world' + '}')}
+            'content': btoa(patternlanguageTtlContent)
+          }
         , {headers: res.headers}); }));
   }
 

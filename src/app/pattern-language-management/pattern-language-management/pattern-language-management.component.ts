@@ -131,8 +131,8 @@ export class PatternLanguageManagementComponent implements OnInit {
     dialogRef.afterClosed().subscribe(async (result: DialogPatternLanguageResult) => {
       console.log(result);
       const patternlanguage = new PatternLanguage(null, result.name, null, null, result.sections);
-      console.log(patternlanguage.toTurtle());
-      // this.uploadService.uploadPatternLanguage(null).subscribe(res => console.log(res));
+      const ttlFilecontent = patternlanguage.toTurtle();
+      this.uploadService.uploadPatternLanguage(patternlanguage.name, ttlFilecontent).subscribe(res => console.log(res));
     });
   }
 }
