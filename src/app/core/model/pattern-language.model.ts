@@ -85,12 +85,13 @@ class PatternLanguage {
     ary.push(`### ${this.patternpediaBaseURI + '/' + this.name} + 'Pattern'`);
     ary.push(`:CloudComputingPattern rdf:type owl:Class ; `);
     ary.push(` rdfs:subClassOf pp:Pattern ,`);
-    for (const section of this.sections) {
+    this.sections.forEach((section, index) => {
       ary.push(`${'\t'.repeat(3)}[ rdf:type owl:Restriction ;`);
       ary.push(`${'\t'.repeat(3)} owl:onProperty ${this.getSectionIdentifier(section)} ; `);
       ary.push(`${'\t'.repeat(3)}owl:allValuesFrom xsd:string`);
-      ary.push(`${'\t'.repeat(4)}`);
-    }
+      ary.push(`${'\t'.repeat(4)}] ${index === this.sections.length - 1 ? '.' : ','}`);
+      ary.push(`\n`);
+    });
     // Todo solutionSketches and variations
 
     return ary.join('\n');
