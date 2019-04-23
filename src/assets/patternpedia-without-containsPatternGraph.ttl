@@ -132,6 +132,3 @@
                              :PatternPedia ;
                     :hasName "PatternPedia - Linked Open Patterns"^^xsd:string ;
                     :hasLogo "https://avatars2.githubusercontent.com/u/26855294?s=400&u=79a17f6856ac0b53e4658f1206362634904eb8b3&v=4"^^xsd:anyURI .
-
-:LinkedOpenPatterns :containsPatternGraph <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPatterns> ,
-                                                                 <http://purl.org/patternpedia/internetofthingspatterns#InternetOfThingsPatterns> .

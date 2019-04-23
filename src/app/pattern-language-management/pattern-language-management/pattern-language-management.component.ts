@@ -23,6 +23,7 @@ import { CreateEditPatternLanguageComponent } from '../create-edit-pattern-langu
 import { MatDialog } from '@angular/material';
 import { UploadDocumentsService } from '../../core/service/upload-documents.service';
 import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
+import { switchMap } from 'rxjs/internal/operators';
 
 @Component({
     selector: 'pp-pattern-language-management',
@@ -128,17 +129,26 @@ export class PatternLanguageManagementComponent implements OnInit {
   goToPatternLanguageCreation(): void{
     this.pos.getOntologyAsTurtle().subscribe(res => console.log(res));
     const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent);
-    dialogRef.afterClosed().subscribe(async (result: DialogPatternLanguageResult) => {
+    dialogRef.afterClosed().subscribe(async (result) => {
       console.log(result);
     });
 
     (<CreateEditPatternLanguageComponent> dialogRef.componentInstance).onSaveClicked.subscribe((result: DialogPatternLanguageResult) => {
       console.log(result);
-      const patternlanguage = new PatternLanguage(null, result.name, null, null,
+      const patternlanguage = new PatternLanguage(this.urlPatternPedia + result.name.replace(new RegExp('\s', 'g'), ''), result.name, null, null,
         result.sections);
       const ttlFilecontent = patternlanguage.toTurtle();
-      this.uploadService.uploadPatternLanguage(patternlanguage.name, ttlFilecontent).subscribe(
-        res => console.log(res));
+      this.uploadService.uploadPatternLanguage(patternlanguage.name, ttlFilecontent).pipe(
+        switchMap(() => {
+          this.uploadService.addPatternLanguageToPatternPedia(patternlanguage, this.patternLanguages);
+        }),
+        switchMap(() => {
+          return this.pos.insertNewPatternLanguageIndividual(patternlanguage);
+        })
+      ).subscribe((res) => {
+          console.log(res);
+        }
+      );
     });
   }
 }

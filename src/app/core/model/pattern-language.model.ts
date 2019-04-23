@@ -62,7 +62,7 @@ class PatternLanguage {
   toTurtle(): string {
     const ary = this.getPrefixes();
     ary.push('\n');
-    ary.push(`<${this.patternpediaBaseURI + '/' + this.name}> rdf:type owl:Ontology ;`);
+    ary.push(`<${this.iri}> rdf:type owl:Ontology ;`);
     ary.push(`owl:imports <${this.patternpediaBaseURI}> .`);
     ary.push('\n');
     ary.push('# #################################################################');
@@ -82,7 +82,7 @@ class PatternLanguage {
     ary.push('# #');
     ary.push('# #################################################################');
 
-    ary.push(`### ${this.patternpediaBaseURI + '/' + this.name} + 'Pattern'`);
+    ary.push(`### ${this.iri}`);
     ary.push(`:CloudComputingPattern rdf:type owl:Class ; `);
     ary.push(` rdfs:subClassOf pp:Pattern ,`);
     this.sections.forEach((section, index) => {
@@ -95,6 +95,10 @@ class PatternLanguage {
     // Todo solutionSketches and variations
 
     return ary.join('\n');
+  }
+
+  getIsLinkedOpenPatternLanguageStatement(): string {
+    return `<${this.patternpediaBaseURI}#LinkedOpenPatterns> <${this.patternpediaBaseURI}#containsPatternGraph> <${this.iri}> .`;
   }
 
 }

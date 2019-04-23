@@ -14,7 +14,7 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { forkJoin, from, Observable, of, throwError } from 'rxjs';
+import { forkJoin, from, Observable, throwError } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
 import PatternLanguage from '../model/pattern-language.model';
 import { SparqlExecutor } from '../model/sparql.executor';
@@ -195,13 +195,15 @@ export class PatternOntologyService implements SparqlExecutor {
      */
     loadLocallyHostedOntosRaw(): Observable<any> {
         const observables = [
-            this.http.get('assets/patternpedia.ttl', {responseType: 'text'}),
-            this.http.get('assets/cloudcomputingpatterns/cloudcomputingpatterns.ttl', {responseType: 'text'}),
+          this.http.get('assets/patternpedia.ttl', {responseType: 'text'}),
+          this.http.get('assets/cloudcomputingpatterns/cloudcomputingpatterns.ttl', {responseType: 'text'}),
             this.http.get('assets/cloudcomputingpatterns/elasticinfrastructure.ttl', {responseType: 'text'}),
             this.http.get('assets/cloudcomputingpatterns/elasticloadbalancer.ttl', {responseType: 'text'}),
-            this.http.get('assets/internetofthingspatterns/internetofthingspatterns.ttl', {responseType: 'text'}),
+          this.http.get('assets/internetofthingspatterns/internetofthingspatterns.ttl', {responseType: 'text'}),
             this.http.get('assets/internetofthingspatterns/deviceshadow.ttl', {responseType: 'text'}),
-            this.http.get('assets/internetofthingspatterns/devicegateway.ttl', {responseType: 'text'})
+          this.http.get('assets/internetofthingspatterns/devicegateway.ttl', {responseType: 'text'}),
+          // this.http.get('assets/patternlanguages/Testlanguage1/Testlanguage1.ttl', {responseType: 'text'}),
+          // this.http.get('assets/patternlanguages/Testlanguage1/testpattern.ttl', {responseType: 'text'})
         ];
         return forkJoin(observables);
     }
@@ -232,6 +234,11 @@ export class PatternOntologyService implements SparqlExecutor {
             loadResult[5], 'http://purl.org/patternpedia/internetofthingspatterns/devicegateway'));
         console.log('Result: ', await this.loadToStore('text/turtle',
             loadResult[6], 'http://purl.org/patternpedia/internetofthingspatterns/devicegateway'));
+      console.log('LOADING http://purl.org/patternpedia/patternlanguages/Testlanguage1 to store');
+      console.log('Result: ', await this.loadToStore('text/turtle',
+        loadResult[7], 'http://purl.org/patternpedia/patternlanguages/Testlanguage1'));
+      console.log('Result: ', await this.loadToStore('text/turtle',
+        loadResult[8], 'http://purl.org/patternpedia/patternlanguages/Testlanguage1'));
     }
 
     loadToStore(mediaType: string, data: string, graphIri: string): Promise<number> {
@@ -240,6 +247,7 @@ export class PatternOntologyService implements SparqlExecutor {
                 if (!err) {
                     resolve(result);
                 } else {
+                  console.log('error while loading ' + graphIri);
                     reject(err);
                 }
             });
@@ -433,7 +441,7 @@ export class PatternOntologyService implements SparqlExecutor {
      * @param store Store the new pattern language is inserted to
      */
     insertNewPatternLanguageIndividual(pl: PatternLanguage, store: any = null): Observable<boolean> {
-        // TODO: Add tripple that connect pattern language individual with a PatternPedia Instance
+      // TODO: Add triple that connect pattern language individual with a PatternPedia Instance
         // (plId pp:containsPatternLanguage NewPatternLanguageIndividualIRI)
         if (!store) {
             console.log('Use default store');
