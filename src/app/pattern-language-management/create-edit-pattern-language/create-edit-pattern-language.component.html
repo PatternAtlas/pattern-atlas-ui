@@ -16,10 +16,10 @@
     <div fxLayout="row" fxLayoutAlign="space-around center">
       <mat-form-field class="full-width" appearance="outline" style="width: 24em" [floatLabel]="'always'">
         <mat-label>Icon URL</mat-label>
-        <input matInput formControlName="url" placeholder="Enter URL of your icon" type="url">
+        <input matInput formControlName="iconUrl" placeholder="Enter URL of your icon" type="url">
         <div fxLayout="row" fxLayoutAlign="space-around center" *ngIf="iconPreviewVisible">
           <span class="label-preview">Icon-Preview: </span>
-          <div mat-card-avatar #iconPreview [ngStyle]="{ 'background-image': 'url(' + url?.value + ')'}"
+          <div mat-card-avatar #iconPreview [ngStyle]="{ 'background-image': 'url(' + iconUrl?.value + ')'}"
                class="example-header-image"></div>
         </div>
       </mat-form-field>

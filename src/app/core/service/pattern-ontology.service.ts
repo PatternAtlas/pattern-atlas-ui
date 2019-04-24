@@ -202,8 +202,8 @@ export class PatternOntologyService implements SparqlExecutor {
           this.http.get('assets/internetofthingspatterns/internetofthingspatterns.ttl', {responseType: 'text'}),
             this.http.get('assets/internetofthingspatterns/deviceshadow.ttl', {responseType: 'text'}),
           this.http.get('assets/internetofthingspatterns/devicegateway.ttl', {responseType: 'text'}),
-          // this.http.get('assets/patternlanguages/Testlanguage1/Testlanguage1.ttl', {responseType: 'text'}),
-          // this.http.get('assets/patternlanguages/Testlanguage1/testpattern.ttl', {responseType: 'text'})
+          this.http.get('assets/patternlanguages/Testlanguage1/Testlanguage1.ttl', {responseType: 'text'}),
+          this.http.get('assets/patternlanguages/Testlanguage1/testpattern.ttl', {responseType: 'text'})
         ];
         return forkJoin(observables);
     }
@@ -236,9 +236,9 @@ export class PatternOntologyService implements SparqlExecutor {
             loadResult[6], 'http://purl.org/patternpedia/internetofthingspatterns/devicegateway'));
       console.log('LOADING http://purl.org/patternpedia/patternlanguages/Testlanguage1 to store');
       console.log('Result: ', await this.loadToStore('text/turtle',
-        loadResult[7], 'http://purl.org/patternpedia/patternlanguages/Testlanguage1'));
+        loadResult[7], '<http://purl.org/patternpedia/patternlanguages/Testlanguage1#Testlanguage1>'));
       console.log('Result: ', await this.loadToStore('text/turtle',
-        loadResult[8], 'http://purl.org/patternpedia/patternlanguages/Testlanguage1'));
+        loadResult[8], '<http://purl.org/patternpedia/patternlanguages/Testlanguage1#Testlanguage1>'));
     }
 
     loadToStore(mediaType: string, data: string, graphIri: string): Promise<number> {

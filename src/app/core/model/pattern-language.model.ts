@@ -92,13 +92,27 @@ class PatternLanguage {
       ary.push(`${'\t'.repeat(4)}] ${index === this.sections.length - 1 ? '.' : ','}`);
       ary.push(`\n`);
     });
+
+
+    ary.push('#################################################################');
+    ary.push('Individuals');
+    ary.push('##############################################################');
+
+    ary.push(`###  ${this.iri}#${this.name}`);
+    ary.push(`<${this.iri}> rdf:type owl:NamedIndividual ,`);
+    ary.push('pp:PatternLanguage ;');
+    if (this.logos.length > 0) {
+      ary.push(`pp:hasLogo ${this.logos[0]}^^xsd:anyURI ;`);
+    }
+    ary.push(`pp:hasName ${this.name}^^xsd:string .`);
     // Todo solutionSketches and variations
 
     return ary.join('\n');
   }
 
   getIsLinkedOpenPatternLanguageStatement(): string {
-    return `<${this.patternpediaBaseURI}#LinkedOpenPatterns> <${this.patternpediaBaseURI}#containsPatternGraph> <${this.iri}> .`;
+    return `<${this.patternpediaBaseURI}#LinkedOpenPatterns> <${this.patternpediaBaseURI}#containsPatternGraph> <${this.iri}#${this.name}> .`
+      ;
   }
 
 }

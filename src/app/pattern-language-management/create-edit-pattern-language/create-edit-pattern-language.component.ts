@@ -32,16 +32,16 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     return this.patternLanguageForm.get('name');
   }
 
-  get url(): AbstractControl {
-    return this.patternLanguageForm.get('url');
+  get iconUrl(): AbstractControl {
+    return this.patternLanguageForm.get('iconUrl');
   }
 
   ngOnInit(): void {
     this.patternLanguageForm = this._fb.group({
       name: ['', [Validators.required]],
-      url: ['', [Validators.required]]
+      iconUrl: ['', [Validators.required]]
     });
-    this.url.valueChanges.pipe(debounceTime(1000), distinctUntilChanged()).subscribe((urlValue) => {
+    this.iconUrl.valueChanges.pipe(debounceTime(1000), distinctUntilChanged()).subscribe((urlValue) => {
       this.iconPreviewVisible = urlValue && (urlValue.startsWith('https://') || urlValue.startsWith('http://'));
     });
   }
@@ -105,7 +105,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   }
 
   save(): void {
-    this.onSaveClicked.emit({sections: this.sections, name: this.name.value, url: this.url.value});
+    this.onSaveClicked.emit({sections: this.sections, name: this.name.value, iconUrl: this.iconUrl.value});
     this.dialogRef.close();
   }
 
