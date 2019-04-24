@@ -36,14 +36,14 @@ export class UploadDocumentsService {
     return this.httpClient.get('assets/github-user-config.json').pipe(map(res => <GithubConfigFile> res));
   }
 
-  addPatternLanguageToPatternPedia(patternlanguage: PatternLanguage, existingPatternlanguages: PatternLanguage[]): void {
+  addPatternLanguageToPatternPedia(patternlanguage: PatternLanguage, existingPatternlanguages: PatternLanguage[]): Observable<any> {
     const patternpediaUrl = 'https://api.github.com/repos/PatternPedia/patternpediacontent/contents/patternpedia.ttl';
     existingPatternlanguages.push(patternlanguage);
     const containsPatternGraphStatements = existingPatternlanguages.map((pl: PatternLanguage) => {
       return pl.getIsLinkedOpenPatternLanguageStatement();
     });
 
-    this.getRequestInfosToAddToPatternPedia().pipe(
+    return this.getRequestInfosToAddToPatternPedia().pipe(
       switchMap((res: GithubUploadRequestInfo) => {
         return this.httpClient.put(patternpediaUrl, {
             message: `upload the new patternlanguage ${patternlanguage.name} that was created with the UI to patternpedia`,
@@ -55,9 +55,7 @@ export class UploadDocumentsService {
             sha: res.fileInfo.sha
           }
           , {headers: res.config.headers});
-      })).subscribe((res) => console.log(res));
-    // TODO
-    console.log('add to pattern pedia triggered');
+      }));
   }
 
   getRequestInfosToAddToPatternPedia(): Observable<GithubUploadRequestInfo> {
