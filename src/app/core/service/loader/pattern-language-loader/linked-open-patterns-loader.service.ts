@@ -21,7 +21,7 @@ import { IriConverter } from '../../../util/iri-converter';
 @Injectable()
 export class LinkedOpenPatternsLoader extends Loader<PatternLanguage> {
 
-
+  patterngraphs = [];
   constructor(private pos: PatternOntologyService) {
         super('http://purl.org/patternpedia#LinkedOpenPatterns', pos);
     }
@@ -32,12 +32,12 @@ export class LinkedOpenPatternsLoader extends Loader<PatternLanguage> {
                                           <${this.supportedIRI}> <http://purl.org/patternpedia#containsPatternGraph> ?patterngraph
                                       }`;
       const patternGraphs = await this.executor.exec(qryPatternGraphs, [IriConverter.getFileName(this.supportedIRI)]);
-        const qry = `SELECT ?patterngraph ?type ?name ?logo ?pattern
+      const qry = `SELECT ?patterngraph ?type ?name ?logo 
                                          WHERE {
                                             <${this.supportedIRI}> <http://purl.org/patternpedia#containsPatternGraph> ?patterngraph .
                                             ?patterngraph a ?type .
                                             OPTIONAL {?patterngraph <http://purl.org/patternpedia#containsPattern> ?pattern .}
-                                            ?patterngraph <http://purl.org/patternpedia#hasName> ?name . 
+                                            OPTIONAL {?patterngraph <http://purl.org/patternpedia#hasName> ?name .} 
                                             OPTIONAL {?patterngraph <http://purl.org/patternpedia#hasLogo> ?logo . }
                                             FILTER (?type != owl:NamedIndividual)
                                           }
@@ -46,6 +46,7 @@ export class LinkedOpenPatternsLoader extends Loader<PatternLanguage> {
 
       for (const entry of patternGraphs) {
         graphs.push(IriConverter.getFileName(entry.patterngraph.value));
+        this.patterngraphs.push(entry);
       }
       return this.executor.exec(qry, graphs);
     }
@@ -53,9 +54,12 @@ export class LinkedOpenPatternsLoader extends Loader<PatternLanguage> {
     mapTriples(triples: any): Promise<Map<string, PatternLanguage>> {
         const result = new Map<string, PatternLanguage>();
         // we first iterate the triples and generate an intermediate format to create afterwards pattern objects
-
       const rawPatternGraphs = {};
-        for (const row of triples) {
+      for (const graph of this.patterngraphs) {
+        rawPatternGraphs[graph.patterngraph.value] = {patterngraph: graph.patterngraph.value};
+      }
+
+      for (const row of triples) {
             if (!rawPatternGraphs[row.patterngraph.value]) {
                 rawPatternGraphs[row.patterngraph.value] = {patterngraph: row.patterngraph.value};
             }

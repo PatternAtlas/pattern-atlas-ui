@@ -7,14 +7,13 @@ import PatternLanguage from '../model/pattern-language.model';
 import { GithubFileResponse } from './data/GithubFileResponse.interface';
 import { switchMap, tap } from 'rxjs/internal/operators';
 import { GithubUploadRequestInfo } from './data/GithubUploadRequestInfo.interface';
-import { PatternOntologyService } from './pattern-ontology.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UploadDocumentsService {
 
-  constructor(private httpClient: HttpClient, private pos: PatternOntologyService) {
+  constructor(private httpClient: HttpClient) {
   }
 
 
