@@ -138,4 +138,4 @@
 <http://purl.org/patternpedia#LinkedOpenPatterns> <http://purl.org/patternpedia#containsPatternGraph> <http://purl.org/patternpedia/cloudcomputingpatterns2#CloudComputingPatterns2> .
 <http://purl.org/patternpedia#LinkedOpenPatterns> <http://purl.org/patternpedia#containsPatternGraph> <http://purl.org/patternpedia/internetofthingspatterns#InternetOfThingsPatterns> .
 <http://purl.org/patternpedia#LinkedOpenPatterns> <http://purl.org/patternpedia#containsPatternGraph> <http://purl.org/patternpedia/TESTWriter#TESTWriter> .
-<http://purl.org/patternpedia#LinkedOpenPatterns> <http://purl.org/patternpedia#containsPatternGraph> <http://purl.org/patternpedia/mylanguage#mylanguage> .
+<http://purl.org/patternpedia#LinkedOpenPatterns> <http://purl.org/patternpedia#containsPatternGraph> <http://purl.org/patternpedia/patternlanguages/mylanguage#mylanguage> .

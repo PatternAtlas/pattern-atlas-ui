@@ -249,7 +249,7 @@ export class PatternOntologyService implements SparqlExecutor {
       console.log('Result: ', await this.loadToStore('text/turtle',
         loadResult[10], 'http://purl.org/patternpedia/cloudcomputingpatterns2/elasticloadbalancer2'));
       console.log('Result: ', await this.loadToStore('text/turtle',
-        loadResult[11], 'http://purl.org/patternpedia/mylanguage'));
+        loadResult[11], 'http://purl.org/patternpedia/patternlanguages/mylanguage'));
 
     }
 

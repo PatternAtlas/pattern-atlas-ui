@@ -1,14 +1,14 @@
-@prefix : <http://purl.org/patternpedia/mylanguage#> .
+@prefix : <http://purl.org/patternpedia/patternlanguages/mylanguage#> .
 @prefix pp: <http://purl.org/patternpedia#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@base <http://purl.org/patternpedia/mylanguage> .
+@base <http://purl.org/patternpedia/patternlanguages/mylanguage> .
 
 
-<http://purl.org/patternpedia/mylanguage> rdf:type owl:Ontology ;
+<http://purl.org/patternpedia/patternlanguages/mylanguage> rdf:type owl:Ontology ;
 owl:imports <http://purl.org/patternpedia> .
 
 
@@ -40,7 +40,7 @@ owl:imports <http://purl.org/patternpedia> .
 # #    Restrictions / Classes
 # #
 # #################################################################
-### http://purl.org/patternpedia/mylanguage
+### http://purl.org/patternpedia/patternlanguages/mylanguage
 :mylanguage rdf:type owl:Class ;
  rdfs:subClassOf pp:Pattern ,
 			[ rdf:type owl:Restriction ;
@@ -70,8 +70,8 @@ owl:imports <http://purl.org/patternpedia> .
 #################################################################
 # Individuals
 ##############################################################
-###  http://purl.org/patternpedia/mylanguage#mylanguage
-:mylanguage rdf:type owl:NamedIndividual ,
+###  http://purl.org/patternpedia/patternlanguages/mylanguage#mylanguage
+<http://purl.org/patternpedia/patternlanguages/mylanguage#mylanguage> rdf:type owl:NamedIndividual ,
 pp:PatternLanguage ;
 pp:hasLogo "http://placekitten.com/150/151"^^xsd:anyURI ;
 pp:hasName "mylanguage"^^xsd:string .
