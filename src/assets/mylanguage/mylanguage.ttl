@@ -1,14 +1,14 @@
-@prefix : <http://purl.org/patternpedia/patternlanguages/Testlanguage1#> .
+@prefix : <http://purl.org/patternpedia/mylanguage#> .
+@prefix pp: <http://purl.org/patternpedia#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix pp: <http://purl.org/patternpedia#> .
-@base <http://purl.org/patternpedia/Testlanguage1> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://purl.org/patternpedia/mylanguage> .
 
 
-<http://purl.org/patternpedia/Testlanguage1> rdf:type owl:Ontology ;
+<http://purl.org/patternpedia/mylanguage> rdf:type owl:Ontology ;
 owl:imports <http://purl.org/patternpedia> .
 
 
@@ -40,35 +40,38 @@ owl:imports <http://purl.org/patternpedia> .
 # #    Restrictions / Classes
 # #
 # #################################################################
-### http://purl.org/patternpedia/Testlanguage1 + 'Pattern'
-:CloudComputingPattern rdf:type owl:Class ;
+### http://purl.org/patternpedia/mylanguage
+:mylanguage rdf:type owl:Class ;
  rdfs:subClassOf pp:Pattern ,
 			[ rdf:type owl:Restriction ;
 			 owl:onProperty :hasIcon ;
-			owl:allValuesFrom xsd:string
+			 owl:onDataRange xsd:string
 				] ,
+
+
 			[ rdf:type owl:Restriction ;
 			 owl:onProperty :hasContext ;
-			owl:allValuesFrom xsd:string
+			 owl:onDataRange xsd:string
 				] ,
+
+
 			[ rdf:type owl:Restriction ;
 			 owl:onProperty :hasDrivingQuestion ;
-			owl:allValuesFrom xsd:string
+			 owl:onDataRange xsd:string
 				] ,
+
+
 			[ rdf:type owl:Restriction ;
 			 owl:onProperty :hasSolution ;
-			owl:allValuesFrom xsd:string
+			 owl:onDataRange xsd:string
 				] .
 
 
 #################################################################
-#    Individuals
-#################################################################
-
-###  http://purl.org/patternpedia/patternlanguages/Testlanguage1#Testlanguage1
-<http://purl.org/patternpedia/patternlanguages/Testlanguage1#Testlanguage1> rdf:type owl:NamedIndividual ,
-                                 pp:PatternLanguage ;
-                        pp:hasLogo "http://www.cloudcomputingpatterns.org/img/book.png"^^xsd:anyURI ;
-                        pp:hasName "Testlanguage1"^^xsd:string  .
-
-
+# Individuals
+##############################################################
+###  http://purl.org/patternpedia/mylanguage#mylanguage
+:mylanguage rdf:type owl:NamedIndividual ,
+pp:PatternLanguage ;
+pp:hasLogo "http://placekitten.com/150/151"^^xsd:anyURI ;
+pp:hasName "mylanguage"^^xsd:string .

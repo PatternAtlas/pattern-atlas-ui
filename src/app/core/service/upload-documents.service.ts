@@ -20,7 +20,7 @@ export class UploadDocumentsService {
   uploadPatternLanguage(patternlanguageName: string, patternlanguageTtlContent: string): Observable<any> {
     return this.getGithubUserConfig().pipe(
       flatMap(res =>  {
-        return this.httpClient.put(`https://api.github.com/repos/PatternPedia/patternpediacontent/contents/patternlanguages/${patternlanguageName}/${patternlanguageName}.ttl`, {
+        return this.httpClient.put(`https://api.github.com/repos/PatternPedia/patternpediacontent/contents/${patternlanguageName}/${patternlanguageName}.ttl`, {
             message: `upload the new patternlanguage ${patternlanguageName} that was created with the UI`,
         committer: {
           name: res.committer.name,

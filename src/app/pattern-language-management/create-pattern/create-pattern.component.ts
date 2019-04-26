@@ -51,7 +51,7 @@ export class CreatePatternComponent implements OnInit {
   getPatternLanguageDefinition(): PatternLanguage {
     const linesWithText = this._textEditor.value.split('\n').filter((line) => this.containsMoreThanWhitespace(line));
     const plName = linesWithText.filter((line) => this.matchPatternLanguageName(line))[0].replace('#', '').trim();
-    return new PatternLanguage('http://purl.org/patternpedia/patternlanguages/' + plName, plName, [], []);
+    return new PatternLanguage('http://purl.org/patternpedia/' + plName, plName, [], []);
   }
 
   containsMoreThanWhitespace(teststring: string): boolean {

@@ -43,14 +43,14 @@ class PatternLanguage {
   getPrefixes(): Array<string> {
     const ary: Array<string> = [];
     ary.push(
-      `@prefix : <${this.patternpediaBaseURI + '/' + this.name}#> .`,
+      `@prefix : <${this.patternpediaBaseURI + '/' + this.name}#> .`, // patternlanguages/'
+      `@prefix pp: <${this.patternpediaBaseURI}#> .`,
       `@prefix owl: <http://www.w3.org/2002/07/owl#> .`,
       `@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .`,
       `@prefix xml: <http://www.w3.org/XML/1998/namespace> .`,
-      `@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .`,
       `@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .`,
-      `@prefix pp: <${this.patternpediaBaseURI}#> .`,
-      `@base <${this.patternpediaBaseURI + '/' + this.name}> .`
+      `@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .`,
+      `@base <${this.patternpediaBaseURI + '/' + this.name}> .` // patternlanguages/'
     );
     return ary;
   }
@@ -83,35 +83,35 @@ class PatternLanguage {
     ary.push('# #################################################################');
 
     ary.push(`### ${this.iri}`);
-    ary.push(`:CloudComputingPattern rdf:type owl:Class ; `);
+    ary.push(`:${this.name} rdf:type owl:Class ; `);
     ary.push(` rdfs:subClassOf pp:Pattern ,`);
     this.sections.forEach((section, index) => {
       ary.push(`${'\t'.repeat(3)}[ rdf:type owl:Restriction ;`);
       ary.push(`${'\t'.repeat(3)} owl:onProperty ${this.getSectionIdentifier(section)} ; `);
-      ary.push(`${'\t'.repeat(3)}owl:allValuesFrom xsd:string`);
+      ary.push(`${'\t'.repeat(3)} owl:onDataRange xsd:string`);
       ary.push(`${'\t'.repeat(4)}] ${index === this.sections.length - 1 ? '.' : ','}`);
       ary.push(`\n`);
     });
 
 
     ary.push('#################################################################');
-    ary.push('Individuals');
+    ary.push('# Individuals');
     ary.push('##############################################################');
 
     ary.push(`###  ${this.iri}#${this.name}`);
-    ary.push(`<${this.iri}> rdf:type owl:NamedIndividual ,`);
+    ary.push(`:${this.name} rdf:type owl:NamedIndividual ,`);
     ary.push('pp:PatternLanguage ;');
     if (this.logos.length > 0) {
-      ary.push(`pp:hasLogo ${this.logos[0]}^^xsd:anyURI ;`);
+      ary.push(`pp:hasLogo "${this.logos[0]}"^^xsd:anyURI ;`);
     }
-    ary.push(`pp:hasName ${this.name}^^xsd:string .`);
+    ary.push(`pp:hasName "${this.name}"^^xsd:string .`);
     // Todo solutionSketches and variations
 
     return ary.join('\n');
   }
 
   getIsLinkedOpenPatternLanguageStatement(): string {
-    return `<${this.patternpediaBaseURI}#LinkedOpenPatterns> <${this.patternpediaBaseURI}#containsPatternGraph> <${this.iri}#${this.name}> .`
+    return `<${this.patternpediaBaseURI}#LinkedOpenPatterns> <${this.patternpediaBaseURI}#containsPatternGraph> <${this.iri}> .`
       ;
   }
 
