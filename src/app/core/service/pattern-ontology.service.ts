@@ -18,12 +18,13 @@ import { forkJoin, from, Observable, throwError } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
 import PatternLanguage from '../model/pattern-language.model';
 import { SparqlExecutor } from '../model/sparql.executor';
+import { IriConverter } from '../util/iri-converter';
 
 @Injectable()
 export class PatternOntologyService implements SparqlExecutor {
     private _store;
 
-    constructor(private http: HttpClient) {
+  constructor(private http: HttpClient) {
         this.createNewStore()
             .then(() => console.log('Created new Store'));
     }
@@ -214,12 +215,17 @@ export class PatternOntologyService implements SparqlExecutor {
       const patternpediaResult = await (this.http.get('assets/patternpedia.ttl', {responseType: 'text'}).toPromise());
       console.log('Result: ', await this.loadToStore('text/turtle',
         patternpediaResult, 'http://purl.org/patternpedia'));
+      const store = this.store;
+      this.registerDefaultNameSpaces(store);
         console.log('LOADING Ontologies...');
+      const pl = await this.getPatternGraphsOfLinkedOpenPatterns();
+      console.log(`These are the patternlanguages that we have to load dynamically:`);
+      console.log(pl);
+      // TODO: use this result to extract the uris, because we don't want hard-coded urls
         const loadResult = await this.loadLocallyHostedOntosRaw().toPromise();
         console.log('LOADED Ontologies!');
-        const store = this.store;
-        this.registerDefaultNameSpaces(store);
-        console.log('LOADING http://purl.org/patternpedia to store');
+
+      console.log('LOADING http://purl.org/patternpedia to store');
 
       console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns to store');
         console.log('Result: ', await this.loadToStore('text/turtle',
@@ -234,7 +240,9 @@ export class PatternOntologyService implements SparqlExecutor {
         console.log('Result: ', await this.loadToStore('text/turtle',
           loadResult[3], 'http://purl.org/patternpedia/internetofthingspatterns'));
         console.log('LOADING http://purl.org/patternpedia/internetofthingspatterns/deviceshadow to store');
-        console.log('Result: ', await this.loadToStore('text/turtle',
+
+
+      console.log('Result: ', await this.loadToStore('text/turtle',
           loadResult[4], 'http://purl.org/patternpedia/internetofthingspatterns/devicegateway'));
         console.log('Result: ', await this.loadToStore('text/turtle',
           loadResult[5], 'http://purl.org/patternpedia/internetofthingspatterns/devicegateway'));
@@ -488,4 +496,31 @@ export class PatternOntologyService implements SparqlExecutor {
             });
         });
     }
+
+  async getPatternGraphsOfLinkedOpenPatterns(): Promise<any> {
+    // Function taken from Loader
+    // TODO: move functionality to avoid duplicate code
+    const supportedIRI = 'http://purl.org/patternpedia#LinkedOpenPatterns';
+    const qryPatternGraphs = `SELECT DISTINCT ?patterngraph
+                                      WHERE {
+                                          <${supportedIRI}> <http://purl.org/patternpedia#containsPatternGraph> ?patterngraph
+                                      }`;
+    const patternGraphs = await this.exec(qryPatternGraphs, [IriConverter.getFileName(supportedIRI)]);
+    // const qry = `SELECT ?patterngraph ?type ?name ?logo ?pattern
+    //                                      WHERE {
+    //                                          <${supportedIRI}> <http://purl.org/patternpedia#containsPatternGraph> ?patterngraph .
+    //                                         ?patterngraph a ?type .
+    //                                         optional {?patterngraph <http://purl.org/patternpedia#containsPattern> ?pattern .}
+    //                                         ?patterngraph <http://purl.org/patternpedia#hasName> ?name .
+    //                                         ?patterngraph <http://purl.org/patternpedia#hasLogo> ?logo .
+    //                                         FILTER (?type != owl:NamedIndividual)
+    //                                       }
+    //                             ORDER BY ?patterngraph`;
+    // const graphs = [IriConverter.getFileName(supportedIRI)];
+    //
+    // for (const entry of patternGraphs) {
+    //   graphs.push(IriConverter.getFileName(entry.patterngraph.value));
+    // }
+    return this.exec(qryPatternGraphs, [IriConverter.getFileName(supportedIRI)]);
+  }
 }
