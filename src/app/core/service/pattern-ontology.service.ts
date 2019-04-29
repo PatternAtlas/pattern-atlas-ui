@@ -14,11 +14,12 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { forkJoin, from, Observable, throwError } from 'rxjs';
+import { forkJoin, from, Observable, of, throwError } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
 import PatternLanguage from '../model/pattern-language.model';
 import { SparqlExecutor } from '../model/sparql.executor';
 import { IriConverter } from '../util/iri-converter';
+import { PatternGraphContainedInPP } from './data/PatternGraphContainedInPP.interface';
 
 @Injectable()
 export class PatternOntologyService implements SparqlExecutor {
@@ -194,72 +195,48 @@ export class PatternOntologyService implements SparqlExecutor {
     /**
      * This function loads ontologies locally hosted for development
      */
-    loadLocallyHostedOntosRaw(): Observable<any> {
-        const observables = [
-          this.http.get('assets/cloudcomputingpatterns/cloudcomputingpatterns.ttl', {responseType: 'text'}),
-            this.http.get('assets/cloudcomputingpatterns/elasticinfrastructure.ttl', {responseType: 'text'}),
-            this.http.get('assets/cloudcomputingpatterns/elasticloadbalancer.ttl', {responseType: 'text'}),
-          this.http.get('assets/internetofthingspatterns/internetofthingspatterns.ttl', {responseType: 'text'}),
-            this.http.get('assets/internetofthingspatterns/deviceshadow.ttl', {responseType: 'text'}),
-          this.http.get('assets/internetofthingspatterns/devicegateway.ttl', {responseType: 'text'}),
-          this.http.get('assets/TestX.ttl', {responseType: 'text'}),
-          this.http.get('assets/cloudcomputingpatterns2/cloudcomputingpatterns2.ttl', {responseType: 'text'}),
-          this.http.get('assets/cloudcomputingpatterns2/elasticinfrastructure2.ttl', {responseType: 'text'}),
-          this.http.get('assets/cloudcomputingpatterns2/elasticloadbalancer2.ttl', {responseType: 'text'}),
-          this.http.get('assets/mylanguage/mylanguage.ttl', {responseType: 'text'}),
-        ];
+    loadLocallyHostedOntosRaw(iris?: string[]): Observable<any> {
+      if (!iris) {
+        return of(null);
+      }
+      console.log(iris);
+      const observables = iris.map((iri) => {
+        return this.http.get('assets/cloudcomputingpatterns/cloudcomputingpatterns.ttl', {responseType: 'text'});
+      });
+      // [
+      //     this.http.get('assets/cloudcomputingpatterns/cloudcomputingpatterns.ttl', {responseType: 'text'}),
+      //       this.http.get('assets/cloudcomputingpatterns/elasticinfrastructure.ttl', {responseType: 'text'}),
+      //       this.http.get('assets/cloudcomputingpatterns/elasticloadbalancer.ttl', {responseType: 'text'}),
+      //     this.http.get('assets/internetofthingspatterns/internetofthingspatterns.ttl', {responseType: 'text'}),
+      //       this.http.get('assets/internetofthingspatterns/deviceshadow.ttl', {responseType: 'text'}),
+      //     this.http.get('assets/internetofthingspatterns/devicegateway.ttl', {responseType: 'text'}),
+      //     this.http.get('assets/TestX.ttl', {responseType: 'text'}),
+      //     this.http.get('assets/cloudcomputingpatterns2/cloudcomputingpatterns2.ttl', {responseType: 'text'}),
+      //     this.http.get('assets/cloudcomputingpatterns2/elasticinfrastructure2.ttl', {responseType: 'text'}),
+      //     this.http.get('assets/cloudcomputingpatterns2/elasticloadbalancer2.ttl', {responseType: 'text'}),
+      //     this.http.get('assets/mylanguage/mylanguage.ttl', {responseType: 'text'}),
+      //   ];
         return forkJoin(observables);
     }
 
     async loadLocallyHostedOntos() {
-      const patternpediaResult = await (this.http.get('assets/patternpedia.ttl', {responseType: 'text'}).toPromise());
+      const patternpediaResult = await (this.http.get('https:/purl.org/patternpedia', {responseType: 'text'}).toPromise());
       console.log('Result: ', await this.loadToStore('text/turtle',
         patternpediaResult, 'http://purl.org/patternpedia'));
       const store = this.store;
       this.registerDefaultNameSpaces(store);
         console.log('LOADING Ontologies...');
       const pl = await this.getPatternGraphsOfLinkedOpenPatterns();
+      console.log(IriConverter.getPatternGraphURIs(pl));
       console.log(`These are the patternlanguages that we have to load dynamically:`);
       console.log(pl);
       // TODO: use this result to extract the uris, because we don't want hard-coded urls
-        const loadResult = await this.loadLocallyHostedOntosRaw().toPromise();
+      const loadResult = await this.loadLocallyHostedOntosRaw(IriConverter.getPatternGraphURIs(pl)).toPromise();
         console.log('LOADED Ontologies!');
-
-      console.log('LOADING http://purl.org/patternpedia to store');
-
-      console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns to store');
-        console.log('Result: ', await this.loadToStore('text/turtle',
-          loadResult[0], 'http://purl.org/patternpedia/cloudcomputingpatterns'));
-        console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure to store');
-        console.log('Result: ', await this.loadToStore('text/turtle',
-          loadResult[1], 'http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure'));
-        console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer to store');
-        console.log('Result: ', await this.loadToStore('text/turtle',
-          loadResult[2], 'http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer'));
-        console.log('LOADING http://purl.org/patternpedia/internetofthingspatterns/ to store');
-        console.log('Result: ', await this.loadToStore('text/turtle',
-          loadResult[3], 'http://purl.org/patternpedia/internetofthingspatterns'));
-        console.log('LOADING http://purl.org/patternpedia/internetofthingspatterns/deviceshadow to store');
-
-
-      console.log('Result: ', await this.loadToStore('text/turtle',
-          loadResult[4], 'http://purl.org/patternpedia/internetofthingspatterns/devicegateway'));
-        console.log('Result: ', await this.loadToStore('text/turtle',
-          loadResult[5], 'http://purl.org/patternpedia/internetofthingspatterns/devicegateway'));
-      console.log('Result: ', await this.loadToStore('text/turtle',
-        loadResult[6], 'http://purl.org/patternpedia/TestX/TestX.ttl'));
-      console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns to store');
-      console.log('Result: ', await this.loadToStore('text/turtle',
-        loadResult[7], 'http://purl.org/patternpedia/cloudcomputingpatterns2'));
-      console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns2/elasticinfrastructure2 to store');
-      console.log('Result: ', await this.loadToStore('text/turtle',
-        loadResult[8], 'http://purl.org/patternpedia/cloudcomputingpatterns2/elasticinfrastructure2'));
-      console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer to store');
-      console.log('Result: ', await this.loadToStore('text/turtle',
-        loadResult[9], 'http://purl.org/patternpedia/cloudcomputingpatterns2/elasticloadbalancer2'));
-      console.log('Result: ', await this.loadToStore('text/turtle',
-        loadResult[10], 'http://purl.org/patternpedia/patternlanguages/mylanguage'));
-
+      for (let i = 0; i < loadResult.length; i++) {
+        console.log('Result: ', await
+          this.loadToStore('text/turtle', loadResult[i], IriConverter.getFileName(pl[i].patterngraph.value)));
+      }
     }
 
     loadToStore(mediaType: string, data: string, graphIri: string): Promise<number> {
@@ -497,7 +474,7 @@ export class PatternOntologyService implements SparqlExecutor {
         });
     }
 
-  async getPatternGraphsOfLinkedOpenPatterns(): Promise<any> {
+  async getPatternGraphsOfLinkedOpenPatterns(): Promise<PatternGraphContainedInPP []> {
     // Function taken from Loader
     // TODO: move functionality to avoid duplicate code
     const supportedIRI = 'http://purl.org/patternpedia#LinkedOpenPatterns';
@@ -506,21 +483,7 @@ export class PatternOntologyService implements SparqlExecutor {
                                           <${supportedIRI}> <http://purl.org/patternpedia#containsPatternGraph> ?patterngraph
                                       }`;
     const patternGraphs = await this.exec(qryPatternGraphs, [IriConverter.getFileName(supportedIRI)]);
-    // const qry = `SELECT ?patterngraph ?type ?name ?logo ?pattern
-    //                                      WHERE {
-    //                                          <${supportedIRI}> <http://purl.org/patternpedia#containsPatternGraph> ?patterngraph .
-    //                                         ?patterngraph a ?type .
-    //                                         optional {?patterngraph <http://purl.org/patternpedia#containsPattern> ?pattern .}
-    //                                         ?patterngraph <http://purl.org/patternpedia#hasName> ?name .
-    //                                         ?patterngraph <http://purl.org/patternpedia#hasLogo> ?logo .
-    //                                         FILTER (?type != owl:NamedIndividual)
-    //                                       }
-    //                             ORDER BY ?patterngraph`;
-    // const graphs = [IriConverter.getFileName(supportedIRI)];
-    //
-    // for (const entry of patternGraphs) {
-    //   graphs.push(IriConverter.getFileName(entry.patterngraph.value));
-    // }
+
     return this.exec(qryPatternGraphs, [IriConverter.getFileName(supportedIRI)]);
   }
 }

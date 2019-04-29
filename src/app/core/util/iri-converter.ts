@@ -12,6 +12,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
+import { PatternGraphContainedInPP } from '../service/data/PatternGraphContainedInPP.interface';
+
 export class IriConverter {
     static convertIriToId(iri: string): string {
         return encodeURIComponent(encodeURIComponent(iri));
@@ -24,4 +26,20 @@ export class IriConverter {
     static getFileName(iri: string): string {
         return iri.split('#')[0];
     }
+
+  static getURL(patternlanguageIri: string) {
+    if (patternlanguageIri.indexOf('patternlanguages') !== -1) {
+      return patternlanguageIri.replace('#', '/') + '.ttl';
+      ;
+    }
+    // const urlsegments = patternlanguageIri.split('/');
+    return this.getFileName(patternlanguageIri);
+  }
+
+
+  static getPatternGraphURIs(pl: PatternGraphContainedInPP[]): string[] {
+    return pl.map((graph: PatternGraphContainedInPP) => {
+      return this.getURL(graph.patterngraph.value);
+    });
+  }
 }

@@ -25,8 +25,10 @@ export class LinkedOpenPatternsLoader extends Loader<PatternLanguage> {
         super('http://purl.org/patternpedia#LinkedOpenPatterns', pos);
     }
 
-    async selectContentFromStore(): Promise<any> {
-        const qryPatternGraphs = `SELECT DISTINCT ?patterngraph
+  async selectContentFromStore(): Promise<any> {
+    console.log('supportedIRI: ');
+    console.log(this.supportedIRI);
+    const qryPatternGraphs = `SELECT DISTINCT ?patterngraph
                                       WHERE {
                                           <${this.supportedIRI}> <http://purl.org/patternpedia#containsPatternGraph> ?patterngraph
                                       }`;
