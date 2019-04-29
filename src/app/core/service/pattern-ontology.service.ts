@@ -195,7 +195,6 @@ export class PatternOntologyService implements SparqlExecutor {
      */
     loadLocallyHostedOntosRaw(): Observable<any> {
         const observables = [
-          this.http.get('assets/patternpedia.ttl', {responseType: 'text'}),
           this.http.get('assets/cloudcomputingpatterns/cloudcomputingpatterns.ttl', {responseType: 'text'}),
             this.http.get('assets/cloudcomputingpatterns/elasticinfrastructure.ttl', {responseType: 'text'}),
             this.http.get('assets/cloudcomputingpatterns/elasticloadbalancer.ttl', {responseType: 'text'}),
@@ -212,44 +211,46 @@ export class PatternOntologyService implements SparqlExecutor {
     }
 
     async loadLocallyHostedOntos() {
+      const patternpediaResult = await (this.http.get('assets/patternpedia.ttl', {responseType: 'text'}).toPromise());
+      console.log('Result: ', await this.loadToStore('text/turtle',
+        patternpediaResult, 'http://purl.org/patternpedia'));
         console.log('LOADING Ontologies...');
         const loadResult = await this.loadLocallyHostedOntosRaw().toPromise();
         console.log('LOADED Ontologies!');
         const store = this.store;
         this.registerDefaultNameSpaces(store);
         console.log('LOADING http://purl.org/patternpedia to store');
+
+      console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns to store');
         console.log('Result: ', await this.loadToStore('text/turtle',
-            loadResult[0], 'http://purl.org/patternpedia'));
-        console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns to store');
-        console.log('Result: ', await this.loadToStore('text/turtle',
-            loadResult[1], 'http://purl.org/patternpedia/cloudcomputingpatterns'));
+          loadResult[0], 'http://purl.org/patternpedia/cloudcomputingpatterns'));
         console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure to store');
         console.log('Result: ', await this.loadToStore('text/turtle',
-            loadResult[2], 'http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure'));
+          loadResult[1], 'http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure'));
         console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer to store');
         console.log('Result: ', await this.loadToStore('text/turtle',
-            loadResult[3], 'http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer'));
+          loadResult[2], 'http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer'));
         console.log('LOADING http://purl.org/patternpedia/internetofthingspatterns/ to store');
         console.log('Result: ', await this.loadToStore('text/turtle',
-            loadResult[4], 'http://purl.org/patternpedia/internetofthingspatterns'));
+          loadResult[3], 'http://purl.org/patternpedia/internetofthingspatterns'));
         console.log('LOADING http://purl.org/patternpedia/internetofthingspatterns/deviceshadow to store');
         console.log('Result: ', await this.loadToStore('text/turtle',
-            loadResult[5], 'http://purl.org/patternpedia/internetofthingspatterns/devicegateway'));
+          loadResult[4], 'http://purl.org/patternpedia/internetofthingspatterns/devicegateway'));
         console.log('Result: ', await this.loadToStore('text/turtle',
-          loadResult[6], 'http://purl.org/patternpedia/internetofthingspatterns/devicegateway'));
+          loadResult[5], 'http://purl.org/patternpedia/internetofthingspatterns/devicegateway'));
       console.log('Result: ', await this.loadToStore('text/turtle',
-        loadResult[7], 'http://purl.org/patternpedia/TestX/TestX.ttl'));
+        loadResult[6], 'http://purl.org/patternpedia/TestX/TestX.ttl'));
       console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns to store');
       console.log('Result: ', await this.loadToStore('text/turtle',
-        loadResult[8], 'http://purl.org/patternpedia/cloudcomputingpatterns2'));
+        loadResult[7], 'http://purl.org/patternpedia/cloudcomputingpatterns2'));
       console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns2/elasticinfrastructure2 to store');
       console.log('Result: ', await this.loadToStore('text/turtle',
-        loadResult[9], 'http://purl.org/patternpedia/cloudcomputingpatterns2/elasticinfrastructure2'));
+        loadResult[8], 'http://purl.org/patternpedia/cloudcomputingpatterns2/elasticinfrastructure2'));
       console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer to store');
       console.log('Result: ', await this.loadToStore('text/turtle',
-        loadResult[10], 'http://purl.org/patternpedia/cloudcomputingpatterns2/elasticloadbalancer2'));
+        loadResult[9], 'http://purl.org/patternpedia/cloudcomputingpatterns2/elasticloadbalancer2'));
       console.log('Result: ', await this.loadToStore('text/turtle',
-        loadResult[11], 'http://purl.org/patternpedia/patternlanguages/mylanguage'));
+        loadResult[10], 'http://purl.org/patternpedia/patternlanguages/mylanguage'));
 
     }
 
