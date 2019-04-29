@@ -43,14 +43,14 @@ class PatternLanguage {
   getPrefixes(): Array<string> {
     const ary: Array<string> = [];
     ary.push(
-      `@prefix : <${this.patternpediaBaseURI + '/' + this.name}#> .`, // patternlanguages/'
+      `@prefix : <${this.patternpediaBaseURI + '/patternlanguages/' + this.name}#> .`,
       `@prefix pp: <${this.patternpediaBaseURI}#> .`,
       `@prefix owl: <http://www.w3.org/2002/07/owl#> .`,
       `@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .`,
       `@prefix xml: <http://www.w3.org/XML/1998/namespace> .`,
       `@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .`,
       `@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .`,
-      `@base <${this.patternpediaBaseURI + '/' + this.name}> .` // patternlanguages/'
+      `@base <${this.patternpediaBaseURI + '/patternlanguages/' + this.name}> .`
     );
     return ary;
   }
@@ -111,8 +111,8 @@ class PatternLanguage {
   }
 
   getIsLinkedOpenPatternLanguageStatement(): string {
-    return `<${this.patternpediaBaseURI}#LinkedOpenPatterns> <${this.patternpediaBaseURI}#containsPatternGraph> <${this.iri}> .`
-      ;
+    return this.iri.indexOf('#') > -1 ? `<${this.patternpediaBaseURI}#LinkedOpenPatterns> <${this.patternpediaBaseURI}#containsPatternGraph> <${this.iri}> .`
+      : `<${this.patternpediaBaseURI}#LinkedOpenPatterns> <${this.patternpediaBaseURI}#containsPatternGraph> <${this.iri}#${this.name}> .`;
   }
 
 }

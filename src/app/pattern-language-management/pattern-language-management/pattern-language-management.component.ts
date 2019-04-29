@@ -12,18 +12,18 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
-import PatternLanguage from '../../core/model/pattern-language.model';
-import { PatternOntologyService } from '../../core/service/pattern-ontology.service';
-import { LoaderRegistryService } from '../../core/service/loader/pattern-language-loader/loader-registry.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { globals } from '../../globals';
-import { LinkedOpenPatternsLoader } from '../../core/service/loader/pattern-language-loader/linked-open-patterns-loader.service';
-import { CreateEditPatternLanguageComponent } from '../create-edit-pattern-language/create-edit-pattern-language.component';
-import { MatDialog } from '@angular/material';
-import { UploadDocumentsService } from '../../core/service/upload-documents.service';
-import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
-import { switchMap } from 'rxjs/internal/operators';
+import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core'
+import PatternLanguage from '../../core/model/pattern-language.model'
+import { PatternOntologyService } from '../../core/service/pattern-ontology.service'
+import { LoaderRegistryService } from '../../core/service/loader/pattern-language-loader/loader-registry.service'
+import { ActivatedRoute, Router } from '@angular/router'
+import { globals } from '../../globals'
+import { LinkedOpenPatternsLoader } from '../../core/service/loader/pattern-language-loader/linked-open-patterns-loader.service'
+import { CreateEditPatternLanguageComponent } from '../create-edit-pattern-language/create-edit-pattern-language.component'
+import { MatDialog } from '@angular/material'
+import { UploadDocumentsService } from '../../core/service/upload-documents.service'
+import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface'
+import { switchMap } from 'rxjs/internal/operators'
 
 @Component({
     selector: 'pp-pattern-language-management',
@@ -73,7 +73,7 @@ export class PatternLanguageManagementComponent implements OnInit {
     }
 
     async loadLocallyHostedOntos(): Promise<void> {
-        await this.pos.loadLocallyHostedOntos();
+      await this.pos.loadLocallyHostedOntos()
         return this.loader.loadContentFromStore()
             .then(async (languages) => {
                 this.patternLanguages = await Array.from<PatternLanguage>(languages.values())
@@ -87,6 +87,8 @@ export class PatternLanguageManagementComponent implements OnInit {
                         return 0;
                     });
                 this.cdr.detectChanges();
+              console.log('PL:')
+              console.log(this.patternLanguages)
             });
     }
 

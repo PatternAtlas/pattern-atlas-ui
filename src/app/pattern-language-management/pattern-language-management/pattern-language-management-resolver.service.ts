@@ -12,14 +12,14 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import PatternLanguage from '../../core/model/pattern-language.model';
-import { from, Observable, of } from 'rxjs';
-import { PatternOntologyService } from '../../core/service/pattern-ontology.service';
-import { mergeMap } from 'rxjs/operators';
-import { globals } from '../../globals';
-import { LinkedOpenPatternsLoader } from '../../core/service/loader/pattern-language-loader/linked-open-patterns-loader.service';
+import { Injectable } from '@angular/core'
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router'
+import PatternLanguage from '../../core/model/pattern-language.model'
+import { from, Observable } from 'rxjs'
+import { PatternOntologyService } from '../../core/service/pattern-ontology.service'
+import { mergeMap } from 'rxjs/operators'
+import { globals } from '../../globals'
+import { LinkedOpenPatternsLoader } from '../../core/service/loader/pattern-language-loader/linked-open-patterns-loader.service'
 
 @Injectable({
     providedIn: 'root'
@@ -38,7 +38,7 @@ export class PatternLanguageManagementResolverService implements Resolve<Map<str
     }
 
     async loadLocallyHostedOntos(): Promise<Map<string, PatternLanguage>> {
-        await this.pos.loadLocallyHostedOntos();
+      await this.pos.loadLocallyHostedOntos()
         return this.loader.loadContentFromStore();
     }
 
