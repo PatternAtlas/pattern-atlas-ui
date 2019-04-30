@@ -1,9 +1,7 @@
-import { ChangeDetectorRef, Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { DefaultPlLoaderService } from '../service/loader/default-pl-loader.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IriConverter } from '../util/iri-converter';
-import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { take } from 'rxjs/operators';
 
 @Component({
     selector: 'pp-default-pl-renderer',
@@ -13,6 +11,7 @@ import { take } from 'rxjs/operators';
 export class DefaultPlRendererComponent implements OnInit {
 
     patterns: any;
+  plIri: string;
     plName: string;
 
     constructor(private loader: DefaultPlLoaderService,
@@ -24,7 +23,8 @@ export class DefaultPlRendererComponent implements OnInit {
 
     ngOnInit() {
         this.loader.supportedIRI = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
-        this.plName = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
+      this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
+      this.plName = IriConverter.getPLNameFromIri(this.plIri);
         this.loader.loadContentFromStore()
             .then(result => {
                 this.patterns = Array.from(result.entries());
@@ -32,10 +32,17 @@ export class DefaultPlRendererComponent implements OnInit {
             });
     }
 
-    navigateBack(): void {
+
+  navigateBack(): void {
         this.zone.run(() => {
             this.router.navigate(['..'], {relativeTo: this.activatedRoute});
         });
     }
+
+  goToPatternCreation() {
+    this.zone.run(() => {
+      this.router.navigate(['create-pattern'], {relativeTo: this.activatedRoute});
+    });
+  }
 
 }

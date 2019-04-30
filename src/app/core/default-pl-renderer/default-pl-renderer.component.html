@@ -1,10 +1,12 @@
 <button style="margin-bottom: 20px" mat-raised-button color="primary" (click)="navigateBack()"><i
-        class="material-icons">keyboard_backspace</i></button>
+  class="material-icons">keyboard_backspace</i></button>
 
 <h2>Pattern Language: {{plName}}</h2>
 <div *ngFor="let pattern of patterns">
-    <h3>{{pattern[1]['http://purl.org/patternpedia#hasName']?.value}}</h3>
-    <pre style="white-space: pre-wrap; word-wrap: break-word">{{pattern[1] | json:2}}</pre>
+  <h3>{{pattern[1]['http://purl.org/patternpedia#hasName']?.value}}</h3>
+  <pre style="white-space: pre-wrap; word-wrap: break-word">{{pattern[1] | json:2}}</pre>
 </div>
-
+<mat-card class="landing-card center-content add-card" (click)="goToPatternCreation()">
+  <i class="material-icons">add_box</i>
+</mat-card>
 
