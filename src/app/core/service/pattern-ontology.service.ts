@@ -460,6 +460,7 @@ export class PatternOntologyService implements SparqlExecutor {
         });
     }
 
+
   async getPatternGraphsOfLinkedOpenPatterns(): Promise<PatternGraphContainedInPP []> {
     // Function taken from Loader
     // TODO: move functionality to avoid duplicate code

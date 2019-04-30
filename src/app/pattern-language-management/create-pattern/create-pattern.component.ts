@@ -1,8 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { TdTextEditorComponent } from '@covalent/text-editor';
 import SimpleMDE from 'simplemde/src/js/simplemde.js';
-import { PatternOntologyService } from '../../core/service/pattern-ontology.service';
 import PatternLanguage from '../../core/model/pattern-language.model';
+import { DefaultPlLoaderService } from '../../core/service/loader/default-pl-loader.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IriConverter } from '../../core/util/iri-converter';
 
 @Component({
   selector: 'pp-create-pattern',
@@ -12,15 +14,29 @@ import PatternLanguage from '../../core/model/pattern-language.model';
 export class CreatePatternComponent implements OnInit {
 
 
+  patterns: any;
+  plIri: string;
+  plName: string;
+
+  constructor(private loader: DefaultPlLoaderService,
+              private activatedRoute: ActivatedRoute,
+              private cdr: ChangeDetectorRef,
+              private zone: NgZone,
+              private router: Router) {
+  }
+
   ngOnInit() {
+    this.loader.supportedIRI = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
+    this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
+    this.plName = IriConverter.getPLNameFromIri(this.plIri);
+    this.loader.loadContentFromStore()
+      .then(result => {
+        this.patterns = Array.from(result.entries());
+        this.cdr.detectChanges();
+      });
   }
-
-
-  constructor(private _patternOntologieService: PatternOntologyService) {
-  }
-
   @ViewChild('textEditor') private _textEditor: TdTextEditorComponent;
-  patternLanguageStructure = `# Patternlanguage name 
+  patternLanguageStructure = `# Pattern name 
   \n [link to your icon](http://placekitten.com/200/300)
   \n ## Driving Question 
   \n ## Context 
@@ -67,7 +83,7 @@ export class CreatePatternComponent implements OnInit {
   }
 
   save(): void {
-    this._patternOntologieService.insertNewPatternLanguageIndividual(this.getPatternLanguageDefinition());
+    // this._patternOntologieService.insertNewPatternIndividual(this.getPatternLanguageDefinition());
     // TODO: persist save
   }
 
