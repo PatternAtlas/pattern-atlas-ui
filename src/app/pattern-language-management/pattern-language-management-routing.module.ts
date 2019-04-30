@@ -18,6 +18,7 @@ import { PatternLanguageManagementComponent } from './pattern-language-managemen
 import { PatternLanguageContainerComponent } from './pattern-language-container/pattern-language-container.component';
 import { PatternContainerComponent } from './pattern-container/pattern-container.component';
 import { PatternLanguageManagementResolverService } from './pattern-language-management/pattern-language-management-resolver.service';
+import { CreatePatternComponent } from './create-pattern/create-pattern.component';
 
 const routes: Routes = [
     {
@@ -33,7 +34,10 @@ const routes: Routes = [
             }, {
                 path: ':plid',
                 component: PatternLanguageContainerComponent,
-            },
+          }, {
+            path: ':plid/create-pattern',
+            component: CreatePatternComponent,
+          },
             {
                 path: ':plid/:pid',
                 component: PatternContainerComponent

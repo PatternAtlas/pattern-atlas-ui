@@ -199,23 +199,9 @@ export class PatternOntologyService implements SparqlExecutor {
       if (!iris) {
         return of(null);
       }
-      console.log(iris);
       const observables = iris.map((iri) => {
-        return this.http.get('assets/cloudcomputingpatterns/cloudcomputingpatterns.ttl', {responseType: 'text'});
+        return this.http.get(iri, {responseType: 'text'});
       });
-      // [
-      //     this.http.get('assets/cloudcomputingpatterns/cloudcomputingpatterns.ttl', {responseType: 'text'}),
-      //       this.http.get('assets/cloudcomputingpatterns/elasticinfrastructure.ttl', {responseType: 'text'}),
-      //       this.http.get('assets/cloudcomputingpatterns/elasticloadbalancer.ttl', {responseType: 'text'}),
-      //     this.http.get('assets/internetofthingspatterns/internetofthingspatterns.ttl', {responseType: 'text'}),
-      //       this.http.get('assets/internetofthingspatterns/deviceshadow.ttl', {responseType: 'text'}),
-      //     this.http.get('assets/internetofthingspatterns/devicegateway.ttl', {responseType: 'text'}),
-      //     this.http.get('assets/TestX.ttl', {responseType: 'text'}),
-      //     this.http.get('assets/cloudcomputingpatterns2/cloudcomputingpatterns2.ttl', {responseType: 'text'}),
-      //     this.http.get('assets/cloudcomputingpatterns2/elasticinfrastructure2.ttl', {responseType: 'text'}),
-      //     this.http.get('assets/cloudcomputingpatterns2/elasticloadbalancer2.ttl', {responseType: 'text'}),
-      //     this.http.get('assets/mylanguage/mylanguage.ttl', {responseType: 'text'}),
-      //   ];
         return forkJoin(observables);
     }
 

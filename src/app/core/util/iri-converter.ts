@@ -27,6 +27,10 @@ export class IriConverter {
         return iri.split('#')[0];
     }
 
+  static getPLNameFromIri(iri: string): string {
+    return iri.split('#')[1];
+  }
+
   static getURL(patternlanguageIri: string) {
     if (patternlanguageIri.indexOf('patternlanguages') !== -1) {
       return patternlanguageIri.replace('#', '/') + '.ttl';

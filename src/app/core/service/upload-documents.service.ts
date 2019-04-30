@@ -38,6 +38,7 @@ export class UploadDocumentsService {
   addPatternLanguageToPatternPedia(patternlanguage: PatternLanguage, existingPatternlanguages: PatternLanguage[]): Observable<any> {
     const patternpediaUrl = 'https://api.github.com/repos/PatternPedia/patternpediacontent/contents/patternpedia.ttl';
     existingPatternlanguages.push(patternlanguage);
+    console.log(existingPatternlanguages);
     const containsPatternGraphStatements = existingPatternlanguages.map((pl: PatternLanguage) => {
       return pl.getIsLinkedOpenPatternLanguageStatement();
     });
