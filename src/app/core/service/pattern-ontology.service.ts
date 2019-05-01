@@ -20,6 +20,7 @@ import PatternLanguage from '../model/pattern-language.model';
 import { SparqlExecutor } from '../model/sparql.executor';
 import { IriConverter } from '../util/iri-converter';
 import { PatternGraphContainedInPP } from './data/PatternGraphContainedInPP.interface';
+import { Property } from './data/Property.interface';
 
 @Injectable()
 export class PatternOntologyService implements SparqlExecutor {
@@ -472,5 +473,18 @@ export class PatternOntologyService implements SparqlExecutor {
     const patternGraphs = await this.exec(qryPatternGraphs, [IriConverter.getFileName(supportedIRI)]);
 
     return this.exec(qryPatternGraphs, [IriConverter.getFileName(supportedIRI)]);
+  }
+
+  async getPropertiesOfPL(graphIri: string): Promise<Property[]> {
+    const qryPatternGraphs = `SELECT ?property
+WHERE {
+  ?pl rdf:type owl:NamedIndividual . 
+  ?pl rdfs:subClassOf ?restrictionClass .
+  ?restrictionClass rdf:type owl:Restriction . 
+  ?restrictionClass owl:onProperty ?property
+}`;
+    const patternGraphs = await this.exec(qryPatternGraphs, [IriConverter.getFileName(graphIri)]);
+
+    return this.exec(qryPatternGraphs, [IriConverter.getFileName(graphIri)]);
   }
 }

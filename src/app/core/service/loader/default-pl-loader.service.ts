@@ -16,6 +16,7 @@ import { Injectable } from '@angular/core';
 import { PatternOntologyService } from '../pattern-ontology.service';
 import Loader from '../../model/loader';
 import { selectPatternLanguage } from './pl-selector.function';
+import { Property } from '../data/Property.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -30,7 +31,11 @@ export class DefaultPlLoaderService extends Loader<any> {
         return selectPatternLanguage(this.supportedIRI, this.executor);
     }
 
-    mapTriples(triples: any): Promise<Map<string, any>> {
+  getPLProperties(supportedIri: string): Promise<Property[]> {
+    return this.pos.getPropertiesOfPL(supportedIri);
+  }
+
+  mapTriples(triples: any): Promise<Map<string, any>> {
         const patterns = new Map<string, any>();
         for (const row of triples) {
             if (!patterns.get(row.pattern.value)) {

@@ -5,6 +5,7 @@ import PatternLanguage from '../../core/model/pattern-language.model';
 import { DefaultPlLoaderService } from '../../core/service/loader/default-pl-loader.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IriConverter } from '../../core/util/iri-converter';
+import { Property } from '../../core/service/data/Property.interface';
 
 @Component({
   selector: 'pp-create-pattern',
@@ -17,6 +18,7 @@ export class CreatePatternComponent implements OnInit {
   patterns: any;
   plIri: string;
   plName: string;
+  sections: string[];
 
   constructor(private loader: DefaultPlLoaderService,
               private activatedRoute: ActivatedRoute,
@@ -34,17 +36,26 @@ export class CreatePatternComponent implements OnInit {
         this.patterns = Array.from(result.entries());
         this.cdr.detectChanges();
       });
+
+    this.loader.getPLProperties(this.plIri).then((res: Property[]) => {
+      console.log(res);
+      const sectionNames = res.map((iri: Property) => {
+        return this.convertIrisToSectionName(iri);
+      });
+      for (const section of sectionNames) {
+        this.patternLanguageStructure = this.patternLanguageStructure.concat('\n ## ' + section.replace(/([a-z])([A-Z])/g, '$1 $2'));
+      }
+      console.log(sectionNames);
+
+
+    });
+  }
+
+  convertIrisToSectionName(iri: Property): string {
+    return iri.property.value.split('#has')[1];
   }
   @ViewChild('textEditor') private _textEditor: TdTextEditorComponent;
-  patternLanguageStructure = `# Pattern name 
-  \n [link to your icon](http://placekitten.com/200/300)
-  \n ## Driving Question 
-  \n ## Context 
-  \n ## Solution 
-  \n ## Solution Sketches 
-  \n ## Result 
-  \n ## Related Patterns 
-  \n ## Icon `;
+  patternLanguageStructure = `# Pattern name`;
 
   options: any = {
     // todo: hide the preview button because it forces fullscreen mode (and destroys our page layout)
