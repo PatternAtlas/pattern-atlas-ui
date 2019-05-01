@@ -73,7 +73,7 @@ class PatternLanguage {
     for (const section of this.sections) {
       ary.push('\n');
       ary.push(`### ${section}`);
-      ary.push(`${this.getSectionIdentifier(section)} rdf:type rdf:type owl:DatatypeProperty .`);
+      ary.push(`${this.getSectionIdentifier(section)} rdf:type owl:DatatypeProperty .`);
     }
     ary.push('\n');
     ary.push('# #################################################################');
