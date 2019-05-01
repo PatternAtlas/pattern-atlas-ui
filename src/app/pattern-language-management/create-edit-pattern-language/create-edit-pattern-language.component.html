@@ -11,6 +11,10 @@
     <mat-form-field appearance="outline" style="width: 24em;" [floatLabel]="'always'">
       <mat-label>Pattern language name</mat-label>
       <input matInput formControlName="name" placeholder="Enter the name of your Pattern Language">
+      <mat-error *ngIf="saveRequested && name?.hasError('required')">Dies ist ein Pflichtfeld.</mat-error>
+      <mat-error *ngIf="saveRequested && name?.hasError('pattern')">Bitte nur alphanumerische Zeichen, _ und
+        Leerzeichen verwenden.
+      </mat-error>
     </mat-form-field>
 
     <div fxLayout="row" fxLayoutAlign="space-around center">
@@ -22,6 +26,9 @@
           <div mat-card-avatar #iconPreview [ngStyle]="{ 'background-image': 'url(' + iconUrl?.value + ')'}"
                class="example-header-image"></div>
         </div>
+        <mat-error *ngIf="saveRequested && iconUrl?.hasError('required')">Dies ist ein Pflichtfeld.</mat-error>
+        <mat-error *ngIf="saveRequested && iconUrl?.hasError('pattern')">Bitte eine gültige URL angeben.
+        </mat-error>
       </mat-form-field>
 
     </div>
@@ -64,7 +71,7 @@
   <button mat-raised-button color="primary" (click)="save()"><i
     class="material-icons">save</i> Save
   </button>
-  <button mat-raised-button color="primary" (click)="save()"><i
-    class="material-icons"><i className="material-icons">arrow_forward</i></i> Save
+  <button mat-raised-button color="primary" (click)="nextStep()"><i
+    class="material-icons"><i className="material-icons">arrow_forward</i></i>
   </button>
 </div>

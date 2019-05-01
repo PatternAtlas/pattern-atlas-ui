@@ -25,6 +25,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   sectionNames: string[] = ['Icon', 'Context', 'Driving Question', 'Solution', 'Solution Sketches'];
   patternLanguageForm: FormGroup;
   iconPreviewVisible = false;
+  saveRequested = false;
 
   @Output() onSaveClicked = new EventEmitter<DialogPatternLanguageResult>();
 
@@ -37,9 +38,10 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const urlRegex = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
     this.patternLanguageForm = this._fb.group({
-      name: ['', [Validators.required]],
-      iconUrl: ['', [Validators.required]]
+      name: ['', [Validators.required, Validators.pattern(urlRegex)]],
+      iconUrl: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9_-\s]+')]]
     });
     this.iconUrl.valueChanges.pipe(debounceTime(1000), distinctUntilChanged()).subscribe((urlValue) => {
       this.iconPreviewVisible = urlValue && (urlValue.startsWith('https://') || urlValue.startsWith('http://'));
@@ -105,8 +107,43 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   }
 
   save(): void {
-    this.onSaveClicked.emit({sections: this.sections, name: this.name.value, iconUrl: this.iconUrl.value});
-    this.dialogRef.close();
+    this.saveRequested = true;
+    if (this.patternLanguageForm.valid) {
+      this.onSaveClicked.emit({sections: this.sections, name: this.name.value, iconUrl: this.iconUrl.value});
+      this.dialogRef.close();
+    }
   }
 
+  nextStep(): void {
+    this.saveRequested = true;
+    this.patternLanguageForm.markAsTouched();
+    (<any>Object).values(this.patternLanguageForm.controls).forEach(control => {
+      control.markAsTouched();
+    });
+    console.log(this.patternLanguageForm);
+    console.log(this.patternLanguageForm.controls['name'].errors);
+  }
+
+  getErrorMessage(formControl: AbstractControl): string {
+    if (!formControl) {
+      return '';
+    }
+    console.log(formControl.errors);
+    if (formControl.hasError('required')) {
+      return 'Dies ist ein Pflichtfeld.';
+    }
+    if (formControl.hasError('requiredPattern')) {
+      return 'Bitte eine gültige URL eingeben.';
+    }
+    if (formControl.hasError('requiredPattern')) {
+      return 'Bitte eine gültige URL eingeben.';
+    }
+    if (formControl.hasError('notUrlSafe')) {
+      return 'Bitte keine speziellen Zeichen verwenden.';
+    }
+  }
+
+
 }
+
+
