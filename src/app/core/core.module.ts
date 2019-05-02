@@ -25,6 +25,7 @@ import { MatButtonModule, MatCardModule } from '@angular/material';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { MdEditorComponent } from './component/md-editor/md-editor.component';
 import { CovalentTextEditorModule } from '@covalent/text-editor';
+import { EmitEventOnKeyupDirective } from './directives/emit-event-on-keyup.directive';
 
 @NgModule({
     imports: [
@@ -36,7 +37,7 @@ import { CovalentTextEditorModule } from '@covalent/text-editor';
       MatCardModule
 
     ],
-  exports: [CovalentTextEditorModule],
+  exports: [CovalentTextEditorModule, EmitEventOnKeyupDirective],
     providers: [
         PatternOntologyService,
         LinkedOpenPatternsLoader
@@ -44,12 +45,13 @@ import { CovalentTextEditorModule } from '@covalent/text-editor';
     declarations: [
         DefaultPlRendererComponent,
         DefaultPatternRendererComponent,
-        MdEditorComponent
+      MdEditorComponent,
+      EmitEventOnKeyupDirective
     ],
     entryComponents: [
         DefaultPlRendererComponent,
         DefaultPatternRendererComponent,
-        MdEditorComponent
+      MdEditorComponent
     ]
 })
 export class CoreModule {

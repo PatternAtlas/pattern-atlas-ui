@@ -1,11 +1,12 @@
-import { ChangeDetectorRef, Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { TdTextEditorComponent } from '@covalent/text-editor';
-import SimpleMDE from 'simplemde/src/js/simplemde.js';
 import PatternLanguage from '../../core/model/pattern-language.model';
 import { DefaultPlLoaderService } from '../../core/service/loader/default-pl-loader.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { IriConverter } from '../../core/util/iri-converter';
 import { Property } from '../../core/service/data/Property.interface';
+import * as marked from 'marked';
+
 
 @Component({
   selector: 'pp-create-pattern',
@@ -22,9 +23,7 @@ export class CreatePatternComponent implements OnInit {
 
   constructor(private loader: DefaultPlLoaderService,
               private activatedRoute: ActivatedRoute,
-              private cdr: ChangeDetectorRef,
-              private zone: NgZone,
-              private router: Router) {
+              private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -45,9 +44,8 @@ export class CreatePatternComponent implements OnInit {
       for (const section of sectionNames) {
         this.patternLanguageStructure = this.patternLanguageStructure.concat('\n ## ' + section.replace(/([a-z])([A-Z])/g, '$1 $2'));
       }
-      console.log(sectionNames);
-
-
+      this._textEditor.value = this.patternLanguageStructure;
+      this.onChangeMarkdownText();
     });
   }
 
@@ -60,20 +58,6 @@ export class CreatePatternComponent implements OnInit {
   options: any = {
     // todo: hide the preview button because it forces fullscreen mode (and destroys our page layout)
   };
-
-  ngAfterViewInit(): void {
-
-    // unfortunately there is no change method in the angular wrapper, so we have to access the unterlying javascript component
-    const markdownEditor = this._textEditor;
-    this._textEditor.simpleMDE.codemirror.on('change', function () {
-      document.getElementById('preview').innerHTML = SimpleMDE.prototype.markdown(markdownEditor.value);
-    });
-    // trigger on change initially to set preview
-    this._textEditor.value = this.patternLanguageStructure;
-
-
-  }
-
 
   getPatternLanguageDefinition(): PatternLanguage {
     const linesWithText = this._textEditor.value.split('\n').filter((line) => this.containsMoreThanWhitespace(line));
@@ -96,6 +80,12 @@ export class CreatePatternComponent implements OnInit {
   save(): void {
     // this._patternOntologieService.insertNewPatternIndividual(this.getPatternLanguageDefinition());
     // TODO: persist save
+  }
+
+  onChangeMarkdownText(changedText?: string): void {
+    const tokens = changedText ? marked.lexer(changedText) : marked.lexer(this._textEditor.value);
+    console.log(tokens);
+    document.getElementById('preview').innerHTML = marked.parser(tokens);
   }
 
 }
