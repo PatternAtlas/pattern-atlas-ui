@@ -17,6 +17,7 @@ import { PatternOntologyService } from '../pattern-ontology.service';
 import Loader from '../../model/loader';
 import { selectPatternLanguage } from './pl-selector.function';
 import { Property } from '../data/Property.interface';
+import { Logo } from '../data/Logo.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -33,6 +34,10 @@ export class DefaultPlLoaderService extends Loader<any> {
 
   getPLProperties(supportedIri: string): Promise<Property[]> {
     return this.pos.getPropertiesOfPL(supportedIri);
+  }
+
+  getPLLogo(supportedIri: string): Promise<Logo[]> {
+    return this.pos.getPLLogo(supportedIri);
   }
 
   mapTriples(triples: any): Promise<Map<string, any>> {

@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IriConverter } from '../../core/util/iri-converter';
 import { Property } from '../../core/service/data/Property.interface';
 import * as marked from 'marked';
+import { Logo } from '../../core/service/data/Logo.interface';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class CreatePatternComponent implements OnInit {
   plIri: string;
   plName: string;
   sections: string[];
+  plLogos: string[];
 
   constructor(private loader: DefaultPlLoaderService,
               private activatedRoute: ActivatedRoute,
@@ -46,6 +48,14 @@ export class CreatePatternComponent implements OnInit {
       }
       this._textEditor.value = this.patternLanguageStructure;
       this.onChangeMarkdownText();
+    });
+
+    this.loader.getPLLogo(this.plIri).then((res: Logo[]) => {
+      console.log(res);
+      this.plLogos = res.map((dataRessponse: Logo) => {
+        return dataRessponse.logo.value;
+      });
+      console.log(this.plLogos);
     });
   }
 
@@ -78,6 +88,7 @@ export class CreatePatternComponent implements OnInit {
   }
 
   save(): void {
+    const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, [''], this.sections);
     // this._patternOntologieService.insertNewPatternIndividual(this.getPatternLanguageDefinition());
     // TODO: persist save
   }

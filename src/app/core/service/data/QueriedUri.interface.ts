@@ -1,4 +1,4 @@
-export interface QueriedUri {
+export interface QueriedData {
   token: string;
   value: string;
 }

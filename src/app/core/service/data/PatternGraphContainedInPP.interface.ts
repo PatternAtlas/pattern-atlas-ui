@@ -1,6 +1,6 @@
-import { QueriedUri } from './QueriedUri.interface';
+import { QueriedData } from './QueriedUri.interface';
 
 export interface PatternGraphContainedInPP {
-  patterngraph: QueriedUri;
+  patterngraph: QueriedData;
 }
 

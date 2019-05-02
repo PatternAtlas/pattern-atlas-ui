@@ -21,6 +21,7 @@ import { SparqlExecutor } from '../model/sparql.executor';
 import { IriConverter } from '../util/iri-converter';
 import { PatternGraphContainedInPP } from './data/PatternGraphContainedInPP.interface';
 import { Property } from './data/Property.interface';
+import { Logo } from './data/Logo.interface';
 
 @Injectable()
 export class PatternOntologyService implements SparqlExecutor {
@@ -483,7 +484,16 @@ WHERE {
   ?restrictionClass rdf:type owl:Restriction . 
   ?restrictionClass owl:onProperty ?property
 }`;
-    const patternGraphs = await this.exec(qryPatternGraphs, [IriConverter.getFileName(graphIri)]);
+
+    return this.exec(qryPatternGraphs, [IriConverter.getFileName(graphIri)]);
+  }
+
+  async getPLLogo(graphIri: string): Promise<Logo[]> {
+    const qryPatternGraphs = `SELECT ?logo
+    WHERE {
+        ?pl rdf:type owl:NamedIndividual . 
+        ?pl <http://purl.org/patternpedia#hasLogo> ?logo .
+    }`;
 
     return this.exec(qryPatternGraphs, [IriConverter.getFileName(graphIri)]);
   }
