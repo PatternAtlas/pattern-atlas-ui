@@ -4,5 +4,5 @@ import { GithubFileResponse } from './GithubFileResponse.interface';
 export interface GithubUploadRequestInfo {
   config: GithubConfigFile;
   fileInfo: GithubFileResponse;
-  content: string;
+  content?: string;
 }

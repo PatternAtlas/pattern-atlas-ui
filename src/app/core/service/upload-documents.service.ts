@@ -7,28 +7,38 @@ import PatternLanguage from '../model/pattern-language.model';
 import { GithubFileResponse } from './data/GithubFileResponse.interface';
 import { switchMap, tap } from 'rxjs/internal/operators';
 import { GithubUploadRequestInfo } from './data/GithubUploadRequestInfo.interface';
+import { IriConverter } from '../util/iri-converter';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UploadDocumentsService {
 
+  githubBaseUrl = 'https://api.github.com/repos/PatternPedia/patternpediacontent/contents';
+  githubPatternPediaUrl = this.githubBaseUrl + '/patternpedia.ttl';
+
   constructor(private httpClient: HttpClient) {
   }
 
 
-  uploadPatternLanguage(patternlanguageName: string, patternlanguageTtlContent: string): Observable<any> {
+  uploadPatternLanguage(patternlanguage: PatternLanguage): Observable<any> {
     return this.getGithubUserConfig().pipe(
       flatMap(res =>  {
-        return this.httpClient.put(`https://api.github.com/repos/PatternPedia/patternpediacontent/contents/patternlanguages/${patternlanguageName}/${patternlanguageName}.ttl`, {
-            message: `upload the new patternlanguage ${patternlanguageName} that was created with the UI`,
+        return this.httpClient.put(this.getGithubPathForPatternLanguage(patternlanguage), {
+            message: `upload the new patternlanguage ${patternlanguage.name} that was created with the UI`,
         committer: {
           name: res.committer.name,
           email: res.committer.email
         },
-            'content': btoa(patternlanguageTtlContent)
+            'content': btoa(patternlanguage.toTurtle())
           }
         , {headers: res.headers}); }));
+  }
+
+  getGithubPathForPatternLanguage(patternLanguage: PatternLanguage): string {
+    return patternLanguage.iri.indexOf('patternlanguage') === -1 ?
+      `${this.githubBaseUrl}/${patternLanguage.name}/${patternLanguage.name}.ttl` :
+      `${this.githubBaseUrl}/patternlanguages/${patternLanguage.name}/${patternLanguage.name}.ttl`;
   }
 
   getGithubUserConfig(): Observable<GithubConfigFile> {
@@ -36,7 +46,6 @@ export class UploadDocumentsService {
   }
 
   addPatternLanguageToPatternPedia(patternlanguage: PatternLanguage, existingPatternlanguages: PatternLanguage[]): Observable<any> {
-    const patternpediaUrl = 'https://api.github.com/repos/PatternPedia/patternpediacontent/contents/patternpedia.ttl';
     existingPatternlanguages.push(patternlanguage);
     console.log(existingPatternlanguages);
     const containsPatternGraphStatements = existingPatternlanguages.map((pl: PatternLanguage) => {
@@ -45,7 +54,7 @@ export class UploadDocumentsService {
 
     return this.getRequestInfosToAddToPatternPedia().pipe(
       switchMap((res: GithubUploadRequestInfo) => {
-        return this.httpClient.put(patternpediaUrl, {
+        return this.httpClient.put(this.githubPatternPediaUrl, {
             message: `upload the new patternlanguage ${patternlanguage.name} that was created with the UI to patternpedia`,
             committer: {
               name: res.config.committer.name,
@@ -59,10 +68,8 @@ export class UploadDocumentsService {
   }
 
   getRequestInfosToAddToPatternPedia(): Observable<GithubUploadRequestInfo> {
-    const patternpediaUrl = 'https://api.github.com/repos/PatternPedia/patternpediacontent/contents/patternpedia.ttl';
     return forkJoin(this.httpClient.get('assets/patternpedia-without-containsPatternGraph.ttl', {responseType: 'text'}),
-      this.getGithubUserConfig(), this.getFile(patternpediaUrl)).pipe(
-      tap(res => console.log(res)),
+      this.getGithubUserConfig(), this.getFile(this.githubPatternPediaUrl)).pipe(
       map(res => <GithubUploadRequestInfo> {content: res[0], config: res[1], fileInfo: res[2]}));
   }
 
@@ -71,12 +78,40 @@ export class UploadDocumentsService {
     return this.httpClient.get(fileGitApiUrl).pipe(map(res => <GithubFileResponse> res));
   };
 
+  getTTLFile(url: string): Observable<any> {
+    return this.httpClient.get(url, {responseType: 'text'});
+  };
+
 
   getPatternLanguage(patternLanguageName: string): Observable<any> {
 
-    const url = 'https://purl.org/patternpedia' + patternLanguageName;
-    return this.httpClient.get(url);
+    return this.getTTLFile('https://purl.org/patternpedia' + patternLanguageName);
 
   }
 
+  getUpdateFileInfos(uploadUrl: string): Observable<GithubUploadRequestInfo> {
+    return forkJoin(this.getGithubUserConfig(), this.getFile(uploadUrl)).pipe(
+      map(res => <GithubUploadRequestInfo> {content: '', config: res[0], fileInfo: res[1]})
+    );
+  }
+
+  updatePL(patternLanguage: PatternLanguage): Observable<any> {
+    const fileUrl = IriConverter.getURL(patternLanguage.iri);
+    return this.getUpdateFileInfos(this.getGithubPathForPatternLanguage(patternLanguage)).pipe(
+      tap(() => {
+        console.log(patternLanguage.toTurtle());
+      }),
+      switchMap((res: GithubUploadRequestInfo) => {
+        return this.httpClient.put(this.getGithubPathForPatternLanguage(patternLanguage), {
+            message: 'update patternlanguage ' + patternLanguage.name,
+            committer: {
+              name: res.config.committer.name,
+              email: res.config.committer.email
+            },
+            content: btoa(patternLanguage.toTurtle()),
+            sha: res.fileInfo.sha
+          }
+          , {headers: res.config.headers});
+      }));
+  }
 }

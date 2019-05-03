@@ -1,4 +1,4 @@
-import { QueriedData } from './QueriedUri.interface';
+import { QueriedData } from './QueriedData.interface';
 
 export interface Logo {
   logo: QueriedData;

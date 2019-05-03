@@ -24,7 +24,7 @@ export class DefaultPlRendererComponent implements OnInit {
     ngOnInit() {
         this.loader.supportedIRI = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
       this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
-      this.plName = IriConverter.getPLNameFromIri(this.plIri);
+      this.plName = IriConverter.extractIndividualNameFromIri(this.plIri);
         this.loader.loadContentFromStore()
             .then(result => {
                 this.patterns = Array.from(result.entries());

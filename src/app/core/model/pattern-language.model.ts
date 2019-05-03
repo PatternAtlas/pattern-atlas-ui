@@ -62,7 +62,7 @@ class PatternLanguage {
   toTurtle(): string {
     const ary = this.getPrefixes();
     ary.push('\n');
-    ary.push(`<${this.iri}> rdf:type owl:Ontology ;`);
+    ary.push(`<${IriConverter.getFileName(this.iri)}> rdf:type owl:Ontology ;`);
     ary.push(`owl:imports <${this.patternpediaBaseURI}> .`);
     ary.push('\n');
     ary.push('# #################################################################');
@@ -83,7 +83,7 @@ class PatternLanguage {
     ary.push('# #################################################################');
 
     ary.push(`### ${this.iri}`);
-    ary.push(`:${this.name} rdf:type owl:Class ; `);
+    ary.push(`:${this.name}Pattern rdf:type owl:Class ; `);
     ary.push(` rdfs:subClassOf pp:Pattern ,`);
     this.sections.forEach((section, index) => {
       ary.push(`${'\t'.repeat(3)}[ rdf:type owl:Restriction ;`);
@@ -98,7 +98,7 @@ class PatternLanguage {
     ary.push('# Individuals');
     ary.push('##############################################################');
 
-    ary.push(`###  ${this.iri}#${this.name}`);
+    ary.push(`###  ${this.iri}`);
     ary.push(`:${this.name} rdf:type owl:NamedIndividual ,`);
     ary.push('pp:PatternLanguage ;');
     if (this.logos.length > 0) {
@@ -106,6 +106,10 @@ class PatternLanguage {
     }
     ary.push(`pp:hasName "${this.name}"^^xsd:string .`);
     // Todo solutionSketches and variations
+
+    this.patternIRIs.forEach((patternIri, index) => {
+      ary.push(`:${this.name} pp:containsPattern <${IriConverter.getFileName(patternIri)}#${IriConverter.extractIndividualNameFromIri(patternIri)}> .`);
+    });
 
     return ary.join('\n');
   }

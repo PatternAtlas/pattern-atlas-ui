@@ -7,6 +7,8 @@ import { IriConverter } from '../../core/util/iri-converter';
 import { Property } from '../../core/service/data/Property.interface';
 import * as marked from 'marked';
 import { Logo } from '../../core/service/data/Logo.interface';
+import { globals } from '../../globals';
+import { UploadDocumentsService } from '../../core/service/upload-documents.service';
 
 
 @Component({
@@ -25,13 +27,13 @@ export class CreatePatternComponent implements OnInit {
 
   constructor(private loader: DefaultPlLoaderService,
               private activatedRoute: ActivatedRoute,
-              private cdr: ChangeDetectorRef) {
+              private cdr: ChangeDetectorRef, private uploadService: UploadDocumentsService) {
   }
 
   ngOnInit() {
     this.loader.supportedIRI = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
     this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
-    this.plName = IriConverter.getPLNameFromIri(this.plIri);
+    this.plName = IriConverter.extractIndividualNameFromIri(this.plIri);
     this.loader.loadContentFromStore()
       .then(result => {
         this.patterns = Array.from(result.entries());
@@ -39,11 +41,10 @@ export class CreatePatternComponent implements OnInit {
       });
 
     this.loader.getPLProperties(this.plIri).then((res: Property[]) => {
-      console.log(res);
-      const sectionNames = res.map((iri: Property) => {
+      this.sections = res.map((iri: Property) => {
         return this.convertIrisToSectionName(iri);
       });
-      for (const section of sectionNames) {
+      for (const section of this.sections) {
         this.patternLanguageStructure = this.patternLanguageStructure.concat('\n ## ' + section.replace(/([a-z])([A-Z])/g, '$1 $2'));
       }
       this._textEditor.value = this.patternLanguageStructure;
@@ -88,15 +89,24 @@ export class CreatePatternComponent implements OnInit {
   }
 
   save(): void {
-    const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, [''], this.sections);
+    const urlPatternPedia = globals.urlPatternRepoOntology;
+    const patternUri = urlPatternPedia + '/patternlanguages/' + 'firstPattern#firstPattern';
+    const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, [patternUri], this.sections);
+    this.uploadService.updatePL(patternLanguage).subscribe((res) => {
+      console.log(res);
+    });
+
     // this._patternOntologieService.insertNewPatternIndividual(this.getPatternLanguageDefinition());
     // TODO: persist save
   }
 
-  onChangeMarkdownText(changedText?: string): void {
-    const tokens = changedText ? marked.lexer(changedText) : marked.lexer(this._textEditor.value);
-    console.log(tokens);
-    document.getElementById('preview').innerHTML = marked.parser(tokens);
+  parseMarkdownText(): any {
+    return marked.lexer(this._textEditor.value);
+  }
+
+  onChangeMarkdownText(): void {
+
+    document.getElementById('preview').innerHTML = marked.parser(this.parseMarkdownText());
   }
 
 }
