@@ -479,8 +479,8 @@ export class PatternOntologyService implements SparqlExecutor {
   async getPropertiesOfPL(graphIri: string): Promise<Property[]> {
     const qryPatternGraphs = `SELECT ?property
 WHERE {
-  ?pl rdf:type owl:NamedIndividual . 
-  ?pl rdfs:subClassOf ?restrictionClass .
+  ?patternLanguageIndividual rdf:type owl:Class . 
+  ?patternLanguageIndividual rdfs:subClassOf ?restrictionClass .
   ?restrictionClass rdf:type owl:Restriction . 
   ?restrictionClass owl:onProperty ?property
 }`;
@@ -491,7 +491,7 @@ WHERE {
   async getPLLogo(graphIri: string): Promise<Logo[]> {
     const qryPatternGraphs = `SELECT ?logo
     WHERE {
-        ?pl rdf:type owl:NamedIndividual . 
+        ?pl rdf:type owl:Class . 
         ?pl <http://purl.org/patternpedia#hasLogo> ?logo .
     }`;
 

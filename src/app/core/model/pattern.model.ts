@@ -15,11 +15,13 @@
 import { IriConverter } from '../util/iri-converter';
 
 class Pattern {
-    protected _id: string;
-    iri: string;
-    name: string;
+  protected _id: string;
+  iri: string;
+  name: string;
 
-    set id(iri: string) {
+  sectionsProperties: Map<string, string | string[]>;
+
+  set id(iri: string) {
         this._id = IriConverter.convertIriToId(iri);
     }
 
@@ -27,10 +29,11 @@ class Pattern {
         return this._id;
     }
 
-    constructor(iri: string = null, name: string = null) {
-        this.name = name;
-        this.iri = iri;
-        this.id = iri;
+  constructor(iri: string = null, name: string = null, sectionProperties: Map<string, string | string[]> = null) {
+    this.name = name;
+    this.iri = iri;
+    this.id = iri;
+    this.sectionsProperties = sectionProperties;
     }
 }
 

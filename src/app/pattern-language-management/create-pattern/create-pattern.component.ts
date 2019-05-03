@@ -9,6 +9,7 @@ import * as marked from 'marked';
 import { Logo } from '../../core/service/data/Logo.interface';
 import { globals } from '../../globals';
 import { UploadDocumentsService } from '../../core/service/upload-documents.service';
+import Pattern from '../../core/model/pattern.model';
 
 
 @Component({
@@ -37,6 +38,7 @@ export class CreatePatternComponent implements OnInit {
     this.loader.loadContentFromStore()
       .then(result => {
         this.patterns = Array.from(result.entries());
+        console.log(this.patterns);
         this.cdr.detectChanges();
       });
 
@@ -52,12 +54,12 @@ export class CreatePatternComponent implements OnInit {
     });
 
     this.loader.getPLLogo(this.plIri).then((res: Logo[]) => {
-      console.log(res);
       this.plLogos = res.map((dataRessponse: Logo) => {
         return dataRessponse.logo.value;
       });
-      console.log(this.plLogos);
     });
+
+
   }
 
   convertIrisToSectionName(iri: Property): string {
@@ -91,13 +93,18 @@ export class CreatePatternComponent implements OnInit {
   save(): void {
     const urlPatternPedia = globals.urlPatternRepoOntology;
     const patternUri = urlPatternPedia + '/patternlanguages/' + 'firstPattern#firstPattern';
+    this.patterns.push(this.getPatternUri('patternName'));
     const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, [patternUri], this.sections);
     this.uploadService.updatePL(patternLanguage).subscribe((res) => {
       console.log(res);
     });
-
+    const pattern = new Pattern();
     // this._patternOntologieService.insertNewPatternIndividual(this.getPatternLanguageDefinition());
-    // TODO: persist save
+    // TODO: save Pattern
+  }
+
+  getPatternUri(patternName: string) {
+    return globals.urlPatternRepoOntology + '/patternlanguages/' + patternName + '#' + patternName;
   }
 
   parseMarkdownText(): any {

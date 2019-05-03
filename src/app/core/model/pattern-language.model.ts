@@ -83,7 +83,7 @@ class PatternLanguage {
     ary.push('# #################################################################');
 
     ary.push(`### ${this.iri}`);
-    ary.push(`:${this.name}Pattern rdf:type owl:Class ; `);
+    ary.push(`:${this.name}Individual rdf:type owl:Class ; `);
     ary.push(` rdfs:subClassOf pp:Pattern ,`);
     this.sections.forEach((section, index) => {
       ary.push(`${'\t'.repeat(3)}[ rdf:type owl:Restriction ;`);
