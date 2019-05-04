@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IriConverter } from '../../core/util/iri-converter';
 import { Property } from '../../core/service/data/Property.interface';
 import * as marked from 'marked';
+import { TokensList } from 'marked';
 import { Logo } from '../../core/service/data/Logo.interface';
 import { globals } from '../../globals';
 import { UploadDocumentsService } from '../../core/service/upload-documents.service';
@@ -47,7 +48,7 @@ export class CreatePatternComponent implements OnInit {
         return this.convertIrisToSectionName(iri);
       });
       for (const section of this.sections) {
-        this.patternLanguageStructure = this.patternLanguageStructure.concat('\n ## ' + section.replace(/([a-z])([A-Z])/g, '$1 $2'));
+        this.patternLanguageStructure = this.patternLanguageStructure.concat('\n ## ' + this.addSpaceForCamelCase(section) + '\n Enter your text for this section here. ');
       }
       this._textEditor.value = this.patternLanguageStructure;
       this.onChangeMarkdownText();
@@ -95,19 +96,21 @@ export class CreatePatternComponent implements OnInit {
     const patternUri = urlPatternPedia + '/patternlanguages/' + 'firstPattern#firstPattern';
     this.patterns.push(this.getPatternUri('patternName'));
     const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, [patternUri], this.sections);
-    this.uploadService.updatePL(patternLanguage).subscribe((res) => {
-      console.log(res);
-    });
-    const pattern = new Pattern();
+    // this.uploadService.updatePL(patternLanguage).subscribe((res) => {
+    //   console.log(res);
+    // });
+    const pattern = this.parsePatternInput();
+    console.log(pattern);
+    console.log(pattern.toTurtle());
     // this._patternOntologieService.insertNewPatternIndividual(this.getPatternLanguageDefinition());
     // TODO: save Pattern
   }
 
-  getPatternUri(patternName: string) {
-    return globals.urlPatternRepoOntology + '/patternlanguages/' + patternName + '#' + patternName;
+  getPatternUri(patternName: string): string {
+    return globals.urlPatternRepoOntology + '/patternlanguages/' + IriConverter.deleteWhitespace(patternName) + '#' + IriConverter.deleteWhitespace(patternName);
   }
 
-  parseMarkdownText(): any {
+  parseMarkdownText(): TokensList {
     return marked.lexer(this._textEditor.value);
   }
 
@@ -116,4 +119,39 @@ export class CreatePatternComponent implements OnInit {
     document.getElementById('preview').innerHTML = marked.parser(this.parseMarkdownText());
   }
 
+  private parsePatternInput(): Pattern {
+    const lines = this.parseMarkdownText();
+    console.log(lines);
+    console.log(lines.values);
+    const patternNameIndex = lines.findIndex((it) => it.type === 'heading' && it.depth === 1);
+    const patternname = patternNameIndex !== -1 ? lines[patternNameIndex].text : '';
+    const sectionMap = new Map<string, string | string[]>();
+
+    this.sections.forEach((section: string) => {
+      const sectionIndex = lines.findIndex((it) => it.type === 'heading' && it.depth === 2 &&
+        this.ignoreCaseAndWhitespace(it.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(section)));
+      if (sectionIndex !== -1) {
+        const sectioncontent = '';
+        for (const i = sectionIndex + 1; i < lines.length; i++) {
+          if (lines[i].type === 'heading') {
+            break;
+          }
+          sectioncontent = sectioncontent + lines[i].text;
+        }
+        sectionMap[section] = sectioncontent;
+      }
+    });
+
+    return new Pattern(this.getPatternUri(patternname), patternname, sectionMap, this.plIri);
+
+  }
+
+
+  ignoreCaseAndWhitespace(text: string): string {
+    return text.trim().replace(new RegExp('/s', 'g'), '').toLowerCase();
+  }
+
+  addSpaceForCamelCase(text: string): string {
+    return text.replace(/([a-z])([A-Z])/g, '$1 $2');
+  }
 }

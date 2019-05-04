@@ -43,6 +43,10 @@ export class IriConverter {
     return this.getFileName(patternlanguageIri);
   }
 
+  static deleteWhitespace(text: string): string {
+    return text.replace(/\s/g, '');
+  }
+
 
   static getPatternGraphURIs(pl: PatternGraphContainedInPP[]): string[] {
     return pl.map((graph: PatternGraphContainedInPP) => {
