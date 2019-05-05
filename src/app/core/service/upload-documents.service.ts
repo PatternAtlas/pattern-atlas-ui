@@ -9,7 +9,6 @@ import { switchMap, tap } from 'rxjs/internal/operators';
 import { GithubUploadRequestInfo } from './data/GithubUploadRequestInfo.interface';
 import { IriConverter } from '../util/iri-converter';
 import Pattern from '../model/pattern.model';
-import { GithubCommitResponse } from './data/GithubCommitResponse.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +22,7 @@ export class UploadDocumentsService {
   }
 
 
-  uploadPatternLanguage(patternlanguage: PatternLanguage): Observable<GithubCommitResponse> {
+  uploadPatternLanguage(patternlanguage: PatternLanguage): Observable<any> {
     return this.getGithubUserConfig().pipe(
       flatMap(res =>  {
         return this.httpClient.put(this.getGithubPathForPatternLanguage(patternlanguage), {
@@ -97,7 +96,7 @@ export class UploadDocumentsService {
     );
   }
 
-  updatePL(patternLanguage: PatternLanguage): Observable<GithubCommitResponse> {
+  updatePL(patternLanguage: PatternLanguage): Observable<any> {
     const fileUrl = IriConverter.getURL(patternLanguage.iri);
     return this.getUpdateFileInfos(this.getGithubPathForPatternLanguage(patternLanguage)).pipe(
       tap(() => {
@@ -117,7 +116,7 @@ export class UploadDocumentsService {
       }));
   }
 
-  uploadPattern(pattern: Pattern, patternLanguage: PatternLanguage): Observable<GithubCommitResponse> {
+  uploadPattern(pattern: Pattern, patternLanguage: PatternLanguage): Observable<any> {
     const url = `${this.githubBaseUrl}/patternlanguages/${patternLanguage.name}/${IriConverter.removeWhitespace(pattern.name)}.ttl`;
     return this.getGithubUserConfig().pipe(
       switchMap((res: GithubConfigFile) => {

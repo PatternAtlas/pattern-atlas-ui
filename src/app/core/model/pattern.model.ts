@@ -68,12 +68,12 @@ class Pattern {
     ary.push('\n\n');
     ary.push(`###  ${this.iri}`);
     ary.push(`:${IriConverter.removeWhitespace(this.name)} rdf:type owl:NamedIndividual ,`);
-    ary.push(`${IriConverter.getFileName(this.patternLanguageIri)}/${IriConverter.extractIndividualNameFromIri(this.patternLanguageIri)}Individual ;`);
-    ary.push(`<${IriConverter.getFileName(this.iri)}#hasName> "${this.name}" ,`);
+    ary.push(`<${IriConverter.getFileName(this.patternLanguageIri)}/${IriConverter.extractIndividualNameFromIri(this.patternLanguageIri)}Individual> ;`);
+    ary.push(`<${IriConverter.getFileName(this.iri)}#hasName> "${this.name}" ;`);
     const sections = Array.from(Object.keys(this.sectionsProperties));
-    sections.forEach((key, index) => { // this.sectionsProperties.forEach((value, key) => {
-      ary.push(`${IriConverter.getFileName(this.iri)}#has${key}
-       "${this.sectionsProperties[key]}" ${index === sections.length - 1 ? '.' : ','}`);
+    sections.forEach((key, index) => {
+      ary.push(`<${IriConverter.getFileName(this.iri)}#has${key}>
+       "${this.sectionsProperties[key]}" ${index === sections.length - 1 ? '.' : ';'}`);
     });
     return ary.join('\n');
   }
