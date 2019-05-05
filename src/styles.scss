@@ -130,8 +130,10 @@ body{
   min-height: 3rem;
 }
 
-.add-card:hover {
-  background-color: lightgray;
-  cursor: pointer;
-
+.add-card {
+  color: #3f51b5;
+  &:hover {
+    background-color: lightgray;
+    cursor: pointer;
+  }
 }
