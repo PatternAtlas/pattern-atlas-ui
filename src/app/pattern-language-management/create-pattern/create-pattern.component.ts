@@ -11,6 +11,7 @@ import { Logo } from '../../core/service/data/Logo.interface';
 import { globals } from '../../globals';
 import { UploadDocumentsService } from '../../core/service/upload-documents.service';
 import Pattern from '../../core/model/pattern.model';
+import { switchMap } from 'rxjs/internal/operators';
 
 
 @Component({
@@ -93,13 +94,18 @@ export class CreatePatternComponent implements OnInit {
 
   save(): void {
     const urlPatternPedia = globals.urlPatternRepoOntology;
-    const patternUri = urlPatternPedia + '/patternlanguages/' + 'firstPattern#firstPattern';
-    this.patterns.push(this.getPatternUri('patternName'));
-    const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, [patternUri], this.sections);
-    // this.uploadService.updatePL(patternLanguage).subscribe((res) => {
-    //   console.log(res);
-    // });
     const pattern = this.parsePatternInput();
+    console.log(this.patterns);
+    const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, [pattern.iri], this.sections);
+    this.uploadService.updatePL(patternLanguage).pipe(
+      switchMap((res) => {
+        return this.uploadService.uploadPattern(pattern, patternLanguage);
+      })
+    ).subscribe((res) => {
+      console.log(res);
+    });
+
+
     console.log(pattern);
     console.log(pattern.toTurtle());
     // this._patternOntologieService.insertNewPatternIndividual(this.getPatternLanguageDefinition());
@@ -107,7 +113,7 @@ export class CreatePatternComponent implements OnInit {
   }
 
   getPatternUri(patternName: string): string {
-    return globals.urlPatternRepoOntology + '/patternlanguages/' + IriConverter.deleteWhitespace(patternName) + '#' + IriConverter.deleteWhitespace(patternName);
+    return globals.urlPatternRepoOntology + '/patternlanguages/' + IriConverter.removeWhitespace(patternName) + '#' + IriConverter.removeWhitespace(patternName);
   }
 
   parseMarkdownText(): TokensList {
@@ -124,19 +130,19 @@ export class CreatePatternComponent implements OnInit {
     console.log(lines);
     console.log(lines.values);
     const patternNameIndex = lines.findIndex((it) => it.type === 'heading' && it.depth === 1);
-    const patternname = patternNameIndex !== -1 ? lines[patternNameIndex].text : '';
+    const patternname = patternNameIndex !== -1 ? lines[patternNameIndex]['text'] : '';
     const sectionMap = new Map<string, string | string[]>();
 
     this.sections.forEach((section: string) => {
       const sectionIndex = lines.findIndex((it) => it.type === 'heading' && it.depth === 2 &&
         this.ignoreCaseAndWhitespace(it.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(section)));
       if (sectionIndex !== -1) {
-        const sectioncontent = '';
-        for (const i = sectionIndex + 1; i < lines.length; i++) {
+        let sectioncontent = '';
+        for (let i = sectionIndex + 1; i < lines.length; i++) {
           if (lines[i].type === 'heading') {
             break;
           }
-          sectioncontent = sectioncontent + lines[i].text;
+          sectioncontent = sectioncontent + lines[i]['text'] ? lines[i]['text'] : '';
         }
         sectionMap[section] = sectioncontent;
       }

@@ -43,7 +43,7 @@ export class IriConverter {
     return this.getFileName(patternlanguageIri);
   }
 
-  static deleteWhitespace(text: string): string {
+  static removeWhitespace(text: string): string {
     return text.replace(/\s/g, '');
   }
 

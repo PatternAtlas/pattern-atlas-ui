@@ -8,6 +8,7 @@ import { GithubFileResponse } from './data/GithubFileResponse.interface';
 import { switchMap, tap } from 'rxjs/internal/operators';
 import { GithubUploadRequestInfo } from './data/GithubUploadRequestInfo.interface';
 import { IriConverter } from '../util/iri-converter';
+import Pattern from '../model/pattern.model';
 
 @Injectable({
   providedIn: 'root'
@@ -113,5 +114,22 @@ export class UploadDocumentsService {
           }
           , {headers: res.config.headers});
       }));
+  }
+
+  uploadPattern(pattern: Pattern, patternLanguage: PatternLanguage): Observable<any> {
+    const url = `${this.githubBaseUrl}/patternlanguages/${patternLanguage.name}/${IriConverter.removeWhitespace(pattern.name)}.ttl`;
+    return this.getGithubUserConfig().pipe(
+      switchMap((res: GithubConfigFile) => {
+        return this.httpClient.put(url, {
+            message: 'update patternlanguage ' + patternLanguage.name,
+            committer: {
+              name: res.committer.name,
+              email: res.committer.email
+            },
+            content: btoa(pattern.toTurtle()),
+          }
+          , {headers: res.headers});
+      })
+    );
   }
 }

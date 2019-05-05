@@ -67,7 +67,7 @@ class Pattern {
     ary.push('##############################################################');
     ary.push('\n\n');
     ary.push(`###  ${this.iri}`);
-    ary.push(`:${IriConverter.deleteWhitespace(this.name)} rdf:type owl:NamedIndividual ,`);
+    ary.push(`:${IriConverter.removeWhitespace(this.name)} rdf:type owl:NamedIndividual ,`);
     ary.push(`${IriConverter.getFileName(this.patternLanguageIri)}/${IriConverter.extractIndividualNameFromIri(this.patternLanguageIri)}Individual ;`);
     ary.push(`<${IriConverter.getFileName(this.iri)}#hasName> "${this.name}" ,`);
     const sections = Array.from(Object.keys(this.sectionsProperties));
