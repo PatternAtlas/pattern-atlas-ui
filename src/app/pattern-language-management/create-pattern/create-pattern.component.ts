@@ -12,6 +12,7 @@ import { switchMap } from 'rxjs/internal/operators';
 import * as marked from 'marked';
 import { TokensList } from 'marked';
 import Pattern from '../../core/model/pattern.model';
+import { from } from 'rxjs';
 
 
 @Component({
@@ -36,6 +37,8 @@ export class CreatePatternComponent implements OnInit {
   ngOnInit() {
     this.loader.supportedIRI = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
     this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
+    const importObservable = from(this.loader.getOWLImports(this.plIri)).subscribe(res => console.log(res));
+
     this.plName = IriConverter.extractIndividualNameFromIri(this.plIri);
     this.loader.loadContentFromStore()
       .then(result => {
@@ -74,23 +77,11 @@ export class CreatePatternComponent implements OnInit {
     // todo: hide the preview button because it forces fullscreen mode (and destroys our page layout)
   };
 
-  getPatternLanguageDefinition(): PatternLanguage {
-    const linesWithText = this._textEditor.value.split('\n').filter((line) => this.containsMoreThanWhitespace(line));
-    const plName = linesWithText.filter((line) => this.matchPatternLanguageName(line))[0].replace('#', '').trim();
-    return new PatternLanguage('http://purl.org/patternpedia/' + plName, plName, [], []);
-  }
 
   containsMoreThanWhitespace(teststring: string): boolean {
     return !teststring.match(new RegExp('^\\s*$', 'g'));
   }
 
-  matchPatternLanguageName(teststring: string): boolean {
-    return /^(\s)?#\s.*$/.test(teststring);
-  }
-
-  matchSectionLabel(teststring: string): boolean {
-    return /^(\s)?##\s.*$/.test(teststring);
-  }
 
   save(): void {
     const urlPatternPedia = globals.urlPatternRepoOntology;

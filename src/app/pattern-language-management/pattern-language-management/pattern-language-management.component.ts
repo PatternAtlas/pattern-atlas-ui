@@ -74,7 +74,7 @@ export class PatternLanguageManagementComponent implements OnInit {
     }
 
     async loadLocallyHostedOntos(): Promise<void> {
-      await this.pos.loadLocallyHostedOntos()
+      await this.pos.loadLinkedOpenPatternGraphs();
         return this.loader.loadContentFromStore()
             .then(async (languages) => {
                 this.patternLanguages = await Array.from<PatternLanguage>(languages.values())

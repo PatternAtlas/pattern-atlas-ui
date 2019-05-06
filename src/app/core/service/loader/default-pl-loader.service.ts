@@ -32,6 +32,10 @@ export class DefaultPlLoaderService extends Loader<any> {
         return selectPatternLanguage(this.supportedIRI, this.executor);
     }
 
+  getOWLImports(supportedIri: string): Promise<any[]> {
+    return this.pos.getOWLImports(supportedIri);
+  }
+
   getPLProperties(supportedIri: string): Promise<Property[]> {
     return this.pos.getPropertiesOfPL(supportedIri);
   }

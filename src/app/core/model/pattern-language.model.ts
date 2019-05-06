@@ -111,6 +111,14 @@ class PatternLanguage {
       ary.push(`:${this.name} pp:containsPattern <${IriConverter.getFileName(patternIri)}#${IriConverter.extractIndividualNameFromIri(patternIri)}> .`);
     });
 
+    ary.push('#################################################################');
+    ary.push('# Pattern Import Statements');
+    ary.push('##############################################################');
+
+    this.patternIRIs.forEach((patternIri, index) => {
+      ary.push(`<${IriConverter.getFileName(this.iri)}> owl:imports <${IriConverter.getFileName(patternIri)}> .`);
+    });
+
     return ary.join('\n');
   }
 

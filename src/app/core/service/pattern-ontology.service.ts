@@ -22,6 +22,7 @@ import { IriConverter } from '../util/iri-converter';
 import { PatternGraphContainedInPP } from './data/PatternGraphContainedInPP.interface';
 import { Property } from './data/Property.interface';
 import { Logo } from './data/Logo.interface';
+import { Import } from './data/Import.interface';
 
 @Injectable()
 export class PatternOntologyService implements SparqlExecutor {
@@ -176,56 +177,40 @@ export class PatternOntologyService implements SparqlExecutor {
         );
     }
 
-    /**
-     * This function loads ontologies locally hosted for development
+  /**
+   * This function loads the patterngraph of the given Uris
      */
-    // loadLocallyHostedOntos(): Observable<any> {
-    //     console.log('Loading locally hosted Ontologies');
-    //     const observables = [
-    //         this.loadOntologyToStore('assets/patternpedia.ttl', 'http://purl.org/patternpedia'),
-    //         // this.loadOntologyToStore('assets/cloudcomputingpatterns.ttl', 'http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPatterns'),
-    //         // this.loadOntologyToStore('assets/internetofthingspatterns.ttl',
-    //              'http://purl.org/patternpedia/internetofthingspatterns#InternetOfThingsPatterns')
-    //     ];
-    //     return forkJoin(observables)
-    //         .pipe(
-    //             map(result => {
-    //                 console.log('Loaded locally hosted Ontologies: ', result);
-    //                 return result;
-    //             }));
-    // }
-    /**
-     * This function loads ontologies locally hosted for development
-     */
-    loadLocallyHostedOntosRaw(iris?: string[]): Observable<any> {
-      if (!iris) {
+  loadPatternGraphsByUri(uri?: string[]): Observable<any> {
+    if (!uri) {
         return of(null);
       }
-      const observables = iris.map((iri) => {
+    const observables = uri.map((iri) => {
         return this.http.get(iri, {responseType: 'text'});
       });
         return forkJoin(observables);
     }
 
-    async loadLocallyHostedOntos() {
+  async loadLinkedOpenPatternGraphs() {
       const patternpediaResult = await (this.http.get('https:/purl.org/patternpedia', {responseType: 'text'}).toPromise());
       console.log('Result: ', await this.loadToStore('text/turtle',
         patternpediaResult, 'http://purl.org/patternpedia'));
       const store = this.store;
       this.registerDefaultNameSpaces(store);
         console.log('LOADING Ontologies...');
-      const pl = await this.getPatternGraphsOfLinkedOpenPatterns();
-      console.log(IriConverter.getPatternGraphURIs(pl));
+    const patternGraphList: PatternGraphContainedInPP[] = await this.getPatternGraphsOfLinkedOpenPatterns();
       console.log(`These are the patternlanguages that we have to load dynamically:`);
-      console.log(pl);
-      // TODO: use this result to extract the uris, because we don't want hard-coded urls
-      const loadResult = await this.loadLocallyHostedOntosRaw(IriConverter.getPatternGraphURIs(pl)).toPromise();
-        console.log('LOADED Ontologies!');
-      for (let i = 0; i < loadResult.length; i++) {
-        console.log('Result: ', await
-          this.loadToStore('text/turtle', loadResult[i], IriConverter.getFileName(pl[i].patterngraph.value)));
-      }
+    console.log(patternGraphList);
+    await this.loadUrisToStore(patternGraphList);
+  }
+
+  async loadUrisToStore(patternGraphList: PatternGraphContainedInPP[]) {
+    const loadResult = await this.loadPatternGraphsByUri(IriConverter.getPatternGraphURIs(patternGraphList)).toPromise();
+    console.log('LOADED Uri Dependencies!');
+    for (let i = 0; i < loadResult.length; i++) {
+      console.log('Result: ', await
+        this.loadToStore('text/turtle', loadResult[i], IriConverter.getFileName(patternGraphList[i].patterngraph.value)));
     }
+  }
 
     loadToStore(mediaType: string, data: string, graphIri: string): Promise<number> {
         return new Promise((resolve, reject) => {
@@ -495,6 +480,15 @@ WHERE {
         ?pl <http://purl.org/patternpedia#hasLogo> ?logo .
     }`;
 
+    return this.exec(qryPatternGraphs, [IriConverter.getFileName(graphIri)]);
+  }
+
+  async getOWLImports(graphIri: string): Promise<Import[]> {
+    const qryPatternGraphs = `SELECT ?import
+    WHERE {
+        ?pl rdf:type owl:Ontology .
+        ?pl  owl:imports ?import .
+    }`;
     return this.exec(qryPatternGraphs, [IriConverter.getFileName(graphIri)]);
   }
 }

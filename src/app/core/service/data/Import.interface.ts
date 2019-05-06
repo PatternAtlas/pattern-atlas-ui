@@ -1,6 +1,5 @@
 import { QueriedData } from './QueriedData.interface';
 
-export interface Logo {
-  logo: QueriedData;
+export interface Import {
+  import: QueriedData;
 }
-
