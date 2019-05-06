@@ -5,13 +5,13 @@ import { DefaultPlLoaderService } from '../../core/service/loader/default-pl-loa
 import { ActivatedRoute } from '@angular/router';
 import { IriConverter } from '../../core/util/iri-converter';
 import { Property } from '../../core/service/data/Property.interface';
-import * as marked from 'marked';
-import { TokensList } from 'marked';
 import { Logo } from '../../core/service/data/Logo.interface';
 import { globals } from '../../globals';
 import { UploadDocumentsService } from '../../core/service/upload-documents.service';
-import Pattern from '../../core/model/pattern.model';
 import { switchMap } from 'rxjs/internal/operators';
+import * as marked from 'marked';
+import { TokensList } from 'marked';
+import Pattern from '../../core/model/pattern.model';
 
 
 @Component({
@@ -95,7 +95,7 @@ export class CreatePatternComponent implements OnInit {
   save(): void {
     const urlPatternPedia = globals.urlPatternRepoOntology;
     const pattern = this.parsePatternInput();
-    console.log(this.patterns);
+    console.log(`loaded patterns: ${this.patterns}`);
     const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, [pattern.iri], this.sections);
     this.uploadService.updatePL(patternLanguage).pipe(
       switchMap((res) => {
@@ -105,9 +105,6 @@ export class CreatePatternComponent implements OnInit {
       console.log(res);
     });
 
-
-    console.log(pattern);
-    console.log(pattern.toTurtle());
     // this._patternOntologieService.insertNewPatternIndividual(this.getPatternLanguageDefinition());
     // TODO: save Pattern
   }

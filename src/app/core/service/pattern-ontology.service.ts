@@ -491,7 +491,7 @@ WHERE {
   async getPLLogo(graphIri: string): Promise<Logo[]> {
     const qryPatternGraphs = `SELECT ?logo
     WHERE {
-        ?pl rdf:type owl:Class . 
+        ?pl rdf:type owl:NamedIndividual .
         ?pl <http://purl.org/patternpedia#hasLogo> ?logo .
     }`;
 

@@ -1,14 +1,14 @@
-@prefix : <http://purl.org/patternpedia/TestX#> .
+@prefix : <http://purl.org/patternpedia/patternlanguages/Hello#> .
 @prefix pp: <http://purl.org/patternpedia#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@base <http://purl.org/patternpedia/TestX> .
+@base <http://purl.org/patternpedia/patternlanguages/Hello> .
 
 
-<http://purl.org/patternpedia/TestX> rdf:type owl:Ontology ;
+<http://purl.org/patternpedia/patternlanguages/Hello> rdf:type owl:Ontology ;
 owl:imports <http://purl.org/patternpedia> .
 
 
@@ -20,19 +20,19 @@ owl:imports <http://purl.org/patternpedia> .
 
 
 ### Icon
-:hasIcon rdf:type rdf:type owl:DatatypeProperty .
+:hasIcon rdf:type owl:DatatypeProperty .
 
 
 ### Context
-:hasContext rdf:type rdf:type owl:DatatypeProperty .
+:hasContext rdf:type owl:DatatypeProperty .
 
 
 ### Driving Question
-:hasDrivingQuestion rdf:type rdf:type owl:DatatypeProperty .
+:hasDrivingQuestion rdf:type owl:DatatypeProperty .
 
 
 ### Solution
-:hasSolution rdf:type rdf:type owl:DatatypeProperty .
+:hasSolution rdf:type owl:DatatypeProperty .
 
 
 # #################################################################
@@ -40,8 +40,8 @@ owl:imports <http://purl.org/patternpedia> .
 # #    Restrictions / Classes
 # #
 # #################################################################
-### http://purl.org/patternpedia/TestX
-:TestX rdf:type owl:Class ;
+### http://purl.org/patternpedia/patternlanguages/Hello
+:HelloIndividual rdf:type owl:Class ;
  rdfs:subClassOf pp:Pattern ,
 			[ rdf:type owl:Restriction ;
 			 owl:onProperty :hasIcon ;
@@ -70,8 +70,8 @@ owl:imports <http://purl.org/patternpedia> .
 #################################################################
 # Individuals
 ##############################################################
-###  http://purl.org/patternpedia/TestX#TestX
-:TestX rdf:type owl:NamedIndividual ,
+###  http://purl.org/patternpedia/patternlanguages/Hello
+:Hello rdf:type owl:NamedIndividual ,
 pp:PatternLanguage ;
-pp:hasLogo ""^^xsd:anyURI ;
-pp:hasName "TestX"^^xsd:string .
+pp:hasLogo "https://placekitten.com/300/204"^^xsd:anyURI ;
+pp:hasName "Hello"^^xsd:string .
