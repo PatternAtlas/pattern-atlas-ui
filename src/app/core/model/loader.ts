@@ -42,7 +42,10 @@ abstract class Loader<T> {
     loadContentFromStore(): Promise<Map<string, T>> {
         return this.selectContentFromStore()
           .then(
-            triples => this.mapTriples(triples)
+            (triples) => {
+              console.log(triples);
+              return (this.mapTriples(triples));
+            }
             );
     }
 

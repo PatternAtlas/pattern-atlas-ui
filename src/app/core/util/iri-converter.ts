@@ -12,7 +12,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { PatternGraphContainedInPP } from '../service/data/PatternGraphContainedInPP.interface';
+import { QueriedData } from '../service/data/QueriedData.interface';
 
 export class IriConverter {
     static convertIriToId(iri: string): string {
@@ -48,9 +48,9 @@ export class IriConverter {
   }
 
 
-  static getPatternGraphURIs(pl: PatternGraphContainedInPP[]): string[] {
-    return pl.map((graph: PatternGraphContainedInPP) => {
-      return this.getURL(graph.patterngraph.value);
+  static extractDataValue(pl: QueriedData[]): string[] {
+    return pl.map((graph: QueriedData) => {
+      return this.getURL(graph.value);
     });
   }
 }

@@ -35,7 +35,7 @@ export class CloudComputingPatternsLoaderService extends Loader<CloudComputingPa
                  WHERE {
                     <${this.supportedIRI}> pp:containsPattern ?pattern .
                     ?pattern ?predicate ?property .
-                    ?pattern a ?type .
+                    ?pattern ?a ?type .
                     FILTER (?type != owl:NamedIndividual && ?predicate != rdf:type)
                     }
                  ORDER BY ?pattern`;

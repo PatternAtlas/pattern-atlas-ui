@@ -23,6 +23,7 @@ import { PatternGraphContainedInPP } from './data/PatternGraphContainedInPP.inte
 import { Property } from './data/Property.interface';
 import { Logo } from './data/Logo.interface';
 import { Import } from './data/Import.interface';
+import { QueriedData } from './data/QueriedData.interface';
 
 @Injectable()
 export class PatternOntologyService implements SparqlExecutor {
@@ -200,16 +201,18 @@ export class PatternOntologyService implements SparqlExecutor {
     const patternGraphList: PatternGraphContainedInPP[] = await this.getPatternGraphsOfLinkedOpenPatterns();
       console.log(`These are the patternlanguages that we have to load dynamically:`);
     console.log(patternGraphList);
-    await this.loadUrisToStore(patternGraphList);
+    await this.loadUrisToStore(patternGraphList.map(it => it.patterngraph));
   }
 
-  async loadUrisToStore(patternGraphList: PatternGraphContainedInPP[]) {
-    const loadResult = await this.loadPatternGraphsByUri(IriConverter.getPatternGraphURIs(patternGraphList)).toPromise();
-    console.log('LOADED Uri Dependencies!');
+  async loadUrisToStore(patternGraphList: QueriedData[]) {
+    console.log(`Load imported graphs to the store:`);
+    console.log(patternGraphList);
+    const loadResult = await this.loadPatternGraphsByUri(IriConverter.extractDataValue(patternGraphList)).toPromise();
     for (let i = 0; i < loadResult.length; i++) {
       console.log('Result: ', await
-        this.loadToStore('text/turtle', loadResult[i], IriConverter.getFileName(patternGraphList[i].patterngraph.value)));
+        this.loadToStore('text/turtle', loadResult[i], IriConverter.getFileName(patternGraphList[i].value)));
     }
+    console.log('LOADED Uri Dependencies!');
   }
 
     loadToStore(mediaType: string, data: string, graphIri: string): Promise<number> {

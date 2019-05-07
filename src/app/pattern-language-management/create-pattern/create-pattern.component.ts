@@ -6,13 +6,12 @@ import { ActivatedRoute } from '@angular/router';
 import { IriConverter } from '../../core/util/iri-converter';
 import { Property } from '../../core/service/data/Property.interface';
 import { Logo } from '../../core/service/data/Logo.interface';
-import { globals } from '../../globals';
 import { UploadDocumentsService } from '../../core/service/upload-documents.service';
 import { switchMap } from 'rxjs/internal/operators';
 import * as marked from 'marked';
 import { TokensList } from 'marked';
 import Pattern from '../../core/model/pattern.model';
-import { from } from 'rxjs';
+import { PatternOntologyService } from '../../core/service/pattern-ontology.service';
 
 
 @Component({
@@ -31,21 +30,28 @@ export class CreatePatternComponent implements OnInit {
 
   constructor(private loader: DefaultPlLoaderService,
               private activatedRoute: ActivatedRoute,
-              private cdr: ChangeDetectorRef, private uploadService: UploadDocumentsService) {
+              private cdr: ChangeDetectorRef, private uploadService: UploadDocumentsService, private pos: PatternOntologyService) {
   }
+
 
   ngOnInit() {
     this.loader.supportedIRI = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
     this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
-    const importObservable = from(this.loader.getOWLImports(this.plIri)).subscribe(res => console.log(res));
+    this.loader.getOWLImports(this.plIri)
+      .then(res => {
+          console.log(res);
+          const importedPatternIris = res.map(i => i.import);
+          this.pos.loadUrisToStore(importedPatternIris).then(() => {
+            this.loader.loadContentFromStore()
+              .then(result => {
+                this.patterns = Array.from(result.values());
+                this.cdr.detectChanges();
+              });
+          });
+        }
+      );
 
     this.plName = IriConverter.extractIndividualNameFromIri(this.plIri);
-    this.loader.loadContentFromStore()
-      .then(result => {
-        this.patterns = Array.from(result.entries());
-        console.log(this.patterns);
-        this.cdr.detectChanges();
-      });
 
     this.loader.getPLProperties(this.plIri).then((res: Property[]) => {
       this.sections = res.map((iri: Property) => {
@@ -67,6 +73,7 @@ export class CreatePatternComponent implements OnInit {
 
   }
 
+
   convertIrisToSectionName(iri: Property): string {
     return iri.property.value.split('#has')[1];
   }
@@ -84,10 +91,10 @@ export class CreatePatternComponent implements OnInit {
 
 
   save(): void {
-    const urlPatternPedia = globals.urlPatternRepoOntology;
     const pattern = this.parsePatternInput();
-    console.log(`loaded patterns: ${this.patterns}`);
-    const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, [pattern.iri], this.sections);
+    const patternIris = this.patterns.map(p => p.uri);
+    patternIris.push(pattern.iri);
+    const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, patternIris, this.sections);
     this.uploadService.updatePL(patternLanguage).pipe(
       switchMap((res) => {
         return this.uploadService.uploadPattern(pattern, patternLanguage);
@@ -100,8 +107,8 @@ export class CreatePatternComponent implements OnInit {
     // TODO: save Pattern
   }
 
-  getPatternUri(patternName: string): string {
-    return globals.urlPatternRepoOntology + '/patternlanguages/' + IriConverter.removeWhitespace(patternName) + '#' + IriConverter.removeWhitespace(patternName);
+  getPatternUri(patternName: string, plIri: string): string {
+    return IriConverter.getFileName(plIri) + '/' + IriConverter.removeWhitespace(patternName) + '#' + IriConverter.removeWhitespace(patternName);
   }
 
   parseMarkdownText(): TokensList {
@@ -136,7 +143,7 @@ export class CreatePatternComponent implements OnInit {
       }
     });
 
-    return new Pattern(this.getPatternUri(patternname), patternname, sectionMap, this.plIri);
+    return new Pattern(this.getPatternUri(patternname, this.plIri), patternname, sectionMap, this.plIri);
 
   }
 
@@ -148,4 +155,6 @@ export class CreatePatternComponent implements OnInit {
   addSpaceForCamelCase(text: string): string {
     return text.replace(/([a-z])([A-Z])/g, '$1 $2');
   }
+
+
 }
