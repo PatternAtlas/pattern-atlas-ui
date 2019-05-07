@@ -77,11 +77,11 @@ export class UploadDocumentsService {
 
   getFile(fileGitApiUrl: string): Observable<GithubFileResponse> {
     return this.httpClient.get(fileGitApiUrl).pipe(map(res => <GithubFileResponse> res));
-  };
+  }
 
   getTTLFile(url: string): Observable<any> {
     return this.httpClient.get(url, {responseType: 'text'});
-  };
+  }
 
 
   getPatternLanguage(patternLanguageName: string): Observable<any> {
@@ -97,7 +97,6 @@ export class UploadDocumentsService {
   }
 
   updatePL(patternLanguage: PatternLanguage): Observable<any> {
-    const fileUrl = IriConverter.getURL(patternLanguage.iri);
     return this.getUpdateFileInfos(this.getGithubPathForPatternLanguage(patternLanguage)).pipe(
       tap(() => {
         console.log(patternLanguage.toTurtle());

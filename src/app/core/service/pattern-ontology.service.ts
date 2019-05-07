@@ -24,10 +24,12 @@ import { Property } from './data/Property.interface';
 import { Logo } from './data/Logo.interface';
 import { Import } from './data/Import.interface';
 import { QueriedData } from './data/QueriedData.interface';
+import { GithubFileResponse } from './data/GithubFileResponse.interface';
 
 @Injectable()
 export class PatternOntologyService implements SparqlExecutor {
     private _store;
+  private githubBaseUrl = 'https://api.github.com/repos/PatternPedia/patternpediacontent/contents/';
 
   constructor(private http: HttpClient) {
         this.createNewStore()
@@ -186,14 +188,14 @@ export class PatternOntologyService implements SparqlExecutor {
         return of(null);
       }
     const observables = uri.map((iri) => {
-        return this.http.get(iri, {responseType: 'text'});
+      return this.http.get(this.githubBaseUrl + IriConverter.getFileLocationOnRepo(iri), {responseType: 'text'});
       });
         return forkJoin(observables);
     }
 
   async loadLinkedOpenPatternGraphs() {
-      const patternpediaResult = await (this.http.get('https:/purl.org/patternpedia', {responseType: 'text'}).toPromise());
-      console.log('Result: ', await this.loadToStore('text/turtle',
+    const patternpediaResult = atob((<GithubFileResponse> await this.http.get(this.githubBaseUrl + 'patternpedia.ttl').toPromise()).content);
+    console.log('Result: ', await this.loadToStore('text/turtle',
         patternpediaResult, 'http://purl.org/patternpedia'));
       const store = this.store;
       this.registerDefaultNameSpaces(store);
