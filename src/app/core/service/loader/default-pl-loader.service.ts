@@ -20,7 +20,7 @@ import { Property } from '../data/Property.interface';
 import { Logo } from '../data/Logo.interface';
 import { Import } from '../data/Import.interface';
 import { IriConverter } from '../../util/iri-converter';
-import { PatternInstance, PatternInstanceInterface } from '../../model/PatternInstance.interface';
+import { PatternInstance } from '../../model/PatternInstance.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -32,7 +32,6 @@ export class DefaultPlLoaderService extends Loader<any> {
     }
 
   async selectContentFromStore(): Promise<any> {
-    console.log(this.supportedIRI);
     const qryPatterns = `SELECT DISTINCT ?pattern
                                       WHERE {
                                           <${this.supportedIRI}> <http://purl.org/patternpedia#containsPattern> ?pattern
@@ -50,7 +49,6 @@ export class DefaultPlLoaderService extends Loader<any> {
     for (const entry of patterns) {
       graphs.push(IriConverter.getFileName(entry.pattern.value));
     }
-    console.log(graphs);
     return this.executor.exec(qry, graphs);
   }
 

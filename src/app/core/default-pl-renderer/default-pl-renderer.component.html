@@ -2,11 +2,16 @@
   class="material-icons">keyboard_backspace</i></button>
 
 <h2>Pattern Language: {{plName}}</h2>
-<div *ngFor="let pattern of patterns">
-  <h3>{{pattern[0]</h3>
-  <pre style="white-space: pre-wrap; word-wrap: break-word">{{pattern[0] | json:2}}</pre>
-</div>
+<div fxLayout="row" fxLayoutAlign="start center">
+  <mat-card class="landing-card" *ngFor="let pattern of patterns">
+    <mat-card-header>
+      <mat-card-title>
+        <b>{{getNameForPattern(pattern)}}</b>
+      </mat-card-title>
+    </mat-card-header>
+  </mat-card>
 <mat-card class="landing-card center-content add-card" (click)="goToPatternCreation()">
   <i class="material-icons">add_box</i>
 </mat-card>
+</div>
 

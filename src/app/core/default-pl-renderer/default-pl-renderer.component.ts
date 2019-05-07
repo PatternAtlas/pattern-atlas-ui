@@ -2,6 +2,8 @@ import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { DefaultPlLoaderService } from '../service/loader/default-pl-loader.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IriConverter } from '../util/iri-converter';
+import { PatternOntologyService } from '../service/pattern-ontology.service';
+import { PatternInstance } from '../model/PatternInstance.interface';
 
 @Component({
     selector: 'pp-default-pl-renderer',
@@ -10,7 +12,7 @@ import { IriConverter } from '../util/iri-converter';
 })
 export class DefaultPlRendererComponent implements OnInit {
 
-    patterns: any;
+  patterns: PatternInstance[];
   plIri: string;
     plName: string;
 
@@ -18,18 +20,27 @@ export class DefaultPlRendererComponent implements OnInit {
                 private activatedRoute: ActivatedRoute,
                 private cdr: ChangeDetectorRef,
                 private zone: NgZone,
-                private router: Router) {
+                private router: Router,
+                private pos: PatternOntologyService) {
     }
 
     ngOnInit() {
         this.loader.supportedIRI = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
       this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
       this.plName = IriConverter.extractIndividualNameFromIri(this.plIri);
-        this.loader.loadContentFromStore()
-            .then(result => {
-                this.patterns = Array.from(result.entries());
-                this.cdr.detectChanges();
+      this.loader.getOWLImports(this.plIri)
+        .then(res => {
+            console.log(res);
+            const importedPatternIris = res.map(i => i.import);
+            this.pos.loadUrisToStore(importedPatternIris).then(() => {
+              this.loader.loadContentFromStore()
+                .then(result => {
+                  this.patterns = Array.from(result.values());
+                  this.cdr.detectChanges();
+                });
             });
+          }
+        );
     }
 
 
@@ -45,4 +56,7 @@ export class DefaultPlRendererComponent implements OnInit {
     });
   }
 
+  getNameForPattern(pattern: PatternInstance) {
+    return IriConverter.extractIndividualNameFromIri(pattern.uri);
+  }
 }

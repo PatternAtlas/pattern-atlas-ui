@@ -26,6 +26,7 @@ import { TextFieldModule } from '@angular/cdk/text-field';
 import { MdEditorComponent } from './component/md-editor/md-editor.component';
 import { CovalentTextEditorModule } from '@covalent/text-editor';
 import { EmitEventOnKeyupDirective } from './directives/emit-event-on-keyup.directive';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
     imports: [
@@ -34,7 +35,8 @@ import { EmitEventOnKeyupDirective } from './directives/emit-event-on-keyup.dire
         MatButtonModule,
         TextFieldModule,
       CovalentTextEditorModule,
-      MatCardModule
+      MatCardModule,
+      FlexLayoutModule
 
     ],
   exports: [CovalentTextEditorModule, EmitEventOnKeyupDirective],
