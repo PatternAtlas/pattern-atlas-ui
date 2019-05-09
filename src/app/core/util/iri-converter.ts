@@ -32,7 +32,7 @@ export class IriConverter {
     }
 
   static extractIndividualNameFromIri(iri: string): string {
-    return iri.includes('#') ? iri.split('#')[1] : iri.split('/')[iri.split('/').length - 1];
+    return iri.split('#')[1];
   }
 
   static getURL(patternlanguageIri: string) {
@@ -52,10 +52,5 @@ export class IriConverter {
     return pl.map((graph: QueriedData) => {
       return this.getURL(graph.value);
     });
-  }
-
-  // convert a uri to the location on our github repo
-  static getFileLocationOnRepo(iri: string): string {
-    return this.getFileName(iri).split('purl.org/patternpedia/')[1] + '/' + this.extractIndividualNameFromIri(iri) + '.ttl';
   }
 }
