@@ -27,6 +27,7 @@
     "core-js": "^2.6.3",
     "hammerjs": "^2.0.8",
     "jsonld": "^1.5.0",
+    "madr": "^2.1.2",
     "material-design-icons": "^3.0.1",
     "ngx-md": "^7.0.0",
     "parse-uri": "^1.0.0",
