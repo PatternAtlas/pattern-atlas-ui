@@ -1,5 +1,5 @@
 <div style="display: flex; justify-content: space-between; align-items: baseline">
-  <h1 mat-dialog-title>Create a new Patternlanguage</h1>
+  <h1 mat-dialog-title>{{isFirstStep ? 'Create a new Patternlanguage' : 'Define the section'}}</h1>
   <button mat-flat-button (click)="close()" tabindex="-1">
     <i class="material-icons">close</i>
   </button>
@@ -7,7 +7,7 @@
 <div mat-dialog-content [formGroup]="patternLanguageForm">
 <div fxLayout="column" fxLayoutAlign="space-around center">
   <mat-card fxLayout="column" fxLayoutAlign="space-around center"
-            style="margin: 10px;">
+            style="margin: 10px;" *ngIf="isFirstStep; else templateName">
     <mat-form-field appearance="outline" style="width: 24em;" [floatLabel]="'always'">
       <mat-label>Pattern language name</mat-label>
       <input matInput formControlName="name" placeholder="Enter the name of your Pattern Language">
@@ -63,6 +63,7 @@
       </mat-autocomplete>
     </mat-form-field>
   </mat-card>
+
 </div>
 </div>
 
@@ -75,3 +76,33 @@
     class="material-icons"><i className="material-icons">arrow_forward</i></i>
   </button>
 </div>
+
+<ng-template #templateName>
+  <mat-form-field appearance="outline" style="width: 24em" [floatLabel]="'always'" [formGroup]="myGroup">
+    <mat-label>Sections</mat-label>
+    <mat-chip-list #chipList>
+      <div fxLayout="column" fxLayoutAlign="space-around start">
+        <div fxLayout="row" *ngFor="let section of sections, let i = index" fxLayoutAlign="start center">
+          <span fxFlexAlign="center">{{i+1}}.</span>
+          <mat-chip fxLayout="row" fxLayoutAlign="initial"
+                    [selectable]="selectable"
+                    [removable]="removable"
+                    (removed)="remove(section)">
+            {{section}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <mat-form-field>
+            <input type="text" appearance="fill" matInput
+                   formControlName="myControl"
+                   [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let option of options" [value]="option">
+                {{option}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-chip-list>
+  </mat-form-field>
+</ng-template>

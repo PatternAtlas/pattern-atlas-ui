@@ -13,7 +13,7 @@ import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult
 })
 export class CreateEditPatternLanguageComponent implements OnInit {
 
-
+  isFirstStep = true;
   visible = true;
   selectable = true;
   removable = true;
@@ -26,6 +26,10 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   patternLanguageForm: FormGroup;
   iconPreviewVisible = false;
   saveRequested = false;
+  myGroup: FormGroup;
+
+  options: string[] = ['One', 'Two', 'Three'];
+
 
   @Output() onSaveClicked = new EventEmitter<DialogPatternLanguageResult>();
 
@@ -41,11 +45,17 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     const urlRegex = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
     this.patternLanguageForm = this._fb.group({
       name: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9_-\s]+')]],
-      iconUrl: ['', [Validators.required, Validators.pattern(urlRegex)]]
+      iconUrl: ['', [Validators.required, Validators.pattern(urlRegex)]],
+      myControl: ['', []]
     });
     this.iconUrl.valueChanges.pipe(debounceTime(1000), distinctUntilChanged()).subscribe((urlValue) => {
       this.iconPreviewVisible = urlValue && (urlValue.startsWith('https://') || urlValue.startsWith('http://'));
     });
+
+    this.myGroup = new FormGroup({
+      myControl: new FormControl()
+    });
+
   }
 
   @ViewChild('sectionInput') sectionInput: ElementRef<HTMLInputElement>;
@@ -120,8 +130,9 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     (<any>Object).values(this.patternLanguageForm.controls).forEach(control => {
       control.markAsTouched();
     });
-    console.log(this.patternLanguageForm);
-    console.log(this.patternLanguageForm.controls['name'].errors);
+    if (this.patternLanguageForm.valid) {
+      this.isFirstStep = false;
+    }
   }
 
   getErrorMessage(formControl: AbstractControl): string {
