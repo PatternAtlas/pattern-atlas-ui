@@ -1,5 +1,5 @@
 <div style="display: flex; justify-content: space-between; align-items: baseline">
-  <h1 mat-dialog-title>{{isFirstStep ? 'Create a new Patternlanguage' : 'Define the section'}}</h1>
+  <h1 mat-dialog-title>{{isFirstStep ? 'Create a new Patternlanguage' : 'Define the content type of you sections'}}</h1>
   <button mat-flat-button (click)="close()" tabindex="-1">
     <i class="material-icons">close</i>
   </button>
@@ -36,14 +36,17 @@
       <mat-label>Sections</mat-label>
       <mat-chip-list #chipList>
         <div fxLayout="column" fxLayoutAlign="space-around start">
-          <mat-chip fxLayout="row" fxLayoutAlign="initial"
-                    *ngFor="let section of sections"
-                    [selectable]="selectable"
+          <div *ngFor="let section of sections, let i = index" fxLayout="row" fxLayoutAlign="start center">
+            <span>{{i+1}}. </span>
+            <mat-chip fxLayout="row" fxLayoutAlign="initial"
+
+                      [selectable]="selectable"
                     [removable]="removable"
                     (removed)="remove(section)">
             {{section}}
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
           </mat-chip>
+          </div>
         </div>
       </mat-chip-list>
       <input
@@ -82,7 +85,7 @@
     <mat-label>Sections</mat-label>
     <mat-chip-list #chipList>
       <div fxLayout="column" fxLayoutAlign="space-around start">
-        <div fxLayout="row" *ngFor="let section of sections, let i = index" fxLayoutAlign="start center">
+        <div fxLayout="row" fxLayoutAlign="start center" *ngFor="let section of sections, let i = index">
           <span fxFlexAlign="center">{{i+1}}.</span>
           <mat-chip fxLayout="row" fxLayoutAlign="initial"
                     [selectable]="selectable"
