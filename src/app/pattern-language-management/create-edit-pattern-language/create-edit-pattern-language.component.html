@@ -41,8 +41,8 @@
             <mat-chip fxLayout="row" fxLayoutAlign="initial"
 
                       [selectable]="selectable"
-                    [removable]="removable"
-                    (removed)="remove(section)">
+                      [removable]="removable"
+                      (removed)="removeSectionMatChip(section)">
             {{section}}
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
           </mat-chip>
@@ -81,31 +81,42 @@
 </div>
 
 <ng-template #templateName>
-  <mat-form-field appearance="outline" style="width: 24em" [floatLabel]="'always'" [formGroup]="myGroup">
-    <mat-label>Sections</mat-label>
-    <mat-chip-list #chipList>
-      <div fxLayout="column" fxLayoutAlign="space-around start">
-        <div fxLayout="row" fxLayoutAlign="start center" *ngFor="let section of sections, let i = index">
-          <span fxFlexAlign="center">{{i+1}}.</span>
-          <mat-chip fxLayout="row" fxLayoutAlign="initial"
-                    [selectable]="selectable"
-                    [removable]="removable"
-                    (removed)="remove(section)">
-            {{section}}
-            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-          </mat-chip>
-          <mat-form-field>
-            <input type="text" appearance="fill" matInput
-                   formControlName="myControl"
-                   [matAutocomplete]="auto">
-            <mat-autocomplete #auto="matAutocomplete">
-              <mat-option *ngFor="let option of options" [value]="option">
-                {{option}}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-        </div>
-      </div>
-    </mat-chip-list>
-  </mat-form-field>
+  <div [formGroup]="sectionDetailsGroup">
+    <div formArrayName="sectionsArray">
+      <mat-form-field appearance="outline" style="width: 24em" [floatLabel]="'always'">
+        <mat-label>Sections</mat-label>
+        <mat-chip-list #chipList>
+          <div fxLayout="column" fxLayoutAlign="space-around start">
+            <div fxLayout="row" fxLayoutAlign="start center"
+                 *ngFor="let section of sectionsArray.controls, let i = index">
+              <div [formGroupName]="i">
+                <span fxFlexAlign="center">{{i+1}}.</span>
+                <mat-chip fxLayout="row" fxLayoutAlign="initial"
+                          [selectable]="selectable"
+                          [removable]="removable"
+                          (removed)="removeSectionMatChip(section)">
+                  {{sections[i]}}
+                </mat-chip>
+                <mat-form-field>
+                  <mat-label>Type</mat-label>
+                  <input type="text" appearance="fill" matInput
+                         formControlName="type"
+                         [matAutocomplete]="auto">
+                  <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let option of options" [value]="option">
+                      {{option}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <mat-radio-group aria-label="Select an option" formControlName="isSingleton">
+                  <mat-radio-button value="1" checked>max. 1 value</mat-radio-button>
+                  <mat-radio-button value="2">Array</mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+          </div>
+        </mat-chip-list>
+      </mat-form-field>
+    </div>
+  </div>
 </ng-template>

@@ -32,6 +32,7 @@ import {
   MatGridListModule,
   MatIconModule,
   MatInputModule,
+  MatRadioModule,
   MatSidenavModule,
   MatTabsModule,
   MatToolbarModule
@@ -59,7 +60,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
       CoreModule,
       MatGridListModule,
       ReactiveFormsModule,
-      FlexLayoutModule
+      FlexLayoutModule,
+      MatRadioModule
     ],
     declarations: [
         PatternLanguageManagementComponent,

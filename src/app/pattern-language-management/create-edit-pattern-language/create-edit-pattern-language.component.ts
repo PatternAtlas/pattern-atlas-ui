@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatDialogRef } from '@angular/material';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/internal/operators';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
@@ -26,9 +26,10 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   patternLanguageForm: FormGroup;
   iconPreviewVisible = false;
   saveRequested = false;
-  myGroup: FormGroup;
+  sectionDetailsArray: FormArray;
+  sectionDetailsGroup: FormGroup;
 
-  options: string[] = ['One', 'Two', 'Three'];
+  options: string[] = ['xsd:string', 'xsd:int', 'xsd:int', 'xsd:positiveInteger', 'xsd:anyURI', 'Two', 'Three'];
 
 
   @Output() onSaveClicked = new EventEmitter<DialogPatternLanguageResult>();
@@ -45,17 +46,23 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     const urlRegex = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
     this.patternLanguageForm = this._fb.group({
       name: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9_-\s]+')]],
-      iconUrl: ['', [Validators.required, Validators.pattern(urlRegex)]],
-      myControl: ['', []]
+      iconUrl: ['', [Validators.required, Validators.pattern(urlRegex)]]
     });
     this.iconUrl.valueChanges.pipe(debounceTime(1000), distinctUntilChanged()).subscribe((urlValue) => {
       this.iconPreviewVisible = urlValue && (urlValue.startsWith('https://') || urlValue.startsWith('http://'));
     });
 
-    this.myGroup = new FormGroup({
-      myControl: new FormControl()
+    this.sectionDetailsGroup = this._fb.group({
+      sectionsArray: this._fb.array([])
     });
+  }
 
+  createSection(sectionName: string): FormGroup {
+    return this._fb.group({
+      type: ['xsd:string', [Validators.required]],
+      isSingleton: [true, []],
+      name: [sectionName, []]
+    });
   }
 
   @ViewChild('sectionInput') sectionInput: ElementRef<HTMLInputElement>;
@@ -89,7 +96,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     }
   }
 
-  remove(section: string): void {
+  removeSectionMatChip(section: string): void {
     const index = this.sections.indexOf(section);
 
     if (index >= 0) {
@@ -124,6 +131,14 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     }
   }
 
+  addSectionDetail(sectionName: string): void {
+    this.sectionsArray.push(this.createSection(sectionName));
+  }
+
+  get sectionsArray(): FormArray {
+    return this.sectionDetailsGroup.get('sectionsArray') as FormArray;
+  }
+
   nextStep(): void {
     this.saveRequested = true;
     this.patternLanguageForm.markAsTouched();
@@ -131,8 +146,11 @@ export class CreateEditPatternLanguageComponent implements OnInit {
       control.markAsTouched();
     });
     if (this.patternLanguageForm.valid) {
+
       this.isFirstStep = false;
+      this.sections.forEach((section) => this.addSectionDetail(section));
     }
+
   }
 
   getErrorMessage(formControl: AbstractControl): string {
