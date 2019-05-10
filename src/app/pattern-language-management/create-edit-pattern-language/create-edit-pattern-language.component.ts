@@ -148,6 +148,9 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     if (this.patternLanguageForm.valid) {
 
       this.isFirstStep = false;
+      while (this.sectionsArray.length > 0) {
+        this.sectionsArray.removeAt(0);
+      }
       this.sections.forEach((section) => this.addSectionDetail(section));
     }
 

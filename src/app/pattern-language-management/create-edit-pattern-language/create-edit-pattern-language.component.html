@@ -72,10 +72,15 @@
 
 <div mat-dialog-actions>
 
-  <button mat-raised-button color="primary" (click)="save()"><i
+  <button mat-raised-button color="primary" (click)="isFirstStep = true" *ngIf="!isFirstStep"><i
+    class="material-icons"><i className="material-icons">arrow_backward</i></i>
+  </button>
+
+  <button mat-raised-button color="primary" *ngIf="!isFirstStep" (click)="save()"><i
     class="material-icons">save</i> Save
   </button>
-  <button mat-raised-button color="primary" (click)="nextStep()"><i
+
+  <button mat-raised-button color="primary" (click)="nextStep()" *ngIf="isFirstStep"><i
     class="material-icons"><i className="material-icons">arrow_forward</i></i>
   </button>
 </div>
@@ -89,7 +94,7 @@
           <div fxLayout="column" fxLayoutAlign="space-around start">
             <div fxLayout="row" fxLayoutAlign="start center"
                  *ngFor="let section of sectionsArray.controls, let i = index">
-              <div [formGroupName]="i">
+              <div [formGroupName]="i" fxLayout="row" fxLayoutAlign="start center">
                 <span fxFlexAlign="center">{{i+1}}.</span>
                 <mat-chip fxLayout="row" fxLayoutAlign="initial"
                           [selectable]="selectable"
