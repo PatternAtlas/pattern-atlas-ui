@@ -12,6 +12,7 @@ import * as marked from 'marked';
 import { TokensList } from 'marked';
 import Pattern from '../../core/model/pattern.model';
 import { PatternOntologyService } from '../../core/service/pattern-ontology.service';
+import { Section } from '../../core/model/section.model';
 
 
 @Component({
@@ -94,7 +95,9 @@ export class CreatePatternComponent implements OnInit {
     const pattern = this.parsePatternInput();
     const patternIris = this.patterns.map(p => p.uri);
     patternIris.push(pattern.iri);
-    const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, patternIris, this.sections);
+    const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, patternIris, this.sections.map((sectionname) => {
+      return <Section> {name: sectionname, type: null, isSingleton: null};
+    }));
     this.uploadService.updatePL(patternLanguage).pipe(
       switchMap((res) => {
         return this.uploadService.uploadPattern(pattern, patternLanguage);
