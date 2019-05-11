@@ -1,5 +1,6 @@
 <div style="display: flex; justify-content: space-between; align-items: baseline">
-  <h1 mat-dialog-title>{{isFirstStep ? 'Create a new Patternlanguage' : 'Define the content type of you sections'}}</h1>
+  <h1 mat-dialog-title>{{isFirstStep ? 'Create a new Patternlanguage' : 'Define the content type of your
+    sections'}}</h1>
   <button mat-flat-button (click)="close()" tabindex="-1">
     <i class="material-icons">close</i>
   </button>
@@ -77,7 +78,7 @@
   </button>
 
   <button mat-raised-button color="primary" *ngIf="!isFirstStep" (click)="save()"><i
-    class="material-icons">save</i> Save
+    class="material-icons">save</i> Save patternlanguage
   </button>
 
   <button mat-raised-button color="primary" (click)="nextStep()" *ngIf="isFirstStep"><i
@@ -114,8 +115,8 @@
                   </mat-autocomplete>
                 </mat-form-field>
                 <mat-radio-group aria-label="Select an option" formControlName="isSingleton">
-                  <mat-radio-button value="1" checked>max. 1 value</mat-radio-button>
-                  <mat-radio-button value="2">Array</mat-radio-button>
+                  <mat-radio-button [value]="true">max. 1 value</mat-radio-button>
+                  <mat-radio-button [value]="false">unordered List</mat-radio-button>
                 </mat-radio-group>
               </div>
             </div>

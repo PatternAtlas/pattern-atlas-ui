@@ -13,6 +13,7 @@
  */
 
 import { IriConverter } from '../util/iri-converter';
+import { Section } from './section.model';
 
 class PatternLanguage {
   private patternpediaBaseURI = 'http://purl.org/patternpedia';
@@ -21,7 +22,7 @@ class PatternLanguage {
     logos: Array<string>;
     iri: string;
     patternIRIs: Array<string>;
-  sections: string[];
+  sections: Section[];
 
     set id(iri: string) {
         this._id = IriConverter.convertIriToId(iri);
@@ -31,7 +32,7 @@ class PatternLanguage {
         return this._id;
     }
 
-  public constructor(iri: string = null, name: string = null, logos: Array<string> = null, patternIRIs: Array<string> = null, sections: string[] = null) {
+  public constructor(iri: string = null, name: string = null, logos: Array<string> = null, patternIRIs: Array<string> = null, sections: Section[] = null) {
         this.name = name;
         this.logos = logos || [];
         this.patternIRIs = patternIRIs || [];
@@ -72,7 +73,7 @@ class PatternLanguage {
     ary.push('# #################################################################');
     for (const section of this.sections) {
       ary.push('\n');
-      ary.push(`### ${section}`);
+      ary.push(`### ${section.name}`);
       ary.push(`${this.getSectionIdentifier(section)} rdf:type owl:DatatypeProperty .`);
     }
     ary.push('\n');
@@ -87,8 +88,11 @@ class PatternLanguage {
     ary.push(` rdfs:subClassOf pp:Pattern ,`);
     this.sections.forEach((section, index) => {
       ary.push(`${'\t'.repeat(3)}[ rdf:type owl:Restriction ;`);
-      ary.push(`${'\t'.repeat(3)} owl:onProperty ${this.getSectionIdentifier(section)} ; `);
-      ary.push(`${'\t'.repeat(3)} owl:onDataRange xsd:string`);
+      ary.push(`${'\t'.repeat(3)} owl:onProperty ${this.getSectionIdentifier(section.name)} ; `);
+      if (section.isSingleton) {
+        ary.push(`${'\t'.repeat(3)} owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ; `);
+      }
+      ary.push(`${'\t'.repeat(3)} owl:onDataRange ${section.type}`);
       ary.push(`${'\t'.repeat(4)}] ${index === this.sections.length - 1 ? '.' : ','}`);
       ary.push(`\n`);
     });

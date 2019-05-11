@@ -1,5 +1,7 @@
+import { Section } from '../../core/model/section.model';
+
 export interface DialogPatternLanguageResult {
-  sections: string[];
+  sections: Section[];
   name: string;
   iconUrl: string;
 }

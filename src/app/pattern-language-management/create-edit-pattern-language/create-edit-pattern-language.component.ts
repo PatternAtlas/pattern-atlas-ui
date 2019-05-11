@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/internal/operators';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
+import { Section } from '../../core/model/section.model';
 
 @Component({
   selector: 'pp-create-edit-pattern-language',
@@ -125,8 +126,13 @@ export class CreateEditPatternLanguageComponent implements OnInit {
 
   save(): void {
     this.saveRequested = true;
-    if (this.patternLanguageForm.valid) {
-      this.onSaveClicked.emit({sections: this.sections, name: this.name.value, iconUrl: this.iconUrl.value});
+    console.log(this.sectionsArray.value);
+    if (this.patternLanguageForm.valid && this.sectionDetailsGroup.valid) {
+      this.onSaveClicked.emit({
+        sections: this.sectionsArray.value.map((sectionFormValue) => {
+          return <Section> {type: sectionFormValue.type, name: sectionFormValue.name, isSingleton: sectionFormValue.isSingleton};
+        }), name: this.name.value, iconUrl: this.iconUrl.value
+      });
       this.dialogRef.close();
     }
   }
