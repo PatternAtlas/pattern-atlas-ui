@@ -30,7 +30,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   sectionDetailsArray: FormArray;
   sectionDetailsGroup: FormGroup;
 
-  options: string[] = ['xsd:string', 'xsd:int', 'xsd:int', 'xsd:positiveInteger', 'xsd:anyURI', 'Two', 'Three'];
+  options: string[] = ['xsd:string', 'xsd:anyURI', 'xsd:int', 'xsd:positiveInteger'];
 
 
   @Output() onSaveClicked = new EventEmitter<DialogPatternLanguageResult>();

@@ -16,11 +16,11 @@ import { Injectable } from '@angular/core';
 import { PatternOntologyService } from '../pattern-ontology.service';
 import Loader from '../../model/loader';
 import { selectPatternLanguage } from './pl-selector.function';
-import { Property } from '../data/Property.interface';
 import { Logo } from '../data/Logo.interface';
 import { Import } from '../data/Import.interface';
 import { IriConverter } from '../../util/iri-converter';
 import { PatternInstance } from '../../model/PatternInstance.interface';
+import { SectionResponse } from '../data/SectionResponse.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -60,7 +60,7 @@ export class DefaultPlLoaderService extends Loader<any> {
     return this.pos.getOWLImports(supportedIri);
   }
 
-  getPLProperties(supportedIri: string): Promise<Property[]> {
+  getPLProperties(supportedIri: string): Promise<SectionResponse[]> {
     return this.pos.getPropertiesOfPL(supportedIri);
   }
 

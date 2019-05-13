@@ -4,7 +4,6 @@ import PatternLanguage from '../../core/model/pattern-language.model';
 import { DefaultPlLoaderService } from '../../core/service/loader/default-pl-loader.service';
 import { ActivatedRoute } from '@angular/router';
 import { IriConverter } from '../../core/util/iri-converter';
-import { Property } from '../../core/service/data/Property.interface';
 import { Logo } from '../../core/service/data/Logo.interface';
 import { UploadDocumentsService } from '../../core/service/upload-documents.service';
 import { switchMap } from 'rxjs/internal/operators';
@@ -13,6 +12,7 @@ import { TokensList } from 'marked';
 import Pattern from '../../core/model/pattern.model';
 import { PatternOntologyService } from '../../core/service/pattern-ontology.service';
 import { Section } from '../../core/model/section.model';
+import { SectionResponse } from '../../core/service/data/SectionResponse.interface';
 
 
 @Component({
@@ -26,8 +26,16 @@ export class CreatePatternComponent implements OnInit {
   patterns: any;
   plIri: string;
   plName: string;
-  sections: string[];
+  sections: Section[];
   plLogos: string[];
+
+
+  @ViewChild('textEditor') private _textEditor: TdTextEditorComponent;
+  patternLanguageStructure = `# Pattern name`;
+
+  options: any = {
+    // todo: hide the preview button because it forces fullscreen mode (and destroys our page layout)
+  };
 
   constructor(private loader: DefaultPlLoaderService,
               private activatedRoute: ActivatedRoute,
@@ -54,12 +62,13 @@ export class CreatePatternComponent implements OnInit {
 
     this.plName = IriConverter.extractIndividualNameFromIri(this.plIri);
 
-    this.loader.getPLProperties(this.plIri).then((res: Property[]) => {
-      this.sections = res.map((iri: Property) => {
-        return this.convertIrisToSectionName(iri);
+    this.loader.getPLProperties(this.plIri).then((res: SectionResponse[]) => {
+      this.sections = res.map((iri: any) => {
+        return this.reconstructSectionFromQueryResult(iri);
       });
       for (const section of this.sections) {
-        this.patternLanguageStructure = this.patternLanguageStructure.concat('\n ## ' + this.addSpaceForCamelCase(section) + '\n Enter your text for this section here. ');
+        this.patternLanguageStructure = this.patternLanguageStructure.concat(
+          '\n ## ' + this.addSpaceForCamelCase(section.name) + '\n' + this.getDefaultTextForSection(section));
       }
       this._textEditor.value = this.patternLanguageStructure;
       this.onChangeMarkdownText();
@@ -75,15 +84,17 @@ export class CreatePatternComponent implements OnInit {
   }
 
 
-  convertIrisToSectionName(iri: Property): string {
-    return iri.property.value.split('#has')[1];
+  reconstructSectionFromQueryResult(queryResult: SectionResponse): Section {
+    return <Section>{
+      name: queryResult.property.value.split('#has')[1],
+      isSingleton: queryResult.cardinality ? this.matchesOne(queryResult.cardinality.value.split('^^')[0]) : false,
+      type: queryResult.dataRange.value
+    };
   }
-  @ViewChild('textEditor') private _textEditor: TdTextEditorComponent;
-  patternLanguageStructure = `# Pattern name`;
 
-  options: any = {
-    // todo: hide the preview button because it forces fullscreen mode (and destroys our page layout)
-  };
+  private matchesOne(string: string): boolean {
+    return !!string.match(('1'));
+  }
 
 
   containsMoreThanWhitespace(teststring: string): boolean {
@@ -125,8 +136,6 @@ export class CreatePatternComponent implements OnInit {
 
   private parsePatternInput(): Pattern {
     const lines = this.parseMarkdownText();
-    console.log(lines);
-    console.log(lines.values);
     const patternNameIndex = lines.findIndex((it) => it.type === 'heading' && it.depth === 1);
     const patternname = patternNameIndex !== -1 ? lines[patternNameIndex]['text'] : '';
     const sectionMap = new Map<string, string | string[]>();
@@ -160,4 +169,17 @@ export class CreatePatternComponent implements OnInit {
   }
 
 
+  getDefaultTextForSection(section: Section): string {
+    const prefix = 'http://www.w3.org/2001/XMLSchema#';
+    if (section.type === (prefix + 'xsd:positiveInteger')) {
+      return 'Enter a positive Integer.';
+    }
+    if (section.type === (prefix + 'xsd:string')) {
+      return 'Enter your text for this section here.';
+    }
+    if (section.type === (prefix + 'anyURI')) {
+      return '<Enter/your/URI/or/URL>';
+    }
+    return 'Enter your input for this section here.';
+  }
 }

@@ -20,10 +20,10 @@ import PatternLanguage from '../model/pattern-language.model';
 import { SparqlExecutor } from '../model/sparql.executor';
 import { IriConverter } from '../util/iri-converter';
 import { PatternGraphContainedInPP } from './data/PatternGraphContainedInPP.interface';
-import { Property } from './data/Property.interface';
 import { Logo } from './data/Logo.interface';
 import { Import } from './data/Import.interface';
 import { QueriedData } from './data/QueriedData.interface';
+import { SectionResponse } from './data/SectionResponse.interface';
 
 @Injectable()
 export class PatternOntologyService implements SparqlExecutor {
@@ -464,14 +464,27 @@ export class PatternOntologyService implements SparqlExecutor {
     return this.exec(qryPatternGraphs, [IriConverter.getFileName(supportedIRI)]);
   }
 
-  async getPropertiesOfPL(graphIri: string): Promise<Property[]> {
-    const qryPatternGraphs = `SELECT ?property
-WHERE {
-  ?patternLanguageIndividual rdf:type owl:Class . 
-  ?patternLanguageIndividual rdfs:subClassOf ?restrictionClass .
-  ?restrictionClass rdf:type owl:Restriction . 
-  ?restrictionClass owl:onProperty ?property
-}`;
+  async getPropertiesOfPL(graphIri: string): Promise<SectionResponse[]> {
+    const qryPatternGraphs = ` SELECT DISTINCT  ?property ?cardinality ?dataRange WHERE {
+  { ?patternLanguageIndividual rdf:type owl:Class . 
+    ?patternLanguageIndividual rdfs:subClassOf ?restrictionClass .
+    ?restrictionClass rdf:type owl:Restriction . 
+    ?restrictionClass owl:onProperty ?property .
+    ?property a owl:DatatypeProperty .
+    ?restrictionClass owl:onDataRange   ?dataRange .
+    optional {	?restrictionClass owl:qualifiedCardinality ?cardinality . }  
+  }
+  UNION
+  { ?patternLanguageIndividual rdf:type owl:Class . 
+    ?patternLanguageIndividual rdfs:subClassOf ?restrictionClass .
+    ?restrictionClass rdf:type owl:Restriction . 
+    ?restrictionClass owl:onProperty ?property .
+    ?property a owl:DatatypeProperty .
+    ?restrictionClass owl:allValuesFrom   ?dataRange .
+    optional {	?restrictionClass owl:qualifiedCardinality ?cardinality . }  
+ }
+ 
+ }`;
 
     return this.exec(qryPatternGraphs, [IriConverter.getFileName(graphIri)]);
   }
