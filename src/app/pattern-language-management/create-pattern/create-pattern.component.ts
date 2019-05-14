@@ -106,9 +106,8 @@ export class CreatePatternComponent implements OnInit {
     const pattern = this.parsePatternInput();
     const patternIris = this.patterns.map(p => p.uri);
     patternIris.push(pattern.iri);
-    const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, patternIris, this.sections.map((sectionname) => {
-      return <Section> {name: sectionname, type: null, isSingleton: null};
-    }));
+    const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, patternIris, this.sections);
+
     this.uploadService.updatePL(patternLanguage).pipe(
       switchMap((res) => {
         return this.uploadService.uploadPattern(pattern, patternLanguage);
@@ -140,9 +139,9 @@ export class CreatePatternComponent implements OnInit {
     const patternname = patternNameIndex !== -1 ? lines[patternNameIndex]['text'] : '';
     const sectionMap = new Map<string, string | string[]>();
 
-    this.sections.forEach((section: string) => {
+    this.sections.forEach((section: Section) => {
       const sectionIndex = lines.findIndex((it) => it.type === 'heading' && it.depth === 2 &&
-        this.ignoreCaseAndWhitespace(it.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(section)));
+        this.ignoreCaseAndWhitespace(it.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(section.name)));
       if (sectionIndex !== -1) {
         let sectioncontent = '';
         for (let i = sectionIndex + 1; i < lines.length; i++) {
@@ -151,7 +150,7 @@ export class CreatePatternComponent implements OnInit {
           }
           sectioncontent = sectioncontent + lines[i]['text'] ? lines[i]['text'] : '';
         }
-        sectionMap[section] = sectioncontent;
+        sectionMap[section.name] = sectioncontent;
       }
     });
 

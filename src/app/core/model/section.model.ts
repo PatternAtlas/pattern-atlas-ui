@@ -9,9 +9,6 @@ export class Section {
     this.isSingleton = isSingleton;
   }
 
-  toTurtleValue() {
-    return `"${this.name}^^${this.type}`;
-  }
 
 
 }
