@@ -64,6 +64,7 @@ export class DefaultPlLoaderService extends Loader<any> {
     return this.pos.getPropertiesOfPL(supportedIri);
   }
 
+
   getPLLogo(supportedIri: string): Promise<Logo[]> {
     return this.pos.getPLLogo(supportedIri);
   }

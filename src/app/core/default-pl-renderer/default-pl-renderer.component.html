@@ -7,8 +7,18 @@
     <mat-card-header>
       <mat-card-title>
         <b>{{getNameForPattern(pattern)}}</b>
+
       </mat-card-title>
     </mat-card-header>
+    <div *ngFor="let patternSection of pattern.sectionProperties.keys()">
+      <span><b>{{getSectionName(patternSection)}}</b>: {{pattern.sectionProperties.get(patternSection)}}</span><br>
+    </div>
+    <mat-card-actions>
+      <div style="text-align: center">
+        <button mat-stroked-button color="primary" (click)="navigate(pattern)"><i class="material-icons">pageview</i>View
+        </button>
+      </div>
+    </mat-card-actions>
   </mat-card>
 <mat-card class="landing-card center-content add-card" (click)="goToPatternCreation()">
   <i class="material-icons">add_box</i>

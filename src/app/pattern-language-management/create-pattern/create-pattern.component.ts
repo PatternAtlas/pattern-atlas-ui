@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { TdTextEditorComponent } from '@covalent/text-editor';
 import PatternLanguage from '../../core/model/pattern-language.model';
 import { DefaultPlLoaderService } from '../../core/service/loader/default-pl-loader.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IriConverter } from '../../core/util/iri-converter';
 import { Logo } from '../../core/service/data/Logo.interface';
 import { GithubPersistenceService } from '../../core/service/github-persistence.service';
@@ -43,7 +43,8 @@ export class CreatePatternComponent implements OnInit {
               private cdr: ChangeDetectorRef,
               private uploadService: GithubPersistenceService,
               private pos: PatternOntologyService,
-              private toastService: ToasterService) {
+              private toastService: ToasterService,
+              private router: Router) {
   }
 
 
@@ -113,15 +114,14 @@ export class CreatePatternComponent implements OnInit {
     const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, patternIris, this.sections);
 
     this.uploadService.updatePL(patternLanguage).pipe(
-      switchMap((res) => {
+      switchMap(() => {
         return this.uploadService.uploadPattern(pattern, patternLanguage);
       })
-    ).subscribe((res) => {
+    ).subscribe(() => {
       this.toastService.pop('success', 'Pattern created');
-    });
+      this.router.navigate(['..'], {relativeTo: this.activatedRoute});
+    }, (error) => this.toastService.pop('error', 'Something went wrong whilecreating the pattern: ' + error.message));
 
-    // this._patternOntologieService.insertNewPatternIndividual(this.getPatternLanguageDefinition());
-    // TODO: save Pattern
   }
 
   getPatternUri(patternName: string, plIri: string): string {
@@ -173,14 +173,15 @@ export class CreatePatternComponent implements OnInit {
 
 
   getDefaultTextForSection(section: Section): string {
+    console.log(section.type);
     const prefix = 'http://www.w3.org/2001/XMLSchema#';
-    if (section.type === (prefix + 'xsd:positiveInteger')) {
+    if (section.type === (prefix + 'positiveInteger') || (section.type === 'xsd:positiveInteger')) {
       return 'Enter a positive Integer.';
     }
-    if (section.type === (prefix + 'xsd:string')) {
+    if (section.type === (prefix + 'string') || (section.type === 'xsd:string')) {
       return 'Enter your text for this section here.';
     }
-    if (section.type === (prefix + 'anyURI')) {
+    if (section.type === (prefix + 'anyURI') || (section.type === 'xsd:anyURI')) {
       return '<Enter/your/URI/or/URL>';
     }
     return 'Enter your input for this section here.';

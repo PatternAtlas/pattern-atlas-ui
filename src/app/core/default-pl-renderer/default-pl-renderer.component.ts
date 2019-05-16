@@ -36,6 +36,7 @@ export class DefaultPlRendererComponent implements OnInit {
               this.loader.loadContentFromStore()
                 .then(result => {
                   this.patterns = Array.from(result.values());
+                  console.log(this.patterns);
                   this.cdr.detectChanges();
                 });
             });
@@ -50,6 +51,12 @@ export class DefaultPlRendererComponent implements OnInit {
         });
     }
 
+  navigate(pattern: PatternInstance): void {
+    this.zone.run(() => {
+      this.router.navigate([IriConverter.convertIriToId(pattern.uri)], {relativeTo: this.activatedRoute});
+    });
+  }
+
   goToPatternCreation() {
     this.zone.run(() => {
       this.router.navigate(['create-pattern'], {relativeTo: this.activatedRoute});
@@ -58,5 +65,9 @@ export class DefaultPlRendererComponent implements OnInit {
 
   getNameForPattern(pattern: PatternInstance) {
     return IriConverter.extractIndividualNameFromIri(pattern.uri);
+  }
+
+  getSectionName(patternSection: string) {
+    return patternSection.split('#has')[1];
   }
 }

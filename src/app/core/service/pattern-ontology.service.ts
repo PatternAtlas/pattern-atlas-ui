@@ -507,4 +507,22 @@ export class PatternOntologyService implements SparqlExecutor {
     }`;
     return this.exec(qryPatternGraphs, [IriConverter.getFileName(graphIri)]);
   }
+
+
+  async getPatternProperties(graphIri: string): Promise<any[]> {
+    const qryPatternGraph = `SELECT DISTINCT ?property ?predicate WHERE {
+  { ?pattern a owl:NamedIndividual . 
+    ?pattern ?property ?o
+    FILTER(?property != rdf:type)
+  }
+} `;
+    return this.exec(qryPatternGraph, [IriConverter.getFileName(graphIri)]);
+  }
+
+  async allTriples(graphIri: string): Promise<any[]> {
+    const qryPatternGraph = `SELECT * WHERE {
+   ?subject ?predicate ?object .
+} `;
+    return this.exec(qryPatternGraph, [IriConverter.getFileName(graphIri)]);
+  }
 }

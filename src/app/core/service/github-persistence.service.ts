@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { GithubConfigFile } from './data/GithubConfigFile.interface';
@@ -149,9 +149,7 @@ export class GithubPersistenceService {
 
   requestOAuthToken(): Observable<any> {
     const params = new HttpParams()
-      .set('scope', `repo repo:status write:repo_hook read:repo_hook admin:org admin:public_key write:public_key read:public_key admin:org_hook gist notifications user read:user user:email user:follow delete_repo write:discussion read:discussion write:packages read:packages admin:gpg_key write:gpg_key read:gpg_key`);
-    const headers = new HttpHeaders()
-      .set('Content-Type', 'text/xml');
+      .set('scope', `repo`);
     return this.getGithubAppConfig().pipe(
       tap((config: GithubAppConfig) => {
         params.set('client_id', config.client_id);
