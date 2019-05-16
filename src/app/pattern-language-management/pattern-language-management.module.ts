@@ -41,6 +41,8 @@ import { CreateEditPatternLanguageComponent } from './create-edit-pattern-langua
 import { CreatePatternComponent } from './create-pattern/create-pattern.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ProcessOauthCallbackComponent } from '../core/component/process-oauth-callback/process-oauth-callback.component';
+import { ToasterModule } from 'angular2-toaster';
 
 @NgModule({
     imports: [
@@ -61,7 +63,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
       MatGridListModule,
       ReactiveFormsModule,
       FlexLayoutModule,
-      MatRadioModule
+      MatRadioModule,
+      ToasterModule
     ],
     declarations: [
         PatternLanguageManagementComponent,
@@ -70,7 +73,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         PatternContainerComponent,
         PatternContainerDirective,
       CreateEditPatternLanguageComponent,
-      CreatePatternComponent
+      CreatePatternComponent,
+      ProcessOauthCallbackComponent
     ],
   entryComponents: [
     CreateEditPatternLanguageComponent

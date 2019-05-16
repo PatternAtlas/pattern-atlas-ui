@@ -17,9 +17,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent } from './page-not-found.component';
 import { AdministrationComponent } from './administration.component';
 import { TestComponent } from './test/test.component';
+import { ProcessOauthCallbackComponent } from './core/component/process-oauth-callback/process-oauth-callback.component';
+import { ToasterModule } from 'angular2-toaster';
 
 const routes: Routes = [
-    {
+  {
+    path: 'oauth-callback',
+    component: ProcessOauthCallbackComponent
+  }, {
         path: '',
         redirectTo: 'patternlanguages',
         pathMatch: 'full'
@@ -39,7 +44,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes, {useHash: true})],
+  imports: [RouterModule.forRoot(routes, {useHash: false}), ToasterModule.forRoot()],
     exports: [RouterModule]
 })
 export class AppRoutingModule {

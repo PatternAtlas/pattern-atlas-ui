@@ -21,9 +21,11 @@ import { globals } from '../../globals';
 import { LinkedOpenPatternsLoader } from '../../core/service/loader/pattern-language-loader/linked-open-patterns-loader.service';
 import { CreateEditPatternLanguageComponent } from '../create-edit-pattern-language/create-edit-pattern-language.component';
 import { MatDialog } from '@angular/material';
-import { UploadDocumentsService } from '../../core/service/upload-documents.service';
+import { GithubPersistenceService } from '../../core/service/github-persistence.service';
 import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
-import { switchMap } from 'rxjs/internal/operators';
+import { switchMap, tap } from 'rxjs/internal/operators';
+import { CookieService } from 'ngx-cookie-service';
+import { ToasterService } from 'angular2-toaster';
 
 @Component({
     selector: 'pp-pattern-language-management',
@@ -38,8 +40,9 @@ export class PatternLanguageManagementComponent implements OnInit {
     private urlPatternPedia = globals.urlPatternRepoOntology;
     private patternPediaInstance = globals.iriPatternRepoInstance;
     private loadLocally = globals.loadOntologyLocally;
+  showAuthentificationButton = true;
 
-    patternLanguages: Array<PatternLanguage>;
+  patternLanguages: Array<PatternLanguage>;
 
     constructor(private pos: PatternOntologyService,
                 private cdr: ChangeDetectorRef,
@@ -49,7 +52,9 @@ export class PatternLanguageManagementComponent implements OnInit {
                 private zone: NgZone,
                 private loader: LinkedOpenPatternsLoader,
                 private dialog: MatDialog,
-                private uploadService: UploadDocumentsService) {
+                private uploadService: GithubPersistenceService,
+                private _cookieService: CookieService,
+                private _toasterService: ToasterService) {
     }
 
     getTurtle(): void {
@@ -70,7 +75,8 @@ export class PatternLanguageManagementComponent implements OnInit {
                 }
                 return 0;
             });
-      console.log(this.patternLanguages);
+      this.showAuthentificationButton = !this._cookieService.get('patternpedia_github_token');
+
     }
 
     async loadLocallyHostedOntos(): Promise<void> {
@@ -88,7 +94,7 @@ export class PatternLanguageManagementComponent implements OnInit {
                         return 0;
                     });
                 this.cdr.detectChanges();
-              console.log('PL:')
+
 
             });
     }
@@ -109,8 +115,8 @@ export class PatternLanguageManagementComponent implements OnInit {
                     }
                     return 0;
                 });
-          console.log(this.patternLanguages);
-            this.cdr.detectChanges();
+          this._toasterService.pop('success', 'Loaded patternlanguages');
+          this.cdr.detectChanges();
         });
     }
 
@@ -130,6 +136,10 @@ export class PatternLanguageManagementComponent implements OnInit {
             .subscribe(() => this.ngOnInit());
     }
 
+  getOAuthToken(): void {
+    window.open('https://github.com/login/oauth/authorize?client_id=2c81550780e16f8c2642&scope=repo', '_blank');
+  }
+
   goToPatternLanguageCreation(): void{
     this.pos.getOntologyAsTurtle().subscribe(res => console.log(res));
     const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent);
@@ -144,11 +154,15 @@ export class PatternLanguageManagementComponent implements OnInit {
         switchMap(() => {
           return this.uploadService.addPatternLanguageToPatternPedia(patternlanguage, this.patternLanguages);
         }),
+        tap(() => this._toasterService.pop('success', 'Created new patternlanguage')),
         switchMap(() => {
           return this.pos.insertNewPatternLanguageIndividual(patternlanguage);
         })
       ).subscribe((res) => {
-          console.log(res);
+          this._toasterService.pop('success', 'Created new patternlanguage');
+        },
+        (error) => {
+          this._toasterService.pop('error', `An error occured while creating the patternlanguage: ${error.message}`);
         }
       );
     });

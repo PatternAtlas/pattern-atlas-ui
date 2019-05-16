@@ -32,8 +32,8 @@ const routes: Routes = [
                 path: '',
                 component: PatternLanguageManagementComponent
             }, {
-                path: ':plid',
-                component: PatternLanguageContainerComponent,
+            path: ':plid',
+            component: PatternLanguageContainerComponent,
           }, {
             path: ':plid/create-pattern',
             component: CreatePatternComponent,

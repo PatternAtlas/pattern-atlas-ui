@@ -21,7 +21,7 @@ import { DefaultPatternRendererComponent } from './default-pattern-renderer/defa
 import { ComponentRegistryService } from './service/component-registry.service';
 import { LinkedOpenPatternsLoader } from './service/loader/pattern-language-loader/linked-open-patterns-loader.service';
 import { PrettyJsonModule } from 'angular2-prettyjson';
-import { MatButtonModule, MatCardModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatProgressSpinnerModule } from '@angular/material';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { MdEditorComponent } from './component/md-editor/md-editor.component';
 import { CovalentTextEditorModule } from '@covalent/text-editor';
@@ -36,10 +36,11 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         TextFieldModule,
       CovalentTextEditorModule,
       MatCardModule,
-      FlexLayoutModule
+      FlexLayoutModule,
+      MatProgressSpinnerModule
 
     ],
-  exports: [CovalentTextEditorModule, EmitEventOnKeyupDirective],
+  exports: [CovalentTextEditorModule, EmitEventOnKeyupDirective, MatProgressSpinnerModule],
     providers: [
         PatternOntologyService,
         LinkedOpenPatternsLoader

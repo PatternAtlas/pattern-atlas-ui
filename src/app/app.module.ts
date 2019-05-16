@@ -32,6 +32,8 @@ import { NgxMdModule } from 'ngx-md';
 import { CovalentTextEditorModule } from '@covalent/text-editor';
 import { TestComponent } from './test/test.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { CookieService } from 'ngx-cookie-service';
+import { ToasterModule } from 'angular2-toaster';
 
 @NgModule({
     declarations: [
@@ -39,7 +41,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         PageNotFoundComponent,
         LandingPageComponent,
         AdministrationComponent,
-        TestComponent
+      TestComponent
     ],
     imports: [
         BrowserModule,
@@ -59,10 +61,12 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         HttpClientModule,
         AppRoutingModule,
       ExtensionsModule,
-      FlexLayoutModule
+      FlexLayoutModule, ToasterModule.forRoot()
     ],
-    providers: [],
+  providers: [CookieService],
     bootstrap: [AppComponent]
 })
 export class AppModule {
 }
+
+

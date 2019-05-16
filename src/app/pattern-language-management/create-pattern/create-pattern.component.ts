@@ -5,7 +5,7 @@ import { DefaultPlLoaderService } from '../../core/service/loader/default-pl-loa
 import { ActivatedRoute } from '@angular/router';
 import { IriConverter } from '../../core/util/iri-converter';
 import { Logo } from '../../core/service/data/Logo.interface';
-import { UploadDocumentsService } from '../../core/service/upload-documents.service';
+import { GithubPersistenceService } from '../../core/service/github-persistence.service';
 import { switchMap } from 'rxjs/internal/operators';
 import * as marked from 'marked';
 import { TokensList } from 'marked';
@@ -39,7 +39,7 @@ export class CreatePatternComponent implements OnInit {
 
   constructor(private loader: DefaultPlLoaderService,
               private activatedRoute: ActivatedRoute,
-              private cdr: ChangeDetectorRef, private uploadService: UploadDocumentsService, private pos: PatternOntologyService) {
+              private cdr: ChangeDetectorRef, private uploadService: GithubPersistenceService, private pos: PatternOntologyService) {
   }
 
 
