@@ -92,7 +92,7 @@ class PatternLanguage {
       if (section.isSingleton) {
         ary.push(`${'\t'.repeat(3)} owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ; `);
       }
-      ary.push(`${'\t'.repeat(3)} owl:onDataRange ${section.type}`);
+      ary.push(`${'\t'.repeat(3)} owl:onDataRange <${section.type}>`);
       ary.push(`${'\t'.repeat(4)}] ${index === this.sections.length - 1 ? '.' : ','}`);
       ary.push(`\n`);
     });

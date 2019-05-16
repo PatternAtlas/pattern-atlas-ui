@@ -13,6 +13,7 @@ import Pattern from '../../core/model/pattern.model';
 import { PatternOntologyService } from '../../core/service/pattern-ontology.service';
 import { Section } from '../../core/model/section.model';
 import { SectionResponse } from '../../core/service/data/SectionResponse.interface';
+import { ToasterService } from 'angular2-toaster';
 
 
 @Component({
@@ -39,7 +40,10 @@ export class CreatePatternComponent implements OnInit {
 
   constructor(private loader: DefaultPlLoaderService,
               private activatedRoute: ActivatedRoute,
-              private cdr: ChangeDetectorRef, private uploadService: GithubPersistenceService, private pos: PatternOntologyService) {
+              private cdr: ChangeDetectorRef,
+              private uploadService: GithubPersistenceService,
+              private pos: PatternOntologyService,
+              private toastService: ToasterService) {
   }
 
 
@@ -113,7 +117,7 @@ export class CreatePatternComponent implements OnInit {
         return this.uploadService.uploadPattern(pattern, patternLanguage);
       })
     ).subscribe((res) => {
-      console.log(res);
+      this.toastService.pop('success', 'Pattern created');
     });
 
     // this._patternOntologieService.insertNewPatternIndividual(this.getPatternLanguageDefinition());
