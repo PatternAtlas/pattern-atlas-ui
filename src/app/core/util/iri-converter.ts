@@ -24,7 +24,7 @@ export class IriConverter {
     }
 
   static getExactTtlFileUrl(iri: string): string {
-    return iri;
+    return iri.includes('patternlanguages/') ? iri : iri + '/' + this.extractIndividualNameFromIri(iri) + '.ttl';
   }
 
   static getFileName(iri: string): string {
@@ -32,7 +32,8 @@ export class IriConverter {
     }
 
   static extractIndividualNameFromIri(iri: string): string {
-    return iri.split('#')[1];
+    return iri.includes('#') ? iri.split('#')[1] :
+      iri.split('/')[iri.split('/').length - 1];
   }
 
   static getURL(patternlanguageIri: string) {
@@ -53,4 +54,10 @@ export class IriConverter {
       return this.getURL(graph.value);
     });
   }
+
+  static getSectionName(patternSection: string) {
+    return patternSection.split('#has')[1];
+  }
+
+
 }

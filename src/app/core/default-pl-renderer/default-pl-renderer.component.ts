@@ -68,6 +68,6 @@ export class DefaultPlRendererComponent implements OnInit {
   }
 
   getSectionName(patternSection: string) {
-    return patternSection.split('#has')[1];
+    return IriConverter.getSectionName(patternSection);
   }
 }

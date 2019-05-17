@@ -24,12 +24,15 @@ import { Logo } from './data/Logo.interface';
 import { Import } from './data/Import.interface';
 import { QueriedData } from './data/QueriedData.interface';
 import { SectionResponse } from './data/SectionResponse.interface';
+import { CookieService } from 'ngx-cookie-service';
+import { GithubPersistenceService } from './github-persistence.service';
+import { GithubFileResponse } from './data/GithubFileResponse.interface';
 
 @Injectable()
 export class PatternOntologyService implements SparqlExecutor {
     private _store;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private cookieService: CookieService, private githubPersistenceService: GithubPersistenceService) {
         this.createNewStore()
             .then(() => console.log('Created new Store'));
     }
@@ -186,14 +189,28 @@ export class PatternOntologyService implements SparqlExecutor {
         return of(null);
       }
     const observables = uri.map((iri) => {
+      if (this.cookieService.get('patternpedia_github_token')) {
+        const githubUrl = this.githubPersistenceService.githubBaseUrl;
+        let url = IriConverter.getExactTtlFileUrl(iri.replace('http://purl.org/patternpedia', githubUrl));
+        if (iri === 'http://purl.org/patternpedia') {
+          url = githubUrl + '/patternpedia.ttl';
+        }
+        return this.githubPersistenceService.getFile(url).pipe(
+          map((fileResponse: GithubFileResponse) => {
+            return atob(fileResponse.content);
+          }));
+      }
         return this.http.get(iri, {responseType: 'text'});
       });
         return forkJoin(observables);
     }
 
   async loadLinkedOpenPatternGraphs() {
-      const patternpediaResult = await (this.http.get('https:/purl.org/patternpedia', {responseType: 'text'}).toPromise());
-      console.log('Result: ', await this.loadToStore('text/turtle',
+    const githubUrl = this.githubPersistenceService.githubBaseUrl;
+    let patternpediaResult = await this.http.get(githubUrl + '/patternpedia.ttl').toPromise();
+    console.log(patternpediaResult.content);
+    patternpediaResult = atob(patternpediaResult.content);
+    console.log('Result: ', await this.loadToStore('text/turtle',
         patternpediaResult, 'http://purl.org/patternpedia'));
       const store = this.store;
       this.registerDefaultNameSpaces(store);
@@ -512,7 +529,7 @@ export class PatternOntologyService implements SparqlExecutor {
   async getPatternProperties(graphIri: string): Promise<any[]> {
     const qryPatternGraph = `SELECT DISTINCT ?property ?predicate WHERE {
   { ?pattern a owl:NamedIndividual . 
-    ?pattern ?property ?o
+    ?pattern ?property ?predicate
     FILTER(?property != rdf:type)
   }
 } `;

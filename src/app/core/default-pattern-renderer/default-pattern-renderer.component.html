@@ -1,3 +1,5 @@
-<p>
-  default-pattern-renderer works!
-</p>
+<div *ngFor="let property of patternProperties">
+  <p><b>{{getSectionName(property.property.value)}}</b></p>
+  <p>{{property.predicate.value}}</p>
+
+</div>

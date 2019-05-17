@@ -12,8 +12,7 @@ export class DefaultPatternLoaderService extends Loader<any> {
   }
 
   selectContentFromStore(): Promise<any> {
-    console.log(this.supportedIRI);
-    return this.pos.allTriples(this.supportedIRI);
+    return this.pos.getPatternProperties(this.supportedIRI);
   }
 
   mapTriples(triples: any): Promise<Map<string, any>> {
