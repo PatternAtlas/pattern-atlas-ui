@@ -208,9 +208,9 @@ export class PatternOntologyService implements SparqlExecutor {
   async loadLinkedOpenPatternGraphs() {
     const githubUrl = this.githubPersistenceService.githubBaseUrl;
     let patternpediaResult = await this.http.get(githubUrl + '/patternpedia.ttl').toPromise();
-    patternpediaResult = atob(patternpediaResult.content);
+    const loadedResult = atob((<GithubFileResponse> patternpediaResult).content);
     console.log('Result: ', await this.loadToStore('text/turtle',
-        patternpediaResult, 'http://purl.org/patternpedia'));
+      loadedResult, 'http://purl.org/patternpedia'));
       const store = this.store;
       this.registerDefaultNameSpaces(store);
         console.log('LOADING Ontologies...');
