@@ -67,7 +67,7 @@ export class CreatePatternComponent implements OnInit {
 
     this.plName = IriConverter.extractIndividualNameFromIri(this.plIri);
 
-    this.loader.getPLProperties(this.plIri).then((res: SectionResponse[]) => {
+    this.loader.getPLSections(this.plIri).then((res: SectionResponse[]) => {
       this.sections = res.map((iri: any) => {
         return this.reconstructSectionFromQueryResult(iri);
       });

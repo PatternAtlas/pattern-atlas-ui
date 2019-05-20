@@ -72,7 +72,7 @@ class Pattern {
     ary.push(`<${IriConverter.getFileName(this.iri)}#hasName> "${this.name}" ;`);
     const sections = Array.from(Object.keys(this.sectionsProperties));
     sections.forEach((key, index) => {
-      ary.push(`<${IriConverter.getFileName(this.iri)}#has${key}>
+      ary.push(`<${IriConverter.getFileName(this.patternLanguageIri)}#has${key}>
        "${this.sectionsProperties[key]}" ${index === sections.length - 1 ? '.' : ';'}`);
     });
     return ary.join('\n');

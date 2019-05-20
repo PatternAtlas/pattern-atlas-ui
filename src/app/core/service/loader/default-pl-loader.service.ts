@@ -60,7 +60,7 @@ export class DefaultPlLoaderService extends Loader<any> {
     return this.pos.getOWLImports(supportedIri);
   }
 
-  getPLProperties(supportedIri: string): Promise<SectionResponse[]> {
+  getPLSections(supportedIri: string): Promise<SectionResponse[]> {
     return this.pos.getPropertiesOfPL(supportedIri);
   }
 

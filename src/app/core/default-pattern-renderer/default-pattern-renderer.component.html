@@ -1,5 +1,6 @@
 <div *ngFor="let property of patternProperties">
-  <p><b>{{getSectionName(property.property.value)}}</b></p>
+  <p><b>{{getSectionName(property.property.value)}}</b> <i>
+    {{getSectionInfo(property.property.value)?.dataRange.value}}</i></p>
   <p>{{property.predicate.value}}</p>
 
 </div>
