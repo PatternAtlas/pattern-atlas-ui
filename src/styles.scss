@@ -117,8 +117,13 @@ body{
 
 .mat-card {
   border-top: 1px solid rgba(0, 0, 0, .14);
-  min-height: 16rem;
+  min-height: 18rem;
   word-break: break-all;
+}
+
+.mat-card-actions {
+  height: unset;
+  margin-bottom: unset;
 }
 
 .mat-card-image {
@@ -137,6 +142,7 @@ body{
     background-color: lightgray;
     cursor: pointer;
   }
+  max-height: 21em;
 }
 
 .mat-form-field-appearance-outline .mat-form-field-infix {
