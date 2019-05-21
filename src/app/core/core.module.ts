@@ -27,6 +27,7 @@ import { MdEditorComponent } from './component/md-editor/md-editor.component';
 import { CovalentTextEditorModule } from '@covalent/text-editor';
 import { EmitEventOnKeyupDirective } from './directives/emit-event-on-keyup.directive';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { NavigateBackComponent } from './component/navigate-back/navigate-back.component';
 
 @NgModule({
     imports: [
@@ -40,7 +41,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
       MatProgressSpinnerModule
 
     ],
-  exports: [CovalentTextEditorModule, EmitEventOnKeyupDirective, MatProgressSpinnerModule],
+  exports: [CovalentTextEditorModule, EmitEventOnKeyupDirective, MatProgressSpinnerModule, NavigateBackComponent],
     providers: [
         PatternOntologyService,
         LinkedOpenPatternsLoader
@@ -49,7 +50,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         DefaultPlRendererComponent,
         DefaultPatternRendererComponent,
       MdEditorComponent,
-      EmitEventOnKeyupDirective
+      EmitEventOnKeyupDirective,
+      NavigateBackComponent
     ],
     entryComponents: [
         DefaultPlRendererComponent,

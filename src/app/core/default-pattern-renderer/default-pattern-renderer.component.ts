@@ -23,6 +23,8 @@ export class DefaultPatternRendererComponent implements OnInit {
   patternIri: string;
   patternProperties: PatternProperty[];
   sectionInfo: SectionResponse[];
+  isLoadingPattern = true;
+  isLoadingSection = true;
 
 
   ngOnInit() {
@@ -35,10 +37,12 @@ export class DefaultPatternRendererComponent implements OnInit {
       this.toasterService.pop('success', 'Loaded Pattern Infos');
       this.patternLoaderService.selectContentFromStore().then((result) => {
         this.patternProperties = result;
+        this.isLoadingPattern = false;
       });
 
       this.plLoader.getPLSections(this.plIri).then((result: SectionResponse[]) => {
         this.sectionInfo = result;
+        this.isLoadingSection = false;
       });
     });
 

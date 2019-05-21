@@ -1,16 +1,15 @@
-<button style="margin-bottom: 20px" mat-raised-button color="primary" (click)="navigateBack()"><i
-  class="material-icons">keyboard_backspace</i></button>
-
+<pp-navigate-back></pp-navigate-back>
 <h2>Pattern Language: {{plName}}</h2>
 <div fxLayout="row" fxLayoutAlign="start center">
-  <mat-card class="landing-card" *ngFor="let pattern of patterns">
+  <mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>
+  <mat-card class="landing-card fixed-height-card" *ngFor="let pattern of patterns">
     <mat-card-header>
       <mat-card-title>
         <b>{{getNameForPattern(pattern)}}</b>
 
       </mat-card-title>
     </mat-card-header>
-    <div *ngFor="let patternSection of pattern.sectionProperties.keys()">
+    <div *ngFor="let patternSection of getKeys(pattern.sectionProperties)">
       <span><b>{{getSectionName(patternSection)}}</b>: {{pattern.sectionProperties.get(patternSection)}}</span><br>
     </div>
     <mat-card-actions>

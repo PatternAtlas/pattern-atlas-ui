@@ -25,7 +25,7 @@
 
 </mat-toolbar>
 <div class="container">
-  <mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>
+  <mat-progress-spinner mode="indeterminate" *ngIf="isLoadingPattern"></mat-progress-spinner>
   <mat-card class="landing-card" *ngFor="let patternLanguage of patternLanguages">
         <mat-card-header>
             <img *ngIf="patternLanguage.logos && patternLanguage.logos[0]; else noImageAvatar" mat-card-avatar [src]="patternLanguage.logos[0]">
@@ -49,7 +49,7 @@
             </div>
         </mat-card-actions>
     </mat-card>
-  <mat-card class="landing-card center-content add-card" (click)="goToPatternLanguageCreation()" *ngIf="!isLoading">
+  <mat-card class="landing-card center-content add-card" (click)="goToPatternLanguageCreation()" *ngIf="!isLoadingPattern">
         <i class="material-icons">add_box</i>
   </mat-card>
 </div>

@@ -12,11 +12,12 @@ import { PatternInstance } from '../model/PatternInstance.interface';
 })
 export class DefaultPlRendererComponent implements OnInit {
 
-  patterns: PatternInstance[];
+  patterns: PatternInstance[] = [];
   plIri: string;
     plName: string;
+  isLoading = true;
 
-    constructor(private loader: DefaultPlLoaderService,
+  constructor(private loader: DefaultPlLoaderService,
                 private activatedRoute: ActivatedRoute,
                 private cdr: ChangeDetectorRef,
                 private zone: NgZone,
@@ -36,7 +37,7 @@ export class DefaultPlRendererComponent implements OnInit {
               this.loader.loadContentFromStore()
                 .then(result => {
                   this.patterns = Array.from(result.values());
-                  console.log(this.patterns);
+                  this.isLoading = false;
                   this.cdr.detectChanges();
                 });
             });
@@ -44,12 +45,9 @@ export class DefaultPlRendererComponent implements OnInit {
         );
     }
 
-
-  navigateBack(): void {
-        this.zone.run(() => {
-            this.router.navigate(['..'], {relativeTo: this.activatedRoute});
-        });
-    }
+  getKeys(map) {
+    return Array.from(map.keys());
+  }
 
   navigate(pattern: PatternInstance): void {
     this.zone.run(() => {
