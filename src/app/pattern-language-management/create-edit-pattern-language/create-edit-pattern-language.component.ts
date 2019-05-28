@@ -24,9 +24,11 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   sections: string[] = ['Icon', 'Context', 'Driving Question', 'Solution'];
   sectionNames: string[] = ['Icon', 'Context', 'Driving Question', 'Solution', 'Solution Sketches'];
   patternLanguageForm: FormGroup;
+  prefixForm: FormGroup;
   iconPreviewVisible = false;
   saveRequested = false;
   sectionDetailsGroup: FormGroup;
+  prefixes = ['xsd', 'dctype'];
 
   sectionFormModel: {[key in keyof SectionRestrictionForm]?: FormControl} = {
     type: new FormControl('xsd:string', Validators.required),
@@ -62,15 +64,21 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     this.sectionDetailsGroup = this._fb.group({
       sectionsArray: this._fb.array([])
     });
+
+    this.prefixForm = this._fb.group({
+      prefixArray: this._fb.array([])
+    });
+
+    for (const prefix of this.prefixes) {
+      this.prefixArray.push(
+        new FormGroup({
+          prefixname: new FormControl(prefix),
+          checked: new FormControl(false)
+        })
+      );
+    }
   }
 
-  createSection(sectionName: string): FormGroup {
-
-    const form: FormGroup = new FormGroup(this.sectionFormModel);
-    form.get('name').patchValue(sectionName);
-    form.get('restrictionType').patchValue('some');
-    return form;
-  }
 
   @ViewChild('sectionInput') sectionInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
@@ -144,8 +152,11 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     }
   }
 
-  addSectionDetail(sectionName: string): void {
-    (<FormArray>this.sectionsArray).push(new FormGroup({
+  addSectionDetail(sectionName: string, i?: number): void {
+    if (i === undefined || i === null && i !== 0) { // if no index specified, add at the end
+      i = this.sectionsArray.length;
+    }
+    (<FormArray>this.sectionsArray).insert(i, new FormGroup({
       type: new FormControl('xsd:string', Validators.required),
       cardinality: new FormControl(0),
       restrictionType: new FormControl('only'),
@@ -159,7 +170,11 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     return this.sectionDetailsGroup.get('sectionsArray') as FormArray;
   }
 
-  nextStep(): void {
+  get prefixArray(): FormArray {
+    return this.prefixForm.get('prefixArray') as FormArray;
+  }
+
+  initForSecondStep(): void {
     this.saveRequested = true;
     this.patternLanguageForm.markAsTouched();
     (<any>Object).values(this.patternLanguageForm.controls).forEach(control => {
@@ -173,6 +188,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
       }
       this.sections.forEach((section) => this.addSectionDetail(section));
     }
+
 
   }
 
@@ -201,6 +217,9 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   }
 
 
+  deleteSectionRestriction(i: number): void {
+    this.sectionsArray.removeAt(i);
+  }
 }
 
 

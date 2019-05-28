@@ -89,8 +89,10 @@ class PatternLanguage {
     this.sections.forEach((section, index) => {
       ary.push(`${'\t'.repeat(3)}[ rdf:type owl:Restriction ;`);
       ary.push(`${'\t'.repeat(3)} owl:onProperty ${this.getSectionIdentifier(section.name)} ; `);
-      if (section.isSingleton) {
-        ary.push(`${'\t'.repeat(3)} owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ; `);
+      if (section.max === section.min && section.min !== null) {
+        ary.push(`${'\t'.repeat(3)} owl:qualifiedCardinality "${section.min}"^^xsd:nonNegativeInteger ; `);
+      } else if (section.max) {
+        
       }
       ary.push(`${'\t'.repeat(3)} owl:onDataRange <${section.type}>`);
       ary.push(`${'\t'.repeat(4)}] ${index === this.sections.length - 1 ? '.' : ','}`);

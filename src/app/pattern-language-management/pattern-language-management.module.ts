@@ -27,6 +27,7 @@ import {
   MatBadgeModule,
   MatButtonModule,
   MatCardModule,
+  MatCheckboxModule,
   MatChipsModule,
   MatDialogModule,
   MatGridListModule,
@@ -66,6 +67,7 @@ import { ToasterModule } from 'angular2-toaster';
       FlexLayoutModule,
       MatSelectModule,
       MatRadioModule,
+      MatCheckboxModule,
       ToasterModule
     ],
     declarations: [

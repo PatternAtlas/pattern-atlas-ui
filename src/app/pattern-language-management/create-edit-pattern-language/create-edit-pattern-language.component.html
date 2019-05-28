@@ -8,7 +8,7 @@
 <div mat-dialog-content [formGroup]="patternLanguageForm">
 <div fxLayout="column" fxLayoutAlign="space-around center">
   <mat-card fxLayout="column" fxLayoutAlign="space-around center"
-            style="margin: 10px;" *ngIf="isFirstStep; else templateName">
+            style="margin: 10px;" *ngIf="isFirstStep; else secondStep">
     <mat-form-field appearance="outline" style="width: 24em;" [floatLabel]="'always'">
       <mat-label>Pattern language name</mat-label>
       <input matInput formControlName="name" placeholder="Enter the name of your Pattern Language">
@@ -77,16 +77,34 @@
     class="material-icons"><i className="material-icons">arrow_backward</i></i>
   </button>
 
+
+  <button mat-raised-button color="primary" *ngIf="!isFirstStep" (click)="initForSecondStep()"><i
+    class="material-icons">restore_page</i> Reset all Restrictions
+  </button>
+
   <button mat-raised-button color="primary" *ngIf="!isFirstStep" (click)="save()"><i
     class="material-icons">save</i> Save patternlanguage
   </button>
 
-  <button mat-raised-button color="primary" (click)="nextStep()" *ngIf="isFirstStep"><i
+
+  <button mat-raised-button color="primary" (click)="initForSecondStep()" *ngIf="isFirstStep"><i
     class="material-icons"><i className="material-icons">arrow_forward</i></i>
   </button>
 </div>
 
-<ng-template #templateName>
+<ng-template #secondStep>
+  <div [formGroup]="prefixForm">
+    <div formArrayName="prefixArray">
+      <div *ngFor="let prefixControl of prefixArray.controls,  let ind = index">
+        <div [formGroupName]="ind">
+
+          <mat-checkbox matInput formControlName="checked"> {{prefixControl.value.prefixname}}</mat-checkbox>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div [formGroup]="sectionDetailsGroup">
     <div formArrayName="sectionsArray">
       <mat-form-field appearance="outline" style="width: 24em" [floatLabel]="'always'">
@@ -138,6 +156,11 @@
                 </ng-template>
 
               </div>
+              <i (click)="deleteSectionRestriction(i)"
+                 class="material-icons">delete</i>
+              <i (click)="addSectionDetail(section.value.name, i+1)"
+                 class="material-icons">add_circle</i>
+
             </div>
           </div>
         </mat-chip-list>
