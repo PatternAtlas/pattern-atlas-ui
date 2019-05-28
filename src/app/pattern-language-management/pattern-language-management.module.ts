@@ -33,6 +33,7 @@ import {
   MatIconModule,
   MatInputModule,
   MatRadioModule,
+  MatSelectModule,
   MatSidenavModule,
   MatTabsModule,
   MatToolbarModule
@@ -63,6 +64,7 @@ import { ToasterModule } from 'angular2-toaster';
       MatGridListModule,
       ReactiveFormsModule,
       FlexLayoutModule,
+      MatSelectModule,
       MatRadioModule,
       ToasterModule
     ],

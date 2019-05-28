@@ -22,12 +22,13 @@ export class DefaultPatternRendererComponent implements OnInit {
   plIri: string;
   patternIri: string;
   patternProperties: PatternProperty[];
-  sectionInfo: SectionResponse[];
+  sectionInfos: SectionResponse[];
   isLoadingPattern = true;
   isLoadingSection = true;
 
 
   ngOnInit() {
+
     this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
     this.patternIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('pid'));
     this.patternLoaderService.supportedIRI = this.patternIri;
@@ -41,7 +42,7 @@ export class DefaultPatternRendererComponent implements OnInit {
       });
 
       this.plLoader.getPLSections(this.plIri).then((result: SectionResponse[]) => {
-        this.sectionInfo = result;
+        this.sectionInfos = result;
         this.isLoadingSection = false;
       });
     });
@@ -54,10 +55,10 @@ export class DefaultPatternRendererComponent implements OnInit {
   }
 
   getSectionInfo(iri: string): SectionResponse {
-    if (!iri || !this.sectionInfo) {
+    if (!iri || !this.sectionInfos) {
       return;
     }
-    return this.sectionInfo.filter(s => s.property.value === iri)[0];
+    return this.sectionInfos.filter(s => s.property.value === iri)[0];
   }
 
 }

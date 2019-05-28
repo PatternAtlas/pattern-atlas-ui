@@ -92,7 +92,8 @@ export class CreatePatternComponent implements OnInit {
   reconstructSectionFromQueryResult(queryResult: SectionResponse): Section {
     return <Section>{
       name: queryResult.property.value.split('#has')[1],
-      isSingleton: queryResult.cardinality ? this.matchesOne(queryResult.cardinality.value.split('^^')[0]) : false,
+      min: queryResult.cardinality ? 1 : null,
+      max: queryResult.cardinality ? 1 : null,
       type: queryResult.dataRange.value
     };
   }

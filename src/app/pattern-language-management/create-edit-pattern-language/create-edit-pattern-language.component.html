@@ -90,34 +90,53 @@
   <div [formGroup]="sectionDetailsGroup">
     <div formArrayName="sectionsArray">
       <mat-form-field appearance="outline" style="width: 24em" [floatLabel]="'always'">
-        <mat-label>Sections</mat-label>
+        <mat-label>Section Restrictions</mat-label>
         <mat-chip-list #chipList>
           <div fxLayout="column" fxLayoutAlign="space-around start">
             <div fxLayout="row" fxLayoutAlign="start center"
                  *ngFor="let section of sectionsArray.controls, let i = index">
               <div [formGroupName]="i" fxLayout="row" fxLayoutAlign="start center">
-                <span fxFlexAlign="center">{{i+1}}.</span>
                 <mat-chip fxLayout="row" fxLayoutAlign="initial"
                           [selectable]="selectable"
                           [removable]="removable"
                           (removed)="removeSectionMatChip(section)">
-                  {{sections[i]}}
+                  {{sectionsArray.controls[i].value.name}}
                 </mat-chip>
                 <mat-form-field>
-                  <mat-label>Type</mat-label>
-                  <input type="text" appearance="fill" matInput
-                         formControlName="type"
-                         [matAutocomplete]="auto">
-                  <mat-autocomplete #auto="matAutocomplete">
-                    <mat-option *ngFor="let option of options" [value]="option">
+                  <mat-label>Restriction Type</mat-label>
+                  <mat-select formControlName="restrictionType">
+                    <mat-option *ngFor="let option of restrictionOptions"
+                                [value]="option">
                       {{option}}
                     </mat-option>
-                  </mat-autocomplete>
+                  </mat-select>
                 </mat-form-field>
-                <mat-radio-group aria-label="Select an option" formControlName="isSingleton">
-                  <mat-radio-button [value]="true">max. 1 value</mat-radio-button>
-                  <mat-radio-button [value]="false">unordered List</mat-radio-button>
-                </mat-radio-group>
+
+                <span *ngIf="isCardinalityInputVisible(section)">&mdash;</span>
+                <mat-form-field class="min-max-width"
+                                *ngIf="isCardinalityInputVisible(section); else typeInput">
+
+                  <mat-label>Max</mat-label>
+                  <input matInput type="number" formControlName="cardinality">
+                </mat-form-field>
+
+
+                <ng-template #typeInput>
+                  <span>of</span>
+                  <mat-form-field>
+
+                    <mat-label>Type</mat-label>
+                    <input type="text" appearance="fill" matInput
+                           formControlName="type"
+                           [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete">
+                      <mat-option *ngFor="let option of options" [value]="option">
+                        {{option}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </ng-template>
+
               </div>
             </div>
           </div>

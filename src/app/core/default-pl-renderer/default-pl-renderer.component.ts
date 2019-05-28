@@ -14,7 +14,7 @@ export class DefaultPlRendererComponent implements OnInit {
 
   patterns: PatternInstance[] = [];
   plIri: string;
-    plName: string;
+  plName: string;
   isLoading = true;
 
   constructor(private loader: DefaultPlLoaderService,

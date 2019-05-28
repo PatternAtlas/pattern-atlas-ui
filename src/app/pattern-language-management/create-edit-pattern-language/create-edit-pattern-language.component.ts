@@ -1,10 +1,10 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatDialogRef } from '@angular/material';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/internal/operators';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
+import { DialogPatternLanguageResult, SectionRestrictionForm } from '../data/DialogPatternLanguageResult.interface';
 import { Section } from '../../core/model/section.model';
 
 @Component({
@@ -15,7 +15,6 @@ import { Section } from '../../core/model/section.model';
 export class CreateEditPatternLanguageComponent implements OnInit {
 
   isFirstStep = true;
-  visible = true;
   selectable = true;
   removable = true;
   addOnBlur = true;
@@ -27,10 +26,17 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   patternLanguageForm: FormGroup;
   iconPreviewVisible = false;
   saveRequested = false;
-  sectionDetailsArray: FormArray;
   sectionDetailsGroup: FormGroup;
 
+  sectionFormModel: {[key in keyof SectionRestrictionForm]?: FormControl} = {
+    type: new FormControl('xsd:string', Validators.required),
+    cardinality: new FormControl(0),
+    restrictionType: new FormControl('only'),
+    name: new FormControl(null),
+  };
+
   options: string[] = ['xsd:string', 'xsd:anyURI', 'xsd:int', 'xsd:positiveInteger'];
+  restrictionOptions: string[] = ['only', 'some', 'min', 'exactly', 'max'];
 
 
   @Output() onSaveClicked = new EventEmitter<DialogPatternLanguageResult>();
@@ -59,17 +65,17 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   }
 
   createSection(sectionName: string): FormGroup {
-    return this._fb.group({
-      type: ['xsd:string', [Validators.required]],
-      isSingleton: [true, []],
-      name: [sectionName, []]
-    });
+
+    const form: FormGroup = new FormGroup(this.sectionFormModel);
+    form.get('name').patchValue(sectionName);
+    form.get('restrictionType').patchValue('some');
+    return form;
   }
 
   @ViewChild('sectionInput') sectionInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
-  constructor(public dialogRef: MatDialogRef<CreateEditPatternLanguageComponent>, private  _fb: FormBuilder) {
+  constructor(public dialogRef: MatDialogRef<CreateEditPatternLanguageComponent>, private  _fb: FormBuilder, private cdr: ChangeDetectorRef) {
     this.filteredSections = this.sectionCtrl.valueChanges.pipe(
       startWith(null),
       map((section: string | null) => section ? this._filter(section) : this.sectionNames.slice()));
@@ -121,7 +127,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   }
 
   close(): void {
-    this.dialogRef.close(); // {field: this.data.field, content: this.intialContent});
+    this.dialogRef.close();
   }
 
   save(): void {
@@ -130,15 +136,23 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     if (this.patternLanguageForm.valid && this.sectionDetailsGroup.valid) {
       this.onSaveClicked.emit({
         sections: this.sectionsArray.value.map((sectionFormValue) => {
-          return <Section> {type: sectionFormValue.type, name: sectionFormValue.name, isSingleton: sectionFormValue.isSingleton};
-        }), name: this.name.value, iconUrl: this.iconUrl.value
+          return new Section(sectionFormValue.type, sectionFormValue.name, sectionFormValue.min, sectionFormValue.max);
+        }),
+        name: this.name.value, iconUrl: this.iconUrl.value
       });
       this.dialogRef.close();
     }
   }
 
   addSectionDetail(sectionName: string): void {
-    this.sectionsArray.push(this.createSection(sectionName));
+    (<FormArray>this.sectionsArray).push(new FormGroup({
+      type: new FormControl('xsd:string', Validators.required),
+      cardinality: new FormControl(0),
+      restrictionType: new FormControl('only'),
+      name: new FormControl(sectionName),
+    }));
+    console.log(this.sectionsArray);
+    this.cdr.detectChanges();
   }
 
   get sectionsArray(): FormArray {
@@ -179,6 +193,11 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     if (formControl.hasError('notUrlSafe')) {
       return 'Bitte keine speziellen Zeichen verwenden.';
     }
+  }
+
+
+  isCardinalityInputVisible(section: any): boolean {
+    return section.value.restrictionType === 'max' || section.value.restrictionType === 'min' || section.value.restrictionType === 'exactly';
   }
 
 
