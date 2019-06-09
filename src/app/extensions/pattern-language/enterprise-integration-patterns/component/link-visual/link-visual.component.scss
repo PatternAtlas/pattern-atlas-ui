@@ -1,0 +1,16 @@
+line {
+    stroke-width: 1px;
+    marker-end: url(#end);
+}
+
+.selected {
+    stroke: red;
+}
+
+.not-selected {
+    stroke: #7f7f7f;
+}
+
+.preview {
+    opacity: 0.1;
+}

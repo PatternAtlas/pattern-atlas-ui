@@ -1,0 +1,4561 @@
+{
+    "nodes": [
+        {
+            "group": "Integration Styles",
+            "description": [
+                "Have each application *produce files containing information* that other applications need to consume. *Integrators take the responsibility of transforming files* into different formats. Produce the files at regular intervals according to the nature of the business"
+            ],
+            "name": "File Transfer"
+        },
+        {
+            "group": "Integration Styles",
+            "description": [
+                "Integrate applications by having them *store their data in a single Shared Database*"
+            ],
+            "name": "Shared Database"
+        },
+        {
+            "group": "Integration Styles",
+            "description": [
+                "Develop each application as a *large-scale object or component with encapsulated data*. *Provide an interface to allow other applications to interact* with the running application"
+            ],
+            "name": "Remote Procedure Invocation"
+        },
+        {
+            "group": "Integration Styles",
+            "description": [
+                "Use Messaging to transfer packets of data *frequently, immediately, reliably, and asynchronously*, using customizable formats"
+            ],
+            "name": "Messaging"
+        },
+        {
+            "group": null,
+            "description": [],
+            "name": "Messaging-CLP"
+        },
+        {
+            "group": "Messaging Systems",
+            "description": [
+                "Connect the applications using a Message Channel, where *one application writes* information to the channel and the *other one reads* that information from the channel"
+            ],
+            "name": "Message Channel"
+        },
+        {
+            "group": null,
+            "description": [],
+            "name": "Message Channel-CLP"
+        },
+        {
+            "group": "Messaging Systems",
+            "description": [
+                "Package the information into a Message, *a data record that the messaging system can transmit* through a message channel"
+            ],
+            "name": "Message"
+        },
+        {
+            "group": "Messaging Systems",
+            "description": [
+                "Use the Pipes and Filters *architectural style* to divide a *larger processing task into a sequence of smaller, independent processing steps* (Filters) that are connected by channels (Pipes)"
+            ],
+            "name": "Pipes and Filters"
+        },
+        {
+            "group": null,
+            "description": [],
+            "name": "Pipes and Filters-CLP"
+        },
+        {
+            "group": "Messaging Systems",
+            "description": [
+                "Insert a special filter, a Message Router, which consumes a Message from one Message Channel and republishes it to a *different Message Channel channel depending on a set of conditions*"
+            ],
+            "name": "Message Router"
+        },
+        {
+            "group": "Messaging Systems",
+            "description": [
+                "Use a special filter, a Message Translator, between other filters or applications to *translate one data format into another*"
+            ],
+            "name": "Message Translator"
+        },
+        {
+            "group": "Messaging Systems",
+            "description": [
+                "*Connect an application to a messaging channel* using a Message Endpoint, a client of the messaging system that the application can then use *to send or receive messages*"
+            ],
+            "name": "Message Endpoint"
+        },
+        {
+            "group": "Messaging Channels",
+            "description": [
+                "Send the message on a Point-to-Point Channel, which ensures that *only one receiver will receive* a particular message"
+            ],
+            "name": "Point-to-Point Channel"
+        },
+        {
+            "group": "Messaging Channels",
+            "description": [
+                "Send the event on a Publish-Subscribe Channel, which delivers a *copy of a particular event to each receiver*"
+            ],
+            "name": "Publish-Subscribe Channel"
+        },
+        {
+            "group": "Messaging Channels",
+            "description": [
+                "Use a *separate Datatype Channel for each data type*, so that all data on a particular channel is of the same type"
+            ],
+            "name": "Datatype Channel"
+        },
+        {
+            "group": "Messaging Channels",
+            "description": [
+                "The receiver should move the improper message to an Invalid Message Channel, a special channel *for messages that could not be processed by their receivers*"
+            ],
+            "name": "Invalid Message Channel"
+        },
+        {
+            "group": "Messaging Channels",
+            "description": [
+                "When a messaging system determines that it *cannot or should not deliver a message*, it may elect to move the message to a Dead Letter Channel"
+            ],
+            "name": "Dead Letter Channel"
+        },
+        {
+            "group": "Messaging Channels",
+            "description": [
+                "Use Guaranteed Delivery to make messages *persistent* so that they are *not lost* even if the messaging system crashes"
+            ],
+            "name": "Guaranteed Delivery"
+        },
+        {
+            "group": "Messaging Channels",
+            "description": [
+                "Use a Channel Adapter that can *access the application's API or data* and publish messages on a channel based on this data, and that likewise can receive messages and *invoke functionality inside the application*"
+            ],
+            "name": "Channel Adapter"
+        },
+        {
+            "group": "Messaging Channels",
+            "description": [
+                "Use a Messaging Bridge, a *connection between messaging systems*, to replicate messages between systems"
+            ],
+            "name": "Messaging Bridge"
+        },
+        {
+            "group": null,
+            "description": [],
+            "name": "Messaging Bridge-CLP"
+        },
+        {
+            "group": "Messaging Channels",
+            "description": [
+                "Structure the connecting middleware between these applications as a Message Bus that enables them to *work together using messaging*"
+            ],
+            "name": "Message Bus"
+        },
+        {
+            "group": "Message Construction",
+            "description": [
+                "Use a Command Message to reliably *invoke a procedure in another application*"
+            ],
+            "name": "Command Message"
+        },
+        {
+            "group": "Message Construction",
+            "description": [
+                "Use a Document Message to reliably *transfer a data structure* between applications"
+            ],
+            "name": "Document Message"
+        },
+        {
+            "group": "Message Construction",
+            "description": [
+                "Use an Event Message for reliable, *asynchronous event notification* between applications"
+            ],
+            "name": "Event Message"
+        },
+        {
+            "group": "Message Construction",
+            "description": [
+                "Send a pair of Request-Reply messages, each on its own channel"
+            ],
+            "name": "Request-Reply"
+        },
+        {
+            "group": "Message Construction",
+            "description": [
+                "The request message should contain a Return Address that indicates *where to send the reply message*"
+            ],
+            "name": "Return Address"
+        },
+        {
+            "group": "Message Construction",
+            "description": [
+                "Each reply message should contain a Correlation Identifier, a unique identifier that indicates *which request message this reply is for*"
+            ],
+            "name": "Correlation Identifier"
+        },
+        {
+            "group": "Message Construction",
+            "description": [
+                "Whenever a large set of data may need to be *broken into message-size chunks*, send the data as a Message Sequence and mark *each message with sequence identification fields*"
+            ],
+            "name": "Message Sequence"
+        },
+        {
+            "group": "Message Construction",
+            "description": [
+                "Set the Message Expiration to specify a *time limit how long the message is viable*"
+            ],
+            "name": "Message Expiration"
+        },
+        {
+            "group": "Message Construction",
+            "description": [
+                "Design a data format that includes a Format Indicator, so that the message *specifies what format it is using*"
+            ],
+            "name": "Format Indicator"
+        },
+        {
+            "group": "Message Routing",
+            "description": [
+                "Use a Content-Based Router to *route each message to the correct recipient based on message content*"
+            ],
+            "name": "Content-Based Router"
+        },
+        {
+            "group": "Message Routing",
+            "description": [
+                "Use a special kind of Message Router, a Message Filter, to *eliminate undesired messages from a channel* based on a set of criteria"
+            ],
+            "name": "Message Filter"
+        },
+        {
+            "group": "Message Routing",
+            "description": [
+                "Use a Dynamic Router, a Router that can *self-configure based on special configuration messages* from participating destinations"
+            ],
+            "name": "Dynamic Router"
+        },
+        {
+            "group": "Message Routing",
+            "description": [
+                "Define a *channel for each recipient*. Then use a Recipient List to inspect an incoming message, *determine the list of desired recipients*, and forward the message to all channels associated with the recipients in the list"
+            ],
+            "name": "Recipient List"
+        },
+        {
+            "group": "Message Routing",
+            "description": [
+                "Use a Splitter to break out the *composite message into a series of individual messages*, each containing data related to one item"
+            ],
+            "name": "Splitter"
+        },
+        {
+            "group": "Message Routing",
+            "description": [
+                "Use a stateful filter, an Aggregator, to *collect and store individual messages until a complete set of related messages* has been received. Then, the Aggregator publishes a single message distilled from the individual messages"
+            ],
+            "name": "Aggregator"
+        },
+        {
+            "group": "Message Routing",
+            "description": [
+                "Use a stateful filter, a Resequencer, to *collect and re-order messages* so that they can be published to the output channel *in a specified order*"
+            ],
+            "name": "Resequencer"
+        },
+        {
+            "group": "Message Routing",
+            "description": [
+                "Use Composed Message Processor to process a composite message. The Composed Message Processor *splits the message up, routes the sub-messages to the appropriate destinations and re-aggregates the responses back into a single message*",
+                "combination of Splitter, Router, and Aggregator"
+            ],
+            "name": "Composed Message Processor"
+        },
+        {
+            "group": "Message Routing",
+            "description": [
+                "Use a Scatter-Gather that *broadcasts* a message *to multiple recipients and re-aggregates the responses back* into a single message"
+            ],
+            "name": "Scatter-Gather"
+        },
+        {
+            "group": "Message Routing",
+            "description": [
+                "Attach a Routing Slip to each message, *specifying the sequence of processing steps*. Wrap *each component with a special message router* that reads the Routing Slip and routes the message to the next component in the list"
+            ],
+            "name": "Routing Slip"
+        },
+        {
+            "group": "Message Routing",
+            "description": [
+                "Use a central processing unit, a Process Manager, to *maintain the state of the sequence and determine the next processing step based on intermediate results*",
+                "Business Process Management (separate topic or even pattern language)"
+            ],
+            "name": "Process Manager"
+        },
+        {
+            "group": null,
+            "description": [],
+            "name": "Process Manager-CLP"
+        },
+        {
+            "group": "Message Routing",
+            "description": [
+                "Use a central Message Broker that can *receive messages from multiple destinations*, determine the correct destination and route the message to the correct channel",
+                "hub-and-spoke architectural style"
+            ],
+            "name": "Message Broker"
+        },
+        {
+            "group": "Message Transformation",
+            "description": [
+                "Use a Envelope Wrapper to *wrap application data* inside an envelope that is compliant with the messaging infrastructure. *Unwrap the message* when it arrives at the destination"
+            ],
+            "name": "Envelope Wrapper"
+        },
+        {
+            "group": "Message Transformation",
+            "description": [
+                "Use a specialized transformer, a Content Enricher, to access an external data source in order to *augment a message with missing information*"
+            ],
+            "name": "Content Enricher"
+        },
+        {
+            "group": "Message Transformation",
+            "description": [
+                "Use a Content Filter to *remove unimportant data items* from a message leaving only important items"
+            ],
+            "name": "Content Filter"
+        },
+        {
+            "group": "Message Transformation",
+            "description": [
+                "Store message data in a *persistent store and pass a Claim Check* to subsequent components. These components can *use the Claim Check to retrieve the stored information*"
+            ],
+            "name": "Claim Check"
+        },
+        {
+            "group": null,
+            "description": [],
+            "name": "Claim Check-CLP"
+        },
+        {
+            "group": "Message Transformation",
+            "description": [
+                "Use a Normalizer to route each message type through a custom Message Translator so that the resulting *messages match a common format*"
+            ],
+            "name": "Normalizer"
+        },
+        {
+            "group": "Message Transformation",
+            "description": [
+                "Therefore, design a Canonical Data Model that is *independent from any specific application*. Require each application to produce and consume messages in this common format"
+            ],
+            "name": "Canonical Data Model"
+        },
+        {
+            "group": "Messaging Endpoints",
+            "description": [
+                "Use a Messaging Gateway, a class than *wraps messaging-specific method calls* and *exposes domain-specific methods* to the application"
+            ],
+            "name": "Messaging Gateway"
+        },
+        {
+            "group": "Messaging Endpoints",
+            "description": [
+                "Create a separate Messaging Mapper that contains the *mapping logic between the messaging infrastructure and the domain objects*. Neither the objects nor the infrastructure have knowledge of the Messaging Mapper's existence"
+            ],
+            "name": "Messaging Mapper"
+        },
+        {
+            "group": "Messaging Endpoints",
+            "description": [
+                "Use a Transactional Client\u00e2\u20ac\u201dmake the client\u00e2\u20ac\u2122s session with the messaging system transactional so that the *client can specify transaction boundaries*"
+            ],
+            "name": "Transactional Client"
+        },
+        {
+            "group": null,
+            "description": [],
+            "name": "Transactional Client-CLP"
+        },
+        {
+            "group": "Messaging Endpoints",
+            "description": [
+                "The application should use a Polling Consumer, one that *explicitly makes a call when it wants to receive a message*"
+            ],
+            "name": "Polling Consumer"
+        },
+        {
+            "group": "Messaging Endpoints",
+            "description": [
+                "The application should use an Event-Driven Consumer, one that is *automatically handed messages* as they\u00e2\u20ac\u2122re delivered on the channel"
+            ],
+            "name": "Event-Driven Consumer"
+        },
+        {
+            "group": "Messaging Endpoints",
+            "description": [
+                "Create *multiple Competing Consumers on a single channel* so that the consumers can *process multiple messages concurrently*"
+            ],
+            "name": "Competing Consumers"
+        },
+        {
+            "group": null,
+            "description": [],
+            "name": "Competing Consumers-CLP"
+        },
+        {
+            "group": "Messaging Endpoints",
+            "description": [
+                "Create a Message Dispatcher on a channel that will *consume messages from a channel and distribute them to performers*"
+            ],
+            "name": "Message Dispatcher"
+        },
+        {
+            "group": "Messaging Endpoints",
+            "description": [
+                "Make the consumer a Selective Consumer, one that filteres the messages delivered by its channel so that it *only receives the ones that match its criteria*"
+            ],
+            "name": "Selective Consumer"
+        },
+        {
+            "group": "Messaging Endpoints",
+            "description": [
+                "Use a Durable Subscriber to make the messaging system *save messages published while the subscriber is disconnected*"
+            ],
+            "name": "Durable Subscriber"
+        },
+        {
+            "group": "Messaging Endpoints",
+            "description": [
+                "Design a receiver to be an Idempotent Receiver--one that can safely receive the *same message multiple times*"
+            ],
+            "name": "Idempotent Receiver"
+        },
+        {
+            "group": null,
+            "description": [],
+            "name": "Idempotent Receiver-CLP"
+        },
+        {
+            "group": "Messaging Endpoints",
+            "description": [
+                "Design a Service Activator that *connects the messages on the channel to the service being accessed*"
+            ],
+            "name": "Service Activator"
+        },
+        {
+            "group": "System Management",
+            "description": [
+                "Use a Control Bus to manage an enterprise integration system. The Control Bus uses the same messaging mechanism used by the application data, but *uses separate channels* to *transmit data that is relevant to the management of components* involved in the message flow"
+            ],
+            "name": "Control Bus"
+        },
+        {
+            "group": "System Management",
+            "description": [
+                "Construct a Detour with a *context-based router controlled via the Control Bus*. In one state the router *routes incoming messages through additional steps* while in the other it routes messages directly to the destination channel"
+            ],
+            "name": "Detour"
+        },
+        {
+            "group": "System Management",
+            "description": [
+                "Insert a simple Recipient List into the channel that publishes each incoming message to the main channel *and a secondary channel*"
+            ],
+            "name": "Wire Tap"
+        },
+        {
+            "group": "System Management",
+            "description": [
+                "Therefore, attach a Message History to the message. The Message History is a *list of all applications that the message passed through since its origination*"
+            ],
+            "name": "Message History"
+        },
+        {
+            "group": "System Management",
+            "description": [
+                "Use a Message Store to capture information about each message in a *central location*"
+            ],
+            "name": "Message Store"
+        },
+        {
+            "group": null,
+            "description": [],
+            "name": "Message Store-CLP"
+        },
+        {
+            "group": "System Management",
+            "description": [
+                "Use a Smart Proxy to store the Return Address supplied by the original requestor and replace it with the address of the Smart Proxy. When the service sends the reply message route it to the original Return Address",
+                "Proxy for return address"
+            ],
+            "name": "Smart Proxy"
+        },
+        {
+            "group": "System Management",
+            "description": [
+                "Therefore, use Test Message to assure the health of message processing components",
+                "consists of Test Data Generator, Test Message Injector, Test Data Verifier, and Test Message Separator"
+            ],
+            "name": "Test Message"
+        },
+        {
+            "group": "System Management",
+            "description": [
+                "Use a Channel Purger to remove unwanted messages from a channel"
+            ],
+            "name": "Channel Purger"
+        }
+    ],
+    "links": [
+        {
+            "source": "Messaging",
+            "type": "clp",
+            "description": [],
+            "target": "Messaging-CLP"
+        },
+        {
+            "source": "Messaging",
+            "type": "Cloud Computing Patterns",
+            "description": [
+                "components are *decoupled* using the messaging pattern",
+                "the broker refered in the Loose Coupling Pattern corresponds to the Message Bus in Messaging"
+            ],
+            "target": "Loose Coupling"
+        },
+        {
+            "source": "Messaging",
+            "type": "Cloud Computing Patterns",
+            "description": [
+                "Asynchronous communication between partners via messaging"
+            ],
+            "target": "Message-oriented Middleware"
+        },
+        {
+            "source": "Message Channel",
+            "type": "clp",
+            "description": [],
+            "target": "Message Channel-CLP"
+        },
+        {
+            "source": "Message Channel",
+            "type": "Cloud Computing Patterns",
+            "description": [
+                "Use a elastic queue, to enable a channel, that can adapt to the load if needed"
+            ],
+            "target": "Elastic Queue"
+        },
+        {
+            "source": "Pipes and Filters",
+            "type": "clp",
+            "description": [],
+            "target": "Pipes and Filters-CLP"
+        },
+        {
+            "source": "Pipes and Filters",
+            "type": "Cloud Computing Patterns",
+            "description": [
+                "Pipes-and-filters-based decomposition focuses on for data-centric processing of an application. Each filter provides a certain function that is performed on input data and produces output data after processing. Multiple filters are interconnected with pipes, i.e, through messaging"
+            ],
+            "target": "Distributed Application"
+        },
+        {
+            "source": "Messaging Bridge",
+            "type": "clp",
+            "description": [],
+            "target": "Messaging Bridge-CLP"
+        },
+        {
+            "source": "Messaging Bridge",
+            "type": "Cloud Computing Patterns",
+            "description": [
+                "identical",
+                "different cloud provider = different messaging systems"
+            ],
+            "target": "Message Mover"
+        },
+        {
+            "source": "Process Manager",
+            "type": "clp",
+            "description": [],
+            "target": "Process Manager-CLP"
+        },
+        {
+            "source": "Process Manager",
+            "type": "Cloud Computing Patterns",
+            "description": [
+                "Process-based decomposition focuses on the business processes supported by the application. These processes are comprised out of activities that are executed in a specific order. Functionality is divided into components with respect to the supported business activity"
+            ],
+            "target": "Distributed Application"
+        },
+        {
+            "source": "Claim Check",
+            "type": "clp",
+            "description": [],
+            "target": "Claim Check-CLP"
+        },
+        {
+            "source": "Claim Check",
+            "type": "Cloud Computing Patterns",
+            "description": [
+                "separate data from business logic and presentation",
+                "claim check can be used to get rid of the data in business logic"
+            ],
+            "target": "Three-Tier Cloud Application"
+        },
+        {
+            "source": "Claim Check",
+            "type": "Cloud Computing Patterns",
+            "description": [
+                "separate state from components via claim check, i.e. extract data from component but leave check to retrive data if needed again."
+            ],
+            "target": "Stateless Component"
+        },
+        {
+            "source": "Claim Check",
+            "type": "Cloud Computing Patterns",
+            "description": [
+                "since claim check has to deal with storing and accessing data consider the data access component"
+            ],
+            "target": "Data Access Component"
+        },
+        {
+            "source": "Transactional Client",
+            "type": "clp",
+            "description": [],
+            "target": "Transactional Client-CLP"
+        },
+        {
+            "source": "Transactional Client",
+            "type": "Cloud Computing Patterns",
+            "description": [
+                "identical",
+                "define transactional boundaries"
+            ],
+            "target": "Transaction-based Processor"
+        },
+        {
+            "source": "Competing Consumers",
+            "type": "clp",
+            "description": [],
+            "target": "Competing Consumers-CLP"
+        },
+        {
+            "source": "Competing Consumers",
+            "type": "Cloud Computing Patterns",
+            "description": [
+                "multiple instances of the same processing component. We cannot determine the exact component, so no state should be stored within the component"
+            ],
+            "target": "Stateless Component"
+        },
+        {
+            "source": "Competing Consumers",
+            "type": "Cloud Computing Patterns",
+            "description": [
+                "Processing Component for scaling out. Competing Consumer in a similar way, to split work, i.e. scaling the application / process"
+            ],
+            "target": "Processing Component"
+        },
+        {
+            "source": "Idempotent Receiver",
+            "type": "clp",
+            "description": [],
+            "target": "Idempotent Receiver-CLP"
+        },
+        {
+            "source": "Idempotent Receiver",
+            "type": "Cloud Computing Patterns",
+            "description": [
+                "identical",
+                "the same message can be processed multiple times"
+            ],
+            "target": "Idempotent Processor"
+        },
+        {
+            "source": "Message Store",
+            "type": "clp",
+            "description": [],
+            "target": "Message Store-CLP"
+        },
+        {
+            "source": "Message Store",
+            "type": "Cloud Computing Patterns",
+            "description": [],
+            "target": "Blob Storage"
+        },
+        {
+            "source": "Message Store",
+            "type": "Cloud Computing Patterns",
+            "description": [],
+            "target": "Relational Database"
+        },
+        {
+            "source": "Message Store",
+            "type": "Cloud Computing Patterns",
+            "description": [],
+            "target": "Key-Value Storage"
+        },
+        {
+            "source": "Message Store",
+            "type": "Cloud Computing Patterns",
+            "description": [],
+            "target": "Strict Consistency"
+        },
+        {
+            "source": "Message Store",
+            "type": "Cloud Computing Patterns",
+            "description": [],
+            "target": "Eventual Consistency"
+        },
+        {
+            "source": "Message Store",
+            "type": "Cloud Computing Patterns",
+            "description": [],
+            "target": "Data Access Component"
+        },
+        {
+            "source": "File Transfer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Remote Procedure Invocation"
+        },
+        {
+            "source": "File Transfer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "File Transfer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Shared Database"
+        },
+        {
+            "source": "Shared Database",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Remote Procedure Invocation"
+        },
+        {
+            "source": "Shared Database",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "File Transfer"
+        },
+        {
+            "source": "Shared Database",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Remote Procedure Invocation",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "File Transfer"
+        },
+        {
+            "source": "Remote Procedure Invocation",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Remote Procedure Invocation",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Shared Database"
+        },
+        {
+            "source": "Messaging",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Remote Procedure Invocation"
+        },
+        {
+            "source": "Messaging",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "File Transfer"
+        },
+        {
+            "source": "Messaging",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message"
+        },
+        {
+            "source": "Messaging",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Messaging",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Endpoint"
+        },
+        {
+            "source": "Messaging",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Router"
+        },
+        {
+            "source": "Messaging",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Translator"
+        },
+        {
+            "source": "Messaging",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Shared Database"
+        },
+        {
+            "source": "Message Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Channel Adapter"
+        },
+        {
+            "source": "Message Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Datatype Channel"
+        },
+        {
+            "source": "Message Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Invalid Message Channel"
+        },
+        {
+            "source": "Message Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Bus"
+        },
+        {
+            "source": "Message Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Endpoint"
+        },
+        {
+            "source": "Message Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Selective Consumer"
+        },
+        {
+            "source": "Message Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Message Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Point-to-Point Channel"
+        },
+        {
+            "source": "Message Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Canonical Data Model"
+        },
+        {
+            "source": "Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Command Message"
+        },
+        {
+            "source": "Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Document Message"
+        },
+        {
+            "source": "Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Event Message"
+        },
+        {
+            "source": "Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Expiration"
+        },
+        {
+            "source": "Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Sequence"
+        },
+        {
+            "source": "Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Request-Reply"
+        },
+        {
+            "source": "Pipes and Filters",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Competing Consumers"
+        },
+        {
+            "source": "Pipes and Filters",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Content Filter"
+        },
+        {
+            "source": "Pipes and Filters",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Event-Driven Consumer"
+        },
+        {
+            "source": "Pipes and Filters",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Filter"
+        },
+        {
+            "source": "Pipes and Filters",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Pipes and Filters",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Router"
+        },
+        {
+            "source": "Pipes and Filters",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Pipes and Filters",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging Gateway"
+        },
+        {
+            "source": "Pipes and Filters",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Point-to-Point Channel"
+        },
+        {
+            "source": "Pipes and Filters",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Resequencer"
+        },
+        {
+            "source": "Pipes and Filters",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Test Message"
+        },
+        {
+            "source": "Pipes and Filters",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Transactional Client"
+        },
+        {
+            "source": "Message Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Channel Adapter"
+        },
+        {
+            "source": "Message Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Content-Based Router"
+        },
+        {
+            "source": "Message Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Control Bus"
+        },
+        {
+            "source": "Message Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Datatype Channel"
+        },
+        {
+            "source": "Message Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Dynamic Router"
+        },
+        {
+            "source": "Message Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Filter"
+        },
+        {
+            "source": "Message Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message"
+        },
+        {
+            "source": "Message Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Message Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message History"
+        },
+        {
+            "source": "Message Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Translator"
+        },
+        {
+            "source": "Message Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Pipes and Filters"
+        },
+        {
+            "source": "Message Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Message Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Transactional Client"
+        },
+        {
+            "source": "Message Translator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Canonical Data Model"
+        },
+        {
+            "source": "Message Translator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Channel Adapter"
+        },
+        {
+            "source": "Message Translator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Content Filter"
+        },
+        {
+            "source": "Message Translator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Content Enricher"
+        },
+        {
+            "source": "Message Translator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Message Translator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Endpoint"
+        },
+        {
+            "source": "Message Translator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Router"
+        },
+        {
+            "source": "Message Translator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging Bridge"
+        },
+        {
+            "source": "Message Translator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Normalizer"
+        },
+        {
+            "source": "Message Translator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Pipes and Filters"
+        },
+        {
+            "source": "Message Translator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Shared Database"
+        },
+        {
+            "source": "Message Translator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Claim Check"
+        },
+        {
+            "source": "Message Endpoint",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Channel Adapter"
+        },
+        {
+            "source": "Message Endpoint",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Competing Consumers"
+        },
+        {
+            "source": "Message Endpoint",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Durable Subscriber"
+        },
+        {
+            "source": "Message Endpoint",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Event-Driven Consumer"
+        },
+        {
+            "source": "Message Endpoint",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Idempotent Receiver"
+        },
+        {
+            "source": "Message Endpoint",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message"
+        },
+        {
+            "source": "Message Endpoint",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Message Endpoint",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Dispatcher"
+        },
+        {
+            "source": "Message Endpoint",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Selective Consumer"
+        },
+        {
+            "source": "Message Endpoint",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Service Activator"
+        },
+        {
+            "source": "Message Endpoint",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging Gateway"
+        },
+        {
+            "source": "Message Endpoint",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging Mapper"
+        },
+        {
+            "source": "Message Endpoint",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Polling Consumer"
+        },
+        {
+            "source": "Message Endpoint",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Transactional Client"
+        },
+        {
+            "source": "Point-to-Point Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Command Message"
+        },
+        {
+            "source": "Point-to-Point Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Competing Consumers"
+        },
+        {
+            "source": "Point-to-Point Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Document Message"
+        },
+        {
+            "source": "Point-to-Point Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message"
+        },
+        {
+            "source": "Point-to-Point Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Point-to-Point Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Point-to-Point Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Point-to-Point Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Request-Reply"
+        },
+        {
+            "source": "Publish-Subscribe Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Competing Consumers"
+        },
+        {
+            "source": "Publish-Subscribe Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Durable Subscriber"
+        },
+        {
+            "source": "Publish-Subscribe Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Event Message"
+        },
+        {
+            "source": "Publish-Subscribe Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message"
+        },
+        {
+            "source": "Publish-Subscribe Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Publish-Subscribe Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Store"
+        },
+        {
+            "source": "Publish-Subscribe Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Publish-Subscribe Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Point-to-Point Channel"
+        },
+        {
+            "source": "Publish-Subscribe Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Request-Reply"
+        },
+        {
+            "source": "Datatype Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Canonical Data Model"
+        },
+        {
+            "source": "Datatype Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Command Message"
+        },
+        {
+            "source": "Datatype Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Format Indicator"
+        },
+        {
+            "source": "Datatype Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Datatype Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Dispatcher"
+        },
+        {
+            "source": "Datatype Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Selective Consumer"
+        },
+        {
+            "source": "Datatype Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Invalid Message Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Command Message"
+        },
+        {
+            "source": "Invalid Message Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Correlation Identifier"
+        },
+        {
+            "source": "Invalid Message Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Datatype Channel"
+        },
+        {
+            "source": "Invalid Message Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Dead Letter Channel"
+        },
+        {
+            "source": "Invalid Message Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message"
+        },
+        {
+            "source": "Invalid Message Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Invalid Message Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Sequence"
+        },
+        {
+            "source": "Invalid Message Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Invalid Message Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Service Activator"
+        },
+        {
+            "source": "Invalid Message Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging Gateway"
+        },
+        {
+            "source": "Invalid Message Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Return Address"
+        },
+        {
+            "source": "Dead Letter Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Invalid Message Channel"
+        },
+        {
+            "source": "Dead Letter Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Expiration"
+        },
+        {
+            "source": "Dead Letter Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Selective Consumer"
+        },
+        {
+            "source": "Dead Letter Channel",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Guaranteed Delivery",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Durable Subscriber"
+        },
+        {
+            "source": "Guaranteed Delivery",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Event Message"
+        },
+        {
+            "source": "Guaranteed Delivery",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Expiration"
+        },
+        {
+            "source": "Guaranteed Delivery",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Guaranteed Delivery",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Point-to-Point Channel"
+        },
+        {
+            "source": "Guaranteed Delivery",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Guaranteed Delivery",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Transactional Client"
+        },
+        {
+            "source": "Channel Adapter",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Canonical Data Model"
+        },
+        {
+            "source": "Channel Adapter",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Channel Adapter",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Translator"
+        },
+        {
+            "source": "Channel Adapter",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Channel Adapter",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging Bridge"
+        },
+        {
+            "source": "Channel Adapter",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Transactional Client"
+        },
+        {
+            "source": "Messaging Bridge",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Channel Adapter"
+        },
+        {
+            "source": "Messaging Bridge",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Messaging Bridge",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Endpoint"
+        },
+        {
+            "source": "Messaging Bridge",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Message Bus",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Canonical Data Model"
+        },
+        {
+            "source": "Message Bus",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Channel Adapter"
+        },
+        {
+            "source": "Message Bus",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Command Message"
+        },
+        {
+            "source": "Message Bus",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Datatype Channel"
+        },
+        {
+            "source": "Message Bus",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Router"
+        },
+        {
+            "source": "Message Bus",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Service Activator"
+        },
+        {
+            "source": "Message Bus",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Command Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Remote Procedure Invocation"
+        },
+        {
+            "source": "Command Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message"
+        },
+        {
+            "source": "Command Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Command Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Command Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Point-to-Point Channel"
+        },
+        {
+            "source": "Document Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Command Message"
+        },
+        {
+            "source": "Document Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Remote Procedure Invocation"
+        },
+        {
+            "source": "Document Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Event Message"
+        },
+        {
+            "source": "Document Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "File Transfer"
+        },
+        {
+            "source": "Document Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Guaranteed Delivery"
+        },
+        {
+            "source": "Document Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message"
+        },
+        {
+            "source": "Document Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Expiration"
+        },
+        {
+            "source": "Document Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Document Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Point-to-Point Channel"
+        },
+        {
+            "source": "Document Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Document Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Request-Reply"
+        },
+        {
+            "source": "Document Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Shared Database"
+        },
+        {
+            "source": "Event Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Command Message"
+        },
+        {
+            "source": "Event Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Document Message"
+        },
+        {
+            "source": "Event Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Durable Subscriber"
+        },
+        {
+            "source": "Event Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Remote Procedure Invocation"
+        },
+        {
+            "source": "Event Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Guaranteed Delivery"
+        },
+        {
+            "source": "Event Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message"
+        },
+        {
+            "source": "Event Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Expiration"
+        },
+        {
+            "source": "Event Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Event Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Point-to-Point Channel"
+        },
+        {
+            "source": "Event Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Request-Reply",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Command Message"
+        },
+        {
+            "source": "Request-Reply",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Correlation Identifier"
+        },
+        {
+            "source": "Request-Reply",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Document Message"
+        },
+        {
+            "source": "Request-Reply",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Remote Procedure Invocation"
+        },
+        {
+            "source": "Request-Reply",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Event Message"
+        },
+        {
+            "source": "Request-Reply",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Guaranteed Delivery"
+        },
+        {
+            "source": "Request-Reply",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message"
+        },
+        {
+            "source": "Request-Reply",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Request-Reply",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Sequence"
+        },
+        {
+            "source": "Request-Reply",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Request-Reply",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Point-to-Point Channel"
+        },
+        {
+            "source": "Request-Reply",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Polling Consumer"
+        },
+        {
+            "source": "Request-Reply",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Request-Reply",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Return Address"
+        },
+        {
+            "source": "Return Address",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Correlation Identifier"
+        },
+        {
+            "source": "Return Address",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Return Address",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Return Address",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Request-Reply"
+        },
+        {
+            "source": "Correlation Identifier",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Remote Procedure Invocation"
+        },
+        {
+            "source": "Correlation Identifier",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message"
+        },
+        {
+            "source": "Correlation Identifier",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Selective Consumer"
+        },
+        {
+            "source": "Correlation Identifier",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Sequence"
+        },
+        {
+            "source": "Correlation Identifier",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Correlation Identifier",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Request-Reply"
+        },
+        {
+            "source": "Correlation Identifier",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Return Address"
+        },
+        {
+            "source": "Message Sequence",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Competing Consumers"
+        },
+        {
+            "source": "Message Sequence",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Correlation Identifier"
+        },
+        {
+            "source": "Message Sequence",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Invalid Message Channel"
+        },
+        {
+            "source": "Message Sequence",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Message Sequence",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Dispatcher"
+        },
+        {
+            "source": "Message Sequence",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Request-Reply"
+        },
+        {
+            "source": "Message Sequence",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Claim Check"
+        },
+        {
+            "source": "Message Sequence",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Transactional Client"
+        },
+        {
+            "source": "Message Expiration",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Dead Letter Channel"
+        },
+        {
+            "source": "Message Expiration",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Guaranteed Delivery"
+        },
+        {
+            "source": "Message Expiration",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Invalid Message Channel"
+        },
+        {
+            "source": "Message Expiration",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message"
+        },
+        {
+            "source": "Message Expiration",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Message Expiration",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Message Expiration",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Request-Reply"
+        },
+        {
+            "source": "Format Indicator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Canonical Data Model"
+        },
+        {
+            "source": "Format Indicator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message"
+        },
+        {
+            "source": "Content-Based Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Dynamic Router"
+        },
+        {
+            "source": "Content-Based Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Filter"
+        },
+        {
+            "source": "Content-Based Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Invalid Message Channel"
+        },
+        {
+            "source": "Content-Based Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Router"
+        },
+        {
+            "source": "Content-Based Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Pipes and Filters"
+        },
+        {
+            "source": "Content-Based Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Content-Based Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Routing Slip"
+        },
+        {
+            "source": "Content-Based Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Transactional Client"
+        },
+        {
+            "source": "Message Filter",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Content-Based Router"
+        },
+        {
+            "source": "Message Filter",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Event-Driven Consumer"
+        },
+        {
+            "source": "Message Filter",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Router"
+        },
+        {
+            "source": "Message Filter",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Selective Consumer"
+        },
+        {
+            "source": "Message Filter",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Message Filter",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Recipient List"
+        },
+        {
+            "source": "Dynamic Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Content-Based Router"
+        },
+        {
+            "source": "Dynamic Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Filter"
+        },
+        {
+            "source": "Dynamic Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Router"
+        },
+        {
+            "source": "Dynamic Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Dynamic Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Recipient List"
+        },
+        {
+            "source": "Dynamic Router",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Routing Slip"
+        },
+        {
+            "source": "Recipient List",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Aggregator"
+        },
+        {
+            "source": "Recipient List",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Scatter-Gather"
+        },
+        {
+            "source": "Recipient List",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Content-Based Router"
+        },
+        {
+            "source": "Recipient List",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Dynamic Router"
+        },
+        {
+            "source": "Recipient List",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Filter"
+        },
+        {
+            "source": "Recipient List",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Idempotent Receiver"
+        },
+        {
+            "source": "Recipient List",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Router"
+        },
+        {
+            "source": "Recipient List",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Selective Consumer"
+        },
+        {
+            "source": "Recipient List",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Point-to-Point Channel"
+        },
+        {
+            "source": "Recipient List",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Splitter",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Aggregator"
+        },
+        {
+            "source": "Splitter",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Content-Based Router"
+        },
+        {
+            "source": "Splitter",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Content Filter"
+        },
+        {
+            "source": "Splitter",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Correlation Identifier"
+        },
+        {
+            "source": "Splitter",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Envelope Wrapper"
+        },
+        {
+            "source": "Splitter",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Event-Driven Consumer"
+        },
+        {
+            "source": "Splitter",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Pipes and Filters"
+        },
+        {
+            "source": "Splitter",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Aggregator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Scatter-Gather"
+        },
+        {
+            "source": "Aggregator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Content-Based Router"
+        },
+        {
+            "source": "Aggregator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Control Bus"
+        },
+        {
+            "source": "Aggregator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Correlation Identifier"
+        },
+        {
+            "source": "Aggregator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Composed Message Processor"
+        },
+        {
+            "source": "Aggregator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Event-Driven Consumer"
+        },
+        {
+            "source": "Aggregator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Event Message"
+        },
+        {
+            "source": "Aggregator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Guaranteed Delivery"
+        },
+        {
+            "source": "Aggregator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Expiration"
+        },
+        {
+            "source": "Aggregator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Point-to-Point Channel"
+        },
+        {
+            "source": "Aggregator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Aggregator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Recipient List"
+        },
+        {
+            "source": "Aggregator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Resequencer"
+        },
+        {
+            "source": "Aggregator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Splitter"
+        },
+        {
+            "source": "Aggregator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Transactional Client"
+        },
+        {
+            "source": "Resequencer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Aggregator"
+        },
+        {
+            "source": "Resequencer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Competing Consumers"
+        },
+        {
+            "source": "Resequencer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Router"
+        },
+        {
+            "source": "Resequencer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Sequence"
+        },
+        {
+            "source": "Resequencer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Pipes and Filters"
+        },
+        {
+            "source": "Resequencer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Splitter"
+        },
+        {
+            "source": "Resequencer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Test Message"
+        },
+        {
+            "source": "Composed Message Processor",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Aggregator"
+        },
+        {
+            "source": "Composed Message Processor",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Content-Based Router"
+        },
+        {
+            "source": "Composed Message Processor",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Pipes and Filters"
+        },
+        {
+            "source": "Composed Message Processor",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Splitter"
+        },
+        {
+            "source": "Scatter-Gather",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Aggregator"
+        },
+        {
+            "source": "Scatter-Gather",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Composed Message Processor"
+        },
+        {
+            "source": "Scatter-Gather",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Scatter-Gather",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Recipient List"
+        },
+        {
+            "source": "Scatter-Gather",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Return Address"
+        },
+        {
+            "source": "Scatter-Gather",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Splitter"
+        },
+        {
+            "source": "Routing Slip",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Content-Based Router"
+        },
+        {
+            "source": "Routing Slip",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Filter"
+        },
+        {
+            "source": "Routing Slip",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Router"
+        },
+        {
+            "source": "Routing Slip",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Pipes and Filters"
+        },
+        {
+            "source": "Routing Slip",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Process Manager"
+        },
+        {
+            "source": "Routing Slip",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Routing Slip",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Return Address"
+        },
+        {
+            "source": "Process Manager",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Aggregator"
+        },
+        {
+            "source": "Process Manager",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Content-Based Router"
+        },
+        {
+            "source": "Process Manager",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Correlation Identifier"
+        },
+        {
+            "source": "Process Manager",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Process Manager",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message History"
+        },
+        {
+            "source": "Process Manager",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Store"
+        },
+        {
+            "source": "Process Manager",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Translator"
+        },
+        {
+            "source": "Process Manager",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Pipes and Filters"
+        },
+        {
+            "source": "Process Manager",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Process Manager",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Routing Slip"
+        },
+        {
+            "source": "Process Manager",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Claim Check"
+        },
+        {
+            "source": "Message Broker",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Canonical Data Model"
+        },
+        {
+            "source": "Message Broker",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Event-Driven Consumer"
+        },
+        {
+            "source": "Message Broker",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Message Broker",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Endpoint"
+        },
+        {
+            "source": "Message Broker",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Router"
+        },
+        {
+            "source": "Message Broker",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Pipes and Filters"
+        },
+        {
+            "source": "Message Broker",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Point-to-Point Channel"
+        },
+        {
+            "source": "Message Broker",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Message Broker",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Recipient List"
+        },
+        {
+            "source": "Envelope Wrapper",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Content-Based Router"
+        },
+        {
+            "source": "Envelope Wrapper",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Content Enricher"
+        },
+        {
+            "source": "Envelope Wrapper",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging Bridge"
+        },
+        {
+            "source": "Envelope Wrapper",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Pipes and Filters"
+        },
+        {
+            "source": "Content Enricher",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Content Filter"
+        },
+        {
+            "source": "Content Enricher",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Event Message"
+        },
+        {
+            "source": "Content Enricher",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Content Enricher",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Translator"
+        },
+        {
+            "source": "Content Enricher",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Claim Check"
+        },
+        {
+            "source": "Content Filter",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Channel Adapter"
+        },
+        {
+            "source": "Content Filter",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Content Enricher"
+        },
+        {
+            "source": "Content Filter",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Splitter"
+        },
+        {
+            "source": "Claim Check",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Content Filter"
+        },
+        {
+            "source": "Claim Check",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Content Enricher"
+        },
+        {
+            "source": "Claim Check",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Process Manager"
+        },
+        {
+            "source": "Normalizer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Datatype Channel"
+        },
+        {
+            "source": "Normalizer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Router"
+        },
+        {
+            "source": "Normalizer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Translator"
+        },
+        {
+            "source": "Canonical Data Model",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Format Indicator"
+        },
+        {
+            "source": "Canonical Data Model",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Canonical Data Model",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Router"
+        },
+        {
+            "source": "Canonical Data Model",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Canonical Data Model",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging Mapper"
+        },
+        {
+            "source": "Canonical Data Model",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Shared Database"
+        },
+        {
+            "source": "Messaging Gateway",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Scatter-Gather"
+        },
+        {
+            "source": "Messaging Gateway",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Correlation Identifier"
+        },
+        {
+            "source": "Messaging Gateway",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Messaging Gateway",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Request-Reply"
+        },
+        {
+            "source": "Messaging Mapper",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Aggregator"
+        },
+        {
+            "source": "Messaging Mapper",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Canonical Data Model"
+        },
+        {
+            "source": "Messaging Mapper",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Command Message"
+        },
+        {
+            "source": "Messaging Mapper",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Document Message"
+        },
+        {
+            "source": "Messaging Mapper",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Router"
+        },
+        {
+            "source": "Messaging Mapper",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Translator"
+        },
+        {
+            "source": "Transactional Client",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Channel Adapter"
+        },
+        {
+            "source": "Transactional Client",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Competing Consumers"
+        },
+        {
+            "source": "Transactional Client",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Document Message"
+        },
+        {
+            "source": "Transactional Client",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Event-Driven Consumer"
+        },
+        {
+            "source": "Transactional Client",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Event Message"
+        },
+        {
+            "source": "Transactional Client",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Guaranteed Delivery"
+        },
+        {
+            "source": "Transactional Client",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message"
+        },
+        {
+            "source": "Transactional Client",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Transactional Client",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Dispatcher"
+        },
+        {
+            "source": "Transactional Client",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Endpoint"
+        },
+        {
+            "source": "Transactional Client",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Router"
+        },
+        {
+            "source": "Transactional Client",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Sequence"
+        },
+        {
+            "source": "Transactional Client",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Translator"
+        },
+        {
+            "source": "Transactional Client",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging Bridge"
+        },
+        {
+            "source": "Transactional Client",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Pipes and Filters"
+        },
+        {
+            "source": "Transactional Client",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Point-to-Point Channel"
+        },
+        {
+            "source": "Transactional Client",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Polling Consumer"
+        },
+        {
+            "source": "Transactional Client",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Transactional Client",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Request-Reply"
+        },
+        {
+            "source": "Transactional Client",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Resequencer"
+        },
+        {
+            "source": "Polling Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Competing Consumers"
+        },
+        {
+            "source": "Polling Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Durable Subscriber"
+        },
+        {
+            "source": "Polling Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Event-Driven Consumer"
+        },
+        {
+            "source": "Polling Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message"
+        },
+        {
+            "source": "Polling Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Dispatcher"
+        },
+        {
+            "source": "Polling Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Selective Consumer"
+        },
+        {
+            "source": "Polling Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Transactional Client"
+        },
+        {
+            "source": "Event-Driven Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Competing Consumers"
+        },
+        {
+            "source": "Event-Driven Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Durable Subscriber"
+        },
+        {
+            "source": "Event-Driven Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message"
+        },
+        {
+            "source": "Event-Driven Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Event-Driven Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Dispatcher"
+        },
+        {
+            "source": "Event-Driven Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Selective Consumer"
+        },
+        {
+            "source": "Event-Driven Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Polling Consumer"
+        },
+        {
+            "source": "Event-Driven Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Transactional Client"
+        },
+        {
+            "source": "Competing Consumers",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Event-Driven Consumer"
+        },
+        {
+            "source": "Competing Consumers",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message"
+        },
+        {
+            "source": "Competing Consumers",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Competing Consumers",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Dispatcher"
+        },
+        {
+            "source": "Competing Consumers",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Router"
+        },
+        {
+            "source": "Competing Consumers",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Competing Consumers",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Point-to-Point Channel"
+        },
+        {
+            "source": "Competing Consumers",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Polling Consumer"
+        },
+        {
+            "source": "Competing Consumers",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Competing Consumers",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Transactional Client"
+        },
+        {
+            "source": "Message Dispatcher",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Competing Consumers"
+        },
+        {
+            "source": "Message Dispatcher",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Datatype Channel"
+        },
+        {
+            "source": "Message Dispatcher",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Remote Procedure Invocation"
+        },
+        {
+            "source": "Message Dispatcher",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Event-Driven Consumer"
+        },
+        {
+            "source": "Message Dispatcher",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Message Dispatcher",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Selective Consumer"
+        },
+        {
+            "source": "Message Dispatcher",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Message Dispatcher",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Point-to-Point Channel"
+        },
+        {
+            "source": "Message Dispatcher",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Polling Consumer"
+        },
+        {
+            "source": "Message Dispatcher",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Message Dispatcher",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Claim Check"
+        },
+        {
+            "source": "Message Dispatcher",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Transactional Client"
+        },
+        {
+            "source": "Selective Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Competing Consumers"
+        },
+        {
+            "source": "Selective Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Content-Based Router"
+        },
+        {
+            "source": "Selective Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Correlation Identifier"
+        },
+        {
+            "source": "Selective Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Datatype Channel"
+        },
+        {
+            "source": "Selective Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Durable Subscriber"
+        },
+        {
+            "source": "Selective Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Event-Driven Consumer"
+        },
+        {
+            "source": "Selective Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Filter"
+        },
+        {
+            "source": "Selective Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Guaranteed Delivery"
+        },
+        {
+            "source": "Selective Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Invalid Message Channel"
+        },
+        {
+            "source": "Selective Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message"
+        },
+        {
+            "source": "Selective Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Selective Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Dispatcher"
+        },
+        {
+            "source": "Selective Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Expiration"
+        },
+        {
+            "source": "Selective Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Selective Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Point-to-Point Channel"
+        },
+        {
+            "source": "Selective Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Polling Consumer"
+        },
+        {
+            "source": "Selective Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Selective Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Request-Reply"
+        },
+        {
+            "source": "Selective Consumer",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Transactional Client"
+        },
+        {
+            "source": "Durable Subscriber",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Guaranteed Delivery"
+        },
+        {
+            "source": "Durable Subscriber",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Expiration"
+        },
+        {
+            "source": "Durable Subscriber",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Point-to-Point Channel"
+        },
+        {
+            "source": "Durable Subscriber",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Idempotent Receiver",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Command Message"
+        },
+        {
+            "source": "Idempotent Receiver",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Guaranteed Delivery"
+        },
+        {
+            "source": "Idempotent Receiver",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging"
+        },
+        {
+            "source": "Idempotent Receiver",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Resequencer"
+        },
+        {
+            "source": "Service Activator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Command Message"
+        },
+        {
+            "source": "Service Activator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Competing Consumers"
+        },
+        {
+            "source": "Service Activator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Event-Driven Consumer"
+        },
+        {
+            "source": "Service Activator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Invalid Message Channel"
+        },
+        {
+            "source": "Service Activator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Dispatcher"
+        },
+        {
+            "source": "Service Activator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Endpoint"
+        },
+        {
+            "source": "Service Activator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Messaging Gateway"
+        },
+        {
+            "source": "Service Activator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Polling Consumer"
+        },
+        {
+            "source": "Service Activator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Request-Reply"
+        },
+        {
+            "source": "Service Activator",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Transactional Client"
+        },
+        {
+            "source": "Control Bus",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Content-Based Router"
+        },
+        {
+            "source": "Control Bus",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Test Message"
+        },
+        {
+            "source": "Detour",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Control Bus"
+        },
+        {
+            "source": "Detour",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Detour",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Wire Tap"
+        },
+        {
+            "source": "Wire Tap",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Competing Consumers"
+        },
+        {
+            "source": "Wire Tap",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Control Bus"
+        },
+        {
+            "source": "Wire Tap",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Detour"
+        },
+        {
+            "source": "Wire Tap",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Document Message"
+        },
+        {
+            "source": "Wire Tap",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Broker"
+        },
+        {
+            "source": "Wire Tap",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Store"
+        },
+        {
+            "source": "Wire Tap",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Point-to-Point Channel"
+        },
+        {
+            "source": "Wire Tap",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Wire Tap",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Recipient List"
+        },
+        {
+            "source": "Message History",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Aggregator"
+        },
+        {
+            "source": "Message History",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Control Bus"
+        },
+        {
+            "source": "Message History",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Router"
+        },
+        {
+            "source": "Message History",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Store"
+        },
+        {
+            "source": "Message History",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Process Manager"
+        },
+        {
+            "source": "Message History",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Publish-Subscribe Channel"
+        },
+        {
+            "source": "Message History",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Recipient List"
+        },
+        {
+            "source": "Message Store",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Control Bus"
+        },
+        {
+            "source": "Message Store",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message History"
+        },
+        {
+            "source": "Message Store",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Wire Tap"
+        },
+        {
+            "source": "Smart Proxy",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Correlation Identifier"
+        },
+        {
+            "source": "Smart Proxy",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Router"
+        },
+        {
+            "source": "Smart Proxy",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Request-Reply"
+        },
+        {
+            "source": "Smart Proxy",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Return Address"
+        },
+        {
+            "source": "Smart Proxy",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Wire Tap"
+        },
+        {
+            "source": "Test Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Content-Based Router"
+        },
+        {
+            "source": "Test Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Control Bus"
+        },
+        {
+            "source": "Test Message",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Return Address"
+        },
+        {
+            "source": "Channel Purger",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Correlation Identifier"
+        },
+        {
+            "source": "Channel Purger",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Invalid Message Channel"
+        },
+        {
+            "source": "Channel Purger",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Channel"
+        },
+        {
+            "source": "Channel Purger",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Message Store"
+        },
+        {
+            "source": "Channel Purger",
+            "type": "default",
+            "description": [
+                "None"
+            ],
+            "target": "Point-to-Point Channel"
+        }
+    ]
+}

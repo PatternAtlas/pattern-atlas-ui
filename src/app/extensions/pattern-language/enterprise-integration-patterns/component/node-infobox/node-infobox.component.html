@@ -1,0 +1,25 @@
+<div class="info">
+  <div class="headline">
+    <h1>{{info.currNode.name}}</h1>
+    <p>{{info.currNode.group}}</p>
+  </div>
+  <div class="description">
+    <p *ngFor="let desc of info.currNode.description">{{desc}}</p>
+  </div>
+  <div class="related">
+    <!-- Outgoing Related Nodes -->
+    <ul>
+      <li *ngFor="let o of info.outgoing" 
+        (click)="onClick($event, o)"
+        (mouseenter)="onMouseEnter($event, o)"
+        (mouseleave)="onMouseLeave($event, o)">{{o.name}}</li>
+    </ul>
+    <!-- Incoming Related Nodes -->
+    <ul>
+      <li *ngFor="let i of info.incoming"
+        (click)="onClick($event, i)"
+        (mouseenter)="onMouseEnter($event, i)"
+        (mouseleave)="onMouseLeave($event, i)">{{i.name}}</li>
+    </ul>
+  </div>
+</div>

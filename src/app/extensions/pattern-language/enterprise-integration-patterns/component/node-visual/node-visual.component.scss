@@ -1,0 +1,15 @@
+.selected {
+    circle {
+        stroke: red;
+        stroke-width: 2px;
+    }
+
+    text {
+        fill: red;
+        font-weight: bold;
+    }
+}
+
+.preview {
+    opacity: 0.1;
+}
