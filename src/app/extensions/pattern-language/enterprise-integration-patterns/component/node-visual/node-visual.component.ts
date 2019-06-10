@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Node } from '../../model';
 
 @Component({
-  selector: 'pp-node-visual',
+  selector: '[nodeVisual]',
   templateUrl: './node-visual.component.html',
   styleUrls: ['./node-visual.component.scss']
 })

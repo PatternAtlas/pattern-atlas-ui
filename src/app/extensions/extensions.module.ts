@@ -15,12 +15,14 @@
 import { NgModule } from '@angular/core';
 import { CloudComputingPatternsModule } from './pattern-language/cloud-computing-patterns/cloud-computing-patterns.module';
 import { InternetOfThingsPatternsModule } from './pattern-language/internet-of-things-patterns/internet-of-things-patterns.module';
+import { EnterpriseIntegrationPatternsModule } from './pattern-language/enterprise-integration-patterns/enterprise-integration-patterns.module';
 
 @NgModule({
     // here we import all specific extensions and make them available for the app
     imports: [
         CloudComputingPatternsModule,
-        InternetOfThingsPatternsModule
+        InternetOfThingsPatternsModule,
+        EnterpriseIntegrationPatternsModule
     ],
     declarations: [],
     exports: []

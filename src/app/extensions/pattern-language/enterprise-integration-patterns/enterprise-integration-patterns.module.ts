@@ -8,11 +8,26 @@ import { LinkVisualComponent } from './component/link-visual/link-visual.compone
 import { NodeVisualComponent } from './component/node-visual/node-visual.component';
 import { NodeInfoboxComponent } from './component/node-infobox/node-infobox.component';
 import { EnterpriseIntegrationPatternComponent } from './component/enterprise-integration-pattern/enterprise-integration-pattern.component';
+import { EnterpriseIntegrationPatternsLoaderService } from './loader/enterprise-integration-patterns-loader.service';
 
 @NgModule({
-  declarations: [EnterpriseIntegrationPatternsComponent, GraphComponent, LinkVisualComponent, NodeVisualComponent, NodeInfoboxComponent, EnterpriseIntegrationPatternComponent],
+  declarations: [
+    EnterpriseIntegrationPatternsComponent, 
+    GraphComponent, 
+    LinkVisualComponent, 
+    NodeVisualComponent, 
+    NodeInfoboxComponent, 
+    EnterpriseIntegrationPatternComponent
+  ],
   imports: [
     CommonModule
+  ],
+  providers: [
+    EnterpriseIntegrationPatternsLoaderService
+  ],
+  entryComponents: [
+    EnterpriseIntegrationPatternsComponent,
+    EnterpriseIntegrationPatternComponent
   ]
 })
 export class EnterpriseIntegrationPatternsModule {
