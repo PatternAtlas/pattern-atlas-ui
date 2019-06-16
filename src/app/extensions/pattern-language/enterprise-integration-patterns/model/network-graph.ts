@@ -48,7 +48,7 @@ export class NetworkGraph {
 
     this.simulation.force('links',
       d3.forceLink(this.links)
-        .id(d => d['name'])
+        .id(d => d['id'])
         .distance(200)
         .strength(1)
     );

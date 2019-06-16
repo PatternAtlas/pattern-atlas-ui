@@ -18,94 +18,124 @@ export class EnterpriseIntegrationPatternsComponent implements OnInit {
   data: {nodes: Node[], links: Link[]};
 
   patternMap: Map<string, EnterpriseIntegrationPattern>;
-  nodes: Node[];
-
   linkMap: Map<string, Link>;
+  groupMap: Map<string, any>;
+  
+  nodes: Node[];
   links: Link[];
 
   constructor(private http: HttpClient,
-    private loader: EnterpriseIntegrationPatternsLoaderService,
+    private nodeLoader: EnterpriseIntegrationPatternsLoaderService,
     private linkLoader: EnterpriseIntegrationPatternsLinkLoaderService,
     private groupLoader: EnterpriseIntegrationPatternsGroupLoaderService) { }
 
   ngOnInit() {
-    this.loader.loadContentFromStore().then(
-      patternMap => {
-        this.patternMap = patternMap;
-        this.nodes = [];
-
-        // convert given IRI -> EnterpriseIntegrationPattern Map to Node list for rendering
-        patternMap.forEach((value, key) => {
-          let n = new Node(value.name);
-          n.description = value.description.value;
-
-          this.nodes.push(n);
+    Promise.all([this.nodeLoader.loadContentFromStore(), this.linkLoader.loadContentFromStore(), this.groupLoader.loadContentFromStore()])
+      .then(values => {
+        this.patternMap = values[0];
+        this.linkMap = values[1];
+        this.groupMap = values[2];
+        
+        // links
+        // links also contains edges to different pattern languages. we don't want to render them as actual links of the network graph
+        // => filter clp links
+        this.links = Array.from(this.linkMap.values()).filter(link => {
+          // keep link, if its source and destination is from enterpriseintegrationpatterns, and no other language
+          if (typeof link.source === 'string' && typeof link.target === 'string') {
+            return link.source.includes('enterpriseintegrationpatterns') && link.target.includes('enterpriseintegrationpatterns');
+          }
+          return false;
         });
-      }
-    );
 
-    this.linkLoader.loadContentFromStore().then(
-      linkMap => {
-        this.linkMap = linkMap;
-        this.links = Array.from(linkMap.values());
-      }
-    );
+        // groups
+        let groups = {};
+        this.groupMap.forEach(value => {
+          groups[value.groupName] = value.patterns;
+        });
 
-    this.groupLoader.loadContentFromStore().then(
-      groupMap => {
-        console.log("done group loading");
-      }
-    );
-
-    this.http.get('http://localhost:4200/assets/enterpriseintegrationpatterns/EIP-combined-CLP.json')
-      .subscribe((data) => {
-        // collect all groups
-        let groups = new Set();
-        for(let node of data['nodes']) {
-          if(node.group)
-            groups.add(node.group)
-        }
-        let groupIds = Array.from(groups);
+        // for coloring of nodes
+        let groupIds = Array.from(Object.keys(groups));
         let scale = d3.scaleOrdinal(d3.schemeCategory10);
-        let color = function(d) {
+        let color = function(d: any) {
           if(d)
             return scale('' + groupIds.indexOf(d));
           return scale('0');
         }
 
-        // parse nodes
-        let nodes: Node[] = [];
-        for(let node of data['nodes']) {
-          let curr: Node;
-          curr = new Node(node.name);
-          curr.group = node.group;
-          curr.description = node.description;
+        // nodes
+        this.nodes = [];
+
+        // convert given IRI -> EnterpriseIntegrationPattern Map to Node list for rendering
+        this.patternMap.forEach((value) => {
+          let n = new Node(value.iri);
+          n.name = value.name;
+          n.description = value.description.value;
           
-          curr.color = color(curr.group);
+          // go through all groups and check if the current pattern is present in the list of patterns
+          // return the group (i.e. the group name) that contains the pattern. undefined if no group contains this pattern
+          n.group = Object.keys(groups).find(groupName => groups[groupName].includes(value.iri));
 
-          nodes.push(curr);
-        }
-        // parse links
-        let links: Link[] = [];
-        for(let link of data['links']) {
-          let curr: Link;
-          curr = new Link(
-            link.source,
-            link.target,
-            link.type,
-            link.description
-          );
+          n.color = color(n.group);
 
-          // filter links depending on their type! Otherwise Nodes from other languages will be referenced leading to errors!
-          if(link.type === 'default' || link.type === 'clp')
-            links.push(curr);
-        }
+          this.nodes.push(n);
+        });
 
         // place data in field
         this.data = {
-          'nodes': nodes,
-          'links': links
+          nodes: this.nodes,
+          links: this.links
         };
       });
+
+    // this.http.get('http://localhost:4200/assets/enterpriseintegrationpatterns/EIP-combined-CLP.json')
+    //   .subscribe((data) => {
+    //     // collect all groups
+    //     let groups = new Set();
+    //     for(let node of data['nodes']) {
+    //       if(node.group)
+    //         groups.add(node.group)
+    //     }
+    //     let groupIds = Array.from(groups);
+    //     let scale = d3.scaleOrdinal(d3.schemeCategory10);
+    //     let color = function(d) {
+    //       if(d)
+    //         return scale('' + groupIds.indexOf(d));
+    //       return scale('0');
+    //     }
+
+    //     // parse nodes
+    //     let nodes: Node[] = [];
+    //     for(let node of data['nodes']) {
+    //       let curr: Node;
+    //       curr = new Node(node.name);
+    //       curr.group = node.group;
+    //       curr.description = node.description;
+          
+    //       curr.color = color(curr.group);
+
+    //       nodes.push(curr);
+    //     }
+    //     // parse links
+    //     let links: Link[] = [];
+    //     for(let link of data['links']) {
+    //       let curr: Link;
+    //       curr = new Link(
+    //         link.source,
+    //         link.target,
+    //         link.type,
+    //         link.description
+    //       );
+
+    //       // filter links depending on their type! Otherwise Nodes from other languages will be referenced leading to errors!
+    //       if(link.type === 'default' || link.type === 'clp')
+    //         links.push(curr);
+    //     }
+
+    //     // place data in field
+    //     this.data = {
+    //       'nodes': nodes,
+    //       'links': links
+    //     };
+    //   });
   }
 }

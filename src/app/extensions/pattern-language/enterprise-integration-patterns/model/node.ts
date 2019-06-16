@@ -9,16 +9,23 @@ export class Node implements d3.SimulationNodeDatum {
     fx?: number | null;
     fy?: number | null;
 
+    // the uri/iri of the pattern
+    id: string; 
+
+    // the name of the pattern which will be displayed
     name: string;
+    // the group of the pattern
     group: string;
+    // multiple descriptions
     description: string[];
+    // color of the node
     color: string;
 
     selected: boolean;
     preview: boolean;
 
-    constructor(name) {
-        this.name = name;
+    constructor(id: string) {
+        this.id = id;
     }
 
     isPseudo() {
