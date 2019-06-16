@@ -3,6 +3,9 @@ import { Link } from '../../model/link';
 import { Node } from '../../model/node';
 import { HttpClient } from '@angular/common/http';
 import * as d3 from 'd3';
+import { EnterpriseIntegrationPatternsLoaderService } from '../../loader/enterprise-integration-patterns-loader.service';
+import EnterpriseIntegrationPattern from '../../model/enterprise-integration-pattern';
+import { EnterpriseIntegrationPatternsLinkLoaderService } from '../../loader/enterprise-integration-patterns-link-loader.service';
 
 @Component({
   selector: 'pp-enterprise-integration-patterns',
@@ -13,9 +16,41 @@ export class EnterpriseIntegrationPatternsComponent implements OnInit {
 
   data: {nodes: Node[], links: Link[]};
 
-  constructor(private http: HttpClient) { }
+  patternMap: Map<string, EnterpriseIntegrationPattern>;
+  nodes: Node[];
+
+  linkMap: Map<string, Link>;
+  links: Link[];
+
+  constructor(private http: HttpClient,
+    private loader: EnterpriseIntegrationPatternsLoaderService,
+    private linkLoader: EnterpriseIntegrationPatternsLinkLoaderService) { }
 
   ngOnInit() {
+    this.loader.loadContentFromStore().then(
+      patternMap => {
+        this.patternMap = patternMap;
+        this.nodes = [];
+
+        // convert given IRI -> EnterpriseIntegrationPattern Map to Node list for rendering
+        patternMap.forEach((value, key) => {
+          let n = new Node(value.name);
+          n.description = value.description.value;
+
+          this.nodes.push(n);
+        });
+      }
+    );
+
+    this.linkLoader.loadContentFromStore().then(
+      linkMap => {
+        this.linkMap = linkMap;
+        this.links = Array.from(linkMap.values());
+      }
+    );
+
+    
+
     this.http.get('http://localhost:4200/assets/enterpriseintegrationpatterns/EIP-combined-CLP.json')
       .subscribe((data) => {
         // collect all groups
