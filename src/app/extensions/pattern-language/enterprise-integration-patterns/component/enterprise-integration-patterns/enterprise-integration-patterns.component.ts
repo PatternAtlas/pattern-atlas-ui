@@ -6,6 +6,7 @@ import * as d3 from 'd3';
 import { EnterpriseIntegrationPatternsLoaderService } from '../../loader/enterprise-integration-patterns-loader.service';
 import EnterpriseIntegrationPattern from '../../model/enterprise-integration-pattern';
 import { EnterpriseIntegrationPatternsLinkLoaderService } from '../../loader/enterprise-integration-patterns-link-loader.service';
+import { EnterpriseIntegrationPatternsGroupLoaderService } from '../../loader/enterprise-integration-patterns-group-loader.service';
 
 @Component({
   selector: 'pp-enterprise-integration-patterns',
@@ -24,7 +25,8 @@ export class EnterpriseIntegrationPatternsComponent implements OnInit {
 
   constructor(private http: HttpClient,
     private loader: EnterpriseIntegrationPatternsLoaderService,
-    private linkLoader: EnterpriseIntegrationPatternsLinkLoaderService) { }
+    private linkLoader: EnterpriseIntegrationPatternsLinkLoaderService,
+    private groupLoader: EnterpriseIntegrationPatternsGroupLoaderService) { }
 
   ngOnInit() {
     this.loader.loadContentFromStore().then(
@@ -49,7 +51,11 @@ export class EnterpriseIntegrationPatternsComponent implements OnInit {
       }
     );
 
-    
+    this.groupLoader.loadContentFromStore().then(
+      groupMap => {
+        console.log("done group loading");
+      }
+    );
 
     this.http.get('http://localhost:4200/assets/enterpriseintegrationpatterns/EIP-combined-CLP.json')
       .subscribe((data) => {
