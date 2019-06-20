@@ -34,8 +34,14 @@ export class EnterpriseIntegrationPatternsModule {
   constructor(private cr: ComponentRegistryService) {
     // register module as rendering for Enterprise Integration Patterns in registry
     this.cr.registerComponent(IriConverter.convertIriToId('http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns'), {
+      label: "Network Graph",
+      priority: 10, // this is the main renderer for this language
       plcomponent: EnterpriseIntegrationPatternsComponent, // the rendering for the pattern LANGUAGE
       pcomponent: EnterpriseIntegrationPatternComponent // TODO is this actually used?
     });
+
+    // adding a secondary renderer (dummy)
+    this.cr.registerComponent(IriConverter.convertIriToId('http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns'), 
+      this.cr.getPLRenderingComponents("default"));
   }
 }

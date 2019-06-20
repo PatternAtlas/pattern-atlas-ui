@@ -14,6 +14,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ComponentRegistryService } from 'src/app/core/service/component-registry.service';
 
 @Component({
     selector: 'pp-pattern-language-container',
@@ -22,13 +23,18 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class PatternLanguageContainerComponent implements OnInit {
 
+    // the iri of the pattern language
     plId: string;
+    // the list of registered renderer components for the language
+    renderer: Array<any>;
 
-    constructor(private route: ActivatedRoute) {
+    constructor(private route: ActivatedRoute,
+        private compRegistry: ComponentRegistryService) {
     }
 
     ngOnInit() {
         this.plId = this.route.snapshot.params['plid'];
+        this.renderer = this.compRegistry.getRenderingComponents(this.plId);
     }
 
 }

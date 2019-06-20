@@ -12,6 +12,17 @@
   ~ SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
   -->
 
-<mat-card>
-    <ng-template ppPatternLanguageContainer [plId]="plId"></ng-template>
-</mat-card>
+<!-- tab view if there are multiple renderer for the language available -->
+<mat-tab-group *ngIf="renderer.length > 1; else singleRenderer">
+  <!-- create a new tab for each available renderer -->
+  <mat-tab label="{{r.label || 'Tab ' + (i+1)}}" *ngFor="let r of renderer; let i = index">
+    <ng-template ppPatternLanguageContainer [plId]="plId" [index]="i"></ng-template>
+  </mat-tab>
+</mat-tab-group>
+
+<!-- else, render everything in a single card -->
+<ng-template #singleRenderer>
+  <mat-card>
+      <ng-template ppPatternLanguageContainer [plId]="plId"></ng-template>
+  </mat-card>
+</ng-template>

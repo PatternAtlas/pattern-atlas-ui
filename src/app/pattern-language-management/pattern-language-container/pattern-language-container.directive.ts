@@ -21,6 +21,7 @@ import { ComponentRegistryService } from '../../core/service/component-registry.
 export class PatternLanguageContainerDirective implements OnInit {
 
     @Input() plId: string;
+    @Input() index?: number;
 
     constructor(public viewContainerRef: ViewContainerRef,
                 private componentFactoryResolver: ComponentFactoryResolver,
@@ -28,8 +29,10 @@ export class PatternLanguageContainerDirective implements OnInit {
     }
 
     ngOnInit(): void {
-        const componentFactory = this.compRegistry.getPLRenderingComponents(this.plId) ?
-            this.componentFactoryResolver.resolveComponentFactory(this.compRegistry.getPLRenderingComponents(this.plId).plcomponent) :
+        let renderingComponent = this.compRegistry.getPLRenderingComponents(this.plId, this.index);
+
+        const componentFactory = renderingComponent ?
+            this.componentFactoryResolver.resolveComponentFactory(renderingComponent.plcomponent) :
             this.componentFactoryResolver.resolveComponentFactory(this.compRegistry.getPLRenderingComponents('default').plcomponent);
 
         this.viewContainerRef.clear();
