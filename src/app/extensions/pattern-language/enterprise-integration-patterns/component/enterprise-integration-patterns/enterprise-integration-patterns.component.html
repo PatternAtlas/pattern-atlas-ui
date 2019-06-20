@@ -1,4 +1,7 @@
+<!-- to navigate back to the overview of pattern languages -->
+<button style="margin-bottom: 20px" mat-raised-button color="primary" (click)="navigateBack()"><i class="material-icons">keyboard_backspace</i></button>
+
 <div *ngIf="data; else loading">
   <pp-graph [links]="data.links" [nodes]="data.nodes"></pp-graph>
 </div>
-<ng-template #loading>Loading JSON File ... </ng-template>
+<ng-template #loading>Loading Data ... </ng-template>

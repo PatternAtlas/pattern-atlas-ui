@@ -9,6 +9,7 @@ import { NodeVisualComponent } from './component/node-visual/node-visual.compone
 import { NodeInfoboxComponent } from './component/node-infobox/node-infobox.component';
 import { EnterpriseIntegrationPatternComponent } from './component/enterprise-integration-pattern/enterprise-integration-pattern.component';
 import { EnterpriseIntegrationPatternsLoaderService } from './loader/enterprise-integration-patterns-loader.service';
+import { MatButtonModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { EnterpriseIntegrationPatternsLoaderService } from './loader/enterprise-
     EnterpriseIntegrationPatternComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MatButtonModule
   ],
   providers: [
     EnterpriseIntegrationPatternsLoaderService

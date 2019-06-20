@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Link } from '../../model/link';
 import { Node } from '../../model/node';
 import { HttpClient } from '@angular/common/http';
@@ -7,6 +7,7 @@ import { EnterpriseIntegrationPatternsLoaderService } from '../../loader/enterpr
 import EnterpriseIntegrationPattern from '../../model/enterprise-integration-pattern';
 import { EnterpriseIntegrationPatternsLinkLoaderService } from '../../loader/enterprise-integration-patterns-link-loader.service';
 import { EnterpriseIntegrationPatternsGroupLoaderService } from '../../loader/enterprise-integration-patterns-group-loader.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'pp-enterprise-integration-patterns',
@@ -27,7 +28,10 @@ export class EnterpriseIntegrationPatternsComponent implements OnInit {
   constructor(private http: HttpClient,
     private nodeLoader: EnterpriseIntegrationPatternsLoaderService,
     private linkLoader: EnterpriseIntegrationPatternsLinkLoaderService,
-    private groupLoader: EnterpriseIntegrationPatternsGroupLoaderService) { }
+    private groupLoader: EnterpriseIntegrationPatternsGroupLoaderService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private zone: NgZone) { }
 
   ngOnInit() {
     Promise.all([this.nodeLoader.loadContentFromStore(), this.linkLoader.loadContentFromStore(), this.groupLoader.loadContentFromStore()])
@@ -138,4 +142,10 @@ export class EnterpriseIntegrationPatternsComponent implements OnInit {
     //     };
     //   });
   }
+
+  navigateBack(): void {
+    this.zone.run(() => {
+      this.router.navigate(['..'], {relativeTo: this.activatedRoute});
+  });
+}
 }
