@@ -1,25 +1,30 @@
-<div class="info">
+<div class="info" *ngIf="info; else loading">
   <div class="headline">
-    <h1>{{info.currNode.name}}</h1>
-    <p>{{info.currNode.group}}</p>
+    <h1>{{info.name}}</h1>
+    <p>{{info.group}}</p>
   </div>
   <div class="description">
-    <p *ngFor="let desc of info.currNode.description">{{desc}}</p>
+    <p *ngFor="let desc of info.description">{{desc}}</p>
   </div>
   <div class="related">
     <!-- Outgoing Related Nodes -->
     <ul>
       <li *ngFor="let o of info.outgoing" 
-        (click)="onClick($event, o)"
-        (mouseenter)="onMouseEnter($event, o)"
-        (mouseleave)="onMouseLeave($event, o)">{{o.name}}</li>
+        (click)="onClick($event, o.id)"
+        (mouseenter)="onMouseEnter($event, o.id)"
+        (mouseleave)="onMouseLeave($event, o.id)">{{o.name}}</li>
     </ul>
     <!-- Incoming Related Nodes -->
     <ul>
       <li *ngFor="let i of info.incoming"
-        (click)="onClick($event, i)"
-        (mouseenter)="onMouseEnter($event, i)"
-        (mouseleave)="onMouseLeave($event, i)">{{i.name}}</li>
+        (click)="onClick($event, i.id)"
+        (mouseenter)="onMouseEnter($event, i.id)"
+        (mouseleave)="onMouseLeave($event, i.id)">{{i.name}}</li>
     </ul>
   </div>
 </div>
+<ng-template #loading>
+  <div class="info">
+    Loading Pattern Info...
+  </div>
+</ng-template>

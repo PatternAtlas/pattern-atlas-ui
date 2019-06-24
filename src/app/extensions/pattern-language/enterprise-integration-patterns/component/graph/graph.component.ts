@@ -9,6 +9,8 @@ import { NodeInfo } from '../../model/node-info';
   styleUrls: ['./graph.component.scss']
 })
 export class GraphComponent implements OnInit, AfterViewInit {
+  @Input('selectedNodeId') selectedNodeId?: string;
+  
   @Input('nodes') nodes: Node[];
   @Input('links') links: Link[];
 
@@ -16,7 +18,7 @@ export class GraphComponent implements OnInit, AfterViewInit {
 
   // the node that is currently selected or null, if there is no selection
   selectedNode?: Node;
-  selectedNodeInfo?: NodeInfo;
+  // selectedNodeInfo?: NodeInfo;
 
   private _options: { width: number, height: number } = { width: 800, height: 600 };
 
@@ -49,7 +51,7 @@ export class GraphComponent implements OnInit, AfterViewInit {
     };
   }
 
-  previewNodeInformation(event: Node) {
+  previewNodeInformation(event: string) {
     for(let l of this.links) {
       l.preview = true;
     }
@@ -57,20 +59,22 @@ export class GraphComponent implements OnInit, AfterViewInit {
       n.preview = true;
     }
 
-    event.preview = false;
+    let currNode = this.nodes.find(n => n.id === event);
+
+    currNode.preview = false;
 
     // iterate through all links and get neighbours 
     for(let link of this.links) {
       // check source
       if(link.source instanceof Node) {
-        if(link.source.name === event.name) {
+        if(link.source.name === currNode.name) {
           link.preview = false;
           if(link.target instanceof Node) {
             link.target.preview = false;
           }
         }
       } else if(typeof link.source === 'string') {
-        if(link.source === event.name) {
+        if(link.source === currNode.name) {
           link.preview = false;
           let n = this.nodes.find(n => n.name === link.target);
           n.preview = false;
@@ -79,14 +83,14 @@ export class GraphComponent implements OnInit, AfterViewInit {
 
       // check target
       if(link.target instanceof Node) {
-        if(link.target.name === event.name) {
+        if(link.target.name === currNode.name) {
           link.preview = false;
           if(link.source instanceof Node) {
             link.source.preview = false;
           }
         }
       } else if(typeof link.target === 'string') {
-        if(link.target === event.name) {
+        if(link.target === currNode.name) {
           link.preview = false;
           let n = this.nodes.find(n => n.name === link.source);
           n.preview = false;
@@ -95,7 +99,7 @@ export class GraphComponent implements OnInit, AfterViewInit {
     }
   }
 
-  dePreviewNodeInformation(event: Node) {
+  dePreviewNodeInformation(event: string) {
     for(let l of this.links) {
       l.preview = false;
     }
@@ -114,57 +118,63 @@ export class GraphComponent implements OnInit, AfterViewInit {
     }
 
     this.selectedNode = null;
-    this.selectedNodeInfo = null;
+    // this.selectedNodeInfo = null;
+    this.selectedNodeId = null;
   }
 
-  // $event is the clicked node!
-  nodeInformation($event: Node) {
+  // $event is the clicked node id!
+  nodeInformation($event: string) {
+
+    let node = this.nodes.find(n => n.id === $event);
 
     this.deselectNode();
 
     // set clicked node as current node to display infobox (separate component) about node
     // in HTML we can do *ngIf to show infobox component 
-    this.selectedNode = $event;
-    this.selectedNodeInfo = new NodeInfo();
-    this.selectedNodeInfo.currNode = this.selectedNode;
-
+    this.selectedNode = node;
     this.selectedNode.selected = true;
 
-    // iterate through all links and get neighbours 
+    this.selectedNodeId = $event;
+
+    // this.selectedNodeInfo = new NodeInfo();
+    // this.selectedNodeInfo.currNode = this.selectedNode;
+
+
+    // // iterate through all links and get neighbours 
     for(let link of this.links) {
       // check source
       if(link.source instanceof Node) {
-        if(link.source.name === $event.name) {
+        if(link.source.name === node.name) {
           link.selected = true;
           if(link.target instanceof Node) {
             link.target.selected = true;
-            this.selectedNodeInfo.outgoing.push(link.target)
+            // this.selectedNodeInfo.outgoing.push(link.target)
           }
         }
       } else if(typeof link.source === 'string') {
-        if(link.source === $event.name) {
+        if(link.source === node.name) {
           link.selected = true;
           let n = this.nodes.find(n => n.name === link.target);
           n.selected = true;
-          this.selectedNodeInfo.outgoing.push(n);
+          // this.selectedNodeInfo.outgoing.push(n);
         }
       }
 
       // check target
       if(link.target instanceof Node) {
-        if(link.target.name === $event.name) {
+        if(link.target.name === node.name) {
           link.selected = true;
           if(link.source instanceof Node) {
             link.source.selected = true;
-            this.selectedNodeInfo.incoming.push(link.source);
+            // this.selectedNodeInfo.incoming.push(link.source);
           }
         }
       } else if(typeof link.target === 'string') {
-        if(link.target === $event.name) {
+        if(link.target === node.name) {
           link.selected = true;
           let n = this.nodes.find(n => n.name === link.source);
           n.selected = true;
-          this.selectedNodeInfo.incoming.push(n);
+          // this.selectedNodeInfo.incoming.push(n);
         }
       }
     }

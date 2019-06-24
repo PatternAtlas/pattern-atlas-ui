@@ -8,15 +8,21 @@ import EnterpriseIntegrationPattern from '../../model/enterprise-integration-pat
 import { EnterpriseIntegrationPatternsLinkLoaderService } from '../../loader/enterprise-integration-patterns-link-loader.service';
 import { EnterpriseIntegrationPatternsGroupLoaderService } from '../../loader/enterprise-integration-patterns-group-loader.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { EnterpriseIntegrationPatternsDataService } from '../../service/enterprise-integration-patterns-data.service';
+import { PatternRenderingComponentInterface } from 'src/app/core/model/pattern-rendering-component.interface';
+import { EnterpriseIntegrationPatternLoaderService } from '../../loader/enterprise-integration-pattern-loader.service';
 
 @Component({
   selector: 'pp-enterprise-integration-patterns',
   templateUrl: './enterprise-integration-patterns.component.html',
   styleUrls: ['./enterprise-integration-patterns.component.scss']
 })
-export class EnterpriseIntegrationPatternsComponent implements OnInit {
+export class EnterpriseIntegrationPatternsComponent implements PatternRenderingComponentInterface, OnInit {
 
-  data: {nodes: Node[], links: Link[]};
+  // id of the pattern that is currently selected. We use the Network-Graph for displaying individual patterns too. Via Infobox.
+  pId: string;
+
+  data: {nodes: Node[], links: Link[], id?: string};
 
   patternMap: Map<string, EnterpriseIntegrationPattern>;
   linkMap: Map<string, Link>;
@@ -26,15 +32,14 @@ export class EnterpriseIntegrationPatternsComponent implements OnInit {
   links: Link[];
 
   constructor(private http: HttpClient,
-    private nodeLoader: EnterpriseIntegrationPatternsLoaderService,
-    private linkLoader: EnterpriseIntegrationPatternsLinkLoaderService,
-    private groupLoader: EnterpriseIntegrationPatternsGroupLoaderService,
+    private loader: EnterpriseIntegrationPatternsDataService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private zone: NgZone) { }
+    private zone: NgZone,
+    private patternLoader: EnterpriseIntegrationPatternLoaderService) { }
 
   ngOnInit() {
-    Promise.all([this.nodeLoader.loadContentFromStore(), this.linkLoader.loadContentFromStore(), this.groupLoader.loadContentFromStore()])
+    this.loader.getAllData()
       .then(values => {
         this.patternMap = values[0];
         this.linkMap = values[1];
@@ -44,11 +49,21 @@ export class EnterpriseIntegrationPatternsComponent implements OnInit {
         // links also contains edges to different pattern languages. we don't want to render them as actual links of the network graph
         // => filter clp links
         this.links = Array.from(this.linkMap.values()).filter(link => {
+          let source = "";
+          let target = "";
+          
+          if (typeof link.source === 'string') 
+            source = link.source;
+          else if (link.source instanceof Node)
+            source = link.source.id;
+          
+          if (typeof link.target === 'string')
+            target = link.target;
+          else if (link.target instanceof Node)
+            target = link.target.id;
+          
           // keep link, if its source and destination is from enterpriseintegrationpatterns, and no other language
-          if (typeof link.source === 'string' && typeof link.target === 'string') {
-            return link.source.includes('enterpriseintegrationpatterns') && link.target.includes('enterpriseintegrationpatterns');
-          }
-          return false;
+          return source.includes('enterpriseintegrationpatterns') && target.includes('enterpriseintegrationpatterns');
         });
 
         // groups
@@ -87,10 +102,11 @@ export class EnterpriseIntegrationPatternsComponent implements OnInit {
         // place data in field
         this.data = {
           nodes: this.nodes,
-          links: this.links
+          links: this.links,
+          id: this.pId
         };
       });
-
+      
     // this.http.get('http://localhost:4200/assets/enterpriseintegrationpatterns/EIP-combined-CLP.json')
     //   .subscribe((data) => {
     //     // collect all groups
