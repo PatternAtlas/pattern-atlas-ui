@@ -113,9 +113,10 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
     // TODO navigate to pattern via router
     console.log(nodeId);
     // should not be relative, as we might click multiple nodes!
-    // this.zone.run(() => {
-    //   this.router.navigate([nodeId], {relativeTo: this.activatedRoute});
-    // });
+    this.zone.run(() => {
+      let route = this.pId ? ['..', nodeId] : [nodeId];
+      this.router.navigate(route, {relativeTo: this.activatedRoute});
+    });
   }
 
   // called when a node was unselected i.e. when clicked somewhere else

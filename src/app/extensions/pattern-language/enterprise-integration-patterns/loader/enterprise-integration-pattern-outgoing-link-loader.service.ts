@@ -27,8 +27,8 @@ export class EnterpriseIntegrationPatternOutgoingLinkLoaderService extends Loade
     const qry = `SELECT ?targetUri ?targetName
       WHERE {
         ?targetLink a <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPatternDirectedRelationDescriptor> ;
-              <http://purl.org/patternpedia#hasTarget> <${uri}> ;
-              <http://purl.org/patternpedia#hasSource> ?targetUri .
+              <http://purl.org/patternpedia#hasSource> <${uri}> ;
+              <http://purl.org/patternpedia#hasTarget> ?targetUri .
         ?targetUri <http://purl.org/patternpedia#hasName> ?targetName .
       }`;
     

@@ -41,6 +41,10 @@ export class GraphComponent implements OnInit, AfterViewInit {
     this.graph.ticker.subscribe((d: any) => {
       this.ref.markForCheck();
     });
+
+    if (this.selectedNodeId) {
+      this.nodeInformation(this.selectedNodeId);
+    }
   }
 
   ngAfterViewInit() {
