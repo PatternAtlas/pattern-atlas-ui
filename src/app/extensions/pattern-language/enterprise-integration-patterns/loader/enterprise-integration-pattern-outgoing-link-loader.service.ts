@@ -32,7 +32,7 @@ export class EnterpriseIntegrationPatternOutgoingLinkLoaderService extends Loade
         ?targetUri <http://purl.org/patternpedia#hasName> ?targetName .
       }`;
     
-    const graphs = [IriConverter.getFileName(this.supportedIRI), IriConverter.getFileName(uri)];
+    const graphs = [IriConverter.getFileName(this.supportedIRI), IriConverter.getFileName(uri), 'http://purl.org/patternpedia/cloudcomputingpatterns'];
 
     return this.executor.exec(qry, graphs);
   }
@@ -54,7 +54,7 @@ export class EnterpriseIntegrationPatternOutgoingLinkLoaderService extends Loade
 
     we convert the given triples to the following object:
     {
-      id: string - the uri of the target pattern,
+      id: string - the id of the target pattern derived from the uri,
       name: string - the name of the target pattern
     }
     */
@@ -62,7 +62,7 @@ export class EnterpriseIntegrationPatternOutgoingLinkLoaderService extends Loade
 
     for (const t of triples) {
       let item = {
-        id: t.targetUri.value,
+        id: IriConverter.convertIriToId(t.targetUri.value),
         name: t.targetName.value
       };
 

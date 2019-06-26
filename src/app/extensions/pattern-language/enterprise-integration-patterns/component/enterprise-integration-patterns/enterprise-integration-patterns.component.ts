@@ -86,13 +86,13 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
 
         // convert given IRI -> EnterpriseIntegrationPattern Map to Node list for rendering
         this.patternMap.forEach((value) => {
-          let n = new Node(value.iri);
+          let n = new Node(value.id);
           n.name = value.name;
           n.description = value.description.value;
           
           // go through all groups and check if the current pattern is present in the list of patterns
           // return the group (i.e. the group name) that contains the pattern. undefined if no group contains this pattern
-          n.group = Object.keys(groups).find(groupName => groups[groupName].includes(value.iri));
+          n.group = Object.keys(groups).find(groupName => groups[groupName].includes(value.id));
 
           n.color = color(n.group);
 
@@ -106,62 +106,26 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
           id: this.pId
         };
       });
-      
-    // this.http.get('http://localhost:4200/assets/enterpriseintegrationpatterns/EIP-combined-CLP.json')
-    //   .subscribe((data) => {
-    //     // collect all groups
-    //     let groups = new Set();
-    //     for(let node of data['nodes']) {
-    //       if(node.group)
-    //         groups.add(node.group)
-    //     }
-    //     let groupIds = Array.from(groups);
-    //     let scale = d3.scaleOrdinal(d3.schemeCategory10);
-    //     let color = function(d) {
-    //       if(d)
-    //         return scale('' + groupIds.indexOf(d));
-    //       return scale('0');
-    //     }
+  }
 
-    //     // parse nodes
-    //     let nodes: Node[] = [];
-    //     for(let node of data['nodes']) {
-    //       let curr: Node;
-    //       curr = new Node(node.name);
-    //       curr.group = node.group;
-    //       curr.description = node.description;
-          
-    //       curr.color = color(curr.group);
+  // called when a node from the network graph was selected
+  selectNode(nodeId: string) {
+    // TODO navigate to pattern via router
+    console.log(nodeId);
+    // should not be relative, as we might click multiple nodes!
+    // this.zone.run(() => {
+    //   this.router.navigate([nodeId], {relativeTo: this.activatedRoute});
+    // });
+  }
 
-    //       nodes.push(curr);
-    //     }
-    //     // parse links
-    //     let links: Link[] = [];
-    //     for(let link of data['links']) {
-    //       let curr: Link;
-    //       curr = new Link(
-    //         link.source,
-    //         link.target,
-    //         link.type,
-    //         link.description
-    //       );
-
-    //       // filter links depending on their type! Otherwise Nodes from other languages will be referenced leading to errors!
-    //       if(link.type === 'default' || link.type === 'clp')
-    //         links.push(curr);
-    //     }
-
-    //     // place data in field
-    //     this.data = {
-    //       'nodes': nodes,
-    //       'links': links
-    //     };
-    //   });
+  // called when a node was unselected i.e. when clicked somewhere else
+  unselectNode() {
+    // TODO navigate back to language level
   }
 
   navigateBack(): void {
     this.zone.run(() => {
       this.router.navigate(['..'], {relativeTo: this.activatedRoute});
-  });
-}
+    });
+  }
 }

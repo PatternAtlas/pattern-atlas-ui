@@ -39,7 +39,7 @@ export class EnterpriseIntegrationPatternsModule {
       label: "Network Graph",
       priority: 10, // this is the main renderer for this language
       plcomponent: EnterpriseIntegrationPatternsComponent, // the rendering for the pattern LANGUAGE
-      pcomponent: EnterpriseIntegrationPatternComponent // TODO is this actually used?
+      pcomponent: EnterpriseIntegrationPatternsComponent // TODO is this actually used?
     });
 
     // adding a secondary renderer (dummy)

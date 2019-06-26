@@ -102,7 +102,7 @@ export class EnterpriseIntegrationPatternsLoaderService extends Loader<Enterpris
       data[p].description
     );
 
-    result.set(p, eip);
+    result.set(eip.id, eip);
    }
 
    return Promise.resolve(result);

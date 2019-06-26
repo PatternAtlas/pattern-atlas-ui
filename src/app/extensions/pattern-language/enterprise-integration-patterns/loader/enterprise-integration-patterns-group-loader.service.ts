@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import Loader from 'src/app/core/model/loader';
 import { PatternOntologyService } from 'src/app/core/service/pattern-ontology.service';
+import { IriConverter } from 'src/app/core/util/iri-converter';
 
 @Injectable({
   providedIn: 'root'
@@ -47,7 +48,7 @@ export class EnterpriseIntegrationPatternsGroupLoaderService extends Loader<any>
         uri: string - uri of the group,
         groupName: string - group name,
         patterns: [
-          list of uris of the patterns contained in the group
+          list of ids of the patterns contained in the group
         ]
       },
       next group ...
@@ -69,7 +70,7 @@ export class EnterpriseIntegrationPatternsGroupLoaderService extends Loader<any>
       }
 
       // add pattern to group
-      item.patterns.push(t.pattern.value);
+      item.patterns.push(IriConverter.convertIriToId(t.pattern.value));
     }
 
     // there is no group class as we need to inject the data into the individual patterns later on

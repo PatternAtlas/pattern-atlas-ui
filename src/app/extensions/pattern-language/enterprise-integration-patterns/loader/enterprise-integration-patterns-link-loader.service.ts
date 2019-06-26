@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import Loader from 'src/app/core/model/loader';
 import { PatternOntologyService } from 'src/app/core/service/pattern-ontology.service';
 import { Link } from '../model';
+import { IriConverter } from 'src/app/core/util/iri-converter';
 
 @Injectable({
   providedIn: 'root'
@@ -51,9 +52,9 @@ export class EnterpriseIntegrationPatternsLinkLoaderService extends Loader<Link>
     e.g. LooseCoupling has 2 description lines leading to 2 objects in the triples list for the same link
     we combine the triples to the following objects:
     {
-      uri: string - the identifier of the link,
-      source: string - the source uri,
-      target: string - the target uri,
+      id: string - the identifier of the link derived from the URI,
+      source: string - the source id derived from the URI,
+      target: string - the target id derived from the URI,
       description: [string] - the descriptions. Might be empty
     }
     */
@@ -65,9 +66,9 @@ export class EnterpriseIntegrationPatternsLinkLoaderService extends Loader<Link>
       // if no entry for link yet, create new one
       if(!item) {
         item = {
-          uri: t.uri.value,
-          source: t.source.value,
-          target: t.target.value,
+          id: IriConverter.convertIriToId(t.uri.value),
+          source: IriConverter.convertIriToId(t.source.value),
+          target: IriConverter.convertIriToId(t.target.value),
           description: []
         };
 
@@ -86,7 +87,7 @@ export class EnterpriseIntegrationPatternsLinkLoaderService extends Loader<Link>
       let link = new Link(
         l.source, l.target, null, l.description
       );
-      result.set(l.uri, link);
+      result.set(l.id, link);
     }
     return Promise.resolve(result);
   }

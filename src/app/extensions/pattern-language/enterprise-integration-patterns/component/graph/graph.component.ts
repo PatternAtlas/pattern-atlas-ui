@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, HostListener, ChangeDetectorRef, ChangeDetectionStrategy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, HostListener, ChangeDetectorRef, ChangeDetectionStrategy, AfterViewInit, EventEmitter, Output } from '@angular/core';
 import { Node, Link, NetworkGraph } from '../../model';
 import { D3Service } from '../../service/d3.service';
 import { NodeInfo } from '../../model/node-info';
@@ -13,6 +13,9 @@ export class GraphComponent implements OnInit, AfterViewInit {
   
   @Input('nodes') nodes: Node[];
   @Input('links') links: Link[];
+
+  @Output() nodeSelectEvent = new EventEmitter<string>();
+  @Output() nodeUnselectEvent = new EventEmitter<string>();
 
   graph: NetworkGraph;
 
@@ -108,7 +111,10 @@ export class GraphComponent implements OnInit, AfterViewInit {
     }
   }
 
-  deselectNode() {    
+  deselectNode() {
+    // call listener
+    this.nodeUnselectEvent.emit();
+
     // remove selection of nodes and links
     for(let n of this.nodes) {
       n.selected = false;
@@ -124,10 +130,18 @@ export class GraphComponent implements OnInit, AfterViewInit {
 
   // $event is the clicked node id!
   nodeInformation($event: string) {
+    // call listener
+    this.nodeSelectEvent.emit($event);
 
     let node = this.nodes.find(n => n.id === $event);
 
-    this.deselectNode();
+    // remove selection of nodes and links
+    for(let n of this.nodes) {
+      n.selected = false;
+    }
+    for(let l of this.links) {
+      l.selected = false;
+    }
 
     // set clicked node as current node to display infobox (separate component) about node
     // in HTML we can do *ngIf to show infobox component 

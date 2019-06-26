@@ -22,7 +22,7 @@
 
 <div *ngIf="selectedNodeId">
   <pp-node-infobox 
-        [uri]="selectedNodeId"
+        [id]="selectedNodeId"
         (clickEvent)="nodeInformation($event)"
         (mouseEnterEvent)="previewNodeInformation($event)"
         (mouseLeaveEvent)="dePreviewNodeInformation($event)">

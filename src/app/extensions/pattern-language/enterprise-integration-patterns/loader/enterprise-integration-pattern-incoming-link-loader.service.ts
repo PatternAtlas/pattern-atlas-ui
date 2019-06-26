@@ -54,7 +54,7 @@ export class EnterpriseIntegrationPatternIncomingLinkLoaderService extends Loade
 
     we convert the given triples to the following object:
     {
-      id: string - the uri of the source pattern,
+      id: string - the id of the source pattern derived from the uri,
       name: string - the name of the source pattern
     }
     */
@@ -62,7 +62,7 @@ export class EnterpriseIntegrationPatternIncomingLinkLoaderService extends Loade
 
     for (const t of triples) {
       let item = {
-        id: t.sourceUri.value,
+        id: IriConverter.convertIriToId(t.sourceUri.value),
         name: t.sourceName.value
       };
 
