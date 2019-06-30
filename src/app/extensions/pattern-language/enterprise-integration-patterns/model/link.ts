@@ -13,6 +13,7 @@ export class Link implements d3.SimulationLinkDatum<Node> {
 
     selected: boolean;
     preview: boolean;
+    hide: boolean;
 
     constructor(source, target, type: string = 'default', description?: string[]) {
         this.source = source;

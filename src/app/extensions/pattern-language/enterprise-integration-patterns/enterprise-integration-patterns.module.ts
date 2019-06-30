@@ -9,7 +9,8 @@ import { NodeVisualComponent } from './component/node-visual/node-visual.compone
 import { NodeInfoboxComponent } from './component/node-infobox/node-infobox.component';
 import { EnterpriseIntegrationPatternComponent } from './component/enterprise-integration-pattern/enterprise-integration-pattern.component';
 import { EnterpriseIntegrationPatternsLoaderService } from './loader/enterprise-integration-patterns-loader.service';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule, MatIcon, MatIconModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,11 @@ import { MatButtonModule } from '@angular/material';
   ],
   imports: [
     CommonModule,
-    MatButtonModule
+    MatButtonModule,
+    FormsModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [
     EnterpriseIntegrationPatternsLoaderService

@@ -1,6 +1,6 @@
 <svg:g class="node-element" 
   [attr.transform]="'translate(' + node.x + ',' + node.y + ')'" 
-  [ngClass]="{'selected': node.selected, 'preview': node.preview}"
+  [ngClass]="{'selected': node.selected, 'preview': node.preview, 'hide': node.hide}"
   (click)="onClick($event)"
   (mouseenter)="onMouseEnter($event)"
   (mouseleave)="onMouseLeave($event)">

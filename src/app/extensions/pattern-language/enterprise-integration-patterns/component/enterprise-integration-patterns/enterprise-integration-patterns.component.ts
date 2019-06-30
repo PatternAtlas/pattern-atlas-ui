@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, ViewChild } from '@angular/core';
 import { Link } from '../../model/link';
 import { Node } from '../../model/node';
 import { HttpClient } from '@angular/common/http';
@@ -11,6 +11,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { EnterpriseIntegrationPatternsDataService } from '../../service/enterprise-integration-patterns-data.service';
 import { PatternRenderingComponentInterface } from 'src/app/core/model/pattern-rendering-component.interface';
 import { EnterpriseIntegrationPatternLoaderService } from '../../loader/enterprise-integration-pattern-loader.service';
+import { GraphComponent } from '../graph/graph.component';
 
 @Component({
   selector: 'pp-enterprise-integration-patterns',
@@ -30,6 +31,10 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
   
   nodes: Node[];
   links: Link[];
+
+  @ViewChild('graph') graph;
+
+  filterValue: string;
 
   constructor(private http: HttpClient,
     private loader: EnterpriseIntegrationPatternsDataService,
@@ -128,5 +133,15 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
     this.zone.run(() => {
       this.router.navigate(['..'], {relativeTo: this.activatedRoute});
     });
+  }
+
+  filterNodes(value: string) {
+    if (value !== '' /*&& this.filterValue !== value*/) {
+      this.filterValue = value;
+
+      this.graph.filterNodes(this.filterValue);
+    } else {
+      this.graph.showAllNodes();
+    }
   }
 }

@@ -197,4 +197,44 @@ export class GraphComponent implements OnInit, AfterViewInit {
       }
     }
   }
+
+  filterNodes(filterValue: string) {
+    this.showAllNodes();
+
+    const reg = new RegExp(filterValue);
+
+    // get patterns to hide
+    let nodesToBeFiltered = this.nodes.filter(n => !reg.test(n.name));
+
+    // get all links that contain a pattern that should be filtered 
+    let linksToBeFiltered = this.links.filter(e => {
+      let id = '';
+      if (typeof e.source === 'string')
+        id = e.source;
+      else if (e.source instanceof Node) 
+        id = e.source.id;
+
+      let s = nodesToBeFiltered.find(n => n.id === id);
+      if (s) return true;
+
+      if (typeof e.target === 'string')
+        id = e.target;
+      else if (e.target instanceof Node)
+        id = e.target.id;
+      
+      let t = nodesToBeFiltered.find(n => n.id === id);
+      if (t) return true;
+
+      return false;
+    });
+
+    // aquired elements have to be hidden
+    nodesToBeFiltered.forEach(n => n.hide = true);
+    linksToBeFiltered.forEach(l => l.hide = true);
+  }
+
+  showAllNodes() {
+    this.nodes.forEach(n => n.hide = false);
+    this.links.forEach(l => l.hide = false);
+  }
 }
