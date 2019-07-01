@@ -3,7 +3,7 @@ import { NodeInfo } from '../../model';
 import { EnterpriseIntegrationPatternLoaderService } from '../../loader/enterprise-integration-pattern-loader.service';
 import { EnterpriseIntegrationPatternIncomingLinkLoaderService } from '../../loader/enterprise-integration-pattern-incoming-link-loader.service';
 import { EnterpriseIntegrationPatternOutgoingLinkLoaderService } from '../../loader/enterprise-integration-pattern-outgoing-link-loader.service';
-import Info from '../../model/info';
+import { Info, GroupInfo } from '../../model/info';
 import { IriConverter } from 'src/app/core/util/iri-converter';
 
 @Component({
@@ -60,14 +60,54 @@ export class NodeInfoboxComponent implements OnInit, OnChanges {
       let incoming = [];
       incomingMap.forEach(value => incoming.push(value));
 
+      // group outgoing and incoming links into pattern language groups
+      let groups: GroupInfo[] = [];
+      for (let o of outgoing) {
+        let groupId = this.filterGroupId(o.id);
+
+        if (!groups.find(g => g.id === groupId)) {
+          let g: GroupInfo = {
+            id: groupId,
+            outgoing: [],
+            incoming: []
+          };
+          groups.push(g);
+        } 
+        
+        let g = groups.find(g => g.id === groupId);
+        g.outgoing.push(o);
+      }
+      for (let i of incoming) {
+        let groupId = this.filterGroupId(i.id);
+
+        if (!groups.find(g => g.id === groupId)) {
+          let g: GroupInfo = {
+            id: groupId,
+            outgoing: [],
+            incoming: []
+          };
+          groups.push(g);
+        }
+
+        let g = groups.find(g => g.id === groupId);
+        g.incoming.push(i);
+      }
+
       this.info = {
         name: pattern.name,
         group: pattern.group,
         description: pattern.description,
-        outgoing: outgoing,
-        incoming: incoming
+        related: groups
       };
     });
+  }
+
+  private filterGroupId(id: string) {
+    let uri = IriConverter.convertIdToIri(id);
+    let noPrefix = uri.replace('http://purl.org/patternpedia/', '');
+    let slash = noPrefix.indexOf('/');
+    
+    return noPrefix.substr(0, slash);
   }
 
   onClick(event: any, node: Node) {

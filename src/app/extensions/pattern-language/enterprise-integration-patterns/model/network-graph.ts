@@ -2,6 +2,15 @@ import { EventEmitter } from '@angular/core';
 import { Link } from './link';
 import { Node } from './node';
 import * as d3 from 'd3';
+import GraphConfig from './graph-config';
+
+const DEFAULT_CONFIG = {
+  charge: -4000,
+  xStrength: 1,
+  yStrength: 1,
+  linkDistance: 300,
+  linkStrength: 0.5
+}
 
 export class NetworkGraph {
   public ticker: EventEmitter<d3.Simulation<Node, Link>> = new EventEmitter();
@@ -10,9 +19,13 @@ export class NetworkGraph {
   public nodes: Node[] = [];
   public links: Link[] = [];
 
-  constructor(nodes, links, options: { width, height }) {
+  config: GraphConfig;
+
+  constructor(nodes, links, options: { width, height }, config?: GraphConfig) {
     this.nodes = nodes;
     this.links = links;
+
+    this.config = config || DEFAULT_CONFIG;
 
     this.initSimulation(options);
   }
@@ -45,12 +58,11 @@ export class NetworkGraph {
       throw new Error('simulation was not initialized yet');
     }
 
-
     this.simulation.force('links',
       d3.forceLink(this.links)
         .id(d => d['id'])
-        .distance(200)
-        .strength(1)
+        .distance(this.config.linkDistance)
+        .strength(this.config.linkStrength)
     );
   }
 
@@ -64,10 +76,10 @@ export class NetworkGraph {
       const ticker = this.ticker;
 
       this.simulation = d3.forceSimulation()
-        .force('charge',d3.forceManyBody().strength(-3000))
+        .force('charge',d3.forceManyBody().strength(this.config.charge))
         .force('center', d3.forceCenter(options.width / 2, options.height / 2))
-        .force('x', d3.forceX(options.width / 2).strength(1))
-        .force('y', d3.forceY(options.height / 2).strength(1));
+        .force('x', d3.forceX(options.width / 2).strength(this.config.xStrength))
+        .force('y', d3.forceY(options.height / 2).strength(this.config.yStrength));
 
       // Connecting the d3 ticker to an angular event emitter
       this.simulation.on('tick', function () {
