@@ -196,9 +196,12 @@ export class PatternOntologyService implements SparqlExecutor {
     loadLocallyHostedOntosRaw(): Observable<any> {
         const observables = [
             this.http.get('assets/patternpedia.ttl', {responseType: 'text'}),
-            this.http.get('assets/cloudcomputingpatterns/cloudcomputingpatterns.ttl', {responseType: 'text'}),
-            this.http.get('assets/cloudcomputingpatterns/elasticinfrastructure.ttl', {responseType: 'text'}),
-            this.http.get('assets/cloudcomputingpatterns/elasticloadbalancer.ttl', {responseType: 'text'}),
+            // this.http.get('assets/cloudcomputingpatterns/cloudcomputingpatterns.ttl', {responseType: 'text'}),
+            // this.http.get('assets/cloudcomputingpatterns/elasticinfrastructure.ttl', {responseType: 'text'}),
+            // this.http.get('assets/cloudcomputingpatterns/elasticloadbalancer.ttl', {responseType: 'text'}),
+            this.http.get('assets/cloudcomputingpatterns/Cloud Computing Patterns.ttl', {responseType: 'text'}),
+            this.http.get('assets/cloudcomputingpatterns/Cloud Computing Patterns-links.ttl', {responseType: 'text'}),
+            this.http.get('assets/cloudcomputingpatterns/Cloud Computing Patterns-nodes.ttl', {responseType: 'text'}),
             this.http.get('assets/internetofthingspatterns/internetofthingspatterns.ttl', {responseType: 'text'}),
             this.http.get('assets/internetofthingspatterns/deviceshadow.ttl', {responseType: 'text'}),
             this.http.get('assets/internetofthingspatterns/devicegateway.ttl', {responseType: 'text'}),
@@ -218,15 +221,31 @@ export class PatternOntologyService implements SparqlExecutor {
         console.log('LOADING http://purl.org/patternpedia to store');
         console.log('Result: ', await this.loadToStore('text/turtle',
             loadResult[0], 'http://purl.org/patternpedia'));
-        console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns to store');
+
+
+        // console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns to store');
+        // console.log('Result: ', await this.loadToStore('text/turtle',
+        //     loadResult[1], 'http://purl.org/patternpedia/cloudcomputingpatterns'));
+        // console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure to store');
+        // console.log('Result: ', await this.loadToStore('text/turtle',
+        //     loadResult[2], 'http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure'));
+        // console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer to store');
+        // console.log('Result: ', await this.loadToStore('text/turtle',
+        //     loadResult[3], 'http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer'));
+
+        // loading the enterprise integration patterns turtle file 
+        console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns');
         console.log('Result: ', await this.loadToStore('text/turtle',
             loadResult[1], 'http://purl.org/patternpedia/cloudcomputingpatterns'));
-        console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure to store');
+        // loading the nodes
+        console.log('LOADING NODES OF http://purl.org/patternpedia/cloudcomputingpatterns');
         console.log('Result: ', await this.loadToStore('text/turtle',
-            loadResult[2], 'http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure'));
-        console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer to store');
+            loadResult[2], 'http://purl.org/patternpedia/cloudcomputingpatterns'));
+        // loading the links
+        console.log('LOADING EDGES OF http://purl.org/patternpedia/cloudcomputingpatterns');
         console.log('Result: ', await this.loadToStore('text/turtle',
-            loadResult[3], 'http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer'));
+            loadResult[3], 'http://purl.org/patternpedia/cloudcomputingpatterns'));
+
         console.log('LOADING http://purl.org/patternpedia/internetofthingspatterns/ to store');
         console.log('Result: ', await this.loadToStore('text/turtle',
             loadResult[4], 'http://purl.org/patternpedia/internetofthingspatterns'));

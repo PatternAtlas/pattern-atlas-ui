@@ -26,17 +26,30 @@
     }
 }
 
-.related {
+.referenced {
     border-top-width: 2px;
     border-top-style: solid;
     border-top-color: lightgrey;
 
-    ul {
-        margin: 10px;
-        padding-left: 10px;
+    ul { 
+        padding-left:20px; 
+        list-style:none; 
+    }
+    
+    li { 
+        margin-bottom:10px; 
+    }
+}
+
+.related {
+    margin-bottom: 10px;
+    padding: 4px;
+
+    i {
+        margin-right: 8px;
     }
 
-    li {
-        padding-bottom: 3px;
+    .item {
+        margin-bottom: 4px;
     }
 }
