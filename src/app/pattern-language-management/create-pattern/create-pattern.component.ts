@@ -64,6 +64,8 @@ export class CreatePatternComponent implements OnInit {
         }
       );
 
+    // Todo: Load Restrictions because we don't want to overwrite them + we would like to do some validation
+
     this.plName = IriConverter.extractIndividualNameFromIri(this.plIri);
 
     this.loader.getPLSections(this.plIri).then((res: SectionResponse[]) => {
@@ -105,6 +107,7 @@ export class CreatePatternComponent implements OnInit {
     const pattern = this.parsePatternInput();
     const patternIris = this.patterns.map(p => p.uri);
     patternIris.push(pattern.iri);
+
     const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, patternIris, this.sections);
 
     this.uploadService.updatePL(patternLanguage).pipe(
@@ -114,7 +117,10 @@ export class CreatePatternComponent implements OnInit {
     ).subscribe(() => {
       this.toastService.pop('success', 'Pattern created');
       this.router.navigate(['..'], {relativeTo: this.activatedRoute});
-    }, (error) => this.toastService.pop('error', 'Something went wrong whilecreating the pattern: ' + error.message));
+    }, (error) => {
+      this.toastService.pop('error', 'Something went wrong while creating the pattern: ' + error.message);
+      console.log(error);
+    });
 
   }
 
@@ -136,7 +142,7 @@ export class CreatePatternComponent implements OnInit {
     const patternNameIndex = lines.findIndex((it) => it.type === 'heading' && it.depth === 1);
     const patternname = patternNameIndex !== -1 ? lines[patternNameIndex]['text'] : '';
     const sectionMap = new Map<string, string | string[]>();
-
+    console.log(this.sections);
     this.sections.forEach((section: string) => {
       const sectionIndex = lines.findIndex((it) => it.type === 'heading' && it.depth === 2 &&
         this.ignoreCaseAndWhitespace(it.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(section)));

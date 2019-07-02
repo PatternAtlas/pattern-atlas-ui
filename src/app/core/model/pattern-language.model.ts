@@ -80,32 +80,37 @@ class PatternLanguage {
       ary.push(`### ${section}`);
       ary.push(`${this.getSectionIdentifier(section)} rdf:type owl:DatatypeProperty .`);
     }
-    ary.push('\n');
-    ary.push('# #################################################################');
-    ary.push('# #');
-    ary.push('# #    Restrictions / Classes');
-    ary.push('# #');
-    ary.push('# #################################################################');
 
-    ary.push(`### ${this.iri}`);
-    ary.push(`:${this.name}Individual rdf:type owl:Class ; `);
-    ary.push(` rdfs:subClassOf pp:Pattern ,`);
-    this.restrictions.forEach((restriction, index) => {
-      ary.push(`${'\t'.repeat(3)}[ rdf:type owl:Restriction ;`);
-      ary.push(`${'\t'.repeat(3)} owl:onProperty ${this.getSectionIdentifier(restriction.name)} ; `);
-      if (restriction.restrictionType === 'min' || restriction.restrictionType === 'max') {
-        ary.push(`${'\t'.repeat(3)} ${restriction.restrictionType === 'min' ? 'owl:minQualifiedCardinality' : 'owl:maxQualifiedCardinality'} "${restriction.cardinality}"^^xsd:nonNegativeInteger`);
-      } else if (restriction.restrictionType === 'exactly') {
-        ary.push(`${'\t'.repeat(3)} owl:QualifiedCardinality"${restriction.cardinality}"^^xsd:nonNegativeInteger`);
-      } else if (restriction.restrictionType === 'some') {
-        ary.push(`${'\t'.repeat(3)} owl:someValuesFrom ${restriction.type}`);
-      } else if (restriction.restrictionType === 'only') {
-        ary.push(`${'\t'.repeat(3)} owl:allValuesFrom ${restriction.type}`);
-      }
-      //  ary.push(`${'\t'.repeat(3)} owl:onDataRange <${section.type}>`); Is this statement necessary?
-      ary.push(`${'\t'.repeat(4)}] ${index === this.sections.length ? '.' : ','}`);
-      ary.push(`\n`);
-    });
+    if (this.restrictions && this.restrictions.length > 0) {
+
+      ary.push('\n');
+      ary.push('# #################################################################');
+      ary.push('# #');
+      ary.push('# #    Restrictions / Classes');
+      ary.push('# #');
+      ary.push('# #################################################################');
+
+      ary.push(`### ${this.iri}`);
+      ary.push(`:${this.name}Individual rdf:type owl:Class ; `);
+      ary.push(` rdfs:subClassOf pp:Pattern ,`);
+      
+      this.restrictions.forEach((restriction, index) => {
+        ary.push(`${'\t'.repeat(3)}[ rdf:type owl:Restriction ;`);
+        ary.push(`${'\t'.repeat(3)} owl:onProperty ${this.getSectionIdentifier(restriction.name)} ; `);
+        if (restriction.restrictionType === 'min' || restriction.restrictionType === 'max') {
+          ary.push(`${'\t'.repeat(3)} ${restriction.restrictionType === 'min' ? 'owl:minQualifiedCardinality' : 'owl:maxQualifiedCardinality'} "${restriction.cardinality}"^^xsd:nonNegativeInteger`);
+        } else if (restriction.restrictionType === 'exactly') {
+          ary.push(`${'\t'.repeat(3)} owl:QualifiedCardinality"${restriction.cardinality}"^^xsd:nonNegativeInteger`);
+        } else if (restriction.restrictionType === 'some') {
+          ary.push(`${'\t'.repeat(3)} owl:someValuesFrom ${restriction.type}`);
+        } else if (restriction.restrictionType === 'only') {
+          ary.push(`${'\t'.repeat(3)} owl:allValuesFrom ${restriction.type}`);
+        }
+        //  ary.push(`${'\t'.repeat(3)} owl:onDataRange <${section.type}>`); Is this statement necessary?
+        ary.push(`${'\t'.repeat(4)}] ${index === this.sections.length ? '.' : ','}`);
+        ary.push(`\n`);
+      });
+    }
 
 
     ary.push('#################################################################');
