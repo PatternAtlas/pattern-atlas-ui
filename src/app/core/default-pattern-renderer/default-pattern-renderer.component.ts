@@ -58,7 +58,7 @@ export class DefaultPatternRendererComponent implements OnInit {
     if (!iri || !this.sectionInfos) {
       return;
     }
-    return this.sectionInfos.filter(s => s.property.value === iri)[0];
+    return this.sectionInfos.filter(s => s.section.value === iri)[0];
   }
 
 }

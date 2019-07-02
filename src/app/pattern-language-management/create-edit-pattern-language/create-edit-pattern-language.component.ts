@@ -4,8 +4,8 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Valida
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/internal/operators';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { DialogPatternLanguageResult, SectionRestrictionForm } from '../data/DialogPatternLanguageResult.interface';
-import { Section } from '../../core/model/section.model';
+import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
+import { PatternLanguageSectionRestriction } from '../../core/model/PatternLanguageSectionRestriction.model';
 
 @Component({
   selector: 'pp-create-edit-pattern-language',
@@ -30,12 +30,6 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   sectionDetailsGroup: FormGroup;
   prefixes = ['xsd', 'dctype'];
 
-  sectionFormModel: {[key in keyof SectionRestrictionForm]?: FormControl} = {
-    type: new FormControl('xsd:string', Validators.required),
-    cardinality: new FormControl(0),
-    restrictionType: new FormControl('only'),
-    name: new FormControl(null),
-  };
 
   options: string[] = ['xsd:string', 'xsd:anyURI', 'xsd:int', 'xsd:positiveInteger'];
   restrictionOptions: string[] = ['only', 'some', 'min', 'exactly', 'max'];
@@ -140,12 +134,14 @@ export class CreateEditPatternLanguageComponent implements OnInit {
 
   save(): void {
     this.saveRequested = true;
-    console.log(this.sectionsArray.value);
     if (this.patternLanguageForm.valid && this.sectionDetailsGroup.valid) {
       this.onSaveClicked.emit({
-        sections: this.sectionsArray.value.map((sectionFormValue) => {
-          return new Section(sectionFormValue.type, sectionFormValue.name, sectionFormValue.min, sectionFormValue.max);
+        restrictions: this.sectionsArray.value.map((sectionFormValue) => {
+          // (name: string, restrictionType: string, type: string, cardinality: number)
+          return new PatternLanguageSectionRestriction(sectionFormValue.name, sectionFormValue.restrictionType, sectionFormValue.type,
+            sectionFormValue.cardinality);
         }),
+        sections: this.sections,
         name: this.name.value, iconUrl: this.iconUrl.value
       });
       this.dialogRef.close();

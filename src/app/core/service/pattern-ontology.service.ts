@@ -480,7 +480,7 @@ export class PatternOntologyService implements SparqlExecutor {
     return this.exec(qryPatternGraphs, [IriConverter.getFileName(supportedIRI)]);
   }
 
-  async getPropertiesOfPL(graphIri: string): Promise<SectionResponse[]> {
+  async getRestrictionsOfPL(graphIri: string): Promise<SectionResponse[]> {
     const qryPatternGraphs = ` SELECT DISTINCT  ?property ?cardinality ?dataRange WHERE {
   { ?patternLanguageIndividual rdf:type owl:Class . 
     ?patternLanguageIndividual rdfs:subClassOf ?restrictionClass .
@@ -538,6 +538,13 @@ export class PatternOntologyService implements SparqlExecutor {
   async allTriples(graphIri: string): Promise<any[]> {
     const qryPatternGraph = `SELECT * WHERE {
    ?subject ?predicate ?object .
+} `;
+    return this.exec(qryPatternGraph, [IriConverter.getFileName(graphIri)]);
+  }
+
+  getPLSections(graphIri: string): Promise<any[]> {
+    const qryPatternGraph = `SELECT ?section WHERE {
+   ?section a owl:DatatypeProperty .
 } `;
     return this.exec(qryPatternGraph, [IriConverter.getFileName(graphIri)]);
   }

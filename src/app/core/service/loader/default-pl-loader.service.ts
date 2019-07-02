@@ -61,7 +61,11 @@ export class DefaultPlLoaderService extends Loader<any> {
   }
 
   getPLSections(supportedIri: string): Promise<SectionResponse[]> {
-    return this.pos.getPropertiesOfPL(supportedIri);
+    return this.pos.getPLSections(supportedIri);
+  }
+
+  getPLRestrictions(supportedIri: string): Promise<SectionResponse[]> {
+    return this.pos.getRestrictionsOfPL(supportedIri);
   }
 
 

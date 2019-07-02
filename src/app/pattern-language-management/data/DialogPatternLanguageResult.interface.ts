@@ -1,7 +1,8 @@
-import { Section } from '../../core/model/section.model';
+import { PatternLanguageSectionRestriction } from '../../core/model/PatternLanguageSectionRestriction.model';
 
 export interface DialogPatternLanguageResult {
-  sections: Section[];
+  sections: string[];
+  restrictions?: PatternLanguageSectionRestriction[];
   name: string;
   iconUrl: string;
 }

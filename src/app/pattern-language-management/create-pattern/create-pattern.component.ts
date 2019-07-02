@@ -11,7 +11,6 @@ import * as marked from 'marked';
 import { TokensList } from 'marked';
 import Pattern from '../../core/model/pattern.model';
 import { PatternOntologyService } from '../../core/service/pattern-ontology.service';
-import { Section } from '../../core/model/section.model';
 import { SectionResponse } from '../../core/service/data/SectionResponse.interface';
 import { ToasterService } from 'angular2-toaster';
 
@@ -27,7 +26,7 @@ export class CreatePatternComponent implements OnInit {
   patterns: any;
   plIri: string;
   plName: string;
-  sections: Section[];
+  sections: string[];
   plLogos: string[];
 
 
@@ -69,11 +68,11 @@ export class CreatePatternComponent implements OnInit {
 
     this.loader.getPLSections(this.plIri).then((res: SectionResponse[]) => {
       this.sections = res.map((iri: any) => {
-        return this.reconstructSectionFromQueryResult(iri);
+        return this.reconstructSectionFromSectionesult(iri);
       });
       for (const section of this.sections) {
         this.patternLanguageStructure = this.patternLanguageStructure.concat(
-          '\n ## ' + this.addSpaceForCamelCase(section.name) + '\n' + this.getDefaultTextForSection(section));
+          '\n ## ' + this.addSpaceForCamelCase(section) + '\n' + this.getDefaultTextForSection(section));
       }
       this._textEditor.value = this.patternLanguageStructure;
       this.onChangeMarkdownText();
@@ -88,14 +87,8 @@ export class CreatePatternComponent implements OnInit {
 
   }
 
-
-  reconstructSectionFromQueryResult(queryResult: SectionResponse): Section {
-    return <Section>{
-      name: queryResult.property.value.split('#has')[1],
-      min: queryResult.cardinality ? 1 : null,
-      max: queryResult.cardinality ? 1 : null,
-      type: queryResult.dataRange.value
-    };
+  reconstructSectionFromSectionesult(queryResult: SectionResponse): string {
+    return queryResult.section.value.split('#has')[1];
   }
 
   private matchesOne(string: string): boolean {
@@ -144,9 +137,9 @@ export class CreatePatternComponent implements OnInit {
     const patternname = patternNameIndex !== -1 ? lines[patternNameIndex]['text'] : '';
     const sectionMap = new Map<string, string | string[]>();
 
-    this.sections.forEach((section: Section) => {
+    this.sections.forEach((section: string) => {
       const sectionIndex = lines.findIndex((it) => it.type === 'heading' && it.depth === 2 &&
-        this.ignoreCaseAndWhitespace(it.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(section.name)));
+        this.ignoreCaseAndWhitespace(it.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(section)));
       if (sectionIndex !== -1) {
         let sectioncontent = '';
         for (let i = sectionIndex + 1; i < lines.length; i++) {
@@ -155,7 +148,7 @@ export class CreatePatternComponent implements OnInit {
           }
           sectioncontent = sectioncontent + lines[i]['text'] ? lines[i]['text'] : '';
         }
-        sectionMap[section.name] = sectioncontent;
+        sectionMap[section] = sectioncontent;
       }
     });
 
@@ -173,16 +166,15 @@ export class CreatePatternComponent implements OnInit {
   }
 
 
-  getDefaultTextForSection(section: Section): string {
-    console.log(section.type);
+  getDefaultTextForSection(section: string): string {
     const prefix = 'http://www.w3.org/2001/XMLSchema#';
-    if (section.type === (prefix + 'positiveInteger') || (section.type === 'xsd:positiveInteger')) {
+    if (section === (prefix + 'positiveInteger') || (section === 'xsd:positiveInteger')) {
       return 'Enter a positive Integer.';
     }
-    if (section.type === (prefix + 'string') || (section.type === 'xsd:string')) {
+    if (section === (prefix + 'string') || (section === 'xsd:string')) {
       return 'Enter your text for this section here.';
     }
-    if (section.type === (prefix + 'anyURI') || (section.type === 'xsd:anyURI')) {
+    if (section === (prefix + 'anyURI') || (section === 'xsd:anyURI')) {
       return '<Enter/your/URI/or/URL>';
     }
     return 'Enter your input for this section here.';

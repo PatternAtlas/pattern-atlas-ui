@@ -13,7 +13,7 @@
  */
 
 import { IriConverter } from '../util/iri-converter';
-import { Section } from './section.model';
+import { PatternLanguageSectionRestriction } from './PatternLanguageSectionRestriction.model';
 
 class PatternLanguage {
   private patternpediaBaseURI = 'http://purl.org/patternpedia';
@@ -22,9 +22,11 @@ class PatternLanguage {
     logos: Array<string>;
     iri: string;
     patternIRIs: Array<string>;
-  sections: Section[];
+  sections: string[];
+  restrictions: PatternLanguageSectionRestriction[];
 
-    set id(iri: string) {
+
+  set id(iri: string) {
         this._id = IriConverter.convertIriToId(iri);
     }
 
@@ -32,13 +34,15 @@ class PatternLanguage {
         return this._id;
     }
 
-  public constructor(iri: string = null, name: string = null, logos: Array<string> = null, patternIRIs: Array<string> = null, sections: Section[] = null) {
+  public constructor(iri: string = null, name: string = null, logos: Array<string> = null, patternIRIs: Array<string> = null, sections: string[] = null,
+                     restrictions: PatternLanguageSectionRestriction[] = null) {
         this.name = name;
         this.logos = logos || [];
         this.patternIRIs = patternIRIs || [];
         this.iri = iri;
         this.id = iri;
     this.sections = sections;
+    this.restrictions = restrictions;
   }
 
   getPrefixes(): Array<string> {
@@ -73,8 +77,8 @@ class PatternLanguage {
     ary.push('# #################################################################');
     for (const section of this.sections) {
       ary.push('\n');
-      ary.push(`### ${section.name}`);
-      ary.push(`${this.getSectionIdentifier(section.name)} rdf:type owl:DatatypeProperty .`);
+      ary.push(`### ${section}`);
+      ary.push(`${this.getSectionIdentifier(section)} rdf:type owl:DatatypeProperty .`);
     }
     ary.push('\n');
     ary.push('# #################################################################');
@@ -86,16 +90,20 @@ class PatternLanguage {
     ary.push(`### ${this.iri}`);
     ary.push(`:${this.name}Individual rdf:type owl:Class ; `);
     ary.push(` rdfs:subClassOf pp:Pattern ,`);
-    this.sections.forEach((section, index) => {
+    this.restrictions.forEach((restriction, index) => {
       ary.push(`${'\t'.repeat(3)}[ rdf:type owl:Restriction ;`);
-      ary.push(`${'\t'.repeat(3)} owl:onProperty ${this.getSectionIdentifier(section.name)} ; `);
-      if (section.max === section.min && section.min !== null) {
-        ary.push(`${'\t'.repeat(3)} owl:qualifiedCardinality "${section.min}"^^xsd:nonNegativeInteger ; `);
-      } else if (section.max) {
-        
+      ary.push(`${'\t'.repeat(3)} owl:onProperty ${this.getSectionIdentifier(restriction.name)} ; `);
+      if (restriction.restrictionType === 'min' || restriction.restrictionType === 'max') {
+        ary.push(`${'\t'.repeat(3)} ${restriction.restrictionType === 'min' ? 'owl:minQualifiedCardinality' : 'owl:maxQualifiedCardinality'} "${restriction.cardinality}"^^xsd:nonNegativeInteger`);
+      } else if (restriction.restrictionType === 'exactly') {
+        ary.push(`${'\t'.repeat(3)} owl:QualifiedCardinality"${restriction.cardinality}"^^xsd:nonNegativeInteger`);
+      } else if (restriction.restrictionType === 'some') {
+        ary.push(`${'\t'.repeat(3)} owl:someValuesFrom ${restriction.type}`);
+      } else if (restriction.restrictionType === 'only') {
+        ary.push(`${'\t'.repeat(3)} owl:allValuesFrom ${restriction.type}`);
       }
-      ary.push(`${'\t'.repeat(3)} owl:onDataRange <${section.type}>`);
-      ary.push(`${'\t'.repeat(4)}] ${index === this.sections.length - 1 ? '.' : ','}`);
+      //  ary.push(`${'\t'.repeat(3)} owl:onDataRange <${section.type}>`); Is this statement necessary?
+      ary.push(`${'\t'.repeat(4)}] ${index === this.sections.length ? '.' : ','}`);
       ary.push(`\n`);
     });
 
