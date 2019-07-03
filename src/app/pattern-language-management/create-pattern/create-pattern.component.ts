@@ -13,6 +13,8 @@ import Pattern from '../../core/model/pattern.model';
 import { PatternOntologyService } from '../../core/service/pattern-ontology.service';
 import { SectionResponse } from '../../core/service/data/SectionResponse.interface';
 import { ToasterService } from 'angular2-toaster';
+import { PlRestrictionLoaderService } from '../../core/service/loader/pattern-language-loader/pl-restriction-loader.service';
+import { PatternLanguageSectionRestriction } from '../../core/model/PatternLanguageSectionRestriction.model';
 
 
 @Component({
@@ -28,6 +30,7 @@ export class CreatePatternComponent implements OnInit {
   plName: string;
   sections: string[];
   plLogos: string[];
+  plRestrictions: Map<string, PatternLanguageSectionRestriction[]>;
 
 
   @ViewChild('textEditor') private _textEditor: TdTextEditorComponent;
@@ -38,6 +41,7 @@ export class CreatePatternComponent implements OnInit {
   };
 
   constructor(private loader: DefaultPlLoaderService,
+              private PlRestrictionLoader: PlRestrictionLoaderService,
               private activatedRoute: ActivatedRoute,
               private cdr: ChangeDetectorRef,
               private uploadService: GithubPersistenceService,
@@ -72,13 +76,21 @@ export class CreatePatternComponent implements OnInit {
       this.sections = res.map((iri: any) => {
         return this.reconstructSectionFromSectionesult(iri);
       });
-      for (const section of this.sections) {
-        this.patternLanguageStructure = this.patternLanguageStructure.concat(
-          '\n ## ' + this.addSpaceForCamelCase(section) + '\n' + this.getDefaultTextForSection(section));
-      }
+      this.PlRestrictionLoader.loadContentFromStore().then((response: any) => {
+        this.plRestrictions = response;
+        console.log(this.plRestrictions);
+        for (const section of this.sections) {
+          this.patternLanguageStructure = this.patternLanguageStructure.concat(
+            '\n ## ' + this.addSpaceForCamelCase(section) + '\n' + this.getDefaultTextForSection(section));
+        }
+      });
+
       this._textEditor.value = this.patternLanguageStructure;
       this.onChangeMarkdownText();
     });
+
+    this.PlRestrictionLoader.supportedIRI = this.loader.supportedIRI;
+
 
     this.loader.getPLLogo(this.plIri).then((res: Logo[]) => {
       this.plLogos = res.map((dataRessponse: Logo) => {
@@ -174,13 +186,17 @@ export class CreatePatternComponent implements OnInit {
 
   getDefaultTextForSection(section: string): string {
     const prefix = 'http://www.w3.org/2001/XMLSchema#';
-    if (section === (prefix + 'positiveInteger') || (section === 'xsd:positiveInteger')) {
+    const restrictionWithTypeIndex = this.plRestrictions.get(section).findIndex((rest: PatternLanguageSectionRestriction) => {
+      return !!rest.type;
+    });
+    const sectionType = restrictionWithTypeIndex !== -1 ? this.plRestrictions.get(section)[restrictionWithTypeIndex].type : '';
+    if (sectionType === (prefix + 'positiveInteger') || (sectionType === 'xsd:positiveInteger')) {
       return 'Enter a positive Integer.';
     }
-    if (section === (prefix + 'string') || (section === 'xsd:string')) {
+    if (sectionType === (prefix + 'string') || (section === 'xsd:string')) {
       return 'Enter your text for this section here.';
     }
-    if (section === (prefix + 'anyURI') || (section === 'xsd:anyURI')) {
+    if (sectionType === (prefix + 'anyURI') || (section === 'xsd:anyURI')) {
       return '<Enter/your/URI/or/URL>';
     }
     return 'Enter your input for this section here.';

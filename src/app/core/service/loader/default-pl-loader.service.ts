@@ -21,6 +21,7 @@ import { Import } from '../data/Import.interface';
 import { IriConverter } from '../../util/iri-converter';
 import { PatternInstance } from '../../model/PatternInstance.interface';
 import { SectionResponse } from '../data/SectionResponse.interface';
+import { RestrictionResponse } from '../data/RestrictionResponse.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -64,10 +65,9 @@ export class DefaultPlLoaderService extends Loader<any> {
     return this.pos.getPLSections(supportedIri);
   }
 
-  getPLRestrictions(supportedIri: string): Promise<SectionResponse[]> {
+  getPLRestrictions(supportedIri: string): Promise<RestrictionResponse[]> {
     return this.pos.getRestrictionsOfPL(supportedIri);
   }
-
 
   getPLLogo(supportedIri: string): Promise<Logo[]> {
     return this.pos.getPLLogo(supportedIri);

@@ -93,12 +93,12 @@ class PatternLanguage {
       ary.push(`### ${this.iri}`);
       ary.push(`:${this.name}Individual rdf:type owl:Class ; `);
       ary.push(` rdfs:subClassOf pp:Pattern ,`);
-      
+
       this.restrictions.forEach((restriction, index) => {
         ary.push(`${'\t'.repeat(3)}[ rdf:type owl:Restriction ;`);
         ary.push(`${'\t'.repeat(3)} owl:onProperty ${this.getSectionIdentifier(restriction.name)} ; `);
         if (restriction.restrictionType === 'min' || restriction.restrictionType === 'max') {
-          ary.push(`${'\t'.repeat(3)} ${restriction.restrictionType === 'min' ? 'owl:minQualifiedCardinality' : 'owl:maxQualifiedCardinality'} "${restriction.cardinality}"^^xsd:nonNegativeInteger`);
+          ary.push(`${'\t'.repeat(3)} ${restriction.restrictionType === 'min' ? 'owl:minCardinality' : 'owl:maxCardinality'} "${restriction.cardinality}"^^xsd:nonNegativeInteger`);
         } else if (restriction.restrictionType === 'exactly') {
           ary.push(`${'\t'.repeat(3)} owl:QualifiedCardinality"${restriction.cardinality}"^^xsd:nonNegativeInteger`);
         } else if (restriction.restrictionType === 'some') {
@@ -107,7 +107,7 @@ class PatternLanguage {
           ary.push(`${'\t'.repeat(3)} owl:allValuesFrom ${restriction.type}`);
         }
         //  ary.push(`${'\t'.repeat(3)} owl:onDataRange <${section.type}>`); Is this statement necessary?
-        ary.push(`${'\t'.repeat(4)}] ${index === this.sections.length ? '.' : ','}`);
+        ary.push(`${'\t'.repeat(4)}] ${index === (this.restrictions.length - 1) ? '.' : ','}`);
         ary.push(`\n`);
       });
     }

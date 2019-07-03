@@ -27,6 +27,7 @@ import { SectionResponse } from './data/SectionResponse.interface';
 import { CookieService } from 'ngx-cookie-service';
 import { GithubPersistenceService } from './github-persistence.service';
 import { GithubFileResponse } from './data/GithubFileResponse.interface';
+import { RestrictionResponse } from './data/RestrictionResponse.interface';
 
 @Injectable()
 export class PatternOntologyService implements SparqlExecutor {
@@ -480,27 +481,22 @@ export class PatternOntologyService implements SparqlExecutor {
     return this.exec(qryPatternGraphs, [IriConverter.getFileName(supportedIRI)]);
   }
 
-  async getRestrictionsOfPL(graphIri: string): Promise<SectionResponse[]> {
-    const qryPatternGraphs = ` SELECT DISTINCT  ?property ?cardinality ?dataRange WHERE {
-  { ?patternLanguageIndividual rdf:type owl:Class . 
-    ?patternLanguageIndividual rdfs:subClassOf ?restrictionClass .
-    ?restrictionClass rdf:type owl:Restriction . 
-    ?restrictionClass owl:onProperty ?property .
-    ?property a owl:DatatypeProperty .
-    ?restrictionClass owl:onDataRange   ?dataRange .
-    optional {	?restrictionClass owl:qualifiedCardinality ?cardinality . }  
-  }
-  UNION
-  { ?patternLanguageIndividual rdf:type owl:Class . 
-    ?patternLanguageIndividual rdfs:subClassOf ?restrictionClass .
-    ?restrictionClass rdf:type owl:Restriction . 
-    ?restrictionClass owl:onProperty ?property .
-    ?property a owl:DatatypeProperty .
-    ?restrictionClass owl:allValuesFrom   ?dataRange .
-    optional {	?restrictionClass owl:qualifiedCardinality ?cardinality . }  
- }
- 
- }`;
+  async getRestrictionsOfPL(graphIri: string): Promise<RestrictionResponse[]> {
+    const qryPatternGraphs = `SELECT DISTINCT  ?property ?exactCardinality ?minCardinality 
+    ?maxCardinality ?dataRange ?allValuesdataRange ?someValuesdataRange 
+    WHERE {
+      ?patternLanguageIndividual a owl:Class . 
+      ?patternLanguageIndividual rdfs:subClassOf ?restrictionClass .
+      ?restrictionClass a owl:Restriction . 
+      ?restrictionClass owl:onProperty ?property .
+      ?property a owl:DatatypeProperty .
+      optional { ?restrictionClass owl:allValuesFrom ?allValuesdataRange .}
+      optional { ?restrictionClass owl:someValuesFrom ?someValuesdataRange .}
+      optional { ?restrictionClass owl:onDataRange   ?dataRange . }
+      optional { ?restrictionClass owl:qualifiedCardinality ?exactCardinality . }  
+      optional { ?restrictionClass owl:minCardinality  ?minCardinality . }  
+      optional { ?restrictionClass owl:maxCardinality  ?maxCardinality . }
+    }`;
 
     return this.exec(qryPatternGraphs, [IriConverter.getFileName(graphIri)]);
   }
@@ -542,7 +538,7 @@ export class PatternOntologyService implements SparqlExecutor {
     return this.exec(qryPatternGraph, [IriConverter.getFileName(graphIri)]);
   }
 
-  getPLSections(graphIri: string): Promise<any[]> {
+  getPLSections(graphIri: string): Promise<SectionResponse[]> {
     const qryPatternGraph = `SELECT ?section WHERE {
    ?section a owl:DatatypeProperty .
 } `;
