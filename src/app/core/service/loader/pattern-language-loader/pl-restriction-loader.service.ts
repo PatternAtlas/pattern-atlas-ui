@@ -36,7 +36,7 @@ export class PlRestrictionLoaderService extends Loader<any> {
     const sectionRestriction = new PatternLanguageSectionRestriction(restriction.property.value, null,
       null, null);
     if (restriction.allValuesdataRange) {
-      sectionRestriction.restrictionType = 'all';
+      sectionRestriction.restrictionType = 'only';
       sectionRestriction.type = restriction.allValuesdataRange.value;
     } else if (restriction.someValuesdataRange) {
       sectionRestriction.restrictionType = 'some';
