@@ -55,9 +55,6 @@ export class PlRestrictionLoaderService extends Loader<any> {
       }
     }
 
-    if (!sectionRestriction.type && restriction.dataRange) { // dataRange was explicitly specified
-      sectionRestriction.type = restriction.dataRange.value;
-    }
     return sectionRestriction;
   }
 }
