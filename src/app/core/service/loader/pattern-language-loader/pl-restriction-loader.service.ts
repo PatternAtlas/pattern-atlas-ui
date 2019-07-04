@@ -41,15 +41,18 @@ export class PlRestrictionLoaderService extends Loader<any> {
     } else if (restriction.someValuesdataRange) {
       sectionRestriction.restrictionType = 'some';
       sectionRestriction.type = restriction.someValuesdataRange.value;
-    } else if (restriction.exactCardinality) {
-      sectionRestriction.restrictionType = 'exact';
-      sectionRestriction.cardinality = +restriction.exactCardinality.value as number;
-    } else if (restriction.minCardinality) {
-      sectionRestriction.restrictionType = 'min';
-      sectionRestriction.cardinality = +restriction.minCardinality.value  as number;
-    } else if (restriction.maxCardinality) {
-      sectionRestriction.restrictionType = 'max';
-      sectionRestriction.cardinality = +restriction.maxCardinality.value;
+    } else {
+      sectionRestriction.type = restriction.dataRange.value;
+      if (restriction.exactCardinality) {
+        sectionRestriction.restrictionType = 'exact';
+        sectionRestriction.cardinality = +restriction.exactCardinality.value;
+      } else if (restriction.minCardinality) {
+        sectionRestriction.restrictionType = 'min';
+        sectionRestriction.cardinality = +restriction.minCardinality.value;
+      } else if (restriction.maxCardinality) {
+        sectionRestriction.restrictionType = 'max';
+        sectionRestriction.cardinality = +restriction.maxCardinality.value;
+      }
     }
 
     if (!sectionRestriction.type && restriction.dataRange) { // dataRange was explicitly specified

@@ -19,6 +19,11 @@
                  rdfs:domain :PatternLanguage ;
                  rdfs:range :Pattern .
 
+ ###  http://purl.org/patternpedia#containsPattern
+ :containsPatternRelationDescriptors rdf:type owl:ObjectProperty ;
+                  rdfs:domain :PatternLanguage ;
+                  rdfs:range :Pattern .
+
 ###  http://purl.org/patternpedia#containsPatternGraph
 :containsPatternGraph rdf:type owl:ObjectProperty ;
                          rdfs:domain :PatternPedia ;
