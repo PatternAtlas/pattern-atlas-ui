@@ -13,7 +13,7 @@
   -->
 
 <!-- tab view if there are multiple renderer for the language available -->
-<mat-tab-group *ngIf="renderer.length > 1; else singleRenderer">
+<mat-tab-group *ngIf="renderer && renderer.length > 1; else singleRenderer">
   <!-- create a new tab for each available renderer -->
   <mat-tab label="{{r.label || 'Tab ' + (i+1)}}" *ngFor="let r of renderer; let i = index">
     <mat-card>
