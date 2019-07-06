@@ -13,6 +13,7 @@
  */
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import '../node_modules/angular2-toaster/toaster';
 
 @font-face {
     font-family: 'Material Icons';
@@ -24,6 +25,9 @@
     url(../node_modules/material-design-icons/iconfont/MaterialIcons-Regular.woff2) format('woff2'),
     url(../node_modules/material-design-icons/iconfont/MaterialIcons-Regular.woff) format('woff'),
     url(../node_modules/material-design-icons/iconfont/MaterialIcons-Regular.ttf) format('truetype');
+}
+body{
+  font-family: sans-serif;
 }
 
 .material-icons {
@@ -96,6 +100,61 @@
     display: flex;
     flex-wrap: wrap;
 }
-
 $fa-font-path: "~font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome.scss";
+
+  display: flex !important;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.preview-tile > figure {
+  align-items: flex-start !important;
+}
+
+.mat-card {
+  border-top: 1px solid rgba(0, 0, 0, .14);
+  min-height: 18rem;
+  word-break: break-all;
+}
+
+.mat-card-actions {
+  height: unset;
+  margin-bottom: unset;
+}
+
+.mat-card-image {
+  object-fit: cover;
+  height: 10rem;
+}
+
+.mat-card-title {
+  font-size: 18px;
+  min-height: 3rem;
+}
+
+.add-card {
+  color: #3f51b5;
+  &:hover {
+    background-color: lightgray;
+    cursor: pointer;
+  }
+  max-height: 21em;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0.25em 0 0.25em 0;
+  width: 6em;
+}
+
+.mat-radio-group {
+  margin-left: 0.25em;
+}
+
+.ignore-css {
+  all: initial !important;
+}

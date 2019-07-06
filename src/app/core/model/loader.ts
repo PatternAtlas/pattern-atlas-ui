@@ -41,8 +41,8 @@ abstract class Loader<T> {
      */
     loadContentFromStore(): Promise<Map<string, T>> {
         return this.selectContentFromStore()
-            .then(
-                triples => this.mapTriples(triples)
+          .then(
+            triples => this.mapTriples(triples)
             );
     }
 

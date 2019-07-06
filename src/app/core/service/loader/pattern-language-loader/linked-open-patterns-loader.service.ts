@@ -21,38 +21,42 @@ import { IriConverter } from '../../../util/iri-converter';
 @Injectable()
 export class LinkedOpenPatternsLoader extends Loader<PatternLanguage> {
 
-    constructor(private pos: PatternOntologyService) {
+  constructor(private pos: PatternOntologyService) {
         super('http://purl.org/patternpedia#LinkedOpenPatterns', pos);
     }
 
-    async selectContentFromStore(): Promise<any> {
-        const qryPatternGraphs = `SELECT DISTINCT ?patterngraph
+  async selectContentFromStore(): Promise<any> {
+    console.log('supportedIRI: ');
+    console.log(this.supportedIRI);
+    const qryPatternGraphs = `SELECT DISTINCT ?patterngraph
                                       WHERE {
                                           <${this.supportedIRI}> <http://purl.org/patternpedia#containsPatternGraph> ?patterngraph
                                       }`;
-        const patternGraphs = await this.executor.exec(qryPatternGraphs, [IriConverter.getFileName(this.supportedIRI)]);
-        const qry = `SELECT ?patterngraph ?type ?name ?logo ?pattern
+      const patternGraphs = await this.executor.exec(qryPatternGraphs, [IriConverter.getFileName(this.supportedIRI)]);
+      const qry = `SELECT ?patterngraph ?type ?name ?logo ?pattern
                                          WHERE {
-                                            <${this.supportedIRI}> <http://purl.org/patternpedia#containsPatternGraph> ?patterngraph .
+                                             <${this.supportedIRI}> <http://purl.org/patternpedia#containsPatternGraph> ?patterngraph .
                                             ?patterngraph a ?type .
-                                            ?patterngraph <http://purl.org/patternpedia#containsPattern> ?pattern .
+                                            optional {?patterngraph <http://purl.org/patternpedia#containsPattern> ?pattern .}
                                             ?patterngraph <http://purl.org/patternpedia#hasName> ?name .
                                             ?patterngraph <http://purl.org/patternpedia#hasLogo> ?logo .
                                             FILTER (?type != owl:NamedIndividual)
                                           }
                                 ORDER BY ?patterngraph`;
-        const graphs = [IriConverter.getFileName(this.supportedIRI)];
-        for (const entry of patternGraphs) {
-            graphs.push(IriConverter.getFileName(entry.patterngraph.value));
-        }
-        return this.executor.exec(qry, graphs);
+      const graphs = [IriConverter.getFileName(this.supportedIRI)];
+
+      for (const entry of patternGraphs) {
+        graphs.push(IriConverter.getFileName(entry.patterngraph.value));
+      }
+      return this.executor.exec(qry, graphs);
     }
 
     mapTriples(triples: any): Promise<Map<string, PatternLanguage>> {
         const result = new Map<string, PatternLanguage>();
         // we first iterate the triples and generate an intermediate format to create afterwards pattern objects
-        const rawPatternGraphs = {};
-        for (const row of triples) {
+      const rawPatternGraphs = {};
+
+      for (const row of triples) {
             if (!rawPatternGraphs[row.patterngraph.value]) {
                 rawPatternGraphs[row.patterngraph.value] = {patterngraph: row.patterngraph.value};
             }
@@ -66,13 +70,14 @@ export class LinkedOpenPatternsLoader extends Loader<PatternLanguage> {
             if (!rawPatternGraphs[row.patterngraph.value]['logo']) {
                 rawPatternGraphs[row.patterngraph.value]['logo'] = row.logo.value;
             }
-            if (!rawPatternGraphs[row.patterngraph.value]['patterns']) {
-                rawPatternGraphs[row.patterngraph.value]['patterns'] = [row.pattern.value];
-            } else {
-                rawPatternGraphs[row.patterngraph.value]['patterns'].push(row.pattern.value);
+          if (!rawPatternGraphs[row.patterngraph.value]['patterns']) {
+            rawPatternGraphs[row.patterngraph.value]['patterns'] = row.pattern ? [row.pattern.value] : [];
+          } else if (row.pattern) {
+            rawPatternGraphs[row.patterngraph.value]['patterns'].push(row.pattern.value);
             }
         }
-        for (const key of Object.keys(rawPatternGraphs)) {
+
+      for (const key of Object.keys(rawPatternGraphs)) {
             result.set(
                 key,
                 new PatternLanguage(

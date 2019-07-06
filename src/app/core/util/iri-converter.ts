@@ -12,6 +12,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
+import { QueriedData } from '../service/data/QueriedData.interface';
+
 export class IriConverter {
     static convertIriToId(iri: string): string {
         return encodeURIComponent(encodeURIComponent(iri));
@@ -21,7 +23,41 @@ export class IriConverter {
         return decodeURIComponent(decodeURIComponent(id));
     }
 
-    static getFileName(iri: string): string {
+  static getExactTtlFileUrl(iri: string): string {
+    return iri.includes('patternlanguages/') ? iri : iri + '/' + this.extractIndividualNameFromIri(iri) + '.ttl';
+  }
+
+  static getFileName(iri: string): string {
         return iri.split('#')[0];
     }
+
+  static extractIndividualNameFromIri(iri: string): string {
+    return iri.includes('#') ? iri.split('#')[1] :
+      iri.split('/')[iri.split('/').length - 1];
+  }
+
+  static getURL(patternlanguageIri: string) {
+    if (patternlanguageIri.indexOf('patternlanguages') !== -1) {
+      return patternlanguageIri.replace('#', '/') + '.ttl';
+
+    }
+    return this.getFileName(patternlanguageIri);
+  }
+
+  static removeWhitespace(text: string): string {
+    return text.replace(/\s/g, '');
+  }
+
+
+  static extractDataValue(pl: QueriedData[]): string[] {
+    return pl.map((graph: QueriedData) => {
+      return this.getURL(graph.value);
+    });
+  }
+
+  static getSectionName(patternSection: string) {
+    return patternSection.split('#has')[1];
+  }
+
+
 }

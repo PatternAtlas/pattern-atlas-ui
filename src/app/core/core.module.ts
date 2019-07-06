@@ -21,10 +21,13 @@ import { DefaultPatternRendererComponent } from './default-pattern-renderer/defa
 import { ComponentRegistryService } from './service/component-registry.service';
 import { LinkedOpenPatternsLoader } from './service/loader/pattern-language-loader/linked-open-patterns-loader.service';
 import { PrettyJsonModule } from 'angular2-prettyjson';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatProgressSpinnerModule } from '@angular/material';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { MdEditorComponent } from './component/md-editor/md-editor.component';
 import { CovalentTextEditorModule } from '@covalent/text-editor';
+import { EmitEventOnKeyupDirective } from './directives/emit-event-on-keyup.directive';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { NavigateBackComponent } from './component/navigate-back/navigate-back.component';
 
 @NgModule({
     imports: [
@@ -32,9 +35,13 @@ import { CovalentTextEditorModule } from '@covalent/text-editor';
         PrettyJsonModule,
         MatButtonModule,
         TextFieldModule,
-        CovalentTextEditorModule
+      CovalentTextEditorModule,
+      MatCardModule,
+      FlexLayoutModule,
+      MatProgressSpinnerModule
+
     ],
-    exports: [],
+  exports: [CovalentTextEditorModule, EmitEventOnKeyupDirective, MatProgressSpinnerModule, NavigateBackComponent],
     providers: [
         PatternOntologyService,
         LinkedOpenPatternsLoader
@@ -42,12 +49,14 @@ import { CovalentTextEditorModule } from '@covalent/text-editor';
     declarations: [
         DefaultPlRendererComponent,
         DefaultPatternRendererComponent,
-        MdEditorComponent
+      MdEditorComponent,
+      EmitEventOnKeyupDirective,
+      NavigateBackComponent
     ],
     entryComponents: [
         DefaultPlRendererComponent,
         DefaultPatternRendererComponent,
-        MdEditorComponent
+      MdEditorComponent
     ]
 })
 export class CoreModule {

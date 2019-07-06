@@ -1,0 +1,20 @@
+<pp-navigate-back></pp-navigate-back>
+<div fxLayout="row" fxLayoutAlign="space-around center"><h2>
+  Add a new pattern to {{plName}}
+</h2></div>
+<div fxLayout="row" fxLayoutAlign="space-around center">
+  <td-text-editor ppEmitOnChange (onKeyup)="onChangeMarkdownText()" class="markdownEditor"
+                  [(value)]="patternLanguageStructure" [options]="options"
+                  #textEditor
+                  id="textEditor"></td-text-editor>
+  <div class="preview-tile">
+    <div fxLayout="column" fxLayoutAlign="flex-start">
+      <mat-card>
+        <div id="preview"></div>
+      </mat-card>
+      <button (click)="save()" class="save-button" mat-raised-button color="accent" style="float: right"><i
+        class="material-icons">save</i>Save
+      </button>
+    </div>
+  </div>
+</div>

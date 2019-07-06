@@ -15,7 +15,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import PatternLanguage from '../../core/model/pattern-language.model';
-import { from, Observable, of } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { PatternOntologyService } from '../../core/service/pattern-ontology.service';
 import { mergeMap } from 'rxjs/operators';
 import { globals } from '../../globals';
@@ -38,7 +38,7 @@ export class PatternLanguageManagementResolverService implements Resolve<Map<str
     }
 
     async loadLocallyHostedOntos(): Promise<Map<string, PatternLanguage>> {
-        await this.pos.loadLocallyHostedOntos();
+      await this.pos.loadLinkedOpenPatternGraphs();
         return this.loader.loadContentFromStore();
     }
 

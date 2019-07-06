@@ -15,5 +15,5 @@
 export const globals = {
     urlPatternRepoOntology: 'http://purl.org/patternpedia',
     iriPatternRepoInstance: 'http://purl.org/patternpedia#LinkedOpenPatterns',
-    loadOntologyLocally: true
+  loadOntologyLocally: true
 };

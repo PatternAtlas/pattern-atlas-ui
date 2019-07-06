@@ -1,0 +1,168 @@
+<div style="display: flex; justify-content: space-between; align-items: baseline">
+  <h1 mat-dialog-title>{{isFirstStep ? 'Create a new Patternlanguage' : 'Define the content type of your
+    sections'}}</h1>
+  <button mat-flat-button (click)="close()" tabindex="-1">
+    <i class="material-icons">close</i>
+  </button>
+</div>
+<div mat-dialog-content [formGroup]="patternLanguageForm">
+  <div fxLayout="column" fxLayoutAlign="space-around start">
+    <mat-card fxLayout="column" fxLayoutAlign="space-around"
+            style="margin: 10px;" *ngIf="isFirstStep; else secondStep">
+    <mat-form-field appearance="outline" style="width: 24em;" [floatLabel]="'always'">
+      <mat-label>Pattern language name</mat-label>
+      <input matInput formControlName="name" placeholder="Enter the name of your Pattern Language">
+      <mat-error *ngIf="saveRequested && name?.hasError('required')">Dies ist ein Pflichtfeld.</mat-error>
+      <mat-error *ngIf="saveRequested && name?.hasError('pattern')">Bitte nur alphanumerische Zeichen, _ und
+        Leerzeichen verwenden.
+      </mat-error>
+    </mat-form-field>
+
+    <div fxLayout="row" fxLayoutAlign="space-around center">
+      <mat-form-field class="full-width" appearance="outline" style="width: 24em" [floatLabel]="'always'">
+        <mat-label>Icon URL</mat-label>
+        <input matInput formControlName="iconUrl" placeholder="Enter URL of your icon" type="url">
+        <div fxLayout="row" fxLayoutAlign="space-around center" *ngIf="iconPreviewVisible">
+          <span class="label-preview">Icon-Preview: </span>
+          <div mat-card-avatar #iconPreview [ngStyle]="{ 'background-image': 'url(' + iconUrl?.value + ')'}"
+               class="example-header-image"></div>
+        </div>
+        <mat-error *ngIf="saveRequested && iconUrl?.hasError('required')">Dies ist ein Pflichtfeld.</mat-error>
+        <mat-error *ngIf="saveRequested && iconUrl?.hasError('pattern')">Bitte eine gültige URL angeben.
+        </mat-error>
+      </mat-form-field>
+
+    </div>
+    <mat-form-field appearance="outline" style="width: 24em" [floatLabel]="'always'">
+      <mat-label>Sections</mat-label>
+      <mat-chip-list #chipList>
+        <div fxLayout="column" fxLayoutAlign="space-around start">
+          <div *ngFor="let section of sections, let i = index" fxLayout="row" fxLayoutAlign="start center">
+            <span>{{i+1}}. </span>
+            <mat-chip fxLayout="row" fxLayoutAlign="initial"
+
+                      [selectable]="selectable"
+                      [removable]="removable"
+                      (removed)="removeSectionMatChip(section)">
+            {{section}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          </div>
+        </div>
+      </mat-chip-list>
+      <input
+        placeholder="Add section (press enter to create custom section)"
+        fxFill
+          #sectionInput
+          [matAutocomplete]="auto"
+          [formControl]="sectionCtrl"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="addOnBlur"
+          (matChipInputTokenEnd)="add($event)">
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+        <mat-option *ngFor="let section of filteredSections | async" [value]="section">
+          {{section}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </mat-card>
+
+</div>
+</div>
+
+<div mat-dialog-actions>
+
+  <button mat-raised-button color="primary" (click)="isFirstStep = true" *ngIf="!isFirstStep"><i
+    class="material-icons"><i className="material-icons">arrow_backward</i></i>
+  </button>
+
+
+  <button mat-raised-button color="primary" *ngIf="!isFirstStep" (click)="initForSecondStep()"><i
+    class="material-icons">restore_page</i> Reset all Restrictions
+  </button>
+
+  <button mat-raised-button color="primary" *ngIf="!isFirstStep" (click)="save()"><i
+    class="material-icons">save</i> Save patternlanguage
+  </button>
+
+
+  <button mat-raised-button color="primary" (click)="initForSecondStep()" *ngIf="isFirstStep"><i
+    class="material-icons"><i className="material-icons">arrow_forward</i></i>
+  </button>
+</div>
+
+<ng-template #secondStep>
+  <div [formGroup]="prefixForm">
+    <div formArrayName="prefixArray">
+      <div *ngFor="let prefixControl of prefixArray.controls,  let ind = index">
+        <div [formGroupName]="ind">
+
+          <mat-checkbox matInput formControlName="checked"> {{prefixControl.value.prefixname}}</mat-checkbox>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div [formGroup]="sectionDetailsGroup">
+    <div formArrayName="sectionsArray">
+      <mat-form-field style="width: 24em" [floatLabel]="'always'">
+
+        <mat-chip-list #chipList>
+          <div fxLayout="column" fxLayoutAlign="space-around start">
+            <div fxLayout="row" fxLayoutAlign="start center"
+                 *ngFor="let section of sectionsArray.controls, let i = index">
+              <div [formGroupName]="i" fxLayout="row" fxLayoutAlign="start center">
+                <mat-chip fxLayout="row" fxLayoutAlign="initial"
+                          [selectable]="selectable"
+                          [removable]="removable"
+                          (removed)="removeSectionMatChip(section)">
+                  {{sectionsArray.controls[i].value.name}}
+                </mat-chip>
+                <mat-form-field>
+                  <mat-label>Restriction Type</mat-label>
+                  <mat-select formControlName="restrictionType">
+                    <mat-option *ngFor="let option of restrictionOptions"
+                                [value]="option">
+                      {{option}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <span *ngIf="isCardinalityInputVisible(section)">&mdash;</span>
+                <mat-form-field class="min-max-width"
+                                *ngIf="isCardinalityInputVisible(section)">
+
+                  <mat-label>Amount</mat-label>
+                  <input matInput type="number" formControlName="cardinality">
+                </mat-form-field>
+
+
+                  <span>of</span>
+                  <mat-form-field>
+
+                    <mat-label>Type</mat-label>
+                    <input type="text" appearance="fill" matInput
+                           formControlName="type"
+                           [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete">
+                      <mat-option *ngFor="let option of options" [value]="option">
+                        {{option}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+
+              </div>
+              <i (click)="deleteSectionRestriction(i)"
+                 class="material-icons">delete</i>
+              <i (click)="addSectionDetail(section.value.name, i+1)"
+                 class="material-icons">add_circle</i>
+
+            </div>
+          </div>
+        </mat-chip-list>
+      </mat-form-field>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,204 @@
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { TdTextEditorComponent } from '@covalent/text-editor';
+import PatternLanguage from '../../core/model/pattern-language.model';
+import { DefaultPlLoaderService } from '../../core/service/loader/default-pl-loader.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IriConverter } from '../../core/util/iri-converter';
+import { Logo } from '../../core/service/data/Logo.interface';
+import { GithubPersistenceService } from '../../core/service/github-persistence.service';
+import { switchMap } from 'rxjs/internal/operators';
+import * as marked from 'marked';
+import { TokensList } from 'marked';
+import Pattern from '../../core/model/pattern.model';
+import { PatternOntologyService } from '../../core/service/pattern-ontology.service';
+import { SectionResponse } from '../../core/service/data/SectionResponse.interface';
+import { ToasterService } from 'angular2-toaster';
+import { PlRestrictionLoaderService } from '../../core/service/loader/pattern-language-loader/pl-restriction-loader.service';
+import { PatternLanguageSectionRestriction } from '../../core/model/PatternLanguageSectionRestriction.model';
+
+
+@Component({
+  selector: 'pp-create-pattern',
+  templateUrl: './create-pattern.component.html',
+  styleUrls: ['./create-pattern.component.scss']
+})
+export class CreatePatternComponent implements OnInit {
+
+
+  patterns: any;
+  plIri: string;
+  plName: string;
+  sections: string[];
+  plLogos: string[];
+  plRestrictions: Map<string, PatternLanguageSectionRestriction[]>;
+
+
+  @ViewChild('textEditor') private _textEditor: TdTextEditorComponent;
+  patternLanguageStructure = `# Pattern name`;
+
+  options: any = {
+    // todo: hide the preview button because it forces fullscreen mode (and destroys our page layout)
+  };
+
+  constructor(private loader: DefaultPlLoaderService,
+              private PlRestrictionLoader: PlRestrictionLoaderService,
+              private activatedRoute: ActivatedRoute,
+              private cdr: ChangeDetectorRef,
+              private uploadService: GithubPersistenceService,
+              private pos: PatternOntologyService,
+              private toastService: ToasterService,
+              private router: Router) {
+  }
+
+
+  ngOnInit() {
+    this.loader.supportedIRI = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
+    this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
+    this.loader.getOWLImports(this.plIri)
+      .then(res => {
+          console.log(res);
+          const importedPatternIris = res.map(i => i.import);
+          this.pos.loadUrisToStore(importedPatternIris).then(() => {
+            this.loader.loadContentFromStore()
+              .then(result => {
+                this.patterns = Array.from(result.values());
+                this.cdr.detectChanges();
+              });
+          });
+        }
+      );
+
+    // Todo: Load Restrictions because we don't want to overwrite them + we would like to do some validation
+
+    this.plName = IriConverter.extractIndividualNameFromIri(this.plIri);
+
+    this.loader.getPLSections(this.plIri).then((res: SectionResponse[]) => {
+      this.sections = res.map((iri: any) => {
+        return this.reconstructSectionFromSectionesult(iri);
+      });
+      this.PlRestrictionLoader.loadContentFromStore().then((response: any) => {
+        this.plRestrictions = response;
+        console.log(this.plRestrictions);
+        for (const section of this.sections) {
+          this.patternLanguageStructure = this.patternLanguageStructure.concat(
+            '\n ## ' + this.addSpaceForCamelCase(section) + '\n' + this.getDefaultTextForSection(section));
+        }
+      });
+
+      this._textEditor.value = this.patternLanguageStructure;
+      this.onChangeMarkdownText();
+    });
+
+    this.PlRestrictionLoader.supportedIRI = this.loader.supportedIRI;
+
+
+    this.loader.getPLLogo(this.plIri).then((res: Logo[]) => {
+      this.plLogos = res.map((dataRessponse: Logo) => {
+        return dataRessponse.logo.value;
+      });
+    });
+
+
+  }
+
+  reconstructSectionFromSectionesult(queryResult: SectionResponse): string {
+    return queryResult.section.value.split('#has')[1];
+  }
+
+  private matchesOne(string: string): boolean {
+    return !!string.match(('1'));
+  }
+
+
+  containsMoreThanWhitespace(teststring: string): boolean {
+    return !teststring.match(new RegExp('^\\s*$', 'g'));
+  }
+
+
+  save(): void {
+    const pattern = this.parsePatternInput();
+    const patternIris = this.patterns.map(p => p.uri);
+    patternIris.push(pattern.iri);
+
+    const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, patternIris, this.sections);
+
+    this.uploadService.updatePL(patternLanguage).pipe(
+      switchMap(() => {
+        return this.uploadService.uploadPattern(pattern, patternLanguage);
+      })
+    ).subscribe(() => {
+      this.toastService.pop('success', 'Pattern created');
+      this.router.navigate(['..'], {relativeTo: this.activatedRoute});
+    }, (error) => {
+      this.toastService.pop('error', 'Something went wrong while creating the pattern: ' + error.message);
+      console.log(error);
+    });
+
+  }
+
+  getPatternUri(patternName: string, plIri: string): string {
+    return IriConverter.getFileName(plIri) + '/' + IriConverter.removeWhitespace(patternName) + '#' + IriConverter.removeWhitespace(patternName);
+  }
+
+  parseMarkdownText(): TokensList {
+    return marked.lexer(this._textEditor.value);
+  }
+
+  onChangeMarkdownText(): void {
+
+    document.getElementById('preview').innerHTML = marked.parser(this.parseMarkdownText());
+  }
+
+  private parsePatternInput(): Pattern {
+    const lines = this.parseMarkdownText();
+    const patternNameIndex = lines.findIndex((it) => it.type === 'heading' && it.depth === 1);
+    const patternname = patternNameIndex !== -1 ? lines[patternNameIndex]['text'] : '';
+    const sectionMap = new Map<string, string | string[]>();
+    console.log(this.sections);
+    this.sections.forEach((section: string) => {
+      const sectionIndex = lines.findIndex((it) => it.type === 'heading' && it.depth === 2 &&
+        this.ignoreCaseAndWhitespace(it.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(section)));
+      if (sectionIndex !== -1) {
+        let sectioncontent = '';
+        for (let i = sectionIndex + 1; i < lines.length; i++) {
+          if (lines[i].type === 'heading') {
+            break;
+          }
+          sectioncontent = sectioncontent + lines[i]['text'] ? lines[i]['text'] : '';
+        }
+        sectionMap[section] = sectioncontent;
+      }
+    });
+
+    return new Pattern(this.getPatternUri(patternname, this.plIri), patternname, sectionMap, this.plIri);
+
+  }
+
+
+  ignoreCaseAndWhitespace(text: string): string {
+    return text.trim().replace(new RegExp('/s', 'g'), '').toLowerCase();
+  }
+
+  addSpaceForCamelCase(text: string): string {
+    return text.replace(/([a-z])([A-Z])/g, '$1 $2');
+  }
+
+
+  getDefaultTextForSection(section: string): string {
+    const prefix = 'http://www.w3.org/2001/XMLSchema#';
+    const restrictionWithTypeIndex = this.plRestrictions.get(section).findIndex((rest: PatternLanguageSectionRestriction) => {
+      return !!rest.type;
+    });
+    const sectionType = restrictionWithTypeIndex !== -1 ? this.plRestrictions.get(section)[restrictionWithTypeIndex].type : '';
+    if (sectionType === (prefix + 'positiveInteger') || (sectionType === 'xsd:positiveInteger')) {
+      return 'Enter a positive Integer.';
+    }
+    if (sectionType === (prefix + 'string') || (section === 'xsd:string')) {
+      return 'Enter your text for this section here.';
+    }
+    if (sectionType === (prefix + 'anyURI') || (section === 'xsd:anyURI')) {
+      return '<Enter/your/URI/or/URL>';
+    }
+    return 'Enter your input for this section here.';
+  }
+}

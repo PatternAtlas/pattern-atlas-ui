@@ -1,10 +1,28 @@
-<button style="margin-bottom: 20px" mat-raised-button color="primary" (click)="navigateBack()"><i
-        class="material-icons">keyboard_backspace</i></button>
-
+<pp-navigate-back></pp-navigate-back>
 <h2>Pattern Language: {{plName}}</h2>
-<div *ngFor="let pattern of patterns">
-    <h3>{{pattern[1]['http://purl.org/patternpedia#hasName']?.value}}</h3>
-    <pre style="white-space: pre-wrap; word-wrap: break-word">{{pattern[1] | json:2}}</pre>
-</div>
+<div fxLayout="row" fxLayoutAlign="start center">
+  <mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>
+  <mat-card class="landing-card " *ngFor="let pattern of patterns">
+    <mat-card-header>
+      <mat-card-title>
+        <b>{{getNameForPattern(pattern)}}</b>
 
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="fixed-height-card-content">
+      <div *ngFor="let patternSection of getKeys(pattern.sectionProperties)">
+        <p><b>{{getSectionName(patternSection)}}</b>: {{pattern.sectionProperties.get(patternSection)}}</p>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <div style="text-align: center">
+        <button mat-stroked-button color="primary" (click)="navigate(pattern)"><i class="material-icons">pageview</i>View
+        </button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+<mat-card class="landing-card center-content add-card" (click)="goToPatternCreation()">
+  <i class="material-icons">add_box</i>
+</mat-card>
+</div>
 

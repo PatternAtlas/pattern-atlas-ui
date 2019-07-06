@@ -18,12 +18,22 @@ import { forkJoin, from, Observable, of, throwError } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
 import PatternLanguage from '../model/pattern-language.model';
 import { SparqlExecutor } from '../model/sparql.executor';
+import { IriConverter } from '../util/iri-converter';
+import { PatternGraphContainedInPP } from './data/PatternGraphContainedInPP.interface';
+import { Logo } from './data/Logo.interface';
+import { Import } from './data/Import.interface';
+import { QueriedData } from './data/QueriedData.interface';
+import { SectionResponse } from './data/SectionResponse.interface';
+import { CookieService } from 'ngx-cookie-service';
+import { GithubPersistenceService } from './github-persistence.service';
+import { GithubFileResponse } from './data/GithubFileResponse.interface';
+import { RestrictionResponse } from './data/RestrictionResponse.interface';
 
 @Injectable()
 export class PatternOntologyService implements SparqlExecutor {
     private _store;
 
-    constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private cookieService: CookieService, private githubPersistenceService: GithubPersistenceService) {
         this.createNewStore()
             .then(() => console.log('Created new Store'));
     }
@@ -147,7 +157,7 @@ export class PatternOntologyService implements SparqlExecutor {
      * @param store
      * @returns {Observable<number>}
      */
-    loadOntologyToStore(url: string, graphIri: string, store: any = null): Observable<number> {
+    loadOntologyToStore(url: string, graphIri: string, store: any = null): Observable<any> {
         console.log('Loading ontology:', url, 'for entity ', graphIri, ' from ', url);
         if (!store) {
             console.log('Using default store');
@@ -172,25 +182,29 @@ export class PatternOntologyService implements SparqlExecutor {
         );
     }
 
-    /**
-     * This function loads ontologies locally hosted for development
+  /**
+   * This function loads the patterngraph of the given Uris
      */
-    // loadLocallyHostedOntos(): Observable<any> {
-    //     console.log('Loading locally hosted Ontologies');
-    //     const observables = [
-    //         this.loadOntologyToStore('assets/patternpedia.ttl', 'http://purl.org/patternpedia'),
-    //         // this.loadOntologyToStore('assets/cloudcomputingpatterns.ttl', 'http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPatterns'),
-    //         // this.loadOntologyToStore('assets/internetofthingspatterns.ttl',
-    //              'http://purl.org/patternpedia/internetofthingspatterns#InternetOfThingsPatterns')
-    //     ];
-    //     return forkJoin(observables)
-    //         .pipe(
-    //             map(result => {
-    //                 console.log('Loaded locally hosted Ontologies: ', result);
-    //                 return result;
-    //             }));
-    // }
-    /**
+  loadPatternGraphsByUri(uri?: string[]): Observable<any> {
+    if (!uri) {
+        return of(null);
+      }
+    const observables = uri.map((iri) => {
+      if (this.cookieService.get('patternpedia_github_token')) {
+        const githubUrl = this.githubPersistenceService.githubBaseUrl;
+        let url = IriConverter.getExactTtlFileUrl(iri.replace('http://purl.org/patternpedia', githubUrl));
+        if (iri === 'http://purl.org/patternpedia') {
+          url = githubUrl + '/patternpedia.ttl';
+        }
+        return this.githubPersistenceService.getFile(url).pipe(
+          map((fileResponse: GithubFileResponse) => {
+            return atob(fileResponse.content);
+          }));
+      }
+        return this.http.get(iri, {responseType: 'text'});
+      });
+
+     /**
      * This function loads ontologies locally hosted for development
      */
     loadLocallyHostedOntosRaw(): Observable<any> {
@@ -214,6 +228,7 @@ export class PatternOntologyService implements SparqlExecutor {
 
     async loadLocallyHostedOntos() {
         console.log('LOADING Ontologies...');
+
         const loadResult = await this.loadLocallyHostedOntosRaw().toPromise();
         console.log('LOADED Ontologies!');
         const store = this.store;
@@ -221,17 +236,6 @@ export class PatternOntologyService implements SparqlExecutor {
         console.log('LOADING http://purl.org/patternpedia to store');
         console.log('Result: ', await this.loadToStore('text/turtle',
             loadResult[0], 'http://purl.org/patternpedia'));
-
-
-        // console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns to store');
-        // console.log('Result: ', await this.loadToStore('text/turtle',
-        //     loadResult[1], 'http://purl.org/patternpedia/cloudcomputingpatterns'));
-        // console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure to store');
-        // console.log('Result: ', await this.loadToStore('text/turtle',
-        //     loadResult[2], 'http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure'));
-        // console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer to store');
-        // console.log('Result: ', await this.loadToStore('text/turtle',
-        //     loadResult[3], 'http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer'));
 
         // loading the enterprise integration patterns turtle file 
         console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns');
@@ -269,12 +273,41 @@ export class PatternOntologyService implements SparqlExecutor {
             loadResult[9], 'http://purl.org/patternpedia/enterpriseintegrationpatterns'));
     }
 
+
+  async loadLinkedOpenPatternGraphs() {
+    const githubUrl = this.githubPersistenceService.githubBaseUrl;
+    let patternpediaResult = await this.http.get(githubUrl + '/patternpedia.ttl').toPromise();
+    const loadedResult = atob((<GithubFileResponse> patternpediaResult).content);
+    console.log('Result: ', await this.loadToStore('text/turtle',
+      loadedResult, 'http://purl.org/patternpedia'));
+      const store = this.store;
+      this.registerDefaultNameSpaces(store);
+        console.log('LOADING Ontologies...');
+    const patternGraphList: PatternGraphContainedInPP[] = await this.getPatternGraphsOfLinkedOpenPatterns();
+      console.log(`These are the patternlanguages that we have to load dynamically:`);
+    console.log(patternGraphList);
+    await this.loadUrisToStore(patternGraphList.map(it => it.patterngraph));
+  }
+
+  async loadUrisToStore(patternGraphList: QueriedData[]) {
+    console.log(`Load imported graphs to the store:`);
+    console.log(patternGraphList);
+    const loadResult = await this.loadPatternGraphsByUri(IriConverter.extractDataValue(patternGraphList)).toPromise();
+    for (let i = 0; i < loadResult.length; i++) {
+      console.log('Result: ', await
+        this.loadToStore('text/turtle', loadResult[i], IriConverter.getFileName(patternGraphList[i].value)));
+        
+    }
+    console.log('LOADED Uri Dependencies!');
+  }
+
     loadToStore(mediaType: string, data: string, graphIri: string): Promise<number> {
         return new Promise((resolve, reject) => {
             this.store.load(mediaType, data, graphIri, (err, result) => {
                 if (!err) {
                     resolve(result);
                 } else {
+                  console.log('error while loading ' + graphIri);
                     reject(err);
                 }
             });
@@ -468,7 +501,7 @@ export class PatternOntologyService implements SparqlExecutor {
      * @param store Store the new pattern language is inserted to
      */
     insertNewPatternLanguageIndividual(pl: PatternLanguage, store: any = null): Observable<boolean> {
-        // TODO: Add tripple that connect pattern language individual with a PatternPedia Instance
+      // TODO: Add triple that connect pattern language individual with a PatternPedia Instance
         // (plId pp:containsPatternLanguage NewPatternLanguageIndividualIRI)
         if (!store) {
             console.log('Use default store');
@@ -502,4 +535,82 @@ export class PatternOntologyService implements SparqlExecutor {
             });
         });
     }
+
+
+  async getPatternGraphsOfLinkedOpenPatterns(): Promise<PatternGraphContainedInPP []> {
+    // Function taken from Loader
+    // TODO: move functionality to avoid duplicate code
+    const supportedIRI = 'http://purl.org/patternpedia#LinkedOpenPatterns';
+    const qryPatternGraphs = `SELECT DISTINCT ?patterngraph
+                                      WHERE {
+                                          <${supportedIRI}> <http://purl.org/patternpedia#containsPatternGraph> ?patterngraph
+                                      }`;
+    const patternGraphs = await this.exec(qryPatternGraphs, [IriConverter.getFileName(supportedIRI)]);
+
+    return this.exec(qryPatternGraphs, [IriConverter.getFileName(supportedIRI)]);
+  }
+
+  async getRestrictionsOfPL(graphIri: string): Promise<RestrictionResponse[]> {
+    const qryPatternGraphs = `SELECT DISTINCT  ?property ?exactCardinality ?minCardinality 
+    ?maxCardinality ?dataRange ?allValuesdataRange ?someValuesdataRange 
+    WHERE {
+      ?patternLanguageIndividual a owl:Class . 
+      ?patternLanguageIndividual rdfs:subClassOf ?restrictionClass .
+      ?restrictionClass a owl:Restriction . 
+      ?restrictionClass owl:onProperty ?property .
+      ?property a owl:DatatypeProperty .
+      optional { ?restrictionClass owl:allValuesFrom ?allValuesdataRange .}
+      optional { ?restrictionClass owl:someValuesFrom ?someValuesdataRange .}
+      optional { ?restrictionClass owl:onDataRange   ?dataRange . }
+      optional { ?restrictionClass owl:qualifiedCardinality ?exactCardinality . }  
+      optional { ?restrictionClass owl:minCardinality  ?minCardinality . }  
+      optional { ?restrictionClass owl:maxCardinality  ?maxCardinality . }
+    }`;
+
+    return this.exec(qryPatternGraphs, [IriConverter.getFileName(graphIri)]);
+  }
+
+  async getPLLogo(graphIri: string): Promise<Logo[]> {
+    const qryPatternGraphs = `SELECT ?logo
+    WHERE {
+        ?pl rdf:type owl:NamedIndividual .
+        ?pl <http://purl.org/patternpedia#hasLogo> ?logo .
+    }`;
+
+    return this.exec(qryPatternGraphs, [IriConverter.getFileName(graphIri)]);
+  }
+
+  async getOWLImports(graphIri: string): Promise<Import[]> {
+    const qryPatternGraphs = `SELECT ?import
+    WHERE {
+        ?pl rdf:type owl:Ontology .
+        ?pl  owl:imports ?import .
+    }`;
+    return this.exec(qryPatternGraphs, [IriConverter.getFileName(graphIri)]);
+  }
+
+
+  async getPatternProperties(graphIri: string): Promise<any[]> {
+    const qryPatternGraph = `SELECT DISTINCT ?property ?predicate WHERE {
+  { ?pattern a owl:NamedIndividual . 
+    ?pattern ?property ?predicate
+    FILTER(?property != rdf:type)
+  }
+} `;
+    return this.exec(qryPatternGraph, [IriConverter.getFileName(graphIri)]);
+  }
+
+  async allTriples(graphIri: string): Promise<any[]> {
+    const qryPatternGraph = `SELECT * WHERE {
+   ?subject ?predicate ?object .
+} `;
+    return this.exec(qryPatternGraph, [IriConverter.getFileName(graphIri)]);
+  }
+
+  getPLSections(graphIri: string): Promise<SectionResponse[]> {
+    const qryPatternGraph = `SELECT ?section WHERE {
+   ?section a owl:DatatypeProperty .
+} `;
+    return this.exec(qryPatternGraph, [IriConverter.getFileName(graphIri)]);
+  }
 }

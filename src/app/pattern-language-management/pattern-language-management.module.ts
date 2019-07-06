@@ -23,14 +23,28 @@ import { PatternLanguageContainerDirective } from './pattern-language-container/
 import { PatternContainerComponent } from './pattern-container/pattern-container.component';
 import { PatternContainerDirective } from './pattern-container/pattern-container.directive';
 import {
-    MatBadgeModule,
-    MatButtonModule,
-    MatCardModule,
-    MatDialogModule,
-    MatIconModule, MatInputModule,
-    MatSidenavModule, MatTabsModule,
-    MatToolbarModule
+  MatAutocompleteModule,
+  MatBadgeModule,
+  MatButtonModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatChipsModule,
+  MatDialogModule,
+  MatGridListModule,
+  MatIconModule,
+  MatInputModule,
+  MatRadioModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatTabsModule,
+  MatToolbarModule
 } from '@angular/material';
+import { CreateEditPatternLanguageComponent } from './create-edit-pattern-language/create-edit-pattern-language.component';
+import { CreatePatternComponent } from './create-pattern/create-pattern.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { ProcessOauthCallbackComponent } from '../core/component/process-oauth-callback/process-oauth-callback.component';
+import { ToasterModule } from 'angular2-toaster';
 
 @NgModule({
     imports: [
@@ -45,7 +59,16 @@ import {
         MatDialogModule,
         MatTabsModule,
         MatInputModule,
-        CoreModule,
+      MatChipsModule,
+      MatAutocompleteModule,
+      CoreModule,
+      MatGridListModule,
+      ReactiveFormsModule,
+      FlexLayoutModule,
+      MatSelectModule,
+      MatRadioModule,
+      MatCheckboxModule,
+      ToasterModule
     ],
     declarations: [
         PatternLanguageManagementComponent,
@@ -53,7 +76,13 @@ import {
         PatternLanguageContainerDirective,
         PatternContainerComponent,
         PatternContainerDirective,
-    ]
+      CreateEditPatternLanguageComponent,
+      CreatePatternComponent,
+      ProcessOauthCallbackComponent
+    ],
+  entryComponents: [
+    CreateEditPatternLanguageComponent
+  ]
 })
 export class PatternLanguageManagementModule {
 }

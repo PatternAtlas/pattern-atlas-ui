@@ -19,20 +19,30 @@ import { LoaderRegistryService } from '../../core/service/loader/pattern-languag
 import { ActivatedRoute, Router } from '@angular/router';
 import { globals } from '../../globals';
 import { LinkedOpenPatternsLoader } from '../../core/service/loader/pattern-language-loader/linked-open-patterns-loader.service';
+import { CreateEditPatternLanguageComponent } from '../create-edit-pattern-language/create-edit-pattern-language.component';
+import { MatDialog } from '@angular/material';
+import { GithubPersistenceService } from '../../core/service/github-persistence.service';
+import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
+import { switchMap, tap } from 'rxjs/internal/operators';
+import { CookieService } from 'ngx-cookie-service';
+import { ToasterService } from 'angular2-toaster';
 
 @Component({
     selector: 'pp-pattern-language-management',
     templateUrl: './pattern-language-management.component.html',
     styleUrls: ['./pattern-language-management.component.scss']
 })
+
+
 export class PatternLanguageManagementComponent implements OnInit {
 
     // NOTE: These are currently the config params
     private urlPatternPedia = globals.urlPatternRepoOntology;
     private patternPediaInstance = globals.iriPatternRepoInstance;
     private loadLocally = globals.loadOntologyLocally;
+  showAuthentificationButton = true;
 
-    patternLanguages: Array<PatternLanguage>;
+  patternLanguages: Array<PatternLanguage>;
 
     constructor(private pos: PatternOntologyService,
                 private cdr: ChangeDetectorRef,
@@ -40,7 +50,11 @@ export class PatternLanguageManagementComponent implements OnInit {
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private zone: NgZone,
-                private loader: LinkedOpenPatternsLoader) {
+                private loader: LinkedOpenPatternsLoader,
+                private dialog: MatDialog,
+                private uploadService: GithubPersistenceService,
+                private _cookieService: CookieService,
+                private _toasterService: ToasterService) {
     }
 
     getTurtle(): void {
@@ -61,10 +75,12 @@ export class PatternLanguageManagementComponent implements OnInit {
                 }
                 return 0;
             });
+      this.showAuthentificationButton = !this._cookieService.get('patternpedia_github_token');
+
     }
 
     async loadLocallyHostedOntos(): Promise<void> {
-        await this.pos.loadLocallyHostedOntos();
+      await this.pos.loadLinkedOpenPatternGraphs();
         return this.loader.loadContentFromStore()
             .then(async (languages) => {
                 this.patternLanguages = await Array.from<PatternLanguage>(languages.values())
@@ -78,6 +94,8 @@ export class PatternLanguageManagementComponent implements OnInit {
                         return 0;
                     });
                 this.cdr.detectChanges();
+
+
             });
     }
 
@@ -97,7 +115,8 @@ export class PatternLanguageManagementComponent implements OnInit {
                     }
                     return 0;
                 });
-            this.cdr.detectChanges();
+          this._toasterService.pop('success', 'Loaded patternlanguages');
+          this.cdr.detectChanges();
         });
     }
 
@@ -116,4 +135,36 @@ export class PatternLanguageManagementComponent implements OnInit {
         this.pos.insertNewPatternLanguageIndividual(null)
             .subscribe(() => this.ngOnInit());
     }
+
+  getOAuthToken(): void {
+    window.open('https://github.com/login/oauth/authorize?client_id=2c81550780e16f8c2642&scope=repo', '_blank');
+  }
+
+  goToPatternLanguageCreation(): void{
+    this.pos.getOntologyAsTurtle().subscribe(res => console.log(res));
+    const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent);
+    dialogRef.afterClosed().subscribe(async (result) => {
+      console.log(result);
+    });
+
+    (<CreateEditPatternLanguageComponent> dialogRef.componentInstance).onSaveClicked.subscribe((result: DialogPatternLanguageResult) => {
+      const patternlanguage = new PatternLanguage(this.urlPatternPedia + '/patternlanguages/' + result.name.replace(/\s/g, ''), result.name, [result.iconUrl], null,
+        result.sections, result.restrictions);
+      this.uploadService.uploadPatternLanguage(patternlanguage).pipe(
+        switchMap(() => {
+          return this.uploadService.addPatternLanguageToPatternPedia(patternlanguage, this.patternLanguages);
+        }),
+        tap(() => this._toasterService.pop('success', 'Created new patternlanguage')),
+        switchMap(() => {
+          return this.pos.insertNewPatternLanguageIndividual(patternlanguage);
+        })
+      ).subscribe((res) => {
+          this._toasterService.pop('success', 'Created new patternlanguage');
+        },
+        (error) => {
+          this._toasterService.pop('error', `An error occured while creating the patternlanguage: ${error.message}`);
+        }
+      );
+    });
+  }
 }

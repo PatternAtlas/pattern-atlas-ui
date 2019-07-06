@@ -17,9 +17,8 @@ import { SparqlExecutor } from '../../model/sparql.executor';
 export function selectPatternLanguage(plIri: string, executor: SparqlExecutor): any {
     const qry = `SELECT DISTINCT ?type ?pattern ?predicate ?property
                  WHERE {
-                    <${plIri}> pp:containsPattern ?pattern .
+                    <${plIri}> <http://purl.org/patternpedia#containsPattern> ?pattern .
                     ?pattern ?predicate ?property .
-                    ?pattern a ?type .
                     FILTER (?type != owl:NamedIndividual && ?predicate != rdf:type)
                     }
                  ORDER BY ?pattern`;
