@@ -7,6 +7,7 @@ import { PatternOntologyService } from '../service/pattern-ontology.service';
 import { PatternProperty } from '../service/data/PatternProperty.interface';
 import { ToasterService } from 'angular2-toaster';
 import { SectionResponse } from '../service/data/SectionResponse.interface';
+import { PlRestrictionLoaderService } from '../service/loader/pattern-language-loader/pl-restriction-loader.service';
 
 @Component({
   selector: 'pp-default-pattern-renderer',
@@ -15,7 +16,7 @@ import { SectionResponse } from '../service/data/SectionResponse.interface';
 })
 export class DefaultPatternRendererComponent implements OnInit {
 
-  constructor(private patternLoaderService: DefaultPatternLoaderService, private plLoader: DefaultPlLoaderService, private activatedRoute: ActivatedRoute,
+  constructor(private patternLoaderService: DefaultPatternLoaderService, private sectionLoader: PlRestrictionLoaderService, private plLoader: DefaultPlLoaderService, private activatedRoute: ActivatedRoute,
               private pos: PatternOntologyService, private toasterService: ToasterService, private cdr: ChangeDetectorRef) {
   }
 
@@ -39,8 +40,12 @@ export class DefaultPatternRendererComponent implements OnInit {
       this.patternLoaderService.selectContentFromStore().then((result) => {
         this.patternProperties = result;
         this.isLoadingPattern = false;
+        console.log(this.patternProperties);
       });
-
+      this.sectionLoader.supportedIRI = this.plIri;
+      this.sectionLoader.loadContentFromStore().then((result) => {
+        console.log(result);
+      });
       this.plLoader.getPLSections(this.plIri).then((result: SectionResponse[]) => {
         this.sectionInfos = result;
         this.isLoadingSection = false;
