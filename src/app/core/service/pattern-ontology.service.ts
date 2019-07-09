@@ -294,7 +294,6 @@ export class PatternOntologyService implements SparqlExecutor {
     async loadUrisToStore(patternGraphList: QueriedData[]) {
         console.log(`Load imported graphs to the store:`);
         console.log(patternGraphList);
-        // FIXME this is the problem
         const loadResult = await this.loadPatternGraphsByUri(IriConverter.extractDataValue(patternGraphList)).toPromise();
         for (let i = 0; i < loadResult.length; i++) {
             console.log('Result: ', await
