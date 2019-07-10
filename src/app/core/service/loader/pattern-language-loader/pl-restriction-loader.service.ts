@@ -17,6 +17,7 @@ export class PlRestrictionLoaderService extends Loader<any> {
     return this.pos.getRestrictionsOfPL(this.supportedIRI);
   }
 
+
   mapTriples(triples: any): Promise<Map<string, PatternLanguageSectionRestriction[]>> {
     const map = new Map<string, PatternLanguageSectionRestriction[]>();
     for (const restriction of triples) {

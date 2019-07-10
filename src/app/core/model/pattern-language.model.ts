@@ -14,6 +14,7 @@
 
 import { IriConverter } from '../util/iri-converter';
 import { PatternLanguageSectionRestriction } from './PatternLanguageSectionRestriction.model';
+import PatternPedia from './pattern-pedia.model';
 
 class PatternLanguage {
   private patternpediaBaseURI = 'http://purl.org/patternpedia';
@@ -47,16 +48,16 @@ class PatternLanguage {
 
   getPrefixes(): Array<string> {
     const ary: Array<string> = [];
+    const prefixes = new PatternPedia().defaultPrefixes;
     ary.push(
       `@prefix : <${this.patternpediaBaseURI + '/patternlanguages/' + this.name}#> .`,
-      `@prefix pp: <${this.patternpediaBaseURI}#> .`,
-      `@prefix owl: <http://www.w3.org/2002/07/owl#> .`,
-      `@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .`,
-      `@prefix xml: <http://www.w3.org/XML/1998/namespace> .`,
-      `@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .`,
-      `@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .`,
       `@base <${this.patternpediaBaseURI + '/patternlanguages/' + this.name}> .`
     );
+    prefixes.forEach((value: boolean, key: string) => {
+      ary.push(
+        `@prefix ${key}: ${value} .`,
+      );
+    });
     return ary;
   }
 
@@ -96,17 +97,17 @@ class PatternLanguage {
 
       this.restrictions.forEach((restriction, index) => {
         ary.push(`${'\t'.repeat(3)}[ rdf:type owl:Restriction ;`);
-        ary.push(`${'\t'.repeat(3)} owl:onProperty ${this.getSectionIdentifier(restriction.name)} ; `);
+        ary.push(`${'\t'.repeat(3)} owl:onProperty ${this.addPrefixCharacterOrAngleBrackets(restriction.name)} ; `);
         if (restriction.restrictionType === 'min' || restriction.restrictionType === 'max') {
           ary.push(`${'\t'.repeat(3)} ${restriction.restrictionType === 'min' ? 'owl:minCardinality' : 'owl:maxCardinality'} "${restriction.cardinality}"^^xsd:nonNegativeInteger;`);
-          ary.push(`${'\t'.repeat(3)} owl:onDataRange ${restriction.type}`);
+          ary.push(`${'\t'.repeat(3)} owl:onDataRange ${this.addAngleBracketsIfNeeded(restriction.type)}`);
         } else if (restriction.restrictionType === 'exactly') {
           ary.push(`${'\t'.repeat(3)} owl:QualifiedCardinality"${restriction.cardinality}"^^xsd:nonNegativeInteger;`);
-          ary.push(`${'\t'.repeat(3)} owl:onDataRange ${restriction}`);
+          ary.push(`${'\t'.repeat(3)} owl:onDataRange ${this.addAngleBracketsIfNeeded(restriction.type)}`);
         } else if (restriction.restrictionType === 'some') {
-          ary.push(`${'\t'.repeat(3)} owl:someValuesFrom ${restriction.type}`);
+          ary.push(`${'\t'.repeat(3)} owl:someValuesFrom ${this.addAngleBracketsIfNeeded(restriction.type)}`);
         } else if (restriction.restrictionType === 'only') {
-          ary.push(`${'\t'.repeat(3)} owl:allValuesFrom ${restriction.type}`);
+          ary.push(`${'\t'.repeat(3)} owl:allValuesFrom ${this.addAngleBracketsIfNeeded(restriction.type)}`);
         }
         ary.push(`${'\t'.repeat(4)}] ${index === (this.restrictions.length - 1) ? '.' : ','}`);
         ary.push(`\n`);
@@ -147,6 +148,28 @@ class PatternLanguage {
       : `<${this.patternpediaBaseURI}#LinkedOpenPatterns> <${this.patternpediaBaseURI}#containsPatternGraph> <${this.iri}#${this.name}> .`;
   }
 
+  private addAngleBracketsIfNeeded(type: string | undefined) {
+    if (this.isIri(type)) { // if we have a uri
+      return '<' + type + '>';
+    }
+    return type;
+  }
+
+  // if the object of the sentence is an URI this can be a prefix abbrevation or a complete URI that requires <>
+  private addPrefixCharacterOrAngleBrackets(name: string) {
+
+    if (this.isIri(name)) { // if we have a uri
+      return '<' + name + '>';
+    }
+    if (name.indexOf(':') < 0) {
+      return this.getSectionIdentifier(name);
+    }
+    return name;
+  }
+
+  private isIri(name: string): boolean {
+    return (name.indexOf('#') >= 0) || (name.indexOf('://') >= 0) || (name.indexOf('purl.org/patternpedia') >= 0);
+  }
 }
 
 export default PatternLanguage;

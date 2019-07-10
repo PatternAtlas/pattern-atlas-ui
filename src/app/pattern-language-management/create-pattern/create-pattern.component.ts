@@ -6,7 +6,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IriConverter } from '../../core/util/iri-converter';
 import { Logo } from '../../core/service/data/Logo.interface';
 import { GithubPersistenceService } from '../../core/service/github-persistence.service';
-import { switchMap } from 'rxjs/internal/operators';
 import * as marked from 'marked';
 import { TokensList } from 'marked';
 import Pattern from '../../core/model/pattern.model';
@@ -15,6 +14,7 @@ import { SectionResponse } from '../../core/service/data/SectionResponse.interfa
 import { ToasterService } from 'angular2-toaster';
 import { PlRestrictionLoaderService } from '../../core/service/loader/pattern-language-loader/pl-restriction-loader.service';
 import { PatternLanguageSectionRestriction } from '../../core/model/PatternLanguageSectionRestriction.model';
+import { switchMap } from 'rxjs/internal/operators';
 
 
 @Component({
@@ -71,6 +71,7 @@ export class CreatePatternComponent implements OnInit {
     // Todo: Load Restrictions because we don't want to overwrite them + we would like to do some validation
 
     this.plName = IriConverter.extractIndividualNameFromIri(this.plIri);
+    this.PlRestrictionLoader.supportedIRI = this.loader.supportedIRI;
 
     this.loader.getPLSections(this.plIri).then((res: SectionResponse[]) => {
       this.sections = res.map((iri: any) => {
@@ -83,13 +84,12 @@ export class CreatePatternComponent implements OnInit {
           this.patternLanguageStructure = this.patternLanguageStructure.concat(
             '\n ## ' + this.addSpaceForCamelCase(section) + '\n' + this.getDefaultTextForSection(section));
         }
+        this._textEditor.value = this.patternLanguageStructure;
+        this.onChangeMarkdownText();
       });
 
-      this._textEditor.value = this.patternLanguageStructure;
-      this.onChangeMarkdownText();
-    });
 
-    this.PlRestrictionLoader.supportedIRI = this.loader.supportedIRI;
+    });
 
 
     this.loader.getPLLogo(this.plIri).then((res: Logo[]) => {
@@ -120,8 +120,14 @@ export class CreatePatternComponent implements OnInit {
     const patternIris = this.patterns.map(p => p.uri);
     patternIris.push(pattern.iri);
 
-    const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, patternIris, this.sections);
-
+    const restrictions = [];
+    for (const key of this.sections) {
+      if (!this.plRestrictions.get(key)) {
+        continue;
+      }
+      restrictions.push(...this.plRestrictions.get(key));
+    }
+    const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, patternIris, this.sections, restrictions);
     this.uploadService.updatePL(patternLanguage).pipe(
       switchMap(() => {
         return this.uploadService.uploadPattern(pattern, patternLanguage);
@@ -154,7 +160,6 @@ export class CreatePatternComponent implements OnInit {
     const patternNameIndex = lines.findIndex((it) => it.type === 'heading' && it.depth === 1);
     const patternname = patternNameIndex !== -1 ? lines[patternNameIndex]['text'] : '';
     const sectionMap = new Map<string, string | string[]>();
-    console.log(this.sections);
     this.sections.forEach((section: string) => {
       const sectionIndex = lines.findIndex((it) => it.type === 'heading' && it.depth === 2 &&
         this.ignoreCaseAndWhitespace(it.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(section)));
@@ -186,6 +191,9 @@ export class CreatePatternComponent implements OnInit {
 
   getDefaultTextForSection(section: string): string {
     const prefix = 'http://www.w3.org/2001/XMLSchema#';
+    if (!this.plRestrictions) {
+      return null;
+    }
     const restrictionWithTypeIndex = this.plRestrictions.get(section).findIndex((rest: PatternLanguageSectionRestriction) => {
       return !!rest.type;
     });
