@@ -84,10 +84,11 @@ export class CreatePatternComponent implements OnInit {
           this.patternLanguageStructure = this.patternLanguageStructure.concat(
             '\n ## ' + this.addSpaceForCamelCase(section) + '\n' + this.getDefaultTextForSection(section));
         }
+        this._textEditor.value = this.patternLanguageStructure;
+        this.onChangeMarkdownText();
       });
 
-      this._textEditor.value = this.patternLanguageStructure;
-      this.onChangeMarkdownText();
+
     });
 
 
@@ -159,7 +160,6 @@ export class CreatePatternComponent implements OnInit {
     const patternNameIndex = lines.findIndex((it) => it.type === 'heading' && it.depth === 1);
     const patternname = patternNameIndex !== -1 ? lines[patternNameIndex]['text'] : '';
     const sectionMap = new Map<string, string | string[]>();
-    console.log(this.sections);
     this.sections.forEach((section: string) => {
       const sectionIndex = lines.findIndex((it) => it.type === 'heading' && it.depth === 2 &&
         this.ignoreCaseAndWhitespace(it.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(section)));
