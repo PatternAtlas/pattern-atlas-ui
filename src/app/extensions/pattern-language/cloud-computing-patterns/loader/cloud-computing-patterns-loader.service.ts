@@ -79,48 +79,48 @@ export class CloudComputingPatternsLoaderService extends Loader<CloudComputingPa
         }
         for (const key of Object.keys(patterns)) {
             const p = new CloudComputingPattern(key);
-            if (Array.isArray(patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasSolutionSketch'])) {
-                for (const entry of patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasSolutionSketch']) {
+          if (Array.isArray(patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasSolutionSketch'])) {
+            for (const entry of patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasSolutionSketch']) {
                     p.solutionSketches.value.push(entry.value);
                 }
-            } else if (patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasSolutionSketch']
-                && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasSolutionSketch'].value) {
-                p.solutionSketches.value.push(patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasSolutionSketch'].value);
+          } else if (patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasSolutionSketch']
+            && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasSolutionSketch'].value) {
+            p.solutionSketches.value.push(patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasSolutionSketch'].value);
             }
-            if (Array.isArray(patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasVariation'])) {
-                for (const entry of patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasVariation']) {
+          if (Array.isArray(patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasVariation'])) {
+            for (const entry of patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasVariation']) {
                     p.variations.value.push(entry.value);
                 }
-            } else if (patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasVariation']
-                && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasVariation'].value) {
-                p.variations.value.push(patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasVariation'].value);
+          } else if (patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasVariation']
+            && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasVariation'].value) {
+            p.variations.value.push(patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasVariation'].value);
             }
             if (patterns[key] && patterns[key]['http://purl.org/patternpedia#hasName'] && patterns[key]['http://purl.org/patternpedia#hasName'].value) {
                 p.name = patterns[key]['http://purl.org/patternpedia#hasName'].value;
             }
-            if (patterns[key] && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasIcon']
-                && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasIcon'].value) {
-                p.icon.value = patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasIcon'].value;
+          if (patterns[key] && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasIcon']
+            && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasIcon'].value) {
+            p.icon.value = patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasIcon'].value;
             }
-            if (patterns[key] && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasIntent']
-                && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasIntent'].value) {
-                p.intent.value = patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasIntent'].value;
+          if (patterns[key] && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasIntent']
+            && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasIntent'].value) {
+            p.intent.value = patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasIntent'].value;
             }
-            if (patterns[key] && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasDrivingQuestion']
-                && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasDrivingQuestion'].value) {
-                p.drivingQuestion.value = patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasDrivingQuestion'].value;
+          if (patterns[key] && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasDrivingQuestion']
+            && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasDrivingQuestion'].value) {
+            p.drivingQuestion.value = patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasDrivingQuestion'].value;
             }
-            if (patterns[key] && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasSolution']
-                && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasSolution'].value) {
-                p.solution.value = patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasSolution'].value;
+          if (patterns[key] && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasSolution']
+            && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasSolution'].value) {
+            p.solution.value = patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasSolution'].value;
             }
-            if (patterns[key] && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasResult']
-                && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasResult'].value) {
-                p.result.value = patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasResult'].value;
+          if (patterns[key] && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasResult']
+            && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasResult'].value) {
+            p.result.value = patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasResult'].value;
             }
-            if (patterns[key] && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasContext']
-                && patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasContext'].value) {
-                p.context.value = patterns[key]['http://purl.org/patternpedia/cloudcomputingpatterns#hasContext'].value;
+          if (patterns[key] && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasContext']
+            && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasContext'].value) {
+            p.context.value = patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasContext'].value;
             }
             result.set(p.iri, p);
         }
