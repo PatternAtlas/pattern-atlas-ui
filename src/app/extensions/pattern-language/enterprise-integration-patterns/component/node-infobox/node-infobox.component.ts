@@ -95,7 +95,7 @@ export class NodeInfoboxComponent implements OnInit, OnChanges {
 
       this.info = {
         name: pattern.name,
-        group: pattern.group,
+        group: pattern.groupName,
         description: pattern.description,
         related: groups
       };
@@ -104,7 +104,9 @@ export class NodeInfoboxComponent implements OnInit, OnChanges {
 
   private filterGroupId(id: string) {
     let uri = IriConverter.convertIdToIri(id);
-    let noPrefix = uri.replace('http://purl.org/patternpedia/', '');
+    let noPrefix = uri.includes('patternlanguages') 
+      ? uri.replace('http://purl.org/patternpedia/patternlanguages/', '') 
+      : uri.replace('http://purl.org/patternpedia/', '');
     let slash = noPrefix.indexOf('/');
     
     return noPrefix.substr(0, slash);

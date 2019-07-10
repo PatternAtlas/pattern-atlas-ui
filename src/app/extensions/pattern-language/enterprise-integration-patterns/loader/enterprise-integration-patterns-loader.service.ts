@@ -9,8 +9,8 @@ import { IriConverter } from 'src/app/core/util/iri-converter';
 })
 export class EnterpriseIntegrationPatternsLoaderService extends Loader<EnterpriseIntegrationPattern> {
 
-  constructor(private pos: PatternOntologyService) { 
-    super('http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos);
+  constructor(private pos: PatternOntologyService) {
+    super('http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos);
   }
 
   async selectContentFromStore(): Promise<any> {
@@ -24,20 +24,23 @@ export class EnterpriseIntegrationPatternsLoaderService extends Loader<Enterpris
     // select all information of the individual patterns
     const qry = `SELECT ?pattern ?name ?description
       WHERE {
-        ?pattern a <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> .
+        ?pattern a <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> .
         ?pattern <http://purl.org/patternpedia#hasName> ?name .
-        ?pattern <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> ?description .
+        ?pattern <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description .
       }`;
+
+    // const qry = `SELECT ?s ?p ?o
+    //   WHERE {
+    //     ?s ?p ?o
+    //   }`;
+
     // graphs is a list containing all the ontology uris of the language with all its patterns
     const graphs = [IriConverter.getFileName(this.supportedIRI)];
-    for(const entry of patterns) {
+    for (const entry of patterns) {
       // patterns contains list of objects with field pattern via the query above (qryPatterns)
       graphs.push(IriConverter.getFileName(entry.pattern.value));
     }
-    // return this.executor.exec(qry, graphs);
-
-    // graphs is actually not needed. This URI is enough to make the query result into all patterns...
-    return this.executor.exec(qry, ["http://purl.org/patternpedia/enterpriseintegrationpatterns"]);
+    return this.executor.exec(qry, graphs);
   }
 
   mapTriples(triples: any): Promise<Map<string, EnterpriseIntegrationPattern>> {
@@ -71,40 +74,40 @@ export class EnterpriseIntegrationPatternsLoaderService extends Loader<Enterpris
       next pattern ...
     }
     */
-   const data = {};
-   for (const t of triples) {
-     let uri = t.pattern.value;
+    const data = {};
+    for (const t of triples) {
+      let uri = t.pattern.value;
 
-     // create new entry for current pattern if non existent
-     if (!data[uri]) {
-      data[uri] = {
-        uri: uri, 
-        name: null,
-        description: []
-      };
-     }
+      // create new entry for current pattern if non existent
+      if (!data[uri]) {
+        data[uri] = {
+          uri: uri,
+          name: null,
+          description: []
+        };
+      }
 
-     // set name
-     if (!data[uri].name) {
-       data[uri].name = t.name.value;
-     }
+      // set name
+      if (!data[uri].name) {
+        data[uri].name = t.name.value;
+      }
 
-     // add description
-     data[uri].description.push(t.description.value);
-   }
+      // add description
+      data[uri].description.push(t.description.value);
+    }
 
-   // use combined data to create instances of EnterpriseIntegrationPattern class
-   const result = new Map<string, EnterpriseIntegrationPattern>();
-   for (const p of Object.keys(data)) {
-    const eip = new EnterpriseIntegrationPattern(
-      data[p].uri,
-      data[p].name,
-      data[p].description
-    );
+    // use combined data to create instances of EnterpriseIntegrationPattern class
+    const result = new Map<string, EnterpriseIntegrationPattern>();
+    for (const p of Object.keys(data)) {
+      const eip = new EnterpriseIntegrationPattern(
+        data[p].uri,
+        data[p].name,
+        data[p].description
+      );
 
-    result.set(eip.id, eip);
-   }
+      result.set(eip.id, eip);
+    }
 
-   return Promise.resolve(result);
+    return Promise.resolve(result);
   }
 }
