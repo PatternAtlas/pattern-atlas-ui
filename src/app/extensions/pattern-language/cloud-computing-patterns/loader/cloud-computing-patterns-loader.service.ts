@@ -22,7 +22,7 @@ import { IriConverter } from '../../../../core/util/iri-converter';
 export class CloudComputingPatternsLoaderService extends Loader<CloudComputingPattern> {
 
     constructor(private pos: PatternOntologyService) {
-        super('http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPatterns', pos);
+      super('http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#CloudComputingPatterns', pos);
     }
 
     async selectContentFromStore(): Promise<any> {
