@@ -192,8 +192,8 @@ export class PatternOntologyService implements SparqlExecutor {
         const observables = uri.map((iri) => {
             if (this.cookieService.get('patternpedia_github_token')) {
                 const githubUrl = this.githubPersistenceService.githubBaseUrl;
-                let url = IriConverter.getExactTtlFileUrl(iri.replace('http://purl.org/patternpedia', githubUrl));
-                if (iri === 'http://purl.org/patternpedia') {
+              let url = iri;
+              if (iri === 'http://purl.org/patternpedia') {
                     url = githubUrl + '/patternpedia.ttl';
                 }
                 return this.githubPersistenceService.getFile(url).pipe(
@@ -203,7 +203,7 @@ export class PatternOntologyService implements SparqlExecutor {
             }
             return this.http.get(iri, { responseType: 'text' });
         });
-        
+
         return forkJoin(observables);
     }
 
@@ -239,7 +239,7 @@ export class PatternOntologyService implements SparqlExecutor {
         console.log('Result: ', await this.loadToStore('text/turtle',
             loadResult[0], 'http://purl.org/patternpedia'));
 
-        // loading the enterprise integration patterns turtle file 
+      // loading the enterprise integration patterns turtle file
         console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns');
         console.log('Result: ', await this.loadToStore('text/turtle',
             loadResult[1], 'http://purl.org/patternpedia/cloudcomputingpatterns'));
@@ -261,7 +261,7 @@ export class PatternOntologyService implements SparqlExecutor {
         console.log('Result: ', await this.loadToStore('text/turtle',
             loadResult[6], 'http://purl.org/patternpedia/internetofthingspatterns/devicegateway'));
 
-        // loading the enterprise integration patterns turtle file 
+      // loading the enterprise integration patterns turtle file
         console.log('LOADING http://purl.org/patternpedia/enterpriseintegrationpatterns');
         console.log('Result: ', await this.loadToStore('text/turtle',
             loadResult[7], 'http://purl.org/patternpedia/enterpriseintegrationpatterns'));

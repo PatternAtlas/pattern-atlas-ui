@@ -22,11 +22,7 @@ export class IriConverter {
     static convertIdToIri(id: string): string {
         return decodeURIComponent(decodeURIComponent(id));
     }
-
-  static getExactTtlFileUrl(iri: string): string {
-    return iri.includes('patternlanguages/') ? iri : iri + '/' + this.extractIndividualNameFromIri(iri) + '.ttl';
-  }
-
+    
   static getFileName(iri: string): string {
         return iri.split('#')[0];
     }
@@ -38,7 +34,7 @@ export class IriConverter {
 
   static getURL(patternlanguageIri: string) {
     if (patternlanguageIri.indexOf('patternlanguages') !== -1) {
-      return patternlanguageIri.replace('#', '/') + '.ttl';
+      return patternlanguageIri;
 
     }
     return this.getFileName(patternlanguageIri);
