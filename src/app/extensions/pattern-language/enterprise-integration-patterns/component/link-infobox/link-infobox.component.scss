@@ -1,0 +1,26 @@
+.info {
+    width: 350px;
+    padding: 10px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    border-width: 2px;
+    border-style: solid;
+    border-color: grey;
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.headline {
+    padding-bottom: 10px;
+
+    h1 {
+        padding: 0;
+        margin: 0;
+    }
+}
+
+.description {
+    word-break: normal;
+
+    border-top-width: 2px;
+    border-top-style: solid;
+    border-top-color: lightgrey;
+}
