@@ -43,6 +43,13 @@
     li { 
         margin-bottom:10px; 
     }
+
+    h1 {
+        padding: 0;
+        margin: 0;
+        font-variant: small-caps;
+        font-size: 14pt;
+    }
 }
 
 .related {
@@ -56,13 +63,8 @@
     .item {
         margin-bottom: 4px;
     }
-}
 
-.referenced {
-    h1 {
-        padding: 0;
-        margin: 0;
-        font-variant: small-caps;
-        font-size: 14pt;
+    .info-icon {
+        float: right;
     }
 }

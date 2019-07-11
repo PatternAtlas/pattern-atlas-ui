@@ -1,14 +1,28 @@
 
 /**
+ * Contains information about a link
+ */
+export interface LinkInfo {
+    // the id of the node that is refered within this link
+    nodeId: string;
+    // the name of the referenced node
+    name: string;
+    // the id of the link object itself
+    linkId: string;
+    // whether this link has a description or not
+    hasDescription: boolean;
+}
+
+/**
  * Contains information about a group of relations of a pattern
  */
 export interface GroupInfo {
     // the name / identifier of the group of related patterns
     id: string;
     // list of outgoing links
-    outgoing: Array<{id: string, name: string}>;
+    outgoing: Array<LinkInfo>;
     // list of incoming links
-    incoming: Array<{id: string, name: string}>;
+    incoming: Array<LinkInfo>;
 }
 
 /**
