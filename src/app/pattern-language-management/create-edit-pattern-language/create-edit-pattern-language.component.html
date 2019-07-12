@@ -92,16 +92,31 @@
   </button>
 </div>
 
+<!-- Second Screen -->
 <ng-template #secondStep>
-  <div [formGroup]="prefixForm">
-    <div formArrayName="prefixArray">
-      <div *ngFor="let prefixControl of prefixArray.controls,  let ind = index">
-        <div [formGroupName]="ind">
-
-          <mat-checkbox matInput formControlName="checked"> {{prefixControl.value.prefixname}}</mat-checkbox>
-
+  <div fxLayout="row" fxLayoutAlign="space-around start">
+    <div [formGroup]="prefixForm">
+      <div formArrayName="prefixArray">
+        <div *ngFor="let prefixControl of prefixArray.controls,  let ind = index">
+          <div [formGroupName]="ind">
+            <mat-checkbox matInput formControlName="checked"> {{prefixControl.value.prefixname}}</mat-checkbox>
+          </div>
         </div>
       </div>
+    </div>
+    <div [formGroup]="newPrefixForm" class="add-prefix-form">
+      <mat-form-field id="new-prefix">
+        <mat-label>Prefix</mat-label>
+        <input matInput formControlName="prefix" placeholder="Prefix">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>URI</mat-label>
+        <input matInput formControlName="uri" placeholder="URI">
+      </mat-form-field>
+
+      <button mat-icon-button aria-label="Add new prefix" (click)="onAddPrefix()">
+        <i class="material-icons">add_circle</i> Add prefix
+      </button>
     </div>
   </div>
 
