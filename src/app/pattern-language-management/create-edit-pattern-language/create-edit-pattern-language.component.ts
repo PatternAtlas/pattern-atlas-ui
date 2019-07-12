@@ -6,6 +6,7 @@ import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/interna
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
 import { PatternLanguageSectionRestriction } from '../../core/model/PatternLanguageSectionRestriction.model';
+import { PrefixPatternlanguage } from '../data/PrefixPatternlanguages.interface';
 
 @Component({
   selector: 'pp-create-edit-pattern-language',
@@ -13,6 +14,28 @@ import { PatternLanguageSectionRestriction } from '../../core/model/PatternLangu
   styleUrls: ['./create-edit-pattern-language.component.scss']
 })
 export class CreateEditPatternLanguageComponent implements OnInit {
+
+  get name(): AbstractControl {
+    return this.patternLanguageForm.get('name');
+  }
+
+  get iconUrl(): AbstractControl {
+    return this.patternLanguageForm.get('iconUrl');
+  }
+
+  constructor(public dialogRef: MatDialogRef<CreateEditPatternLanguageComponent>, private  _fb: FormBuilder, private cdr: ChangeDetectorRef) {
+    this.filteredSections = this.sectionCtrl.valueChanges.pipe(
+      startWith(null),
+      map((section: string | null) => section ? this._filter(section) : this.sectionNames.slice()));
+  }
+
+  get sectionsArray(): FormArray {
+    return this.sectionDetailsGroup.get('sectionsArray') as FormArray;
+  }
+
+  get prefixArray(): FormArray {
+    return this.prefixForm.get('prefixArray') as FormArray;
+  }
 
   isFirstStep = true;
   selectable = true;
@@ -25,25 +48,24 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   sectionNames: string[] = ['Icon', 'Context', 'Driving Question', 'Solution', 'Solution Sketches'];
   patternLanguageForm: FormGroup;
   prefixForm: FormGroup;
+  newPrefixForm: FormGroup;
   iconPreviewVisible = false;
   saveRequested = false;
   sectionDetailsGroup: FormGroup;
-  prefixes = ['xsd', 'dctype'];
-
+  prefixesWithStatus = new Map<string, PrefixPatternlanguage>([
+    ['xsd', {activated: true, values: ['xsd:string', 'xsd:anyURI', 'xsd:int', 'xsd:positiveInteger']}],
+    ['dctype', {activated: true, values: ['dctype:Image', 'dctype:StillImage', 'dctype:MovingImage']}]
+  ]);
 
   options: string[] = ['xsd:string', 'xsd:anyURI', 'xsd:int', 'xsd:positiveInteger'];
   restrictionOptions: string[] = ['only', 'some', 'min', 'exactly', 'max'];
 
 
-  @Output() onSaveClicked = new EventEmitter<DialogPatternLanguageResult>();
+  @Output() saveClicked = new EventEmitter<DialogPatternLanguageResult>();
 
-  get name(): AbstractControl {
-    return this.patternLanguageForm.get('name');
-  }
 
-  get iconUrl(): AbstractControl {
-    return this.patternLanguageForm.get('iconUrl');
-  }
+  @ViewChild('sectionInput') sectionInput: ElementRef<HTMLInputElement>;
+  @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   ngOnInit(): void {
     const urlRegex = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
@@ -62,25 +84,25 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     this.prefixForm = this._fb.group({
       prefixArray: this._fb.array([])
     });
+    this.prefixForm.valueChanges.subscribe(() => {
+      this.options.push('test');
+      this.updateAvailableOptions();
+    });
 
-    for (const prefix of this.prefixes) {
+    this.newPrefixForm = this._fb.group({
+      prefix: ['', []],
+      uri: ['', []]
+    });
+
+    this.prefixesWithStatus.forEach((value: PrefixPatternlanguage, key: string, m) => {
       this.prefixArray.push(
         new FormGroup({
-          prefixname: new FormControl(prefix),
-          checked: new FormControl(false)
+          prefixname: new FormControl(key),
+          checked: new FormControl(value.activated)
         })
       );
-    }
-  }
+    });
 
-
-  @ViewChild('sectionInput') sectionInput: ElementRef<HTMLInputElement>;
-  @ViewChild('auto') matAutocomplete: MatAutocomplete;
-
-  constructor(public dialogRef: MatDialogRef<CreateEditPatternLanguageComponent>, private  _fb: FormBuilder, private cdr: ChangeDetectorRef) {
-    this.filteredSections = this.sectionCtrl.valueChanges.pipe(
-      startWith(null),
-      map((section: string | null) => section ? this._filter(section) : this.sectionNames.slice()));
   }
 
 
@@ -128,6 +150,15 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     return this.sectionNames.filter(section => section.toLowerCase().indexOf(filterValue) === 0);
   }
 
+  onAddPrefix(): void {
+    this.prefixArray.push(
+      new FormGroup({
+        prefixname: new FormControl(this.newPrefixForm.get('prefix').value),
+        checked: new FormControl(this.newPrefixForm.get('uri').value)
+      })
+    );
+  }
+
   close(): void {
     this.dialogRef.close();
   }
@@ -135,7 +166,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   save(): void {
     this.saveRequested = true;
     if (this.patternLanguageForm.valid && this.sectionDetailsGroup.valid) {
-      this.onSaveClicked.emit({
+      this.saveClicked.emit({
         restrictions: this.sectionsArray.value.map((sectionFormValue) => {
           // (name: string, restrictionType: string, type: string, cardinality: number)
           return new PatternLanguageSectionRestriction(sectionFormValue.name, sectionFormValue.restrictionType, sectionFormValue.type,
@@ -162,14 +193,6 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  get sectionsArray(): FormArray {
-    return this.sectionDetailsGroup.get('sectionsArray') as FormArray;
-  }
-
-  get prefixArray(): FormArray {
-    return this.prefixForm.get('prefixArray') as FormArray;
-  }
-
   initForSecondStep(): void {
     this.saveRequested = true;
     this.patternLanguageForm.markAsTouched();
@@ -184,26 +207,15 @@ export class CreateEditPatternLanguageComponent implements OnInit {
       }
       this.sections.forEach((section) => this.addSectionDetail(section));
     }
-
-
+    this.updateAvailableOptions();
   }
 
-  getErrorMessage(formControl: AbstractControl): string {
-    if (!formControl) {
-      return '';
-    }
-    console.log(formControl.errors);
-    if (formControl.hasError('required')) {
-      return 'Dies ist ein Pflichtfeld.';
-    }
-    if (formControl.hasError('requiredPattern')) {
-      return 'Bitte eine gültige URL eingeben.';
-    }
-    if (formControl.hasError('requiredPattern')) {
-      return 'Bitte eine gültige URL eingeben.';
-    }
-    if (formControl.hasError('notUrlSafe')) {
-      return 'Bitte keine speziellen Zeichen verwenden.';
+  updateAvailableOptions(): void {
+    this.options = [];
+    for (const control of this.prefixArray.controls) {
+      if (control.value.checked) {
+        this.options.push(...this.prefixesWithStatus.get(control.value.prefixname).values);
+      }
     }
   }
 
@@ -216,6 +228,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   deleteSectionRestriction(i: number): void {
     this.sectionsArray.removeAt(i);
   }
+
 }
 
 
