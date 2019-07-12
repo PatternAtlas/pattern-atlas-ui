@@ -6,7 +6,6 @@ import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/interna
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
 import { PatternLanguageSectionRestriction } from '../../core/model/PatternLanguageSectionRestriction.model';
-import { PrefixPatternlanguage } from '../data/PrefixPatternlanguages.interface';
 
 @Component({
   selector: 'pp-create-edit-pattern-language',
@@ -52,9 +51,9 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   iconPreviewVisible = false;
   saveRequested = false;
   sectionDetailsGroup: FormGroup;
-  prefixesWithStatus = new Map<string, PrefixPatternlanguage>([
-    ['xsd', {activated: true, values: ['xsd:string', 'xsd:anyURI', 'xsd:int', 'xsd:positiveInteger']}],
-    ['dctype', {activated: true, values: ['dctype:Image', 'dctype:StillImage', 'dctype:MovingImage']}]
+  prefixesWithStatus = new Map<string, string[]>([
+    ['xsd', ['xsd:string', 'xsd:anyURI', 'xsd:int', 'xsd:positiveInteger']],
+    ['dctype', ['dctype:Image', 'dctype:StillImage', 'dctype:MovingImage']]
   ]);
 
   options: string[] = ['xsd:string', 'xsd:anyURI', 'xsd:int', 'xsd:positiveInteger'];
@@ -94,11 +93,11 @@ export class CreateEditPatternLanguageComponent implements OnInit {
       uri: ['', []]
     });
 
-    this.prefixesWithStatus.forEach((value: PrefixPatternlanguage, key: string, m) => {
+    this.prefixesWithStatus.forEach((value: string[], key: string, m) => {
       this.prefixArray.push(
         new FormGroup({
           prefixname: new FormControl(key),
-          checked: new FormControl(value.activated)
+          checked: new FormControl(true)
         })
       );
     });
@@ -214,7 +213,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     this.options = [];
     for (const control of this.prefixArray.controls) {
       if (control.value.checked) {
-        this.options.push(...this.prefixesWithStatus.get(control.value.prefixname).values);
+        this.options.push(...this.prefixesWithStatus.get(control.value.prefixname));
       }
     }
   }
