@@ -79,7 +79,7 @@ export class PatternLanguageManagementComponent implements OnInit {
 
     }
 
-    async loadLocallyHostedOntos(): Promise<void> {
+  async loadLinkedOpenPatterns(): Promise<void> {
       await this.pos.loadLinkedOpenPatternGraphs();
         return this.loader.loadContentFromStore()
             .then(async (languages) => {
@@ -121,7 +121,7 @@ export class PatternLanguageManagementComponent implements OnInit {
     }
 
     reloadPatternRepo() {
-        this.loadLocally ? this.loadLocallyHostedOntos() : this.loadPatternPedia();
+      this.loadLocally ? this.loadLinkedOpenPatterns() : this.loadPatternPedia();
     }
 
     navigateToPL(id: string): void {
@@ -155,7 +155,7 @@ export class PatternLanguageManagementComponent implements OnInit {
         })*/
       ).subscribe((res) => {
           console.log('trigger reloading all available patternlanguages');
-          this.loadLocallyHostedOntos();
+          this.loadLinkedOpenPatterns();
           this._toasterService.pop('success', 'Created new patternlanguage');
         },
         (error) => {
