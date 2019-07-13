@@ -56,7 +56,6 @@ export class CreatePatternComponent implements OnInit {
     this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
     this.loader.getOWLImports(this.plIri)
       .then(res => {
-          console.log(res);
           const importedPatternIris = res.map(i => i.import);
           this.pos.loadUrisToStore(importedPatternIris).then(() => {
             this.loader.loadContentFromStore()
@@ -127,7 +126,7 @@ export class CreatePatternComponent implements OnInit {
       }
       restrictions.push(...this.plRestrictions.get(key));
     }
-    const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, patternIris, this.sections, restrictions);
+    const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, patternIris, this.sections, restrictions, null);
     this.uploadService.updatePL(patternLanguage).pipe(
       switchMap(() => {
         return this.uploadService.uploadPattern(pattern, patternLanguage);
