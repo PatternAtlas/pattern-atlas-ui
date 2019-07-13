@@ -54,7 +54,6 @@ export class GithubPersistenceService {
 
   addPatternLanguageToPatternPedia(patternlanguage: PatternLanguage, existingPatternlanguages: PatternLanguage[]): Observable<any> {
     existingPatternlanguages.push(patternlanguage);
-    console.log(existingPatternlanguages);
     const containsPatternGraphStatements = existingPatternlanguages.map((pl: PatternLanguage) => {
       return pl.getIsLinkedOpenPatternLanguageStatement();
     });
