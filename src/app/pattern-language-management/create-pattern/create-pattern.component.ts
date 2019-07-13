@@ -54,59 +54,19 @@ export class CreatePatternComponent implements OnInit {
   ngOnInit() {
     this.loader.supportedIRI = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
     this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
-    this.loader.getOWLImports(this.plIri)
-      .then(res => {
-          const importedPatternIris = res.map(i => i.import);
-          this.pos.loadUrisToStore(importedPatternIris).then(() => {
-            this.loader.loadContentFromStore()
-              .then(result => {
-                this.patterns = Array.from(result.values());
-                this.cdr.detectChanges();
-              });
-          });
-        }
-      );
-
-    // Todo: Load Restrictions because we don't want to overwrite them + we would like to do some validation
+    this.loadPatternInfos();
 
     this.plName = IriConverter.extractIndividualNameFromIri(this.plIri);
     this.PlRestrictionLoader.supportedIRI = this.loader.supportedIRI;
 
-    this.loader.getPLSections(this.plIri).then((res: SectionResponse[]) => {
-      this.sections = res.map((iri: any) => {
-        return this.reconstructSectionFromSectionesult(iri);
-      });
-      this.PlRestrictionLoader.loadContentFromStore().then((response: any) => {
-        this.plRestrictions = response;
-        console.log(this.plRestrictions);
-        for (const section of this.sections) {
-          this.patternLanguageStructure = this.patternLanguageStructure.concat(
-            '\n ## ' + this.addSpaceForCamelCase(section) + '\n' + this.getDefaultTextForSection(section));
-        }
-        this._textEditor.value = this.patternLanguageStructure;
-        this.onChangeMarkdownText();
-      });
-
-
-    });
-
-
-    this.loader.getPLLogo(this.plIri).then((res: Logo[]) => {
-      this.plLogos = res.map((dataRessponse: Logo) => {
-        return dataRessponse.logo.value;
-      });
-    });
-
-
+    this.loadRestrictionsAndInitPatternEditor();
+    this.loadLogoData();
   }
 
   reconstructSectionFromSectionesult(queryResult: SectionResponse): string {
     return queryResult.section.value.split('#has')[1];
   }
 
-  private matchesOne(string: string): boolean {
-    return !!string.match(('1'));
-  }
 
 
   containsMoreThanWhitespace(teststring: string): boolean {
@@ -130,6 +90,9 @@ export class CreatePatternComponent implements OnInit {
     this.uploadService.updatePL(patternLanguage).pipe(
       switchMap(() => {
         return this.uploadService.uploadPattern(pattern, patternLanguage);
+      }),
+      switchMap(() => {
+        return this.pos.loadLinkedOpenPatternGraphs();
       })
     ).subscribe(() => {
       this.toastService.pop('success', 'Pattern created');
@@ -207,5 +170,48 @@ export class CreatePatternComponent implements OnInit {
       return '<Enter/your/URI/or/URL>';
     }
     return 'Enter your input for this section here.';
+  }
+
+  private loadPatternInfos() {
+    this.loader.getOWLImports(this.plIri)
+      .then(res => {
+          const importedPatternIris = res.map(i => i.import);
+          this.pos.loadUrisToStore(importedPatternIris).then(() => {
+            this.loader.loadContentFromStore()
+              .then(result => {
+                this.patterns = Array.from(result.values());
+                this.cdr.detectChanges();
+              });
+          });
+        }
+      );
+  }
+
+  private loadRestrictionsAndInitPatternEditor() {
+    this.loader.getPLSections(this.plIri).then((res: SectionResponse[]) => {
+      this.sections = res.map((iri: any) => {
+        return this.reconstructSectionFromSectionesult(iri);
+      });
+      this.PlRestrictionLoader.loadContentFromStore().then((response: any) => {
+        this.plRestrictions = response;
+        for (const section of this.sections) {
+          this.patternLanguageStructure = this.patternLanguageStructure.concat(
+            '\n ## ' + this.addSpaceForCamelCase(section) + '\n' + this.getDefaultTextForSection(section));
+        }
+        this._textEditor.value = this.patternLanguageStructure;
+        this.onChangeMarkdownText();
+      });
+
+
+    });
+
+  }
+
+  private loadLogoData() {
+    this.loader.getPLLogo(this.plIri).then((res: Logo[]) => {
+      this.plLogos = res.map((dataRessponse: Logo) => {
+        return dataRessponse.logo.value;
+      });
+    });
   }
 }
