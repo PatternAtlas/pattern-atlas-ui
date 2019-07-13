@@ -15,6 +15,7 @@
 import { IriConverter } from '../util/iri-converter';
 import { PatternLanguageSectionRestriction } from './PatternLanguageSectionRestriction.model';
 import PatternPedia from './pattern-pedia.model';
+import { CustomPrefix } from '../../pattern-language-management/data/CustomPrefix.interface';
 
 class PatternLanguage {
   private patternpediaBaseURI = 'http://purl.org/patternpedia';
@@ -25,6 +26,7 @@ class PatternLanguage {
     patternIRIs: Array<string>;
   sections: string[];
   restrictions: PatternLanguageSectionRestriction[];
+  prefixes: CustomPrefix[];
 
 
   set id(iri: string) {
@@ -36,7 +38,7 @@ class PatternLanguage {
     }
 
   public constructor(iri: string = null, name: string = null, logos: Array<string> = null, patternIRIs: Array<string> = null, sections: string[] = null,
-                     restrictions: PatternLanguageSectionRestriction[] = null) {
+                     restrictions: PatternLanguageSectionRestriction[] = null, prefixes: CustomPrefix[] = null) {
         this.name = name;
         this.logos = logos || [];
         this.patternIRIs = patternIRIs || [];
@@ -44,19 +46,31 @@ class PatternLanguage {
         this.id = iri;
     this.sections = sections;
     this.restrictions = restrictions;
+    this.prefixes = prefixes;
   }
 
   getPrefixes(): Array<string> {
     const ary: Array<string> = [];
-    const prefixes = new PatternPedia().defaultPrefixes;
+    const standardPrefixes = new PatternPedia().defaultPrefixes;
     ary.push(
       `@prefix : <${this.patternpediaBaseURI + '/patternlanguages/' + this.name}#> .`,
       `@base <${this.patternpediaBaseURI + '/patternlanguages/' + this.name}> .`
     );
-    prefixes.forEach((value: boolean, key: string) => {
+    standardPrefixes.forEach((value: boolean, key: string) => {
       ary.push(
         `@prefix ${key}: ${value} .`,
       );
+    });
+    if (!this.prefixes) {
+      return ary;
+    }
+
+    this.prefixes.forEach((value: CustomPrefix) => {
+      if (value.checked && (value.prefixname !== 'xsd')) { // xsd is already contained in standard prefixes
+        ary.push(
+          `@prefix ${value.prefixname}: ${this.addAngleBracketsIfNeeded(value.uri)} .`,
+        );
+      }
     });
     return ary;
   }

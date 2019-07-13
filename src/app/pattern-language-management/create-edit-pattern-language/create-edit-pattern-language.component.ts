@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/internal/operators';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
-import { PatternLanguageSectionRestriction } from '../../core/model/PatternLanguageSectionRestriction.model';
 
 @Component({
   selector: 'pp-create-edit-pattern-language',
@@ -51,12 +50,9 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   iconPreviewVisible = false;
   saveRequested = false;
   sectionDetailsGroup: FormGroup;
-  prefixesWithStatus = new Map<string, string[]>([
-    ['xsd', ['xsd:string', 'xsd:anyURI', 'xsd:int', 'xsd:positiveInteger']],
-    ['dctype', ['dctype:Image', 'dctype:StillImage', 'dctype:MovingImage']]
-  ]);
 
-  options: string[] = ['xsd:string', 'xsd:anyURI', 'xsd:int', 'xsd:positiveInteger'];
+
+  options: string[] = [];
   restrictionOptions: string[] = ['only', 'some', 'min', 'exactly', 'max'];
 
 
@@ -81,10 +77,69 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     });
 
     this.prefixForm = this._fb.group({
-      prefixArray: this._fb.array([])
+      prefixArray: this._fb.array([
+        new FormGroup({
+          prefixname: new FormControl('xsd'),
+          checked: new FormControl(true),
+          uri: new FormControl('http://www.w3.org/2001/XMLSchema#'),
+          values: new FormControl([
+            'xsd:anyURI',
+            'xsd:base64Binary',
+            'xsd:boolean',
+            'xsd:byte',
+            'xsd:date',
+            'xsd:dateTime',
+            'xsd:dateTimeStamp',
+            'xsd:dayTimeDuration',
+            'xsd:decimal',
+            'xsd:double',
+            'xsd:float',
+            'xsd:gDay',
+            'xsd:gMonth',
+            'xsd:gMonthDay',
+            'xsd:gYear',
+            'xsd:gYearMonth',
+            'xsd:hexBinary',
+            'xsd:int',
+            'xsd:integer',
+            'xsd:language',
+            'xsd:long',
+            'xsd:Name',
+            'xsd:NCName',
+            'xsd:NMTOKEN',
+            'xsd:negativeInteger',
+            'xsd:nonNegativeInteger',
+            'xsd:nonPositiveInteger',
+            'xsd:normalizedString',
+            'xsd:positiveInteger',
+            'xsd:short',
+            'xsd:string',
+            'xsd:time',
+            'xsd:token',
+            'xsd:unsignedByte',
+            'xsd:unsignedInt',
+            'xsd:unsignedLong',
+            'xsd:unsignedShort'])
+        }), new FormGroup({
+          prefixname: new FormControl('dctype'),
+          checked: new FormControl(true),
+          uri: new FormControl('http://purl.org/dc/dcmitype/'),
+          values: new FormControl(['dctype:Image', 'dctype:StillImage',
+            'dctype:MovingImage',
+            'dctype:Software',
+            'dctype:Sound',
+            'dctype:Service',
+            'dctype:Event',
+            'dctype:PhysicalObject',
+            'dctype:Dataset',
+            'dctype:Collection',
+            'dctype:SizeOrDuration',
+            'dctype:Text',
+            'dctype:InteractiveResource'])
+        })
+      ])
     });
     this.prefixForm.valueChanges.subscribe(() => {
-      this.options.push('test');
       this.updateAvailableOptions();
     });
 
@@ -93,14 +148,6 @@ export class CreateEditPatternLanguageComponent implements OnInit {
       uri: ['', []]
     });
 
-    this.prefixesWithStatus.forEach((value: string[], key: string, m) => {
-      this.prefixArray.push(
-        new FormGroup({
-          prefixname: new FormControl(key),
-          checked: new FormControl(true)
-        })
-      );
-    });
 
   }
 
@@ -153,7 +200,9 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     this.prefixArray.push(
       new FormGroup({
         prefixname: new FormControl(this.newPrefixForm.get('prefix').value),
-        checked: new FormControl(this.newPrefixForm.get('uri').value)
+        checked: new FormControl(true),
+        uri: new FormControl(this.newPrefixForm.get('uri').value),
+        values: new FormControl([])
       })
     );
   }
@@ -166,13 +215,11 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     this.saveRequested = true;
     if (this.patternLanguageForm.valid && this.sectionDetailsGroup.valid) {
       this.saveClicked.emit({
-        restrictions: this.sectionsArray.value.map((sectionFormValue) => {
-          // (name: string, restrictionType: string, type: string, cardinality: number)
-          return new PatternLanguageSectionRestriction(sectionFormValue.name, sectionFormValue.restrictionType, sectionFormValue.type,
-            sectionFormValue.cardinality);
-        }),
+        restrictions: this.sectionsArray.value,
         sections: this.sections,
-        name: this.name.value, iconUrl: this.iconUrl.value
+        name: this.name.value,
+        prefixes: this.prefixArray.value,
+        iconUrl: this.iconUrl.value
       });
       this.dialogRef.close();
     }
@@ -188,7 +235,6 @@ export class CreateEditPatternLanguageComponent implements OnInit {
       restrictionType: new FormControl('only'),
       name: new FormControl(sectionName),
     }));
-    console.log(this.sectionsArray);
     this.cdr.detectChanges();
   }
 
@@ -212,8 +258,8 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   updateAvailableOptions(): void {
     this.options = [];
     for (const control of this.prefixArray.controls) {
-      if (control.value.checked) {
-        this.options.push(...this.prefixesWithStatus.get(control.value.prefixname));
+      if (control.value.checked && control.value.values) {
+        this.options.push(...control.value.values);
       }
     }
   }

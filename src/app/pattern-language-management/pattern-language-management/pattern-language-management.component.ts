@@ -149,7 +149,7 @@ export class PatternLanguageManagementComponent implements OnInit {
 
     (<CreateEditPatternLanguageComponent> dialogRef.componentInstance).saveClicked.subscribe((result: DialogPatternLanguageResult) => {
       const patternlanguage = new PatternLanguage(this.urlPatternPedia + '/patternlanguages/' + result.name.replace(/\s/g, ''), result.name, [result.iconUrl], null,
-        result.sections, result.restrictions);
+        result.sections, result.restrictions, result.prefixes);
       this.uploadService.uploadPatternLanguage(patternlanguage).pipe(
         switchMap(() => {
           return this.uploadService.addPatternLanguageToPatternPedia(patternlanguage, this.patternLanguages);
