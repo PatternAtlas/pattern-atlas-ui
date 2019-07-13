@@ -130,11 +130,6 @@ export class PatternLanguageManagementComponent implements OnInit {
         });
     }
 
-    // TODO: Move this to patternlanguage rendering component for adding pattern individuals not pl individuals
-    addPatternLanguageIndividual(): void {
-        this.pos.insertNewPatternLanguageIndividual(null)
-            .subscribe(() => this.ngOnInit());
-    }
 
   getOAuthToken(): void {
     window.open('https://github.com/login/oauth/authorize?client_id=2c81550780e16f8c2642&scope=repo', '_blank');
@@ -155,10 +150,12 @@ export class PatternLanguageManagementComponent implements OnInit {
           return this.uploadService.addPatternLanguageToPatternPedia(patternlanguage, this.patternLanguages);
         }),
         tap(() => this._toasterService.pop('success', 'Created new patternlanguage')),
-        switchMap(() => {
+        /*switchMap(() => {
           return this.pos.insertNewPatternLanguageIndividual(patternlanguage);
-        })
+        })*/
       ).subscribe((res) => {
+          console.log('trigger reloading all available patternlanguages');
+          this.loadLocallyHostedOntos();
           this._toasterService.pop('success', 'Created new patternlanguage');
         },
         (error) => {
