@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, HostListener, ChangeDetectorRef, ChangeDetectionStrategy, AfterViewInit, EventEmitter, Output } from '@angular/core';
 import { Node, Link, NetworkGraph } from '../../model';
 import { D3Service } from '../../service/d3.service';
-import { NodeInfo } from '../../model/node-info';
 
 @Component({
   selector: 'pp-graph',
@@ -22,6 +21,8 @@ export class GraphComponent implements OnInit, AfterViewInit {
   // the node that is currently selected or null, if there is no selection
   selectedNode?: Node;
   // selectedNodeInfo?: NodeInfo;
+
+  selectedLinkId: string;
 
   private _options: { width: number, height: number } = { width: 800, height: 600 };
 
@@ -134,6 +135,8 @@ export class GraphComponent implements OnInit, AfterViewInit {
 
   // $event is the clicked node id!
   nodeInformation($event: string) {
+    this.selectedLinkId = null;
+    
     // call listener
     this.nodeSelectEvent.emit($event);
 
@@ -236,5 +239,9 @@ export class GraphComponent implements OnInit, AfterViewInit {
   showAllNodes() {
     this.nodes.forEach(n => n.hide = false);
     this.links.forEach(l => l.hide = false);
+  }
+
+  showLinkInfo(linkId: string) {
+    this.selectedLinkId = linkId;
   }
 }

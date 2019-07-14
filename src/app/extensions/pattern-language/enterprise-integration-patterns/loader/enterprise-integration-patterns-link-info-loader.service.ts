@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import Loader from 'src/app/core/model/loader';
 import { PatternOntologyService } from 'src/app/core/service/pattern-ontology.service';
-import LinkInfo from '../model/link-info';
 import { IriConverter } from 'src/app/core/util/iri-converter';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EnterpriseIntegrationPatternsLinkInfoLoaderService extends Loader<LinkInfo> {
+export class EnterpriseIntegrationPatternsLinkInfoLoaderService extends Loader<any> {
 
   constructor(private pos: PatternOntologyService) { 
     super('http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links', pos);
@@ -22,37 +21,35 @@ export class EnterpriseIntegrationPatternsLinkInfoLoaderService extends Loader<L
     if(!uri) return Promise.resolve();
 
     // get source and target nodes first
-    const patternQry = `
-      SELECT ?sourceUri ?targetUri
+    const patternQry = `SELECT ?sourceUri ?targetUri
       WHERE {
-        ${uri} <http://purl.org/patternpedia#hasSource> ?sourceUri .
-        ${uri} <http://purl.org/patternpedia#hasTarget> ?targetUri .
+        <${uri}> <http://purl.org/patternpedia#hasSource> ?sourceUri .
+        <${uri}> <http://purl.org/patternpedia#hasTarget> ?targetUri .
       }`;
     const patterns = await this.executor.exec(patternQry, [this.supportedIRI]);
 
     // get all information about link
-    const qry = `
-      SELECT ?sourcePatternUri ?sourcePatternName ?targetPatternUri ?targetPatternName ?description
+    const qry = `SELECT ?sourcePatternUri ?sourcePatternName ?targetPatternUri ?targetPatternName ?description
       WHERE {
-        ${uri} <http://purl.org/patternpedia#hasSource> ?sourcePatternUri .
+        <${uri}> <http://purl.org/patternpedia#hasSource> ?sourcePatternUri .
         ?sourcePatternUri <http://purl.org/patternpedia#hasName> ?sourcePatternName .
-        ${uri} <http://purl.org/patternpedia#hasTarget> ?targetPatternUri .
+        <${uri}> <http://purl.org/patternpedia#hasTarget> ?targetPatternUri .
         ?targetPatternUri <http://purl.org/patternpedia#hasName> ?targetPatternName .
-        OPTIONAL { ${uri} <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description }
+        OPTIONAL { <${uri}> <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description }
       }`;
 
     const graphs = [this.supportedIRI];
     patterns.forEach(p => {
       // uri of the source pattern (for name)
-      graphs.push(p.sourceUri.value);
+      graphs.push(IriConverter.getFileName(p.sourceUri.value));
       // uri of the target pattern (for name)
-      graphs.push(p.targetUri.value);
+      graphs.push(IriConverter.getFileName(p.targetUri.value));
     });
 
     return this.executor.exec(qry, graphs);
   }
 
-  mapTriples(triples: any, uri?: string): Promise<Map<string, LinkInfo>> {
+  mapTriples(triples: any, uri?: string): Promise<Map<string, any>> {
     const data: any = {};
 
     // multiple triples only if multiple description values. Other fields are the same for all triple
@@ -69,37 +66,17 @@ export class EnterpriseIntegrationPatternsLinkInfoLoaderService extends Loader<L
         data.descriptions.push(t.description.value)
     }
 
-    // determining the current and linked pattern
-    let currPatternId, currPatternName, linkedPatternId, linkedPatternName;
-    let direction;
-
-    if (data.sourcePatternUri === uri) {
-      currPatternId = IriConverter.convertIriToId(data.sourcePatternUri);
-      currPatternName = data.sourcePatternName;
-      linkedPatternId = IriConverter.convertIriToId(data.targetPatternUri);
-      linkedPatternName = data.targetPatternName;
-      direction = 'outgoing';
-    } else if (data.targetPatternUri === uri) {
-      linkedPatternId = IriConverter.convertIriToId(data.sourcePatternUri);
-      linkedPatternName = data.sourcePatternName;
-      currPatternId = IriConverter.convertIriToId(data.targetPatternUri);
-      currPatternName = data.targetPatternName;
-      direction = 'incoming';
-    }
-
-
-    const result = new Map<string, LinkInfo>();
+    const result = new Map<string, any>();
     result.set(uri, {
-      currPattern: {
-        id: currPatternId,
-        name: currPatternName
+      sourcePattern: {
+        id: IriConverter.convertIriToId(data.sourcePatternUri),
+        name: data.sourcePatternName
       },
-      linkedPattern: {
-        id: linkedPatternId,
-        name: linkedPatternName
+      targetPattern: {
+        id: IriConverter.convertIriToId(data.targetPatternUri),
+        name: data.targetPatternName
       },
-      descriptions: data.descriptions,
-      direction: direction
+      descriptions: data.descriptions
     });
 
     return Promise.resolve(result);

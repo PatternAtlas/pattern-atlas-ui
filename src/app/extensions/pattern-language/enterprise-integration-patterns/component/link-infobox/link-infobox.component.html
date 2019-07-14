@@ -2,7 +2,7 @@
   <div class="headline">
     
     <!-- curr pattern name -->
-    <h1 (click)="onClick(linkInfo.currPattern.id)">
+    <h1 (click)="onClick($event, linkInfo.currPattern.id)">
       {{linkInfo.currPattern.name}}
     </h1>
 
@@ -14,14 +14,14 @@
     </ng-template>
 
     <!-- linked pattern name -->
-    <span (click)="onClick(linkInfo.linkedPattern.id)">
+    <span (click)="onClick($event, linkInfo.linkedPattern.id)">
       {{linkInfo.linkedPattern.name}}
     </span>
 
   </div>
 
-  <div class="description" *ngIf="linkInfo.description.length > 0">
-    <p *ngFor="let d of linkInfo.description">{{d}}</p>
+  <div class="description">
+    <p *ngFor="let d of linkInfo.descriptions">{{d}}</p>
   </div>
 </div>
 <ng-template #loading>

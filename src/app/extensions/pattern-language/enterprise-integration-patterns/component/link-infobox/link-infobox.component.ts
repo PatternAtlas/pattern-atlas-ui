@@ -12,11 +12,13 @@ export class LinkInfoboxComponent implements OnInit {
 
   // the id of the link
   @Input() linkId: string;
+  // the id of the currently inspected pattern. Can be null
+  @Input() currentPatternId?: string;
 
   linkInfo: LinkInfo;
 
   // gets called if a pattern within the infobox has been clicked, parameter is the corresponding id of the pattern
-  @Output() onPatternClicked: EventEmitter<string>;
+  @Output() onPatternClicked = new EventEmitter<string>();
 
   constructor(private loader: EnterpriseIntegrationPatternsLinkInfoLoaderService) { }
 
@@ -29,11 +31,57 @@ export class LinkInfoboxComponent implements OnInit {
     const uri = IriConverter.convertIdToIri(this.linkId);
     this.loader.loadContentFromStore(uri)
       .then(linkMap => {
-        this.linkInfo = linkMap.get(uri);
+        const data = linkMap.get(uri);
+        
+        if (this.currentPatternId) {
+          if (data.sourcePattern.id === this.currentPatternId) {
+            this.linkInfo = {
+              currPattern: {
+                id: data.sourcePattern.id,
+                name: data.sourcePattern.name
+              },
+              linkedPattern: {
+                id: data.targetPattern.id,
+                name: data.targetPattern.name
+              },
+              descriptions: data.descriptions,
+              direction: 'outgoing'
+            };
+          } else if (data.targetPattern.id === this.currentPatternId) {
+            this.linkInfo = {
+              currPattern: {
+                id: data.targetPattern.id,
+                name: data.targetPattern.name
+              },
+              linkedPattern: {
+                id: data.sourcePattern.id,
+                name: data.sourcePattern.name
+              },
+              descriptions: data.descriptions,
+              direction: 'incoming'
+            };
+          }
+        } else {
+          // default case is, source pattern is the current pattern
+          this.linkInfo = {
+            currPattern: {
+              id: data.sourcePattern.id,
+              name: data.sourcePattern.name
+            },
+            linkedPattern: {
+              id: data.targetPattern.id,
+              name: data.targetPattern.name
+            },
+            descriptions: data.descriptions,
+            direction: 'outgoing'
+          };
+        }
       });
   }
 
-  onClick(id: string) {
+  onClick(event: any, id: string) {
+    event.stopPropagation();
+
     this.onPatternClicked.emit(id);
   }
 

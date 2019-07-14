@@ -26,7 +26,7 @@
         
         <i class="info-icon fa fa-info-circle" 
           *ngIf="o.hasDescription"
-          (click)="onInfoClick(o);"></i>
+          (click)="onInfoClick($event, o);"></i>
       </div>
     </div>
 
@@ -45,7 +45,7 @@
 
         <i class="info-icon fa fa-info-circle" 
           *ngIf="i.hasDescription"
-          (click)="onInfoClick(i)"></i>
+          (click)="onInfoClick($event, i)"></i>
       </div>
     </div>
   </div>

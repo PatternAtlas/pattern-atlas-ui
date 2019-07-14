@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
-import { NodeInfo } from '../../model';
 import { EnterpriseIntegrationPatternLoaderService } from '../../loader/enterprise-integration-pattern-loader.service';
 import { EnterpriseIntegrationPatternIncomingLinkLoaderService } from '../../loader/enterprise-integration-pattern-incoming-link-loader.service';
 import { EnterpriseIntegrationPatternOutgoingLinkLoaderService } from '../../loader/enterprise-integration-pattern-outgoing-link-loader.service';
@@ -22,6 +21,8 @@ export class NodeInfoboxComponent implements OnInit, OnChanges {
   @Output() clickEvent = new EventEmitter<Node>();
   @Output() mouseEnterEvent = new EventEmitter<Node>();
   @Output() mouseLeaveEvent = new EventEmitter<Node>();
+
+  @Output() linkClickEvent = new EventEmitter<string>();
 
   constructor(private patternLoader: EnterpriseIntegrationPatternLoaderService,
     private outgoingLoader: EnterpriseIntegrationPatternOutgoingLinkLoaderService,
@@ -130,7 +131,9 @@ export class NodeInfoboxComponent implements OnInit, OnChanges {
     this.mouseLeaveEvent.emit(node);
   }
 
-  onInfoClick(link: LinkInfo) {
-    console.log(`Clicked ${link.linkId} of Node '${link.name}'`);
+  onInfoClick(event: any, link: LinkInfo) {
+    event.stopPropagation();
+
+    this.linkClickEvent.emit(link.linkId);
   }
 }
