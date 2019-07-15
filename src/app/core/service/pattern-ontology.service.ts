@@ -416,31 +416,8 @@ export class PatternOntologyService implements SparqlExecutor {
             );
     }
 
-    // /**
-    //  * Executes the given query on the given store. If no store is given the default store is used.
-    //  * @param {string} qry
-    //  * @param store
-    //  * @returns {Observable<Array<any>>}
-    //  */
-    // exec(qry: string, store: any = null): Observable<Array<any>> {
-    //     return new Observable<Array<any>>(observer => {
-    //         if (!store) {
-    //             console.log('Using default store for query execution');
-    //             store = this.store;
-    //         }
-    //         console.log('EXECUTING Query:', qry);
-    //         store.execute(qry, (execErr, execResult) => {
-    //             if (!execErr) {
-    //                 observer.next(execResult);
-    //                 observer.complete();
-    //             } else {
-    //                 observer.error(execErr);
-    //             }
-    //         });
-    //     });
-    // }
 
-    /**
+  /**
      * Executes the given query on the given store. If no store is given the default store is used.
      * @param {string} qry
      * @param {Array<string>} graphs
