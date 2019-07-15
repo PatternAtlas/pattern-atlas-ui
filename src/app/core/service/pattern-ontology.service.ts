@@ -28,6 +28,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { GithubPersistenceService } from './github-persistence.service';
 import { GithubFileResponse } from './data/GithubFileResponse.interface';
 import { RestrictionResponse } from './data/RestrictionResponse.interface';
+import { globals } from '../../globals';
 
 @Injectable()
 export class PatternOntologyService implements SparqlExecutor {
@@ -189,20 +190,9 @@ export class PatternOntologyService implements SparqlExecutor {
         if (!uri) {
             return of(null);
         }
-        const observables = uri.map((iri) => {
-            if (this.cookieService.get('patternpedia_github_token')) {
-                const githubUrl = this.githubPersistenceService.githubBaseUrl;
-              let url = iri;
-              if (iri === 'http://purl.org/patternpedia') {
-                    url = githubUrl + '/patternpedia.ttl';
-                }
-                return this.githubPersistenceService.getFile(url).pipe(
-                    map((fileResponse: GithubFileResponse) => {
-                        return atob(fileResponse.content);
-                    }));
-            }
-            return this.http.get(iri, { responseType: 'text' });
-        });
+      const observables = uri.map((iri) => {
+        return this.getFileContentFromIri(iri);
+      });
 
         return forkJoin(observables);
     }
@@ -277,9 +267,7 @@ export class PatternOntologyService implements SparqlExecutor {
 
 
     async loadLinkedOpenPatternGraphs() {
-        const githubUrl = this.githubPersistenceService.githubBaseUrl;
-        let patternpediaResult = await this.http.get(githubUrl + '/patternpedia.ttl').toPromise();
-        const loadedResult = atob((<GithubFileResponse>patternpediaResult).content);
+      const loadedResult = await this.getFileContentFromIri('http://purl.org/patternpedia').toPromise();
         console.log('Result: ', await this.loadToStore('text/turtle',
             loadedResult, 'http://purl.org/patternpedia'));
         const store = this.store;
@@ -288,19 +276,16 @@ export class PatternOntologyService implements SparqlExecutor {
         const patternGraphList: PatternGraphContainedInPP[] = await this.getPatternGraphsOfLinkedOpenPatterns();
         console.log(`These are the patternlanguages that we have to load dynamically:`);
         console.log(patternGraphList);
-        await this.loadUrisToStore(patternGraphList.map(it => it.patterngraph));
+      await this.loadQueriedIrisToStore(patternGraphList.map(it => it.patterngraph));
     }
 
-    async loadUrisToStore(patternGraphList: QueriedData[]) {
-        console.log(`Load imported graphs to the store:`);
-        console.log(patternGraphList);
-        const loadResult = await this.loadPatternGraphsByUri(IriConverter.extractDataValue(patternGraphList)).toPromise();
-        for (let i = 0; i < loadResult.length; i++) {
-            console.log('Result: ', await
-                this.loadToStore('text/turtle', loadResult[i], IriConverter.getFileName(patternGraphList[i].value)));
-
-        }
-        console.log('LOADED Uri Dependencies!');
+  // Given an array of iris retrieved by a SPARQL query (QueriedData), load the content into store
+  async loadQueriedIrisToStore(patternGraphList: QueriedData[]) {
+    const urisToLoad = IriConverter.extractDataValue(patternGraphList);
+    for (let i = 0; i < urisToLoad.length; i++) {
+      await this.loadUriToStore(urisToLoad[i]);
+    }
+    console.log('LOADED Uri Dependencies!');
     }
 
     loadToStore(mediaType: string, data: string, graphIri: string): Promise<number> {
@@ -416,31 +401,8 @@ export class PatternOntologyService implements SparqlExecutor {
             );
     }
 
-    // /**
-    //  * Executes the given query on the given store. If no store is given the default store is used.
-    //  * @param {string} qry
-    //  * @param store
-    //  * @returns {Observable<Array<any>>}
-    //  */
-    // exec(qry: string, store: any = null): Observable<Array<any>> {
-    //     return new Observable<Array<any>>(observer => {
-    //         if (!store) {
-    //             console.log('Using default store for query execution');
-    //             store = this.store;
-    //         }
-    //         console.log('EXECUTING Query:', qry);
-    //         store.execute(qry, (execErr, execResult) => {
-    //             if (!execErr) {
-    //                 observer.next(execResult);
-    //                 observer.complete();
-    //             } else {
-    //                 observer.error(execErr);
-    //             }
-    //         });
-    //     });
-    // }
 
-    /**
+  /**
      * Executes the given query on the given store. If no store is given the default store is used.
      * @param {string} qry
      * @param {Array<string>} graphs
@@ -615,4 +577,29 @@ export class PatternOntologyService implements SparqlExecutor {
         } `;
         return this.exec(qryPatternGraph, [IriConverter.getFileName(graphIri)]);
     }
+
+  private getFileContentFromIri(iri: string): Observable<any> {
+
+    if (this.cookieService.get('patternpedia_github_token')) {
+      const githubUrl = this.githubPersistenceService.githubBaseUrl;
+      let url = iri;
+      if (iri === globals.urlPatternRepoOntology) {
+        url = githubUrl + '/patternpedia.ttl';
+      }
+      return this.githubPersistenceService.getFile(url).pipe(
+        map((fileResponse: GithubFileResponse) => {
+          return atob(fileResponse.content);
+        }));
+    }
+    return this.http.get(iri, {responseType: 'text'});
+
+  }
+
+// get the content of an uri and load it to the store
+  async loadUriToStore(uri: string) {
+    const loadResult = await this.getFileContentFromIri(uri).toPromise();
+    console.log('Result: ', await
+      this.loadToStore('text/turtle', loadResult, IriConverter.getFileName(uri)));
+  }
 }
+

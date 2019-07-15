@@ -35,7 +35,7 @@ export class DefaultPatternRendererComponent implements OnInit {
     this.patternLoaderService.supportedIRI = this.patternIri;
 
     const importedPatternIris = [{token: this.patternIri, value: IriConverter.getFileName(this.patternIri)}];
-    this.pos.loadUrisToStore(importedPatternIris).then(() => {
+    this.pos.loadQueriedIrisToStore(importedPatternIris).then(() => {
       this.toasterService.pop('success', 'Loaded Pattern Infos');
       this.patternLoaderService.selectContentFromStore().then((result) => {
         this.patternProperties = result;

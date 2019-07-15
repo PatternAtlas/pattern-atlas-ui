@@ -119,9 +119,9 @@ export class PatternLanguageManagementComponent implements OnInit {
         switchMap(() => {
           return forkJoin(
             // load the new patternlanguage's data into the store, so we can use it's metadata when we navigate to it
-            this.pos.loadUrisToStore([{value: patternlanguage.iri, token: null}]),
+            this.pos.loadUriToStore(patternlanguage.iri),
             // load the updated patternpedia file which contains the new patternlanguage into store
-            this.pos.loadUrisToStore([{value: 'http://purl.org/patternpedia', token: null}]));
+            this.pos.loadUriToStore(globals.urlPatternRepoOntology));
         })
       ).subscribe((res) => { // update view, because our store data has changed (new patternlanguage)
         this.reloadPatternLanguageFromStore();
