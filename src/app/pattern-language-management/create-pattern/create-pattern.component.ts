@@ -92,7 +92,7 @@ export class CreatePatternComponent implements OnInit {
         return this.uploadService.uploadPattern(pattern, patternLanguage);
       }),
       switchMap(() => {
-        return this.pos.loadLinkedOpenPatternGraphs();
+        return this.pos.loadUrisToStore([{value: this.plIri, token: null}]);
       })
     ).subscribe(() => {
       this.toastService.pop('success', 'Pattern created');
