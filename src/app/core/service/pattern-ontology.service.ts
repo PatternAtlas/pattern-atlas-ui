@@ -274,8 +274,6 @@ export class PatternOntologyService implements SparqlExecutor {
         this.registerDefaultNameSpaces(store);
         console.log('LOADING Ontologies...');
         const patternGraphList: PatternGraphContainedInPP[] = await this.getPatternGraphsOfLinkedOpenPatterns();
-        console.log(`These are the patternlanguages that we have to load dynamically:`);
-        console.log(patternGraphList);
       await this.loadQueriedIrisToStore(patternGraphList.map(it => it.patterngraph));
     }
 
@@ -598,7 +596,7 @@ export class PatternOntologyService implements SparqlExecutor {
 // get the content of an uri and load it to the store
   async loadUriToStore(uri: string) {
     const loadResult = await this.getFileContentFromIri(uri).toPromise();
-    console.log('Result: ', await
+    console.log(`Loaded ${uri}, #triples: : `, await
       this.loadToStore('text/turtle', loadResult, IriConverter.getFileName(uri)));
   }
 }
