@@ -26,6 +26,7 @@ import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult
 import { switchMap, tap } from 'rxjs/internal/operators';
 import { CookieService } from 'ngx-cookie-service';
 import { ToasterService } from 'angular2-toaster';
+import { forkJoin } from 'rxjs';
 
 @Component({
     selector: 'pp-pattern-language-management',
@@ -39,7 +40,6 @@ export class PatternLanguageManagementComponent implements OnInit {
     // NOTE: These are currently the config params
     private urlPatternPedia = globals.urlPatternRepoOntology;
     private patternPediaInstance = globals.iriPatternRepoInstance;
-    private loadLocally = globals.loadOntologyLocally;
   showAuthentificationButton = true;
 
   patternLanguages: Array<PatternLanguage>;
@@ -79,49 +79,17 @@ export class PatternLanguageManagementComponent implements OnInit {
 
     }
 
-  async loadLinkedOpenPatterns(): Promise<void> {
-      await this.pos.loadLinkedOpenPatternGraphs();
-        return this.loader.loadContentFromStore()
-            .then(async (languages) => {
-                this.patternLanguages = await Array.from<PatternLanguage>(languages.values())
-                    .sort((pl1: PatternLanguage, pl2: PatternLanguage) => {
-                        if (pl1.name > pl2.name) {
-                            return 1;
-                        }
-                        if (pl1.name < pl2.name) {
-                            return -1;
-                        }
-                        return 0;
-                    });
-                this.cdr.detectChanges();
-
-
-            });
-    }
-
-    loadPatternPedia(): void {
-        this.pos.loadOntologyWithImportsToStore(this.urlPatternPedia, this.urlPatternPedia)
-            .then(() => {
-                    return this.loader.loadContentFromStore();
-                }
-            ).then(async (languages) => {
-            this.patternLanguages = await Array.from<PatternLanguage>(languages.values())
-                .sort((pl1: PatternLanguage, pl2: PatternLanguage) => {
-                    if (pl1.name > pl2.name) {
-                        return 1;
-                    }
-                    if (pl1.name < pl2.name) {
-                        return -1;
-                    }
-                    return 0;
-                });
-          this._toasterService.pop('success', 'Loaded patternlanguages');
-          this.cdr.detectChanges();
-        });
-    }
-
-    reloadPatternRepo() {
-      this.loadLocally ? this.loadLinkedOpenPatterns() : this.loadPatternPedia();
+  // reload the current data from http://purl.org/patternpedia that contains all patternlangauges
+  async reloadPatternRepo() {
+    await this.pos.loadLinkedOpenPatternGraphs();
+    return this.loader.loadContentFromStore()
+      .then(async (languages) => {
+        this.patternLanguages = await Array.from<PatternLanguage>(languages.values())
+          .sort(this.sortPatternlanguages);
+        this.cdr.detectChanges();
+      }).then(() => {
+        this._toasterService.pop('success', 'Reloaded Linked Open Patterns from Patternpedia');
+      });
     }
 
     navigateToPL(id: string): void {
@@ -135,13 +103,11 @@ export class PatternLanguageManagementComponent implements OnInit {
     window.open('https://github.com/login/oauth/authorize?client_id=2c81550780e16f8c2642&scope=repo', '_blank');
   }
 
-  goToPatternLanguageCreation(): void{
+  goToPatternLanguageCreation(): void {
     this.pos.getOntologyAsTurtle().subscribe(res => console.log(res));
     const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent);
-    dialogRef.afterClosed().subscribe(async (result) => {
-      console.log(result);
-    });
 
+    // update patternpedia, when user saves a patternlanguage:
     (<CreateEditPatternLanguageComponent> dialogRef.componentInstance).saveClicked.subscribe((result: DialogPatternLanguageResult) => {
       const patternlanguage = new PatternLanguage(this.urlPatternPedia + '/patternlanguages/' + result.name.replace(/\s/g, ''), result.name, [result.iconUrl], null,
         result.sections, result.restrictions, result.prefixes);
@@ -150,18 +116,40 @@ export class PatternLanguageManagementComponent implements OnInit {
           return this.uploadService.addPatternLanguageToPatternPedia(patternlanguage, this.patternLanguages);
         }),
         tap(() => this._toasterService.pop('success', 'Created new patternlanguage')),
-        /*switchMap(() => {
-          return this.pos.insertNewPatternLanguageIndividual(patternlanguage);
-        })*/
-      ).subscribe((res) => {
-          console.log('trigger reloading all available patternlanguages');
-          this.loadLinkedOpenPatterns();
-          this._toasterService.pop('success', 'Created new patternlanguage');
-        },
-        (error) => {
-          this._toasterService.pop('error', `An error occured while creating the patternlanguage: ${error.message}`);
-        }
-      );
+        switchMap(() => {
+          return forkJoin(
+            // load the new patternlanguage's data into the store, so we can use it's metadata when we navigate to it
+            this.pos.loadUrisToStore([{value: patternlanguage.iri, token: null}]),
+            // load the updated patternpedia file which contains the new patternlanguage into store
+            this.pos.loadUrisToStore([{value: 'http://purl.org/patternpedia', token: null}]));
+        })
+      ).subscribe((res) => { // update view, because our store data has changed (new patternlanguage)
+        this.reloadPatternLanguageFromStore();
+      });
     });
+  }
+
+  // function used to sort the patternlanguages (by name)
+  private sortPatternlanguages(pl1: PatternLanguage, pl2: PatternLanguage): number {
+    if (pl1.name > pl2.name) {
+      return 1;
+    }
+    if (pl1.name < pl2.name) {
+      return -1;
+    }
+    return 0;
+  }
+
+  // retrieve all the patternlanguage from our triple store and update the view
+  private reloadPatternLanguageFromStore() {
+    this.loader.loadContentFromStore().then(async (languages) => {
+        this.patternLanguages = await Array.from<PatternLanguage>(languages.values())
+          .sort(this.sortPatternlanguages);
+        this._toasterService.pop('success', 'Reloaded Linked Open Patterns from Patternpedia');
+      },
+      (error) => {
+        this._toasterService.pop('error', `An error occured while loading Linked Open Patterns from Patternpedia: ${error.message}`);
+      }
+    );
   }
 }
