@@ -92,7 +92,7 @@ export class CreatePatternComponent implements OnInit {
         return this.uploadService.uploadPattern(pattern, patternLanguage);
       }),
       switchMap(() => {
-        return this.pos.loadUrisToStore([{value: this.plIri, token: null}]);
+        return this.pos.loadQueriedIrisToStore([{value: this.plIri, token: null}]);
       })
     ).subscribe(() => {
       this.toastService.pop('success', 'Pattern created');
@@ -176,7 +176,7 @@ export class CreatePatternComponent implements OnInit {
     this.loader.getOWLImports(this.plIri)
       .then(res => {
           const importedPatternIris = res.map(i => i.import);
-          this.pos.loadUrisToStore(importedPatternIris).then(() => {
+        this.pos.loadQueriedIrisToStore(importedPatternIris).then(() => {
             this.loader.loadContentFromStore()
               .then(result => {
                 this.patterns = Array.from(result.values());

@@ -33,7 +33,7 @@ export class DefaultPlRendererComponent implements OnInit {
         .then(res => {
             console.log(res);
             const importedPatternIris = res.map(i => i.import);
-            this.pos.loadUrisToStore(importedPatternIris).then(() => {
+            this.pos.loadQueriedIrisToStore(importedPatternIris).then(() => {
               this.loader.loadContentFromStore()
                 .then(result => {
                   this.patterns = Array.from(result.values());
