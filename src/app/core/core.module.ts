@@ -28,6 +28,10 @@ import { CovalentTextEditorModule } from '@covalent/text-editor';
 import { EmitEventOnKeyupDirective } from './directives/emit-event-on-keyup.directive';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NavigateBackComponent } from './component/navigate-back/navigate-back.component';
+import { IntegerComponent } from './component/type-templates/xsd/integer/integer.component';
+import { StringComponent } from './component/type-templates/xsd/string/string.component';
+import { PatternpropertyDirective } from './component/type-templates/patternproperty.directive';
+import { ImageComponent } from './component/type-templates/dcmitype/image/image.component';
 
 @NgModule({
     imports: [
@@ -51,12 +55,18 @@ import { NavigateBackComponent } from './component/navigate-back/navigate-back.c
         DefaultPatternRendererComponent,
       MdEditorComponent,
       EmitEventOnKeyupDirective,
-      NavigateBackComponent
+      NavigateBackComponent,
+      IntegerComponent,
+      StringComponent,
+      PatternpropertyDirective,
+      ImageComponent
     ],
     entryComponents: [
         DefaultPlRendererComponent,
         DefaultPatternRendererComponent,
-      MdEditorComponent
+      MdEditorComponent,
+      IntegerComponent,
+      StringComponent
     ]
 })
 export class CoreModule {
