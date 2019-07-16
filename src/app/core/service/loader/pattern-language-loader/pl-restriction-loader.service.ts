@@ -43,7 +43,9 @@ export class PlRestrictionLoaderService extends Loader<any> {
       sectionRestriction.restrictionType = 'some';
       sectionRestriction.type = restriction.someValuesdataRange.value;
     } else {
-      sectionRestriction.type = restriction.dataRange.value;
+      if (restriction.dataRange && restriction.dataRange.value) {
+        sectionRestriction.type = restriction.dataRange.value;
+      }
       if (restriction.exactCardinality) {
         sectionRestriction.restrictionType = 'exactly';
         sectionRestriction.cardinality = +restriction.exactCardinality.value;

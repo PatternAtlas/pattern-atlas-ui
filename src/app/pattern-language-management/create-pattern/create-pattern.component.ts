@@ -47,20 +47,23 @@ export class CreatePatternComponent implements OnInit {
               private uploadService: GithubPersistenceService,
               private pos: PatternOntologyService,
               private toastService: ToasterService,
-              private router: Router) {
+              private router: Router,
+              private patternOntologyServce: PatternOntologyService) {
   }
 
 
   ngOnInit() {
-    this.loader.supportedIRI = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
     this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
-    this.loadPatternInfos();
+    this.loader.supportedIRI = this.plIri;
 
-    this.plName = IriConverter.extractIndividualNameFromIri(this.plIri);
-    this.PlRestrictionLoader.supportedIRI = this.loader.supportedIRI;
+    this.patternOntologyServce.loadUriToStore(this.plIri).then(() => {
+      this.loadPatternInfos();
+      this.plName = IriConverter.extractIndividualNameFromIri(this.plIri);
+      this.PlRestrictionLoader.supportedIRI = this.plIri;
 
-    this.loadRestrictionsAndInitPatternEditor();
-    this.loadLogoData();
+      this.loadRestrictionsAndInitPatternEditor();
+      this.loadLogoData();
+    });
   }
 
   reconstructSectionFromSectionesult(queryResult: SectionResponse): string {
@@ -76,7 +79,7 @@ export class CreatePatternComponent implements OnInit {
 
   save(): void {
     const pattern = this.parsePatternInput();
-    const patternIris = this.patterns.map(p => p.uri);
+    const patternIris = this.patterns.length === 0 ? [] : this.patterns.map(p => p.uri);
     patternIris.push(pattern.iri);
 
     const restrictions = [];
@@ -189,11 +192,16 @@ export class CreatePatternComponent implements OnInit {
 
   private loadRestrictionsAndInitPatternEditor() {
     this.loader.getPLSections(this.plIri).then((res: SectionResponse[]) => {
+      console.log('sections: ');
+      console.log(res);
       this.sections = res.map((iri: any) => {
         return this.reconstructSectionFromSectionesult(iri);
       });
+      console.log('parsed sections: ');
+      console.log(this.sections);
       this.PlRestrictionLoader.loadContentFromStore().then((response: any) => {
         this.plRestrictions = response;
+        console.log(this.plRestrictions);
         for (const section of this.sections) {
           this.patternLanguageStructure = this.patternLanguageStructure.concat(
             '\n ## ' + this.addSpaceForCamelCase(section) + '\n' + this.getDefaultTextForSection(section));

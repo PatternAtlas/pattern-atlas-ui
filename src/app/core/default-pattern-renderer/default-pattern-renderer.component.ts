@@ -38,14 +38,15 @@ export class DefaultPatternRendererComponent implements OnInit {
     this.pos.loadUrisToStore(importedPatternIris).then(() => {
       this.toasterService.pop('success', 'Loaded Pattern Infos');
       this.patternLoaderService.selectContentFromStore().then((result) => {
+        const patterns = Array.from(result.values());
         this.patternProperties = result;
         this.isLoadingPattern = false;
-        console.log(this.patternProperties);
       });
       this.sectionLoader.supportedIRI = this.plIri;
       this.sectionLoader.loadContentFromStore().then((result) => {
         console.log(result);
       });
+      this.plLoader.supportedIRI = this.plIri;
       this.plLoader.getPLSections(this.plIri).then((result: SectionResponse[]) => {
         this.sectionInfos = result;
         this.isLoadingSection = false;
