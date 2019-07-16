@@ -116,7 +116,7 @@ class PatternLanguage {
           ary.push(`${'\t'.repeat(3)} ${restriction.restrictionType === 'min' ? 'owl:minCardinality' : 'owl:maxCardinality'} "${restriction.cardinality}"^^xsd:nonNegativeInteger;`);
           ary.push(`${'\t'.repeat(3)} owl:onDataRange ${this.addAngleBracketsIfNeeded(restriction.type)}`);
         } else if (restriction.restrictionType === 'exactly') {
-          ary.push(`${'\t'.repeat(3)} owl:QualifiedCardinality"${restriction.cardinality}"^^xsd:nonNegativeInteger;`);
+          ary.push(`${'\t'.repeat(3)} owl:qualifiedCardinality"${restriction.cardinality}"^^xsd:nonNegativeInteger;`);
           ary.push(`${'\t'.repeat(3)} owl:onDataRange ${this.addAngleBracketsIfNeeded(restriction.type)}`);
         } else if (restriction.restrictionType === 'some') {
           ary.push(`${'\t'.repeat(3)} owl:someValuesFrom ${this.addAngleBracketsIfNeeded(restriction.type)}`);
