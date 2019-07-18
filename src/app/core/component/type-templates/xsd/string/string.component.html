@@ -1,3 +1,11 @@
-<p>
-  string works!
-</p>
+<mat-card>
+  <div style="display: flex; align-items: center;" (mouseenter)="showActionButtons = true"
+       (mouseleave)="showActionButtons = false">
+    <ngx-md [data]="data"></ngx-md>
+    <button *ngIf="showActionButtons" mat-stroked-button
+            style="margin-left: 5px" color="primary"
+            (click)="openEditor()" matTooltip="Edit"><i class="material-icons">mode_edit</i></button>
+  </div>
+</mat-card>
+
+

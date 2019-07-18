@@ -21,7 +21,7 @@ export class PlRestrictionLoaderService extends Loader<any> {
   mapTriples(triples: any): Promise<Map<string, PatternLanguageSectionRestriction[]>> {
     const map = new Map<string, PatternLanguageSectionRestriction[]>();
     for (const restriction of triples) {
-      const property = restriction.property.value.split('#has')[1];
+      const property = restriction.property.value;
       if (!map.get(property)) {
         map.set(property, []);
       }

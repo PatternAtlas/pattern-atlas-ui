@@ -76,7 +76,7 @@ class PatternLanguage {
   }
 
   getSectionIdentifier(section: string): string {
-    return ':has' + section.replace(/\s/g, '');
+    return section.startsWith('http://purl.org') ? '<' + section + '>' : ':has' + section.replace(/\s/g, '');
   }
 
   toTurtle(): string {
@@ -163,7 +163,7 @@ class PatternLanguage {
   }
 
   private addAngleBracketsIfNeeded(type: string | undefined) {
-    if (this.isIri(type)) { // if we have a uri
+    if (IriConverter.isIri(type)) { // if we have a uri
       return '<' + type + '>';
     }
     return type;
@@ -172,7 +172,7 @@ class PatternLanguage {
   // if the object of the sentence is an URI this can be a prefix abbrevation or a complete URI that requires <>
   private addPrefixCharacterOrAngleBrackets(name: string) {
 
-    if (this.isIri(name)) { // if we have a uri
+    if (IriConverter.isIri(name)) { // if we have a uri
       return '<' + name + '>';
     }
     if (name.indexOf(':') < 0) {
@@ -181,9 +181,7 @@ class PatternLanguage {
     return name;
   }
 
-  private isIri(name: string): boolean {
-    return (name.indexOf('#') >= 0) || (name.indexOf('://') >= 0) || (name.indexOf('purl.org/patternpedia') >= 0);
-  }
+
 }
 
 export default PatternLanguage;

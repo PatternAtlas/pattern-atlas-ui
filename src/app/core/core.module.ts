@@ -21,7 +21,18 @@ import { DefaultPatternRendererComponent } from './default-pattern-renderer/defa
 import { ComponentRegistryService } from './service/component-registry.service';
 import { LinkedOpenPatternsLoader } from './service/loader/pattern-language-loader/linked-open-patterns-loader.service';
 import { PrettyJsonModule } from 'angular2-prettyjson';
-import { MatButtonModule, MatCardModule, MatProgressSpinnerModule } from '@angular/material';
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatDatepickerModule,
+  MatDialogModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatNativeDateModule,
+  MatProgressSpinnerModule,
+  MatTooltipModule
+} from '@angular/material';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { MdEditorComponent } from './component/md-editor/md-editor.component';
 import { CovalentTextEditorModule } from '@covalent/text-editor';
@@ -32,6 +43,11 @@ import { IntegerComponent } from './component/type-templates/xsd/integer/integer
 import { StringComponent } from './component/type-templates/xsd/string/string.component';
 import { PatternpropertyDirective } from './component/type-templates/patternproperty.directive';
 import { ImageComponent } from './component/type-templates/dcmitype/image/image.component';
+import { DateComponent } from './component/type-templates/xsd/date/date.component';
+import { DividerComponent } from './component/type-templates/divider/divider.component';
+import { SectionTitleComponent } from './component/type-templates/section-title/section-title.component';
+import { NgxMdModule } from 'ngx-md';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     imports: [
@@ -42,8 +58,14 @@ import { ImageComponent } from './component/type-templates/dcmitype/image/image.
       CovalentTextEditorModule,
       MatCardModule,
       FlexLayoutModule,
-      MatProgressSpinnerModule
-
+      MatProgressSpinnerModule,
+      MatListModule,
+      MatDatepickerModule, MatInputModule,
+      ReactiveFormsModule,
+      MatTooltipModule,
+      MatDialogModule,
+      MatIconModule,
+      NgxMdModule.forRoot(), MatNativeDateModule
     ],
   exports: [CovalentTextEditorModule, EmitEventOnKeyupDirective, MatProgressSpinnerModule, NavigateBackComponent],
     providers: [
@@ -59,14 +81,20 @@ import { ImageComponent } from './component/type-templates/dcmitype/image/image.
       IntegerComponent,
       StringComponent,
       PatternpropertyDirective,
-      ImageComponent
+      ImageComponent,
+      DateComponent,
+      DividerComponent,
+      SectionTitleComponent
     ],
     entryComponents: [
         DefaultPlRendererComponent,
         DefaultPatternRendererComponent,
       MdEditorComponent,
       IntegerComponent,
-      StringComponent
+      StringComponent,
+      ImageComponent,
+      DateComponent,
+      DividerComponent
     ]
 })
 export class CoreModule {
