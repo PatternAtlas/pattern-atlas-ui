@@ -67,7 +67,7 @@ export class CreatePatternComponent implements OnInit {
   }
 
   reconstructSectionFromSectionesult(queryResult: SectionResponse): string {
-    return queryResult.section.value.split('#has')[1];
+    return queryResult.section.value;
   }
 
 
@@ -79,7 +79,7 @@ export class CreatePatternComponent implements OnInit {
 
   save(): void {
     const pattern = this.parsePatternInput();
-    const patternIris = this.patterns.length === 0 ? [] : this.patterns.map(p => p.uri);
+    const patternIris = !this.patterns ? [] : this.patterns.map(p => p.uri);
     patternIris.push(pattern.iri);
 
     const restrictions = [];
@@ -115,6 +115,10 @@ export class CreatePatternComponent implements OnInit {
     return marked.lexer(this._textEditor.value);
   }
 
+  getSectionTitle(section: string): string {
+    return section.split('#has')[1];
+  }
+
   onChangeMarkdownText(): void {
 
     document.getElementById('preview').innerHTML = marked.parser(this.parseMarkdownText());
@@ -127,7 +131,7 @@ export class CreatePatternComponent implements OnInit {
     const sectionMap = new Map<string, string | string[]>();
     this.sections.forEach((section: string) => {
       const sectionIndex = lines.findIndex((it) => it.type === 'heading' && it.depth === 2 &&
-        this.ignoreCaseAndWhitespace(it.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(section)));
+        this.ignoreCaseAndWhitespace(it.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(this.getSectionTitle(section))));
       if (sectionIndex !== -1) {
         let sectioncontent = '';
         for (let i = sectionIndex + 1; i < lines.length; i++) {
@@ -182,7 +186,10 @@ export class CreatePatternComponent implements OnInit {
         this.pos.loadQueriedIrisToStore(importedPatternIris).then(() => {
             this.loader.loadContentFromStore()
               .then(result => {
+
                 this.patterns = Array.from(result.values());
+                console.log('patterns');
+                console.log(this.patterns);
                 this.cdr.detectChanges();
               });
           });
@@ -204,7 +211,7 @@ export class CreatePatternComponent implements OnInit {
         console.log(this.plRestrictions);
         for (const section of this.sections) {
           this.patternLanguageStructure = this.patternLanguageStructure.concat(
-            '\n ## ' + this.addSpaceForCamelCase(section) + '\n' + this.getDefaultTextForSection(section));
+            '\n ## ' + this.addSpaceForCamelCase(this.getSectionTitle(section)) + '\n' + this.getDefaultTextForSection(section));
         }
         this._textEditor.value = this.patternLanguageStructure;
         this.onChangeMarkdownText();

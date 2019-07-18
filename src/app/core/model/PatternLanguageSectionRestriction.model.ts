@@ -1,7 +1,7 @@
 export class PatternLanguageSectionRestriction {
 
   name: string;
-  restrictionType: string;
+  restrictionType: string; // some, only, min, max, exactly
   type?: string;
   cardinality?: number;
 

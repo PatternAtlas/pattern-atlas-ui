@@ -22,7 +22,7 @@ export class IriConverter {
     static convertIdToIri(id: string): string {
         return decodeURIComponent(decodeURIComponent(id));
     }
-    
+
   static getFileName(iri: string): string {
         return iri.split('#')[0];
     }
@@ -53,6 +53,10 @@ export class IriConverter {
 
   static getSectionName(patternSection: string) {
     return patternSection.split('#has')[1];
+  }
+
+  static isIri(name: string): boolean {
+    return (name.indexOf('#') >= 0) || (name.indexOf('://') >= 0) || (name.indexOf('purl.org/patternpedia') >= 0);
   }
 
 

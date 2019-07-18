@@ -11,6 +11,12 @@ import { PlRestrictionLoaderService } from '../service/loader/pattern-language-l
 import { IntegerComponent } from '../component/type-templates/xsd/integer/integer.component';
 import { PatternpropertyDirective } from '../component/type-templates/patternproperty.directive';
 import { PatternLanguageSectionRestriction } from '../model/PatternLanguageSectionRestriction.model';
+import { StringComponent } from '../component/type-templates/xsd/string/string.component';
+import PatternPedia from '../model/pattern-pedia.model';
+import { ImageComponent } from '../component/type-templates/dcmitype/image/image.component';
+import { DataRenderingComponent } from '../component/type-templates/interfaces/DataRenderingComponent.interface';
+import { DividerComponent } from '../component/type-templates/divider/divider.component';
+import { DateComponent } from '../component/type-templates/xsd/date/date.component';
 
 @Component({
   selector: 'pp-default-pattern-renderer',
@@ -31,7 +37,23 @@ export class DefaultPatternRendererComponent implements OnInit {
   sections: SectionResponse[];
   isLoadingPattern = true;
   isLoadingSection = true;
-  @ViewChild(PatternpropertyDirective, {static: true}) ppPatternproperty: PatternpropertyDirective;
+  @ViewChild(PatternpropertyDirective) ppPatternproperty: PatternpropertyDirective;
+
+  standardPrefixes = new PatternPedia().defaultPrefixes;
+  xsdPrefix = this.standardPrefixes.get('xsd').replace('<', '').replace('>', '');
+  dcmiPrefix = 'http://purl.org/dc/dcmitype/';
+
+  defaultComponentForType: Map<string, any> = new Map([
+    [this.xsdPrefix + 'string', StringComponent],
+    [this.xsdPrefix + 'integer', IntegerComponent],
+    [this.xsdPrefix + 'positiveInteger', IntegerComponent],
+    [this.xsdPrefix + 'nonPositiveInteger', IntegerComponent],
+    [this.xsdPrefix + 'nonNegativeInteger', IntegerComponent],
+    [this.xsdPrefix + 'negativeInteger', IntegerComponent],
+    [this.xsdPrefix + 'date', DateComponent],
+    [this.dcmiPrefix + 'Image', ImageComponent],
+
+  ]);
 
 
   ngOnInit() {
@@ -42,13 +64,22 @@ export class DefaultPatternRendererComponent implements OnInit {
     this.loadInfos().then(() => {
       const viewContainerRef = this.ppPatternproperty.viewContainerRef;
       viewContainerRef.clear();
-      this.patternProperties.forEach(property => {
 
-        // TODO: Select component based on section restriction (e.g. xsd:integer, xsd:string, dcmitype:Image)
+      const componentDividerFactory = this.componentFactoryResolver.resolveComponentFactory(DividerComponent);
+      this.patternProperties.forEach((property: PatternProperty) => {
 
-        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(IntegerComponent);
+        const sectionRestrictions = this.sectionRestritions.get(property.property.value);
+        const sectionTitle = property.property.value.split('#has')[1].replace(/([A-Z])/g, ' $1').trim();
+        console.log(sectionTitle);
+        const type = (sectionRestrictions && !!sectionRestrictions[0] && sectionRestrictions[0].type) ? sectionRestrictions[0].type : this.xsdPrefix + 'string';
+        console.log(sectionRestrictions);
+        console.log(type);
+        const component = this.defaultComponentForType.get(type) ? this.defaultComponentForType.get(type) : StringComponent;
+
+        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
         const componentRef = viewContainerRef.createComponent(componentFactory);
-        (<IntegerComponent>componentRef.instance).data = property.predicate.value;
+        (<DataRenderingComponent>componentRef.instance).data = property.predicate.value;
+        viewContainerRef.createComponent(componentDividerFactory); // create divider
       });
     });
 
