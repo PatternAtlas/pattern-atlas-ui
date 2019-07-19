@@ -4,7 +4,7 @@
 </h2></div>
 <div fxLayout="row" fxLayoutAlign="space-around center">
   <td-text-editor ppEmitOnChange (onKeyup)="onChangeMarkdownText()" class="markdownEditor"
-                  [(value)]="patternLanguageStructure" [options]="options"
+                  [(value)]="previousTextEditorValue" [options]="options"
                   #textEditor
                   id="textEditor"></td-text-editor>
   <div class="preview-tile">
