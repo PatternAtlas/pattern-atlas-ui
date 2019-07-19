@@ -1,5 +1,4 @@
 import { ChangeDetectorRef, Component, ComponentFactoryResolver, OnInit, ViewChild } from '@angular/core';
-import { IriConverter } from '../util/iri-converter';
 import { ActivatedRoute } from '@angular/router';
 import { DefaultPatternLoaderService } from '../service/loader/default-pattern-loader.service';
 import { DefaultPlLoaderService } from '../service/loader/default-pl-loader.service';
@@ -8,15 +7,16 @@ import { PatternProperty } from '../service/data/PatternProperty.interface';
 import { ToasterService } from 'angular2-toaster';
 import { SectionResponse } from '../service/data/SectionResponse.interface';
 import { PlRestrictionLoaderService } from '../service/loader/pattern-language-loader/pl-restriction-loader.service';
-import { IntegerComponent } from '../component/type-templates/xsd/integer/integer.component';
 import { PatternpropertyDirective } from '../component/type-templates/patternproperty.directive';
 import { PatternLanguageSectionRestriction } from '../model/PatternLanguageSectionRestriction.model';
-import { StringComponent } from '../component/type-templates/xsd/string/string.component';
 import PatternPedia from '../model/pattern-pedia.model';
-import { ImageComponent } from '../component/type-templates/dcmitype/image/image.component';
-import { DataRenderingComponent } from '../component/type-templates/interfaces/DataRenderingComponent.interface';
+import { IriConverter } from '../util/iri-converter';
 import { DividerComponent } from '../component/type-templates/divider/divider.component';
+import { DataRenderingComponent } from '../component/type-templates/interfaces/DataRenderingComponent.interface';
+import { StringComponent } from '../component/type-templates/xsd/string/string.component';
+import { IntegerComponent } from '../component/type-templates/xsd/integer/integer.component';
 import { DateComponent } from '../component/type-templates/xsd/date/date.component';
+import { ImageComponent } from '../component/type-templates/dcmitype/image/image.component';
 
 @Component({
   selector: 'pp-default-pattern-renderer',
@@ -43,17 +43,18 @@ export class DefaultPatternRendererComponent implements OnInit {
   xsdPrefix = this.standardPrefixes.get('xsd').replace('<', '').replace('>', '');
   dcmiPrefix = 'http://purl.org/dc/dcmitype/';
 
-  defaultComponentForType: Map<string, any> = new Map([
-    [this.xsdPrefix + 'string', StringComponent],
-    [this.xsdPrefix + 'integer', IntegerComponent],
-    [this.xsdPrefix + 'positiveInteger', IntegerComponent],
-    [this.xsdPrefix + 'nonPositiveInteger', IntegerComponent],
-    [this.xsdPrefix + 'nonNegativeInteger', IntegerComponent],
-    [this.xsdPrefix + 'negativeInteger', IntegerComponent],
-    [this.xsdPrefix + 'date', DateComponent],
-    [this.dcmiPrefix + 'Image', ImageComponent],
 
-  ]);
+  mappings = [
+    {prefix: this.xsdPrefix + 'string', value: StringComponent},
+    {prefix: this.xsdPrefix + 'integer', value: IntegerComponent},
+    {prefix: this.xsdPrefix + 'positiveInteger', value: IntegerComponent},
+    {prefix: this.xsdPrefix + 'nonPositiveInteger', value: IntegerComponent},
+    {prefix: this.xsdPrefix + 'nonNegativeInteger', value: IntegerComponent},
+    {prefix: this.xsdPrefix + 'negativeInteger', value: IntegerComponent},
+    {prefix: this.xsdPrefix + 'date', value: DateComponent},
+    {prefix: this.dcmiPrefix + 'Image', value: ImageComponent},
+  ];
+  defaultComponentForType = new Map(this.mappings.map(x => [x.prefix, x.value] as [string, any]));
 
 
   ngOnInit() {
@@ -74,7 +75,7 @@ export class DefaultPatternRendererComponent implements OnInit {
         const type = (sectionRestrictions && !!sectionRestrictions[0] && sectionRestrictions[0].type) ? sectionRestrictions[0].type : this.xsdPrefix + 'string';
         console.log(sectionRestrictions);
         console.log(type);
-        const component = this.defaultComponentForType.get(type) ? this.defaultComponentForType.get(type) : StringComponent;
+        let component = this.defaultComponentForType.get(type) ? this.defaultComponentForType.get(type) : null;
 
         const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
         const componentRef = viewContainerRef.createComponent(componentFactory);

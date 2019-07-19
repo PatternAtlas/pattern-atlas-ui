@@ -6,10 +6,12 @@ import { DataRenderingComponent } from '../../interfaces/DataRenderingComponent.
   templateUrl: './image.component.html',
   styleUrls: ['./image.component.scss']
 })
-export class ImageComponent implements OnInit, DataRenderingComponent {
+export class ImageComponent extends DataRenderingComponent implements OnInit {
   data: any;
 
-  constructor() { }
+  constructor() {
+    super();
+  }
 
   ngOnInit() {
   }
