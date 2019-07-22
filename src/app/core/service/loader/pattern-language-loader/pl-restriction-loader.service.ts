@@ -41,23 +41,26 @@ export class PlRestrictionLoaderService extends Loader<any> {
     } else if (restriction.someValuesdataRange) {
       sectionRestriction.restrictionType = 'some';
       sectionRestriction.type = restriction.someValuesdataRange.value;
-    } else {
-      console.log('parsing min/max/exactly');
-      console.log(restriction);
-      if (restriction.dataRange && restriction.dataRange.value) {
-        sectionRestriction.type = restriction.dataRange.value;
-      }
-      if (restriction.exactCardinality) {
-        sectionRestriction.restrictionType = 'exactly';
-        sectionRestriction.cardinality = +restriction.exactCardinality.value;
-      } else if (restriction.minCardinality) {
-        sectionRestriction.restrictionType = 'min';
-        sectionRestriction.cardinality = +restriction.minCardinality.value;
-      } else if (restriction.maxCardinality) {
-        sectionRestriction.restrictionType = 'max';
-        sectionRestriction.cardinality = +restriction.maxCardinality.value;
-      }
     }
+    if (restriction.dataRange && restriction.dataRange.value) {
+        sectionRestriction.type = restriction.dataRange.value;
+    }
+    if (restriction.exactCardinality) {
+      sectionRestriction.restrictionType = 'exactly';
+      sectionRestriction.cardinality = +restriction.exactCardinality.value;
+    } else if (restriction.minCardinality) {
+      sectionRestriction.restrictionType = 'min';
+      sectionRestriction.cardinality = +restriction.minCardinality.value;
+    } else if (restriction.maxCardinality) {
+      sectionRestriction.restrictionType = 'max';
+      sectionRestriction.cardinality = +restriction.maxCardinality.value;
+    }
+    if (!sectionRestriction.type) {
+      console.log('missiong type for');
+      console.log(restriction);
+
+    }
+
 
     return sectionRestriction;
   }

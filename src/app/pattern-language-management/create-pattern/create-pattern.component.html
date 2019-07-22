@@ -3,15 +3,24 @@
   Add a new pattern to {{plName}}
 </h2></div>
 <div fxLayout="row" fxLayoutAlign="space-around center">
+
   <td-text-editor ppEmitOnChange (onKeyup)="onChangeMarkdownText()" class="markdownEditor"
                   [(value)]="previousTextEditorValue" [options]="options"
                   #textEditor
                   id="textEditor"></td-text-editor>
   <div class="preview-tile">
+
     <div fxLayout="column" fxLayoutAlign="flex-start">
+
       <mat-card>
         <div id="preview"></div>
       </mat-card>
+
+      <mat-error *ngIf="wasSaveButtonClicked && errormessages.length > 0">Found errors in the following sections:
+        <div *ngFor="let message of errormessages">
+          <span>{{message}}<br></span>
+        </div>
+      </mat-error>
       <button (click)="save()" class="save-button" mat-raised-button color="accent" style="float: right"><i
         class="material-icons">save</i>Save
       </button>
