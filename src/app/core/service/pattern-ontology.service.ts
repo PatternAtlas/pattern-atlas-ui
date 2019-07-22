@@ -521,14 +521,15 @@ export class PatternOntologyService implements SparqlExecutor {
             ?restrictionClass a owl:Restriction . 
             ?restrictionClass owl:onProperty ?property .
             ?property a owl:DatatypeProperty .
+            optional { ?restrictionClass owl:onDataRange   ?dataRange . }
             optional { ?restrictionClass owl:allValuesFrom ?allValuesdataRange .}
             optional { ?restrictionClass owl:someValuesFrom ?someValuesdataRange .}
-            optional { ?restrictionClass owl:qualifiedCardinality ?exactCardinality .
-   				    ?restrictionClass owl:onDataRange   ?dataRange .}  
+            optional { ?restrictionClass owl:qualifiedCardinality ?exactCardinality . 
+            }  
             optional { ?restrictionClass owl:minCardinality  ?minCardinality . 
-   				    ?restrictionClass owl:onDataRange   ?dataRange .}  
+            }  
             optional { ?restrictionClass owl:maxCardinality  ?maxCardinality . 
-   				      ?restrictionClass owl:onDataRange   ?dataRange .}
+            }
         }`;
 
         return this.exec(qryPatternGraphs, [IriConverter.getFileName(graphIri)]);

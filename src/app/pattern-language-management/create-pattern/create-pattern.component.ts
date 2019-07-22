@@ -7,13 +7,13 @@ import { IriConverter } from '../../core/util/iri-converter';
 import { Logo } from '../../core/service/data/Logo.interface';
 import { GithubPersistenceService } from '../../core/service/github-persistence.service';
 import * as marked from 'marked';
-import { Token, TokensList } from 'marked';
+import { TokensList } from 'marked';
 import Pattern from '../../core/model/pattern.model';
 import { PatternOntologyService } from '../../core/service/pattern-ontology.service';
 import { SectionResponse } from '../../core/service/data/SectionResponse.interface';
 import { ToasterService } from 'angular2-toaster';
 import { PlRestrictionLoaderService } from '../../core/service/loader/pattern-language-loader/pl-restriction-loader.service';
-import { PatternLanguageSectionRestriction } from '../../core/model/PatternLanguageSectionRestriction.model';
+import { PatternLanguageSectionRestriction, SectionRestrictionsResult } from '../../core/model/PatternLanguageSectionRestriction.model';
 import { switchMap } from 'rxjs/internal/operators';
 import PatternPedia from '../../core/model/pattern-pedia.model';
 
@@ -32,6 +32,7 @@ export class CreatePatternComponent implements OnInit {
   sections: string[];
   plLogos: string[];
   plRestrictions: Map<string, PatternLanguageSectionRestriction[]>;
+  sectionRestrictions = new Map<string, SectionRestrictionsResult>();
   xsdPrefix = new PatternPedia().defaultPrefixes.get('xsd').replace('<', '').replace('>', '');
 
   defaultTextForType: Map<string, string> =
@@ -68,7 +69,6 @@ export class CreatePatternComponent implements OnInit {
   ngOnInit() {
     this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
     this.loader.supportedIRI = this.plIri;
-    console.log(this.defaultTextForType);
 
     this.patternOntologyServce.loadUriToStore(this.plIri).then(() => {
       this.loadPatternInfos();
@@ -148,8 +148,11 @@ export class CreatePatternComponent implements OnInit {
   private invalidTextEdit(currentText: marked.TokensList): boolean {
     // we should find a corresponding line (= that starts with ## followed by section name) for each section
     for (const section of this.sections) {
-      const indexOfCorrespondingLine = currentText.findIndex(sec => this.isSectionHeading(sec) &&
-        && this.ignoreCaseAndWhitespace(sec.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(this.getSectionTitle(section))));
+      const indexOfCorrespondingLine = currentText.findIndex(line =>
+        (line.type === 'heading' && line.depth === 2) &&
+        this.ignoreCaseAndWhitespace(line.text) ===
+        this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(this.getSectionTitle(section)))
+      );
       if (indexOfCorrespondingLine === -1) {
         return true;
       }
@@ -167,7 +170,7 @@ export class CreatePatternComponent implements OnInit {
     const patternname = patternNameIndex !== -1 ? lines[patternNameIndex]['text'] : '';
     const sectionMap = new Map<string, string | string[]>();
     this.sections.forEach((section: string) => {
-      const sectionIndex = lines.findIndex((sec) => this.isSectionHeading(sec) &&
+      const sectionIndex = lines.findIndex((sec) => sec.type === 'heading' && sec.depth === 1 &&
         this.ignoreCaseAndWhitespace(sec.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(this.getSectionTitle(section))));
       if (sectionIndex !== -1) {
         let sectioncontent = '';
@@ -194,13 +197,8 @@ export class CreatePatternComponent implements OnInit {
     return text.replace(/([a-z])([A-Z])/g, '$1 $2');
   }
 
-  private isSectionHeading(line: Token): boolean {
-    return line.type === 'heading' && line.depth === 2;
-  }
-
 
   getDefaultTextForSection(section: string): string {
-    const xsdPrefix = 'http://www.w3.org/2001/XMLSchema#';
     if (!this.plRestrictions) {
       return null;
     }
@@ -208,11 +206,11 @@ export class CreatePatternComponent implements OnInit {
       return !!rest.type;
     });
     const sectionType = restrictionWithTypeIndex !== -1 ? this.plRestrictions.get(section)[restrictionWithTypeIndex].type : '';
+
     const defaultText = this.defaultTextForType.get(sectionType);
     if (!defaultText) {
       return 'Enter your input for this section here.';
     }
-    console.log(defaultText);
     return defaultText;
   }
 
@@ -241,6 +239,12 @@ export class CreatePatternComponent implements OnInit {
       });
       this.PlRestrictionLoader.loadContentFromStore().then((response: any) => {
         this.plRestrictions = response;
+        this.plRestrictions.forEach((value: PatternLanguageSectionRestriction[], key: string) => {
+            this.sectionRestrictions.set(key,
+              this.PlRestrictionLoader.getRestrictionsForSection(key, this.plRestrictions.get(key)));
+          }
+        );
+        console.log(this.sectionRestrictions);
         for (const section of this.sections) {
           this.previousTextEditorValue = this.previousTextEditorValue.concat(
             '\n ## ' + this.addSpaceForCamelCase(this.getSectionTitle(section)) + '\n' + this.getDefaultTextForSection(section));

@@ -12,3 +12,10 @@ export class PatternLanguageSectionRestriction {
     this.cardinality = cardinality;
   }
 }
+
+// sums up all restrictions that apply to a section
+export class SectionRestrictionsResult {
+  minCardinality: number;
+  maxCardinality?: number;
+  type: string;
+}
