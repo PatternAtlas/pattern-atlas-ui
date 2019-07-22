@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PatternOntologyService } from '../../pattern-ontology.service';
 import Loader from '../../../model/loader';
-import { PatternLanguageSectionRestriction } from '../../../model/PatternLanguageSectionRestriction.model';
-import { RestrictionResponse } from '../../data/RestrictionResponse.interface';
+import { PatternLanguageSectionRestriction, SectionRestrictionsResult } from '../../../model/PatternLanguageSectionRestriction.model';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +32,7 @@ export class PlRestrictionLoaderService extends Loader<any> {
     return Promise.resolve(map);
   }
 
-  mapRestrictionResponseToJSObject(restriction: RestrictionResponse): PatternLanguageSectionRestriction {
+  mapRestrictionResponseToJSObject(restriction): PatternLanguageSectionRestriction {
     const sectionRestriction = new PatternLanguageSectionRestriction(restriction.property.value, null,
       null, null);
     if (restriction.allValuesdataRange) {
@@ -43,6 +42,8 @@ export class PlRestrictionLoaderService extends Loader<any> {
       sectionRestriction.restrictionType = 'some';
       sectionRestriction.type = restriction.someValuesdataRange.value;
     } else {
+      console.log('parsing min/max/exactly');
+      console.log(restriction);
       if (restriction.dataRange && restriction.dataRange.value) {
         sectionRestriction.type = restriction.dataRange.value;
       }
@@ -60,4 +61,48 @@ export class PlRestrictionLoaderService extends Loader<any> {
 
     return sectionRestriction;
   }
+
+  // sum up all the restrictions in the array in one restriction object
+  getRestrictionsForSection(section: string, restrictions: PatternLanguageSectionRestriction[]): SectionRestrictionsResult {
+    const restrictionWithTypeIndex = restrictions.findIndex((rest: PatternLanguageSectionRestriction) => {
+      return !!rest.type;
+    });
+
+    if (restrictionWithTypeIndex === -1 || !restrictions[restrictionWithTypeIndex]) {
+      console.log('no restrictions for ' + section);
+      return null;
+    }
+    const sectionType = restrictionWithTypeIndex !== -1 ? restrictions[restrictionWithTypeIndex].type : '';
+    const exactlyRestrictionIndex = restrictions.findIndex((rest: PatternLanguageSectionRestriction) => {
+      return rest.restrictionType === 'exactly';
+    });
+    if (exactlyRestrictionIndex !== -1) {
+      return <SectionRestrictionsResult>{
+        type: sectionType, maxCardinality: restrictions[exactlyRestrictionIndex].cardinality,
+        minCardinality: restrictions[exactlyRestrictionIndex].cardinality
+      };
+    }
+
+    const minRestrictionIndex = restrictions.findIndex((rest: PatternLanguageSectionRestriction) => {
+      return rest.restrictionType === 'min';
+    });
+    let minCardinality = 0;
+    if (minRestrictionIndex !== -1) {
+      minCardinality = restrictions[minRestrictionIndex].cardinality;
+    } else if (restrictions[restrictionWithTypeIndex].restrictionType === 'some') {
+      minCardinality = 1;
+    }
+    const maxRestrictionIndex = restrictions.findIndex((rest: PatternLanguageSectionRestriction) => {
+      return rest.restrictionType === 'max';
+    });
+
+    return {
+      type: sectionType,
+      minCardinality: minCardinality,
+      maxCardinality: maxRestrictionIndex !== -1 ? restrictions[maxRestrictionIndex].cardinality : null
+    };
+
+  }
+
+
 }
