@@ -36,22 +36,14 @@ export class ValidationService {
   static xsdImage(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
       if (control.value !== undefined ) {
-        let arrayOfImageValues = control.value;
-        if (!(arrayOfImageValues instanceof Array)) {
-          arrayOfImageValues = [arrayOfImageValues];
+        if (!this.allValuesMatchRegex(control.value, /!\[.*\]\(http:\/\/([a-zA-Z.0-9]+[\/]*)+\)/g)) {
+          return {'xsdImage': true};
         }
-        for (let item of arrayOfImageValues){
-          if(item.startsWith('* ')){
-            item = item.substr(2);
-          }
-            if (!item.trim().match(/!\[.*\]\(http:\/\/([a-zA-Z.0-9]+[\/]*)+\)/g)) {
-              return { 'xsdImage': true };
-            }
-          }
       }
       return null;
     };
   }
+
 
   // checks if value is an array of strings matching the markdown image pattern (e.g. [![test](http://placekitten.com/200/300), ![](http://any.valid.url.com)]
   static xsdInteger(): ValidatorFn {
@@ -59,12 +51,9 @@ export class ValidationService {
       if (control.value !== undefined ) {
         let arrayOfImageValues = control.value;
         if (!(arrayOfImageValues instanceof Array)) {
-          arrayOfImageValues= [arrayOfImageValues];
+          arrayOfImageValues = [arrayOfImageValues];
         }
-        for (let item of arrayOfImageValues){
-          if(item.startsWith('* ')){
-            item = item.substr(2);
-          }
+        for (const item of arrayOfImageValues) {
           if (isNaN(+item)) {
             return { 'xsdInteger': true };
           }
@@ -78,20 +67,24 @@ export class ValidationService {
   static xsdAnyURI(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
       if (control.value !== undefined ) {
-        let arrayOfImageValues = control.value;
-        if (!(arrayOfImageValues instanceof Array)) {
-          arrayOfImageValues = [arrayOfImageValues];
-        }
-        for (let item of arrayOfImageValues){
-          if(item.startsWith('* ')){
-            item = item.substr(2);
-          }
-           if( !item.match(/\[.*\]\(http:\/\/([a-zA-Z.0-9]+[\/]*)+\)/g)) {
-            return { 'xsdAnyURI': true };
-          }
+        if (!this.allValuesMatchRegex(control.value, /\[.*\]\(http:\/\/([a-zA-Z.0-9]+[\/]*)+\)/g)) {
+          return {'xsdAnyURI': true};
         }
       }
       return null;
     };
+  }
+
+  private static allValuesMatchRegex(array: any, regex) {
+    let arrayOfImageValues = array;
+    if (!(arrayOfImageValues instanceof Array)) {
+      arrayOfImageValues = [arrayOfImageValues];
+    }
+    for (const item of arrayOfImageValues) {
+      if (!item.match(regex).length <= item.trim().length) {
+        return false;
+      }
+    }
+    return true;
   }
 }

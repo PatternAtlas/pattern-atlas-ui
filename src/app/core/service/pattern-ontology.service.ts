@@ -570,7 +570,18 @@ export class PatternOntologyService implements SparqlExecutor {
         return this.exec(qryPatternGraph, [IriConverter.getFileName(graphIri)]);
     }
 
-    getPLSections(graphIri: string): Promise<SectionResponse[]> {
+  async getDataPropertyList(graphIri: string): Promise<any[]> {
+    // get position: count the nodes between the start of the list (:DatatypePropertyList) and the current list element
+    const qryPatternGraph = `SELECT ?dataProperty (count(?innerNodes)-1 as ?position) where { 
+      :DatatypePropertyList :list/rdf:rest* ?innerNodes . ?innerNodes rdf:rest* ?node .
+      ?node rdf:first ?element .
+    }
+    group by ?node ?dataProperty
+    order by ?position`;
+    return this.exec(qryPatternGraph, [IriConverter.getFileName(graphIri)]);
+  }
+
+  getPLSections(graphIri: string): Promise<SectionResponse[]> {
         const qryPatternGraph = `SELECT ?section WHERE {
             ?section a owl:DatatypeProperty .
         } `;
@@ -599,7 +610,7 @@ export class PatternOntologyService implements SparqlExecutor {
     const loadResult = await this.getFileContentFromIri(uri).toPromise();
     console.log(`Loaded ${uri}, #triples: : `, await
       this.loadToStore('text/turtle', loadResult, IriConverter.getFileName(uri)));
-   
+
   }
 }
 

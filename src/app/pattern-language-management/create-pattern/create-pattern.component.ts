@@ -100,7 +100,6 @@ export class CreatePatternComponent implements OnInit {
 
   save(): void {
     const pattern = this.parsePatternInput();
-    console.log(pattern.toTurtle());
     const patternIris = !this.patterns ? [] : this.patterns.map(p => p.uri);
     patternIris.push(pattern.iri);
 
@@ -195,6 +194,11 @@ export class CreatePatternComponent implements OnInit {
             sectioncontent.push(lines[i]['text']);
           }
         }
+        for (let i = 0; i < sectioncontent.length; i++) {
+          if (sectioncontent[i].startsWith('* ')) {
+            sectioncontent[i] = sectioncontent[i].substr(2);
+          }
+        }
         if (this.patternValuesFormGroup.controls[section]) {
           this.patternValuesFormGroup.controls[section].setValue(sectioncontent);
         } else {
@@ -205,10 +209,6 @@ export class CreatePatternComponent implements OnInit {
 
 
         for (let i = 0; i < sectioncontent.length; i++) {
-          if (sectioncontent[i].startsWith('* ')) {
-            sectioncontent[i] = sectioncontent[i].substr(2);
-          }
-
           // extract URI/URLs entered in ![](http://) / [](http://) markdown
           if (sectionType === this.xsdPrefix + 'anyURI' || sectionType === 'http://purl.org/dc/dcmitype/Image') {
             sectioncontent[i] = sectioncontent[i].substr(sectioncontent[i].indexOf('(') + 1).replace(')', '');
@@ -226,6 +226,7 @@ export class CreatePatternComponent implements OnInit {
     });
 
     console.log(sectionMap);
+    console.log(this.patternValuesFormGroup);
 
     return new Pattern(this.getPatternUri(patternname, this.plIri), patternname, sectionMap, this.plIri);
 
@@ -324,7 +325,7 @@ export class CreatePatternComponent implements OnInit {
               validators.push(Validators.maxLength(allRestrictions.maxCardinality));
             }
             if (allRestrictions.type === 'http://purl.org/dc/dcmitype/Image') {
-              validators.push(ValidationService.xsdImage);
+              validators.push(ValidationService.xsdImage());
               console.log('added xsdImage validator');
             } else if (allRestrictions.type.startsWith(this.xsdPrefix) &&
               (allRestrictions.type.endsWith('integer') || allRestrictions.type.endsWith('positiveInteger') || allRestrictions.type.endsWith('negativeInteger'))) {
