@@ -280,9 +280,10 @@ export class PatternOntologyService implements SparqlExecutor {
   // Given an array of iris retrieved by a SPARQL query (QueriedData), load the content into store
   async loadQueriedIrisToStore(patternGraphList: QueriedData[]) {
     const urisToLoad = IriConverter.extractDataValue(patternGraphList);
-    for (let i = 0; i < urisToLoad.length; i++) {
-      await this.loadUriToStore(urisToLoad[i]);
-    }
+
+    const promises = urisToLoad.map(uri => this.loadUriToStore(uri));
+    await Promise.all(promises);
+
     console.log('LOADED Uri Dependencies!');
     }
 
