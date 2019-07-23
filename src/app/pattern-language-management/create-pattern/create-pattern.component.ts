@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { TdTextEditorComponent } from '@covalent/text-editor';
-import PatternLanguage from '../../core/model/pattern-language.model';
 import { DefaultPlLoaderService } from '../../core/service/loader/default-pl-loader.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IriConverter } from '../../core/util/iri-converter';
@@ -14,8 +13,11 @@ import { SectionResponse } from '../../core/service/data/SectionResponse.interfa
 import { ToasterService } from 'angular2-toaster';
 import { PlRestrictionLoaderService } from '../../core/service/loader/pattern-language-loader/pl-restriction-loader.service';
 import { PatternLanguageSectionRestriction, SectionRestrictionsResult } from '../../core/model/PatternLanguageSectionRestriction.model';
-import { switchMap } from 'rxjs/internal/operators';
 import PatternPedia from '../../core/model/pattern-pedia.model';
+import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { ValidationService } from '../../core/service/validation.service';
+import { switchMap } from 'rxjs/internal/operators';
+import PatternLanguage from '../../core/model/pattern-language.model';
 
 
 @Component({
@@ -34,12 +36,15 @@ export class CreatePatternComponent implements OnInit {
   plRestrictions: Map<string, PatternLanguageSectionRestriction[]>;
   sectionRestrictions = new Map<string, SectionRestrictionsResult>();
   xsdPrefix = new PatternPedia().defaultPrefixes.get('xsd').replace('<', '').replace('>', '');
+  wasSaveButtonClicked = false;
+  patternValuesFormGroup: FormGroup;
 
   defaultTextForType: Map<string, string> =
     new Map([
       ['http://purl.org/dc/dcmitype/Image', '![](http://)'],
-      [this.xsdPrefix + 'anyURI', '<Insert/your/URI>'],
+      [this.xsdPrefix + 'anyURI', '[](http://)'],
       [this.xsdPrefix + 'integer', 'Replace this line by an Integer.'],
+      [this.xsdPrefix + 'string', ' Enter your input for this section here.'],
       [this.xsdPrefix + 'positiveInteger', 'Replace this line by a positive Integer.'],
       [this.xsdPrefix + 'nonNegativeInteger', 'Replace this line by a positive Integer.'],
       [this.xsdPrefix + 'nonPositiveInteger', 'Replace this line by a negative Integer.'],
@@ -53,6 +58,7 @@ export class CreatePatternComponent implements OnInit {
   options: any = {
     // todo: hide the preview button because it forces fullscreen mode (and destroys our page layout)
   };
+  private errormessages: string[];
 
   constructor(private loader: DefaultPlLoaderService,
               private PlRestrictionLoader: PlRestrictionLoaderService,
@@ -62,7 +68,8 @@ export class CreatePatternComponent implements OnInit {
               private pos: PatternOntologyService,
               private toastService: ToasterService,
               private router: Router,
-              private patternOntologyServce: PatternOntologyService) {
+              private patternOntologyServce: PatternOntologyService,
+              private formBuilder: FormBuilder) {
   }
 
 
@@ -97,6 +104,11 @@ export class CreatePatternComponent implements OnInit {
     patternIris.push(pattern.iri);
 
     const restrictions = [];
+    this.wasSaveButtonClicked = true;
+    if (!this.patternValuesFormGroup.valid) {
+      this.updateFormValidationErrors();
+      return;
+    }
     for (const key of this.sections) {
       if (!this.plRestrictions.get(key)) {
         continue;
@@ -168,21 +180,53 @@ export class CreatePatternComponent implements OnInit {
     const lines = this.parseMarkdownText();
     const patternNameIndex = lines.findIndex((it) => it.type === 'heading' && it.depth === 1);
     const patternname = patternNameIndex !== -1 ? lines[patternNameIndex]['text'] : '';
-    const sectionMap = new Map<string, string | string[]>();
+    const sectionMap = new Map<string, string[]>();
     this.sections.forEach((section: string) => {
-      const sectionIndex = lines.findIndex((sec) => sec.type === 'heading' && sec.depth === 1 &&
+      const sectionIndex = lines.findIndex((sec) => sec.type === 'heading' && sec.depth === 2 &&
         this.ignoreCaseAndWhitespace(sec.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(this.getSectionTitle(section))));
       if (sectionIndex !== -1) {
-        let sectioncontent = '';
+        const sectioncontent = [];
         for (let i = sectionIndex + 1; i < lines.length; i++) {
           if (lines[i].type === 'heading') {
             break;
           }
-          sectioncontent = sectioncontent + lines[i]['text'] ? lines[i]['text'] : '';
+          if (lines[i]['text']) {
+            sectioncontent.push(lines[i]['text']);
+          }
+        }
+        for (let i = 0; i < sectioncontent.length; i++) {
+          if (sectioncontent[i].startsWith('* ')) {
+            sectioncontent[i] = sectioncontent[i].substr(2);
+          }
+        }
+        if (this.patternValuesFormGroup.controls[section]) {
+          this.patternValuesFormGroup.controls[section].setValue(sectioncontent);
+        } else {
+          console.log('missing formcontrol:');
+          console.log(section);
+        }
+        const sectionType = this.sectionRestrictions.get(section).type;
+
+
+        for (let i = 0; i < sectioncontent.length; i++) {
+          // extract URI/URLs entered in ![](http://) / [](http://) markdown
+          if (sectionType === this.xsdPrefix + 'anyURI' || sectionType === 'http://purl.org/dc/dcmitype/Image') {
+            sectioncontent[i] = sectioncontent[i].substr(sectioncontent[i].indexOf('(') + 1).replace(')', '');
+
+            if (sectionType === this.xsdPrefix + 'anyURI') {
+              sectioncontent[i] = '<' + sectioncontent[i] + '>';
+            }
+          }
         }
         sectionMap[section] = sectioncontent;
+
       }
+
+
     });
+
+    console.log(sectionMap);
+    console.log(this.patternValuesFormGroup);
 
     return new Pattern(this.getPatternUri(patternname, this.plIri), patternname, sectionMap, this.plIri);
 
@@ -207,9 +251,21 @@ export class CreatePatternComponent implements OnInit {
     });
     const sectionType = restrictionWithTypeIndex !== -1 ? this.plRestrictions.get(section)[restrictionWithTypeIndex].type : '';
 
-    const defaultText = this.defaultTextForType.get(sectionType);
+    let defaultText = this.defaultTextForType.get(sectionType);
     if (!defaultText) {
-      return 'Enter your input for this section here.';
+      defaultText = 'Enter your input for this section here.';
+    }
+    const restrictions = this.sectionRestrictions.get(section);
+    if (!restrictions) {
+      return defaultText;
+    }
+
+    if (!restrictions.maxCardinality || restrictions.maxCardinality > 1) {
+      // propose listitems if multiple entries are allowed
+      defaultText = '* ' + defaultText;
+    }
+    if (restrictions.minCardinality > 1) {
+      defaultText = (defaultText + '\n').repeat(restrictions.minCardinality - 1) + defaultText;
     }
     return defaultText;
   }
@@ -232,6 +288,21 @@ export class CreatePatternComponent implements OnInit {
       );
   }
 
+  updateFormValidationErrors(): string {
+    if (this.patternValuesFormGroup.valid) {
+      return '';
+    }
+    this.errormessages = [];
+    Object.keys(this.patternValuesFormGroup.controls).forEach(key => {
+      const controlErrors: ValidationErrors = this.patternValuesFormGroup.controls[key].errors;
+      if (controlErrors != null) {
+        Object.keys(controlErrors).forEach(keyError => {
+          this.errormessages.push(ValidationService.getMessageForError(this.getSectionTitle(key), keyError, controlErrors[keyError]));
+        });
+      }
+    });
+  }
+
   private loadRestrictionsAndInitPatternEditor() {
     this.loader.getPLSections(this.plIri).then((res: SectionResponse[]) => {
       this.sections = res.map((iri: any) => {
@@ -239,12 +310,40 @@ export class CreatePatternComponent implements OnInit {
       });
       this.PlRestrictionLoader.loadContentFromStore().then((response: any) => {
         this.plRestrictions = response;
+        this.patternValuesFormGroup = new FormGroup({});
         this.plRestrictions.forEach((value: PatternLanguageSectionRestriction[], key: string) => {
-            this.sectionRestrictions.set(key,
-              this.PlRestrictionLoader.getRestrictionsForSection(key, this.plRestrictions.get(key)));
+          const allRestrictions = this.PlRestrictionLoader.getRestrictionsForSection(key, this.plRestrictions.get(key));
+          const validators = [];
+          if (allRestrictions) {
+            this.sectionRestrictions.set(key, allRestrictions);
+
+            if (allRestrictions.minCardinality && allRestrictions.minCardinality > 0) {
+              validators.push(Validators.required);
+              validators.push(Validators.minLength(allRestrictions.minCardinality));
+            }
+            if (allRestrictions.maxCardinality) {
+              validators.push(Validators.maxLength(allRestrictions.maxCardinality));
+            }
+            if (allRestrictions.type === 'http://purl.org/dc/dcmitype/Image') {
+              validators.push(ValidationService.xsdImage());
+              console.log('added xsdImage validator');
+            } else if (allRestrictions.type.startsWith(this.xsdPrefix) &&
+              (allRestrictions.type.endsWith('integer') || allRestrictions.type.endsWith('positiveInteger') || allRestrictions.type.endsWith('negativeInteger'))) {
+              console.log('added xsdinteger validator');
+              validators.push(ValidationService.xsdInteger());
+            } else if (allRestrictions.type.startsWith(this.xsdPrefix) && allRestrictions.type.endsWith('anyURI')) {
+              validators.push(ValidationService.xsdAnyURI());
+              console.log('added xsdAnyURI validator');
+            }
+          }
+          this.patternValuesFormGroup.addControl(key,
+            new FormControl(
+              '', validators
+            ));
           }
         );
-        console.log(this.sectionRestrictions);
+
+
         for (const section of this.sections) {
           this.previousTextEditorValue = this.previousTextEditorValue.concat(
             '\n ## ' + this.addSpaceForCamelCase(this.getSectionTitle(section)) + '\n' + this.getDefaultTextForSection(section));
