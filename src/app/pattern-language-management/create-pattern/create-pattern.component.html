@@ -16,7 +16,7 @@
         <div id="preview"></div>
       </mat-card>
 
-      <mat-error *ngIf="wasSaveButtonClicked && errormessages.length > 0">Found errors in the following sections:
+      <mat-error *ngIf="wasSaveButtonClicked && errormessages">Found errors in the following sections:
         <div *ngFor="let message of errormessages">
           <span>{{message}}<br></span>
         </div>

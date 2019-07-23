@@ -16,6 +16,8 @@ import { PatternLanguageSectionRestriction, SectionRestrictionsResult } from '..
 import PatternPedia from '../../core/model/pattern-pedia.model';
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ValidationService } from '../../core/service/validation.service';
+import { switchMap } from 'rxjs/internal/operators';
+import PatternLanguage from '../../core/model/pattern-language.model';
 
 
 @Component({
@@ -40,9 +42,9 @@ export class CreatePatternComponent implements OnInit {
   defaultTextForType: Map<string, string> =
     new Map([
       ['http://purl.org/dc/dcmitype/Image', '![](http://)'],
-      [this.xsdPrefix + 'anyURI', '<Insert/your/URI>'],
+      [this.xsdPrefix + 'anyURI', '[](http://)'],
       [this.xsdPrefix + 'integer', 'Replace this line by an Integer.'],
-      [this.xsdPrefix + 'string', ' input for this section here.'],
+      [this.xsdPrefix + 'string', ' Enter your input for this section here.'],
       [this.xsdPrefix + 'positiveInteger', 'Replace this line by a positive Integer.'],
       [this.xsdPrefix + 'nonNegativeInteger', 'Replace this line by a positive Integer.'],
       [this.xsdPrefix + 'nonPositiveInteger', 'Replace this line by a negative Integer.'],
@@ -98,6 +100,7 @@ export class CreatePatternComponent implements OnInit {
 
   save(): void {
     const pattern = this.parsePatternInput();
+    console.log(pattern.toTurtle());
     const patternIris = !this.patterns ? [] : this.patterns.map(p => p.uri);
     patternIris.push(pattern.iri);
 
@@ -107,29 +110,27 @@ export class CreatePatternComponent implements OnInit {
       this.updateFormValidationErrors();
       return;
     }
-    // for (const key of this.sections) {
-    //
-    //
-    //   if (!this.plRestrictions.get(key)) {
-    //     continue;
-    //   }
-    //   restrictions.push(...this.plRestrictions.get(key));
-    // }
-    // const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, patternIris, this.sections, restrictions, null);
-    // this.uploadService.updatePL(patternLanguage).pipe(
-    //   switchMap(() => {
-    //     return this.uploadService.uploadPattern(pattern, patternLanguage);
-    //   }),
-    //   switchMap(() => {
-    //     return this.pos.loadQueriedIrisToStore([{value: this.plIri, token: null}]);
-    //   })
-    // ).subscribe(() => {
-    //   this.toastService.pop('success', 'Pattern created');
-    //   this.router.navigate(['..'], {relativeTo: this.activatedRoute});
-    // }, (error) => {
-    //   this.toastService.pop('error', 'Something went wrong while creating the pattern: ' + error.message);
-    //   console.log(error);
-    // });
+    for (const key of this.sections) {
+      if (!this.plRestrictions.get(key)) {
+        continue;
+      }
+      restrictions.push(...this.plRestrictions.get(key));
+    }
+    const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, patternIris, this.sections, restrictions, null);
+    this.uploadService.updatePL(patternLanguage).pipe(
+      switchMap(() => {
+        return this.uploadService.uploadPattern(pattern, patternLanguage);
+      }),
+      switchMap(() => {
+        return this.pos.loadQueriedIrisToStore([{value: this.plIri, token: null}]);
+      })
+    ).subscribe(() => {
+      this.toastService.pop('success', 'Pattern created');
+      this.router.navigate(['..'], {relativeTo: this.activatedRoute});
+    }, (error) => {
+      this.toastService.pop('error', 'Something went wrong while creating the pattern: ' + error.message);
+      console.log(error);
+    });
 
   }
 
@@ -180,12 +181,11 @@ export class CreatePatternComponent implements OnInit {
     const lines = this.parseMarkdownText();
     const patternNameIndex = lines.findIndex((it) => it.type === 'heading' && it.depth === 1);
     const patternname = patternNameIndex !== -1 ? lines[patternNameIndex]['text'] : '';
-    const sectionMap = new Map<string, string | string[]>();
+    const sectionMap = new Map<string, string[]>();
     this.sections.forEach((section: string) => {
       const sectionIndex = lines.findIndex((sec) => sec.type === 'heading' && sec.depth === 2 &&
         this.ignoreCaseAndWhitespace(sec.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(this.getSectionTitle(section))));
       if (sectionIndex !== -1) {
-        console.log('found line');
         const sectioncontent = [];
         for (let i = sectionIndex + 1; i < lines.length; i++) {
           if (lines[i].type === 'heading') {
@@ -195,20 +195,37 @@ export class CreatePatternComponent implements OnInit {
             sectioncontent.push(lines[i]['text']);
           }
         }
-        sectionMap[section] = sectioncontent;
         if (this.patternValuesFormGroup.controls[section]) {
           this.patternValuesFormGroup.controls[section].setValue(sectioncontent);
-
         } else {
           console.log('missing formcontrol:');
           console.log(section);
         }
+        const sectionType = this.sectionRestrictions.get(section).type;
+
+
+        for (let i = 0; i < sectioncontent.length; i++) {
+          if (sectioncontent[i].startsWith('* ')) {
+            sectioncontent[i] = sectioncontent[i].substr(2);
+          }
+
+          // extract URI/URLs entered in ![](http://) / [](http://) markdown
+          if (sectionType === this.xsdPrefix + 'anyURI' || sectionType === 'http://purl.org/dc/dcmitype/Image') {
+            sectioncontent[i] = sectioncontent[i].substr(sectioncontent[i].indexOf('(') + 1).replace(')', '');
+
+            if (sectionType === this.xsdPrefix + 'anyURI') {
+              sectioncontent[i] = '<' + sectioncontent[i] + '>';
+            }
+          }
+        }
+        sectionMap[section] = sectioncontent;
 
       }
 
+
     });
 
-    console.log(this.patternValuesFormGroup);
+    console.log(sectionMap);
 
     return new Pattern(this.getPatternUri(patternname, this.plIri), patternname, sectionMap, this.plIri);
 
