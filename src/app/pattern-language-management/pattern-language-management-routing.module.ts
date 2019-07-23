@@ -24,9 +24,11 @@ const routes: Routes = [
     {
         path: 'patternlanguages',
         pathMatch: 'prefix',
-        resolve: {
-            patternlanguages: PatternLanguageManagementResolverService
-        },
+      runGuardsAndResolvers: 'always',
+      resolve: {
+        patternlanguages: PatternLanguageManagementResolverService,
+
+      },
         children: [
             {
                 path: '',
@@ -43,7 +45,7 @@ const routes: Routes = [
                 component: PatternContainerComponent
             }
 
-        ]
+        ],
     }
 ];
 

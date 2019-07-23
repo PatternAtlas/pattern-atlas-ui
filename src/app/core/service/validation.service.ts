@@ -1,0 +1,97 @@
+import { Injectable } from '@angular/core';
+import { AbstractControl, ValidatorFn } from '@angular/forms';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ValidationService {
+
+  constructor() { }
+
+
+  static getMessageForError(section, keyError, errorValue): string{
+    if (keyError === 'required') {
+      return section + ': This value is required';
+    }
+    if(keyError === 'xsdImage') {
+      return section + ': Please follow this pattern: ![](http://) and enter a valid url in the round brackets';
+    }
+    if (keyError === 'xsdInteger') {
+      return section + ': Please enter an integer.';
+    }
+    if( keyError === 'xsdAnyURI') {
+      return section + ': Please enter a valid URL/URL.';
+    }
+    if (keyError === 'minlength') {
+      return section + ': Please enter only ' + errorValue['requiredLength'] + ' entries';
+    }
+    if (keyError === 'maxlength') {
+      return section + ': Please enter max. ' + errorValue['requiredLength'] + ' entries';
+    }
+  }
+
+
+
+  // checks if value is an array of strings matching the markdown image pattern (e.g. [![test](http://placekitten.com/200/300), ![](http://any.valid.url.com)]
+  static xsdImage(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+      if (control.value !== undefined ) {
+        let arrayOfImageValues = control.value;
+        if (!(arrayOfImageValues instanceof Array)) {
+          arrayOfImageValues = [arrayOfImageValues];
+        }
+        for (let item of arrayOfImageValues){
+          if(item.startsWith('* ')){
+            item = item.substr(2);
+          }
+            if (!item.trim().match(/!\[.*\]\(http:\/\/([a-zA-Z.0-9]+[\/]*)+\)/g)) {
+              return { 'xsdImage': true };
+            }
+          }
+      }
+      return null;
+    };
+  }
+
+  // checks if value is an array of strings matching the markdown image pattern (e.g. [![test](http://placekitten.com/200/300), ![](http://any.valid.url.com)]
+  static xsdInteger(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+      if (control.value !== undefined ) {
+        let arrayOfImageValues = control.value;
+        if (!(arrayOfImageValues instanceof Array)) {
+          arrayOfImageValues= [arrayOfImageValues];
+        }
+        for (let item of arrayOfImageValues){
+          if(item.startsWith('* ')){
+            item = item.substr(2);
+          }
+          if (isNaN(+item)) {
+            return { 'xsdInteger': true };
+          }
+        }
+      }
+      return null;
+    };
+  }
+
+  // checks if value is an array of strings matching the markdown url pattern (e.g. [[test](http://placekitten.com/200/300), [](http://any.valid.url.com)]
+  static xsdAnyURI(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+      if (control.value !== undefined ) {
+        let arrayOfImageValues = control.value;
+        if (!(arrayOfImageValues instanceof Array)) {
+          arrayOfImageValues = [arrayOfImageValues];
+        }
+        for (let item of arrayOfImageValues){
+          if(item.startsWith('* ')){
+            item = item.substr(2);
+          }
+           if( !item.match(/\[.*\]\(http:\/\/([a-zA-Z.0-9]+[\/]*)+\)/g)) {
+            return { 'xsdAnyURI': true };
+          }
+        }
+      }
+      return null;
+    };
+  }
+}

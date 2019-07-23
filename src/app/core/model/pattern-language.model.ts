@@ -15,6 +15,7 @@
 import { IriConverter } from '../util/iri-converter';
 import { PatternLanguageSectionRestriction } from './PatternLanguageSectionRestriction.model';
 import PatternPedia from './pattern-pedia.model';
+import { CustomPrefix } from '../../pattern-language-management/data/CustomPrefix.interface';
 
 class PatternLanguage {
   private patternpediaBaseURI = 'http://purl.org/patternpedia';
@@ -25,6 +26,7 @@ class PatternLanguage {
     patternIRIs: Array<string>;
   sections: string[];
   restrictions: PatternLanguageSectionRestriction[];
+  prefixes: CustomPrefix[];
 
 
   set id(iri: string) {
@@ -36,7 +38,7 @@ class PatternLanguage {
     }
 
   public constructor(iri: string = null, name: string = null, logos: Array<string> = null, patternIRIs: Array<string> = null, sections: string[] = null,
-                     restrictions: PatternLanguageSectionRestriction[] = null) {
+                     restrictions: PatternLanguageSectionRestriction[] = null, prefixes: CustomPrefix[] = null) {
         this.name = name;
         this.logos = logos || [];
         this.patternIRIs = patternIRIs || [];
@@ -44,25 +46,37 @@ class PatternLanguage {
         this.id = iri;
     this.sections = sections;
     this.restrictions = restrictions;
+    this.prefixes = prefixes;
   }
 
   getPrefixes(): Array<string> {
     const ary: Array<string> = [];
-    const prefixes = new PatternPedia().defaultPrefixes;
+    const standardPrefixes = new PatternPedia().defaultPrefixes;
     ary.push(
       `@prefix : <${this.patternpediaBaseURI + '/patternlanguages/' + this.name}#> .`,
       `@base <${this.patternpediaBaseURI + '/patternlanguages/' + this.name}> .`
     );
-    prefixes.forEach((value: boolean, key: string) => {
+    standardPrefixes.forEach((value: boolean, key: string) => {
       ary.push(
         `@prefix ${key}: ${value} .`,
       );
+    });
+    if (!this.prefixes) {
+      return ary;
+    }
+
+    this.prefixes.forEach((value: CustomPrefix) => {
+      if (value.checked && (value.prefixname !== 'xsd')) { // xsd is already contained in standard prefixes
+        ary.push(
+          `@prefix ${value.prefixname}: ${this.addAngleBracketsIfNeeded(value.uri)} .`,
+        );
+      }
     });
     return ary;
   }
 
   getSectionIdentifier(section: string): string {
-    return ':has' + section.replace(/\s/g, '');
+    return section.startsWith('http://purl.org') ? '<' + section + '>' : ':has' + section.replace(/\s/g, '');
   }
 
   toTurtle(): string {
@@ -102,7 +116,7 @@ class PatternLanguage {
           ary.push(`${'\t'.repeat(3)} ${restriction.restrictionType === 'min' ? 'owl:minCardinality' : 'owl:maxCardinality'} "${restriction.cardinality}"^^xsd:nonNegativeInteger;`);
           ary.push(`${'\t'.repeat(3)} owl:onDataRange ${this.addAngleBracketsIfNeeded(restriction.type)}`);
         } else if (restriction.restrictionType === 'exactly') {
-          ary.push(`${'\t'.repeat(3)} owl:QualifiedCardinality"${restriction.cardinality}"^^xsd:nonNegativeInteger;`);
+          ary.push(`${'\t'.repeat(3)} owl:qualifiedCardinality"${restriction.cardinality}"^^xsd:nonNegativeInteger;`);
           ary.push(`${'\t'.repeat(3)} owl:onDataRange ${this.addAngleBracketsIfNeeded(restriction.type)}`);
         } else if (restriction.restrictionType === 'some') {
           ary.push(`${'\t'.repeat(3)} owl:someValuesFrom ${this.addAngleBracketsIfNeeded(restriction.type)}`);
@@ -149,7 +163,7 @@ class PatternLanguage {
   }
 
   private addAngleBracketsIfNeeded(type: string | undefined) {
-    if (this.isIri(type)) { // if we have a uri
+    if (IriConverter.isIri(type)) { // if we have a uri
       return '<' + type + '>';
     }
     return type;
@@ -158,7 +172,7 @@ class PatternLanguage {
   // if the object of the sentence is an URI this can be a prefix abbrevation or a complete URI that requires <>
   private addPrefixCharacterOrAngleBrackets(name: string) {
 
-    if (this.isIri(name)) { // if we have a uri
+    if (IriConverter.isIri(name)) { // if we have a uri
       return '<' + name + '>';
     }
     if (name.indexOf(':') < 0) {
@@ -167,9 +181,7 @@ class PatternLanguage {
     return name;
   }
 
-  private isIri(name: string): boolean {
-    return (name.indexOf('#') >= 0) || (name.indexOf('://') >= 0) || (name.indexOf('purl.org/patternpedia') >= 0);
-  }
+
 }
 
 export default PatternLanguage;

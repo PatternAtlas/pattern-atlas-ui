@@ -4,6 +4,14 @@
 
 }
 
+.add-prefix-form {
+  .mat-form-field {
+    margin: 0 0.5em;
+  }
+  #new-prefix {
+    width: 4em;
+  }
+}
 .icon-wrapper {
   margin-top: -1.34375em !important;
 }

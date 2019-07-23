@@ -15,26 +15,25 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import PatternLanguage from '../../core/model/pattern-language.model';
-import { from, Observable } from 'rxjs';
+import { EMPTY, from, Observable } from 'rxjs';
 import { PatternOntologyService } from '../../core/service/pattern-ontology.service';
-import { mergeMap } from 'rxjs/operators';
-import { globals } from '../../globals';
 import { LinkedOpenPatternsLoader } from '../../core/service/loader/pattern-language-loader/linked-open-patterns-loader.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class PatternLanguageManagementResolverService implements Resolve<Map<string, PatternLanguage>> {
-    private urlPatternPedia = globals.urlPatternRepoOntology;
-    private patternPediaInstance = globals.iriPatternRepoInstance;
-    private loadLocally = globals.loadOntologyLocally;
 
     constructor(private pos: PatternOntologyService,
                 private loader: LinkedOpenPatternsLoader) {
     }
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Map<string, PatternLanguage>> {
-        return this.loadLocally ? from(this.loadLocallyHostedOntos()) : this.loadPatternPedia();
+
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Map<string, PatternLanguage>> {
+    if (!route.firstChild.params.plid) { // if we're on root page (/patternpedia), reload the content to see new patternlanguages, skipped for child routes
+      return from(this.loadLocallyHostedOntos());
+    }
+    return EMPTY;
     }
 
     async loadLocallyHostedOntos(): Promise<Map<string, PatternLanguage>> {
@@ -42,10 +41,4 @@ export class PatternLanguageManagementResolverService implements Resolve<Map<str
         return this.loader.loadContentFromStore();
     }
 
-    loadPatternPedia(): Observable<Map<string, PatternLanguage>> {
-        return from(this.pos.loadOntologyWithImportsToStore(this.urlPatternPedia, this.urlPatternPedia))
-            .pipe(mergeMap(() => {
-                return from(this.loader.loadContentFromStore());
-            }));
-    }
 }
