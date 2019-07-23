@@ -323,7 +323,6 @@ export class CreatePatternComponent implements OnInit {
             if (allRestrictions.maxCardinality) {
               validators.push(Validators.maxLength(allRestrictions.maxCardinality));
             }
-            console.log(allRestrictions.type);
             if (allRestrictions.type === 'http://purl.org/dc/dcmitype/Image') {
               validators.push(ValidationService.xsdImage);
               console.log('added xsdImage validator');
@@ -342,7 +341,6 @@ export class CreatePatternComponent implements OnInit {
             ));
           }
         );
-        console.log(this.sectionRestrictions);
 
 
         for (const section of this.sections) {

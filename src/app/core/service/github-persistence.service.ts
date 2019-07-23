@@ -25,7 +25,6 @@ export class GithubPersistenceService {
 
 
   uploadPatternLanguage(patternlanguage: PatternLanguage): Observable<any> {
-    console.log(this.cookieService.get('patternpedia_github_token'));
         return this.httpClient.put(this.getGithubPathForPatternLanguage(patternlanguage), {
             message: `upload the new patternlanguage ${patternlanguage.name} that was created with the UI`,
             'content': btoa(patternlanguage.toTurtle())
@@ -109,9 +108,6 @@ export class GithubPersistenceService {
 
   updatePL(patternLanguage: PatternLanguage): Observable<any> {
     return this.getUpdateFileInfos(this.getGithubPathForPatternLanguage(patternLanguage)).pipe(
-      tap(() => {
-        console.log(patternLanguage.toTurtle());
-      }),
       switchMap((res: GithubUploadRequestInfo) => {
         return this.httpClient.put(this.getGithubPathForPatternLanguage(patternLanguage), {
             message: 'update patternlanguage ' + patternLanguage.name,

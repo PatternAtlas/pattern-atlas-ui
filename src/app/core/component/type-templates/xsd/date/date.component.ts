@@ -12,6 +12,7 @@ export class DateComponent implements OnInit {
 
   data: any;
   date = new FormControl(new Date());
+  title = '';
 
   showActionButtons = false;
 
