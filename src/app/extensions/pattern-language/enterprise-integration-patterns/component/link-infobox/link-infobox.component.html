@@ -1,0 +1,31 @@
+<div class="info" *ngIf="linkInfo; else loading">
+  <div class="headline">
+    
+    <!-- curr pattern name -->
+    <h1 (click)="onClick($event, linkInfo.currPattern.id)">
+      {{linkInfo.currPattern.name}}
+    </h1>
+
+    <!-- link arrow -->
+    <i *ngIf="linkInfo.direction === 'outgoing'; else incoming"
+      class="fa fa-long-arrow-right"></i>
+    <ng-template #incoming>
+      <i class="fa fa-long-arrow-left"></i>
+    </ng-template>
+
+    <!-- linked pattern name -->
+    <span (click)="onClick($event, linkInfo.linkedPattern.id)">
+      {{linkInfo.linkedPattern.name}}
+    </span>
+
+  </div>
+
+  <div class="description">
+    <p *ngFor="let d of linkInfo.descriptions">{{d}}</p>
+  </div>
+</div>
+<ng-template #loading>
+  <div class="info">
+    Loading Link Info...
+  </div>
+</ng-template>

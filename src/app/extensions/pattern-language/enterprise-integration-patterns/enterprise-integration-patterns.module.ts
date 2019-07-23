@@ -11,6 +11,7 @@ import { EnterpriseIntegrationPatternComponent } from './component/enterprise-in
 import { EnterpriseIntegrationPatternsLoaderService } from './loader/enterprise-integration-patterns-loader.service';
 import { MatButtonModule, MatIcon, MatIconModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
+import { LinkInfoboxComponent } from './component/link-infobox/link-infobox.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,7 @@ import { FormsModule } from '@angular/forms';
     LinkVisualComponent, 
     NodeVisualComponent, 
     NodeInfoboxComponent, 
-    EnterpriseIntegrationPatternComponent
+    EnterpriseIntegrationPatternComponent, LinkInfoboxComponent
   ],
   imports: [
     CommonModule,

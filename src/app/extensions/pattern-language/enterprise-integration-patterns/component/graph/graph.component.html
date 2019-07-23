@@ -20,11 +20,22 @@
   </svg>
 </div>
 
-<div *ngIf="selectedNodeId">
-  <pp-node-infobox 
-        [id]="selectedNodeId"
-        (clickEvent)="nodeInformation($event)"
-        (mouseEnterEvent)="previewNodeInformation($event)"
-        (mouseLeaveEvent)="dePreviewNodeInformation($event)">
-  </pp-node-infobox>
+<div *ngIf="selectedLinkId; else nodeInfo">
+    <pp-link-infobox
+        [linkId]="selectedLinkId"
+        [currentPatternId]="selectedNodeId"
+        (onPatternClicked)="nodeInformation($event)">
+    </pp-link-infobox>
 </div>
+
+<ng-template #nodeInfo>
+    <div *ngIf="selectedNodeId">
+    <pp-node-infobox 
+            [id]="selectedNodeId"
+            (clickEvent)="nodeInformation($event)"
+            (mouseEnterEvent)="previewNodeInformation($event)"
+            (mouseLeaveEvent)="dePreviewNodeInformation($event)"
+            (linkClickEvent)="showLinkInfo($event)">
+    </pp-node-infobox>
+    </div>
+</ng-template>

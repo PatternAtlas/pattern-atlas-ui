@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { PatternOntologyService } from 'src/app/core/service/pattern-ontology.service';
 import Loader from 'src/app/core/model/loader';
 import { IriConverter } from 'src/app/core/util/iri-converter';
+import { LinkInfo } from '../model/info';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EnterpriseIntegrationPatternIncomingLinkLoaderService extends Loader<any> {
+export class EnterpriseIntegrationPatternIncomingLinkLoaderService extends Loader<LinkInfo> {
 
   constructor(private pos: PatternOntologyService) { 
     super('http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos);
@@ -33,12 +34,13 @@ export class EnterpriseIntegrationPatternIncomingLinkLoaderService extends Loade
     const patterns = await this.executor.exec(uriQry, [IriConverter.getFileName(this.supportedIRI), IriConverter.getFileName(uri), 'http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links']);
 
     // get all information about the given pattern uri
-    const qry = `SELECT ?sourceUri ?sourceName
+    const qry = `SELECT ?sourceUri ?sourceName ?linkUri ?description
       WHERE {
-        ?sourceLink a <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternDirectedRelationDescriptor> ;
+        ?linkUri a <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternDirectedRelationDescriptor> ;
               <http://purl.org/patternpedia#hasTarget> <${uri}> ;
               <http://purl.org/patternpedia#hasSource> ?sourceUri .
         ?sourceUri <http://purl.org/patternpedia#hasName> ?sourceName .
+        OPTIONAL { ?linkUri <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description }
       }`;
     
     const graphs = [IriConverter.getFileName(this.supportedIRI), IriConverter.getFileName(uri), 'http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links'];
@@ -49,7 +51,7 @@ export class EnterpriseIntegrationPatternIncomingLinkLoaderService extends Loade
     return this.executor.exec(qry, graphs);
   }
 
-  mapTriples(triples: any, uri?: string): Promise<Map<string, any>> {
+  mapTriples(triples: any, uri?: string): Promise<Map<string, LinkInfo>> {
     /*
     triples are objects of form:
     {
@@ -61,21 +63,28 @@ export class EnterpriseIntegrationPatternIncomingLinkLoaderService extends Loade
         token: "literal",
         type: string,
         value: string - the name of the source pattern
+      },
+      linkUri: {
+        token: "uri",
+        value: string - the uri of the link itself
+      },
+      description: {
+        token: "literal",
+        type: string,
+        value: string - the description or undefined since optional
       }
     }
 
-    we convert the given triples to the following object:
-    {
-      id: string - the id of the source pattern derived from the uri,
-      name: string - the name of the source pattern
-    }
+    we convert the given triples to LinkInfo
     */
     const data = [];
 
     for (const t of triples) {
-      let item = {
-        id: IriConverter.convertIriToId(t.sourceUri.value),
-        name: t.sourceName.value
+      let item: LinkInfo = {
+        nodeId: IriConverter.convertIriToId(t.sourceUri.value),
+        name: t.sourceName.value,
+        linkId: IriConverter.convertIdToIri(t.linkUri.value),
+        hasDescription: t.description ? true : false
       };
 
       data.push(item);
@@ -83,7 +92,7 @@ export class EnterpriseIntegrationPatternIncomingLinkLoaderService extends Loade
 
     const result = new Map<string, any>();
     for (const item of data) {
-      result.set(item.id, item);
+      result.set(item.nodeId, item);
     }
     
     return Promise.resolve(result);

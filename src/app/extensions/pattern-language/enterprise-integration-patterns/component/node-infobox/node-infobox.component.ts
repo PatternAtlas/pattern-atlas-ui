@@ -1,9 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
-import { NodeInfo } from '../../model';
 import { EnterpriseIntegrationPatternLoaderService } from '../../loader/enterprise-integration-pattern-loader.service';
 import { EnterpriseIntegrationPatternIncomingLinkLoaderService } from '../../loader/enterprise-integration-pattern-incoming-link-loader.service';
 import { EnterpriseIntegrationPatternOutgoingLinkLoaderService } from '../../loader/enterprise-integration-pattern-outgoing-link-loader.service';
-import { Info, GroupInfo } from '../../model/info';
+import { Info, GroupInfo, LinkInfo } from '../../model/info';
 import { IriConverter } from 'src/app/core/util/iri-converter';
 
 @Component({
@@ -22,6 +21,8 @@ export class NodeInfoboxComponent implements OnInit, OnChanges {
   @Output() clickEvent = new EventEmitter<Node>();
   @Output() mouseEnterEvent = new EventEmitter<Node>();
   @Output() mouseLeaveEvent = new EventEmitter<Node>();
+
+  @Output() linkClickEvent = new EventEmitter<string>();
 
   constructor(private patternLoader: EnterpriseIntegrationPatternLoaderService,
     private outgoingLoader: EnterpriseIntegrationPatternOutgoingLinkLoaderService,
@@ -63,33 +64,33 @@ export class NodeInfoboxComponent implements OnInit, OnChanges {
       // group outgoing and incoming links into pattern language groups
       let groups: GroupInfo[] = [];
       for (let o of outgoing) {
-        let groupId = this.filterGroupId(o.id);
+        let groupName = this.filterGroupId(o.nodeId);
 
-        if (!groups.find(g => g.id === groupId)) {
+        if (!groups.find(g => g.id === groupName)) {
           let g: GroupInfo = {
-            id: groupId,
+            id: groupName,
             outgoing: [],
             incoming: []
           };
           groups.push(g);
         } 
         
-        let g = groups.find(g => g.id === groupId);
+        let g = groups.find(g => g.id === groupName);
         g.outgoing.push(o);
       }
       for (let i of incoming) {
-        let groupId = this.filterGroupId(i.id);
+        let groupName = this.filterGroupId(i.nodeId);
 
-        if (!groups.find(g => g.id === groupId)) {
+        if (!groups.find(g => g.id === groupName)) {
           let g: GroupInfo = {
-            id: groupId,
+            id: groupName,
             outgoing: [],
             incoming: []
           };
           groups.push(g);
         }
 
-        let g = groups.find(g => g.id === groupId);
+        let g = groups.find(g => g.id === groupName);
         g.incoming.push(i);
       }
 
@@ -128,5 +129,11 @@ export class NodeInfoboxComponent implements OnInit, OnChanges {
     event.stopPropagation();
     
     this.mouseLeaveEvent.emit(node);
+  }
+
+  onInfoClick(event: any, link: LinkInfo) {
+    event.stopPropagation();
+
+    this.linkClickEvent.emit(link.linkId);
   }
 }
