@@ -49,8 +49,11 @@
             </div>
         </mat-card-actions>
     </mat-card>
-  <mat-card class="landing-card center-content add-card" (click)="goToPatternLanguageCreation()" *ngIf="!isLoadingPattern">
-        <i class="material-icons">add_box</i>
+  <mat-card class="landing-card center-content add-card" id="add-card"
+            (click)="showAuthentificationButton ? '' : goToPatternLanguageCreation()" *ngIf="!isLoadingPattern">
+    <div fxLayout="column" fxLayoutAlign="space-around center"><i class="material-icons">add_box</i>
+      <span id="hideIfNotHovered" *ngIf="showAuthentificationButton"><br>Please authorize Github </span>
+    </div>
   </mat-card>
 </div>
 

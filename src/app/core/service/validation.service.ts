@@ -75,6 +75,21 @@ export class ValidationService {
     };
   }
 
+  static startsWithValidPrefix(allowedPrefixes: string[]): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+      if (control.value !== undefined) {
+        if (control.value.indexOf(':') === -1) {
+          return {'startsWithValidPrefix': true};
+        }
+        const prefix = control.value.trim().substring(0, control.value.indexOf(':'));
+        if (allowedPrefixes.findIndex(it => it === prefix) === -1) {
+          return {'startsWithValidPrefix': true};
+        }
+      }
+      return null;
+    };
+  }
+
   private static allValuesMatchRegex(array: any, regex) {
     let arrayOfImageValues = array;
     if (!(arrayOfImageValues instanceof Array)) {
@@ -88,3 +103,5 @@ export class ValidationService {
     return true;
   }
 }
+
+
