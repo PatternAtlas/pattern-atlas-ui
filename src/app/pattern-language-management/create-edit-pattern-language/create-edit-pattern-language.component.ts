@@ -1,10 +1,11 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatDialogRef } from '@angular/material';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/internal/operators';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
+import { ValidationService } from '../../core/service/validation.service';
 
 @Component({
   selector: 'pp-create-edit-pattern-language',
@@ -12,6 +13,7 @@ import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult
   styleUrls: ['./create-edit-pattern-language.component.scss']
 })
 export class CreateEditPatternLanguageComponent implements OnInit {
+  private sectionRestrictonValidators: ValidatorFn[];
 
   get name(): AbstractControl {
     return this.patternLanguageForm.get('name');
@@ -21,7 +23,8 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     return this.patternLanguageForm.get('iconUrl');
   }
 
-  constructor(public dialogRef: MatDialogRef<CreateEditPatternLanguageComponent>, private  _fb: FormBuilder, private cdr: ChangeDetectorRef) {
+  constructor(public dialogRef: MatDialogRef<CreateEditPatternLanguageComponent>, private  _fb: FormBuilder, private cdr: ChangeDetectorRef,
+              private validatorService: ValidationService) {
     this.filteredSections = this.sectionCtrl.valueChanges.pipe(
       startWith(null),
       map((section: string | null) => section ? this._filter(section) : this.sectionNames.slice()));
@@ -139,8 +142,10 @@ export class CreateEditPatternLanguageComponent implements OnInit {
         })
       ])
     });
+    this.updateValidatorsForSectionRestrctions(); // initialize the sectionrestrictions' validators
     this.prefixForm.valueChanges.subscribe(() => {
       this.updateAvailableOptions();
+      this.updateValidatorsForSectionRestrctions();
     });
 
     this.newPrefixForm = this._fb.group({
@@ -225,16 +230,18 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     }
   }
 
-  addSectionDetail(sectionName: string, i?: number): void {
+  addSectionRestriction(sectionName: string, i?: number): void {
     if (i === undefined || i === null && i !== 0) { // if no index specified, add at the end
       i = this.sectionsArray.length;
     }
-    (<FormArray>this.sectionsArray).insert(i, new FormGroup({
-      type: new FormControl('xsd:string', Validators.required),
+    const newformGroup = new FormGroup({
+      type: new FormControl('xsd:string', this.sectionRestrictonValidators),
       cardinality: new FormControl(0),
       restrictionType: new FormControl('only'),
       name: new FormControl(sectionName),
-    }));
+    });
+    (<FormArray>this.sectionsArray).insert(i, newformGroup);
+
     this.cdr.detectChanges();
   }
 
@@ -250,7 +257,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
       while (this.sectionsArray.length > 0) {
         this.sectionsArray.removeAt(0);
       }
-      this.sections.forEach((section) => this.addSectionDetail(section));
+      this.sections.forEach((section) => this.addSectionRestriction(section));
     }
     this.updateAvailableOptions();
   }
@@ -274,6 +281,24 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     this.sectionsArray.removeAt(i);
   }
 
-}
+  private updateValidatorsForSectionRestrctions() {
 
+    const allowedPrefixes: string[] = [];
+    for (const control of this.prefixArray.controls) {
+      if (control.value.checked) {
+        allowedPrefixes.push(control.value.prefixname);
+      }
+    }
+    this.sectionRestrictonValidators = [Validators.required, ValidationService.startsWithValidPrefix(allowedPrefixes)];
+
+    for (const control of this.sectionsArray.controls) {
+      control.get('type').setValidators(this.sectionRestrictonValidators);
+
+      // trigger validation:
+      control.get('type').updateValueAndValidity();
+      control.get('type').markAsDirty();
+      control.get('type').markAsTouched();
+    }
+  }
+}
 
