@@ -284,7 +284,7 @@ export class PatternOntologyService implements SparqlExecutor {
     await Promise.all(promises);
 
     console.log('LOADED Uri Dependencies!');
-    return Promise.resolve(null);
+    
   }
 
     loadToStore(mediaType: string, data: string, graphIri: string): Promise<number> {
