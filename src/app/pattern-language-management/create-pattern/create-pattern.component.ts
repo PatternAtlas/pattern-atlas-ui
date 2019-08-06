@@ -194,11 +194,6 @@ export class CreatePatternComponent implements OnInit {
             sectioncontent.push(lines[i]['text']);
           }
         }
-        for (let i = 0; i < sectioncontent.length; i++) {
-          if (sectioncontent[i].startsWith('* ')) {
-            sectioncontent[i] = sectioncontent[i].substr(2);
-          }
-        }
         if (this.patternValuesFormGroup.controls[section]) {
           this.patternValuesFormGroup.controls[section].setValue(sectioncontent);
         } else {
@@ -209,14 +204,10 @@ export class CreatePatternComponent implements OnInit {
 
 
         for (let i = 0; i < sectioncontent.length; i++) {
-          // extract URI/URLs entered in ![](http://) / [](http://) markdown
-          if (sectionType === this.xsdPrefix + 'anyURI' || sectionType === 'http://purl.org/dc/dcmitype/Image') {
-            sectioncontent[i] = sectioncontent[i].substr(sectioncontent[i].indexOf('(') + 1).replace(')', '');
 
             if (sectionType === this.xsdPrefix + 'anyURI') {
               sectioncontent[i] = '<' + sectioncontent[i] + '>';
             }
-          }
         }
         sectionMap[section] = sectioncontent;
 
