@@ -281,10 +281,11 @@ export class PatternOntologyService implements SparqlExecutor {
   async loadQueriedIrisToStore(patternGraphList: QueriedData[]) {
     const urisToLoad = IriConverter.extractDataValue(patternGraphList);
     const promises = urisToLoad.map(uri => this.loadUriToStore(uri));
-    await Promise.all(promises);
+    const result = await Promise.all(promises);
 
     console.log('LOADED Uri Dependencies!');
-    
+    return result;
+
   }
 
     loadToStore(mediaType: string, data: string, graphIri: string): Promise<number> {
@@ -597,9 +598,11 @@ export class PatternOntologyService implements SparqlExecutor {
 // get the content of an uri and load it to the store
   async loadUriToStore(uri: string) {
     const loadResult = await this.getFileContentFromIri(uri).toPromise();
-    console.log(`Loaded ${uri}, #triples: : `, await
-      this.loadToStore('text/turtle', loadResult, IriConverter.getFileName(uri)));
-   
+    const triplesLoaded = await
+      this.loadToStore('text/turtle', loadResult, IriConverter.getFileName(uri));
+    console.log(`Loaded ${uri}, #triples: : `, triplesLoaded);
+    Promise.resolve(triplesLoaded);
+
   }
 }
 
