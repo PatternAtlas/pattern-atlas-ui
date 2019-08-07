@@ -38,7 +38,7 @@ export class PatternLanguageManagementResolverService implements Resolve<Map<str
 
     async loadLocallyHostedOntos(): Promise<Map<string, PatternLanguage>> {
       await this.pos.loadLinkedOpenPatternGraphs();
-        return this.loader.loadContentFromStore();
+      return await this.loader.loadContentFromStore();
     }
 
 }
