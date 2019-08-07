@@ -28,10 +28,12 @@
   <mat-progress-spinner mode="indeterminate" *ngIf="isLoadingPattern"></mat-progress-spinner>
   <mat-card class="landing-card" *ngFor="let patternLanguage of patternLanguages">
         <mat-card-header>
-            <img *ngIf="patternLanguage.logos && patternLanguage.logos[0]; else noImageAvatar" mat-card-avatar [src]="patternLanguage.logos[0]">
+          <img *ngIf="patternLanguage?.logos && patternLanguage.logos[0]; else noImageAvatar" mat-card-avatar
+               [src]="patternLanguage.logos[0]">
             <ng-template #noImageAvatar><img mat-card-avatar [src]="'https://placekitten.com/200/300'"></ng-template>
 
-            <mat-card-title *ngIf="patternLanguage.name && '' !== patternLanguage.name; else noPLName" style="width: 10rem">
+          <mat-card-title *ngIf="patternLanguage?.name && '' !== patternLanguage.name; else noPLName"
+                          style="width: 10rem">
                 {{patternLanguage.name}}
             </mat-card-title>
             <ng-template #noPLName>
@@ -40,17 +42,21 @@
                 </mat-card-title>
             </ng-template>
         </mat-card-header>
-        <img mat-card-image *ngIf="patternLanguage.logos[0]; else noImage" [src]="patternLanguage.logos[0]">
+    <img mat-card-image *ngIf="patternLanguage?.logos[0]; else noImage" [src]="patternLanguage.logos[0]">
         <ng-template #noImage><img mat-card-image [src]="'https://placekitten.com/200/300'"></ng-template>
         <mat-card-actions>
             <div style="text-align: center">
-                <button matBadge="{{patternLanguage.patternIRIs.length}}" mat-stroked-button color="primary" (click)="navigateToPL(patternLanguage.id)"><i class="material-icons">pageview</i>View
+              <button matBadge="{{patternLanguage?.patternIRIs?.length}}" mat-stroked-button color="primary"
+                      (click)="navigateToPL(patternLanguage.id)"><i class="material-icons">pageview</i>View
                 </button>
             </div>
         </mat-card-actions>
     </mat-card>
-  <mat-card class="landing-card center-content add-card" (click)="goToPatternLanguageCreation()" *ngIf="!isLoadingPattern">
-        <i class="material-icons">add_box</i>
+  <mat-card class="landing-card center-content add-card" id="add-card"
+            (click)="showAuthentificationButton ? '' : goToPatternLanguageCreation()" *ngIf="!isLoadingPattern">
+    <div fxLayout="column" fxLayoutAlign="space-around center"><i class="material-icons">add_box</i>
+      <span id="hideIfNotHovered" *ngIf="showAuthentificationButton"><br>Please authorize Github </span>
+    </div>
   </mat-card>
 </div>
 

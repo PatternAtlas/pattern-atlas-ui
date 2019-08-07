@@ -71,6 +71,7 @@ export class DefaultPatternRendererComponent implements OnInit {
 
         const sectionRestrictions = this.sectionRestritions.get(property.property.value);
         const sectionTitle = property.property.value.split('#has')[1].replace(/([A-Z])/g, ' $1').trim();
+
         const type = (sectionRestrictions && !!sectionRestrictions[0] && sectionRestrictions[0].type) ? sectionRestrictions[0].type : this.xsdPrefix + 'string';
         let component = this.defaultComponentForType.get(type) ? this.defaultComponentForType.get(type) : StringComponent;
 
@@ -78,6 +79,7 @@ export class DefaultPatternRendererComponent implements OnInit {
         const componentRef = viewContainerRef.createComponent(componentFactory);
         (<DataRenderingComponent>componentRef.instance).data = property.predicate.value;
         (<DataRenderingComponent>componentRef.instance).title = sectionTitle;
+
         viewContainerRef.createComponent(componentDividerFactory); // create divider
       });
     });
@@ -100,7 +102,9 @@ export class DefaultPatternRendererComponent implements OnInit {
     this.patternLoaderService.supportedIRI = this.patternIri;
     this.sectionLoader.supportedIRI = this.plIri;
 
-    await this.pos.loadUriToStore(this.patternIri);
+
+    await this.pos.loadUrisToStore( [{token: this.patternIri, value: IriConverter.getFileName(this.patternIri)}]);
+
 
 
     const loadingResult = await this.patternLoaderService.selectContentFromStore();
@@ -108,7 +112,9 @@ export class DefaultPatternRendererComponent implements OnInit {
     this.isLoadingPattern = false;
 
     // not that we loaded the data for the pattern, load all the data from patternlanguage
-    await this.pos.loadUriToStore(this.plIri);
+
+    await this.pos.loadUrisToStore( [{token: this.patternIri, value: IriConverter.getFileName(this.plIri)}]);
+
     this.plLoader.supportedIRI = this.plIri;
     await this.plLoader.loadContentFromStore();
 

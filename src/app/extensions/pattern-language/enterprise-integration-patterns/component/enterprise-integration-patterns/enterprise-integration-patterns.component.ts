@@ -1,17 +1,13 @@
-import { Component, OnInit, NgZone, ViewChild } from '@angular/core';
+import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Link } from '../../model/link';
 import { Node } from '../../model/node';
 import { HttpClient } from '@angular/common/http';
 import * as d3 from 'd3';
-import { EnterpriseIntegrationPatternsLoaderService } from '../../loader/enterprise-integration-patterns-loader.service';
 import EnterpriseIntegrationPattern from '../../model/enterprise-integration-pattern';
-import { EnterpriseIntegrationPatternsLinkLoaderService } from '../../loader/enterprise-integration-patterns-link-loader.service';
-import { EnterpriseIntegrationPatternsGroupLoaderService } from '../../loader/enterprise-integration-patterns-group-loader.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EnterpriseIntegrationPatternsDataService } from '../../service/enterprise-integration-patterns-data.service';
 import { PatternRenderingComponentInterface } from 'src/app/core/model/pattern-rendering-component.interface';
 import { EnterpriseIntegrationPatternLoaderService } from '../../loader/enterprise-integration-pattern-loader.service';
-import { GraphComponent } from '../graph/graph.component';
 import { PatternOntologyService } from 'src/app/core/service/pattern-ontology.service';
 
 @Component({
@@ -49,7 +45,7 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
     this.pos.getOWLImports('http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns')
       .then(res => {
         const importedPatternIris = res.map(i => i.import);
-        this.pos.loadQueriedIrisToStore(importedPatternIris)
+        this.pos.loadUrisToStore(importedPatternIris)
           .then(() => {
             this.loader.getAllData()
               .then(values => {

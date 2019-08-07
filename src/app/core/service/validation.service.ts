@@ -6,20 +6,25 @@ import { AbstractControl, ValidatorFn } from '@angular/forms';
 })
 export class ValidationService {
 
-  constructor() { }
+
+  constructor() {
+  }
 
 
-  static getMessageForError(section, keyError, errorValue): string{
+  static getMessageForError(section, keyError, errorValue): string {
     if (keyError === 'required') {
       return section + ': This value is required';
     }
-    if(keyError === 'xsdImage') {
+    if (keyError === 'xsdImage') {
+
       return section + ': Please follow this pattern: ![](http://) and enter a valid url in the round brackets';
     }
     if (keyError === 'xsdInteger') {
       return section + ': Please enter an integer.';
     }
+
     if( keyError === 'xsdAnyURI') {
+
       return section + ': Please enter a valid URL/URL.';
     }
     if (keyError === 'minlength') {
@@ -35,19 +40,10 @@ export class ValidationService {
   // checks if value is an array of strings matching the markdown image pattern (e.g. [![test](http://placekitten.com/200/300), ![](http://any.valid.url.com)]
   static xsdImage(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
-      if (control.value !== undefined ) {
-        let arrayOfImageValues = control.value;
-        if (!(arrayOfImageValues instanceof Array)) {
-          arrayOfImageValues = [arrayOfImageValues];
+      if (control.value !== undefined) {
+        if (!this.allValuesMatchRegex(control.value, /!\[.*\]\(http:\/\/([a-zA-Z.0-9]+[\/]*)+\)/g)) {
+          return {'xsdImage': true};
         }
-        for (let item of arrayOfImageValues){
-          if(item.startsWith('* ')){
-            item = item.substr(2);
-          }
-            if (!item.trim().match(/!\[.*\]\(http:\/\/([a-zA-Z.0-9]+[\/]*)+\)/g)) {
-              return { 'xsdImage': true };
-            }
-          }
       }
       return null;
     };
@@ -56,17 +52,14 @@ export class ValidationService {
   // checks if value is an array of strings matching the markdown image pattern (e.g. [![test](http://placekitten.com/200/300), ![](http://any.valid.url.com)]
   static xsdInteger(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
-      if (control.value !== undefined ) {
+      if (control.value !== undefined) {
         let arrayOfImageValues = control.value;
         if (!(arrayOfImageValues instanceof Array)) {
-          arrayOfImageValues= [arrayOfImageValues];
+          arrayOfImageValues = [arrayOfImageValues];
         }
-        for (let item of arrayOfImageValues){
-          if(item.startsWith('* ')){
-            item = item.substr(2);
-          }
+        for (const item of arrayOfImageValues) {
           if (isNaN(+item)) {
-            return { 'xsdInteger': true };
+            return {'xsdInteger': true};
           }
         }
       }
@@ -77,21 +70,45 @@ export class ValidationService {
   // checks if value is an array of strings matching the markdown url pattern (e.g. [[test](http://placekitten.com/200/300), [](http://any.valid.url.com)]
   static xsdAnyURI(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
-      if (control.value !== undefined ) {
-        let arrayOfImageValues = control.value;
-        if (!(arrayOfImageValues instanceof Array)) {
-          arrayOfImageValues = [arrayOfImageValues];
-        }
-        for (let item of arrayOfImageValues){
-          if(item.startsWith('* ')){
-            item = item.substr(2);
-          }
-           if( !item.match(/\[.*\]\(http:\/\/([a-zA-Z.0-9]+[\/]*)+\)/g)) {
-            return { 'xsdAnyURI': true };
-          }
+      if (control.value !== undefined) {
+        if (!this.allValuesMatchRegex(control.value, /\[.*\]\(http:\/\/([a-zA-Z.0-9]+[\/]*)+\)/g)) {
+          return {'xsdAnyURI': true};
         }
       }
       return null;
     };
   }
+
+  static startsWithValidPrefix(allowedPrefixes: string[]): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+      if (control.value !== undefined) {
+        if (control.value.indexOf(':') === -1) {
+          return {'startsWithValidPrefix': true};
+        }
+        const prefix = control.value.trim().substring(0, control.value.indexOf(':'));
+        if (allowedPrefixes.findIndex(it => it === prefix) === -1) {
+          return {'startsWithValidPrefix': true};
+        }
+      }
+      return null;
+    };
+  }
+
+
+  private static allValuesMatchRegex(array: any, regex) {
+    let arrayOfImageValues = array;
+    if (!(arrayOfImageValues instanceof Array)) {
+      arrayOfImageValues = [arrayOfImageValues];
+    }
+    for (const item of arrayOfImageValues) {
+      if (!item) {
+        continue;
+      }
+      if (!item.match(regex).length <= item.trim().length) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
+

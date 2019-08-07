@@ -9,7 +9,9 @@ import { DialogData, MdEditorComponent } from '../../../md-editor/md-editor.comp
 })
 export class StringComponent extends DataRenderingComponent implements OnInit {
   data: any;
+
   title = '';
+
   showActionButtons = false;
 
   constructor() {

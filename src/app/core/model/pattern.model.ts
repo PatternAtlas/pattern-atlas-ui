@@ -71,11 +71,13 @@ class Pattern {
     ary.push(`<${IriConverter.getFileName(this.patternLanguageIri)}/${IriConverter.extractIndividualNameFromIri(this.patternLanguageIri)}Individual> ;`);
     ary.push(`<${IriConverter.getFileName(this.iri)}#hasName> "${this.name}" ;`);
     const sections = Array.from(Object.keys(this.sectionsProperties));
+
     sections.forEach((key, sectionindex) => {
       const statements: string[] = this.sectionsProperties[key];
       statements.forEach((val, indexStatements) => {
         ary.push(`${this.getPropertyIri(key)} ${this.sectionsProperties[key][indexStatements].startsWith('<') ? '' : '"'}${this.sectionsProperties[key][indexStatements]}${this.sectionsProperties[key][indexStatements].startsWith('<') ? '' : '"'} ${(sectionindex === sections.length - 1) && (indexStatements === statements.length - 1) ? '.' : ';'}`);
       });
+
     });
     return ary.join('\n');
   }
