@@ -13,7 +13,6 @@
  */
 
 import { IriConverter } from '../util/iri-converter';
-import { globals } from '../../globals';
 
 class PatternPedia {
   private _id: string;
@@ -21,6 +20,7 @@ class PatternPedia {
   name: string;
   logo: string;
 
+  private patternpediaBaseURI = 'http://purl.org/patternpedia';
 
   defaultPrefixes = new Map();
 
@@ -39,7 +39,7 @@ class PatternPedia {
     this.iri = iri;
     this.id = iri;
     this.defaultPrefixes.set('owl', '<http://www.w3.org/2002/07/owl#>');
-    this.defaultPrefixes.set('pp', `<${globals.urlPatternRepoOntology}#>`);
+    this.defaultPrefixes.set('pp', `<${this.patternpediaBaseURI}#>`);
     this.defaultPrefixes.set('xml', `<http://www.w3.org/2001/XMLSchema#>`);
     this.defaultPrefixes.set('rdf', `<http://www.w3.org/1999/02/22-rdf-syntax-ns#>`);
     this.defaultPrefixes.set('rdfs', '<http://www.w3.org/2000/01/rdf-schema#>');
