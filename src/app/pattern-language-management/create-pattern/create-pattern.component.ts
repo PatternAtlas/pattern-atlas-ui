@@ -56,7 +56,7 @@ export class CreatePatternComponent implements OnInit {
     this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
     this.loader.supportedIRI = this.plIri;
 
-    this.patternOntologyServce.loadUriToStore(this.plIri).then(() => {
+    this.patternOntologyServce.loadUrisToStore([{value: this.plIri, token: null}]).then(() => {
       this.loadPatternInfos();
       this.plName = IriConverter.extractIndividualNameFromIri(this.plIri);
       this.PlRestrictionLoader.supportedIRI = this.plIri;
