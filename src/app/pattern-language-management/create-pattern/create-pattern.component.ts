@@ -77,6 +77,7 @@ export class CreatePatternComponent implements OnInit {
     this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
     this.loader.supportedIRI = this.plIri;
 
+
     this.patternOntologyServce.loadUrisToStore([{value: this.plIri, token: null}]).then(() => {
       this.loadPatternInfos();
       this.plName = IriConverter.extractIndividualNameFromIri(this.plIri);
@@ -100,6 +101,7 @@ export class CreatePatternComponent implements OnInit {
 
   save(): void {
     const pattern = this.parsePatternInput();
+
     const patternIris = !this.patterns ? [] : this.patterns.map(p => p.uri);
     patternIris.push(pattern.iri);
 
@@ -122,6 +124,7 @@ export class CreatePatternComponent implements OnInit {
       }),
       switchMap(() => {
         return this.pos.loadUrisToStore([{value: this.plIri, token: null}]);
+
       })
     ).subscribe(() => {
       this.toastService.pop('success', 'Pattern created');
@@ -205,6 +208,7 @@ export class CreatePatternComponent implements OnInit {
 
         for (let i = 0; i < sectioncontent.length; i++) {
 
+
             if (sectionType === this.xsdPrefix + 'anyURI') {
               sectioncontent[i] = '<' + sectioncontent[i] + '>';
             }
@@ -216,8 +220,8 @@ export class CreatePatternComponent implements OnInit {
 
     });
 
-    console.log(sectionMap);
-    console.log(this.patternValuesFormGroup);
+
+
 
     return new Pattern(this.getPatternUri(patternname, this.plIri), patternname, sectionMap, this.plIri);
 
@@ -265,7 +269,9 @@ export class CreatePatternComponent implements OnInit {
     this.loader.getOWLImports(this.plIri)
       .then(res => {
           const importedPatternIris = res.map(i => i.import);
+
           this.pos.loadUrisToStore(importedPatternIris).then(() => {
+
             this.loader.loadContentFromStore()
               .then(result => {
 
@@ -316,7 +322,9 @@ export class CreatePatternComponent implements OnInit {
               validators.push(Validators.maxLength(allRestrictions.maxCardinality));
             }
             if (allRestrictions.type === 'http://purl.org/dc/dcmitype/Image') {
+
               validators.push(ValidationService.xsdImage());
+
               console.log('added xsdImage validator');
             } else if (allRestrictions.type.startsWith(this.xsdPrefix) &&
               (allRestrictions.type.endsWith('integer') || allRestrictions.type.endsWith('positiveInteger') || allRestrictions.type.endsWith('negativeInteger'))) {

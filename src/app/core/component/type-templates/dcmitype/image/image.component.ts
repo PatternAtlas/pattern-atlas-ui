@@ -8,6 +8,7 @@ import { DataRenderingComponent } from '../../interfaces/DataRenderingComponent.
 })
 export class ImageComponent extends DataRenderingComponent implements OnInit {
   data: any;
+  title = '';
 
   constructor() {
     super();

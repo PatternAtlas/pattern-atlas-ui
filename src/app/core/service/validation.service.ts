@@ -6,6 +6,7 @@ import { AbstractControl, ValidatorFn } from '@angular/forms';
 })
 export class ValidationService {
 
+
   constructor() {
   }
 
@@ -15,12 +16,15 @@ export class ValidationService {
       return section + ': This value is required';
     }
     if (keyError === 'xsdImage') {
+
       return section + ': Please follow this pattern: ![](http://) and enter a valid url in the round brackets';
     }
     if (keyError === 'xsdInteger') {
       return section + ': Please enter an integer.';
     }
-    if (keyError === 'xsdAnyURI') {
+
+    if( keyError === 'xsdAnyURI') {
+
       return section + ': Please enter a valid URL/URL.';
     }
     if (keyError === 'minlength') {
@@ -30,6 +34,7 @@ export class ValidationService {
       return section + ': Please enter max. ' + errorValue['requiredLength'] + ' entries';
     }
   }
+
 
 
   // checks if value is an array of strings matching the markdown image pattern (e.g. [![test](http://placekitten.com/200/300), ![](http://any.valid.url.com)]
@@ -43,7 +48,6 @@ export class ValidationService {
       return null;
     };
   }
-
 
   // checks if value is an array of strings matching the markdown image pattern (e.g. [![test](http://placekitten.com/200/300), ![](http://any.valid.url.com)]
   static xsdInteger(): ValidatorFn {
@@ -90,6 +94,7 @@ export class ValidationService {
     };
   }
 
+
   private static allValuesMatchRegex(array: any, regex) {
     let arrayOfImageValues = array;
     if (!(arrayOfImageValues instanceof Array)) {
@@ -106,5 +111,4 @@ export class ValidationService {
     return true;
   }
 }
-
 

@@ -7,6 +7,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
 import { ValidationService } from '../../core/service/validation.service';
 
+
 @Component({
   selector: 'pp-create-edit-pattern-language',
   templateUrl: './create-edit-pattern-language.component.html',
@@ -25,6 +26,28 @@ export class CreateEditPatternLanguageComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<CreateEditPatternLanguageComponent>, private  _fb: FormBuilder, private cdr: ChangeDetectorRef,
               private validatorService: ValidationService) {
+    this.filteredSections = this.sectionCtrl.valueChanges.pipe(
+      startWith(null),
+      map((section: string | null) => section ? this._filter(section) : this.sectionNames.slice()));
+  }
+
+  get sectionsArray(): FormArray {
+    return this.sectionDetailsGroup.get('sectionsArray') as FormArray;
+  }
+
+  get prefixArray(): FormArray {
+    return this.prefixForm.get('prefixArray') as FormArray;
+  }
+
+  get name(): AbstractControl {
+    return this.patternLanguageForm.get('name');
+  }
+
+  get iconUrl(): AbstractControl {
+    return this.patternLanguageForm.get('iconUrl');
+  }
+
+  constructor(public dialogRef: MatDialogRef<CreateEditPatternLanguageComponent>, private  _fb: FormBuilder, private cdr: ChangeDetectorRef) {
     this.filteredSections = this.sectionCtrl.valueChanges.pipe(
       startWith(null),
       map((section: string | null) => section ? this._filter(section) : this.sectionNames.slice()));
@@ -142,6 +165,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
         })
       ])
     });
+
     this.updateValidatorsForSectionRestrctions(); // initialize the sectionrestrictions' validators
     this.prefixForm.valueChanges.subscribe(() => {
       this.updateAvailableOptions();
@@ -280,6 +304,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   deleteSectionRestriction(i: number): void {
     this.sectionsArray.removeAt(i);
   }
+
 
   private updateValidatorsForSectionRestrctions() {
 

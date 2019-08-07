@@ -49,7 +49,7 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
     this.pos.getOWLImports('http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns')
       .then(res => {
         const importedPatternIris = res.map(i => i.import);
-        this.pos.loadUrisToStore(importedPatternIris)
+        this.pos.loadQueriedIrisToStore(importedPatternIris)
           .then(() => {
             this.loader.getAllData()
               .then(values => {
