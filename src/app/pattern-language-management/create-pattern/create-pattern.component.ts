@@ -148,7 +148,7 @@ export class CreatePatternComponent implements OnInit {
   private invalidTextEdit(currentText: marked.TokensList): boolean {
     // we should find a corresponding line (= that starts with ## followed by section name) for each section
     for (const section of this.sections) {
-      const indexOfCorrespondingLine = currentText.findIndex(sec => this.isSectionHeading(sec) &&
+      const indexOfCorrespondingLine = currentText.findIndex(sec => this.isSectionHeading(sec)
         && this.ignoreCaseAndWhitespace(sec.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(this.getSectionTitle(section))));
       if (indexOfCorrespondingLine === -1) {
         return true;
