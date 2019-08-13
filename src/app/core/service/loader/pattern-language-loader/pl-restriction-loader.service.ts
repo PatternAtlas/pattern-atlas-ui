@@ -58,7 +58,6 @@ export class PlRestrictionLoaderService extends Loader<any> {
     if (!sectionRestriction.type) {
       console.log('missiong type for');
       console.log(restriction);
-
     }
 
 

@@ -27,8 +27,8 @@
           <div mat-card-avatar #iconPreview [ngStyle]="{ 'background-image': 'url(' + iconUrl?.value + ')'}"
                class="example-header-image"></div>
         </div>
-        <mat-error *ngIf="saveRequested && iconUrl?.hasError('required')">Dies ist ein Pflichtfeld.</mat-error>
-        <mat-error *ngIf="saveRequested && iconUrl?.hasError('pattern')">Bitte eine gültige URL angeben.
+        <mat-error *ngIf="saveRequested && iconUrl?.hasError('required')">This field is requirec.</mat-error>
+        <mat-error *ngIf="saveRequested && iconUrl?.hasError('pattern')">Please insert a valid URL.
         </mat-error>
       </mat-form-field>
 
@@ -161,6 +161,11 @@
                     <input type="text" appearance="fill" matInput
                            formControlName="type"
                            [matAutocomplete]="auto">
+                    <mat-error *ngIf="!sectionsArray.controls[i]?.type?.errors">Please start
+                      type
+                      value with a
+                      valid prefix.
+                    </mat-error>
                     <mat-autocomplete #auto="matAutocomplete">
                       <mat-option *ngFor="let option of options" [value]="option">
                         {{option}}
@@ -171,7 +176,7 @@
               </div>
               <i (click)="deleteSectionRestriction(i)"
                  class="material-icons">delete</i>
-              <i (click)="addSectionDetail(section.value.name, i+1)"
+              <i (click)="addSectionRestriction(section.value.name, i+1)"
                  class="material-icons">add_circle</i>
 
             </div>

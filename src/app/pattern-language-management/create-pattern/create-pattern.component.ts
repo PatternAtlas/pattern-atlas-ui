@@ -77,7 +77,8 @@ export class CreatePatternComponent implements OnInit {
     this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
     this.loader.supportedIRI = this.plIri;
 
-    this.patternOntologyServce.loadUriToStore(this.plIri).then(() => {
+
+    this.patternOntologyServce.loadUrisToStore([{value: this.plIri, token: null}]).then(() => {
       this.loadPatternInfos();
       this.plName = IriConverter.extractIndividualNameFromIri(this.plIri);
       this.PlRestrictionLoader.supportedIRI = this.plIri;
@@ -100,7 +101,7 @@ export class CreatePatternComponent implements OnInit {
 
   save(): void {
     const pattern = this.parsePatternInput();
-    console.log(pattern.toTurtle());
+
     const patternIris = !this.patterns ? [] : this.patterns.map(p => p.uri);
     patternIris.push(pattern.iri);
 
@@ -122,7 +123,8 @@ export class CreatePatternComponent implements OnInit {
         return this.uploadService.uploadPattern(pattern, patternLanguage);
       }),
       switchMap(() => {
-        return this.pos.loadQueriedIrisToStore([{value: this.plIri, token: null}]);
+        return this.pos.loadUrisToStore([{value: this.plIri, token: null}]);
+
       })
     ).subscribe(() => {
       this.toastService.pop('success', 'Pattern created');
@@ -205,18 +207,11 @@ export class CreatePatternComponent implements OnInit {
 
 
         for (let i = 0; i < sectioncontent.length; i++) {
-          if (sectioncontent[i].startsWith('* ')) {
-            sectioncontent[i] = sectioncontent[i].substr(2);
-          }
 
-          // extract URI/URLs entered in ![](http://) / [](http://) markdown
-          if (sectionType === this.xsdPrefix + 'anyURI' || sectionType === 'http://purl.org/dc/dcmitype/Image') {
-            sectioncontent[i] = sectioncontent[i].substr(sectioncontent[i].indexOf('(') + 1).replace(')', '');
 
             if (sectionType === this.xsdPrefix + 'anyURI') {
               sectioncontent[i] = '<' + sectioncontent[i] + '>';
             }
-          }
         }
         sectionMap[section] = sectioncontent;
 
@@ -225,7 +220,8 @@ export class CreatePatternComponent implements OnInit {
 
     });
 
-    console.log(sectionMap);
+
+
 
     return new Pattern(this.getPatternUri(patternname, this.plIri), patternname, sectionMap, this.plIri);
 
@@ -273,7 +269,9 @@ export class CreatePatternComponent implements OnInit {
     this.loader.getOWLImports(this.plIri)
       .then(res => {
           const importedPatternIris = res.map(i => i.import);
-        this.pos.loadQueriedIrisToStore(importedPatternIris).then(() => {
+
+          this.pos.loadUrisToStore(importedPatternIris).then(() => {
+
             this.loader.loadContentFromStore()
               .then(result => {
 
@@ -324,7 +322,9 @@ export class CreatePatternComponent implements OnInit {
               validators.push(Validators.maxLength(allRestrictions.maxCardinality));
             }
             if (allRestrictions.type === 'http://purl.org/dc/dcmitype/Image') {
-              validators.push(ValidationService.xsdImage);
+
+              validators.push(ValidationService.xsdImage());
+
               console.log('added xsdImage validator');
             } else if (allRestrictions.type.startsWith(this.xsdPrefix) &&
               (allRestrictions.type.endsWith('integer') || allRestrictions.type.endsWith('positiveInteger') || allRestrictions.type.endsWith('negativeInteger'))) {

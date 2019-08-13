@@ -41,7 +41,8 @@ export class CloudComputingPatternsComponent implements OnInit {
         this.pos.getOWLImports('http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns')
             .then(res => {
                 const importedIris = res.map(i => i.import);
-                this.pos.loadQueriedIrisToStore(importedIris)
+
+              this.pos.loadUrisToStore(importedIris)
                     .then(() => {
                         // we can now query the data, as all patterns have been loaded
                         this.loader.loadContentFromStore()
@@ -52,7 +53,6 @@ export class CloudComputingPatternsComponent implements OnInit {
                             });
                     });
             });
-        
     }
 
     navigate(id: string): void {
