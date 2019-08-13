@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "travis": "ng build --base-href '/pattern-pedia'"
+    "travis": "ng build --base-href '/pattern-pedia/'"
   },
   "private": true,
   "dependencies": {
