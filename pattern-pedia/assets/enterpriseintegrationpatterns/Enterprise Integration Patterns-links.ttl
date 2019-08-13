@@ -1,0 +1,2626 @@
+# Definition of prefixes
+@prefix : <http://purl.org/patternpedia/enterpriseintegrationpatterns#> .
+@prefix pp: <http://purl.org/patternpedia#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://purl.org/patternpedia/enterpriseintegrationpatterns/> .
+
+
+# Individual Directed Links
+:FileTransfer-to-RemoteProcedureInvocation
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <filetransfer#FileTransfer> ;
+    pp:hasTarget <remoteprocedureinvocation#RemoteProcedureInvocation> .
+
+:FileTransfer-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <filetransfer#FileTransfer> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:FileTransfer-to-SharedDatabase
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <filetransfer#FileTransfer> ;
+    pp:hasTarget <shareddatabase#SharedDatabase> .
+
+:SharedDatabase-to-RemoteProcedureInvocation
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <shareddatabase#SharedDatabase> ;
+    pp:hasTarget <remoteprocedureinvocation#RemoteProcedureInvocation> .
+
+:SharedDatabase-to-FileTransfer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <shareddatabase#SharedDatabase> ;
+    pp:hasTarget <filetransfer#FileTransfer> .
+
+:SharedDatabase-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <shareddatabase#SharedDatabase> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:RemoteProcedureInvocation-to-FileTransfer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <remoteprocedureinvocation#RemoteProcedureInvocation> ;
+    pp:hasTarget <filetransfer#FileTransfer> .
+
+:RemoteProcedureInvocation-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <remoteprocedureinvocation#RemoteProcedureInvocation> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:RemoteProcedureInvocation-to-SharedDatabase
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <remoteprocedureinvocation#RemoteProcedureInvocation> ;
+    pp:hasTarget <shareddatabase#SharedDatabase> .
+
+:Messaging-to-RemoteProcedureInvocation
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messaging#Messaging> ;
+    pp:hasTarget <remoteprocedureinvocation#RemoteProcedureInvocation> .
+
+:Messaging-to-FileTransfer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messaging#Messaging> ;
+    pp:hasTarget <filetransfer#FileTransfer> .
+
+:Messaging-to-Message
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messaging#Messaging> ;
+    pp:hasTarget <message#Message> .
+
+:Messaging-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messaging#Messaging> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:Messaging-to-MessageEndpoint
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messaging#Messaging> ;
+    pp:hasTarget <messageendpoint#MessageEndpoint> .
+
+:Messaging-to-MessageRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messaging#Messaging> ;
+    pp:hasTarget <messagerouter#MessageRouter> .
+
+:Messaging-to-MessageTranslator
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messaging#Messaging> ;
+    pp:hasTarget <messagetranslator#MessageTranslator> .
+
+:Messaging-to-SharedDatabase
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messaging#Messaging> ;
+    pp:hasTarget <shareddatabase#SharedDatabase> .
+
+:MessageChannel-to-ChannelAdapter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagechannel#MessageChannel> ;
+    pp:hasTarget <channeladapter#ChannelAdapter> .
+
+:MessageChannel-to-DatatypeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagechannel#MessageChannel> ;
+    pp:hasTarget <datatypechannel#DatatypeChannel> .
+
+:MessageChannel-to-InvalidMessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagechannel#MessageChannel> ;
+    pp:hasTarget <invalidmessagechannel#InvalidMessageChannel> .
+
+:MessageChannel-to-MessageBus
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagechannel#MessageChannel> ;
+    pp:hasTarget <messagebus#MessageBus> .
+
+:MessageChannel-to-MessageEndpoint
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagechannel#MessageChannel> ;
+    pp:hasTarget <messageendpoint#MessageEndpoint> .
+
+:MessageChannel-to-SelectiveConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagechannel#MessageChannel> ;
+    pp:hasTarget <selectiveconsumer#SelectiveConsumer> .
+
+:MessageChannel-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagechannel#MessageChannel> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:MessageChannel-to-Point-to-PointChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagechannel#MessageChannel> ;
+    pp:hasTarget <point-to-pointchannel#Point-to-PointChannel> .
+
+:MessageChannel-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagechannel#MessageChannel> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:Message-to-CanonicalDataModel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <message#Message> ;
+    pp:hasTarget <canonicaldatamodel#CanonicalDataModel> .
+
+:Message-to-CommandMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <message#Message> ;
+    pp:hasTarget <commandmessage#CommandMessage> .
+
+:Message-to-DocumentMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <message#Message> ;
+    pp:hasTarget <documentmessage#DocumentMessage> .
+
+:Message-to-EventMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <message#Message> ;
+    pp:hasTarget <eventmessage#EventMessage> .
+
+:Message-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <message#Message> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:Message-to-MessageExpiration
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <message#Message> ;
+    pp:hasTarget <messageexpiration#MessageExpiration> .
+
+:Message-to-MessageSequence
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <message#Message> ;
+    pp:hasTarget <messagesequence#MessageSequence> .
+
+:Message-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <message#Message> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:Message-to-Request-Reply
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <message#Message> ;
+    pp:hasTarget <request-reply#Request-Reply> .
+
+:PipesandFilters-to-CompetingConsumers
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <pipesandfilters#PipesandFilters> ;
+    pp:hasTarget <competingconsumers#CompetingConsumers> .
+
+:PipesandFilters-to-ContentFilter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <pipesandfilters#PipesandFilters> ;
+    pp:hasTarget <contentfilter#ContentFilter> .
+
+:PipesandFilters-to-Event-DrivenConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <pipesandfilters#PipesandFilters> ;
+    pp:hasTarget <event-drivenconsumer#Event-DrivenConsumer> .
+
+:PipesandFilters-to-MessageFilter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <pipesandfilters#PipesandFilters> ;
+    pp:hasTarget <messagefilter#MessageFilter> .
+
+:PipesandFilters-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <pipesandfilters#PipesandFilters> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:PipesandFilters-to-MessageRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <pipesandfilters#PipesandFilters> ;
+    pp:hasTarget <messagerouter#MessageRouter> .
+
+:PipesandFilters-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <pipesandfilters#PipesandFilters> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:PipesandFilters-to-MessagingGateway
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <pipesandfilters#PipesandFilters> ;
+    pp:hasTarget <messaginggateway#MessagingGateway> .
+
+:PipesandFilters-to-Point-to-PointChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <pipesandfilters#PipesandFilters> ;
+    pp:hasTarget <point-to-pointchannel#Point-to-PointChannel> .
+
+:PipesandFilters-to-Resequencer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <pipesandfilters#PipesandFilters> ;
+    pp:hasTarget <resequencer#Resequencer> .
+
+:PipesandFilters-to-TestMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <pipesandfilters#PipesandFilters> ;
+    pp:hasTarget <testmessage#TestMessage> .
+
+:PipesandFilters-to-TransactionalClient
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <pipesandfilters#PipesandFilters> ;
+    pp:hasTarget <transactionalclient#TransactionalClient> .
+
+:MessageRouter-to-ChannelAdapter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagerouter#MessageRouter> ;
+    pp:hasTarget <channeladapter#ChannelAdapter> .
+
+:MessageRouter-to-Content-BasedRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagerouter#MessageRouter> ;
+    pp:hasTarget <content-basedrouter#Content-BasedRouter> .
+
+:MessageRouter-to-ControlBus
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagerouter#MessageRouter> ;
+    pp:hasTarget <controlbus#ControlBus> .
+
+:MessageRouter-to-DatatypeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagerouter#MessageRouter> ;
+    pp:hasTarget <datatypechannel#DatatypeChannel> .
+
+:MessageRouter-to-DynamicRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagerouter#MessageRouter> ;
+    pp:hasTarget <dynamicrouter#DynamicRouter> .
+
+:MessageRouter-to-MessageFilter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagerouter#MessageRouter> ;
+    pp:hasTarget <messagefilter#MessageFilter> .
+
+:MessageRouter-to-Message
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagerouter#MessageRouter> ;
+    pp:hasTarget <message#Message> .
+
+:MessageRouter-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagerouter#MessageRouter> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:MessageRouter-to-MessageHistory
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagerouter#MessageRouter> ;
+    pp:hasTarget <messagehistory#MessageHistory> .
+
+:MessageRouter-to-MessageTranslator
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagerouter#MessageRouter> ;
+    pp:hasTarget <messagetranslator#MessageTranslator> .
+
+:MessageRouter-to-PipesandFilters
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagerouter#MessageRouter> ;
+    pp:hasTarget <pipesandfilters#PipesandFilters> .
+
+:MessageRouter-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagerouter#MessageRouter> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:MessageRouter-to-TransactionalClient
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagerouter#MessageRouter> ;
+    pp:hasTarget <transactionalclient#TransactionalClient> .
+
+:MessageTranslator-to-CanonicalDataModel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagetranslator#MessageTranslator> ;
+    pp:hasTarget <canonicaldatamodel#CanonicalDataModel> .
+
+:MessageTranslator-to-ChannelAdapter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagetranslator#MessageTranslator> ;
+    pp:hasTarget <channeladapter#ChannelAdapter> .
+
+:MessageTranslator-to-ContentFilter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagetranslator#MessageTranslator> ;
+    pp:hasTarget <contentfilter#ContentFilter> .
+
+:MessageTranslator-to-ContentEnricher
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagetranslator#MessageTranslator> ;
+    pp:hasTarget <contentenricher#ContentEnricher> .
+
+:MessageTranslator-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagetranslator#MessageTranslator> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:MessageTranslator-to-MessageEndpoint
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagetranslator#MessageTranslator> ;
+    pp:hasTarget <messageendpoint#MessageEndpoint> .
+
+:MessageTranslator-to-MessageRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagetranslator#MessageTranslator> ;
+    pp:hasTarget <messagerouter#MessageRouter> .
+
+:MessageTranslator-to-MessagingBridge
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagetranslator#MessageTranslator> ;
+    pp:hasTarget <messagingbridge#MessagingBridge> .
+
+:MessageTranslator-to-Normalizer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagetranslator#MessageTranslator> ;
+    pp:hasTarget <normalizer#Normalizer> .
+
+:MessageTranslator-to-PipesandFilters
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagetranslator#MessageTranslator> ;
+    pp:hasTarget <pipesandfilters#PipesandFilters> .
+
+:MessageTranslator-to-SharedDatabase
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagetranslator#MessageTranslator> ;
+    pp:hasTarget <shareddatabase#SharedDatabase> .
+
+:MessageTranslator-to-ClaimCheck
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagetranslator#MessageTranslator> ;
+    pp:hasTarget <claimcheck#ClaimCheck> .
+
+:MessageEndpoint-to-ChannelAdapter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messageendpoint#MessageEndpoint> ;
+    pp:hasTarget <channeladapter#ChannelAdapter> .
+
+:MessageEndpoint-to-CompetingConsumers
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messageendpoint#MessageEndpoint> ;
+    pp:hasTarget <competingconsumers#CompetingConsumers> .
+
+:MessageEndpoint-to-DurableSubscriber
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messageendpoint#MessageEndpoint> ;
+    pp:hasTarget <durablesubscriber#DurableSubscriber> .
+
+:MessageEndpoint-to-Event-DrivenConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messageendpoint#MessageEndpoint> ;
+    pp:hasTarget <event-drivenconsumer#Event-DrivenConsumer> .
+
+:MessageEndpoint-to-IdempotentReceiver
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messageendpoint#MessageEndpoint> ;
+    pp:hasTarget <idempotentreceiver#IdempotentReceiver> .
+
+:MessageEndpoint-to-Message
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messageendpoint#MessageEndpoint> ;
+    pp:hasTarget <message#Message> .
+
+:MessageEndpoint-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messageendpoint#MessageEndpoint> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:MessageEndpoint-to-MessageDispatcher
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messageendpoint#MessageEndpoint> ;
+    pp:hasTarget <messagedispatcher#MessageDispatcher> .
+
+:MessageEndpoint-to-SelectiveConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messageendpoint#MessageEndpoint> ;
+    pp:hasTarget <selectiveconsumer#SelectiveConsumer> .
+
+:MessageEndpoint-to-ServiceActivator
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messageendpoint#MessageEndpoint> ;
+    pp:hasTarget <serviceactivator#ServiceActivator> .
+
+:MessageEndpoint-to-MessagingGateway
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messageendpoint#MessageEndpoint> ;
+    pp:hasTarget <messaginggateway#MessagingGateway> .
+
+:MessageEndpoint-to-MessagingMapper
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messageendpoint#MessageEndpoint> ;
+    pp:hasTarget <messagingmapper#MessagingMapper> .
+
+:MessageEndpoint-to-PollingConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messageendpoint#MessageEndpoint> ;
+    pp:hasTarget <pollingconsumer#PollingConsumer> .
+
+:MessageEndpoint-to-TransactionalClient
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messageendpoint#MessageEndpoint> ;
+    pp:hasTarget <transactionalclient#TransactionalClient> .
+
+:Point-to-PointChannel-to-CommandMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <point-to-pointchannel#Point-to-PointChannel> ;
+    pp:hasTarget <commandmessage#CommandMessage> .
+
+:Point-to-PointChannel-to-CompetingConsumers
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <point-to-pointchannel#Point-to-PointChannel> ;
+    pp:hasTarget <competingconsumers#CompetingConsumers> .
+
+:Point-to-PointChannel-to-DocumentMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <point-to-pointchannel#Point-to-PointChannel> ;
+    pp:hasTarget <documentmessage#DocumentMessage> .
+
+:Point-to-PointChannel-to-Message
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <point-to-pointchannel#Point-to-PointChannel> ;
+    pp:hasTarget <message#Message> .
+
+:Point-to-PointChannel-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <point-to-pointchannel#Point-to-PointChannel> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:Point-to-PointChannel-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <point-to-pointchannel#Point-to-PointChannel> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:Point-to-PointChannel-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <point-to-pointchannel#Point-to-PointChannel> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:Point-to-PointChannel-to-Request-Reply
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <point-to-pointchannel#Point-to-PointChannel> ;
+    pp:hasTarget <request-reply#Request-Reply> .
+
+:Publish-SubscribeChannel-to-CompetingConsumers
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <publish-subscribechannel#Publish-SubscribeChannel> ;
+    pp:hasTarget <competingconsumers#CompetingConsumers> .
+
+:Publish-SubscribeChannel-to-DurableSubscriber
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <publish-subscribechannel#Publish-SubscribeChannel> ;
+    pp:hasTarget <durablesubscriber#DurableSubscriber> .
+
+:Publish-SubscribeChannel-to-EventMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <publish-subscribechannel#Publish-SubscribeChannel> ;
+    pp:hasTarget <eventmessage#EventMessage> .
+
+:Publish-SubscribeChannel-to-Message
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <publish-subscribechannel#Publish-SubscribeChannel> ;
+    pp:hasTarget <message#Message> .
+
+:Publish-SubscribeChannel-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <publish-subscribechannel#Publish-SubscribeChannel> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:Publish-SubscribeChannel-to-MessageStore
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <publish-subscribechannel#Publish-SubscribeChannel> ;
+    pp:hasTarget <messagestore#MessageStore> .
+
+:Publish-SubscribeChannel-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <publish-subscribechannel#Publish-SubscribeChannel> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:Publish-SubscribeChannel-to-Point-to-PointChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <publish-subscribechannel#Publish-SubscribeChannel> ;
+    pp:hasTarget <point-to-pointchannel#Point-to-PointChannel> .
+
+:Publish-SubscribeChannel-to-Request-Reply
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <publish-subscribechannel#Publish-SubscribeChannel> ;
+    pp:hasTarget <request-reply#Request-Reply> .
+
+:DatatypeChannel-to-CanonicalDataModel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <datatypechannel#DatatypeChannel> ;
+    pp:hasTarget <canonicaldatamodel#CanonicalDataModel> .
+
+:DatatypeChannel-to-CommandMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <datatypechannel#DatatypeChannel> ;
+    pp:hasTarget <commandmessage#CommandMessage> .
+
+:DatatypeChannel-to-FormatIndicator
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <datatypechannel#DatatypeChannel> ;
+    pp:hasTarget <formatindicator#FormatIndicator> .
+
+:DatatypeChannel-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <datatypechannel#DatatypeChannel> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:DatatypeChannel-to-MessageDispatcher
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <datatypechannel#DatatypeChannel> ;
+    pp:hasTarget <messagedispatcher#MessageDispatcher> .
+
+:DatatypeChannel-to-SelectiveConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <datatypechannel#DatatypeChannel> ;
+    pp:hasTarget <selectiveconsumer#SelectiveConsumer> .
+
+:DatatypeChannel-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <datatypechannel#DatatypeChannel> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:InvalidMessageChannel-to-CommandMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <invalidmessagechannel#InvalidMessageChannel> ;
+    pp:hasTarget <commandmessage#CommandMessage> .
+
+:InvalidMessageChannel-to-CorrelationIdentifier
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <invalidmessagechannel#InvalidMessageChannel> ;
+    pp:hasTarget <correlationidentifier#CorrelationIdentifier> .
+
+:InvalidMessageChannel-to-DatatypeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <invalidmessagechannel#InvalidMessageChannel> ;
+    pp:hasTarget <datatypechannel#DatatypeChannel> .
+
+:InvalidMessageChannel-to-DeadLetterChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <invalidmessagechannel#InvalidMessageChannel> ;
+    pp:hasTarget <deadletterchannel#DeadLetterChannel> .
+
+:InvalidMessageChannel-to-Message
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <invalidmessagechannel#InvalidMessageChannel> ;
+    pp:hasTarget <message#Message> .
+
+:InvalidMessageChannel-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <invalidmessagechannel#InvalidMessageChannel> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:InvalidMessageChannel-to-MessageSequence
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <invalidmessagechannel#InvalidMessageChannel> ;
+    pp:hasTarget <messagesequence#MessageSequence> .
+
+:InvalidMessageChannel-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <invalidmessagechannel#InvalidMessageChannel> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:InvalidMessageChannel-to-ServiceActivator
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <invalidmessagechannel#InvalidMessageChannel> ;
+    pp:hasTarget <serviceactivator#ServiceActivator> .
+
+:InvalidMessageChannel-to-MessagingGateway
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <invalidmessagechannel#InvalidMessageChannel> ;
+    pp:hasTarget <messaginggateway#MessagingGateway> .
+
+:InvalidMessageChannel-to-ReturnAddress
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <invalidmessagechannel#InvalidMessageChannel> ;
+    pp:hasTarget <returnaddress#ReturnAddress> .
+
+:DeadLetterChannel-to-InvalidMessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <deadletterchannel#DeadLetterChannel> ;
+    pp:hasTarget <invalidmessagechannel#InvalidMessageChannel> .
+
+:DeadLetterChannel-to-MessageExpiration
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <deadletterchannel#DeadLetterChannel> ;
+    pp:hasTarget <messageexpiration#MessageExpiration> .
+
+:DeadLetterChannel-to-SelectiveConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <deadletterchannel#DeadLetterChannel> ;
+    pp:hasTarget <selectiveconsumer#SelectiveConsumer> .
+
+:DeadLetterChannel-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <deadletterchannel#DeadLetterChannel> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:GuaranteedDelivery-to-DurableSubscriber
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <guaranteeddelivery#GuaranteedDelivery> ;
+    pp:hasTarget <durablesubscriber#DurableSubscriber> .
+
+:GuaranteedDelivery-to-EventMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <guaranteeddelivery#GuaranteedDelivery> ;
+    pp:hasTarget <eventmessage#EventMessage> .
+
+:GuaranteedDelivery-to-MessageExpiration
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <guaranteeddelivery#GuaranteedDelivery> ;
+    pp:hasTarget <messageexpiration#MessageExpiration> .
+
+:GuaranteedDelivery-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <guaranteeddelivery#GuaranteedDelivery> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:GuaranteedDelivery-to-Point-to-PointChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <guaranteeddelivery#GuaranteedDelivery> ;
+    pp:hasTarget <point-to-pointchannel#Point-to-PointChannel> .
+
+:GuaranteedDelivery-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <guaranteeddelivery#GuaranteedDelivery> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:GuaranteedDelivery-to-TransactionalClient
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <guaranteeddelivery#GuaranteedDelivery> ;
+    pp:hasTarget <transactionalclient#TransactionalClient> .
+
+:ChannelAdapter-to-CanonicalDataModel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <channeladapter#ChannelAdapter> ;
+    pp:hasTarget <canonicaldatamodel#CanonicalDataModel> .
+
+:ChannelAdapter-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <channeladapter#ChannelAdapter> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:ChannelAdapter-to-MessageTranslator
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <channeladapter#ChannelAdapter> ;
+    pp:hasTarget <messagetranslator#MessageTranslator> .
+
+:ChannelAdapter-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <channeladapter#ChannelAdapter> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:ChannelAdapter-to-MessagingBridge
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <channeladapter#ChannelAdapter> ;
+    pp:hasTarget <messagingbridge#MessagingBridge> .
+
+:ChannelAdapter-to-TransactionalClient
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <channeladapter#ChannelAdapter> ;
+    pp:hasTarget <transactionalclient#TransactionalClient> .
+
+:MessagingBridge-to-ChannelAdapter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagingbridge#MessagingBridge> ;
+    pp:hasTarget <channeladapter#ChannelAdapter> .
+
+:MessagingBridge-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagingbridge#MessagingBridge> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:MessagingBridge-to-MessageEndpoint
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagingbridge#MessagingBridge> ;
+    pp:hasTarget <messageendpoint#MessageEndpoint> .
+
+:MessagingBridge-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagingbridge#MessagingBridge> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:MessageBus-to-CanonicalDataModel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagebus#MessageBus> ;
+    pp:hasTarget <canonicaldatamodel#CanonicalDataModel> .
+
+:MessageBus-to-ChannelAdapter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagebus#MessageBus> ;
+    pp:hasTarget <channeladapter#ChannelAdapter> .
+
+:MessageBus-to-CommandMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagebus#MessageBus> ;
+    pp:hasTarget <commandmessage#CommandMessage> .
+
+:MessageBus-to-DatatypeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagebus#MessageBus> ;
+    pp:hasTarget <datatypechannel#DatatypeChannel> .
+
+:MessageBus-to-MessageRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagebus#MessageBus> ;
+    pp:hasTarget <messagerouter#MessageRouter> .
+
+:MessageBus-to-ServiceActivator
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagebus#MessageBus> ;
+    pp:hasTarget <serviceactivator#ServiceActivator> .
+
+:MessageBus-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagebus#MessageBus> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:CommandMessage-to-RemoteProcedureInvocation
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <commandmessage#CommandMessage> ;
+    pp:hasTarget <remoteprocedureinvocation#RemoteProcedureInvocation> .
+
+:CommandMessage-to-Message
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <commandmessage#CommandMessage> ;
+    pp:hasTarget <message#Message> .
+
+:CommandMessage-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <commandmessage#CommandMessage> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:CommandMessage-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <commandmessage#CommandMessage> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:CommandMessage-to-Point-to-PointChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <commandmessage#CommandMessage> ;
+    pp:hasTarget <point-to-pointchannel#Point-to-PointChannel> .
+
+:DocumentMessage-to-CommandMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <documentmessage#DocumentMessage> ;
+    pp:hasTarget <commandmessage#CommandMessage> .
+
+:DocumentMessage-to-RemoteProcedureInvocation
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <documentmessage#DocumentMessage> ;
+    pp:hasTarget <remoteprocedureinvocation#RemoteProcedureInvocation> .
+
+:DocumentMessage-to-EventMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <documentmessage#DocumentMessage> ;
+    pp:hasTarget <eventmessage#EventMessage> .
+
+:DocumentMessage-to-FileTransfer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <documentmessage#DocumentMessage> ;
+    pp:hasTarget <filetransfer#FileTransfer> .
+
+:DocumentMessage-to-GuaranteedDelivery
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <documentmessage#DocumentMessage> ;
+    pp:hasTarget <guaranteeddelivery#GuaranteedDelivery> .
+
+:DocumentMessage-to-Message
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <documentmessage#DocumentMessage> ;
+    pp:hasTarget <message#Message> .
+
+:DocumentMessage-to-MessageExpiration
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <documentmessage#DocumentMessage> ;
+    pp:hasTarget <messageexpiration#MessageExpiration> .
+
+:DocumentMessage-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <documentmessage#DocumentMessage> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:DocumentMessage-to-Point-to-PointChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <documentmessage#DocumentMessage> ;
+    pp:hasTarget <point-to-pointchannel#Point-to-PointChannel> .
+
+:DocumentMessage-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <documentmessage#DocumentMessage> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:DocumentMessage-to-Request-Reply
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <documentmessage#DocumentMessage> ;
+    pp:hasTarget <request-reply#Request-Reply> .
+
+:DocumentMessage-to-SharedDatabase
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <documentmessage#DocumentMessage> ;
+    pp:hasTarget <shareddatabase#SharedDatabase> .
+
+:EventMessage-to-CommandMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <eventmessage#EventMessage> ;
+    pp:hasTarget <commandmessage#CommandMessage> .
+
+:EventMessage-to-DocumentMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <eventmessage#EventMessage> ;
+    pp:hasTarget <documentmessage#DocumentMessage> .
+
+:EventMessage-to-DurableSubscriber
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <eventmessage#EventMessage> ;
+    pp:hasTarget <durablesubscriber#DurableSubscriber> .
+
+:EventMessage-to-RemoteProcedureInvocation
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <eventmessage#EventMessage> ;
+    pp:hasTarget <remoteprocedureinvocation#RemoteProcedureInvocation> .
+
+:EventMessage-to-GuaranteedDelivery
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <eventmessage#EventMessage> ;
+    pp:hasTarget <guaranteeddelivery#GuaranteedDelivery> .
+
+:EventMessage-to-Message
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <eventmessage#EventMessage> ;
+    pp:hasTarget <message#Message> .
+
+:EventMessage-to-MessageExpiration
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <eventmessage#EventMessage> ;
+    pp:hasTarget <messageexpiration#MessageExpiration> .
+
+:EventMessage-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <eventmessage#EventMessage> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:EventMessage-to-Point-to-PointChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <eventmessage#EventMessage> ;
+    pp:hasTarget <point-to-pointchannel#Point-to-PointChannel> .
+
+:EventMessage-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <eventmessage#EventMessage> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:Request-Reply-to-CommandMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <request-reply#Request-Reply> ;
+    pp:hasTarget <commandmessage#CommandMessage> .
+
+:Request-Reply-to-CorrelationIdentifier
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <request-reply#Request-Reply> ;
+    pp:hasTarget <correlationidentifier#CorrelationIdentifier> .
+
+:Request-Reply-to-DocumentMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <request-reply#Request-Reply> ;
+    pp:hasTarget <documentmessage#DocumentMessage> .
+
+:Request-Reply-to-RemoteProcedureInvocation
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <request-reply#Request-Reply> ;
+    pp:hasTarget <remoteprocedureinvocation#RemoteProcedureInvocation> .
+
+:Request-Reply-to-EventMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <request-reply#Request-Reply> ;
+    pp:hasTarget <eventmessage#EventMessage> .
+
+:Request-Reply-to-GuaranteedDelivery
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <request-reply#Request-Reply> ;
+    pp:hasTarget <guaranteeddelivery#GuaranteedDelivery> .
+
+:Request-Reply-to-Message
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <request-reply#Request-Reply> ;
+    pp:hasTarget <message#Message> .
+
+:Request-Reply-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <request-reply#Request-Reply> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:Request-Reply-to-MessageSequence
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <request-reply#Request-Reply> ;
+    pp:hasTarget <messagesequence#MessageSequence> .
+
+:Request-Reply-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <request-reply#Request-Reply> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:Request-Reply-to-Point-to-PointChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <request-reply#Request-Reply> ;
+    pp:hasTarget <point-to-pointchannel#Point-to-PointChannel> .
+
+:Request-Reply-to-PollingConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <request-reply#Request-Reply> ;
+    pp:hasTarget <pollingconsumer#PollingConsumer> .
+
+:Request-Reply-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <request-reply#Request-Reply> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:Request-Reply-to-ReturnAddress
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <request-reply#Request-Reply> ;
+    pp:hasTarget <returnaddress#ReturnAddress> .
+
+:ReturnAddress-to-CorrelationIdentifier
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <returnaddress#ReturnAddress> ;
+    pp:hasTarget <correlationidentifier#CorrelationIdentifier> .
+
+:ReturnAddress-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <returnaddress#ReturnAddress> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:ReturnAddress-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <returnaddress#ReturnAddress> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:ReturnAddress-to-Request-Reply
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <returnaddress#ReturnAddress> ;
+    pp:hasTarget <request-reply#Request-Reply> .
+
+:CorrelationIdentifier-to-RemoteProcedureInvocation
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <correlationidentifier#CorrelationIdentifier> ;
+    pp:hasTarget <remoteprocedureinvocation#RemoteProcedureInvocation> .
+
+:CorrelationIdentifier-to-Message
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <correlationidentifier#CorrelationIdentifier> ;
+    pp:hasTarget <message#Message> .
+
+:CorrelationIdentifier-to-SelectiveConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <correlationidentifier#CorrelationIdentifier> ;
+    pp:hasTarget <selectiveconsumer#SelectiveConsumer> .
+
+:CorrelationIdentifier-to-MessageSequence
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <correlationidentifier#CorrelationIdentifier> ;
+    pp:hasTarget <messagesequence#MessageSequence> .
+
+:CorrelationIdentifier-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <correlationidentifier#CorrelationIdentifier> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:CorrelationIdentifier-to-Request-Reply
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <correlationidentifier#CorrelationIdentifier> ;
+    pp:hasTarget <request-reply#Request-Reply> .
+
+:CorrelationIdentifier-to-ReturnAddress
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <correlationidentifier#CorrelationIdentifier> ;
+    pp:hasTarget <returnaddress#ReturnAddress> .
+
+:MessageSequence-to-CompetingConsumers
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagesequence#MessageSequence> ;
+    pp:hasTarget <competingconsumers#CompetingConsumers> .
+
+:MessageSequence-to-CorrelationIdentifier
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagesequence#MessageSequence> ;
+    pp:hasTarget <correlationidentifier#CorrelationIdentifier> .
+
+:MessageSequence-to-InvalidMessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagesequence#MessageSequence> ;
+    pp:hasTarget <invalidmessagechannel#InvalidMessageChannel> .
+
+:MessageSequence-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagesequence#MessageSequence> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:MessageSequence-to-MessageDispatcher
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagesequence#MessageSequence> ;
+    pp:hasTarget <messagedispatcher#MessageDispatcher> .
+
+:MessageSequence-to-Request-Reply
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagesequence#MessageSequence> ;
+    pp:hasTarget <request-reply#Request-Reply> .
+
+:MessageSequence-to-ClaimCheck
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagesequence#MessageSequence> ;
+    pp:hasTarget <claimcheck#ClaimCheck> .
+
+:MessageSequence-to-TransactionalClient
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagesequence#MessageSequence> ;
+    pp:hasTarget <transactionalclient#TransactionalClient> .
+
+:MessageExpiration-to-DeadLetterChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messageexpiration#MessageExpiration> ;
+    pp:hasTarget <deadletterchannel#DeadLetterChannel> .
+
+:MessageExpiration-to-GuaranteedDelivery
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messageexpiration#MessageExpiration> ;
+    pp:hasTarget <guaranteeddelivery#GuaranteedDelivery> .
+
+:MessageExpiration-to-InvalidMessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messageexpiration#MessageExpiration> ;
+    pp:hasTarget <invalidmessagechannel#InvalidMessageChannel> .
+
+:MessageExpiration-to-Message
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messageexpiration#MessageExpiration> ;
+    pp:hasTarget <message#Message> .
+
+:MessageExpiration-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messageexpiration#MessageExpiration> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:MessageExpiration-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messageexpiration#MessageExpiration> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:MessageExpiration-to-Request-Reply
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messageexpiration#MessageExpiration> ;
+    pp:hasTarget <request-reply#Request-Reply> .
+
+:FormatIndicator-to-CanonicalDataModel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <formatindicator#FormatIndicator> ;
+    pp:hasTarget <canonicaldatamodel#CanonicalDataModel> .
+
+:FormatIndicator-to-Message
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <formatindicator#FormatIndicator> ;
+    pp:hasTarget <message#Message> .
+
+:Content-BasedRouter-to-DynamicRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <content-basedrouter#Content-BasedRouter> ;
+    pp:hasTarget <dynamicrouter#DynamicRouter> .
+
+:Content-BasedRouter-to-MessageFilter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <content-basedrouter#Content-BasedRouter> ;
+    pp:hasTarget <messagefilter#MessageFilter> .
+
+:Content-BasedRouter-to-InvalidMessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <content-basedrouter#Content-BasedRouter> ;
+    pp:hasTarget <invalidmessagechannel#InvalidMessageChannel> .
+
+:Content-BasedRouter-to-MessageRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <content-basedrouter#Content-BasedRouter> ;
+    pp:hasTarget <messagerouter#MessageRouter> .
+
+:Content-BasedRouter-to-PipesandFilters
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <content-basedrouter#Content-BasedRouter> ;
+    pp:hasTarget <pipesandfilters#PipesandFilters> .
+
+:Content-BasedRouter-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <content-basedrouter#Content-BasedRouter> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:Content-BasedRouter-to-RoutingSlip
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <content-basedrouter#Content-BasedRouter> ;
+    pp:hasTarget <routingslip#RoutingSlip> .
+
+:Content-BasedRouter-to-TransactionalClient
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <content-basedrouter#Content-BasedRouter> ;
+    pp:hasTarget <transactionalclient#TransactionalClient> .
+
+:MessageFilter-to-Content-BasedRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagefilter#MessageFilter> ;
+    pp:hasTarget <content-basedrouter#Content-BasedRouter> .
+
+:MessageFilter-to-Event-DrivenConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagefilter#MessageFilter> ;
+    pp:hasTarget <event-drivenconsumer#Event-DrivenConsumer> .
+
+:MessageFilter-to-MessageRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagefilter#MessageFilter> ;
+    pp:hasTarget <messagerouter#MessageRouter> .
+
+:MessageFilter-to-SelectiveConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagefilter#MessageFilter> ;
+    pp:hasTarget <selectiveconsumer#SelectiveConsumer> .
+
+:MessageFilter-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagefilter#MessageFilter> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:MessageFilter-to-RecipientList
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagefilter#MessageFilter> ;
+    pp:hasTarget <recipientlist#RecipientList> .
+
+:DynamicRouter-to-Content-BasedRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <dynamicrouter#DynamicRouter> ;
+    pp:hasTarget <content-basedrouter#Content-BasedRouter> .
+
+:DynamicRouter-to-MessageFilter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <dynamicrouter#DynamicRouter> ;
+    pp:hasTarget <messagefilter#MessageFilter> .
+
+:DynamicRouter-to-MessageRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <dynamicrouter#DynamicRouter> ;
+    pp:hasTarget <messagerouter#MessageRouter> .
+
+:DynamicRouter-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <dynamicrouter#DynamicRouter> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:DynamicRouter-to-RecipientList
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <dynamicrouter#DynamicRouter> ;
+    pp:hasTarget <recipientlist#RecipientList> .
+
+:DynamicRouter-to-RoutingSlip
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <dynamicrouter#DynamicRouter> ;
+    pp:hasTarget <routingslip#RoutingSlip> .
+
+:RecipientList-to-Aggregator
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <recipientlist#RecipientList> ;
+    pp:hasTarget <aggregator#Aggregator> .
+
+:RecipientList-to-Scatter-Gather
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <recipientlist#RecipientList> ;
+    pp:hasTarget <scatter-gather#Scatter-Gather> .
+
+:RecipientList-to-Content-BasedRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <recipientlist#RecipientList> ;
+    pp:hasTarget <content-basedrouter#Content-BasedRouter> .
+
+:RecipientList-to-DynamicRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <recipientlist#RecipientList> ;
+    pp:hasTarget <dynamicrouter#DynamicRouter> .
+
+:RecipientList-to-MessageFilter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <recipientlist#RecipientList> ;
+    pp:hasTarget <messagefilter#MessageFilter> .
+
+:RecipientList-to-IdempotentReceiver
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <recipientlist#RecipientList> ;
+    pp:hasTarget <idempotentreceiver#IdempotentReceiver> .
+
+:RecipientList-to-MessageRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <recipientlist#RecipientList> ;
+    pp:hasTarget <messagerouter#MessageRouter> .
+
+:RecipientList-to-SelectiveConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <recipientlist#RecipientList> ;
+    pp:hasTarget <selectiveconsumer#SelectiveConsumer> .
+
+:RecipientList-to-Point-to-PointChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <recipientlist#RecipientList> ;
+    pp:hasTarget <point-to-pointchannel#Point-to-PointChannel> .
+
+:RecipientList-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <recipientlist#RecipientList> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:Splitter-to-Aggregator
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <splitter#Splitter> ;
+    pp:hasTarget <aggregator#Aggregator> .
+
+:Splitter-to-Content-BasedRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <splitter#Splitter> ;
+    pp:hasTarget <content-basedrouter#Content-BasedRouter> .
+
+:Splitter-to-ContentFilter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <splitter#Splitter> ;
+    pp:hasTarget <contentfilter#ContentFilter> .
+
+:Splitter-to-CorrelationIdentifier
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <splitter#Splitter> ;
+    pp:hasTarget <correlationidentifier#CorrelationIdentifier> .
+
+:Splitter-to-EnvelopeWrapper
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <splitter#Splitter> ;
+    pp:hasTarget <envelopewrapper#EnvelopeWrapper> .
+
+:Splitter-to-Event-DrivenConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <splitter#Splitter> ;
+    pp:hasTarget <event-drivenconsumer#Event-DrivenConsumer> .
+
+:Splitter-to-PipesandFilters
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <splitter#Splitter> ;
+    pp:hasTarget <pipesandfilters#PipesandFilters> .
+
+:Splitter-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <splitter#Splitter> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:Aggregator-to-Scatter-Gather
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <aggregator#Aggregator> ;
+    pp:hasTarget <scatter-gather#Scatter-Gather> .
+
+:Aggregator-to-Content-BasedRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <aggregator#Aggregator> ;
+    pp:hasTarget <content-basedrouter#Content-BasedRouter> .
+
+:Aggregator-to-ControlBus
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <aggregator#Aggregator> ;
+    pp:hasTarget <controlbus#ControlBus> .
+
+:Aggregator-to-CorrelationIdentifier
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <aggregator#Aggregator> ;
+    pp:hasTarget <correlationidentifier#CorrelationIdentifier> .
+
+:Aggregator-to-ComposedMessageProcessor
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <aggregator#Aggregator> ;
+    pp:hasTarget <composedmessageprocessor#ComposedMessageProcessor> .
+
+:Aggregator-to-Event-DrivenConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <aggregator#Aggregator> ;
+    pp:hasTarget <event-drivenconsumer#Event-DrivenConsumer> .
+
+:Aggregator-to-EventMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <aggregator#Aggregator> ;
+    pp:hasTarget <eventmessage#EventMessage> .
+
+:Aggregator-to-GuaranteedDelivery
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <aggregator#Aggregator> ;
+    pp:hasTarget <guaranteeddelivery#GuaranteedDelivery> .
+
+:Aggregator-to-MessageExpiration
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <aggregator#Aggregator> ;
+    pp:hasTarget <messageexpiration#MessageExpiration> .
+
+:Aggregator-to-Point-to-PointChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <aggregator#Aggregator> ;
+    pp:hasTarget <point-to-pointchannel#Point-to-PointChannel> .
+
+:Aggregator-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <aggregator#Aggregator> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:Aggregator-to-RecipientList
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <aggregator#Aggregator> ;
+    pp:hasTarget <recipientlist#RecipientList> .
+
+:Aggregator-to-Resequencer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <aggregator#Aggregator> ;
+    pp:hasTarget <resequencer#Resequencer> .
+
+:Aggregator-to-Splitter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <aggregator#Aggregator> ;
+    pp:hasTarget <splitter#Splitter> .
+
+:Aggregator-to-TransactionalClient
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <aggregator#Aggregator> ;
+    pp:hasTarget <transactionalclient#TransactionalClient> .
+
+:Resequencer-to-Aggregator
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <resequencer#Resequencer> ;
+    pp:hasTarget <aggregator#Aggregator> .
+
+:Resequencer-to-CompetingConsumers
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <resequencer#Resequencer> ;
+    pp:hasTarget <competingconsumers#CompetingConsumers> .
+
+:Resequencer-to-MessageRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <resequencer#Resequencer> ;
+    pp:hasTarget <messagerouter#MessageRouter> .
+
+:Resequencer-to-MessageSequence
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <resequencer#Resequencer> ;
+    pp:hasTarget <messagesequence#MessageSequence> .
+
+:Resequencer-to-PipesandFilters
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <resequencer#Resequencer> ;
+    pp:hasTarget <pipesandfilters#PipesandFilters> .
+
+:Resequencer-to-Splitter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <resequencer#Resequencer> ;
+    pp:hasTarget <splitter#Splitter> .
+
+:Resequencer-to-TestMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <resequencer#Resequencer> ;
+    pp:hasTarget <testmessage#TestMessage> .
+
+:ComposedMessageProcessor-to-Aggregator
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <composedmessageprocessor#ComposedMessageProcessor> ;
+    pp:hasTarget <aggregator#Aggregator> .
+
+:ComposedMessageProcessor-to-Content-BasedRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <composedmessageprocessor#ComposedMessageProcessor> ;
+    pp:hasTarget <content-basedrouter#Content-BasedRouter> .
+
+:ComposedMessageProcessor-to-PipesandFilters
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <composedmessageprocessor#ComposedMessageProcessor> ;
+    pp:hasTarget <pipesandfilters#PipesandFilters> .
+
+:ComposedMessageProcessor-to-Splitter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <composedmessageprocessor#ComposedMessageProcessor> ;
+    pp:hasTarget <splitter#Splitter> .
+
+:Scatter-Gather-to-Aggregator
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <scatter-gather#Scatter-Gather> ;
+    pp:hasTarget <aggregator#Aggregator> .
+
+:Scatter-Gather-to-ComposedMessageProcessor
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <scatter-gather#Scatter-Gather> ;
+    pp:hasTarget <composedmessageprocessor#ComposedMessageProcessor> .
+
+:Scatter-Gather-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <scatter-gather#Scatter-Gather> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:Scatter-Gather-to-RecipientList
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <scatter-gather#Scatter-Gather> ;
+    pp:hasTarget <recipientlist#RecipientList> .
+
+:Scatter-Gather-to-ReturnAddress
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <scatter-gather#Scatter-Gather> ;
+    pp:hasTarget <returnaddress#ReturnAddress> .
+
+:Scatter-Gather-to-Splitter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <scatter-gather#Scatter-Gather> ;
+    pp:hasTarget <splitter#Splitter> .
+
+:RoutingSlip-to-Content-BasedRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <routingslip#RoutingSlip> ;
+    pp:hasTarget <content-basedrouter#Content-BasedRouter> .
+
+:RoutingSlip-to-MessageFilter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <routingslip#RoutingSlip> ;
+    pp:hasTarget <messagefilter#MessageFilter> .
+
+:RoutingSlip-to-MessageRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <routingslip#RoutingSlip> ;
+    pp:hasTarget <messagerouter#MessageRouter> .
+
+:RoutingSlip-to-PipesandFilters
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <routingslip#RoutingSlip> ;
+    pp:hasTarget <pipesandfilters#PipesandFilters> .
+
+:RoutingSlip-to-ProcessManager
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <routingslip#RoutingSlip> ;
+    pp:hasTarget <processmanager#ProcessManager> .
+
+:RoutingSlip-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <routingslip#RoutingSlip> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:RoutingSlip-to-ReturnAddress
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <routingslip#RoutingSlip> ;
+    pp:hasTarget <returnaddress#ReturnAddress> .
+
+:ProcessManager-to-Aggregator
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <processmanager#ProcessManager> ;
+    pp:hasTarget <aggregator#Aggregator> .
+
+:ProcessManager-to-Content-BasedRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <processmanager#ProcessManager> ;
+    pp:hasTarget <content-basedrouter#Content-BasedRouter> .
+
+:ProcessManager-to-CorrelationIdentifier
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <processmanager#ProcessManager> ;
+    pp:hasTarget <correlationidentifier#CorrelationIdentifier> .
+
+:ProcessManager-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <processmanager#ProcessManager> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:ProcessManager-to-MessageHistory
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <processmanager#ProcessManager> ;
+    pp:hasTarget <messagehistory#MessageHistory> .
+
+:ProcessManager-to-MessageStore
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <processmanager#ProcessManager> ;
+    pp:hasTarget <messagestore#MessageStore> .
+
+:ProcessManager-to-MessageTranslator
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <processmanager#ProcessManager> ;
+    pp:hasTarget <messagetranslator#MessageTranslator> .
+
+:ProcessManager-to-PipesandFilters
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <processmanager#ProcessManager> ;
+    pp:hasTarget <pipesandfilters#PipesandFilters> .
+
+:ProcessManager-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <processmanager#ProcessManager> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:ProcessManager-to-RoutingSlip
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <processmanager#ProcessManager> ;
+    pp:hasTarget <routingslip#RoutingSlip> .
+
+:ProcessManager-to-ClaimCheck
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <processmanager#ProcessManager> ;
+    pp:hasTarget <claimcheck#ClaimCheck> .
+
+:MessageBroker-to-CanonicalDataModel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagebroker#MessageBroker> ;
+    pp:hasTarget <canonicaldatamodel#CanonicalDataModel> .
+
+:MessageBroker-to-Event-DrivenConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagebroker#MessageBroker> ;
+    pp:hasTarget <event-drivenconsumer#Event-DrivenConsumer> .
+
+:MessageBroker-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagebroker#MessageBroker> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:MessageBroker-to-MessageEndpoint
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagebroker#MessageBroker> ;
+    pp:hasTarget <messageendpoint#MessageEndpoint> .
+
+:MessageBroker-to-MessageRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagebroker#MessageBroker> ;
+    pp:hasTarget <messagerouter#MessageRouter> .
+
+:MessageBroker-to-PipesandFilters
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagebroker#MessageBroker> ;
+    pp:hasTarget <pipesandfilters#PipesandFilters> .
+
+:MessageBroker-to-Point-to-PointChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagebroker#MessageBroker> ;
+    pp:hasTarget <point-to-pointchannel#Point-to-PointChannel> .
+
+:MessageBroker-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagebroker#MessageBroker> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:MessageBroker-to-RecipientList
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagebroker#MessageBroker> ;
+    pp:hasTarget <recipientlist#RecipientList> .
+
+:EnvelopeWrapper-to-Content-BasedRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <envelopewrapper#EnvelopeWrapper> ;
+    pp:hasTarget <content-basedrouter#Content-BasedRouter> .
+
+:EnvelopeWrapper-to-ContentEnricher
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <envelopewrapper#EnvelopeWrapper> ;
+    pp:hasTarget <contentenricher#ContentEnricher> .
+
+:EnvelopeWrapper-to-MessagingBridge
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <envelopewrapper#EnvelopeWrapper> ;
+    pp:hasTarget <messagingbridge#MessagingBridge> .
+
+:EnvelopeWrapper-to-PipesandFilters
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <envelopewrapper#EnvelopeWrapper> ;
+    pp:hasTarget <pipesandfilters#PipesandFilters> .
+
+:ContentEnricher-to-ContentFilter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <contentenricher#ContentEnricher> ;
+    pp:hasTarget <contentfilter#ContentFilter> .
+
+:ContentEnricher-to-EventMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <contentenricher#ContentEnricher> ;
+    pp:hasTarget <eventmessage#EventMessage> .
+
+:ContentEnricher-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <contentenricher#ContentEnricher> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:ContentEnricher-to-MessageTranslator
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <contentenricher#ContentEnricher> ;
+    pp:hasTarget <messagetranslator#MessageTranslator> .
+
+:ContentEnricher-to-ClaimCheck
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <contentenricher#ContentEnricher> ;
+    pp:hasTarget <claimcheck#ClaimCheck> .
+
+:ContentFilter-to-ChannelAdapter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <contentfilter#ContentFilter> ;
+    pp:hasTarget <channeladapter#ChannelAdapter> .
+
+:ContentFilter-to-ContentEnricher
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <contentfilter#ContentFilter> ;
+    pp:hasTarget <contentenricher#ContentEnricher> .
+
+:ContentFilter-to-Splitter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <contentfilter#ContentFilter> ;
+    pp:hasTarget <splitter#Splitter> .
+
+:ClaimCheck-to-ContentFilter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <claimcheck#ClaimCheck> ;
+    pp:hasTarget <contentfilter#ContentFilter> .
+
+:ClaimCheck-to-ContentEnricher
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <claimcheck#ClaimCheck> ;
+    pp:hasTarget <contentenricher#ContentEnricher> .
+
+:ClaimCheck-to-ProcessManager
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <claimcheck#ClaimCheck> ;
+    pp:hasTarget <processmanager#ProcessManager> .
+
+:Normalizer-to-DatatypeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <normalizer#Normalizer> ;
+    pp:hasTarget <datatypechannel#DatatypeChannel> .
+
+:Normalizer-to-MessageRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <normalizer#Normalizer> ;
+    pp:hasTarget <messagerouter#MessageRouter> .
+
+:Normalizer-to-MessageTranslator
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <normalizer#Normalizer> ;
+    pp:hasTarget <messagetranslator#MessageTranslator> .
+
+:CanonicalDataModel-to-FormatIndicator
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <canonicaldatamodel#CanonicalDataModel> ;
+    pp:hasTarget <formatindicator#FormatIndicator> .
+
+:CanonicalDataModel-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <canonicaldatamodel#CanonicalDataModel> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:CanonicalDataModel-to-MessageRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <canonicaldatamodel#CanonicalDataModel> ;
+    pp:hasTarget <messagerouter#MessageRouter> .
+
+:CanonicalDataModel-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <canonicaldatamodel#CanonicalDataModel> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:CanonicalDataModel-to-MessagingMapper
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <canonicaldatamodel#CanonicalDataModel> ;
+    pp:hasTarget <messagingmapper#MessagingMapper> .
+
+:CanonicalDataModel-to-SharedDatabase
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <canonicaldatamodel#CanonicalDataModel> ;
+    pp:hasTarget <shareddatabase#SharedDatabase> .
+
+:MessagingGateway-to-Scatter-Gather
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messaginggateway#MessagingGateway> ;
+    pp:hasTarget <scatter-gather#Scatter-Gather> .
+
+:MessagingGateway-to-CorrelationIdentifier
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messaginggateway#MessagingGateway> ;
+    pp:hasTarget <correlationidentifier#CorrelationIdentifier> .
+
+:MessagingGateway-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messaginggateway#MessagingGateway> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:MessagingGateway-to-Request-Reply
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messaginggateway#MessagingGateway> ;
+    pp:hasTarget <request-reply#Request-Reply> .
+
+:MessagingMapper-to-Aggregator
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagingmapper#MessagingMapper> ;
+    pp:hasTarget <aggregator#Aggregator> .
+
+:MessagingMapper-to-CanonicalDataModel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagingmapper#MessagingMapper> ;
+    pp:hasTarget <canonicaldatamodel#CanonicalDataModel> .
+
+:MessagingMapper-to-CommandMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagingmapper#MessagingMapper> ;
+    pp:hasTarget <commandmessage#CommandMessage> .
+
+:MessagingMapper-to-DocumentMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagingmapper#MessagingMapper> ;
+    pp:hasTarget <documentmessage#DocumentMessage> .
+
+:MessagingMapper-to-MessageRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagingmapper#MessagingMapper> ;
+    pp:hasTarget <messagerouter#MessageRouter> .
+
+:MessagingMapper-to-MessageTranslator
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagingmapper#MessagingMapper> ;
+    pp:hasTarget <messagetranslator#MessageTranslator> .
+
+:TransactionalClient-to-ChannelAdapter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <transactionalclient#TransactionalClient> ;
+    pp:hasTarget <channeladapter#ChannelAdapter> .
+
+:TransactionalClient-to-CompetingConsumers
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <transactionalclient#TransactionalClient> ;
+    pp:hasTarget <competingconsumers#CompetingConsumers> .
+
+:TransactionalClient-to-DocumentMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <transactionalclient#TransactionalClient> ;
+    pp:hasTarget <documentmessage#DocumentMessage> .
+
+:TransactionalClient-to-Event-DrivenConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <transactionalclient#TransactionalClient> ;
+    pp:hasTarget <event-drivenconsumer#Event-DrivenConsumer> .
+
+:TransactionalClient-to-EventMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <transactionalclient#TransactionalClient> ;
+    pp:hasTarget <eventmessage#EventMessage> .
+
+:TransactionalClient-to-GuaranteedDelivery
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <transactionalclient#TransactionalClient> ;
+    pp:hasTarget <guaranteeddelivery#GuaranteedDelivery> .
+
+:TransactionalClient-to-Message
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <transactionalclient#TransactionalClient> ;
+    pp:hasTarget <message#Message> .
+
+:TransactionalClient-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <transactionalclient#TransactionalClient> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:TransactionalClient-to-MessageDispatcher
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <transactionalclient#TransactionalClient> ;
+    pp:hasTarget <messagedispatcher#MessageDispatcher> .
+
+:TransactionalClient-to-MessageEndpoint
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <transactionalclient#TransactionalClient> ;
+    pp:hasTarget <messageendpoint#MessageEndpoint> .
+
+:TransactionalClient-to-MessageRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <transactionalclient#TransactionalClient> ;
+    pp:hasTarget <messagerouter#MessageRouter> .
+
+:TransactionalClient-to-MessageSequence
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <transactionalclient#TransactionalClient> ;
+    pp:hasTarget <messagesequence#MessageSequence> .
+
+:TransactionalClient-to-MessageTranslator
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <transactionalclient#TransactionalClient> ;
+    pp:hasTarget <messagetranslator#MessageTranslator> .
+
+:TransactionalClient-to-MessagingBridge
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <transactionalclient#TransactionalClient> ;
+    pp:hasTarget <messagingbridge#MessagingBridge> .
+
+:TransactionalClient-to-PipesandFilters
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <transactionalclient#TransactionalClient> ;
+    pp:hasTarget <pipesandfilters#PipesandFilters> .
+
+:TransactionalClient-to-Point-to-PointChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <transactionalclient#TransactionalClient> ;
+    pp:hasTarget <point-to-pointchannel#Point-to-PointChannel> .
+
+:TransactionalClient-to-PollingConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <transactionalclient#TransactionalClient> ;
+    pp:hasTarget <pollingconsumer#PollingConsumer> .
+
+:TransactionalClient-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <transactionalclient#TransactionalClient> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:TransactionalClient-to-Request-Reply
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <transactionalclient#TransactionalClient> ;
+    pp:hasTarget <request-reply#Request-Reply> .
+
+:TransactionalClient-to-Resequencer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <transactionalclient#TransactionalClient> ;
+    pp:hasTarget <resequencer#Resequencer> .
+
+:PollingConsumer-to-CompetingConsumers
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <pollingconsumer#PollingConsumer> ;
+    pp:hasTarget <competingconsumers#CompetingConsumers> .
+
+:PollingConsumer-to-DurableSubscriber
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <pollingconsumer#PollingConsumer> ;
+    pp:hasTarget <durablesubscriber#DurableSubscriber> .
+
+:PollingConsumer-to-Event-DrivenConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <pollingconsumer#PollingConsumer> ;
+    pp:hasTarget <event-drivenconsumer#Event-DrivenConsumer> .
+
+:PollingConsumer-to-Message
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <pollingconsumer#PollingConsumer> ;
+    pp:hasTarget <message#Message> .
+
+:PollingConsumer-to-MessageDispatcher
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <pollingconsumer#PollingConsumer> ;
+    pp:hasTarget <messagedispatcher#MessageDispatcher> .
+
+:PollingConsumer-to-SelectiveConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <pollingconsumer#PollingConsumer> ;
+    pp:hasTarget <selectiveconsumer#SelectiveConsumer> .
+
+:PollingConsumer-to-TransactionalClient
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <pollingconsumer#PollingConsumer> ;
+    pp:hasTarget <transactionalclient#TransactionalClient> .
+
+:Event-DrivenConsumer-to-CompetingConsumers
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <event-drivenconsumer#Event-DrivenConsumer> ;
+    pp:hasTarget <competingconsumers#CompetingConsumers> .
+
+:Event-DrivenConsumer-to-DurableSubscriber
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <event-drivenconsumer#Event-DrivenConsumer> ;
+    pp:hasTarget <durablesubscriber#DurableSubscriber> .
+
+:Event-DrivenConsumer-to-Message
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <event-drivenconsumer#Event-DrivenConsumer> ;
+    pp:hasTarget <message#Message> .
+
+:Event-DrivenConsumer-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <event-drivenconsumer#Event-DrivenConsumer> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:Event-DrivenConsumer-to-MessageDispatcher
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <event-drivenconsumer#Event-DrivenConsumer> ;
+    pp:hasTarget <messagedispatcher#MessageDispatcher> .
+
+:Event-DrivenConsumer-to-SelectiveConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <event-drivenconsumer#Event-DrivenConsumer> ;
+    pp:hasTarget <selectiveconsumer#SelectiveConsumer> .
+
+:Event-DrivenConsumer-to-PollingConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <event-drivenconsumer#Event-DrivenConsumer> ;
+    pp:hasTarget <pollingconsumer#PollingConsumer> .
+
+:Event-DrivenConsumer-to-TransactionalClient
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <event-drivenconsumer#Event-DrivenConsumer> ;
+    pp:hasTarget <transactionalclient#TransactionalClient> .
+
+:CompetingConsumers-to-Event-DrivenConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <competingconsumers#CompetingConsumers> ;
+    pp:hasTarget <event-drivenconsumer#Event-DrivenConsumer> .
+
+:CompetingConsumers-to-Message
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <competingconsumers#CompetingConsumers> ;
+    pp:hasTarget <message#Message> .
+
+:CompetingConsumers-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <competingconsumers#CompetingConsumers> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:CompetingConsumers-to-MessageDispatcher
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <competingconsumers#CompetingConsumers> ;
+    pp:hasTarget <messagedispatcher#MessageDispatcher> .
+
+:CompetingConsumers-to-MessageRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <competingconsumers#CompetingConsumers> ;
+    pp:hasTarget <messagerouter#MessageRouter> .
+
+:CompetingConsumers-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <competingconsumers#CompetingConsumers> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:CompetingConsumers-to-Point-to-PointChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <competingconsumers#CompetingConsumers> ;
+    pp:hasTarget <point-to-pointchannel#Point-to-PointChannel> .
+
+:CompetingConsumers-to-PollingConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <competingconsumers#CompetingConsumers> ;
+    pp:hasTarget <pollingconsumer#PollingConsumer> .
+
+:CompetingConsumers-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <competingconsumers#CompetingConsumers> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:CompetingConsumers-to-TransactionalClient
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <competingconsumers#CompetingConsumers> ;
+    pp:hasTarget <transactionalclient#TransactionalClient> .
+
+:MessageDispatcher-to-CompetingConsumers
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagedispatcher#MessageDispatcher> ;
+    pp:hasTarget <competingconsumers#CompetingConsumers> .
+
+:MessageDispatcher-to-DatatypeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagedispatcher#MessageDispatcher> ;
+    pp:hasTarget <datatypechannel#DatatypeChannel> .
+
+:MessageDispatcher-to-RemoteProcedureInvocation
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagedispatcher#MessageDispatcher> ;
+    pp:hasTarget <remoteprocedureinvocation#RemoteProcedureInvocation> .
+
+:MessageDispatcher-to-Event-DrivenConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagedispatcher#MessageDispatcher> ;
+    pp:hasTarget <event-drivenconsumer#Event-DrivenConsumer> .
+
+:MessageDispatcher-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagedispatcher#MessageDispatcher> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:MessageDispatcher-to-SelectiveConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagedispatcher#MessageDispatcher> ;
+    pp:hasTarget <selectiveconsumer#SelectiveConsumer> .
+
+:MessageDispatcher-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagedispatcher#MessageDispatcher> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:MessageDispatcher-to-Point-to-PointChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagedispatcher#MessageDispatcher> ;
+    pp:hasTarget <point-to-pointchannel#Point-to-PointChannel> .
+
+:MessageDispatcher-to-PollingConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagedispatcher#MessageDispatcher> ;
+    pp:hasTarget <pollingconsumer#PollingConsumer> .
+
+:MessageDispatcher-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagedispatcher#MessageDispatcher> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:MessageDispatcher-to-ClaimCheck
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagedispatcher#MessageDispatcher> ;
+    pp:hasTarget <claimcheck#ClaimCheck> .
+
+:MessageDispatcher-to-TransactionalClient
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagedispatcher#MessageDispatcher> ;
+    pp:hasTarget <transactionalclient#TransactionalClient> .
+
+:SelectiveConsumer-to-CompetingConsumers
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <selectiveconsumer#SelectiveConsumer> ;
+    pp:hasTarget <competingconsumers#CompetingConsumers> .
+
+:SelectiveConsumer-to-Content-BasedRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <selectiveconsumer#SelectiveConsumer> ;
+    pp:hasTarget <content-basedrouter#Content-BasedRouter> .
+
+:SelectiveConsumer-to-CorrelationIdentifier
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <selectiveconsumer#SelectiveConsumer> ;
+    pp:hasTarget <correlationidentifier#CorrelationIdentifier> .
+
+:SelectiveConsumer-to-DatatypeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <selectiveconsumer#SelectiveConsumer> ;
+    pp:hasTarget <datatypechannel#DatatypeChannel> .
+
+:SelectiveConsumer-to-DurableSubscriber
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <selectiveconsumer#SelectiveConsumer> ;
+    pp:hasTarget <durablesubscriber#DurableSubscriber> .
+
+:SelectiveConsumer-to-Event-DrivenConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <selectiveconsumer#SelectiveConsumer> ;
+    pp:hasTarget <event-drivenconsumer#Event-DrivenConsumer> .
+
+:SelectiveConsumer-to-MessageFilter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <selectiveconsumer#SelectiveConsumer> ;
+    pp:hasTarget <messagefilter#MessageFilter> .
+
+:SelectiveConsumer-to-GuaranteedDelivery
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <selectiveconsumer#SelectiveConsumer> ;
+    pp:hasTarget <guaranteeddelivery#GuaranteedDelivery> .
+
+:SelectiveConsumer-to-InvalidMessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <selectiveconsumer#SelectiveConsumer> ;
+    pp:hasTarget <invalidmessagechannel#InvalidMessageChannel> .
+
+:SelectiveConsumer-to-Message
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <selectiveconsumer#SelectiveConsumer> ;
+    pp:hasTarget <message#Message> .
+
+:SelectiveConsumer-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <selectiveconsumer#SelectiveConsumer> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:SelectiveConsumer-to-MessageDispatcher
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <selectiveconsumer#SelectiveConsumer> ;
+    pp:hasTarget <messagedispatcher#MessageDispatcher> .
+
+:SelectiveConsumer-to-MessageExpiration
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <selectiveconsumer#SelectiveConsumer> ;
+    pp:hasTarget <messageexpiration#MessageExpiration> .
+
+:SelectiveConsumer-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <selectiveconsumer#SelectiveConsumer> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:SelectiveConsumer-to-Point-to-PointChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <selectiveconsumer#SelectiveConsumer> ;
+    pp:hasTarget <point-to-pointchannel#Point-to-PointChannel> .
+
+:SelectiveConsumer-to-PollingConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <selectiveconsumer#SelectiveConsumer> ;
+    pp:hasTarget <pollingconsumer#PollingConsumer> .
+
+:SelectiveConsumer-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <selectiveconsumer#SelectiveConsumer> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:SelectiveConsumer-to-Request-Reply
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <selectiveconsumer#SelectiveConsumer> ;
+    pp:hasTarget <request-reply#Request-Reply> .
+
+:SelectiveConsumer-to-TransactionalClient
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <selectiveconsumer#SelectiveConsumer> ;
+    pp:hasTarget <transactionalclient#TransactionalClient> .
+
+:DurableSubscriber-to-GuaranteedDelivery
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <durablesubscriber#DurableSubscriber> ;
+    pp:hasTarget <guaranteeddelivery#GuaranteedDelivery> .
+
+:DurableSubscriber-to-MessageExpiration
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <durablesubscriber#DurableSubscriber> ;
+    pp:hasTarget <messageexpiration#MessageExpiration> .
+
+:DurableSubscriber-to-Point-to-PointChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <durablesubscriber#DurableSubscriber> ;
+    pp:hasTarget <point-to-pointchannel#Point-to-PointChannel> .
+
+:DurableSubscriber-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <durablesubscriber#DurableSubscriber> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:IdempotentReceiver-to-CommandMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <idempotentreceiver#IdempotentReceiver> ;
+    pp:hasTarget <commandmessage#CommandMessage> .
+
+:IdempotentReceiver-to-GuaranteedDelivery
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <idempotentreceiver#IdempotentReceiver> ;
+    pp:hasTarget <guaranteeddelivery#GuaranteedDelivery> .
+
+:IdempotentReceiver-to-Messaging
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <idempotentreceiver#IdempotentReceiver> ;
+    pp:hasTarget <messaging#Messaging> .
+
+:IdempotentReceiver-to-Resequencer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <idempotentreceiver#IdempotentReceiver> ;
+    pp:hasTarget <resequencer#Resequencer> .
+
+:ServiceActivator-to-CommandMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <serviceactivator#ServiceActivator> ;
+    pp:hasTarget <commandmessage#CommandMessage> .
+
+:ServiceActivator-to-CompetingConsumers
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <serviceactivator#ServiceActivator> ;
+    pp:hasTarget <competingconsumers#CompetingConsumers> .
+
+:ServiceActivator-to-Event-DrivenConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <serviceactivator#ServiceActivator> ;
+    pp:hasTarget <event-drivenconsumer#Event-DrivenConsumer> .
+
+:ServiceActivator-to-InvalidMessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <serviceactivator#ServiceActivator> ;
+    pp:hasTarget <invalidmessagechannel#InvalidMessageChannel> .
+
+:ServiceActivator-to-MessageDispatcher
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <serviceactivator#ServiceActivator> ;
+    pp:hasTarget <messagedispatcher#MessageDispatcher> .
+
+:ServiceActivator-to-MessageEndpoint
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <serviceactivator#ServiceActivator> ;
+    pp:hasTarget <messageendpoint#MessageEndpoint> .
+
+:ServiceActivator-to-MessagingGateway
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <serviceactivator#ServiceActivator> ;
+    pp:hasTarget <messaginggateway#MessagingGateway> .
+
+:ServiceActivator-to-PollingConsumer
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <serviceactivator#ServiceActivator> ;
+    pp:hasTarget <pollingconsumer#PollingConsumer> .
+
+:ServiceActivator-to-Request-Reply
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <serviceactivator#ServiceActivator> ;
+    pp:hasTarget <request-reply#Request-Reply> .
+
+:ServiceActivator-to-TransactionalClient
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <serviceactivator#ServiceActivator> ;
+    pp:hasTarget <transactionalclient#TransactionalClient> .
+
+:ControlBus-to-Content-BasedRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <controlbus#ControlBus> ;
+    pp:hasTarget <content-basedrouter#Content-BasedRouter> .
+
+:ControlBus-to-TestMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <controlbus#ControlBus> ;
+    pp:hasTarget <testmessage#TestMessage> .
+
+:Detour-to-ControlBus
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <detour#Detour> ;
+    pp:hasTarget <controlbus#ControlBus> .
+
+:Detour-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <detour#Detour> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:Detour-to-WireTap
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <detour#Detour> ;
+    pp:hasTarget <wiretap#WireTap> .
+
+:WireTap-to-CompetingConsumers
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <wiretap#WireTap> ;
+    pp:hasTarget <competingconsumers#CompetingConsumers> .
+
+:WireTap-to-ControlBus
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <wiretap#WireTap> ;
+    pp:hasTarget <controlbus#ControlBus> .
+
+:WireTap-to-Detour
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <wiretap#WireTap> ;
+    pp:hasTarget <detour#Detour> .
+
+:WireTap-to-DocumentMessage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <wiretap#WireTap> ;
+    pp:hasTarget <documentmessage#DocumentMessage> .
+
+:WireTap-to-MessageBroker
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <wiretap#WireTap> ;
+    pp:hasTarget <messagebroker#MessageBroker> .
+
+:WireTap-to-MessageStore
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <wiretap#WireTap> ;
+    pp:hasTarget <messagestore#MessageStore> .
+
+:WireTap-to-Point-to-PointChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <wiretap#WireTap> ;
+    pp:hasTarget <point-to-pointchannel#Point-to-PointChannel> .
+
+:WireTap-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <wiretap#WireTap> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:WireTap-to-RecipientList
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <wiretap#WireTap> ;
+    pp:hasTarget <recipientlist#RecipientList> .
+
+:MessageHistory-to-Aggregator
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagehistory#MessageHistory> ;
+    pp:hasTarget <aggregator#Aggregator> .
+
+:MessageHistory-to-ControlBus
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagehistory#MessageHistory> ;
+    pp:hasTarget <controlbus#ControlBus> .
+
+:MessageHistory-to-MessageRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagehistory#MessageHistory> ;
+    pp:hasTarget <messagerouter#MessageRouter> .
+
+:MessageHistory-to-MessageStore
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagehistory#MessageHistory> ;
+    pp:hasTarget <messagestore#MessageStore> .
+
+:MessageHistory-to-ProcessManager
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagehistory#MessageHistory> ;
+    pp:hasTarget <processmanager#ProcessManager> .
+
+:MessageHistory-to-Publish-SubscribeChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagehistory#MessageHistory> ;
+    pp:hasTarget <publish-subscribechannel#Publish-SubscribeChannel> .
+
+:MessageHistory-to-RecipientList
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagehistory#MessageHistory> ;
+    pp:hasTarget <recipientlist#RecipientList> .
+
+:MessageStore-to-ControlBus
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagestore#MessageStore> ;
+    pp:hasTarget <controlbus#ControlBus> .
+
+:MessageStore-to-MessageHistory
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagestore#MessageStore> ;
+    pp:hasTarget <messagehistory#MessageHistory> .
+
+:MessageStore-to-WireTap
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagestore#MessageStore> ;
+    pp:hasTarget <wiretap#WireTap> .
+
+:SmartProxy-to-CorrelationIdentifier
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <smartproxy#SmartProxy> ;
+    pp:hasTarget <correlationidentifier#CorrelationIdentifier> .
+
+:SmartProxy-to-MessageRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <smartproxy#SmartProxy> ;
+    pp:hasTarget <messagerouter#MessageRouter> .
+
+:SmartProxy-to-Request-Reply
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <smartproxy#SmartProxy> ;
+    pp:hasTarget <request-reply#Request-Reply> .
+
+:SmartProxy-to-ReturnAddress
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <smartproxy#SmartProxy> ;
+    pp:hasTarget <returnaddress#ReturnAddress> .
+
+:SmartProxy-to-WireTap
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <smartproxy#SmartProxy> ;
+    pp:hasTarget <wiretap#WireTap> .
+
+:TestMessage-to-Content-BasedRouter
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <testmessage#TestMessage> ;
+    pp:hasTarget <content-basedrouter#Content-BasedRouter> .
+
+:TestMessage-to-ControlBus
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <testmessage#TestMessage> ;
+    pp:hasTarget <controlbus#ControlBus> .
+
+:TestMessage-to-ReturnAddress
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <testmessage#TestMessage> ;
+    pp:hasTarget <returnaddress#ReturnAddress> .
+
+:ChannelPurger-to-CorrelationIdentifier
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <channelpurger#ChannelPurger> ;
+    pp:hasTarget <correlationidentifier#CorrelationIdentifier> .
+
+:ChannelPurger-to-InvalidMessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <channelpurger#ChannelPurger> ;
+    pp:hasTarget <invalidmessagechannel#InvalidMessageChannel> .
+
+:ChannelPurger-to-MessageChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <channelpurger#ChannelPurger> ;
+    pp:hasTarget <messagechannel#MessageChannel> .
+
+:ChannelPurger-to-MessageStore
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <channelpurger#ChannelPurger> ;
+    pp:hasTarget <messagestore#MessageStore> .
+
+:ChannelPurger-to-Point-to-PointChannel
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <channelpurger#ChannelPurger> ;
+    pp:hasTarget <point-to-pointchannel#Point-to-PointChannel> .
+
+
+# Cross Language Directed Links (links to pattern from different languages)
+:Messaging-to-LooseCoupling
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messaging#Messaging> ;
+    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/loosecoupling#LooseCoupling> ;
+    :hasDescription "components are *decoupled* using the messaging pattern"^^xsd:string ,
+        "the broker refered in the Loose Coupling Pattern corresponds to the Message Bus in Messaging"^^xsd:string .
+
+:Messaging-to-Message-orientedMiddleware
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messaging#Messaging> ;
+    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/message-orientedmiddleware#Message-orientedMiddleware> ;
+    :hasDescription "Asynchronous communication between partners via messaging"^^xsd:string .
+
+:MessageChannel-to-ElasticQueue
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagechannel#MessageChannel> ;
+    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/elasticqueue#ElasticQueue> ;
+    :hasDescription "Use a elastic queue, to enable a channel, that can adapt to the load if needed"^^xsd:string .
+
+:PipesandFilters-to-DistributedApplication
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <pipesandfilters#PipesandFilters> ;
+    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/distributedapplication#DistributedApplication> ;
+    :hasDescription "Pipes-and-filters-based decomposition focuses on for data-centric processing of an application. Each filter provides a certain function that is performed on input data and produces output data after processing. Multiple filters are interconnected with pipes, i.e, through messaging"^^xsd:string .
+
+:MessagingBridge-to-MessageMover
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagingbridge#MessagingBridge> ;
+    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/messagemover#MessageMover> ;
+    :hasDescription "identical"^^xsd:string ,
+        "different cloud provider = different messaging systems"^^xsd:string .
+
+:ProcessManager-to-DistributedApplication
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <processmanager#ProcessManager> ;
+    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/distributedapplication#DistributedApplication> ;
+    :hasDescription "Process-based decomposition focuses on the business processes supported by the application. These processes are comprised out of activities that are executed in a specific order. Functionality is divided into components with respect to the supported business activity"^^xsd:string .
+
+:ClaimCheck-to-Three-TierCloudApplication
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <claimcheck#ClaimCheck> ;
+    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/three-tiercloudapplication#Three-TierCloudApplication> ;
+    :hasDescription "separate data from business logic and presentation"^^xsd:string ,
+        "claim check can be used to get rid of the data in business logic"^^xsd:string .
+
+:ClaimCheck-to-StatelessComponent
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <claimcheck#ClaimCheck> ;
+    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/statelesscomponent#StatelessComponent> ;
+    :hasDescription "separate state from components via claim check, i.e. extract data from component but leave check to retrive data if needed again."^^xsd:string .
+
+:ClaimCheck-to-DataAccessComponent
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <claimcheck#ClaimCheck> ;
+    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/dataaccesscomponent#DataAccessComponent> ;
+    :hasDescription "since claim check has to deal with storing and accessing data consider the data access component"^^xsd:string .
+
+:TransactionalClient-to-Transaction-basedProcessor
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <transactionalclient#TransactionalClient> ;
+    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/transaction-basedprocessor#Transaction-basedProcessor> ;
+    :hasDescription "identical"^^xsd:string ,
+        "define transactional boundaries"^^xsd:string .
+
+:CompetingConsumers-to-StatelessComponent
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <competingconsumers#CompetingConsumers> ;
+    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/statelesscomponent#StatelessComponent> ;
+    :hasDescription "multiple instances of the same processing component. We cannot determine the exact component, so no state should be stored within the component"^^xsd:string .
+
+:CompetingConsumers-to-ProcessingComponent
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <competingconsumers#CompetingConsumers> ;
+    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/processingcomponent#ProcessingComponent> ;
+    :hasDescription "Processing Component for scaling out. Competing Consumer in a similar way, to split work, i.e. scaling the application / process"^^xsd:string .
+
+:IdempotentReceiver-to-IdempotentProcessor
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <idempotentreceiver#IdempotentReceiver> ;
+    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/idempotentprocessor#IdempotentProcessor> ;
+    :hasDescription "identical"^^xsd:string ,
+        "the same message can be processed multiple times"^^xsd:string .
+
+:MessageStore-to-BlobStorage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagestore#MessageStore> ;
+    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/blobstorage#BlobStorage> .
+
+:MessageStore-to-RelationalDatabase
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagestore#MessageStore> ;
+    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/relationaldatabase#RelationalDatabase> .
+
+:MessageStore-to-Key-ValueStorage
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagestore#MessageStore> ;
+    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/key-valuestorage#Key-ValueStorage> .
+
+:MessageStore-to-StrictConsistency
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagestore#MessageStore> ;
+    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/strictconsistency#StrictConsistency> .
+
+:MessageStore-to-EventualConsistency
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagestore#MessageStore> ;
+    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/eventualconsistency#EventualConsistency> .
+
+:MessageStore-to-DataAccessComponent
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
+    pp:hasSource <messagestore#MessageStore> ;
+    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/dataaccesscomponent#DataAccessComponent> .
+
+
+# Group Links (i.e. Hyperedges containing patterns that form a group)
+:MessageRouting
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternRelationDescriptor ;
+    :hasLabel "Message Routing"^^xsd:string ;
+    :hasPattern <content-basedrouter#Content-BasedRouter> ,
+        <messagefilter#MessageFilter> ,
+        <dynamicrouter#DynamicRouter> ,
+        <recipientlist#RecipientList> ,
+        <splitter#Splitter> ,
+        <aggregator#Aggregator> ,
+        <resequencer#Resequencer> ,
+        <composedmessageprocessor#ComposedMessageProcessor> ,
+        <scatter-gather#Scatter-Gather> ,
+        <routingslip#RoutingSlip> ,
+        <processmanager#ProcessManager> ,
+        <messagebroker#MessageBroker> .
+
+:MessageConstruction
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternRelationDescriptor ;
+    :hasLabel "Message Construction"^^xsd:string ;
+    :hasPattern <commandmessage#CommandMessage> ,
+        <documentmessage#DocumentMessage> ,
+        <eventmessage#EventMessage> ,
+        <request-reply#Request-Reply> ,
+        <returnaddress#ReturnAddress> ,
+        <correlationidentifier#CorrelationIdentifier> ,
+        <messagesequence#MessageSequence> ,
+        <messageexpiration#MessageExpiration> ,
+        <formatindicator#FormatIndicator> .
+
+:SystemManagement
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternRelationDescriptor ;
+    :hasLabel "System Management"^^xsd:string ;
+    :hasPattern <controlbus#ControlBus> ,
+        <detour#Detour> ,
+        <wiretap#WireTap> ,
+        <messagehistory#MessageHistory> ,
+        <messagestore#MessageStore> ,
+        <smartproxy#SmartProxy> ,
+        <testmessage#TestMessage> ,
+        <channelpurger#ChannelPurger> .
+
+:MessageTransformation
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternRelationDescriptor ;
+    :hasLabel "Message Transformation"^^xsd:string ;
+    :hasPattern <envelopewrapper#EnvelopeWrapper> ,
+        <contentenricher#ContentEnricher> ,
+        <contentfilter#ContentFilter> ,
+        <claimcheck#ClaimCheck> ,
+        <normalizer#Normalizer> ,
+        <canonicaldatamodel#CanonicalDataModel> .
+
+:IntegrationStyles
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternRelationDescriptor ;
+    :hasLabel "Integration Styles"^^xsd:string ;
+    :hasPattern <filetransfer#FileTransfer> ,
+        <shareddatabase#SharedDatabase> ,
+        <remoteprocedureinvocation#RemoteProcedureInvocation> ,
+        <messaging#Messaging> .
+
+:MessagingChannels
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternRelationDescriptor ;
+    :hasLabel "Messaging Channels"^^xsd:string ;
+    :hasPattern <point-to-pointchannel#Point-to-PointChannel> ,
+        <publish-subscribechannel#Publish-SubscribeChannel> ,
+        <datatypechannel#DatatypeChannel> ,
+        <invalidmessagechannel#InvalidMessageChannel> ,
+        <deadletterchannel#DeadLetterChannel> ,
+        <guaranteeddelivery#GuaranteedDelivery> ,
+        <channeladapter#ChannelAdapter> ,
+        <messagingbridge#MessagingBridge> ,
+        <messagebus#MessageBus> .
+
+:MessagingEndpoints
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternRelationDescriptor ;
+    :hasLabel "Messaging Endpoints"^^xsd:string ;
+    :hasPattern <messaginggateway#MessagingGateway> ,
+        <messagingmapper#MessagingMapper> ,
+        <transactionalclient#TransactionalClient> ,
+        <pollingconsumer#PollingConsumer> ,
+        <event-drivenconsumer#Event-DrivenConsumer> ,
+        <competingconsumers#CompetingConsumers> ,
+        <messagedispatcher#MessageDispatcher> ,
+        <selectiveconsumer#SelectiveConsumer> ,
+        <durablesubscriber#DurableSubscriber> ,
+        <idempotentreceiver#IdempotentReceiver> ,
+        <serviceactivator#ServiceActivator> .
+
+:MessagingSystems
+    rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternRelationDescriptor ;
+    :hasLabel "Messaging Systems"^^xsd:string ;
+    :hasPattern <messagechannel#MessageChannel> ,
+        <message#Message> ,
+        <pipesandfilters#PipesandFilters> ,
+        <messagerouter#MessageRouter> ,
+        <messagetranslator#MessageTranslator> ,
+        <messageendpoint#MessageEndpoint> .
+

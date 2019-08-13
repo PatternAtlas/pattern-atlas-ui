@@ -1,0 +1,20 @@
+@prefix : <http://purl.org/patternpedia/enterpriseintegrationpatterns#> .
+@prefix pp: <http://purl.org/patternpedia#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+
+<http://purl.org/patternpedia/enterpriseintegrationpatterns> 
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia> .
+
+
+:EnterpriseIntegrationPatterns 
+    rdf:type owl:NamedIndividual , pp:PatternLanguage ;
+    # just as example for now
+    pp:containsPattern <http://purl.org/patternpedia/enterpriseintegrationpatterns/statelesscomponent#StatelessComponent> ; 
+    pp:hasLogo "http://www.cloudcomputingpatterns.org/img/book.png"^^xsd:anyURI ;
+    pp:hasName "Enterprise Integration Patterns"^^xsd:string .

@@ -1,0 +1,747 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://purl.org/patternpedia/cloudcomputingpatterns/> .
+
+<staticworkload>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<staticworkload#StaticWorkload>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Static Workload"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "IT resources with an *equal utilization over time* experience Static Workload"^^xsd:string .
+
+
+<periodicworkload>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<periodicworkload#PeriodicWorkload>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Periodic Workload"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "IT resources with a peaking utilization at *reoccurring time intervals* experience periodic workload"^^xsd:string .
+
+
+<once-in-a-lifetimeworkload>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<once-in-a-lifetimeworkload#Once-in-a-lifetimeWorkload>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Once-in-a-lifetime Workload"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "IT resources with an *equal utilization over time* disturbed by a *strong peak occurring only once* experience Once-in-a-lifetime Workload"^^xsd:string .
+
+
+<unpredictableworkload>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<unpredictableworkload#UnpredictableWorkload>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Unpredictable Workload"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "IT resources with a *random and unforeseeable utilization over time* experience unpredictable workload"^^xsd:string .
+
+
+<continuouslychangingworkload>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<continuouslychangingworkload#ContinuouslyChangingWorkload>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Continuously Changing Workload"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "IT resources with a utilization that *grows or shrinks constantly over time* experience Continuously Changing Workload"^^xsd:string .
+
+
+<infrastructureasaservice%28iaas%29>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<infrastructureasaservice%28iaas%29#InfrastructureasaService%28IaaS%29>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Infrastructure as a Service (IaaS)"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Providers *share physical and virtual hardware IT resources between customers* to enable self-service, rapid elasticity, and pay-per-use pricing"^^xsd:string .
+
+
+<platformasaservice%28paas%29>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<platformasaservice%28paas%29#PlatformasaService%28PaaS%29>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Platform as a Service (PaaS)"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Providers share IT resources providing an *application hosting environment between customers* to enable self-service, rapid elasticity, and pay-per-use pricing"^^xsd:string .
+
+
+<softwareasaservice%28saas%29>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<softwareasaservice%28saas%29#SoftwareasaService%28SaaS%29>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Software as a Service (SaaS)"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Providers share IT resources providing *human-usable application software between customers* to enable self-service, rapid elasticity, and pay-per-use pricing"^^xsd:string .
+
+
+<publiccloud>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<publiccloud#PublicCloud>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Public Cloud"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "IT resources are provided as a service to a *very large customer group* in order to enable elastic use of a static resource pool"^^xsd:string .
+
+
+<privatecloud>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<privatecloud#PrivateCloud>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Private Cloud"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "IT resources are provided as a service *exclusively to one customer* in order to meet high requirements on *privacy, security, and trust* while enabling elastic use of a static resource pool as good as possible"^^xsd:string .
+
+
+<communitycloud>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<communitycloud#CommunityCloud>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Community Cloud"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "IT resources are provided as a service to a *group of customers trusting each other* in order to enable collaborative elastic use of a static resource pool"^^xsd:string .
+
+
+<hybridcloud>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<hybridcloud#HybridCloud>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Hybrid Cloud"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Different clouds and static data centers are *integrated to form a homogeneous hosting environment*."^^xsd:string .
+
+
+<elasticinfrastructure>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<elasticinfrastructure#ElasticInfrastructure>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Elastic Infrastructure"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Hosting of *virtual servers, disk storage, and configuration of network connectivity* is offered via a self-service interface over a network"^^xsd:string .
+
+
+<elasticplatform>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<elasticplatform#ElasticPlatform>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Elastic Platform"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Middleware for the *execution of custom applications, their communication, and data storage* is offered via a self-service interface over a network"^^xsd:string .
+
+
+<node-basedavailability>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<node-basedavailability#Node-basedAvailability>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Node-based Availability"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "A cloud provider *guarantees the availability of individual nodes*, such as *individual virtual servers, middleware components or hosted application components*"^^xsd:string .
+
+
+<environment-basedavailability>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<environment-basedavailability#Environment-basedAvailability>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Environment-based Availability"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "A cloud provider *guarantees the availability of the environment hosting individual nodes*, such as virtual servers or hosted application components"^^xsd:string .
+
+
+<hypervisor>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<hypervisor#Hypervisor>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Hypervisor"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "To enable the elasticity of clouds, the time required to provision and decommission servers is reduced through hardware virtualization"^^xsd:string .
+
+
+<executionenvironment>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<executionenvironment#ExecutionEnvironment>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Execution Environment"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "To avoid duplicate implementation of functionality, application components are deployed to a hosting environment providing middleware services as well as often used functionality"^^xsd:string, "share a hosting environment"^^xsd:string .
+
+
+<mapreduce>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<mapreduce#MapReduce>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Map Reduce"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Large data sets to be processed are *divided into smaller data chunks* and *distributed among processing* application components. Individual results are later consolidated"^^xsd:string .
+
+
+<blockstorage>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<blockstorage#BlockStorage>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Block Storage"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Centralized storage is integrated into servers as a local hard drive managed by the operating system to enable access to this storage via the local file system"^^xsd:string, "central storage accessed via local file system"^^xsd:string .
+
+
+<blobstorage>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<blobstorage#BlobStorage>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Blob Storage"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Data is provided in form of *large files* that are made available in a *file system-like fashion* by Storage Offerings that provides elasticity"^^xsd:string .
+
+
+<relationaldatabase>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<relationaldatabase#RelationalDatabase>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Relational Database"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Data is *structured according to a schema* that is enforced during data manipulation and enables expressive queries of handled data"^^xsd:string .
+
+
+<key-valuestorage>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<key-valuestorage#Key-ValueStorage>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Key-Value Storage"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "*Semi-structured or unstructured data* is stored with limited querying support but *high-performance, availability, and flexibility*"^^xsd:string .
+
+
+<strictconsistency>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<strictconsistency#StrictConsistency>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Strict Consistency"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Data is *stored at different locations (replicas)* to improve response time and to avoid data loss in case of failures while *consistency of replicas is ensured* at all times"^^xsd:string .
+
+
+<eventualconsistency>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<eventualconsistency#EventualConsistency>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Eventual Consistency"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "If data is stored at different locations (replicas) to improve response time and avoid data loss in case of failures. Performance and the availability of data in case of network partitioning are enabled by *ensuring data consistency eventually* and not at all times"^^xsd:string .
+
+
+<virtualnetworking>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<virtualnetworking#VirtualNetworking>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Virtual Networking"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Networking resources are virtualized to empower customers to *configure networks, firewalls, and remote access* using a self-service interface"^^xsd:string .
+
+
+<message-orientedmiddleware>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<message-orientedmiddleware#Message-orientedMiddleware>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Message-oriented Middleware"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "*Asynchronous message-based communication is provided* while hiding complexity resulting from addressing, routing, or data formats from communication partners to make interaction robust and flexible"^^xsd:string .
+
+
+<exactly-oncedelivery>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<exactly-oncedelivery#Exactly-onceDelivery>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Exactly-once Delivery"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "For many critical systems *duplicate messages are inacceptable*. The messaging system ensures that each message is delivered exactly once by filtering possible message duplicates automatically"^^xsd:string .
+
+
+<at-least-oncedelivery>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<at-least-oncedelivery#At-least-onceDelivery>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "At-least-once Delivery"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "In case of failures that lead to message loss or take too long to recover from, messages are retransmitted to assure they are *delivered at least once*"^^xsd:string .
+
+
+<transaction-baseddelivery>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<transaction-baseddelivery#Transaction-basedDelivery>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Transaction-based Delivery"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Clients retrieve messages under a transactional context to *ensure that messages are received by a handling component*"^^xsd:string .
+
+
+<timeout-baseddelivery>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<timeout-baseddelivery#Timeout-basedDelivery>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Timeout-based Delivery"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Clients acknowledge message receptions to ensure that messages are received properly"^^xsd:string, "message is invisible to others after received by one receiver. Gets deleted after ack. (Where is the timeout? Nameing confusion...)"^^xsd:string .
+
+
+<loosecoupling>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<loosecoupling#LooseCoupling>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Loose Coupling"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "A *communication intermediary separates application functionality* from concerns of communication partners regarding their location, implementation platform, the time of communication, and the used data format"^^xsd:string, "Components are decoupled by interacting through a broker"^^xsd:string .
+
+
+<distributedapplication>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<distributedapplication#DistributedApplication>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Distributed Application"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "A cloud application *divides provided functionality among multiple application components* that can be scaled out independently"^^xsd:string .
+
+
+<statefulcomponent>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<statefulcomponent#StatefulComponent>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Stateful Component"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Multiple instances of a scaled-out application component *synchronize their internal state* to provide a unified behavior"^^xsd:string .
+
+
+<statelesscomponent>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<statelesscomponent#StatelessComponent>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Stateless Component"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "*State is handled external of application components* to ease their scaling-out and to make the application more tolerant to component failures"^^xsd:string .
+
+
+<userinterfacecomponent>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<userinterfacecomponent#UserInterfaceComponent>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "User Interface Component"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Interactive *synchronous access to applications* is provided to humans, while application-internal interaction is realized asynchronously when possible to ensure Loose Coupling. Furthermore, the user interface should be customizable to be used by different customers"^^xsd:string, "decouple human ui as separate stateless components"^^xsd:string .
+
+
+<processingcomponent>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<processingcomponent#ProcessingComponent>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Processing Component"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Possibly long running processing *functionality is handled by separate components* to enable elastic scaling. Processing functionality is further made configurable to support different customer requirements"^^xsd:string .
+
+
+<batchprocessingcomponent>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<batchprocessingcomponent#BatchProcessingComponent>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Batch Processing Component"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Requests are *delayed* until environmental conditions make their processing feasible"^^xsd:string, "Requests stored in Request Store, Processed as Batch"^^xsd:string .
+
+
+<dataaccesscomponent>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<dataaccesscomponent#DataAccessComponent>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Data Access Component"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Functionality to store and access data elements is provided by special components that *isolate complexity of data access, enable additional data consistency, and ensure adjustability of handled data elements* to meet different customer requirements"^^xsd:string .
+
+
+<dataabstractor>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<dataabstractor#DataAbstractor>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Data Abstractor"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "The data provided to users or other application components is abstracted to inherently support eventually consistent data storage through the *use of abstractions and approximations*"^^xsd:string .
+
+
+<idempotentprocessor>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<idempotentprocessor#IdempotentProcessor>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Idempotent Processor"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Application functions detect duplicate messages and inconsistent data or are designed to be *immune to these conditions*"^^xsd:string .
+
+
+<transaction-basedprocessor>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<transaction-basedprocessor#Transaction-basedProcessor>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Transaction-based Processor"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Components receive messages or read data and process the obtained information under a transactional context to ensure that *all received messages are processes* and *all altered data is consistent after processing*, respectively"^^xsd:string .
+
+
+<timeout-basedmessageprocessor>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<timeout-basedmessageprocessor#Timeout-basedMessageProcessor>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Timeout-based Message Processor"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "*Clients acknowledge message receptions and processing* to ensure that all messages are handled by an application. If a message is not acknowledged after a certain timeout, it is processed by a different client"^^xsd:string .
+
+
+<multi-componentimage>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<multi-componentimage#Multi-ComponentImage>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Multi-Component Image"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Virtual servers *host multiple application components that may not be active* at all times to reduce provisioning and decommissioning operations"^^xsd:string, "Multiple appliction components are hosted on a single virtual server"^^xsd:string .
+
+
+<sharedcomponent>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<sharedcomponent#SharedComponent>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Shared Component"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "A component is *accessed by multiple tenants* to leverage economies of scale"^^xsd:string .
+
+
+<tenant-isolatedcomponent>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<tenant-isolatedcomponent#Tenant-isolatedComponent>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Tenant-isolated Component"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "A component shared between tenants *avoids influences between tenants* regarding assured performance, available storage capacity, and accessibility of functionality and data"^^xsd:string .
+
+
+<dedicatedcomponent>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<dedicatedcomponent#DedicatedComponent>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Dedicated Component"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Components providing critical functionality shall be *provided exclusively to tenants* while still allowing other components to be shared between tenants"^^xsd:string .
+
+
+<restricteddataaccesscomponent>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<restricteddataaccesscomponent#RestrictedDataAccessComponent>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Restricted Data Access Component"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "*Data provided* to clients from different environments *is adjusted* based on access restrictions"^^xsd:string .
+
+
+<messagemover>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<messagemover#MessageMover>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Message Mover"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Messages are *moved automatically between different cloud providers* to provide unified access to application components using messaging"^^xsd:string .
+
+
+<applicationcomponentproxy>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<applicationcomponentproxy#ApplicationComponentProxy>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Application Component Proxy"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "An application component is *made available in an environment from where it cannot be accessed directly* by deploying an Application Component Proxy. The communication between this proxy and the application component is initiated and maintained from the environment where communication is unrestricted"^^xsd:string .
+
+
+<compliantdatareplication>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<compliantdatareplication#CompliantDataReplication>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Compliant Data Replication"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Data is replicated among multiple environments that may handle different data subsets. During replication data is obfuscated and deleted depending on laws and security regulations. Data updates are adjusted automatically to reflect the different data structures handled by environments"^^xsd:string .
+
+
+<integrationprovider>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<integrationprovider#IntegrationProvider>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Integration Provider"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "*Integration functionality* such as messaging and shared data *is hosted by a separate provider* to enable integrate of otherwise separated hosting environments"^^xsd:string .
+
+
+<provideradapter>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<provideradapter#ProviderAdapter>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Provider Adapter"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "*Provider interfaces are encapsulated and mapped to unified interfaces* used in applications to separate concerns of interactions with the provider from application functionality"^^xsd:string .
+
+
+<managedconfiguration>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<managedconfiguration#ManagedConfiguration>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Managed Configuration"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Scaled-out application components should use a *centrally stored configuration* to provide a unified behavior that can be adjusted simultaneously"^^xsd:string .
+
+
+<elasticitymanager>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<elasticitymanager#ElasticityManager>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Elasticity Manager"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "The utilization of IT resources on which an elastically scaled-out application is hosted, for example, virtual servers is used to determine the number of required application component instances"^^xsd:string, "instances of application components should be provisioned and decommissioned automatically based on the current workload"^^xsd:string .
+
+
+<elasticloadbalancer>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<elasticloadbalancer#ElasticLoadBalancer>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Elastic Load Balancer"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "The number of synchronous accesses to an elastically scaled-out application is used to determine the number of required application component instances"^^xsd:string, "number of components depend on the number of synchronous accesses"^^xsd:string .
+
+
+<elasticqueue>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<elasticqueue#ElasticQueue>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Elastic Queue"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "The number of asynchronous accesses via messaging to an elastically scaled-out application is used to adjust the number of required application component instances"^^xsd:string, "number of components depend on the workload of the queue"^^xsd:string .
+
+
+<watchdog>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<watchdog#Watchdog>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Watchdog"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Applications cope with failures automatically by *monitoring and replacing application component instances* if the provider-assured availability is insufficient"^^xsd:string .
+
+
+<elasticitymanagementprocess>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<elasticitymanagementprocess#ElasticityManagementProcess>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Elasticity Management Process"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Application component instances are *added automatically* to an application to cope with increasing workload. If the workload decreases application component *instances are removed* respectively"^^xsd:string .
+
+
+<featureflagmanagementprocess>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<featureflagmanagementprocess#FeatureFlagManagementProcess>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Feature Flag Management Process"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "If the cloud cannot provide required resources in time, the features provided by application components are degraded gracefully to replace or disable unimportant ones in order to keep vital features operational"^^xsd:string, "unimportant components will be replaced with important ones"^^xsd:string .
+
+
+<updatetransitionprocess>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<updatetransitionprocess#UpdateTransitionProcess>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Update Transition Process"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "When a new application component version, middleware versions etc. become available, *running application components are updated seamlessly*"^^xsd:string .
+
+
+<standbypoolingprocess>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<standbypoolingprocess#StandbyPoolingProcess>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Standby Pooling Process"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Application component instances should be *kept on standby to increase provisioning speed* and utilize billing time-slots efficiently"^^xsd:string, "standby instead of shutdown"^^xsd:string .
+
+
+<resiliencymanagementprocess>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<resiliencymanagementprocess#ResiliencyManagementProcess>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Resiliency Management Process"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Application components are *checked for failures and replaced automatically* without human intervention"^^xsd:string .
+
+
+<two-tiercloudapplication>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<two-tiercloudapplication#Two-TierCloudApplication>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Two-Tier Cloud Application"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "*Presentation and business logic* is bundled to one stateless tier that is easy to scale. This tier is *separated from the data tier* that is harder to scale and often handled by a provider-supplied storage offering"^^xsd:string .
+
+
+<three-tiercloudapplication>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<three-tiercloudapplication#Three-TierCloudApplication>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Three-Tier Cloud Application"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "The *presentation, business logic, and data handling is realized as separate tiers* to scale stateless presentation and compute-intensive processing independently of the data tier, which is harder to scale and often handled by the cloud provider"^^xsd:string .
+
+
+<contentdistributionnetwork>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<contentdistributionnetwork#ContentDistributionNetwork>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Content Distribution Network"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Applications component instances and data handled by them are globally distributed to meet the access performance required by a global user group"^^xsd:string .
+
+
+<hybriduserinterface>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<hybriduserinterface#HybridUserInterface>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Hybrid User Interface"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Varying workload from a *user group interacting asynchronously* with an application is *handled in an elastic environment* while the remainder of an application resides in a static environment"^^xsd:string .
+
+
+<hybridprocessing>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<hybridprocessing#HybridProcessing>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Hybrid Processing"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "*Processing functionality* that experiences varying workload *is hosted in an elastic cloud* while the remainder of an application resides in a static environment"^^xsd:string .
+
+
+<hybriddata>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<hybriddata#HybridData>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Hybrid Data"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "*Data* of varying size *is hosted in an elastic cloud* while the remainder of an application resides in a static environment"^^xsd:string .
+
+
+<hybridbackup>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<hybridbackup#HybridBackup>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Hybrid Backup"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "*Data is periodically extracted* from an application to be *archived in an elastic cloud* for disaster recovery purposes"^^xsd:string .
+
+
+<hybridbackend>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<hybridbackend#HybridBackend>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Hybrid Backend"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "*Backend functionality* comprised of data intensive processing and data storage is experiencing varying workloads and is *hosted in an elastic cloud* while the rest of an application is hosted in a static data center"^^xsd:string .
+
+
+<hybridapplicationfunctions>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<hybridapplicationfunctions#HybridApplicationFunctions>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Hybrid Application Functions"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "*Some application functionality* provided by user interfaces, processing, and data handling is experiencing varying workload and is *hosted in an elastic cloud* while other application functionality of the same type is hosted in a static environment"^^xsd:string .
+
+
+<hybridmultimediawebapplication>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<hybridmultimediawebapplication#HybridMultimediaWebApplication>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Hybrid Multimedia Web Application"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "Website content is largely provided from a static environment. *Multimedia files* that cannot be cached efficiently are *provided from a large distributed elastic environment* for high-performance access"^^xsd:string .
+
+
+<hybriddevelopmentenvironment>
+    rdf:type owl:Ontology ;
+    owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+
+<hybriddevelopmentenvironment#HybridDevelopmentEnvironment>
+    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+    <http://purl.org/patternpedia#hasName> "Hybrid Development Environment"^^xsd:string ;
+    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDescription> "*A production runtime environment is replicated and mocked* in an elastic environment where new applications can be developed and tested"^^xsd:string .
+
+
