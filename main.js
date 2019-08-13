@@ -9962,7 +9962,8 @@ var PatternLanguageManagementResolverService = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.pos.loadLinkedOpenPatternGraphs()];
                     case 1:
                         _a.sent();
-                        return [2 /*return*/, this.loader.loadContentFromStore()];
+                        return [4 /*yield*/, this.loader.loadContentFromStore()];
+                    case 2: return [2 /*return*/, _a.sent()];
                 }
             });
         });
