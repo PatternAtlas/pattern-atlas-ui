@@ -1,14 +1,14 @@
-# https://docs.travis-ci.com/user/deployment/pages/
 language: node_js
 node_js:
-  - "10"
+- '10'
 cache:
   directories:
-    - node_modules
+  - node_modules
 script: npm run build
 deploy:
   provider: pages
   skip-cleanup: true
-  github-token: $GITHUB_TOKEN
+  github-token:
+    secure: IPnppfDkfHwW1yYHgEn0YZXRjx0wKwUh64mGfjB0oE9lTIqTF/glL2OA55u1hXTOjCR/RfsOYwofOg7tX0/2iGGw74zY8BeqjAbDAhHGGRQ/1xeieWgg1k1dnrjpy5Arf5Jgy1k364a7268djg4X2N6mP2qNaO1QYc1btR7zhjHNWiY/B9DxdV/t20O2o870M59jvoZ3L0ZY1IhbhwxqXvoGOvU576JzGyOpkk5+V+BFptn0nIhXSsR5e80Tt09NGi4IDUw2p4RlaM3lZCaMelYEo6M+Nui5c+5PV0kXngRHu3Mk73uTDxlQTDgKpND6Eh/ESYy7ejx9XAQgfi6NGb2ReNVeezdZaRVwsGW3CQAAFwj3g1Amu9Q0DuSogJiOAqcKBlssc95os4EGCLeQmxpiaDPjfQjD6DdNGbIsaSp+XdbB8QSmhSz/yUpZ+3d2fcdpYufbA5rc+DxIf4RH5Qyk66w2qSeJjHBJUJr6fhY4m8e+qXvFbFUfhP1mLo1h8xhH40pCYtrgNSGTokloIApZ43qyg4Et6JahGwFPQbF/+ZzHTq2VU2BXvmfCRyq+z3RDVx/Jt2D8V675EpecI03hQE6yECl8w9iRbGpNzcfJgQd8HoaQaanZdfoQ7+3eD4SgZlWewAQR28UXzKHWw/nmsC8Jap89vKYeX7DuZ0c=
   keep-history: true
   local-dir: dist/pattern-pedia
