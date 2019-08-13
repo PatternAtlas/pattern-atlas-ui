@@ -1,5 +1,4 @@
 # PatternPedia
-First Build ;-)
 
 ## License
 
