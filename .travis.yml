@@ -1,0 +1,12 @@
+# https://docs.travis-ci.com/user/deployment/pages/
+language: node_js
+cache:
+  directories:
+    - node_modules
+script: npm run build
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  keep-history: true
+  local-dir: dist
