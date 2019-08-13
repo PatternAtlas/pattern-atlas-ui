@@ -106,8 +106,8 @@ export class NodeInfoboxComponent implements OnInit, OnChanges {
   private filterGroupId(id: string) {
     let uri = IriConverter.convertIdToIri(id);
     let noPrefix = uri.includes('patternlanguages') 
-      ? uri.replace('http://purl.org/patternpedia/patternlanguages/', '') 
-      : uri.replace('http://purl.org/patternpedia/', '');
+      ? uri.replace('https://purl.org/patternpedia/patternlanguages/', '') 
+      : uri.replace('https://purl.org/patternpedia/', '');
     let slash = noPrefix.indexOf('/');
     
     return noPrefix.substr(0, slash);

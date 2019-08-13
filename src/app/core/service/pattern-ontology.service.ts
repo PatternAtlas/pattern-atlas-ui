@@ -47,7 +47,7 @@ export class PatternOntologyService implements SparqlExecutor {
     store.registerDefaultNamespace('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
     store.registerDefaultNamespace('rdfs', 'http://www.w3.org/2000/01/rdf-schema#');
     store.registerDefaultNamespace('xsd', 'http://www.w3.org/2001/XMLSchema#');
-    store.registerDefaultNamespace('pp', 'http://purl.org/patternpedia#');
+    store.registerDefaultNamespace('pp', 'https://purl.org/patternpedia#');
   }
 
   /**
@@ -193,7 +193,7 @@ export class PatternOntologyService implements SparqlExecutor {
       if (this.cookieService.get('patternpedia_github_token')) {
         const githubUrl = this.githubPersistenceService.githubBaseUrl;
         let url = iri;
-        if (iri === 'http://purl.org/patternpedia') {
+        if (iri === 'https://purl.org/patternpedia') {
           url = githubUrl + '/patternpedia.ttl';
         }
         return this.githubPersistenceService.getFile(url).pipe(
@@ -235,44 +235,44 @@ export class PatternOntologyService implements SparqlExecutor {
     console.log('LOADED Ontologies!');
     const store = this.store;
     this.registerDefaultNameSpaces(store);
-    console.log('LOADING http://purl.org/patternpedia to store');
+    console.log('LOADING https://purl.org/patternpedia to store');
     console.log('Result: ', await this.loadToStore('text/turtle',
-      loadResult[0], 'http://purl.org/patternpedia'));
+      loadResult[0], 'https://purl.org/patternpedia'));
 
     // loading the enterprise integration patterns turtle file
-    console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns');
+    console.log('LOADING https://purl.org/patternpedia/cloudcomputingpatterns');
     console.log('Result: ', await this.loadToStore('text/turtle',
-      loadResult[1], 'http://purl.org/patternpedia/cloudcomputingpatterns'));
+      loadResult[1], 'https://purl.org/patternpedia/cloudcomputingpatterns'));
     // loading the nodes
-    console.log('LOADING NODES OF http://purl.org/patternpedia/cloudcomputingpatterns');
+    console.log('LOADING NODES OF https://purl.org/patternpedia/cloudcomputingpatterns');
     console.log('Result: ', await this.loadToStore('text/turtle',
-      loadResult[2], 'http://purl.org/patternpedia/cloudcomputingpatterns'));
+      loadResult[2], 'https://purl.org/patternpedia/cloudcomputingpatterns'));
     // loading the links
-    console.log('LOADING EDGES OF http://purl.org/patternpedia/cloudcomputingpatterns');
+    console.log('LOADING EDGES OF https://purl.org/patternpedia/cloudcomputingpatterns');
     console.log('Result: ', await this.loadToStore('text/turtle',
-      loadResult[3], 'http://purl.org/patternpedia/cloudcomputingpatterns'));
+      loadResult[3], 'https://purl.org/patternpedia/cloudcomputingpatterns'));
 
-    console.log('LOADING http://purl.org/patternpedia/internetofthingspatterns/ to store');
+    console.log('LOADING https://purl.org/patternpedia/internetofthingspatterns/ to store');
     console.log('Result: ', await this.loadToStore('text/turtle',
-      loadResult[4], 'http://purl.org/patternpedia/internetofthingspatterns'));
-    console.log('LOADING http://purl.org/patternpedia/internetofthingspatterns/deviceshadow to store');
+      loadResult[4], 'https://purl.org/patternpedia/internetofthingspatterns'));
+    console.log('LOADING https://purl.org/patternpedia/internetofthingspatterns/deviceshadow to store');
     console.log('Result: ', await this.loadToStore('text/turtle',
-      loadResult[5], 'http://purl.org/patternpedia/internetofthingspatterns/devicegateway'));
+      loadResult[5], 'https://purl.org/patternpedia/internetofthingspatterns/devicegateway'));
     console.log('Result: ', await this.loadToStore('text/turtle',
-      loadResult[6], 'http://purl.org/patternpedia/internetofthingspatterns/devicegateway'));
+      loadResult[6], 'https://purl.org/patternpedia/internetofthingspatterns/devicegateway'));
 
     // loading the enterprise integration patterns turtle file
-    console.log('LOADING http://purl.org/patternpedia/enterpriseintegrationpatterns');
+    console.log('LOADING https://purl.org/patternpedia/enterpriseintegrationpatterns');
     console.log('Result: ', await this.loadToStore('text/turtle',
-      loadResult[7], 'http://purl.org/patternpedia/enterpriseintegrationpatterns'));
+      loadResult[7], 'https://purl.org/patternpedia/enterpriseintegrationpatterns'));
     // loading the nodes
-    console.log('LOADING NODES OF http://purl.org/patternpedia/enterpriseintegrationpatterns');
+    console.log('LOADING NODES OF https://purl.org/patternpedia/enterpriseintegrationpatterns');
     console.log('Result: ', await this.loadToStore('text/turtle',
-      loadResult[8], 'http://purl.org/patternpedia/enterpriseintegrationpatterns'));
+      loadResult[8], 'https://purl.org/patternpedia/enterpriseintegrationpatterns'));
     // loading the links
-    console.log('LOADING EDGES OF http://purl.org/patternpedia/enterpriseintegrationpatterns');
+    console.log('LOADING EDGES OF https://purl.org/patternpedia/enterpriseintegrationpatterns');
     console.log('Result: ', await this.loadToStore('text/turtle',
-      loadResult[9], 'http://purl.org/patternpedia/enterpriseintegrationpatterns'));
+      loadResult[9], 'https://purl.org/patternpedia/enterpriseintegrationpatterns'));
   }
 
 
@@ -281,7 +281,7 @@ export class PatternOntologyService implements SparqlExecutor {
     let patternpediaResult = await this.http.get(githubUrl + '/patternpedia.ttl').toPromise();
     const loadedResult = atob((<GithubFileResponse>patternpediaResult).content);
     console.log('Result: ', await this.loadToStore('text/turtle',
-      loadedResult, 'http://purl.org/patternpedia'));
+      loadedResult, 'https://purl.org/patternpedia'));
     const store = this.store;
     this.registerDefaultNameSpaces(store);
     console.log('LOADING Ontologies...');
@@ -336,9 +336,9 @@ export class PatternOntologyService implements SparqlExecutor {
                     console.log('--->', loadPLDetailsResult);
                     const pl = new PatternLanguage(entry.patternlanguage.value, null, []);
                     for (const propEntry of loadPLDetailsResult) {
-                      if ('http://purl.org/patternpedia#hasLogo' === propEntry.p.value) {
+                      if ('https://purl.org/patternpedia#hasLogo' === propEntry.p.value) {
                         pl.logos.push(propEntry.o.value);
-                      } else if ('http://purl.org/patternpedia#hasName' === propEntry.p.value) {
+                      } else if ('https://purl.org/patternpedia#hasName' === propEntry.p.value) {
                         pl.name = propEntry.o.value;
                       }
                     }
@@ -487,7 +487,7 @@ export class PatternOntologyService implements SparqlExecutor {
       store = this.store;
     }
     pl = !pl ? new PatternLanguage(
-      'http://purl.org/patternpedia#InternetOfThingsPatterns',
+      'https://purl.org/patternpedia#InternetOfThingsPatterns',
       'Internet of Things Patterns',
       new Array<string>('http://placekitten.com/150/151')
     ) : pl;
@@ -519,10 +519,10 @@ export class PatternOntologyService implements SparqlExecutor {
   async getPatternGraphsOfLinkedOpenPatterns(): Promise<PatternGraphContainedInPP[]> {
     // Function taken from Loader
     // TODO: move functionality to avoid duplicate code
-    const supportedIRI = 'http://purl.org/patternpedia#LinkedOpenPatterns';
+    const supportedIRI = 'https://purl.org/patternpedia#LinkedOpenPatterns';
     const qryPatternGraphs = `SELECT DISTINCT ?patterngraph
                                       WHERE {
-                                          <${supportedIRI}> <http://purl.org/patternpedia#containsPatternGraph> ?patterngraph
+                                          <${supportedIRI}> <https://purl.org/patternpedia#containsPatternGraph> ?patterngraph
                                       }`;
     const patternGraphs = await this.exec(qryPatternGraphs, [IriConverter.getFileName(supportedIRI)]);
 
@@ -553,7 +553,7 @@ export class PatternOntologyService implements SparqlExecutor {
     const qryPatternGraphs = `SELECT ?logo
         WHERE {
             ?pl rdf:type owl:NamedIndividual .
-            ?pl <http://purl.org/patternpedia#hasLogo> ?logo .
+            ?pl <https://purl.org/patternpedia#hasLogo> ?logo .
         }`;
 
     return this.exec(qryPatternGraphs, [IriConverter.getFileName(graphIri)]);

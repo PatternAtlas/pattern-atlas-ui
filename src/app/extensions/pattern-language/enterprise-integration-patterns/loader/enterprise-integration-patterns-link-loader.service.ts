@@ -10,20 +10,20 @@ import { IriConverter } from 'src/app/core/util/iri-converter';
 export class EnterpriseIntegrationPatternsLinkLoaderService extends Loader<Link> {
 
   constructor(private pos: PatternOntologyService) { 
-    super('http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos);
+    super('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos);
   }
 
   async selectContentFromStore(): Promise<any> {
     // select all directed links
     const qry = `SELECT ?uri ?source ?target ?description
       WHERE {
-          ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternDirectedRelationDescriptor> .
-          ?uri <http://purl.org/patternpedia#hasSource> ?source .
-          ?uri <http://purl.org/patternpedia#hasTarget> ?target .
-          OPTIONAL { ?uri <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description . }
+          ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternDirectedRelationDescriptor> .
+          ?uri <https://purl.org/patternpedia#hasSource> ?source .
+          ?uri <https://purl.org/patternpedia#hasTarget> ?target .
+          OPTIONAL { ?uri <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description . }
       }`;
     // we only need information from the links, not the actual patterns. Thus the URI of the links is enough
-    return this.executor.exec(qry, ["http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links"]);
+    return this.executor.exec(qry, ["https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links"]);
   }
 
   mapTriples(triples: any): Promise<Map<string, any>> {

@@ -1,12 +1,12 @@
-@prefix : <http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer#> .
+@prefix : <https://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-<http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer> rdf:type owl:Ontology ;
-	owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> .
+<https://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer> rdf:type owl:Ontology ;
+	owl:imports <https://purl.org/patternpedia/cloudcomputingpatterns> .
 
 # #################################################################
 # #
@@ -14,13 +14,13 @@
 # #
 # #################################################################
 
-# http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer#ElasticLoadBalancer
-<http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer#ElasticLoadBalancer> rdf:type owl:NamedIndividual ,
-                                         <http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
-                    <http://purl.org/patternpedia#hasName> "Elastic Load Balancer"^^xsd:string ;
-                    <http://purl.org/patternpedia/cloudcomputingpatterns#hasContext> "Application components of a Distributed Application shall be scaled out automatically. Requests sent to an application shall be used as an indicator for the currently experienced workload from which the required number of components instances shall be deducted."^^xsd:string ;
-                    <http://purl.org/patternpedia/cloudcomputingpatterns#hasDrivingQuestion> "How can the number of required application component instances be determined based on monitored synchronous accesses?"^^xsd:string ;
-                    <http://purl.org/patternpedia/cloudcomputingpatterns#hasIcon> "http://www.cloudcomputingpatterns.org/icons/elastic_load_balancer_icon.png"^^xsd:anyURI ;
-                    <http://purl.org/patternpedia/cloudcomputingpatterns#hasIntent> "The number of synchronous accesses to an elastically scaled-out application is used to determine the number of required application component instances."^^xsd:string ;
-                    <http://purl.org/patternpedia/cloudcomputingpatterns#hasSolution> "Based on the number of synchronous requests handled by a load balancer and possibly other utilization information, the required number of required component instances is determined."^^xsd:string ;
-                    <http://purl.org/patternpedia/cloudcomputingpatterns#hasSolutionSketch> "http://www.cloudcomputingpatterns.org/sketches/elastic_load_balancer_sketch.png"^^xsd:anyURI .
+# https://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer#ElasticLoadBalancer
+<https://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer#ElasticLoadBalancer> rdf:type owl:NamedIndividual ,
+                                         <https://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern> ;
+                    <https://purl.org/patternpedia#hasName> "Elastic Load Balancer"^^xsd:string ;
+                    <https://purl.org/patternpedia/cloudcomputingpatterns#hasContext> "Application components of a Distributed Application shall be scaled out automatically. Requests sent to an application shall be used as an indicator for the currently experienced workload from which the required number of components instances shall be deducted."^^xsd:string ;
+                    <https://purl.org/patternpedia/cloudcomputingpatterns#hasDrivingQuestion> "How can the number of required application component instances be determined based on monitored synchronous accesses?"^^xsd:string ;
+                    <https://purl.org/patternpedia/cloudcomputingpatterns#hasIcon> "https://www.cloudcomputingpatterns.org/icons/elastic_load_balancer_icon.png"^^xsd:anyURI ;
+                    <https://purl.org/patternpedia/cloudcomputingpatterns#hasIntent> "The number of synchronous accesses to an elastically scaled-out application is used to determine the number of required application component instances."^^xsd:string ;
+                    <https://purl.org/patternpedia/cloudcomputingpatterns#hasSolution> "Based on the number of synchronous requests handled by a load balancer and possibly other utilization information, the required number of required component instances is determined."^^xsd:string ;
+                    <https://purl.org/patternpedia/cloudcomputingpatterns#hasSolutionSketch> "https://www.cloudcomputingpatterns.org/sketches/elastic_load_balancer_sketch.png"^^xsd:anyURI .

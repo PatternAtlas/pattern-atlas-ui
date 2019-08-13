@@ -1,12 +1,12 @@
 # Definition of prefixes
-@prefix : <http://purl.org/patternpedia/cloudcomputingpatterns#> .
-@prefix pp: <http://purl.org/patternpedia#> .
+@prefix : <https://purl.org/patternpedia/cloudcomputingpatterns#> .
+@prefix pp: <https://purl.org/patternpedia#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@base <http://purl.org/patternpedia/cloudcomputingpatterns/> .
+@base <https://purl.org/patternpedia/cloudcomputingpatterns/> .
 
 
 # Individual Directed Links
@@ -1650,57 +1650,57 @@
 :Message-orientedMiddleware-to-GuaranteedDelivery
     rdf:type owl:NamedIndividual , :CloudComputingPatternDirectedRelationDescriptor ;
     pp:hasSource <message-orientedmiddleware#Message-orientedMiddleware> ;
-    pp:hasTarget <http://purl.org/patternpedia/enterpriseintegrationpatterns/guaranteeddelivery#GuaranteedDelivery> ;
+    pp:hasTarget <https://purl.org/patternpedia/enterpriseintegrationpatterns/guaranteeddelivery#GuaranteedDelivery> ;
     :hasDescription "messages will arrive at destination eventually. Messages will not be lost"^^xsd:string .
 
 :LooseCoupling-to-Messaging
     rdf:type owl:NamedIndividual , :CloudComputingPatternDirectedRelationDescriptor ;
     pp:hasSource <loosecoupling#LooseCoupling> ;
-    pp:hasTarget <http://purl.org/patternpedia/enterpriseintegrationpatterns/messaging#Messaging> ;
+    pp:hasTarget <https://purl.org/patternpedia/enterpriseintegrationpatterns/messaging#Messaging> ;
     :hasDescription "components are *decoupled* using the messaging pattern"^^xsd:string ,
         "the broker refered in the Loose Coupling Pattern corresponds to the Message Bus in Messaging"^^xsd:string .
 
 :DistributedApplication-to-PipesandFilters
     rdf:type owl:NamedIndividual , :CloudComputingPatternDirectedRelationDescriptor ;
     pp:hasSource <distributedapplication#DistributedApplication> ;
-    pp:hasTarget <http://purl.org/patternpedia/enterpriseintegrationpatterns/pipesandfilters#PipesandFilters> ;
+    pp:hasTarget <https://purl.org/patternpedia/enterpriseintegrationpatterns/pipesandfilters#PipesandFilters> ;
     :hasDescription "multiple application components are distributed via pipes and Filters"^^xsd:string .
 
 :DistributedApplication-to-ProcessManager
     rdf:type owl:NamedIndividual , :CloudComputingPatternDirectedRelationDescriptor ;
     pp:hasSource <distributedapplication#DistributedApplication> ;
-    pp:hasTarget <http://purl.org/patternpedia/enterpriseintegrationpatterns/processmanager#ProcessManager> ;
+    pp:hasTarget <https://purl.org/patternpedia/enterpriseintegrationpatterns/processmanager#ProcessManager> ;
     :hasDescription "multiple application components are processing steps within the process managed by a process manager"^^xsd:string .
 
 :ProcessingComponent-to-MessageEndpoint
     rdf:type owl:NamedIndividual , :CloudComputingPatternDirectedRelationDescriptor ;
     pp:hasSource <processingcomponent#ProcessingComponent> ;
-    pp:hasTarget <http://purl.org/patternpedia/enterpriseintegrationpatterns/messageendpoint#MessageEndpoint> ;
+    pp:hasTarget <https://purl.org/patternpedia/enterpriseintegrationpatterns/messageendpoint#MessageEndpoint> ;
     :hasDescription "if we're in the context of messaging, the processing component needs a way to send and receive messages"^^xsd:string .
 
 :ProcessingComponent-to-ChannelAdapter
     rdf:type owl:NamedIndividual , :CloudComputingPatternDirectedRelationDescriptor ;
     pp:hasSource <processingcomponent#ProcessingComponent> ;
-    pp:hasTarget <http://purl.org/patternpedia/enterpriseintegrationpatterns/channeladapter#ChannelAdapter> .
+    pp:hasTarget <https://purl.org/patternpedia/enterpriseintegrationpatterns/channeladapter#ChannelAdapter> .
 
 :IdempotentProcessor-to-IdempotentReceiver
     rdf:type owl:NamedIndividual , :CloudComputingPatternDirectedRelationDescriptor ;
     pp:hasSource <idempotentprocessor#IdempotentProcessor> ;
-    pp:hasTarget <http://purl.org/patternpedia/enterpriseintegrationpatterns/idempotentreceiver#IdempotentReceiver> ;
+    pp:hasTarget <https://purl.org/patternpedia/enterpriseintegrationpatterns/idempotentreceiver#IdempotentReceiver> ;
     :hasDescription "identical"^^xsd:string ,
         "the same message can be processed multiple times"^^xsd:string .
 
 :Transaction-basedProcessor-to-TransactionalClient
     rdf:type owl:NamedIndividual , :CloudComputingPatternDirectedRelationDescriptor ;
     pp:hasSource <transaction-basedprocessor#Transaction-basedProcessor> ;
-    pp:hasTarget <http://purl.org/patternpedia/enterpriseintegrationpatterns/transactionalclient#TransactionalClient> ;
+    pp:hasTarget <https://purl.org/patternpedia/enterpriseintegrationpatterns/transactionalclient#TransactionalClient> ;
     :hasDescription "identical"^^xsd:string ,
         "define transactional boundaries"^^xsd:string .
 
 :MessageMover-to-MessagingBridge
     rdf:type owl:NamedIndividual , :CloudComputingPatternDirectedRelationDescriptor ;
     pp:hasSource <messagemover#MessageMover> ;
-    pp:hasTarget <http://purl.org/patternpedia/enterpriseintegrationpatterns/messagingbridge#MessagingBridge> ;
+    pp:hasTarget <https://purl.org/patternpedia/enterpriseintegrationpatterns/messagingbridge#MessagingBridge> ;
     :hasDescription "identical"^^xsd:string ,
         "different cloud provider = different messaging systems"^^xsd:string .
 

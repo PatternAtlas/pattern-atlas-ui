@@ -10,23 +10,23 @@ import { IriConverter } from 'src/app/core/util/iri-converter';
 export class EnterpriseIntegrationPatternsLoaderService extends Loader<EnterpriseIntegrationPattern> {
 
   constructor(private pos: PatternOntologyService) {
-    super('http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos);
+    super('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos);
   }
 
   async selectContentFromStore(): Promise<any> {
     // get all patterns from the language as listed in the "containsPattern" predicate
     const qryPatterns = `SELECT DISTINCT ?pattern
       WHERE {
-        <${this.supportedIRI}> <http://purl.org/patternpedia#containsPattern> ?pattern .
+        <${this.supportedIRI}> <https://purl.org/patternpedia#containsPattern> ?pattern .
       }`;
     const patterns = await this.executor.exec(qryPatterns, [IriConverter.getFileName(this.supportedIRI)]);
 
     // select all information of the individual patterns
     const qry = `SELECT ?pattern ?name ?description
       WHERE {
-        ?pattern a <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> .
-        ?pattern <http://purl.org/patternpedia#hasName> ?name .
-        ?pattern <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description .
+        ?pattern a <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> .
+        ?pattern <https://purl.org/patternpedia#hasName> ?name .
+        ?pattern <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description .
       }`;
 
     // const qry = `SELECT ?s ?p ?o

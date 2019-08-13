@@ -53,7 +53,7 @@ import { CoreModule } from '../../../core/core.module';
 })
 export class CloudComputingPatternsModule {
     constructor(private cr: ComponentRegistryService) {
-      this.cr.registerComponent(IriConverter.convertIriToId('http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#CloudComputingPatterns'), {
+      this.cr.registerComponent(IriConverter.convertIriToId('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#CloudComputingPatterns'), {
             plcomponent: CloudComputingPatternsComponent,
             pcomponent: CloudComputingPatternComponent
         }); // tslint:disable-line:max-line-length

@@ -13,7 +13,7 @@
  */
 
 export const globals = {
-    urlPatternRepoOntology: 'http://purl.org/patternpedia',
-    iriPatternRepoInstance: 'http://purl.org/patternpedia#LinkedOpenPatterns',
+    urlPatternRepoOntology: 'https://purl.org/patternpedia',
+    iriPatternRepoInstance: 'https://purl.org/patternpedia#LinkedOpenPatterns',
   loadOntologyLocally: true
 };

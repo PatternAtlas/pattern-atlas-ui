@@ -22,7 +22,7 @@ import { IriConverter } from '../../../util/iri-converter';
 export class LinkedOpenPatternsLoader extends Loader<PatternLanguage> {
 
   constructor(private pos: PatternOntologyService) {
-        super('http://purl.org/patternpedia#LinkedOpenPatterns', pos);
+        super('https://purl.org/patternpedia#LinkedOpenPatterns', pos);
     }
 
   async selectContentFromStore(): Promise<any> {
@@ -30,16 +30,16 @@ export class LinkedOpenPatternsLoader extends Loader<PatternLanguage> {
     console.log(this.supportedIRI);
     const qryPatternGraphs = `SELECT DISTINCT ?patterngraph
                                       WHERE {
-                                          <${this.supportedIRI}> <http://purl.org/patternpedia#containsPatternGraph> ?patterngraph
+                                          <${this.supportedIRI}> <https://purl.org/patternpedia#containsPatternGraph> ?patterngraph
                                       }`;
       const patternGraphs = await this.executor.exec(qryPatternGraphs, [IriConverter.getFileName(this.supportedIRI)]);
       const qry = `SELECT ?patterngraph ?type ?name ?logo ?pattern
                                          WHERE {
-                                             <${this.supportedIRI}> <http://purl.org/patternpedia#containsPatternGraph> ?patterngraph .
+                                             <${this.supportedIRI}> <https://purl.org/patternpedia#containsPatternGraph> ?patterngraph .
                                             ?patterngraph a ?type .
-                                            optional {?patterngraph <http://purl.org/patternpedia#containsPattern> ?pattern .}
-                                            ?patterngraph <http://purl.org/patternpedia#hasName> ?name .
-                                            ?patterngraph <http://purl.org/patternpedia#hasLogo> ?logo .
+                                            optional {?patterngraph <https://purl.org/patternpedia#containsPattern> ?pattern .}
+                                            ?patterngraph <https://purl.org/patternpedia#hasName> ?name .
+                                            ?patterngraph <https://purl.org/patternpedia#hasLogo> ?logo .
                                             FILTER (?type != owl:NamedIndividual)
                                           }
                                 ORDER BY ?patterngraph`;

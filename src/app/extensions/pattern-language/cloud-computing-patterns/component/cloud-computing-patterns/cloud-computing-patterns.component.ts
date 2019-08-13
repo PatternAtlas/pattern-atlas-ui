@@ -38,7 +38,7 @@ export class CloudComputingPatternsComponent implements OnInit {
 
     ngOnInit() {
         // we have to load the individual patterns first by getting all imports from the base file
-        this.pos.getOWLImports('http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns')
+        this.pos.getOWLImports('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns')
             .then(res => {
                 const importedIris = res.map(i => i.import);
 

@@ -41,7 +41,7 @@ export class DefaultPatternRendererComponent implements OnInit {
 
   standardPrefixes = new PatternPedia().defaultPrefixes;
   xsdPrefix = this.standardPrefixes.get('xsd').replace('<', '').replace('>', '');
-  dcmiPrefix = 'http://purl.org/dc/dcmitype/';
+  dcmiPrefix = 'https://purl.org/dc/dcmitype/';
 
 
   mappings = [

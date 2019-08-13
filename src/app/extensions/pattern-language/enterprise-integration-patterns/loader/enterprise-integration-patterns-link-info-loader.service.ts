@@ -9,7 +9,7 @@ import { IriConverter } from 'src/app/core/util/iri-converter';
 export class EnterpriseIntegrationPatternsLinkInfoLoaderService extends Loader<any> {
 
   constructor(private pos: PatternOntologyService) { 
-    super('http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links', pos);
+    super('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links', pos);
   }
 
   loadContentFromStore(uri? : string): Promise<Map<string, any>> {
@@ -23,19 +23,19 @@ export class EnterpriseIntegrationPatternsLinkInfoLoaderService extends Loader<a
     // get source and target nodes first
     const patternQry = `SELECT ?sourceUri ?targetUri
       WHERE {
-        <${uri}> <http://purl.org/patternpedia#hasSource> ?sourceUri .
-        <${uri}> <http://purl.org/patternpedia#hasTarget> ?targetUri .
+        <${uri}> <https://purl.org/patternpedia#hasSource> ?sourceUri .
+        <${uri}> <https://purl.org/patternpedia#hasTarget> ?targetUri .
       }`;
     const patterns = await this.executor.exec(patternQry, [this.supportedIRI]);
 
     // get all information about link
     const qry = `SELECT ?sourcePatternUri ?sourcePatternName ?targetPatternUri ?targetPatternName ?description
       WHERE {
-        <${uri}> <http://purl.org/patternpedia#hasSource> ?sourcePatternUri .
-        ?sourcePatternUri <http://purl.org/patternpedia#hasName> ?sourcePatternName .
-        <${uri}> <http://purl.org/patternpedia#hasTarget> ?targetPatternUri .
-        ?targetPatternUri <http://purl.org/patternpedia#hasName> ?targetPatternName .
-        OPTIONAL { <${uri}> <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description }
+        <${uri}> <https://purl.org/patternpedia#hasSource> ?sourcePatternUri .
+        ?sourcePatternUri <https://purl.org/patternpedia#hasName> ?sourcePatternName .
+        <${uri}> <https://purl.org/patternpedia#hasTarget> ?targetPatternUri .
+        ?targetPatternUri <https://purl.org/patternpedia#hasName> ?targetPatternName .
+        OPTIONAL { <${uri}> <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description }
       }`;
 
     const graphs = [this.supportedIRI];

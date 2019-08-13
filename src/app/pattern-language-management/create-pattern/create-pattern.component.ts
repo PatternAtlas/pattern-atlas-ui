@@ -41,7 +41,7 @@ export class CreatePatternComponent implements OnInit {
 
   defaultTextForType: Map<string, string> =
     new Map([
-      ['http://purl.org/dc/dcmitype/Image', '![](http://)'],
+      ['https://purl.org/dc/dcmitype/Image', '![](http://)'],
       [this.xsdPrefix + 'anyURI', '[](http://)'],
       [this.xsdPrefix + 'integer', 'Replace this line by an Integer.'],
       [this.xsdPrefix + 'string', ' Enter your input for this section here.'],
@@ -321,7 +321,7 @@ export class CreatePatternComponent implements OnInit {
             if (allRestrictions.maxCardinality) {
               validators.push(Validators.maxLength(allRestrictions.maxCardinality));
             }
-            if (allRestrictions.type === 'http://purl.org/dc/dcmitype/Image') {
+            if (allRestrictions.type === 'https://purl.org/dc/dcmitype/Image') {
 
               validators.push(ValidationService.xsdImage());
 

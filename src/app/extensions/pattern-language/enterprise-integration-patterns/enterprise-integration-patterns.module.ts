@@ -41,7 +41,7 @@ import { LinkInfoboxComponent } from './component/link-infobox/link-infobox.comp
 export class EnterpriseIntegrationPatternsModule {
   constructor(private cr: ComponentRegistryService) {
     // register module as rendering for Enterprise Integration Patterns in registry
-    this.cr.registerComponent(IriConverter.convertIriToId('http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns'), {
+    this.cr.registerComponent(IriConverter.convertIriToId('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns'), {
       label: "Network Graph",
       priority: 10, // this is the main renderer for this language
       plcomponent: EnterpriseIntegrationPatternsComponent, // the rendering for the pattern LANGUAGE
@@ -49,7 +49,7 @@ export class EnterpriseIntegrationPatternsModule {
     });
 
     // adding a secondary renderer (dummy)
-    // this.cr.registerComponent(IriConverter.convertIriToId('http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns'), 
+    // this.cr.registerComponent(IriConverter.convertIriToId('https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns'), 
     //   this.cr.getPLRenderingComponents("default"));
   }
 }

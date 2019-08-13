@@ -9,7 +9,7 @@ import { IriConverter } from 'src/app/core/util/iri-converter';
 export class EnterpriseIntegrationPatternLoaderService extends Loader<any> {
 
   constructor(private pos: PatternOntologyService) { 
-    super('http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos);
+    super('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos);
   }
 
   loadContentFromStore(uri?: string): Promise<Map<string, any>> {
@@ -26,15 +26,15 @@ export class EnterpriseIntegrationPatternLoaderService extends Loader<any> {
     // get all information about the given pattern uri
     const qry = `SELECT ?name ?groupName ?description
       WHERE {
-        <${uri}> <http://purl.org/patternpedia#hasName> ?name .
-        <${uri}> <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description .
-        ?group a <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternRelationDescriptor> ;
-              <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasLabel> ?groupName ;
-              <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasPattern> <${uri}> .
+        <${uri}> <https://purl.org/patternpedia#hasName> ?name .
+        <${uri}> <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description .
+        ?group a <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternRelationDescriptor> ;
+              <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasLabel> ?groupName ;
+              <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasPattern> <${uri}> .
       }`;
     
     // links URI needed for group
-    const graphs = [IriConverter.getFileName(this.supportedIRI), IriConverter.getFileName(uri), 'http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links'];
+    const graphs = [IriConverter.getFileName(this.supportedIRI), IriConverter.getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links'];
 
     return this.executor.exec(qry, graphs);
   }

@@ -42,7 +42,7 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
     private patternLoader: EnterpriseIntegrationPatternLoaderService) { }
 
   ngOnInit() {
-    this.pos.getOWLImports('http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns')
+    this.pos.getOWLImports('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns')
       .then(res => {
         const importedPatternIris = res.map(i => i.import);
         this.pos.loadUrisToStore(importedPatternIris)

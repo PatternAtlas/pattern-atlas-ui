@@ -1,25 +1,25 @@
-@prefix : <http://purl.org/patternpedia/internetofthingspatterns#> .
+@prefix : <https://purl.org/patternpedia/internetofthingspatterns#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@base <http://purl.org/patternpedia/internetofthingspatterns> .
+@base <https://purl.org/patternpedia/internetofthingspatterns> .
 
-<http://purl.org/patternpedia/internetofthingspatterns> rdf:type owl:Ontology ;
-                                                         owl:imports <http://purl.org/patternpedia> .
+<https://purl.org/patternpedia/internetofthingspatterns> rdf:type owl:Ontology ;
+                                                         owl:imports <https://purl.org/patternpedia> .
 
 #################################################################
 #    Object Properties
 #################################################################
 
-###  http://purl.org/patternpedia/internetofthingspatterns#hasSource
+###  https://purl.org/patternpedia/internetofthingspatterns#hasSource
 :hasSource rdf:type owl:ObjectProperty ;
            rdfs:domain :InternetOfThingsPatternRelationDescriptor ;
            rdfs:range :InternetOfThingsPattern .
 
 
-###  http://purl.org/patternpedia/internetofthingspatterns#hasTarget
+###  https://purl.org/patternpedia/internetofthingspatterns#hasTarget
 :hasTarget rdf:type owl:ObjectProperty ;
            rdfs:domain :InternetOfThingsPatternRelationDescriptor ;
            rdfs:range :InternetOfThingsPattern .
@@ -29,55 +29,55 @@
 #    Data properties
 #################################################################
 
-###  http://purl.org/patternpedia/internetofthingspatterns#alias
+###  https://purl.org/patternpedia/internetofthingspatterns#alias
 :alias rdf:type owl:DatatypeProperty .
 
 
-###  http://purl.org/patternpedia/internetofthingspatterns#benefit
+###  https://purl.org/patternpedia/internetofthingspatterns#benefit
 :benefit rdf:type owl:DatatypeProperty .
 
 
-###  http://purl.org/patternpedia/internetofthingspatterns#context
+###  https://purl.org/patternpedia/internetofthingspatterns#context
 :context rdf:type owl:DatatypeProperty .
 
 
-###  http://purl.org/patternpedia/internetofthingspatterns#drawback
+###  https://purl.org/patternpedia/internetofthingspatterns#drawback
 :drawback rdf:type owl:DatatypeProperty .
 
 
-###  http://purl.org/patternpedia/internetofthingspatterns#examples
+###  https://purl.org/patternpedia/internetofthingspatterns#examples
 :examples rdf:type owl:DatatypeProperty .
 
 
-###  http://purl.org/patternpedia/internetofthingspatterns#force
+###  https://purl.org/patternpedia/internetofthingspatterns#force
 :force rdf:type owl:DatatypeProperty .
 
 
-###  http://purl.org/patternpedia/internetofthingspatterns#icon
+###  https://purl.org/patternpedia/internetofthingspatterns#icon
 :icon rdf:type owl:DatatypeProperty .
 
 
-###  http://purl.org/patternpedia/internetofthingspatterns#intent
+###  https://purl.org/patternpedia/internetofthingspatterns#intent
 :intent rdf:type owl:DatatypeProperty .
 
 
-###  http://purl.org/patternpedia/internetofthingspatterns#problem
+###  https://purl.org/patternpedia/internetofthingspatterns#problem
 :problem rdf:type owl:DatatypeProperty .
 
 
-###  http://purl.org/patternpedia/internetofthingspatterns#result
+###  https://purl.org/patternpedia/internetofthingspatterns#result
 :result rdf:type owl:DatatypeProperty .
 
 
-###  http://purl.org/patternpedia/internetofthingspatterns#solution
+###  https://purl.org/patternpedia/internetofthingspatterns#solution
 :solution rdf:type owl:DatatypeProperty .
 
 
-###  http://purl.org/patternpedia/internetofthingspatterns#solutionSketch
+###  https://purl.org/patternpedia/internetofthingspatterns#solutionSketch
 :solutionSketch rdf:type owl:DatatypeProperty .
 
 
-###  http://purl.org/patternpedia/internetofthingspatterns#variant
+###  https://purl.org/patternpedia/internetofthingspatterns#variant
 :variant rdf:type owl:DatatypeProperty .
 
 
@@ -85,9 +85,9 @@
 #    Classes
 #################################################################
 
-###  http://purl.org/patternpedia/internetofthingspatterns#InternetOfThingsPattern
+###  https://purl.org/patternpedia/internetofthingspatterns#InternetOfThingsPattern
 :InternetOfThingsPattern rdf:type owl:Class ;
-                         rdfs:subClassOf <http://purl.org/patternpedia#Pattern> ,
+                         rdfs:subClassOf <https://purl.org/patternpedia#Pattern> ,
                                          [ rdf:type owl:Restriction ;
                                            owl:onProperty :force ;
                                            owl:someValuesFrom xsd:string
@@ -113,7 +113,7 @@
                                            owl:allValuesFrom xsd:string
                                          ] ,
                                          [ rdf:type owl:Restriction ;
-                                           owl:onProperty <http://purl.org/patternpedia#hasName> ;
+                                           owl:onProperty <https://purl.org/patternpedia#hasName> ;
                                            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
                                            owl:onDataRange xsd:string
                                          ] ,
@@ -154,15 +154,15 @@
                                          ] .
 
 
-###  http://purl.org/patternpedia/internetofthingspatterns#InternetOfThingsPatternRelationDescriptor
+###  https://purl.org/patternpedia/internetofthingspatterns#InternetOfThingsPatternRelationDescriptor
 :InternetOfThingsPatternRelationDescriptor rdf:type owl:Class ;
-                                           rdfs:subClassOf <http://purl.org/patternpedia#PatternRelationDescriptor> .
+                                           rdfs:subClassOf <https://purl.org/patternpedia#PatternRelationDescriptor> .
 
 
-###  http://purl.org/patternpedia/internetofthingspatterns#InternetOfThingsPatterns
+###  https://purl.org/patternpedia/internetofthingspatterns#InternetOfThingsPatterns
 :InternetOfThingsPatterns rdf:type owl:NamedIndividual ,
-                                   <http://purl.org/patternpedia#PatternLanguage> ;
-                          <http://purl.org/patternpedia#containsPattern> <http://purl.org/patternpedia/internetofthingspatterns/deviceshadow#DeviceShadow> ,
-                                                                         <http://purl.org/patternpedia/internetofthingspatterns/devicegateway#DeviceGateway> ;
-                          <http://purl.org/patternpedia#hasLogo> "https://media-assets-05.thedrum.com/cache/images/thedrum-prod/s3-news-tmp-112560-internet-of-things--default--300.jpg"^^xsd:anyURI ;
-                          <http://purl.org/patternpedia#hasName> "Internet of Things Patterns"^^xsd:string .
+                                   <https://purl.org/patternpedia#PatternLanguage> ;
+                          <https://purl.org/patternpedia#containsPattern> <https://purl.org/patternpedia/internetofthingspatterns/deviceshadow#DeviceShadow> ,
+                                                                         <https://purl.org/patternpedia/internetofthingspatterns/devicegateway#DeviceGateway> ;
+                          <https://purl.org/patternpedia#hasLogo> "https://media-assets-05.thedrum.com/cache/images/thedrum-prod/s3-news-tmp-112560-internet-of-things--default--300.jpg"^^xsd:anyURI ;
+                          <https://purl.org/patternpedia#hasName> "Internet of Things Patterns"^^xsd:string .

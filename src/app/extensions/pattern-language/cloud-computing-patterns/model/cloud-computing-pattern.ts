@@ -68,12 +68,12 @@ class CloudComputingPattern extends Pattern {
         ary.push(`### ${this.iri}`);
         ary.push(`<${this.iri}> rdf:type owl:NamedIndividual ,`);
         ary.push(`${' '.repeat(16)} ${this.getPatternType()} ;`);
-        ary.push(`${' '.repeat(8)} <http://purl.org/patternpedia#hasName> "${this.name}"^^xsd:string ;`);
-        ary.push(`${' '.repeat(8)} <http://purl.org/patternpedia/cloudcomputingpatterns#hasContext> "${this.context.value}"^^xsd:string ;`);
-        ary.push(`${' '.repeat(8)} <http://purl.org/patternpedia/cloudcomputingpatterns#hasDrivingQuestion> "${this.drivingQuestion.value}"^^xsd:string ;`);
-        ary.push(`${' '.repeat(8)} <http://purl.org/patternpedia/cloudcomputingpatterns#hasIcon> "${this.icon.value}"^^xsd:anyURI ;`);
-        ary.push(`${' '.repeat(8)} <http://purl.org/patternpedia/cloudcomputingpatterns#hasIntent> "${this.intent.value}"^^xsd:string ;`);
-        ary.push(`${' '.repeat(8)} <http://purl.org/patternpedia/cloudcomputingpatterns#hasSolution> "${this.solution.value}"^^xsd:string ;`);
+        ary.push(`${' '.repeat(8)} <https://purl.org/patternpedia#hasName> "${this.name}"^^xsd:string ;`);
+        ary.push(`${' '.repeat(8)} <https://purl.org/patternpedia/cloudcomputingpatterns#hasContext> "${this.context.value}"^^xsd:string ;`);
+        ary.push(`${' '.repeat(8)} <https://purl.org/patternpedia/cloudcomputingpatterns#hasDrivingQuestion> "${this.drivingQuestion.value}"^^xsd:string ;`);
+        ary.push(`${' '.repeat(8)} <https://purl.org/patternpedia/cloudcomputingpatterns#hasIcon> "${this.icon.value}"^^xsd:anyURI ;`);
+        ary.push(`${' '.repeat(8)} <https://purl.org/patternpedia/cloudcomputingpatterns#hasIntent> "${this.intent.value}"^^xsd:string ;`);
+        ary.push(`${' '.repeat(8)} <https://purl.org/patternpedia/cloudcomputingpatterns#hasSolution> "${this.solution.value}"^^xsd:string ;`);
         ary.push('\n');
 
         // Todo solutionSketches and variations
@@ -82,7 +82,7 @@ class CloudComputingPattern extends Pattern {
     }
 
     getPatternType(): string {
-        return '<http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern>';
+        return '<https://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern>';
     }
 
     getPrefixes(): Array<string> {
@@ -118,14 +118,14 @@ class CloudComputingPattern extends Pattern {
     //     const triples: Array<RdfModelTriple> = [];
     //     // Statements about the file
     //     triples.push(new RdfModelTriple(
-    //         this.createRdfModelNamedNode('http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure'),
+    //         this.createRdfModelNamedNode('https://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure'),
     //         this.createRdfModelNamedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
     //         this.createRdfModelNamedNode('http://www.w3.org/2002/07/owl#Ontology')
     //     ));
     //     triples.push(new RdfModelTriple(
-    //         this.createRdfModelNamedNode('http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure'),
+    //         this.createRdfModelNamedNode('https://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure'),
     //         this.createRdfModelNamedNode('http://www.w3.org/2002/07/owl#imports'),
-    //         this.createRdfModelNamedNode('http://purl.org/patternpedia/cloudcomputingpatterns')
+    //         this.createRdfModelNamedNode('https://purl.org/patternpedia/cloudcomputingpatterns')
     //     ));
     //
     //     // Statements about the individual
@@ -137,54 +137,54 @@ class CloudComputingPattern extends Pattern {
     //     triples.push(new RdfModelTriple(
     //         this.createPatternNode(),
     //         this.createRdfModelNamedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
-    //         this.createRdfModelNamedNode('http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern')
+    //         this.createRdfModelNamedNode('https://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern')
     //     ));
     //     triples.push(new RdfModelTriple(
     //         this.createPatternNode(),
-    //         this.createRdfModelNamedNode('http://purl.org/patternpedia#hasName'),
+    //         this.createRdfModelNamedNode('https://purl.org/patternpedia#hasName'),
     //         this.createRdfModelLiteralNode(this.name, 'http://www.w3.org/2001/XMLSchema#string')
     //     ));
     //     triples.push(new RdfModelTriple(
     //         this.createPatternNode(),
-    //         this.createRdfModelNamedNode('http://purl.org/patternpedia/cloudcomputingpatterns#hasIcon'),
+    //         this.createRdfModelNamedNode('https://purl.org/patternpedia/cloudcomputingpatterns#hasIcon'),
     //         this.createRdfModelNamedNode(this.icon.value, 'http://www.w3.org/2001/XMLSchema#anyURI')
     //     ));
     //     triples.push(new RdfModelTriple(
     //         this.createPatternNode(),
-    //         this.createRdfModelNamedNode('http://purl.org/patternpedia/cloudcomputingpatterns#hasIntent'),
+    //         this.createRdfModelNamedNode('https://purl.org/patternpedia/cloudcomputingpatterns#hasIntent'),
     //         this.createRdfModelNamedNode(this.intent.value, 'http://www.w3.org/2001/XMLSchema#string')
     //     ));
     //     triples.push(new RdfModelTriple(
     //         this.createPatternNode(),
-    //         this.createRdfModelNamedNode('http://purl.org/patternpedia#hasContext'),
+    //         this.createRdfModelNamedNode('https://purl.org/patternpedia#hasContext'),
     //         this.createRdfModelLiteralNode(this.context.value, 'http://www.w3.org/2001/XMLSchema#string')
     //     ));
     //     triples.push(new RdfModelTriple(
     //         this.createPatternNode(),
-    //         this.createRdfModelNamedNode('http://purl.org/patternpedia/cloudcomputingpatterns#hasDrivingQuestion'),
+    //         this.createRdfModelNamedNode('https://purl.org/patternpedia/cloudcomputingpatterns#hasDrivingQuestion'),
     //         this.createRdfModelNamedNode(this.drivingQuestion.value, 'http://www.w3.org/2001/XMLSchema#string')
     //     ));
     //     triples.push(new RdfModelTriple(
     //         this.createPatternNode(),
-    //         this.createRdfModelNamedNode('http://purl.org/patternpedia/cloudcomputingpatterns#hasSolution'),
+    //         this.createRdfModelNamedNode('https://purl.org/patternpedia/cloudcomputingpatterns#hasSolution'),
     //         this.createRdfModelNamedNode(this.solution.value, 'http://www.w3.org/2001/XMLSchema#string')
     //     ));
     //     triples.push(new RdfModelTriple(
     //         this.createPatternNode(),
-    //         this.createRdfModelNamedNode('http://purl.org/patternpedia/cloudcomputingpatterns#hasResult'),
+    //         this.createRdfModelNamedNode('https://purl.org/patternpedia/cloudcomputingpatterns#hasResult'),
     //         this.createRdfModelNamedNode(this.result.value, 'http://www.w3.org/2001/XMLSchema#string')
     //     ));
     //     for (const sketch of this.solutionSketches.value) {
     //         triples.push(new RdfModelTriple(
     //             this.createPatternNode(),
-    //             this.createRdfModelNamedNode('http://purl.org/patternpedia/cloudcomputingpatterns#hasSolutionSketch'),
+    //             this.createRdfModelNamedNode('https://purl.org/patternpedia/cloudcomputingpatterns#hasSolutionSketch'),
     //             this.createRdfModelNamedNode(sketch, 'http://www.w3.org/2001/XMLSchema#anyURI')
     //         ));
     //     }
     //     for (const variation of this.variations.value) {
     //         triples.push(new RdfModelTriple(
     //             this.createPatternNode(),
-    //             this.createRdfModelNamedNode('http://purl.org/patternpedia/cloudcomputingpatterns#hasVariation'),
+    //             this.createRdfModelNamedNode('https://purl.org/patternpedia/cloudcomputingpatterns#hasVariation'),
     //             this.createRdfModelNamedNode(variation, 'http://www.w3.org/2001/XMLSchema#string')
     //         ));
     //     }

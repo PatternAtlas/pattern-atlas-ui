@@ -53,7 +53,7 @@ import { CoreModule } from '../../../core/core.module';
 })
 export class InternetOfThingsPatternsModule {
     constructor(private cr: ComponentRegistryService) {
-      this.cr.registerComponent(IriConverter.convertIriToId('http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#InternetOfThingsPatterns'), {
+      this.cr.registerComponent(IriConverter.convertIriToId('https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#InternetOfThingsPatterns'), {
             plcomponent: InternetOfThingsPatternsComponent,
             pcomponent: InternetOfThingsPatternComponent
         }); // tslint:disable-line:max-line-length

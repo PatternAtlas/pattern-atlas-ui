@@ -25,22 +25,22 @@ export class TestComponent implements OnInit {
         console.log('LOADED Ontologies!');
         const store = await this.createNewStore().toPromise();
         this.registerDefaultNameSpaces(store);
-        console.log('LOADING http://purl.org/patternpedia to store');
+        console.log('LOADING https://purl.org/patternpedia to store');
         console.log('Result: ', await this.loadToStore(store, 'text/turtle',
-            loadResult[0], 'http://purl.org/patternpedia').toPromise());
-        console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns to store');
+            loadResult[0], 'https://purl.org/patternpedia').toPromise());
+        console.log('LOADING https://purl.org/patternpedia/cloudcomputingpatterns to store');
         console.log('Result: ', await this.loadToStore(store, 'text/turtle',
-            loadResult[1], 'http://purl.org/patternpedia/cloudcomputingpatterns').toPromise());
-        console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure to store');
+            loadResult[1], 'https://purl.org/patternpedia/cloudcomputingpatterns').toPromise());
+        console.log('LOADING https://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure to store');
         console.log('Result: ', await this.loadToStore(store, 'text/turtle',
-            loadResult[2], 'http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure').toPromise());
-        console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer to store');
+            loadResult[2], 'https://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure').toPromise());
+        console.log('LOADING https://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer to store');
         console.log('Result: ', await this.loadToStore(store, 'text/turtle',
-            loadResult[3], 'http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer').toPromise());
-        console.log('LOADING http://purl.org/patternpedia/internetofthingspatterns to store');
+            loadResult[3], 'https://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer').toPromise());
+        console.log('LOADING https://purl.org/patternpedia/internetofthingspatterns to store');
         console.log('Result: ', await this.loadToStore(store, 'text/turtle',
-            loadResult[4], 'http://purl.org/patternpedia/internetofthingspatterns').toPromise());
-        // const triples = await this.exportGraphAsTriples(store, 'http://purl.org/patternpedia').toPromise();
+            loadResult[4], 'https://purl.org/patternpedia/internetofthingspatterns').toPromise());
+        // const triples = await this.exportGraphAsTriples(store, 'https://purl.org/patternpedia').toPromise();
         this.selectPatternGraphs(store);
         // this.loadGraph(store);
         // this.loadNode(store);
@@ -48,13 +48,13 @@ export class TestComponent implements OnInit {
     }
 
     updateValue(store: any) {
-        store.graph('http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer', (err, graph) => {
+        store.graph('https://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer', (err, graph) => {
             console.log(graph.toNT());
             console.log('---------------');
             graph.add(
                 store.rdf.createTriple(
-                    store.rdf.createNamedNode('http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer#ElasticLoadBalancer'),
-                    store.rdf.createNamedNode('http://purl.org/patternpedia/cloudcomputingpatterns#hasContext'),
+                    store.rdf.createNamedNode('https://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer#ElasticLoadBalancer'),
+                    store.rdf.createNamedNode('https://purl.org/patternpedia/cloudcomputingpatterns#hasContext'),
                     store.rdf.createLiteral('This is the new Context')
                 )
             );
@@ -63,14 +63,14 @@ export class TestComponent implements OnInit {
     }
 
     loadGraph(store: any) {
-        store.graph('http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer', (err, result) => {
+        store.graph('https://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer', (err, result) => {
             console.log(result.toNT());
         });
     }
 
     loadNode(store: any) {
-        store.node('http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer#ElasticLoadBalancer',
-            'http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer', (err, result) => {
+        store.node('https://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer#ElasticLoadBalancer',
+            'https://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer', (err, result) => {
                 console.log(result.toNT());
             });
     }
@@ -79,7 +79,7 @@ export class TestComponent implements OnInit {
         const mResult = new Map();
         const qry = `SELECT DISTINCT ?patterngraph ?type ?logo ?pattern
                              WHERE {
-                                <http://purl.org/patternpedia#LinkedOpenPatterns> pp:containsPatternGraph ?patterngraph .
+                                <https://purl.org/patternpedia#LinkedOpenPatterns> pp:containsPatternGraph ?patterngraph .
                                 ?patterngraph a ?type .
                                 ?patterngraph pp:containsPattern ?pattern .
                                 ?patterngraph pp:hasLogo ?logo .
@@ -88,8 +88,8 @@ export class TestComponent implements OnInit {
                     ORDER BY ?patterngraph`;
         store.execute(qry,
             [
-                'http://purl.org/patternpedia',
-                'http://purl.org/patternpedia/cloudcomputingpatterns'
+                'https://purl.org/patternpedia',
+                'https://purl.org/patternpedia/cloudcomputingpatterns'
             ],
             [],
             (err, result) => {
@@ -99,17 +99,17 @@ export class TestComponent implements OnInit {
                 // }
             });
         // store.execute('SELECT * { ?s ?p ?o }',
-        //     ['http://purl.org/patternpedia',
-        //     'http://purl.org/patternpedia/cloudcomputingpatterns',
-        //     'http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure',
-        //     'http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer',
-        //     'http://purl.org/patternpedia/internetofthingspatterns'],
+        //     ['https://purl.org/patternpedia',
+        //     'https://purl.org/patternpedia/cloudcomputingpatterns',
+        //     'https://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure',
+        //     'https://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer',
+        //     'https://purl.org/patternpedia/internetofthingspatterns'],
         //     [],
         //     (err, result) => {
         //         console.log('-->', result);
         // });
         // store.execute(qry,
-        //     ['http://purl.org/patternpedia'],
+        //     ['https://purl.org/patternpedia'],
         //     [],
         //     (err, results) => {
         //         if (!err) {
@@ -183,7 +183,7 @@ export class TestComponent implements OnInit {
         store.registerDefaultNamespace('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
         store.registerDefaultNamespace('rdfs', 'http://www.w3.org/2000/01/rdf-schema#');
         store.registerDefaultNamespace('xsd', 'http://www.w3.org/2001/XMLSchema#');
-        store.registerDefaultNamespace('pp', 'http://purl.org/patternpedia#');
+        store.registerDefaultNamespace('pp', 'https://purl.org/patternpedia#');
     }
 
 }

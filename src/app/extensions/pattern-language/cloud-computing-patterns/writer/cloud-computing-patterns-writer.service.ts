@@ -10,7 +10,7 @@ import { IriConverter } from '../../../../core/util/iri-converter';
 export class CloudComputingPatternsWriterService extends Writer<CloudComputingPattern> {
 
     constructor(private pos: PatternOntologyService) {
-        super('http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPatterns', pos);
+        super('https://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPatterns', pos);
     }
 
     async writePatternToStore(pattern: CloudComputingPattern): Promise<void> {

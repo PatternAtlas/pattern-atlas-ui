@@ -79,7 +79,7 @@ export class PatternLanguageManagementComponent implements OnInit {
 
     }
 
-  // reload the current data from http://purl.org/patternpedia that contains all patternlangauges
+  // reload the current data from https://purl.org/patternpedia that contains all patternlangauges
   async reloadPatternRepo() {
     await this.pos.loadLinkedOpenPatternGraphs();
     return this.loader.loadContentFromStore()
@@ -122,7 +122,7 @@ export class PatternLanguageManagementComponent implements OnInit {
 
             this.pos.loadUrisToStore([{value: patternlanguage.iri, token: null}]),
             // load the updated patternpedia file which contains the new patternlanguage into store
-            this.pos.loadUrisToStore([{value: 'http://purl.org/patternpedia', token: null}]));
+            this.pos.loadUrisToStore([{value: 'https://purl.org/patternpedia', token: null}]));
         })
       ).subscribe((res) => { // update view, because our store data has changed (new patternlanguage)
         this.reloadPatternLanguageFromStore();

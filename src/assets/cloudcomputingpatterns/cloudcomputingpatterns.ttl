@@ -1,54 +1,54 @@
-@prefix : <http://purl.org/patternpedia/cloudcomputingpatterns#> .
-@prefix pp: <http://purl.org/patternpedia#> .
+@prefix : <https://purl.org/patternpedia/cloudcomputingpatterns#> .
+@prefix pp: <https://purl.org/patternpedia#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@base <http://purl.org/patternpedia/cloudcomputingpatterns> .
+@base <https://purl.org/patternpedia/cloudcomputingpatterns> .
 
-<http://purl.org/patternpedia/cloudcomputingpatterns> rdf:type owl:Ontology ;
-                                                      owl:imports <http://purl.org/patternpedia> ,
-                                                                  <http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer> ,
-                                                                  <http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure> .
+<https://purl.org/patternpedia/cloudcomputingpatterns> rdf:type owl:Ontology ;
+                                                      owl:imports <https://purl.org/patternpedia> ,
+                                                                  <https://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer> ,
+                                                                  <https://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure> .
 
 #################################################################
 #    Data properties
 #################################################################
 
-###  http://purl.org/patternpedia/cloudcomputingpatterns#hasContext
+###  https://purl.org/patternpedia/cloudcomputingpatterns#hasContext
 :hasContext rdf:type owl:DatatypeProperty .
 
 
-###  http://purl.org/patternpedia/cloudcomputingpatterns#hasDrivingQuestion
+###  https://purl.org/patternpedia/cloudcomputingpatterns#hasDrivingQuestion
 :hasDrivingQuestion rdf:type owl:DatatypeProperty .
 
 
-###  http://purl.org/patternpedia/cloudcomputingpatterns#hasExplanation
+###  https://purl.org/patternpedia/cloudcomputingpatterns#hasExplanation
 :hasExplanation rdf:type owl:DatatypeProperty .
 
 
-###  http://purl.org/patternpedia/cloudcomputingpatterns#hasIcon
+###  https://purl.org/patternpedia/cloudcomputingpatterns#hasIcon
 :hasIcon rdf:type owl:DatatypeProperty .
 
 
-###  http://purl.org/patternpedia/cloudcomputingpatterns#hasIntent
+###  https://purl.org/patternpedia/cloudcomputingpatterns#hasIntent
 :hasIntent rdf:type owl:DatatypeProperty .
 
 
-###  http://purl.org/patternpedia/cloudcomputingpatterns#hasResult
+###  https://purl.org/patternpedia/cloudcomputingpatterns#hasResult
 :hasResult rdf:type owl:DatatypeProperty .
 
 
-###  http://purl.org/patternpedia/cloudcomputingpatterns#hasSolution
+###  https://purl.org/patternpedia/cloudcomputingpatterns#hasSolution
 :hasSolution rdf:type owl:DatatypeProperty .
 
 
-###  http://purl.org/patternpedia/cloudcomputingpatterns#hasSolutionSketch
+###  https://purl.org/patternpedia/cloudcomputingpatterns#hasSolutionSketch
 :hasSolutionSketch rdf:type owl:DatatypeProperty .
 
 
-###  http://purl.org/patternpedia/cloudcomputingpatterns#hasVariation
+###  https://purl.org/patternpedia/cloudcomputingpatterns#hasVariation
 :hasVariation rdf:type owl:DatatypeProperty .
 
 
@@ -56,7 +56,7 @@
 #    Classes
 #################################################################
 
-###  http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern
+###  https://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern
 :CloudComputingPattern rdf:type owl:Class ;
                        rdfs:subClassOf pp:Pattern ,
                                        [ rdf:type owl:Restriction ;
@@ -99,7 +99,7 @@
                                        ] .
 
 
-###  http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPatternRelationDescriptor
+###  https://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPatternRelationDescriptor
 :CloudComputingPatternRelationDescriptor rdf:type owl:Class ;
                                          rdfs:subClassOf pp:PatternRelationDescriptor ,
                                                          [ rdf:type owl:Restriction ;
@@ -113,17 +113,17 @@
 #    Individuals
 #################################################################
 
-###  http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPatterns
+###  https://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPatterns
 :CloudComputingPatterns rdf:type owl:NamedIndividual ,
                                  pp:PatternLanguage ;
-                        pp:containsPattern <http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure#ElasticInfrastructure> ,
-                                           <http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer#ElasticLoadBalancer> ;
-                        pp:hasLogo "http://www.cloudcomputingpatterns.org/img/book.png"^^xsd:anyURI ;
+                        pp:containsPattern <https://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure#ElasticInfrastructure> ,
+                                           <https://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer#ElasticLoadBalancer> ;
+                        pp:hasLogo "https://www.cloudcomputingpatterns.org/img/book.png"^^xsd:anyURI ;
                         pp:hasName "Cloud Computing Patterns"^^xsd:string .
 
-###  http://purl.org/patternpedia/cloudcomputingpatterns#ELBtoEI
+###  https://purl.org/patternpedia/cloudcomputingpatterns#ELBtoEI
 :ELBtoEI rdf:type owl:NamedIndividual ,
                   :CloudComputingPatternRelationDescriptor ;
-         pp:hasSource <http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure#ElasticLoadBalancer> ;
-         pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure#ElasticInfrastructure> ;
+         pp:hasSource <https://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure#ElasticLoadBalancer> ;
+         pp:hasTarget <https://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure#ElasticInfrastructure> ;
          :hasExplanation "This is an Explanation."^^xsd:string .

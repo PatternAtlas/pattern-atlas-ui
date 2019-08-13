@@ -1,12 +1,12 @@
 # Definition of prefixes
-@prefix : <http://purl.org/patternpedia/enterpriseintegrationpatterns#> .
-@prefix pp: <http://purl.org/patternpedia#> .
+@prefix : <https://purl.org/patternpedia/enterpriseintegrationpatterns#> .
+@prefix pp: <https://purl.org/patternpedia#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@base <http://purl.org/patternpedia/enterpriseintegrationpatterns/> .
+@base <https://purl.org/patternpedia/enterpriseintegrationpatterns/> .
 
 
 # Individual Directed Links
@@ -2415,115 +2415,115 @@
 :Messaging-to-LooseCoupling
     rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
     pp:hasSource <messaging#Messaging> ;
-    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/loosecoupling#LooseCoupling> ;
+    pp:hasTarget <https://purl.org/patternpedia/cloudcomputingpatterns/loosecoupling#LooseCoupling> ;
     :hasDescription "components are *decoupled* using the messaging pattern"^^xsd:string ,
         "the broker refered in the Loose Coupling Pattern corresponds to the Message Bus in Messaging"^^xsd:string .
 
 :Messaging-to-Message-orientedMiddleware
     rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
     pp:hasSource <messaging#Messaging> ;
-    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/message-orientedmiddleware#Message-orientedMiddleware> ;
+    pp:hasTarget <https://purl.org/patternpedia/cloudcomputingpatterns/message-orientedmiddleware#Message-orientedMiddleware> ;
     :hasDescription "Asynchronous communication between partners via messaging"^^xsd:string .
 
 :MessageChannel-to-ElasticQueue
     rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
     pp:hasSource <messagechannel#MessageChannel> ;
-    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/elasticqueue#ElasticQueue> ;
+    pp:hasTarget <https://purl.org/patternpedia/cloudcomputingpatterns/elasticqueue#ElasticQueue> ;
     :hasDescription "Use a elastic queue, to enable a channel, that can adapt to the load if needed"^^xsd:string .
 
 :PipesandFilters-to-DistributedApplication
     rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
     pp:hasSource <pipesandfilters#PipesandFilters> ;
-    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/distributedapplication#DistributedApplication> ;
+    pp:hasTarget <https://purl.org/patternpedia/cloudcomputingpatterns/distributedapplication#DistributedApplication> ;
     :hasDescription "Pipes-and-filters-based decomposition focuses on for data-centric processing of an application. Each filter provides a certain function that is performed on input data and produces output data after processing. Multiple filters are interconnected with pipes, i.e, through messaging"^^xsd:string .
 
 :MessagingBridge-to-MessageMover
     rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
     pp:hasSource <messagingbridge#MessagingBridge> ;
-    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/messagemover#MessageMover> ;
+    pp:hasTarget <https://purl.org/patternpedia/cloudcomputingpatterns/messagemover#MessageMover> ;
     :hasDescription "identical"^^xsd:string ,
         "different cloud provider = different messaging systems"^^xsd:string .
 
 :ProcessManager-to-DistributedApplication
     rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
     pp:hasSource <processmanager#ProcessManager> ;
-    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/distributedapplication#DistributedApplication> ;
+    pp:hasTarget <https://purl.org/patternpedia/cloudcomputingpatterns/distributedapplication#DistributedApplication> ;
     :hasDescription "Process-based decomposition focuses on the business processes supported by the application. These processes are comprised out of activities that are executed in a specific order. Functionality is divided into components with respect to the supported business activity"^^xsd:string .
 
 :ClaimCheck-to-Three-TierCloudApplication
     rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
     pp:hasSource <claimcheck#ClaimCheck> ;
-    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/three-tiercloudapplication#Three-TierCloudApplication> ;
+    pp:hasTarget <https://purl.org/patternpedia/cloudcomputingpatterns/three-tiercloudapplication#Three-TierCloudApplication> ;
     :hasDescription "separate data from business logic and presentation"^^xsd:string ,
         "claim check can be used to get rid of the data in business logic"^^xsd:string .
 
 :ClaimCheck-to-StatelessComponent
     rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
     pp:hasSource <claimcheck#ClaimCheck> ;
-    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/statelesscomponent#StatelessComponent> ;
+    pp:hasTarget <https://purl.org/patternpedia/cloudcomputingpatterns/statelesscomponent#StatelessComponent> ;
     :hasDescription "separate state from components via claim check, i.e. extract data from component but leave check to retrive data if needed again."^^xsd:string .
 
 :ClaimCheck-to-DataAccessComponent
     rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
     pp:hasSource <claimcheck#ClaimCheck> ;
-    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/dataaccesscomponent#DataAccessComponent> ;
+    pp:hasTarget <https://purl.org/patternpedia/cloudcomputingpatterns/dataaccesscomponent#DataAccessComponent> ;
     :hasDescription "since claim check has to deal with storing and accessing data consider the data access component"^^xsd:string .
 
 :TransactionalClient-to-Transaction-basedProcessor
     rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
     pp:hasSource <transactionalclient#TransactionalClient> ;
-    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/transaction-basedprocessor#Transaction-basedProcessor> ;
+    pp:hasTarget <https://purl.org/patternpedia/cloudcomputingpatterns/transaction-basedprocessor#Transaction-basedProcessor> ;
     :hasDescription "identical"^^xsd:string ,
         "define transactional boundaries"^^xsd:string .
 
 :CompetingConsumers-to-StatelessComponent
     rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
     pp:hasSource <competingconsumers#CompetingConsumers> ;
-    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/statelesscomponent#StatelessComponent> ;
+    pp:hasTarget <https://purl.org/patternpedia/cloudcomputingpatterns/statelesscomponent#StatelessComponent> ;
     :hasDescription "multiple instances of the same processing component. We cannot determine the exact component, so no state should be stored within the component"^^xsd:string .
 
 :CompetingConsumers-to-ProcessingComponent
     rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
     pp:hasSource <competingconsumers#CompetingConsumers> ;
-    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/processingcomponent#ProcessingComponent> ;
+    pp:hasTarget <https://purl.org/patternpedia/cloudcomputingpatterns/processingcomponent#ProcessingComponent> ;
     :hasDescription "Processing Component for scaling out. Competing Consumer in a similar way, to split work, i.e. scaling the application / process"^^xsd:string .
 
 :IdempotentReceiver-to-IdempotentProcessor
     rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
     pp:hasSource <idempotentreceiver#IdempotentReceiver> ;
-    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/idempotentprocessor#IdempotentProcessor> ;
+    pp:hasTarget <https://purl.org/patternpedia/cloudcomputingpatterns/idempotentprocessor#IdempotentProcessor> ;
     :hasDescription "identical"^^xsd:string ,
         "the same message can be processed multiple times"^^xsd:string .
 
 :MessageStore-to-BlobStorage
     rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
     pp:hasSource <messagestore#MessageStore> ;
-    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/blobstorage#BlobStorage> .
+    pp:hasTarget <https://purl.org/patternpedia/cloudcomputingpatterns/blobstorage#BlobStorage> .
 
 :MessageStore-to-RelationalDatabase
     rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
     pp:hasSource <messagestore#MessageStore> ;
-    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/relationaldatabase#RelationalDatabase> .
+    pp:hasTarget <https://purl.org/patternpedia/cloudcomputingpatterns/relationaldatabase#RelationalDatabase> .
 
 :MessageStore-to-Key-ValueStorage
     rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
     pp:hasSource <messagestore#MessageStore> ;
-    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/key-valuestorage#Key-ValueStorage> .
+    pp:hasTarget <https://purl.org/patternpedia/cloudcomputingpatterns/key-valuestorage#Key-ValueStorage> .
 
 :MessageStore-to-StrictConsistency
     rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
     pp:hasSource <messagestore#MessageStore> ;
-    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/strictconsistency#StrictConsistency> .
+    pp:hasTarget <https://purl.org/patternpedia/cloudcomputingpatterns/strictconsistency#StrictConsistency> .
 
 :MessageStore-to-EventualConsistency
     rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
     pp:hasSource <messagestore#MessageStore> ;
-    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/eventualconsistency#EventualConsistency> .
+    pp:hasTarget <https://purl.org/patternpedia/cloudcomputingpatterns/eventualconsistency#EventualConsistency> .
 
 :MessageStore-to-DataAccessComponent
     rdf:type owl:NamedIndividual , :EnterpriseIntegrationPatternDirectedRelationDescriptor ;
     pp:hasSource <messagestore#MessageStore> ;
-    pp:hasTarget <http://purl.org/patternpedia/cloudcomputingpatterns/dataaccesscomponent#DataAccessComponent> .
+    pp:hasTarget <https://purl.org/patternpedia/cloudcomputingpatterns/dataaccesscomponent#DataAccessComponent> .
 
 
 # Group Links (i.e. Hyperedges containing patterns that form a group)

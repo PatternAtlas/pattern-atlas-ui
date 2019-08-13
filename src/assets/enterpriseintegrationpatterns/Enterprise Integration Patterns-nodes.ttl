@@ -3,655 +3,655 @@
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@base <http://purl.org/patternpedia/enterpriseintegrationpatterns/> .
+@base <https://purl.org/patternpedia/enterpriseintegrationpatterns/> .
 
 <filetransfer>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <filetransfer#FileTransfer>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "File Transfer"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Have each application *produce files containing information* that other applications need to consume. *Integrators take the responsibility of transforming files* into different formats. Produce the files at regular intervals according to the nature of the business"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "File Transfer"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Have each application *produce files containing information* that other applications need to consume. *Integrators take the responsibility of transforming files* into different formats. Produce the files at regular intervals according to the nature of the business"^^xsd:string .
 
 
 <shareddatabase>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <shareddatabase#SharedDatabase>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Shared Database"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Integrate applications by having them *store their data in a single Shared Database*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Shared Database"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Integrate applications by having them *store their data in a single Shared Database*"^^xsd:string .
 
 
 <remoteprocedureinvocation>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <remoteprocedureinvocation#RemoteProcedureInvocation>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Remote Procedure Invocation"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Develop each application as a *large-scale object or component with encapsulated data*. *Provide an interface to allow other applications to interact* with the running application"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Remote Procedure Invocation"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Develop each application as a *large-scale object or component with encapsulated data*. *Provide an interface to allow other applications to interact* with the running application"^^xsd:string .
 
 
 <messaging>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <messaging#Messaging>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Messaging"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use Messaging to transfer packets of data *frequently, immediately, reliably, and asynchronously*, using customizable formats"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Messaging"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use Messaging to transfer packets of data *frequently, immediately, reliably, and asynchronously*, using customizable formats"^^xsd:string .
 
 
 <messagechannel>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <messagechannel#MessageChannel>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Message Channel"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Connect the applications using a Message Channel, where *one application writes* information to the channel and the *other one reads* that information from the channel"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Message Channel"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Connect the applications using a Message Channel, where *one application writes* information to the channel and the *other one reads* that information from the channel"^^xsd:string .
 
 
 <message>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <message#Message>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Message"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Package the information into a Message, *a data record that the messaging system can transmit* through a message channel"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Message"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Package the information into a Message, *a data record that the messaging system can transmit* through a message channel"^^xsd:string .
 
 
 <pipesandfilters>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <pipesandfilters#PipesandFilters>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Pipes and Filters"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use the Pipes and Filters *architectural style* to divide a *larger processing task into a sequence of smaller, independent processing steps* (Filters) that are connected by channels (Pipes)"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Pipes and Filters"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use the Pipes and Filters *architectural style* to divide a *larger processing task into a sequence of smaller, independent processing steps* (Filters) that are connected by channels (Pipes)"^^xsd:string .
 
 
 <messagerouter>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <messagerouter#MessageRouter>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Message Router"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Insert a special filter, a Message Router, which consumes a Message from one Message Channel and republishes it to a *different Message Channel channel depending on a set of conditions*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Message Router"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Insert a special filter, a Message Router, which consumes a Message from one Message Channel and republishes it to a *different Message Channel channel depending on a set of conditions*"^^xsd:string .
 
 
 <messagetranslator>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <messagetranslator#MessageTranslator>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Message Translator"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a special filter, a Message Translator, between other filters or applications to *translate one data format into another*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Message Translator"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a special filter, a Message Translator, between other filters or applications to *translate one data format into another*"^^xsd:string .
 
 
 <messageendpoint>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <messageendpoint#MessageEndpoint>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Message Endpoint"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "*Connect an application to a messaging channel* using a Message Endpoint, a client of the messaging system that the application can then use *to send or receive messages*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Message Endpoint"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "*Connect an application to a messaging channel* using a Message Endpoint, a client of the messaging system that the application can then use *to send or receive messages*"^^xsd:string .
 
 
 <point-to-pointchannel>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <point-to-pointchannel#Point-to-PointChannel>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Point-to-Point Channel"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Send the message on a Point-to-Point Channel, which ensures that *only one receiver will receive* a particular message"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Point-to-Point Channel"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Send the message on a Point-to-Point Channel, which ensures that *only one receiver will receive* a particular message"^^xsd:string .
 
 
 <publish-subscribechannel>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <publish-subscribechannel#Publish-SubscribeChannel>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Publish-Subscribe Channel"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Send the event on a Publish-Subscribe Channel, which delivers a *copy of a particular event to each receiver*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Publish-Subscribe Channel"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Send the event on a Publish-Subscribe Channel, which delivers a *copy of a particular event to each receiver*"^^xsd:string .
 
 
 <datatypechannel>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <datatypechannel#DatatypeChannel>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Datatype Channel"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a *separate Datatype Channel for each data type*, so that all data on a particular channel is of the same type"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Datatype Channel"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a *separate Datatype Channel for each data type*, so that all data on a particular channel is of the same type"^^xsd:string .
 
 
 <invalidmessagechannel>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <invalidmessagechannel#InvalidMessageChannel>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Invalid Message Channel"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "The receiver should move the improper message to an Invalid Message Channel, a special channel *for messages that could not be processed by their receivers*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Invalid Message Channel"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "The receiver should move the improper message to an Invalid Message Channel, a special channel *for messages that could not be processed by their receivers*"^^xsd:string .
 
 
 <deadletterchannel>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <deadletterchannel#DeadLetterChannel>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Dead Letter Channel"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "When a messaging system determines that it *cannot or should not deliver a message*, it may elect to move the message to a Dead Letter Channel"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Dead Letter Channel"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "When a messaging system determines that it *cannot or should not deliver a message*, it may elect to move the message to a Dead Letter Channel"^^xsd:string .
 
 
 <guaranteeddelivery>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <guaranteeddelivery#GuaranteedDelivery>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Guaranteed Delivery"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use Guaranteed Delivery to make messages *persistent* so that they are *not lost* even if the messaging system crashes"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Guaranteed Delivery"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use Guaranteed Delivery to make messages *persistent* so that they are *not lost* even if the messaging system crashes"^^xsd:string .
 
 
 <channeladapter>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <channeladapter#ChannelAdapter>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Channel Adapter"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Channel Adapter that can *access the application's API or data* and publish messages on a channel based on this data, and that likewise can receive messages and *invoke functionality inside the application*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Channel Adapter"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Channel Adapter that can *access the application's API or data* and publish messages on a channel based on this data, and that likewise can receive messages and *invoke functionality inside the application*"^^xsd:string .
 
 
 <messagingbridge>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <messagingbridge#MessagingBridge>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Messaging Bridge"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Messaging Bridge, a *connection between messaging systems*, to replicate messages between systems"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Messaging Bridge"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Messaging Bridge, a *connection between messaging systems*, to replicate messages between systems"^^xsd:string .
 
 
 <messagebus>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <messagebus#MessageBus>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Message Bus"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Structure the connecting middleware between these applications as a Message Bus that enables them to *work together using messaging*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Message Bus"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Structure the connecting middleware between these applications as a Message Bus that enables them to *work together using messaging*"^^xsd:string .
 
 
 <commandmessage>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <commandmessage#CommandMessage>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Command Message"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Command Message to reliably *invoke a procedure in another application*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Command Message"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Command Message to reliably *invoke a procedure in another application*"^^xsd:string .
 
 
 <documentmessage>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <documentmessage#DocumentMessage>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Document Message"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Document Message to reliably *transfer a data structure* between applications"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Document Message"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Document Message to reliably *transfer a data structure* between applications"^^xsd:string .
 
 
 <eventmessage>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <eventmessage#EventMessage>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Event Message"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use an Event Message for reliable, *asynchronous event notification* between applications"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Event Message"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use an Event Message for reliable, *asynchronous event notification* between applications"^^xsd:string .
 
 
 <request-reply>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <request-reply#Request-Reply>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Request-Reply"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Send a pair of Request-Reply messages, each on its own channel"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Request-Reply"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Send a pair of Request-Reply messages, each on its own channel"^^xsd:string .
 
 
 <returnaddress>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <returnaddress#ReturnAddress>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Return Address"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "The request message should contain a Return Address that indicates *where to send the reply message*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Return Address"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "The request message should contain a Return Address that indicates *where to send the reply message*"^^xsd:string .
 
 
 <correlationidentifier>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <correlationidentifier#CorrelationIdentifier>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Correlation Identifier"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Each reply message should contain a Correlation Identifier, a unique identifier that indicates *which request message this reply is for*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Correlation Identifier"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Each reply message should contain a Correlation Identifier, a unique identifier that indicates *which request message this reply is for*"^^xsd:string .
 
 
 <messagesequence>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <messagesequence#MessageSequence>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Message Sequence"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Whenever a large set of data may need to be *broken into message-size chunks*, send the data as a Message Sequence and mark *each message with sequence identification fields*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Message Sequence"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Whenever a large set of data may need to be *broken into message-size chunks*, send the data as a Message Sequence and mark *each message with sequence identification fields*"^^xsd:string .
 
 
 <messageexpiration>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <messageexpiration#MessageExpiration>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Message Expiration"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Set the Message Expiration to specify a *time limit how long the message is viable*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Message Expiration"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Set the Message Expiration to specify a *time limit how long the message is viable*"^^xsd:string .
 
 
 <formatindicator>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <formatindicator#FormatIndicator>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Format Indicator"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Design a data format that includes a Format Indicator, so that the message *specifies what format it is using*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Format Indicator"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Design a data format that includes a Format Indicator, so that the message *specifies what format it is using*"^^xsd:string .
 
 
 <content-basedrouter>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <content-basedrouter#Content-BasedRouter>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Content-Based Router"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Content-Based Router to *route each message to the correct recipient based on message content*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Content-Based Router"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Content-Based Router to *route each message to the correct recipient based on message content*"^^xsd:string .
 
 
 <messagefilter>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <messagefilter#MessageFilter>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Message Filter"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a special kind of Message Router, a Message Filter, to *eliminate undesired messages from a channel* based on a set of criteria"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Message Filter"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a special kind of Message Router, a Message Filter, to *eliminate undesired messages from a channel* based on a set of criteria"^^xsd:string .
 
 
 <dynamicrouter>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <dynamicrouter#DynamicRouter>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Dynamic Router"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Dynamic Router, a Router that can *self-configure based on special configuration messages* from participating destinations"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Dynamic Router"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Dynamic Router, a Router that can *self-configure based on special configuration messages* from participating destinations"^^xsd:string .
 
 
 <recipientlist>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <recipientlist#RecipientList>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Recipient List"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Define a *channel for each recipient*. Then use a Recipient List to inspect an incoming message, *determine the list of desired recipients*, and forward the message to all channels associated with the recipients in the list"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Recipient List"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Define a *channel for each recipient*. Then use a Recipient List to inspect an incoming message, *determine the list of desired recipients*, and forward the message to all channels associated with the recipients in the list"^^xsd:string .
 
 
 <splitter>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <splitter#Splitter>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Splitter"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Splitter to break out the *composite message into a series of individual messages*, each containing data related to one item"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Splitter"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Splitter to break out the *composite message into a series of individual messages*, each containing data related to one item"^^xsd:string .
 
 
 <aggregator>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <aggregator#Aggregator>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Aggregator"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a stateful filter, an Aggregator, to *collect and store individual messages until a complete set of related messages* has been received. Then, the Aggregator publishes a single message distilled from the individual messages"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Aggregator"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a stateful filter, an Aggregator, to *collect and store individual messages until a complete set of related messages* has been received. Then, the Aggregator publishes a single message distilled from the individual messages"^^xsd:string .
 
 
 <resequencer>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <resequencer#Resequencer>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Resequencer"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a stateful filter, a Resequencer, to *collect and re-order messages* so that they can be published to the output channel *in a specified order*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Resequencer"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a stateful filter, a Resequencer, to *collect and re-order messages* so that they can be published to the output channel *in a specified order*"^^xsd:string .
 
 
 <composedmessageprocessor>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <composedmessageprocessor#ComposedMessageProcessor>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Composed Message Processor"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use Composed Message Processor to process a composite message. The Composed Message Processor *splits the message up, routes the sub-messages to the appropriate destinations and re-aggregates the responses back into a single message*"^^xsd:string, "combination of Splitter, Router, and Aggregator"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Composed Message Processor"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use Composed Message Processor to process a composite message. The Composed Message Processor *splits the message up, routes the sub-messages to the appropriate destinations and re-aggregates the responses back into a single message*"^^xsd:string, "combination of Splitter, Router, and Aggregator"^^xsd:string .
 
 
 <scatter-gather>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <scatter-gather#Scatter-Gather>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Scatter-Gather"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Scatter-Gather that *broadcasts* a message *to multiple recipients and re-aggregates the responses back* into a single message"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Scatter-Gather"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Scatter-Gather that *broadcasts* a message *to multiple recipients and re-aggregates the responses back* into a single message"^^xsd:string .
 
 
 <routingslip>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <routingslip#RoutingSlip>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Routing Slip"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Attach a Routing Slip to each message, *specifying the sequence of processing steps*. Wrap *each component with a special message router* that reads the Routing Slip and routes the message to the next component in the list"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Routing Slip"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Attach a Routing Slip to each message, *specifying the sequence of processing steps*. Wrap *each component with a special message router* that reads the Routing Slip and routes the message to the next component in the list"^^xsd:string .
 
 
 <processmanager>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <processmanager#ProcessManager>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Process Manager"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a central processing unit, a Process Manager, to *maintain the state of the sequence and determine the next processing step based on intermediate results*"^^xsd:string, "Business Process Management (separate topic or even pattern language)"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Process Manager"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a central processing unit, a Process Manager, to *maintain the state of the sequence and determine the next processing step based on intermediate results*"^^xsd:string, "Business Process Management (separate topic or even pattern language)"^^xsd:string .
 
 
 <messagebroker>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <messagebroker#MessageBroker>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Message Broker"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a central Message Broker that can *receive messages from multiple destinations*, determine the correct destination and route the message to the correct channel"^^xsd:string, "hub-and-spoke architectural style"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Message Broker"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a central Message Broker that can *receive messages from multiple destinations*, determine the correct destination and route the message to the correct channel"^^xsd:string, "hub-and-spoke architectural style"^^xsd:string .
 
 
 <envelopewrapper>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <envelopewrapper#EnvelopeWrapper>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Envelope Wrapper"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Envelope Wrapper to *wrap application data* inside an envelope that is compliant with the messaging infrastructure. *Unwrap the message* when it arrives at the destination"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Envelope Wrapper"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Envelope Wrapper to *wrap application data* inside an envelope that is compliant with the messaging infrastructure. *Unwrap the message* when it arrives at the destination"^^xsd:string .
 
 
 <contentenricher>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <contentenricher#ContentEnricher>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Content Enricher"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a specialized transformer, a Content Enricher, to access an external data source in order to *augment a message with missing information*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Content Enricher"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a specialized transformer, a Content Enricher, to access an external data source in order to *augment a message with missing information*"^^xsd:string .
 
 
 <contentfilter>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <contentfilter#ContentFilter>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Content Filter"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Content Filter to *remove unimportant data items* from a message leaving only important items"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Content Filter"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Content Filter to *remove unimportant data items* from a message leaving only important items"^^xsd:string .
 
 
 <claimcheck>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <claimcheck#ClaimCheck>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Claim Check"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Store message data in a *persistent store and pass a Claim Check* to subsequent components. These components can *use the Claim Check to retrieve the stored information*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Claim Check"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Store message data in a *persistent store and pass a Claim Check* to subsequent components. These components can *use the Claim Check to retrieve the stored information*"^^xsd:string .
 
 
 <normalizer>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <normalizer#Normalizer>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Normalizer"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Normalizer to route each message type through a custom Message Translator so that the resulting *messages match a common format*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Normalizer"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Normalizer to route each message type through a custom Message Translator so that the resulting *messages match a common format*"^^xsd:string .
 
 
 <canonicaldatamodel>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <canonicaldatamodel#CanonicalDataModel>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Canonical Data Model"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Therefore, design a Canonical Data Model that is *independent from any specific application*. Require each application to produce and consume messages in this common format"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Canonical Data Model"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Therefore, design a Canonical Data Model that is *independent from any specific application*. Require each application to produce and consume messages in this common format"^^xsd:string .
 
 
 <messaginggateway>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <messaginggateway#MessagingGateway>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Messaging Gateway"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Messaging Gateway, a class than *wraps messaging-specific method calls* and *exposes domain-specific methods* to the application"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Messaging Gateway"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Messaging Gateway, a class than *wraps messaging-specific method calls* and *exposes domain-specific methods* to the application"^^xsd:string .
 
 
 <messagingmapper>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <messagingmapper#MessagingMapper>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Messaging Mapper"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Create a separate Messaging Mapper that contains the *mapping logic between the messaging infrastructure and the domain objects*. Neither the objects nor the infrastructure have knowledge of the Messaging Mapper's existence"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Messaging Mapper"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Create a separate Messaging Mapper that contains the *mapping logic between the messaging infrastructure and the domain objects*. Neither the objects nor the infrastructure have knowledge of the Messaging Mapper's existence"^^xsd:string .
 
 
 <transactionalclient>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <transactionalclient#TransactionalClient>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Transactional Client"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Transactional Client—make the client’s session with the messaging system transactional so that the *client can specify transaction boundaries*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Transactional Client"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Transactional Client—make the client’s session with the messaging system transactional so that the *client can specify transaction boundaries*"^^xsd:string .
 
 
 <pollingconsumer>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <pollingconsumer#PollingConsumer>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Polling Consumer"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "The application should use a Polling Consumer, one that *explicitly makes a call when it wants to receive a message*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Polling Consumer"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "The application should use a Polling Consumer, one that *explicitly makes a call when it wants to receive a message*"^^xsd:string .
 
 
 <event-drivenconsumer>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <event-drivenconsumer#Event-DrivenConsumer>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Event-Driven Consumer"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "The application should use an Event-Driven Consumer, one that is *automatically handed messages* as they’re delivered on the channel"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Event-Driven Consumer"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "The application should use an Event-Driven Consumer, one that is *automatically handed messages* as they’re delivered on the channel"^^xsd:string .
 
 
 <competingconsumers>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <competingconsumers#CompetingConsumers>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Competing Consumers"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Create *multiple Competing Consumers on a single channel* so that the consumers can *process multiple messages concurrently*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Competing Consumers"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Create *multiple Competing Consumers on a single channel* so that the consumers can *process multiple messages concurrently*"^^xsd:string .
 
 
 <messagedispatcher>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <messagedispatcher#MessageDispatcher>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Message Dispatcher"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Create a Message Dispatcher on a channel that will *consume messages from a channel and distribute them to performers*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Message Dispatcher"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Create a Message Dispatcher on a channel that will *consume messages from a channel and distribute them to performers*"^^xsd:string .
 
 
 <selectiveconsumer>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <selectiveconsumer#SelectiveConsumer>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Selective Consumer"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Make the consumer a Selective Consumer, one that filteres the messages delivered by its channel so that it *only receives the ones that match its criteria*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Selective Consumer"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Make the consumer a Selective Consumer, one that filteres the messages delivered by its channel so that it *only receives the ones that match its criteria*"^^xsd:string .
 
 
 <durablesubscriber>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <durablesubscriber#DurableSubscriber>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Durable Subscriber"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Durable Subscriber to make the messaging system *save messages published while the subscriber is disconnected*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Durable Subscriber"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Durable Subscriber to make the messaging system *save messages published while the subscriber is disconnected*"^^xsd:string .
 
 
 <idempotentreceiver>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <idempotentreceiver#IdempotentReceiver>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Idempotent Receiver"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Design a receiver to be an Idempotent Receiver--one that can safely receive the *same message multiple times*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Idempotent Receiver"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Design a receiver to be an Idempotent Receiver--one that can safely receive the *same message multiple times*"^^xsd:string .
 
 
 <serviceactivator>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <serviceactivator#ServiceActivator>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Service Activator"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Design a Service Activator that *connects the messages on the channel to the service being accessed*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Service Activator"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Design a Service Activator that *connects the messages on the channel to the service being accessed*"^^xsd:string .
 
 
 <controlbus>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <controlbus#ControlBus>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Control Bus"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Control Bus to manage an enterprise integration system. The Control Bus uses the same messaging mechanism used by the application data, but *uses separate channels* to *transmit data that is relevant to the management of components* involved in the message flow"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Control Bus"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Control Bus to manage an enterprise integration system. The Control Bus uses the same messaging mechanism used by the application data, but *uses separate channels* to *transmit data that is relevant to the management of components* involved in the message flow"^^xsd:string .
 
 
 <detour>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <detour#Detour>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Detour"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Construct a Detour with a *context-based router controlled via the Control Bus*. In one state the router *routes incoming messages through additional steps* while in the other it routes messages directly to the destination channel"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Detour"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Construct a Detour with a *context-based router controlled via the Control Bus*. In one state the router *routes incoming messages through additional steps* while in the other it routes messages directly to the destination channel"^^xsd:string .
 
 
 <wiretap>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <wiretap#WireTap>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Wire Tap"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Insert a simple Recipient List into the channel that publishes each incoming message to the main channel *and a secondary channel*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Wire Tap"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Insert a simple Recipient List into the channel that publishes each incoming message to the main channel *and a secondary channel*"^^xsd:string .
 
 
 <messagehistory>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <messagehistory#MessageHistory>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Message History"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Therefore, attach a Message History to the message. The Message History is a *list of all applications that the message passed through since its origination*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Message History"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Therefore, attach a Message History to the message. The Message History is a *list of all applications that the message passed through since its origination*"^^xsd:string .
 
 
 <messagestore>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <messagestore#MessageStore>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Message Store"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Message Store to capture information about each message in a *central location*"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Message Store"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Message Store to capture information about each message in a *central location*"^^xsd:string .
 
 
 <smartproxy>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <smartproxy#SmartProxy>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Smart Proxy"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Smart Proxy to store the Return Address supplied by the original requestor and replace it with the address of the Smart Proxy. When the service sends the reply message route it to the original Return Address"^^xsd:string, "Proxy for return address"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Smart Proxy"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Smart Proxy to store the Return Address supplied by the original requestor and replace it with the address of the Smart Proxy. When the service sends the reply message route it to the original Return Address"^^xsd:string, "Proxy for return address"^^xsd:string .
 
 
 <testmessage>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <testmessage#TestMessage>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Test Message"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Therefore, use Test Message to assure the health of message processing components"^^xsd:string, "consists of Test Data Generator, Test Message Injector, Test Data Verifier, and Test Message Separator"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Test Message"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Therefore, use Test Message to assure the health of message processing components"^^xsd:string, "consists of Test Data Generator, Test Message Injector, Test Data Verifier, and Test Message Separator"^^xsd:string .
 
 
 <channelpurger>
     rdf:type owl:Ontology ;
-    owl:imports <http://purl.org/patternpedia/enterpriseintegrationpatterns> .
+    owl:imports <https://purl.org/patternpedia/enterpriseintegrationpatterns> .
 
 <channelpurger#ChannelPurger>
-    rdf:type owl:NamedIndividual , <http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
-    <http://purl.org/patternpedia#hasName> "Channel Purger"^^xsd:string ;
-    <http://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Channel Purger to remove unwanted messages from a channel"^^xsd:string .
+    rdf:type owl:NamedIndividual , <https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> ;
+    <https://purl.org/patternpedia#hasName> "Channel Purger"^^xsd:string ;
+    <https://purl.org/patternpedia/enterpriseintegrationpatterns#hasDescription> "Use a Channel Purger to remove unwanted messages from a channel"^^xsd:string .
 
 

@@ -128,7 +128,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
         }), new FormGroup({
           prefixname: new FormControl('dctype'),
           checked: new FormControl(true),
-          uri: new FormControl('http://purl.org/dc/dcmitype/'),
+          uri: new FormControl('https://purl.org/dc/dcmitype/'),
           values: new FormControl(['dctype:Image', 'dctype:StillImage',
             'dctype:MovingImage',
             'dctype:Software',

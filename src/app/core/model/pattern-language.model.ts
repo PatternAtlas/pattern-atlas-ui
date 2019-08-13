@@ -18,7 +18,7 @@ import PatternPedia from './pattern-pedia.model';
 import { CustomPrefix } from '../../pattern-language-management/data/CustomPrefix.interface';
 
 class PatternLanguage {
-  private patternpediaBaseURI = 'http://purl.org/patternpedia';
+  private patternpediaBaseURI = 'https://purl.org/patternpedia';
     private _id: string;
     name: string;
     logos: Array<string>;
@@ -76,7 +76,7 @@ class PatternLanguage {
   }
 
   getSectionIdentifier(section: string): string {
-    return section.startsWith('http://purl.org') ? '<' + section + '>' : ':has' + section.replace(/\s/g, '');
+    return section.startsWith('https://purl.org') ? '<' + section + '>' : ':has' + section.replace(/\s/g, '');
   }
 
   toTurtle(): string {

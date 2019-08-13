@@ -35,7 +35,7 @@ export class DefaultPlLoaderService extends Loader<any> {
   async selectContentFromStore(): Promise<any> {
     const qryPatterns = `SELECT DISTINCT ?pattern
                                       WHERE {
-                                          <${this.supportedIRI}> <http://purl.org/patternpedia#containsPattern> ?pattern
+                                          <${this.supportedIRI}> <https://purl.org/patternpedia#containsPattern> ?pattern
                                       }`;
     const patterns = await this.executor.exec(qryPatterns, [IriConverter.getFileName(this.supportedIRI)]);
     const qry = `SELECT DISTINCT ?type ?pattern ?predicate ?property
