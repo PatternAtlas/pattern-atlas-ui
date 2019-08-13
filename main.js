@@ -1553,7 +1553,7 @@ var DefaultPatternRendererComponent = /** @class */ (function () {
         this.isLoadingSection = true;
         this.standardPrefixes = new _model_pattern_pedia_model__WEBPACK_IMPORTED_MODULE_8__["default"]().defaultPrefixes;
         this.xsdPrefix = this.standardPrefixes.get('xsd').replace('<', '').replace('>', '');
-        this.dcmiPrefix = 'http://purl.org/dc/dcmitype/';
+        this.dcmiPrefix = 'https://purl.org/dc/dcmitype/';
         this.mappings = [
             { prefix: this.xsdPrefix + 'string', value: _component_type_templates_xsd_string_string_component__WEBPACK_IMPORTED_MODULE_11__["StringComponent"] },
             { prefix: this.xsdPrefix + 'integer', value: _component_type_templates_xsd_integer_integer_component__WEBPACK_IMPORTED_MODULE_12__["IntegerComponent"] },
@@ -2003,7 +2003,7 @@ var PatternLanguage = /** @class */ (function () {
         if (sections === void 0) { sections = null; }
         if (restrictions === void 0) { restrictions = null; }
         if (prefixes === void 0) { prefixes = null; }
-        this.patternpediaBaseURI = 'http://purl.org/patternpedia';
+        this.patternpediaBaseURI = 'https://purl.org/patternpedia';
         this.name = name;
         this.logos = logos || [];
         this.patternIRIs = patternIRIs || [];
@@ -2042,7 +2042,7 @@ var PatternLanguage = /** @class */ (function () {
         return ary;
     };
     PatternLanguage.prototype.getSectionIdentifier = function (section) {
-        return section.startsWith('http://purl.org') ? '<' + section + '>' : ':has' + section.replace(/\s/g, '');
+        return section.startsWith('https://purl.org') ? '<' + section + '>' : ':has' + section.replace(/\s/g, '');
     };
     PatternLanguage.prototype.toTurtle = function () {
         var _this = this;
@@ -2742,7 +2742,7 @@ var DefaultPlLoaderService = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        qryPatterns = "SELECT DISTINCT ?pattern\n                                      WHERE {\n                                          <" + this.supportedIRI + "> <http://purl.org/patternpedia#containsPattern> ?pattern\n                                      }";
+                        qryPatterns = "SELECT DISTINCT ?pattern\n                                      WHERE {\n                                          <" + this.supportedIRI + "> <https://purl.org/patternpedia#containsPattern> ?pattern\n                                      }";
                         return [4 /*yield*/, this.executor.exec(qryPatterns, [_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getFileName(this.supportedIRI)])];
                     case 1:
                         patterns = _a.sent();
@@ -2892,7 +2892,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 var LinkedOpenPatternsLoader = /** @class */ (function (_super) {
     __extends(LinkedOpenPatternsLoader, _super);
     function LinkedOpenPatternsLoader(pos) {
-        var _this = _super.call(this, 'http://purl.org/patternpedia#LinkedOpenPatterns', pos) || this;
+        var _this = _super.call(this, 'https://purl.org/patternpedia#LinkedOpenPatterns', pos) || this;
         _this.pos = pos;
         return _this;
     }
@@ -2904,11 +2904,11 @@ var LinkedOpenPatternsLoader = /** @class */ (function (_super) {
                     case 0:
                         console.log('supportedIRI: ');
                         console.log(this.supportedIRI);
-                        qryPatternGraphs = "SELECT DISTINCT ?patterngraph\n                                      WHERE {\n                                          <" + this.supportedIRI + "> <http://purl.org/patternpedia#containsPatternGraph> ?patterngraph\n                                      }";
+                        qryPatternGraphs = "SELECT DISTINCT ?patterngraph\n                                      WHERE {\n                                          <" + this.supportedIRI + "> <https://purl.org/patternpedia#containsPatternGraph> ?patterngraph\n                                      }";
                         return [4 /*yield*/, this.executor.exec(qryPatternGraphs, [_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getFileName(this.supportedIRI)])];
                     case 1:
                         patternGraphs = _a.sent();
-                        qry = "SELECT ?patterngraph ?type ?name ?logo ?pattern\n                                         WHERE {\n                                             <" + this.supportedIRI + "> <http://purl.org/patternpedia#containsPatternGraph> ?patterngraph .\n                                            ?patterngraph a ?type .\n                                            optional {?patterngraph <http://purl.org/patternpedia#containsPattern> ?pattern .}\n                                            ?patterngraph <http://purl.org/patternpedia#hasName> ?name .\n                                            ?patterngraph <http://purl.org/patternpedia#hasLogo> ?logo .\n                                            FILTER (?type != owl:NamedIndividual)\n                                          }\n                                ORDER BY ?patterngraph";
+                        qry = "SELECT ?patterngraph ?type ?name ?logo ?pattern\n                                         WHERE {\n                                             <" + this.supportedIRI + "> <https://purl.org/patternpedia#containsPatternGraph> ?patterngraph .\n                                            ?patterngraph a ?type .\n                                            optional {?patterngraph <https://purl.org/patternpedia#containsPattern> ?pattern .}\n                                            ?patterngraph <https://purl.org/patternpedia#hasName> ?name .\n                                            ?patterngraph <https://purl.org/patternpedia#hasLogo> ?logo .\n                                            FILTER (?type != owl:NamedIndividual)\n                                          }\n                                ORDER BY ?patterngraph";
                         graphs = [_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getFileName(this.supportedIRI)];
                         for (_i = 0, patternGraphs_1 = patternGraphs; _i < patternGraphs_1.length; _i++) {
                             entry = patternGraphs_1[_i];
@@ -3193,7 +3193,7 @@ __webpack_require__.r(__webpack_exports__);
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 function selectPatternLanguage(plIri, executor) {
-    var qry = "SELECT DISTINCT ?type ?pattern ?predicate ?property\n                 WHERE {\n                    <" + plIri + "> <http://purl.org/patternpedia#containsPattern> ?pattern .\n                    ?pattern ?predicate ?property .\n                    FILTER (?type != owl:NamedIndividual && ?predicate != rdf:type)\n                    }\n                 ORDER BY ?pattern";
+    var qry = "SELECT DISTINCT ?type ?pattern ?predicate ?property\n                 WHERE {\n                    <" + plIri + "> <https://purl.org/patternpedia#containsPattern> ?pattern .\n                    ?pattern ?predicate ?property .\n                    FILTER (?type != owl:NamedIndividual && ?predicate != rdf:type)\n                    }\n                 ORDER BY ?pattern";
     return executor.exec(qry, [plIri]);
 }
 
@@ -3300,7 +3300,7 @@ var PatternOntologyService = /** @class */ (function () {
         store.registerDefaultNamespace('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
         store.registerDefaultNamespace('rdfs', 'http://www.w3.org/2000/01/rdf-schema#');
         store.registerDefaultNamespace('xsd', 'http://www.w3.org/2001/XMLSchema#');
-        store.registerDefaultNamespace('pp', 'http://purl.org/patternpedia#');
+        store.registerDefaultNamespace('pp', 'https://purl.org/patternpedia#');
     };
     Object.defineProperty(PatternOntologyService.prototype, "store", {
         /**
@@ -3451,7 +3451,7 @@ var PatternOntologyService = /** @class */ (function () {
             if (_this.cookieService.get('patternpedia_github_token')) {
                 var githubUrl = _this.githubPersistenceService.githubBaseUrl;
                 var url = iri;
-                if (iri === 'http://purl.org/patternpedia') {
+                if (iri === 'https://purl.org/patternpedia') {
                     url = githubUrl + '/patternpedia.ttl';
                 }
                 return _this.githubPersistenceService.getFile(url).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (fileResponse) {
@@ -3496,69 +3496,69 @@ var PatternOntologyService = /** @class */ (function () {
                         console.log('LOADED Ontologies!');
                         store = this.store;
                         this.registerDefaultNameSpaces(store);
-                        console.log('LOADING http://purl.org/patternpedia to store');
+                        console.log('LOADING https://purl.org/patternpedia to store');
                         _b = (_a = console).log;
                         _c = ['Result: '];
-                        return [4 /*yield*/, this.loadToStore('text/turtle', loadResult[0], 'http://purl.org/patternpedia')];
+                        return [4 /*yield*/, this.loadToStore('text/turtle', loadResult[0], 'https://purl.org/patternpedia')];
                     case 2:
                         _b.apply(_a, _c.concat([_6.sent()]));
                         // loading the enterprise integration patterns turtle file
-                        console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns');
+                        console.log('LOADING https://purl.org/patternpedia/cloudcomputingpatterns');
                         _e = (_d = console).log;
                         _f = ['Result: '];
-                        return [4 /*yield*/, this.loadToStore('text/turtle', loadResult[1], 'http://purl.org/patternpedia/cloudcomputingpatterns')];
+                        return [4 /*yield*/, this.loadToStore('text/turtle', loadResult[1], 'https://purl.org/patternpedia/cloudcomputingpatterns')];
                     case 3:
                         _e.apply(_d, _f.concat([_6.sent()]));
                         // loading the nodes
-                        console.log('LOADING NODES OF http://purl.org/patternpedia/cloudcomputingpatterns');
+                        console.log('LOADING NODES OF https://purl.org/patternpedia/cloudcomputingpatterns');
                         _h = (_g = console).log;
                         _j = ['Result: '];
-                        return [4 /*yield*/, this.loadToStore('text/turtle', loadResult[2], 'http://purl.org/patternpedia/cloudcomputingpatterns')];
+                        return [4 /*yield*/, this.loadToStore('text/turtle', loadResult[2], 'https://purl.org/patternpedia/cloudcomputingpatterns')];
                     case 4:
                         _h.apply(_g, _j.concat([_6.sent()]));
                         // loading the links
-                        console.log('LOADING EDGES OF http://purl.org/patternpedia/cloudcomputingpatterns');
+                        console.log('LOADING EDGES OF https://purl.org/patternpedia/cloudcomputingpatterns');
                         _l = (_k = console).log;
                         _m = ['Result: '];
-                        return [4 /*yield*/, this.loadToStore('text/turtle', loadResult[3], 'http://purl.org/patternpedia/cloudcomputingpatterns')];
+                        return [4 /*yield*/, this.loadToStore('text/turtle', loadResult[3], 'https://purl.org/patternpedia/cloudcomputingpatterns')];
                     case 5:
                         _l.apply(_k, _m.concat([_6.sent()]));
-                        console.log('LOADING http://purl.org/patternpedia/internetofthingspatterns/ to store');
+                        console.log('LOADING https://purl.org/patternpedia/internetofthingspatterns/ to store');
                         _p = (_o = console).log;
                         _q = ['Result: '];
-                        return [4 /*yield*/, this.loadToStore('text/turtle', loadResult[4], 'http://purl.org/patternpedia/internetofthingspatterns')];
+                        return [4 /*yield*/, this.loadToStore('text/turtle', loadResult[4], 'https://purl.org/patternpedia/internetofthingspatterns')];
                     case 6:
                         _p.apply(_o, _q.concat([_6.sent()]));
-                        console.log('LOADING http://purl.org/patternpedia/internetofthingspatterns/deviceshadow to store');
+                        console.log('LOADING https://purl.org/patternpedia/internetofthingspatterns/deviceshadow to store');
                         _s = (_r = console).log;
                         _t = ['Result: '];
-                        return [4 /*yield*/, this.loadToStore('text/turtle', loadResult[5], 'http://purl.org/patternpedia/internetofthingspatterns/devicegateway')];
+                        return [4 /*yield*/, this.loadToStore('text/turtle', loadResult[5], 'https://purl.org/patternpedia/internetofthingspatterns/devicegateway')];
                     case 7:
                         _s.apply(_r, _t.concat([_6.sent()]));
                         _v = (_u = console).log;
                         _w = ['Result: '];
-                        return [4 /*yield*/, this.loadToStore('text/turtle', loadResult[6], 'http://purl.org/patternpedia/internetofthingspatterns/devicegateway')];
+                        return [4 /*yield*/, this.loadToStore('text/turtle', loadResult[6], 'https://purl.org/patternpedia/internetofthingspatterns/devicegateway')];
                     case 8:
                         _v.apply(_u, _w.concat([_6.sent()]));
                         // loading the enterprise integration patterns turtle file
-                        console.log('LOADING http://purl.org/patternpedia/enterpriseintegrationpatterns');
+                        console.log('LOADING https://purl.org/patternpedia/enterpriseintegrationpatterns');
                         _y = (_x = console).log;
                         _z = ['Result: '];
-                        return [4 /*yield*/, this.loadToStore('text/turtle', loadResult[7], 'http://purl.org/patternpedia/enterpriseintegrationpatterns')];
+                        return [4 /*yield*/, this.loadToStore('text/turtle', loadResult[7], 'https://purl.org/patternpedia/enterpriseintegrationpatterns')];
                     case 9:
                         _y.apply(_x, _z.concat([_6.sent()]));
                         // loading the nodes
-                        console.log('LOADING NODES OF http://purl.org/patternpedia/enterpriseintegrationpatterns');
+                        console.log('LOADING NODES OF https://purl.org/patternpedia/enterpriseintegrationpatterns');
                         _1 = (_0 = console).log;
                         _2 = ['Result: '];
-                        return [4 /*yield*/, this.loadToStore('text/turtle', loadResult[8], 'http://purl.org/patternpedia/enterpriseintegrationpatterns')];
+                        return [4 /*yield*/, this.loadToStore('text/turtle', loadResult[8], 'https://purl.org/patternpedia/enterpriseintegrationpatterns')];
                     case 10:
                         _1.apply(_0, _2.concat([_6.sent()]));
                         // loading the links
-                        console.log('LOADING EDGES OF http://purl.org/patternpedia/enterpriseintegrationpatterns');
+                        console.log('LOADING EDGES OF https://purl.org/patternpedia/enterpriseintegrationpatterns');
                         _4 = (_3 = console).log;
                         _5 = ['Result: '];
-                        return [4 /*yield*/, this.loadToStore('text/turtle', loadResult[9], 'http://purl.org/patternpedia/enterpriseintegrationpatterns')];
+                        return [4 /*yield*/, this.loadToStore('text/turtle', loadResult[9], 'https://purl.org/patternpedia/enterpriseintegrationpatterns')];
                     case 11:
                         _4.apply(_3, _5.concat([_6.sent()]));
                         return [2 /*return*/];
@@ -3579,7 +3579,7 @@ var PatternOntologyService = /** @class */ (function () {
                         loadedResult = atob(patternpediaResult.content);
                         _b = (_a = console).log;
                         _c = ['Result: '];
-                        return [4 /*yield*/, this.loadToStore('text/turtle', loadedResult, 'http://purl.org/patternpedia')];
+                        return [4 /*yield*/, this.loadToStore('text/turtle', loadedResult, 'https://purl.org/patternpedia')];
                     case 2:
                         _b.apply(_a, _c.concat([_d.sent()]));
                         store = this.store;
@@ -3663,10 +3663,10 @@ var PatternOntologyService = /** @class */ (function () {
                             var pl = new _model_pattern_language_model__WEBPACK_IMPORTED_MODULE_4__["default"](entry.patternlanguage.value, null, []);
                             for (var _i = 0, loadPLDetailsResult_1 = loadPLDetailsResult; _i < loadPLDetailsResult_1.length; _i++) {
                                 var propEntry = loadPLDetailsResult_1[_i];
-                                if ('http://purl.org/patternpedia#hasLogo' === propEntry.p.value) {
+                                if ('https://purl.org/patternpedia#hasLogo' === propEntry.p.value) {
                                     pl.logos.push(propEntry.o.value);
                                 }
-                                else if ('http://purl.org/patternpedia#hasName' === propEntry.p.value) {
+                                else if ('https://purl.org/patternpedia#hasName' === propEntry.p.value) {
                                     pl.name = propEntry.o.value;
                                 }
                             }
@@ -3831,7 +3831,7 @@ var PatternOntologyService = /** @class */ (function () {
             console.log('Use default store');
             store = this.store;
         }
-        pl = !pl ? new _model_pattern_language_model__WEBPACK_IMPORTED_MODULE_4__["default"]('http://purl.org/patternpedia#InternetOfThingsPatterns', 'Internet of Things Patterns', new Array('http://placekitten.com/150/151')) : pl;
+        pl = !pl ? new _model_pattern_language_model__WEBPACK_IMPORTED_MODULE_4__["default"]('https://purl.org/patternpedia#InternetOfThingsPatterns', 'Internet of Things Patterns', new Array('http://placekitten.com/150/151')) : pl;
         // prepare logo query part
         var logoQry = '';
         for (var _i = 0, _a = pl.logos; _i < _a.length; _i++) {
@@ -3860,8 +3860,8 @@ var PatternOntologyService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        supportedIRI = 'http://purl.org/patternpedia#LinkedOpenPatterns';
-                        qryPatternGraphs = "SELECT DISTINCT ?patterngraph\n                                      WHERE {\n                                          <" + supportedIRI + "> <http://purl.org/patternpedia#containsPatternGraph> ?patterngraph\n                                      }";
+                        supportedIRI = 'https://purl.org/patternpedia#LinkedOpenPatterns';
+                        qryPatternGraphs = "SELECT DISTINCT ?patterngraph\n                                      WHERE {\n                                          <" + supportedIRI + "> <https://purl.org/patternpedia#containsPatternGraph> ?patterngraph\n                                      }";
                         return [4 /*yield*/, this.exec(qryPatternGraphs, [_util_iri_converter__WEBPACK_IMPORTED_MODULE_5__["IriConverter"].getFileName(supportedIRI)])];
                     case 1:
                         patternGraphs = _a.sent();
@@ -3883,7 +3883,7 @@ var PatternOntologyService = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             var qryPatternGraphs;
             return __generator(this, function (_a) {
-                qryPatternGraphs = "SELECT ?logo\n        WHERE {\n            ?pl rdf:type owl:NamedIndividual .\n            ?pl <http://purl.org/patternpedia#hasLogo> ?logo .\n        }";
+                qryPatternGraphs = "SELECT ?logo\n        WHERE {\n            ?pl rdf:type owl:NamedIndividual .\n            ?pl <https://purl.org/patternpedia#hasLogo> ?logo .\n        }";
                 return [2 /*return*/, this.exec(qryPatternGraphs, [_util_iri_converter__WEBPACK_IMPORTED_MODULE_5__["IriConverter"].getFileName(graphIri)])];
             });
         });
@@ -4253,7 +4253,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 var CloudComputingPatternsModule = /** @class */ (function () {
     function CloudComputingPatternsModule(cr) {
         this.cr = cr;
-        this.cr.registerComponent(_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_8__["IriConverter"].convertIriToId('http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#CloudComputingPatterns'), {
+        this.cr.registerComponent(_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_8__["IriConverter"].convertIriToId('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#CloudComputingPatterns'), {
             plcomponent: _component_cloud_computing_patterns_cloud_computing_patterns_component__WEBPACK_IMPORTED_MODULE_3__["CloudComputingPatternsComponent"],
             pcomponent: _component_cloud_computing_pattern_cloud_computing_pattern_component__WEBPACK_IMPORTED_MODULE_7__["CloudComputingPatternComponent"]
         }); // tslint:disable-line:max-line-length
@@ -4535,7 +4535,7 @@ var CloudComputingPatternsComponent = /** @class */ (function () {
     CloudComputingPatternsComponent.prototype.ngOnInit = function () {
         var _this = this;
         // we have to load the individual patterns first by getting all imports from the base file
-        this.pos.getOWLImports('http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns')
+        this.pos.getOWLImports('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns')
             .then(function (res) {
             var importedIris = res.map(function (i) { return i.import; });
             _this.pos.loadUrisToStore(importedIris)
@@ -4675,7 +4675,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 var CloudComputingPatternsLoaderService = /** @class */ (function (_super) {
     __extends(CloudComputingPatternsLoaderService, _super);
     function CloudComputingPatternsLoaderService(pos) {
-        var _this = _super.call(this, 'http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#CloudComputingPatterns', pos) || this;
+        var _this = _super.call(this, 'https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#CloudComputingPatterns', pos) || this;
         _this.pos = pos;
         return _this;
     }
@@ -4685,7 +4685,7 @@ var CloudComputingPatternsLoaderService = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        qryPatterns = "SELECT DISTINCT ?pattern\n                                      WHERE {\n                                          <" + this.supportedIRI + "> <http://purl.org/patternpedia#containsPattern> ?pattern\n                                      }";
+                        qryPatterns = "SELECT DISTINCT ?pattern\n                                      WHERE {\n                                          <" + this.supportedIRI + "> <https://purl.org/patternpedia#containsPattern> ?pattern\n                                      }";
                         return [4 /*yield*/, this.executor.exec(qryPatterns, [_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getFileName(this.supportedIRI)])];
                     case 1:
                         patterns = _a.sent();
@@ -4737,52 +4737,52 @@ var CloudComputingPatternsLoaderService = /** @class */ (function (_super) {
         for (var _a = 0, _b = Object.keys(patterns); _a < _b.length; _a++) {
             var key = _b[_a];
             var p = new _model_cloud_computing_pattern__WEBPACK_IMPORTED_MODULE_0__["default"](key);
-            if (Array.isArray(patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasSolutionSketch'])) {
-                for (var _c = 0, _d = patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasSolutionSketch']; _c < _d.length; _c++) {
+            if (Array.isArray(patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasSolutionSketch'])) {
+                for (var _c = 0, _d = patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasSolutionSketch']; _c < _d.length; _c++) {
                     var entry = _d[_c];
                     p.solutionSketches.value.push(entry.value);
                 }
             }
-            else if (patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasSolutionSketch']
-                && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasSolutionSketch'].value) {
-                p.solutionSketches.value.push(patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasSolutionSketch'].value);
+            else if (patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasSolutionSketch']
+                && patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasSolutionSketch'].value) {
+                p.solutionSketches.value.push(patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasSolutionSketch'].value);
             }
-            if (Array.isArray(patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasVariation'])) {
-                for (var _e = 0, _f = patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasVariation']; _e < _f.length; _e++) {
+            if (Array.isArray(patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasVariation'])) {
+                for (var _e = 0, _f = patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasVariation']; _e < _f.length; _e++) {
                     var entry = _f[_e];
                     p.variations.value.push(entry.value);
                 }
             }
-            else if (patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasVariation']
-                && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasVariation'].value) {
-                p.variations.value.push(patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasVariation'].value);
+            else if (patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasVariation']
+                && patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasVariation'].value) {
+                p.variations.value.push(patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasVariation'].value);
             }
-            if (patterns[key] && patterns[key]['http://purl.org/patternpedia#hasName'] && patterns[key]['http://purl.org/patternpedia#hasName'].value) {
-                p.name = patterns[key]['http://purl.org/patternpedia#hasName'].value;
+            if (patterns[key] && patterns[key]['https://purl.org/patternpedia#hasName'] && patterns[key]['https://purl.org/patternpedia#hasName'].value) {
+                p.name = patterns[key]['https://purl.org/patternpedia#hasName'].value;
             }
-            if (patterns[key] && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasIcon']
-                && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasIcon'].value) {
-                p.icon.value = patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasIcon'].value;
+            if (patterns[key] && patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasIcon']
+                && patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasIcon'].value) {
+                p.icon.value = patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasIcon'].value;
             }
-            if (patterns[key] && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasIntent']
-                && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasIntent'].value) {
-                p.intent.value = patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasIntent'].value;
+            if (patterns[key] && patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasIntent']
+                && patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasIntent'].value) {
+                p.intent.value = patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasIntent'].value;
             }
-            if (patterns[key] && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasDrivingQuestion']
-                && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasDrivingQuestion'].value) {
-                p.drivingQuestion.value = patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasDrivingQuestion'].value;
+            if (patterns[key] && patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasDrivingQuestion']
+                && patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasDrivingQuestion'].value) {
+                p.drivingQuestion.value = patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasDrivingQuestion'].value;
             }
-            if (patterns[key] && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasSolution']
-                && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasSolution'].value) {
-                p.solution.value = patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasSolution'].value;
+            if (patterns[key] && patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasSolution']
+                && patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasSolution'].value) {
+                p.solution.value = patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasSolution'].value;
             }
-            if (patterns[key] && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasResult']
-                && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasResult'].value) {
-                p.result.value = patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasResult'].value;
+            if (patterns[key] && patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasResult']
+                && patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasResult'].value) {
+                p.result.value = patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasResult'].value;
             }
-            if (patterns[key] && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasContext']
-                && patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasContext'].value) {
-                p.context.value = patterns[key]['http://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasContext'].value;
+            if (patterns[key] && patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasContext']
+                && patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasContext'].value) {
+                p.context.value = patterns[key]['https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#hasContext'].value;
             }
             result.set(p.iri, p);
         }
@@ -4882,18 +4882,18 @@ var CloudComputingPattern = /** @class */ (function (_super) {
         ary.push("### " + this.iri);
         ary.push("<" + this.iri + "> rdf:type owl:NamedIndividual ,");
         ary.push(' '.repeat(16) + " " + this.getPatternType() + " ;");
-        ary.push(' '.repeat(8) + " <http://purl.org/patternpedia#hasName> \"" + this.name + "\"^^xsd:string ;");
-        ary.push(' '.repeat(8) + " <http://purl.org/patternpedia/cloudcomputingpatterns#hasContext> \"" + this.context.value + "\"^^xsd:string ;");
-        ary.push(' '.repeat(8) + " <http://purl.org/patternpedia/cloudcomputingpatterns#hasDrivingQuestion> \"" + this.drivingQuestion.value + "\"^^xsd:string ;");
-        ary.push(' '.repeat(8) + " <http://purl.org/patternpedia/cloudcomputingpatterns#hasIcon> \"" + this.icon.value + "\"^^xsd:anyURI ;");
-        ary.push(' '.repeat(8) + " <http://purl.org/patternpedia/cloudcomputingpatterns#hasIntent> \"" + this.intent.value + "\"^^xsd:string ;");
-        ary.push(' '.repeat(8) + " <http://purl.org/patternpedia/cloudcomputingpatterns#hasSolution> \"" + this.solution.value + "\"^^xsd:string ;");
+        ary.push(' '.repeat(8) + " <https://purl.org/patternpedia#hasName> \"" + this.name + "\"^^xsd:string ;");
+        ary.push(' '.repeat(8) + " <https://purl.org/patternpedia/cloudcomputingpatterns#hasContext> \"" + this.context.value + "\"^^xsd:string ;");
+        ary.push(' '.repeat(8) + " <https://purl.org/patternpedia/cloudcomputingpatterns#hasDrivingQuestion> \"" + this.drivingQuestion.value + "\"^^xsd:string ;");
+        ary.push(' '.repeat(8) + " <https://purl.org/patternpedia/cloudcomputingpatterns#hasIcon> \"" + this.icon.value + "\"^^xsd:anyURI ;");
+        ary.push(' '.repeat(8) + " <https://purl.org/patternpedia/cloudcomputingpatterns#hasIntent> \"" + this.intent.value + "\"^^xsd:string ;");
+        ary.push(' '.repeat(8) + " <https://purl.org/patternpedia/cloudcomputingpatterns#hasSolution> \"" + this.solution.value + "\"^^xsd:string ;");
         ary.push('\n');
         // Todo solutionSketches and variations
         return ary.join('\n');
     };
     CloudComputingPattern.prototype.getPatternType = function () {
-        return '<http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern>';
+        return '<https://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPattern>';
     };
     CloudComputingPattern.prototype.getPrefixes = function () {
         var ary = [];
@@ -4983,7 +4983,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 var CloudComputingPatternsWriterService = /** @class */ (function (_super) {
     __extends(CloudComputingPatternsWriterService, _super);
     function CloudComputingPatternsWriterService(pos) {
-        var _this = _super.call(this, 'http://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPatterns', pos) || this;
+        var _this = _super.call(this, 'https://purl.org/patternpedia/cloudcomputingpatterns#CloudComputingPatterns', pos) || this;
         _this.pos = pos;
         return _this;
     }
@@ -5194,7 +5194,7 @@ var EnterpriseIntegrationPatternsComponent = /** @class */ (function () {
     }
     EnterpriseIntegrationPatternsComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.pos.getOWLImports('http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns')
+        this.pos.getOWLImports('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns')
             .then(function (res) {
             var importedPatternIris = res.map(function (i) { return i.import; });
             _this.pos.loadUrisToStore(importedPatternIris)
@@ -5958,8 +5958,8 @@ var NodeInfoboxComponent = /** @class */ (function () {
     NodeInfoboxComponent.prototype.filterGroupId = function (id) {
         var uri = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].convertIdToIri(id);
         var noPrefix = uri.includes('patternlanguages')
-            ? uri.replace('http://purl.org/patternpedia/patternlanguages/', '')
-            : uri.replace('http://purl.org/patternpedia/', '');
+            ? uri.replace('https://purl.org/patternpedia/patternlanguages/', '')
+            : uri.replace('https://purl.org/patternpedia/', '');
         var slash = noPrefix.indexOf('/');
         return noPrefix.substr(0, slash);
     };
@@ -6158,14 +6158,14 @@ var EnterpriseIntegrationPatternsModule = /** @class */ (function () {
     function EnterpriseIntegrationPatternsModule(cr) {
         this.cr = cr;
         // register module as rendering for Enterprise Integration Patterns in registry
-        this.cr.registerComponent(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIriToId('http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns'), {
+        this.cr.registerComponent(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIriToId('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns'), {
             label: "Network Graph",
             priority: 10,
             plcomponent: _component_enterprise_integration_patterns_enterprise_integration_patterns_component__WEBPACK_IMPORTED_MODULE_4__["EnterpriseIntegrationPatternsComponent"],
             pcomponent: _component_enterprise_integration_patterns_enterprise_integration_patterns_component__WEBPACK_IMPORTED_MODULE_4__["EnterpriseIntegrationPatternsComponent"] // TODO is this actually used?
         });
         // adding a secondary renderer (dummy)
-        // this.cr.registerComponent(IriConverter.convertIriToId('http://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns'), 
+        // this.cr.registerComponent(IriConverter.convertIriToId('https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns'), 
         //   this.cr.getPLRenderingComponents("default"));
     }
     EnterpriseIntegrationPatternsModule = __decorate([
@@ -6281,7 +6281,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 var EnterpriseIntegrationPatternIncomingLinkLoaderService = /** @class */ (function (_super) {
     __extends(EnterpriseIntegrationPatternIncomingLinkLoaderService, _super);
     function EnterpriseIntegrationPatternIncomingLinkLoaderService(pos) {
-        var _this = _super.call(this, 'http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos) || this;
+        var _this = _super.call(this, 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos) || this;
         _this.pos = pos;
         return _this;
     }
@@ -6299,12 +6299,12 @@ var EnterpriseIntegrationPatternIncomingLinkLoaderService = /** @class */ (funct
                         // we need a specific pattern of form 'pattern#Pattern'
                         if (!uri)
                             return [2 /*return*/, Promise.resolve()];
-                        uriQry = "SELECT ?sourceUri\n      WHERE {\n        ?targetLink a <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternDirectedRelationDescriptor> ;\n              <http://purl.org/patternpedia#hasTarget> <" + uri + "> ;\n              <http://purl.org/patternpedia#hasSource> ?sourceUri .\n      }";
-                        return [4 /*yield*/, this.executor.exec(uriQry, [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI), src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(uri), 'http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links'])];
+                        uriQry = "SELECT ?sourceUri\n      WHERE {\n        ?targetLink a <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternDirectedRelationDescriptor> ;\n              <https://purl.org/patternpedia#hasTarget> <" + uri + "> ;\n              <https://purl.org/patternpedia#hasSource> ?sourceUri .\n      }";
+                        return [4 /*yield*/, this.executor.exec(uriQry, [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI), src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links'])];
                     case 1:
                         patterns = _a.sent();
-                        qry = "SELECT ?sourceUri ?sourceName ?linkUri ?description\n      WHERE {\n        ?linkUri a <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternDirectedRelationDescriptor> ;\n              <http://purl.org/patternpedia#hasTarget> <" + uri + "> ;\n              <http://purl.org/patternpedia#hasSource> ?sourceUri .\n        ?sourceUri <http://purl.org/patternpedia#hasName> ?sourceName .\n        OPTIONAL { ?linkUri <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description }\n      }";
-                        graphs = [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI), src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(uri), 'http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links'];
+                        qry = "SELECT ?sourceUri ?sourceName ?linkUri ?description\n      WHERE {\n        ?linkUri a <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternDirectedRelationDescriptor> ;\n              <https://purl.org/patternpedia#hasTarget> <" + uri + "> ;\n              <https://purl.org/patternpedia#hasSource> ?sourceUri .\n        ?sourceUri <https://purl.org/patternpedia#hasName> ?sourceName .\n        OPTIONAL { ?linkUri <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description }\n      }";
+                        graphs = [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI), src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links'];
                         for (_i = 0, patterns_1 = patterns; _i < patterns_1.length; _i++) {
                             entry = patterns_1[_i];
                             graphs.push(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(entry.sourceUri.value));
@@ -6449,7 +6449,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 var EnterpriseIntegrationPatternLoaderService = /** @class */ (function (_super) {
     __extends(EnterpriseIntegrationPatternLoaderService, _super);
     function EnterpriseIntegrationPatternLoaderService(pos) {
-        var _this = _super.call(this, 'http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos) || this;
+        var _this = _super.call(this, 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos) || this;
         _this.pos = pos;
         return _this;
     }
@@ -6465,8 +6465,8 @@ var EnterpriseIntegrationPatternLoaderService = /** @class */ (function (_super)
                 // we need a specific pattern of form 'pattern#Pattern'
                 if (!uri)
                     return [2 /*return*/, Promise.resolve()];
-                qry = "SELECT ?name ?groupName ?description\n      WHERE {\n        <" + uri + "> <http://purl.org/patternpedia#hasName> ?name .\n        <" + uri + "> <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description .\n        ?group a <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternRelationDescriptor> ;\n              <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasLabel> ?groupName ;\n              <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasPattern> <" + uri + "> .\n      }";
-                graphs = [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI), src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(uri), 'http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links'];
+                qry = "SELECT ?name ?groupName ?description\n      WHERE {\n        <" + uri + "> <https://purl.org/patternpedia#hasName> ?name .\n        <" + uri + "> <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description .\n        ?group a <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternRelationDescriptor> ;\n              <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasLabel> ?groupName ;\n              <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasPattern> <" + uri + "> .\n      }";
+                graphs = [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI), src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links'];
                 return [2 /*return*/, this.executor.exec(qry, graphs)];
             });
         });
@@ -6604,7 +6604,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 var EnterpriseIntegrationPatternOutgoingLinkLoaderService = /** @class */ (function (_super) {
     __extends(EnterpriseIntegrationPatternOutgoingLinkLoaderService, _super);
     function EnterpriseIntegrationPatternOutgoingLinkLoaderService(pos) {
-        var _this = _super.call(this, 'http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos) || this;
+        var _this = _super.call(this, 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos) || this;
         _this.pos = pos;
         return _this;
     }
@@ -6622,12 +6622,12 @@ var EnterpriseIntegrationPatternOutgoingLinkLoaderService = /** @class */ (funct
                         // we need a specific pattern of form 'pattern#Pattern'
                         if (!uri)
                             return [2 /*return*/, Promise.resolve()];
-                        uriQry = "SELECT ?targetUri\n      WHERE {\n        ?targetLink a <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternDirectedRelationDescriptor> ;\n              <http://purl.org/patternpedia#hasSource> <" + uri + "> ;\n              <http://purl.org/patternpedia#hasTarget> ?targetUri .\n      }";
-                        return [4 /*yield*/, this.executor.exec(uriQry, [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(this.supportedIRI), src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(uri), 'http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links'])];
+                        uriQry = "SELECT ?targetUri\n      WHERE {\n        ?targetLink a <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternDirectedRelationDescriptor> ;\n              <https://purl.org/patternpedia#hasSource> <" + uri + "> ;\n              <https://purl.org/patternpedia#hasTarget> ?targetUri .\n      }";
+                        return [4 /*yield*/, this.executor.exec(uriQry, [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(this.supportedIRI), src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links'])];
                     case 1:
                         patterns = _a.sent();
-                        qry = "SELECT ?targetUri ?targetName ?linkUri ?description\n      WHERE {\n        ?linkUri a <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternDirectedRelationDescriptor> ;\n              <http://purl.org/patternpedia#hasSource> <" + uri + "> ;\n              <http://purl.org/patternpedia#hasTarget> ?targetUri .\n        ?targetUri <http://purl.org/patternpedia#hasName> ?targetName .\n        OPTIONAL { ?linkUri <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description }\n      }";
-                        graphs = [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(this.supportedIRI), src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(uri), 'http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links'];
+                        qry = "SELECT ?targetUri ?targetName ?linkUri ?description\n      WHERE {\n        ?linkUri a <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternDirectedRelationDescriptor> ;\n              <https://purl.org/patternpedia#hasSource> <" + uri + "> ;\n              <https://purl.org/patternpedia#hasTarget> ?targetUri .\n        ?targetUri <https://purl.org/patternpedia#hasName> ?targetName .\n        OPTIONAL { ?linkUri <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description }\n      }";
+                        graphs = [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(this.supportedIRI), src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links'];
                         for (_i = 0, patterns_1 = patterns; _i < patterns_1.length; _i++) {
                             entry = patterns_1[_i];
                             graphs.push(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(entry.targetUri.value));
@@ -6772,7 +6772,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 var EnterpriseIntegrationPatternsGroupLoaderService = /** @class */ (function (_super) {
     __extends(EnterpriseIntegrationPatternsGroupLoaderService, _super);
     function EnterpriseIntegrationPatternsGroupLoaderService(pos) {
-        var _this = _super.call(this, 'http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos) || this;
+        var _this = _super.call(this, 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos) || this;
         _this.pos = pos;
         return _this;
     }
@@ -6780,8 +6780,8 @@ var EnterpriseIntegrationPatternsGroupLoaderService = /** @class */ (function (_
         return __awaiter(this, void 0, void 0, function () {
             var qry;
             return __generator(this, function (_a) {
-                qry = "SELECT ?uri ?group ?pattern\n      WHERE {\n          ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternRelationDescriptor> .\n          ?uri <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasLabel> ?group .\n          ?uri <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasPattern> ?pattern .\n      }";
-                return [2 /*return*/, this.executor.exec(qry, ["http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links"])];
+                qry = "SELECT ?uri ?group ?pattern\n      WHERE {\n          ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternRelationDescriptor> .\n          ?uri <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasLabel> ?group .\n          ?uri <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasPattern> ?pattern .\n      }";
+                return [2 /*return*/, this.executor.exec(qry, ["https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links"])];
             });
         });
     };
@@ -6933,7 +6933,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 var EnterpriseIntegrationPatternsLinkInfoLoaderService = /** @class */ (function (_super) {
     __extends(EnterpriseIntegrationPatternsLinkInfoLoaderService, _super);
     function EnterpriseIntegrationPatternsLinkInfoLoaderService(pos) {
-        var _this = _super.call(this, 'http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links', pos) || this;
+        var _this = _super.call(this, 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links', pos) || this;
         _this.pos = pos;
         return _this;
     }
@@ -6950,11 +6950,11 @@ var EnterpriseIntegrationPatternsLinkInfoLoaderService = /** @class */ (function
                     case 0:
                         if (!uri)
                             return [2 /*return*/, Promise.resolve()];
-                        patternQry = "SELECT ?sourceUri ?targetUri\n      WHERE {\n        <" + uri + "> <http://purl.org/patternpedia#hasSource> ?sourceUri .\n        <" + uri + "> <http://purl.org/patternpedia#hasTarget> ?targetUri .\n      }";
+                        patternQry = "SELECT ?sourceUri ?targetUri\n      WHERE {\n        <" + uri + "> <https://purl.org/patternpedia#hasSource> ?sourceUri .\n        <" + uri + "> <https://purl.org/patternpedia#hasTarget> ?targetUri .\n      }";
                         return [4 /*yield*/, this.executor.exec(patternQry, [this.supportedIRI])];
                     case 1:
                         patterns = _a.sent();
-                        qry = "SELECT ?sourcePatternUri ?sourcePatternName ?targetPatternUri ?targetPatternName ?description\n      WHERE {\n        <" + uri + "> <http://purl.org/patternpedia#hasSource> ?sourcePatternUri .\n        ?sourcePatternUri <http://purl.org/patternpedia#hasName> ?sourcePatternName .\n        <" + uri + "> <http://purl.org/patternpedia#hasTarget> ?targetPatternUri .\n        ?targetPatternUri <http://purl.org/patternpedia#hasName> ?targetPatternName .\n        OPTIONAL { <" + uri + "> <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description }\n      }";
+                        qry = "SELECT ?sourcePatternUri ?sourcePatternName ?targetPatternUri ?targetPatternName ?description\n      WHERE {\n        <" + uri + "> <https://purl.org/patternpedia#hasSource> ?sourcePatternUri .\n        ?sourcePatternUri <https://purl.org/patternpedia#hasName> ?sourcePatternName .\n        <" + uri + "> <https://purl.org/patternpedia#hasTarget> ?targetPatternUri .\n        ?targetPatternUri <https://purl.org/patternpedia#hasName> ?targetPatternName .\n        OPTIONAL { <" + uri + "> <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description }\n      }";
                         graphs = [this.supportedIRI];
                         patterns.forEach(function (p) {
                             // uri of the source pattern (for name)
@@ -7088,7 +7088,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 var EnterpriseIntegrationPatternsLinkLoaderService = /** @class */ (function (_super) {
     __extends(EnterpriseIntegrationPatternsLinkLoaderService, _super);
     function EnterpriseIntegrationPatternsLinkLoaderService(pos) {
-        var _this = _super.call(this, 'http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos) || this;
+        var _this = _super.call(this, 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos) || this;
         _this.pos = pos;
         return _this;
     }
@@ -7096,9 +7096,9 @@ var EnterpriseIntegrationPatternsLinkLoaderService = /** @class */ (function (_s
         return __awaiter(this, void 0, void 0, function () {
             var qry;
             return __generator(this, function (_a) {
-                qry = "SELECT ?uri ?source ?target ?description\n      WHERE {\n          ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternDirectedRelationDescriptor> .\n          ?uri <http://purl.org/patternpedia#hasSource> ?source .\n          ?uri <http://purl.org/patternpedia#hasTarget> ?target .\n          OPTIONAL { ?uri <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description . }\n      }";
+                qry = "SELECT ?uri ?source ?target ?description\n      WHERE {\n          ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternDirectedRelationDescriptor> .\n          ?uri <https://purl.org/patternpedia#hasSource> ?source .\n          ?uri <https://purl.org/patternpedia#hasTarget> ?target .\n          OPTIONAL { ?uri <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description . }\n      }";
                 // we only need information from the links, not the actual patterns. Thus the URI of the links is enough
-                return [2 /*return*/, this.executor.exec(qry, ["http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links"])];
+                return [2 /*return*/, this.executor.exec(qry, ["https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links"])];
             });
         });
     };
@@ -7258,7 +7258,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 var EnterpriseIntegrationPatternsLoaderService = /** @class */ (function (_super) {
     __extends(EnterpriseIntegrationPatternsLoaderService, _super);
     function EnterpriseIntegrationPatternsLoaderService(pos) {
-        var _this = _super.call(this, 'http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos) || this;
+        var _this = _super.call(this, 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos) || this;
         _this.pos = pos;
         return _this;
     }
@@ -7268,11 +7268,11 @@ var EnterpriseIntegrationPatternsLoaderService = /** @class */ (function (_super
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        qryPatterns = "SELECT DISTINCT ?pattern\n      WHERE {\n        <" + this.supportedIRI + "> <http://purl.org/patternpedia#containsPattern> ?pattern .\n      }";
+                        qryPatterns = "SELECT DISTINCT ?pattern\n      WHERE {\n        <" + this.supportedIRI + "> <https://purl.org/patternpedia#containsPattern> ?pattern .\n      }";
                         return [4 /*yield*/, this.executor.exec(qryPatterns, [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getFileName(this.supportedIRI)])];
                     case 1:
                         patterns = _a.sent();
-                        qry = "SELECT ?pattern ?name ?description\n      WHERE {\n        ?pattern a <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> .\n        ?pattern <http://purl.org/patternpedia#hasName> ?name .\n        ?pattern <http://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description .\n      }";
+                        qry = "SELECT ?pattern ?name ?description\n      WHERE {\n        ?pattern a <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPattern> .\n        ?pattern <https://purl.org/patternpedia#hasName> ?name .\n        ?pattern <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description .\n      }";
                         graphs = [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getFileName(this.supportedIRI)];
                         for (_i = 0, patterns_1 = patterns; _i < patterns_1.length; _i++) {
                             entry = patterns_1[_i];
@@ -8049,7 +8049,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 var InternetOfThingsPatternsModule = /** @class */ (function () {
     function InternetOfThingsPatternsModule(cr) {
         this.cr = cr;
-        this.cr.registerComponent(_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_8__["IriConverter"].convertIriToId('http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#InternetOfThingsPatterns'), {
+        this.cr.registerComponent(_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_8__["IriConverter"].convertIriToId('https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#InternetOfThingsPatterns'), {
             plcomponent: _component_internet_of_things_patterns_internet_of_things_patterns_component__WEBPACK_IMPORTED_MODULE_3__["InternetOfThingsPatternsComponent"],
             pcomponent: _component_internet_of_things_pattern_internet_of_things_pattern_component__WEBPACK_IMPORTED_MODULE_7__["InternetOfThingsPatternComponent"]
         }); // tslint:disable-line:max-line-length
@@ -8183,7 +8183,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 var InternetOfThingsPatternsLoaderService = /** @class */ (function (_super) {
     __extends(InternetOfThingsPatternsLoaderService, _super);
     function InternetOfThingsPatternsLoaderService(pos) {
-        var _this = _super.call(this, 'http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#InternetOfThingsPatterns', pos) || this;
+        var _this = _super.call(this, 'https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#InternetOfThingsPatterns', pos) || this;
         _this.pos = pos;
         return _this;
     }
@@ -8193,7 +8193,7 @@ var InternetOfThingsPatternsLoaderService = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        qryPatterns = "SELECT DISTINCT ?pattern\n                                      WHERE {\n                                          <" + this.supportedIRI + "> <http://purl.org/patternpedia#containsPattern> ?pattern\n                                      }";
+                        qryPatterns = "SELECT DISTINCT ?pattern\n                                      WHERE {\n                                          <" + this.supportedIRI + "> <https://purl.org/patternpedia#containsPattern> ?pattern\n                                      }";
                         return [4 /*yield*/, this.executor.exec(qryPatterns, [_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getFileName(this.supportedIRI)])];
                     case 1:
                         patterns = _a.sent();
@@ -8245,109 +8245,109 @@ var InternetOfThingsPatternsLoaderService = /** @class */ (function (_super) {
         for (var _a = 0, _b = Object.keys(patterns); _a < _b.length; _a++) {
             var key = _b[_a];
             var name_1 = '';
-            if (patterns[key] && patterns[key]['http://purl.org/patternpedia#hasName'] && patterns[key]['http://purl.org/patternpedia#hasName'].value) {
-                name_1 = patterns[key]['http://purl.org/patternpedia#hasName'].value;
+            if (patterns[key] && patterns[key]['https://purl.org/patternpedia#hasName'] && patterns[key]['https://purl.org/patternpedia#hasName'].value) {
+                name_1 = patterns[key]['https://purl.org/patternpedia#hasName'].value;
             }
             var icon = '';
-            if (patterns[key] && patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#icon']
-                && patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#icon'].value) {
-                icon = patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#icon'].value;
+            if (patterns[key] && patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#icon']
+                && patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#icon'].value) {
+                icon = patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#icon'].value;
             }
             var intent = '';
-            if (patterns[key] && patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#intent']
-                && patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#intent'].value) {
-                intent = patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#intent'].value;
+            if (patterns[key] && patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#intent']
+                && patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#intent'].value) {
+                intent = patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#intent'].value;
             }
             var context = '';
-            if (patterns[key] && patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#context']
-                && patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#context'].value) {
-                context = patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#context'].value;
+            if (patterns[key] && patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#context']
+                && patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#context'].value) {
+                context = patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#context'].value;
             }
             var problem = '';
-            if (patterns[key] && patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#problem']
-                && patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#problem'].value) {
-                problem = patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#problem'].value;
+            if (patterns[key] && patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#problem']
+                && patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#problem'].value) {
+                problem = patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#problem'].value;
             }
             var solution = '';
-            if (patterns[key] && patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#solution']
-                && patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#solution'].value) {
-                solution = patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#solution'].value;
+            if (patterns[key] && patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#solution']
+                && patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#solution'].value) {
+                solution = patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#solution'].value;
             }
             var sketches = [];
-            if (Array.isArray(patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#solutionSketch'])) {
-                for (var _c = 0, _d = patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#solutionSketch']; _c < _d.length; _c++) {
+            if (Array.isArray(patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#solutionSketch'])) {
+                for (var _c = 0, _d = patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#solutionSketch']; _c < _d.length; _c++) {
                     var entry = _d[_c];
                     sketches.push(entry.value);
                 }
             }
-            else if (patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#solutionSketch']
-                && patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#solutionSketch'].value) {
-                sketches.push(patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#solutionSketch'].value);
+            else if (patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#solutionSketch']
+                && patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#solutionSketch'].value) {
+                sketches.push(patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#solutionSketch'].value);
             }
             var forces = [];
-            if (Array.isArray(patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#force'])) {
-                for (var _e = 0, _f = patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#force']; _e < _f.length; _e++) {
+            if (Array.isArray(patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#force'])) {
+                for (var _e = 0, _f = patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#force']; _e < _f.length; _e++) {
                     var entry = _f[_e];
                     forces.push(entry.value);
                 }
             }
-            else if (patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#force']
-                && patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#force'].value) {
-                forces.push(patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#force'].value);
+            else if (patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#force']
+                && patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#force'].value) {
+                forces.push(patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#force'].value);
             }
             var benefits = [];
-            if (Array.isArray(patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#benefit'])) {
-                for (var _g = 0, _h = patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#benefit']; _g < _h.length; _g++) {
+            if (Array.isArray(patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#benefit'])) {
+                for (var _g = 0, _h = patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#benefit']; _g < _h.length; _g++) {
                     var entry = _h[_g];
                     benefits.push(entry.value);
                 }
             }
-            else if (patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#benefit']
-                && patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#benefit'].value) {
-                benefits.push(patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#benefit'].value);
+            else if (patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#benefit']
+                && patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#benefit'].value) {
+                benefits.push(patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#benefit'].value);
             }
             var drawbacks = [];
-            if (Array.isArray(patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#drawback'])) {
-                for (var _j = 0, _k = patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#drawback']; _j < _k.length; _j++) {
+            if (Array.isArray(patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#drawback'])) {
+                for (var _j = 0, _k = patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#drawback']; _j < _k.length; _j++) {
                     var entry = _k[_j];
                     drawbacks.push(entry.value);
                 }
             }
-            else if (patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#drawback']
-                && patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#drawback'].value) {
-                drawbacks.push(patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#drawback'].value);
+            else if (patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#drawback']
+                && patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#drawback'].value) {
+                drawbacks.push(patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#drawback'].value);
             }
             var patternResult = '';
-            if (patterns[key] && patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#result']
-                && patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#result'].value) {
-                patternResult = patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#result'].value;
+            if (patterns[key] && patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#result']
+                && patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#result'].value) {
+                patternResult = patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#result'].value;
             }
             var examples = '';
-            if (patterns[key] && patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#examples']
-                && patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#examples'].value) {
-                examples = patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#examples'].value;
+            if (patterns[key] && patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#examples']
+                && patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#examples'].value) {
+                examples = patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#examples'].value;
             }
             var aliases = [];
-            if (Array.isArray(patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#alias'])) {
-                for (var _l = 0, _m = patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#alias']; _l < _m.length; _l++) {
+            if (Array.isArray(patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#alias'])) {
+                for (var _l = 0, _m = patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#alias']; _l < _m.length; _l++) {
                     var entry = _m[_l];
                     aliases.push(entry.value);
                 }
             }
-            else if (patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#alias']
-                && patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#alias'].value) {
-                aliases.push(patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#alias'].value);
+            else if (patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#alias']
+                && patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#alias'].value) {
+                aliases.push(patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#alias'].value);
             }
             var variants = [];
-            if (Array.isArray(patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#variant'])) {
-                for (var _o = 0, _p = patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#variant']; _o < _p.length; _o++) {
+            if (Array.isArray(patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#variant'])) {
+                for (var _o = 0, _p = patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#variant']; _o < _p.length; _o++) {
                     var entry = _p[_o];
                     variants.push(entry.value);
                 }
             }
-            else if (patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#variant']
-                && patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#variant'].value) {
-                variants.push(patterns[key]['http://purl.org/patternpedia/patternlanguages/internetofthingspatterns#variant'].value);
+            else if (patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#variant']
+                && patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#variant'].value) {
+                variants.push(patterns[key]['https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#variant'].value);
             }
             /*
                 iri: string,
@@ -8487,8 +8487,8 @@ __webpack_require__.r(__webpack_exports__);
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 var globals = {
-    urlPatternRepoOntology: 'http://purl.org/patternpedia',
-    iriPatternRepoInstance: 'http://purl.org/patternpedia#LinkedOpenPatterns',
+    urlPatternRepoOntology: 'https://purl.org/patternpedia',
+    iriPatternRepoInstance: 'https://purl.org/patternpedia#LinkedOpenPatterns',
     loadOntologyLocally: true
 };
 
@@ -8812,7 +8812,7 @@ var CreateEditPatternLanguageComponent = /** @class */ (function () {
                 }), new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormGroup"]({
                     prefixname: new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]('dctype'),
                     checked: new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"](true),
-                    uri: new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]('http://purl.org/dc/dcmitype/'),
+                    uri: new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]('https://purl.org/dc/dcmitype/'),
                     values: new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"](['dctype:Image', 'dctype:StillImage',
                         'dctype:MovingImage',
                         'dctype:Software',
@@ -9079,7 +9079,7 @@ var CreatePatternComponent = /** @class */ (function () {
         this.xsdPrefix = new _core_model_pattern_pedia_model__WEBPACK_IMPORTED_MODULE_11__["default"]().defaultPrefixes.get('xsd').replace('<', '').replace('>', '');
         this.wasSaveButtonClicked = false;
         this.defaultTextForType = new Map([
-            ['http://purl.org/dc/dcmitype/Image', '![](http://)'],
+            ['https://purl.org/dc/dcmitype/Image', '![](http://)'],
             [this.xsdPrefix + 'anyURI', '[](http://)'],
             [this.xsdPrefix + 'integer', 'Replace this line by an Integer.'],
             [this.xsdPrefix + 'string', ' Enter your input for this section here.'],
@@ -9307,7 +9307,7 @@ var CreatePatternComponent = /** @class */ (function () {
                         if (allRestrictions.maxCardinality) {
                             validators.push(_angular_forms__WEBPACK_IMPORTED_MODULE_12__["Validators"].maxLength(allRestrictions.maxCardinality));
                         }
-                        if (allRestrictions.type === 'http://purl.org/dc/dcmitype/Image') {
+                        if (allRestrictions.type === 'https://purl.org/dc/dcmitype/Image') {
                             validators.push(_core_service_validation_service__WEBPACK_IMPORTED_MODULE_13__["ValidationService"].xsdImage());
                             console.log('added xsdImage validator');
                         }
@@ -10137,7 +10137,7 @@ var PatternLanguageManagementComponent = /** @class */ (function () {
         });
         this.showAuthentificationButton = !this._cookieService.get('patternpedia_github_token');
     };
-    // reload the current data from http://purl.org/patternpedia that contains all patternlangauges
+    // reload the current data from https://purl.org/patternpedia that contains all patternlangauges
     PatternLanguageManagementComponent.prototype.reloadPatternRepo = function () {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
@@ -10191,7 +10191,7 @@ var PatternLanguageManagementComponent = /** @class */ (function () {
                 // load the new patternlanguage's data into the store, so we can use it's metadata when we navigate to it
                 _this.pos.loadUrisToStore([{ value: patternlanguage.iri, token: null }]), 
                 // load the updated patternpedia file which contains the new patternlanguage into store
-                _this.pos.loadUrisToStore([{ value: 'http://purl.org/patternpedia', token: null }]));
+                _this.pos.loadUrisToStore([{ value: 'https://purl.org/patternpedia', token: null }]));
             })).subscribe(function (res) {
                 _this.reloadPatternLanguageFromStore();
             });
@@ -10517,37 +10517,37 @@ var TestComponent = /** @class */ (function () {
                     case 2:
                         store = _r.sent();
                         this.registerDefaultNameSpaces(store);
-                        console.log('LOADING http://purl.org/patternpedia to store');
+                        console.log('LOADING https://purl.org/patternpedia to store');
                         _b = (_a = console).log;
                         _c = ['Result: '];
-                        return [4 /*yield*/, this.loadToStore(store, 'text/turtle', loadResult[0], 'http://purl.org/patternpedia').toPromise()];
+                        return [4 /*yield*/, this.loadToStore(store, 'text/turtle', loadResult[0], 'https://purl.org/patternpedia').toPromise()];
                     case 3:
                         _b.apply(_a, _c.concat([_r.sent()]));
-                        console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns to store');
+                        console.log('LOADING https://purl.org/patternpedia/cloudcomputingpatterns to store');
                         _e = (_d = console).log;
                         _f = ['Result: '];
-                        return [4 /*yield*/, this.loadToStore(store, 'text/turtle', loadResult[1], 'http://purl.org/patternpedia/cloudcomputingpatterns').toPromise()];
+                        return [4 /*yield*/, this.loadToStore(store, 'text/turtle', loadResult[1], 'https://purl.org/patternpedia/cloudcomputingpatterns').toPromise()];
                     case 4:
                         _e.apply(_d, _f.concat([_r.sent()]));
-                        console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure to store');
+                        console.log('LOADING https://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure to store');
                         _h = (_g = console).log;
                         _j = ['Result: '];
-                        return [4 /*yield*/, this.loadToStore(store, 'text/turtle', loadResult[2], 'http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure').toPromise()];
+                        return [4 /*yield*/, this.loadToStore(store, 'text/turtle', loadResult[2], 'https://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure').toPromise()];
                     case 5:
                         _h.apply(_g, _j.concat([_r.sent()]));
-                        console.log('LOADING http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer to store');
+                        console.log('LOADING https://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer to store');
                         _l = (_k = console).log;
                         _m = ['Result: '];
-                        return [4 /*yield*/, this.loadToStore(store, 'text/turtle', loadResult[3], 'http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer').toPromise()];
+                        return [4 /*yield*/, this.loadToStore(store, 'text/turtle', loadResult[3], 'https://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer').toPromise()];
                     case 6:
                         _l.apply(_k, _m.concat([_r.sent()]));
-                        console.log('LOADING http://purl.org/patternpedia/internetofthingspatterns to store');
+                        console.log('LOADING https://purl.org/patternpedia/internetofthingspatterns to store');
                         _p = (_o = console).log;
                         _q = ['Result: '];
-                        return [4 /*yield*/, this.loadToStore(store, 'text/turtle', loadResult[4], 'http://purl.org/patternpedia/internetofthingspatterns').toPromise()];
+                        return [4 /*yield*/, this.loadToStore(store, 'text/turtle', loadResult[4], 'https://purl.org/patternpedia/internetofthingspatterns').toPromise()];
                     case 7:
                         _p.apply(_o, _q.concat([_r.sent()]));
-                        // const triples = await this.exportGraphAsTriples(store, 'http://purl.org/patternpedia').toPromise();
+                        // const triples = await this.exportGraphAsTriples(store, 'https://purl.org/patternpedia').toPromise();
                         this.selectPatternGraphs(store);
                         return [2 /*return*/];
                 }
@@ -10555,29 +10555,29 @@ var TestComponent = /** @class */ (function () {
         });
     };
     TestComponent.prototype.updateValue = function (store) {
-        store.graph('http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer', function (err, graph) {
+        store.graph('https://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer', function (err, graph) {
             console.log(graph.toNT());
             console.log('---------------');
-            graph.add(store.rdf.createTriple(store.rdf.createNamedNode('http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer#ElasticLoadBalancer'), store.rdf.createNamedNode('http://purl.org/patternpedia/cloudcomputingpatterns#hasContext'), store.rdf.createLiteral('This is the new Context')));
+            graph.add(store.rdf.createTriple(store.rdf.createNamedNode('https://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer#ElasticLoadBalancer'), store.rdf.createNamedNode('https://purl.org/patternpedia/cloudcomputingpatterns#hasContext'), store.rdf.createLiteral('This is the new Context')));
             console.log(graph.toNT());
         });
     };
     TestComponent.prototype.loadGraph = function (store) {
-        store.graph('http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer', function (err, result) {
+        store.graph('https://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer', function (err, result) {
             console.log(result.toNT());
         });
     };
     TestComponent.prototype.loadNode = function (store) {
-        store.node('http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer#ElasticLoadBalancer', 'http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer', function (err, result) {
+        store.node('https://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer#ElasticLoadBalancer', 'https://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer', function (err, result) {
             console.log(result.toNT());
         });
     };
     TestComponent.prototype.selectPatternGraphs = function (store) {
         var mResult = new Map();
-        var qry = "SELECT DISTINCT ?patterngraph ?type ?logo ?pattern\n                             WHERE {\n                                <http://purl.org/patternpedia#LinkedOpenPatterns> pp:containsPatternGraph ?patterngraph .\n                                ?patterngraph a ?type .\n                                ?patterngraph pp:containsPattern ?pattern .\n                                ?patterngraph pp:hasLogo ?logo .\n                                FILTER (?type != owl:NamedIndividual)\n                              }\n                    ORDER BY ?patterngraph";
+        var qry = "SELECT DISTINCT ?patterngraph ?type ?logo ?pattern\n                             WHERE {\n                                <https://purl.org/patternpedia#LinkedOpenPatterns> pp:containsPatternGraph ?patterngraph .\n                                ?patterngraph a ?type .\n                                ?patterngraph pp:containsPattern ?pattern .\n                                ?patterngraph pp:hasLogo ?logo .\n                                FILTER (?type != owl:NamedIndividual)\n                              }\n                    ORDER BY ?patterngraph";
         store.execute(qry, [
-            'http://purl.org/patternpedia',
-            'http://purl.org/patternpedia/cloudcomputingpatterns'
+            'https://purl.org/patternpedia',
+            'https://purl.org/patternpedia/cloudcomputingpatterns'
         ], [], function (err, result) {
             console.log(JSON.stringify(result));
             // for (const entry of result) {
@@ -10585,17 +10585,17 @@ var TestComponent = /** @class */ (function () {
             // }
         });
         // store.execute('SELECT * { ?s ?p ?o }',
-        //     ['http://purl.org/patternpedia',
-        //     'http://purl.org/patternpedia/cloudcomputingpatterns',
-        //     'http://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure',
-        //     'http://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer',
-        //     'http://purl.org/patternpedia/internetofthingspatterns'],
+        //     ['https://purl.org/patternpedia',
+        //     'https://purl.org/patternpedia/cloudcomputingpatterns',
+        //     'https://purl.org/patternpedia/cloudcomputingpatterns/elasticinfrastructure',
+        //     'https://purl.org/patternpedia/cloudcomputingpatterns/elasticloadbalancer',
+        //     'https://purl.org/patternpedia/internetofthingspatterns'],
         //     [],
         //     (err, result) => {
         //         console.log('-->', result);
         // });
         // store.execute(qry,
-        //     ['http://purl.org/patternpedia'],
+        //     ['https://purl.org/patternpedia'],
         //     [],
         //     (err, results) => {
         //         if (!err) {
@@ -10668,7 +10668,7 @@ var TestComponent = /** @class */ (function () {
         store.registerDefaultNamespace('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
         store.registerDefaultNamespace('rdfs', 'http://www.w3.org/2000/01/rdf-schema#');
         store.registerDefaultNamespace('xsd', 'http://www.w3.org/2001/XMLSchema#');
-        store.registerDefaultNamespace('pp', 'http://purl.org/patternpedia#');
+        store.registerDefaultNamespace('pp', 'https://purl.org/patternpedia#');
     };
     TestComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({

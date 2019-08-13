@@ -1,52 +1,52 @@
-@prefix : <http://purl.org/patternpedia#> .
+@prefix : <https://purl.org/patternpedia#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@base <http://purl.org/patternpedia> .
+@base <https://purl.org/patternpedia> .
 
-<http://purl.org/patternpedia> rdf:type owl:Ontology ;
-                               owl:imports <http://purl.org/patternpedia/cloudcomputingpatterns> ,
-                                           <http://purl.org/patternpedia/internetofthingspatterns> .
+<https://purl.org/patternpedia> rdf:type owl:Ontology ;
+                               owl:imports <https://purl.org/patternpedia/cloudcomputingpatterns> ,
+                                           <https://purl.org/patternpedia/internetofthingspatterns> .
 
 #################################################################
 #    Object Properties
 #################################################################
 
-###  http://purl.org/patternpedia#containsPattern
+###  https://purl.org/patternpedia#containsPattern
 :containsPattern rdf:type owl:ObjectProperty ;
                  rdfs:domain :PatternLanguage ;
                  rdfs:range :Pattern .
 
- ###  http://purl.org/patternpedia#containsPattern
+ ###  https://purl.org/patternpedia#containsPattern
  :containsPatternRelationDescriptors rdf:type owl:ObjectProperty ;
                   rdfs:domain :PatternLanguage ;
                   rdfs:range :Pattern .
 
-###  http://purl.org/patternpedia#containsPatternGraph
+###  https://purl.org/patternpedia#containsPatternGraph
 :containsPatternGraph rdf:type owl:ObjectProperty ;
                          rdfs:domain :PatternPedia ;
                          rdfs:range :PatternLanguage .
 
 
-###  http://purl.org/patternpedia#hasPatternRelation
+###  https://purl.org/patternpedia#hasPatternRelation
 :hasPatternRelation rdf:type owl:ObjectProperty ;
                     rdfs:domain :Pattern ;
                     rdfs:range :PatternRelationDescriptor .
 
 
-###  http://purl.org/patternpedia#hasRelatedPattern
+###  https://purl.org/patternpedia#hasRelatedPattern
 :hasRelatedPattern rdf:type owl:ObjectProperty .
 
 
-###  http://purl.org/patternpedia#hasSource
+###  https://purl.org/patternpedia#hasSource
 :hasSource rdf:type owl:ObjectProperty ;
            rdfs:domain :PatternRelationDescriptor ;
            rdfs:range :Pattern .
 
 
-###  http://purl.org/patternpedia#hasTarget
+###  https://purl.org/patternpedia#hasTarget
 :hasTarget rdf:type owl:ObjectProperty ;
            rdfs:domain :PatternRelationDescriptor ;
            rdfs:range :Pattern .
@@ -56,11 +56,11 @@
 #    Datatype properties
 #################################################################
 
-###  http://purl.org/patternpedia#hasLogo
+###  https://purl.org/patternpedia#hasLogo
 :hasLogo rdf:type owl:DatatypeProperty .
 
 
-###  http://purl.org/patternpedia#hasName
+###  https://purl.org/patternpedia#hasName
 :hasName rdf:type owl:DatatypeProperty .
 
 
@@ -68,7 +68,7 @@
 #    Classes
 #################################################################
 
-###  http://purl.org/patternpedia#Pattern
+###  https://purl.org/patternpedia#Pattern
 :Pattern rdf:type owl:Class ;
          rdfs:subClassOf [ rdf:type owl:Restriction ;
                            owl:onProperty :hasName ;
@@ -76,7 +76,7 @@
                            owl:onDataRange xsd:string
                          ] .
 
-###  http://purl.org/patternpedia#PatternGraph
+###  https://purl.org/patternpedia#PatternGraph
 :PatternGraph rdf:type owl:Class ;
                  rdfs:subClassOf [ rdf:type owl:Restriction ;
                                    owl:onProperty :hasLogo ;
@@ -88,15 +88,15 @@
                                    owl:onDataRange xsd:string
                                  ] .
 
-###  http://purl.org/patternpedia#PatternLanguage
+###  https://purl.org/patternpedia#PatternLanguage
 :PatternLanguage rdf:type owl:Class ;
                  rdfs:subClassOf :PatternGraph .
 
-###  http://purl.org/patternpedia#PatternView
+###  https://purl.org/patternpedia#PatternView
 :PatternView rdf:type owl:Class ;
                  rdfs:subClassOf :PatternGraph .
 
-###  http://purl.org/patternpedia#PatternPedia
+###  https://purl.org/patternpedia#PatternPedia
 :PatternPedia rdf:type owl:Class ;
               rdfs:subClassOf [ rdf:type owl:Restriction ;
                                 owl:onProperty :containsPatternGraph ;
@@ -114,7 +114,7 @@
                               ] .
 
 
-###  http://purl.org/patternpedia#PatternRelationDescriptor
+###  https://purl.org/patternpedia#PatternRelationDescriptor
 :PatternRelationDescriptor rdf:type owl:Class ;
                            rdfs:subClassOf [ rdf:type owl:Restriction ;
                                              owl:onProperty :hasSource ;
@@ -132,7 +132,7 @@
 #    Individuals
 #################################################################
 
-###  http://purl.org/patternpedia#LinkedOpenPatterns
+###  https://purl.org/patternpedia#LinkedOpenPatterns
 :LinkedOpenPatterns rdf:type owl:NamedIndividual ,
                              :PatternPedia ;
                     :hasName "PatternPedia - Linked Open Patterns"^^xsd:string ;

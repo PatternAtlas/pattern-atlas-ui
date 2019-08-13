@@ -1,12 +1,12 @@
-@prefix : <http://purl.org/semantic-pattern#> .
+@prefix : <https://purl.org/semantic-pattern#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@base <http://purl.org/semantic-pattern#> .
+@base <https://purl.org/semantic-pattern#> .
 
-<http://purl.org/semantic-pattern#> rdf:type owl:Ontology .
+<https://purl.org/semantic-pattern#> rdf:type owl:Ontology .
 
 #################################################################
 #    Annotation properties
@@ -20,7 +20,7 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
 #    Object Properties
 #################################################################
 
-###  http://purl.org/semantic-pattern#aggregatesCS
+###  https://purl.org/semantic-pattern#aggregatesCS
 :aggregatesCS rdf:type owl:ObjectProperty ;
               rdfs:subPropertyOf owl:topObjectProperty ;
               rdfs:domain [ rdf:type owl:Restriction ;
@@ -33,7 +33,7 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
                          ] .
 
 
-###  http://purl.org/semantic-pattern#hasSource
+###  https://purl.org/semantic-pattern#hasSource
 :hasSource rdf:type owl:ObjectProperty ;
            owl:inverseOf :isSourceOf ;
            rdfs:domain [ rdf:type owl:Restriction ;
@@ -46,7 +46,7 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
                       ] .
 
 
-###  http://purl.org/semantic-pattern#hasTarget
+###  https://purl.org/semantic-pattern#hasTarget
 :hasTarget rdf:type owl:ObjectProperty ;
            owl:inverseOf :isTargetOf ;
            rdfs:domain [ rdf:type owl:Restriction ;
@@ -59,7 +59,7 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
                       ] .
 
 
-###  http://purl.org/semantic-pattern#implementsPattern
+###  https://purl.org/semantic-pattern#implementsPattern
 :implementsPattern rdf:type owl:ObjectProperty ;
                    rdfs:domain [ rdf:type owl:Restriction ;
                                  owl:onProperty owl:topObjectProperty ;
@@ -71,7 +71,7 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
                               ] .
 
 
-###  http://purl.org/semantic-pattern#isSourceOf
+###  https://purl.org/semantic-pattern#isSourceOf
 :isSourceOf rdf:type owl:ObjectProperty ;
             rdfs:domain [ rdf:type owl:Restriction ;
                           owl:onProperty owl:topObjectProperty ;
@@ -83,7 +83,7 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
                        ] .
 
 
-###  http://purl.org/semantic-pattern#isTargetOf
+###  https://purl.org/semantic-pattern#isTargetOf
 :isTargetOf rdf:type owl:ObjectProperty ;
             rdfs:domain [ rdf:type owl:Restriction ;
                           owl:onProperty owl:topObjectProperty ;
@@ -95,7 +95,7 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
                        ] .
 
 
-###  http://purl.org/semantic-pattern#partOf
+###  https://purl.org/semantic-pattern#partOf
 :partOf rdf:type owl:ObjectProperty ;
         rdfs:domain :Pattern ;
         rdfs:range :PatternLanguage .
@@ -105,7 +105,7 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
 #    Data properties
 #################################################################
 
-###  http://purl.org/semantic-pattern#additionalDescription
+###  https://purl.org/semantic-pattern#additionalDescription
 :additionalDescription rdf:type owl:DatatypeProperty ;
                        rdfs:domain [ rdf:type owl:Restriction ;
                                      owl:onProperty owl:topObjectProperty ;
@@ -114,7 +114,7 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
                        rdfs:range rdfs:Literal .
 
 
-###  http://purl.org/semantic-pattern#aggregationDescription
+###  https://purl.org/semantic-pattern#aggregationDescription
 :aggregationDescription rdf:type owl:DatatypeProperty ;
                         rdfs:domain [ rdf:type owl:Restriction ;
                                       owl:onProperty owl:topObjectProperty ;
@@ -123,7 +123,7 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
                         rdfs:range xsd:string .
 
 
-###  http://purl.org/semantic-pattern#context
+###  https://purl.org/semantic-pattern#context
 :context rdf:type owl:DatatypeProperty ;
          rdfs:domain [ rdf:type owl:Restriction ;
                        owl:onProperty owl:topObjectProperty ;
@@ -132,7 +132,7 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
          rdfs:range rdfs:Literal .
 
 
-###  http://purl.org/semantic-pattern#drivingQuestion
+###  https://purl.org/semantic-pattern#drivingQuestion
 :drivingQuestion rdf:type owl:DatatypeProperty ;
                  rdfs:domain [ rdf:type owl:Restriction ;
                                owl:onProperty owl:topObjectProperty ;
@@ -141,7 +141,7 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
                  rdfs:range rdfs:Literal .
 
 
-###  http://purl.org/semantic-pattern#hasCSArtifact
+###  https://purl.org/semantic-pattern#hasCSArtifact
 :hasCSArtifact rdf:type owl:DatatypeProperty ;
                rdfs:domain [ rdf:type owl:Restriction ;
                              owl:onProperty owl:topObjectProperty ;
@@ -150,7 +150,7 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
                rdfs:range xsd:string .
 
 
-###  http://purl.org/semantic-pattern#intent
+###  https://purl.org/semantic-pattern#intent
 :intent rdf:type owl:DatatypeProperty ;
         rdfs:domain [ rdf:type owl:Restriction ;
                       owl:onProperty owl:topObjectProperty ;
@@ -159,11 +159,11 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
         rdfs:range rdfs:Literal .
 
 
-###  http://purl.org/semantic-pattern#patternLanguageName
+###  https://purl.org/semantic-pattern#patternLanguageName
 :patternLanguageName rdf:type owl:DatatypeProperty .
 
 
-###  http://purl.org/semantic-pattern#patternName
+###  https://purl.org/semantic-pattern#patternName
 :patternName rdf:type owl:DatatypeProperty ;
              rdfs:domain [ rdf:type owl:Restriction ;
                            owl:onProperty owl:topObjectProperty ;
@@ -172,7 +172,7 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
              rdfs:range rdfs:Literal .
 
 
-###  http://purl.org/semantic-pattern#precondition
+###  https://purl.org/semantic-pattern#precondition
 :precondition rdf:type owl:DatatypeProperty ;
               rdfs:domain [ rdf:type owl:Restriction ;
                             owl:onProperty owl:topObjectProperty ;
@@ -181,7 +181,7 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
               rdfs:range xsd:string .
 
 
-###  http://purl.org/semantic-pattern#solution
+###  https://purl.org/semantic-pattern#solution
 :solution rdf:type owl:DatatypeProperty ;
           rdfs:domain [ rdf:type owl:Restriction ;
                         owl:onProperty owl:topObjectProperty ;
@@ -194,16 +194,16 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
 #    Classes
 #################################################################
 
-###  http://purl.org/semantic-pattern#Alternative
+###  https://purl.org/semantic-pattern#Alternative
 :Alternative rdf:type owl:Class ;
              rdfs:subClassOf :PRD .
 
 
-###  http://purl.org/semantic-pattern#CSRD
+###  https://purl.org/semantic-pattern#CSRD
 :CSRD rdf:type owl:Class .
 
 
-###  http://purl.org/semantic-pattern#CSRDAggregation
+###  https://purl.org/semantic-pattern#CSRDAggregation
 :CSRDAggregation rdf:type owl:Class ;
                  rdfs:subClassOf :CSRD ,
                                  [ rdf:type owl:Restriction ;
@@ -213,27 +213,27 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
                                  ] .
 
 
-###  http://purl.org/semantic-pattern#CSRDAlternative
+###  https://purl.org/semantic-pattern#CSRDAlternative
 :CSRDAlternative rdf:type owl:Class ;
                  rdfs:subClassOf :CSRD .
 
 
-###  http://purl.org/semantic-pattern#CloudApplicationArchitecturePattern
+###  https://purl.org/semantic-pattern#CloudApplicationArchitecturePattern
 :CloudApplicationArchitecturePattern rdf:type owl:Class ;
                                      rdfs:subClassOf :CloudComputingPattern .
 
 
-###  http://purl.org/semantic-pattern#CloudApplicationManagementPattern
+###  https://purl.org/semantic-pattern#CloudApplicationManagementPattern
 :CloudApplicationManagementPattern rdf:type owl:Class ;
                                    rdfs:subClassOf :CloudComputingPattern .
 
 
-###  http://purl.org/semantic-pattern#CloudComputingFundamentalPattern
+###  https://purl.org/semantic-pattern#CloudComputingFundamentalPattern
 :CloudComputingFundamentalPattern rdf:type owl:Class ;
                                   rdfs:subClassOf :CloudComputingPattern .
 
 
-###  http://purl.org/semantic-pattern#CloudComputingPattern
+###  https://purl.org/semantic-pattern#CloudComputingPattern
 :CloudComputingPattern rdf:type owl:Class ;
                        rdfs:subClassOf :Pattern ,
                                        [ rdf:type owl:Restriction ;
@@ -258,17 +258,17 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
                                        ] .
 
 
-###  http://purl.org/semantic-pattern#CloudOfferingPattern
+###  https://purl.org/semantic-pattern#CloudOfferingPattern
 :CloudOfferingPattern rdf:type owl:Class ;
                       rdfs:subClassOf :CloudComputingPattern .
 
 
-###  http://purl.org/semantic-pattern#CompositeCloudApplicationPattern
+###  https://purl.org/semantic-pattern#CompositeCloudApplicationPattern
 :CompositeCloudApplicationPattern rdf:type owl:Class ;
                                   rdfs:subClassOf :CloudComputingPattern .
 
 
-###  http://purl.org/semantic-pattern#ConcreteSolutionDescriptor
+###  https://purl.org/semantic-pattern#ConcreteSolutionDescriptor
 :ConcreteSolutionDescriptor rdf:type owl:Class ;
                             rdfs:subClassOf [ rdf:type owl:Restriction ;
                                               owl:onProperty :implementsPattern ;
@@ -282,17 +282,17 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
                                             ] .
 
 
-###  http://purl.org/semantic-pattern#ConsiderAfter
+###  https://purl.org/semantic-pattern#ConsiderAfter
 :ConsiderAfter rdf:type owl:Class ;
                rdfs:subClassOf :PRD .
 
 
-###  http://purl.org/semantic-pattern#KnownUse
+###  https://purl.org/semantic-pattern#KnownUse
 :KnownUse rdf:type owl:Class ;
           rdfs:subClassOf :PRD .
 
 
-###  http://purl.org/semantic-pattern#MessagingPattern
+###  https://purl.org/semantic-pattern#MessagingPattern
 :MessagingPattern rdf:type owl:Class ;
                   rdfs:subClassOf :Pattern ,
                                   [ rdf:type owl:Restriction ;
@@ -317,7 +317,7 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
                                   ] .
 
 
-###  http://purl.org/semantic-pattern#PRD
+###  https://purl.org/semantic-pattern#PRD
 :PRD rdf:type owl:Class ;
      rdfs:subClassOf [ rdf:type owl:Restriction ;
                        owl:onProperty :hasSource ;
@@ -331,7 +331,7 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
                      ] .
 
 
-###  http://purl.org/semantic-pattern#Pattern
+###  https://purl.org/semantic-pattern#Pattern
 :Pattern rdf:type owl:Class ;
          rdfs:subClassOf [ rdf:type owl:Restriction ;
                            owl:onProperty :partOf ;
@@ -339,7 +339,7 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
                          ] .
 
 
-###  http://purl.org/semantic-pattern#PatternLanguage
+###  https://purl.org/semantic-pattern#PatternLanguage
 :PatternLanguage rdf:type owl:Class ;
                  rdfs:subClassOf [ rdf:type owl:Restriction ;
                                    owl:onProperty :patternLanguageName ;
@@ -347,7 +347,7 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
                                  ] .
 
 
-###  http://purl.org/semantic-pattern#SeeAlso
+###  https://purl.org/semantic-pattern#SeeAlso
 :SeeAlso rdf:type owl:Class ;
          rdfs:subClassOf :PRD .
 
@@ -356,7 +356,7 @@ owl:qualifiedCardinality rdf:type owl:AnnotationProperty .
 #    Individuals
 #################################################################
 
-###  http://purl.org/semantic-pattern#CloudComputingPatterns
+###  https://purl.org/semantic-pattern#CloudComputingPatterns
 :CloudComputingPatterns rdf:type owl:NamedIndividual ,
                                  :PatternLanguage .
 
