@@ -9,6 +9,7 @@ import { EnterpriseIntegrationPatternsDataService } from '../../service/enterpri
 import { PatternRenderingComponentInterface } from 'src/app/core/model/pattern-rendering-component.interface';
 import { EnterpriseIntegrationPatternLoaderService } from '../../loader/enterprise-integration-pattern-loader.service';
 import { PatternOntologyService } from 'src/app/core/service/pattern-ontology.service';
+import { FilterFactoryService } from 'src/app/filter/service/filter-factory.service';
 
 @Component({
   selector: 'pp-enterprise-integration-patterns',
@@ -39,14 +40,25 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private zone: NgZone,
-    private patternLoader: EnterpriseIntegrationPatternLoaderService) { }
+    private patternLoader: EnterpriseIntegrationPatternLoaderService,
+    private filterFactory: FilterFactoryService) { }
 
   ngOnInit() {
+    // load all files to the store
     this.pos.getOWLImports('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns')
       .then(res => {
         const importedPatternIris = res.map(i => i.import);
         this.pos.loadUrisToStore(importedPatternIris)
           .then(() => {
+
+            // TEST TEST TEST
+            this.filterFactory.createFilter('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns').then(
+              filter => {
+                console.log(filter);
+              }
+            );
+
+            // get data from store
             this.loader.getAllData()
               .then(values => {
                 this.patternMap = values[0];
