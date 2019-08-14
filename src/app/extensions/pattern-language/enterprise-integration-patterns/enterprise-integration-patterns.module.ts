@@ -13,6 +13,8 @@ import { MatButtonModule, MatIcon, MatIconModule, MatFormFieldModule, MatInputMo
 import { FormsModule } from '@angular/forms';
 import { LinkInfoboxComponent } from './component/link-infobox/link-infobox.component';
 import { FilterViewComponent } from 'src/app/filter/component/filter-view/filter-view.component';
+import { DraggableDirective } from './component/directives/draggable.directive';
+import { ZoomableDirective } from './component/directives/zoomable.directive';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { FilterViewComponent } from 'src/app/filter/component/filter-view/filter
     NodeInfoboxComponent, 
     EnterpriseIntegrationPatternComponent, 
     LinkInfoboxComponent,
-    FilterViewComponent
+    FilterViewComponent,
+    DraggableDirective,
+    ZoomableDirective
   ],
   imports: [
     CommonModule,

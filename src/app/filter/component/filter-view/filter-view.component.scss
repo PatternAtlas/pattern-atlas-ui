@@ -27,6 +27,11 @@ h2 {
     margin-top: 32px;
 
     button {
-        margin-right: 16px;
+        margin-right: 8px;
     }
+}
+
+.right-button {
+    float: right;
+    margin-right: 0px !important;
 }

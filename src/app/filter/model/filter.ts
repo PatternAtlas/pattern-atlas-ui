@@ -31,8 +31,15 @@ export default class Filter {
             Object.keys(this.config).forEach(k => {
                 // pattern should contain same fields as the config
                 if (p[k]) {
+                    // FIXME description is a array of strings...
+                    // Quick Hack: ignore description for now until real data is available
+                    if (typeof p[k] !== 'string') {
+                        return;
+                    }
+        
                     // and the value of that fields should match somehow
-                    result = result || this.matches(p[k], this.config[k]);
+                    let test = this.matches(p[k], this.config[k]);
+                    result = result && test;
                 } else {
                     result = false;
                 }
@@ -46,7 +53,14 @@ export default class Filter {
     }
 
     // TODO use a similarity measure here!
+    // for now, we check if one includes the other somehow
     private matches(a: string, b: string): boolean {
-        return false;
+        // special case: b might be empty, i.e. "" if no filter value has been entered
+        // this method works even in this situation. But keep this in mind, if we switch the match function!
+
+        let shorter = (a.length < b.length) ? a : b;
+        let longer = (a.length < b.length) ? b : a;
+
+        return longer.toLowerCase().includes(shorter.toLowerCase());
     }
 }

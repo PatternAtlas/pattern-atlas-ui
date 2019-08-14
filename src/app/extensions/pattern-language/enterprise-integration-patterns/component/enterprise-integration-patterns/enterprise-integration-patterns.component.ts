@@ -34,8 +34,6 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
 
   @ViewChild('graph') graph;
 
-  filterValue: string;
-
   constructor(private http: HttpClient,
     private pos: PatternOntologyService,
     private loader: EnterpriseIntegrationPatternsDataService,
@@ -160,16 +158,6 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
     });
   }
 
-  filterNodes(value: string) {
-    if (value !== '' /*&& this.filterValue !== value*/) {
-      this.filterValue = value;
-
-      this.graph.filterNodes(this.filterValue);
-    } else {
-      this.graph.showAllNodes();
-    }
-  }
-
   openFilterDialog() {
     let dialogRef = this.dialog.open(FilterViewComponent, {
       width: '600px',
@@ -177,7 +165,11 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog closed: ${result}`);
+      if (result) {
+        // there might be new filter values set -> filter data
+        this.filterFactory.createFilter('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns')
+          .then(filter => this.graph.filterNodes(filter));
+      }
     });
   }
 }

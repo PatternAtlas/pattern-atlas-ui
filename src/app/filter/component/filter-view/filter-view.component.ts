@@ -26,12 +26,19 @@ export class FilterViewComponent implements OnInit {
     this.filterFactory.getConfig(this.patternLanguageUri)
       .then(config => {
         // copy object, don't use the original reference!
-        this.data = Object.assign(config);
+        this.data = JSON.parse(JSON.stringify(config));
       });
   }
 
   onCloseConfirm() {
     // apply changed config in factory
+    this.filterFactory.setConfig(this.patternLanguageUri, this.data);
+    this.thisDialogRef.close(true);
+  }
+
+  onCloseClear() {
+    // reset all filter values to empty values
+    Object.keys(this.data).forEach(k => this.data[k] = '');
     this.filterFactory.setConfig(this.patternLanguageUri, this.data);
     this.thisDialogRef.close(true);
   }

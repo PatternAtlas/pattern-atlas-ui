@@ -3,12 +3,10 @@
 
   <div class="pattern-options">
     <h2>Pattern Options</h2>
-    <form>
-      <!-- input field for every field of the config element -->
-      <mat-form-field class="filter-field" *ngFor="let key of objectKeys(data)">
-        <input matInput placeholder="{{key}}" value="{{data[key]}}">
-      </mat-form-field>
-    </form>
+    <!-- input field for every field of the config element -->
+    <mat-form-field class="filter-field" *ngFor="let key of objectKeys(data)">
+      <input matInput placeholder="{{key}}" [(ngModel)]="data[key]">
+    </mat-form-field>
   </div>
 
   <div class="relation-options">
@@ -18,6 +16,7 @@
 
   <div class="dialog-actions">
     <button mat-flat-button color="primary" (click)="onCloseConfirm()">Apply Filter</button>
-    <button mat-flat-button (click)="onCloseCancel()">Cancel</button>
+    <button mat-stroked-button (click)="onCloseClear()">Clear Values</button>
+    <button mat-stroked-button (click)="onCloseCancel()" class="right-button">Cancel</button>
   </div>
 </div>
