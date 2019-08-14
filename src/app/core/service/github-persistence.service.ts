@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { GithubConfigFile } from './data/GithubConfigFile.interface';
 import PatternLanguage from '../model/pattern-language.model';
-import { switchMap, tap } from 'rxjs/internal/operators';
+import { switchMap } from 'rxjs/internal/operators';
 import { GithubUploadRequestInfo } from './data/GithubUploadRequestInfo.interface';
-import { GithubAppConfig } from './data/GithubAppConfig.interface';
 import { CookieService } from 'ngx-cookie-service';
 import { GithubFileResponse } from './data/GithubFileResponse.interface';
 import Pattern from '../model/pattern.model';
@@ -43,14 +41,6 @@ export class GithubPersistenceService {
       `${this.githubBaseUrl}/patternlanguages/${patternLanguage.name}/${patternLanguage.name}.ttl`;
   }
 
-  getGithubUserConfig(): Observable<GithubConfigFile> {
-    return this.httpClient.get('assets/github-user-config.json').pipe(map(res => <GithubConfigFile> res));
-  }
-
-  getGithubAppConfig(): Observable<GithubAppConfig> {
-    return this.httpClient.get('assets/github-app-config.json').pipe(map(res => <GithubAppConfig> res));
-  }
-
   addPatternLanguageToPatternPedia(patternlanguage: PatternLanguage, existingPatternlanguages: PatternLanguage[]): Observable<any> {
     existingPatternlanguages.push(patternlanguage);
     const containsPatternGraphStatements = existingPatternlanguages.map((pl: PatternLanguage) => {
@@ -75,9 +65,8 @@ export class GithubPersistenceService {
   }
 
   getRequestInfosToAddToPatternPedia(): Observable<GithubUploadRequestInfo> {
-    return forkJoin(this.httpClient.get('assets/patternpedia-without-containsPatternGraph.ttl', {responseType: 'text'}),
-      this.getGithubAppConfig(), this.getFile(this.githubPatternPediaUrl)).pipe(
-      map(res => <GithubUploadRequestInfo> {content: res[0], config: res[1], fileInfo: res[2]}));
+    return forkJoin(this.httpClient.get('assets/patternpedia-without-containsPatternGraph.ttl', {responseType: 'text'}), this.getFile(this.githubPatternPediaUrl)).pipe(
+      map(res => <GithubUploadRequestInfo> {content: res[0], fileInfo: res[1]}));
   }
 
 
@@ -94,25 +83,13 @@ export class GithubPersistenceService {
   }
 
 
-  getPatternLanguage(patternLanguageName: string): Observable<any> {
-
-    return this.getTTLFile('https://purl.org/patternpedia' + patternLanguageName);
-
-  }
-
-  getUpdateFileInfos(uploadUrl: string): Observable<GithubUploadRequestInfo> {
-    return forkJoin(this.getGithubAppConfig(), this.getFile(uploadUrl)).pipe(
-      map(res => <GithubUploadRequestInfo> {content: '', config: res[0], fileInfo: res[1]})
-    );
-  }
-
   updatePL(patternLanguage: PatternLanguage): Observable<any> {
-    return this.getUpdateFileInfos(this.getGithubPathForPatternLanguage(patternLanguage)).pipe(
-      switchMap((res: GithubUploadRequestInfo) => {
+    return this.getFile(this.getGithubPathForPatternLanguage(patternLanguage)).pipe(
+      switchMap((res: GithubFileResponse) => {
         return this.httpClient.put(this.getGithubPathForPatternLanguage(patternLanguage), {
             message: 'update patternlanguage ' + patternLanguage.name,
             content: btoa(patternLanguage.toTurtle()),
-            sha: res.fileInfo.sha
+            sha: res.sha
           }
           , {
             headers: {
@@ -126,9 +103,7 @@ export class GithubPersistenceService {
   uploadPattern(pattern: Pattern, patternLanguage: PatternLanguage): Observable<any> {
     const url =
       `${this.githubBaseUrl}/patternlanguages/${patternLanguage.name}/${IriConverter.removeWhitespace(pattern.name)}.ttl`;
-    return this.getGithubAppConfig().pipe(
-      switchMap((res: GithubAppConfig) => {
-        return this.httpClient.put(url, {
+    return this.httpClient.put(url, {
             message: 'update patternlanguage ' + patternLanguage.name,
             content: btoa(pattern.toTurtle()),
           }
@@ -138,22 +113,7 @@ export class GithubPersistenceService {
               'Authorization': `token ${this.cookieService.get('patternpedia_github_token')}`
             }
           });
-      })
-    );
   }
 
-  requestOAuthToken(): Observable<any> {
-    const params = new HttpParams()
-      .set('scope', `repo`);
-    return this.getGithubAppConfig().pipe(
-      tap((config: GithubAppConfig) => {
-        params.set('client_id', config.client_id);
-      }),
-      switchMap(() => {
-        return this.httpClient.get('https://github.com/login/oauth/authorize', {
-          params: params,
-          responseType: 'text'
-        });
-      }));
-  }
+
 }
