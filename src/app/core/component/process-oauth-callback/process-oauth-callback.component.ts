@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
-import { switchMap, tap } from 'rxjs/internal/operators';
 import { GithubPersistenceService } from '../../service/github-persistence.service';
-import { GithubAppConfig } from '../../service/data/GithubAppConfig.interface';
+import { switchMap } from 'rxjs/internal/operators';
 
 @Component({
   selector: 'pp-process-oauth-callback',
@@ -20,19 +19,12 @@ export class ProcessOauthCallbackComponent implements OnInit {
   }
 
   ngOnInit() {
-    const data = new FormData();
-
-    data.append('accept', 'json');
-
-    this._githubPersistenceService.getGithubAppConfig().pipe(
-      tap((githubAppConfig: GithubAppConfig) => { data.append('client_id', githubAppConfig.client_id);
-        data.append('client_secret', githubAppConfig.client_secret); }),
-    switchMap(() =>  this._route.queryParams),
-      tap(params => console.log(params['code'])),
-      switchMap((params)  => {
-        data.append('code', params['code']);
-        return this._httpClient.post('https://github.com/login/oauth/access_token', data, {responseType: 'text'});
-      })).subscribe( (res) => {
+    const code = this._route.snapshot.params['code'];
+    this._route.queryParams.pipe(
+      switchMap((params) => {
+        return this._httpClient.get('https://eqjjnlkv6a.execute-api.eu-central-1.amazonaws.com/default/authenticate/' + params['code']);
+      })).subscribe(
+      (res) => {
         // github sends the access_token in url param style (access_token=...&...), so let's use this info to decode the token:
       const urlResponse = new URLSearchParams(res);
       this._cookieService.set('patternpedia_github_token', urlResponse.get('access_token'));
