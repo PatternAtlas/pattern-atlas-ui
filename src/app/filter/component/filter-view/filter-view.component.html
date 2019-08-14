@@ -1,0 +1,23 @@
+<div *ngIf="data">
+  <h1>Filter Patterns</h1> <!-- maybe add patternlanguage name here? -->
+
+  <div class="pattern-options">
+    <h2>Pattern Options</h2>
+    <form>
+      <!-- input field for every field of the config element -->
+      <mat-form-field class="filter-field" *ngFor="let key of objectKeys(data)">
+        <input matInput placeholder="{{key}}" value="{{data[key]}}">
+      </mat-form-field>
+    </form>
+  </div>
+
+  <div class="relation-options">
+    <h2>Relation Options</h2>
+    <mat-checkbox>Pattern must contain Cross Language Links</mat-checkbox>
+  </div>
+
+  <div class="dialog-actions">
+    <button mat-flat-button color="primary" (click)="onCloseConfirm()">Apply Filter</button>
+    <button mat-flat-button (click)="onCloseCancel()">Cancel</button>
+  </div>
+</div>

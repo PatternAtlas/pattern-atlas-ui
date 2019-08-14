@@ -1,0 +1,32 @@
+h1 {
+    margin: 0;
+}
+
+h2 {
+    font-size: 12pt;
+    margin-left: -8px;
+}
+
+.pattern-options {
+    padding-left: 8px;
+    padding-bottom: 16px;
+    border-bottom: solid 2px lightgrey;
+}
+
+.filter-field {
+    width: 100%;
+    margin-bottom: -16px;
+}
+
+.relation-options {
+    padding-left: 8px;
+    margin-top:20px;
+}
+
+.dialog-actions {
+    margin-top: 32px;
+
+    button {
+        margin-right: 16px;
+    }
+}

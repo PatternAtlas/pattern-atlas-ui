@@ -10,6 +10,8 @@ import { PatternRenderingComponentInterface } from 'src/app/core/model/pattern-r
 import { EnterpriseIntegrationPatternLoaderService } from '../../loader/enterprise-integration-pattern-loader.service';
 import { PatternOntologyService } from 'src/app/core/service/pattern-ontology.service';
 import { FilterFactoryService } from 'src/app/filter/service/filter-factory.service';
+import { MatDialog } from '@angular/material';
+import { FilterViewComponent } from 'src/app/filter/component/filter-view/filter-view.component';
 
 @Component({
   selector: 'pp-enterprise-integration-patterns',
@@ -41,7 +43,8 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
     private activatedRoute: ActivatedRoute,
     private zone: NgZone,
     private patternLoader: EnterpriseIntegrationPatternLoaderService,
-    private filterFactory: FilterFactoryService) { }
+    private filterFactory: FilterFactoryService,
+    public dialog: MatDialog) { }
 
   ngOnInit() {
     // (1) load the base file ...
@@ -165,5 +168,16 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
     } else {
       this.graph.showAllNodes();
     }
+  }
+
+  openFilterDialog() {
+    let dialogRef = this.dialog.open(FilterViewComponent, {
+      width: '600px',
+      data: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog closed: ${result}`);
+    });
   }
 }

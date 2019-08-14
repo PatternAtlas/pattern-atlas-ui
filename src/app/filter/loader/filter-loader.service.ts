@@ -24,28 +24,6 @@ export class FilterLoaderService extends Loader<any> {
   }
 
   async selectContentFromStore(patternlanguageUri?: string): Promise<any> {
-    // const query = `SELECT DISTINCT ?predicate
-    //   WHERE {
-    //     {
-    //       ?class <http://www.w3.org/2001/XMLSchema#subClassOf> pp:Pattern .
-    //     }
-    //     UNION
-    //     { 
-    //       ?predicate a <http://www.w3.org/2002/07/owl#DataProperty> .
-    //       ?class <http://www.w3.org/2000/01/rdf-schema#subClassOf> [ a <http://www.w3.org/2002/07/owl#Restriction> ;
-    //         <http://www.w3.org/2002/07/owl#onProperty> ?predicate ;
-    //         <http://www.w3.org/2002/07/owl#allValuesFrom> | <http://www.w3.org/2002/07/owl#onDataRange> <http://www.w3.org/2001/XMLSchema#string> ] .
-    //     }
-    //     UNION
-    //     {
-    //       ?class <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?pp .
-    //       ?pp a <http://www.w3.org/2002/07/owl#Class> .
-    //       ?pp <http://www.w3.org/2000/01/rdf-schema#subClassOf> [ a <http://www.w3.org/2002/07/owl#Restriction> ;
-    //         <http://www.w3.org/2002/07/owl#onProperty> ?predicate ;
-    //         <http://www.w3.org/2002/07/owl#allValuesFrom> | <http://www.w3.org/2002/07/owl#onDataRange> <http://www.w3.org/2001/XMLSchema#string> ] .
-    //     }
-    //   }`;
-
     const query = `SELECT DISTINCT ?predicate
     WHERE {
       {

@@ -22,10 +22,28 @@ export class FilterFactoryService {
     let config = this.configs.get(uri);
     if (!config) {
       // create new default config via loader
-      config = await this.loader.loadContentFromStore(uri);
+      const result = await this.loader.loadContentFromStore(uri);
+      config = this.createConfig(result.get(uri));
       this.configs.set(uri, config);
     }
 
     return Promise.resolve(config);
+  }
+
+  setConfig(uri: string, config: any) {
+    this.configs.set(uri, config);
+  }
+
+  /**
+   * Creates a config object containing the given list of properties as keys and initializes them with an empty string
+   * @param properties list of string properties
+   */
+  private createConfig(properties: Array<string>) {
+    let config = {};
+    for (const p of properties) {
+      config[p] = '';
+    }
+
+    return config;
   }
 }

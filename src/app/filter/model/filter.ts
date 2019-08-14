@@ -45,6 +45,7 @@ export default class Filter {
         return filtered;
     }
 
+    // TODO use a similarity measure here!
     private matches(a: string, b: string): boolean {
         return false;
     }
