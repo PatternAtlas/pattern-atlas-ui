@@ -44,87 +44,92 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
     private filterFactory: FilterFactoryService) { }
 
   ngOnInit() {
-    // load all files to the store
-    this.pos.getOWLImports('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns')
-      .then(res => {
-        const importedPatternIris = res.map(i => i.import);
-        this.pos.loadUrisToStore(importedPatternIris)
-          .then(() => {
+    // (1) load the base file ...
+    this.pos.loadUrisToStore([{ value: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns' }])
+      .then(() => {
+        // (2) ... in order to get all the imports it defines ...
+        this.pos.getOWLImports('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns')
+          .then(res => {
+            // (3) ... to load all the imported files
+            const importedPatternIris = res.map(i => i.import);
+            this.pos.loadUrisToStore(importedPatternIris)
+              .then(() => {
 
-            // TEST TEST TEST
-            this.filterFactory.createFilter('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns').then(
-              filter => {
-                console.log(filter);
-              }
-            );
+                // TEST TEST TEST
+                this.filterFactory.createFilter('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns').then(
+                  filter => {
+                    console.log(filter);
+                  }
+                );
 
-            // get data from store
-            this.loader.getAllData()
-              .then(values => {
-                this.patternMap = values[0];
-                this.linkMap = values[1];
-                this.groupMap = values[2];
+                // get data from store
+                this.loader.getAllData()
+                  .then(values => {
+                    this.patternMap = values[0];
+                    this.linkMap = values[1];
+                    this.groupMap = values[2];
 
-                // links
-                // links also contains edges to different pattern languages. we don't want to render them as actual links of the network graph
-                // => filter clp links
-                this.links = Array.from(this.linkMap.values()).filter(link => {
-                  let source = "";
-                  let target = "";
+                    // links
+                    // links also contains edges to different pattern languages. we don't want to render them as actual links of the network graph
+                    // => filter clp links
+                    this.links = Array.from(this.linkMap.values()).filter(link => {
+                      let source = "";
+                      let target = "";
 
-                  if (typeof link.source === 'string')
-                    source = link.source;
-                  else if (link.source instanceof Node)
-                    source = link.source.id;
+                      if (typeof link.source === 'string')
+                        source = link.source;
+                      else if (link.source instanceof Node)
+                        source = link.source.id;
 
-                  if (typeof link.target === 'string')
-                    target = link.target;
-                  else if (link.target instanceof Node)
-                    target = link.target.id;
+                      if (typeof link.target === 'string')
+                        target = link.target;
+                      else if (link.target instanceof Node)
+                        target = link.target.id;
 
-                  // keep link, if its source and destination is from enterpriseintegrationpatterns, and no other language
-                  return source.includes('enterpriseintegrationpatterns') && target.includes('enterpriseintegrationpatterns');
-                });
+                      // keep link, if its source and destination is from enterpriseintegrationpatterns, and no other language
+                      return source.includes('enterpriseintegrationpatterns') && target.includes('enterpriseintegrationpatterns');
+                    });
 
-                // groups
-                let groups = {};
-                this.groupMap.forEach(value => {
-                  groups[value.groupName] = value.patterns;
-                });
+                    // groups
+                    let groups = {};
+                    this.groupMap.forEach(value => {
+                      groups[value.groupName] = value.patterns;
+                    });
 
-                // for coloring of nodes
-                let groupIds = Array.from(Object.keys(groups));
-                let scale = d3.scaleOrdinal(d3.schemeCategory10);
-                let color = function (d: any) {
-                  if (d)
-                    return scale('' + groupIds.indexOf(d));
-                  return scale('0');
-                }
+                    // for coloring of nodes
+                    let groupIds = Array.from(Object.keys(groups));
+                    let scale = d3.scaleOrdinal(d3.schemeCategory10);
+                    let color = function (d: any) {
+                      if (d)
+                        return scale('' + groupIds.indexOf(d));
+                      return scale('0');
+                    }
 
-                // nodes
-                this.nodes = [];
+                    // nodes
+                    this.nodes = [];
 
-                // convert given IRI -> EnterpriseIntegrationPattern Map to Node list for rendering
-                this.patternMap.forEach((value) => {
-                  let n = new Node(value.id);
-                  n.name = value.name;
-                  n.description = value.description.value;
+                    // convert given IRI -> EnterpriseIntegrationPattern Map to Node list for rendering
+                    this.patternMap.forEach((value) => {
+                      let n = new Node(value.id);
+                      n.name = value.name;
+                      n.description = value.description.value;
 
-                  // go through all groups and check if the current pattern is present in the list of patterns
-                  // return the group (i.e. the group name) that contains the pattern. undefined if no group contains this pattern
-                  n.group = Object.keys(groups).find(groupName => groups[groupName].includes(value.id));
+                      // go through all groups and check if the current pattern is present in the list of patterns
+                      // return the group (i.e. the group name) that contains the pattern. undefined if no group contains this pattern
+                      n.group = Object.keys(groups).find(groupName => groups[groupName].includes(value.id));
 
-                  n.color = color(n.group);
+                      n.color = color(n.group);
 
-                  this.nodes.push(n);
-                });
+                      this.nodes.push(n);
+                    });
 
-                // place data in field
-                this.data = {
-                  nodes: this.nodes,
-                  links: this.links,
-                  id: this.pId
-                };
+                    // place data in field
+                    this.data = {
+                      nodes: this.nodes,
+                      links: this.links,
+                      id: this.pId
+                    };
+                  });
               });
           });
       });

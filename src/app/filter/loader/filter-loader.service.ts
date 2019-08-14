@@ -24,27 +24,50 @@ export class FilterLoaderService extends Loader<any> {
   }
 
   async selectContentFromStore(patternlanguageUri?: string): Promise<any> {
+    // const query = `SELECT DISTINCT ?predicate
+    //   WHERE {
+    //     {
+    //       ?class <http://www.w3.org/2001/XMLSchema#subClassOf> pp:Pattern .
+    //     }
+    //     UNION
+    //     { 
+    //       ?predicate a <http://www.w3.org/2002/07/owl#DataProperty> .
+    //       ?class <http://www.w3.org/2000/01/rdf-schema#subClassOf> [ a <http://www.w3.org/2002/07/owl#Restriction> ;
+    //         <http://www.w3.org/2002/07/owl#onProperty> ?predicate ;
+    //         <http://www.w3.org/2002/07/owl#allValuesFrom> | <http://www.w3.org/2002/07/owl#onDataRange> <http://www.w3.org/2001/XMLSchema#string> ] .
+    //     }
+    //     UNION
+    //     {
+    //       ?class <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?pp .
+    //       ?pp a <http://www.w3.org/2002/07/owl#Class> .
+    //       ?pp <http://www.w3.org/2000/01/rdf-schema#subClassOf> [ a <http://www.w3.org/2002/07/owl#Restriction> ;
+    //         <http://www.w3.org/2002/07/owl#onProperty> ?predicate ;
+    //         <http://www.w3.org/2002/07/owl#allValuesFrom> | <http://www.w3.org/2002/07/owl#onDataRange> <http://www.w3.org/2001/XMLSchema#string> ] .
+    //     }
+    //   }`;
+
     const query = `SELECT DISTINCT ?predicate
-      WHERE {
-        {
-          ?class <http://www.w3.org/2001/XMLSchema#subClassOf> pp:Pattern .
-        }
-        UNION
-        { 
-          ?predicate a <http://www.w3.org/2002/07/owl#DataProperty> .
-          ?class <http://www.w3.org/2000/01/rdf-schema#subClassOf> [ a <http://www.w3.org/2002/07/owl#Restriction> ;
-            <http://www.w3.org/2002/07/owl#onProperty> ?predicate ;
-            <http://www.w3.org/2002/07/owl#allValuesFrom> | <http://www.w3.org/2002/07/owl#onDataRange> <http://www.w3.org/2001/XMLSchema#string> ] .
-        }
-        UNION
-        {
-          ?class <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?pp .
-          ?pp a <http://www.w3.org/2002/07/owl#Class> .
-          ?pp <http://www.w3.org/2000/01/rdf-schema#subClassOf> [ a <http://www.w3.org/2002/07/owl#Restriction> ;
-            <http://www.w3.org/2002/07/owl#onProperty> ?predicate ;
-            <http://www.w3.org/2002/07/owl#allValuesFrom> | <http://www.w3.org/2002/07/owl#onDataRange> <http://www.w3.org/2001/XMLSchema#string> ] .
-        }
-      }`;
+    WHERE {
+      {
+        ?class rdfs:subClassOf pp:Pattern .
+      }
+      UNION
+      {
+        ?class rdfs:subClassOf ?sub .
+        #?sub a owl:Restriction .
+        ?sub owl:onProperty ?predicate .
+        ?sub ?typeRange xsd:string .
+      }
+      UNION
+      {
+        ?class rdfs:subClassOf ?pp .
+        ?pp a owl:Class .
+        ?pp rdfs:subClassOf ?sub2 .
+        #?sub2 a owl:Restriction .
+        ?sub2 owl:onProperty ?predicate .
+        ?sub2 ?typeRange xsd:string .
+      }
+    }`;
 
     // we need /patternpedia and /patternpedia/patternlanguages/PL for this query
     const graphs = [
@@ -57,8 +80,9 @@ export class FilterLoaderService extends Loader<any> {
 
   async mapTriples(triples: any, patternlanguageUri?: string): Promise<Map<string, any>> {
     const data = [];
-    for (let t of triples) {
-      data.push(this.crop(t.predicate.value));
+    for (const t of triples) {
+      if (t.predicate && t.predicate.value)
+        data.push(this.crop(t.predicate.value));
     }
 
     const result = new Map<string, any>();
