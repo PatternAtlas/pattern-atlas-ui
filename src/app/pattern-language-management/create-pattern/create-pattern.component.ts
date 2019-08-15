@@ -18,6 +18,7 @@ import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } fro
 import { ValidationService } from '../../core/service/validation.service';
 import { switchMap } from 'rxjs/internal/operators';
 import PatternLanguage from '../../core/model/pattern-language.model';
+import { PatternLanguagePatterns } from '../../core/model/pattern-language-patterns.model';
 
 
 @Component({
@@ -120,7 +121,7 @@ export class CreatePatternComponent implements OnInit {
     const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, patternIris, this.sections, restrictions, null);
     this.uploadService.updatePL(patternLanguage).pipe(
       switchMap(() => {
-        return this.uploadService.uploadPattern(pattern, patternLanguage);
+        return this.uploadService.uploadPLPatterns(new PatternLanguagePatterns(IriConverter.getPatternListIriForPLIri(patternLanguage.iri), patternLanguage.iri, []));
       }),
       switchMap(() => {
         return this.pos.loadUrisToStore([{value: this.plIri, token: null}]);

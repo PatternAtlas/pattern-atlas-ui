@@ -16,8 +16,9 @@ import { IriConverter } from '../util/iri-converter';
 import { PatternLanguageSectionRestriction } from './PatternLanguageSectionRestriction.model';
 import PatternPedia from './pattern-pedia.model';
 import { CustomPrefix } from '../../pattern-language-management/data/CustomPrefix.interface';
+import { TurtleFileModelInterface } from './TurtleFileModel.interface';
 
-class PatternLanguage {
+class PatternLanguage implements TurtleFileModelInterface {
   private patternpediaBaseURI = 'https://purl.org/patternpedia';
     private _id: string;
     name: string;
@@ -128,11 +129,6 @@ class PatternLanguage {
       });
     }
 
-
-    ary.push('#################################################################');
-    ary.push('# Individuals');
-    ary.push('##############################################################');
-
     ary.push(`###  ${this.iri}`);
     ary.push(`:${this.name} rdf:type owl:NamedIndividual ,`);
     ary.push('pp:PatternLanguage ;');
@@ -140,18 +136,13 @@ class PatternLanguage {
       ary.push(`pp:hasLogo "${this.logos[0]}"^^xsd:anyURI ;`);
     }
     ary.push(`pp:hasName "${this.name}"^^xsd:string .`);
-    // Todo solutionSketches and variations
-
-    this.patternIRIs.forEach((patternIri, index) => {
-      ary.push(`:${this.name} pp:containsPattern <${IriConverter.getFileName(patternIri)}#${IriConverter.extractIndividualNameFromIri(patternIri)}> .`);
-    });
 
     ary.push('#################################################################');
-    ary.push('# Pattern Import Statements');
+    ary.push('# Individuals');
     ary.push('##############################################################');
 
     this.patternIRIs.forEach((patternIri, index) => {
-      ary.push(`<${IriConverter.getFileName(this.iri)}> owl:imports <${IriConverter.getFileName(patternIri)}> .`);
+      ary.push(`:${this.name} pp:containsPattern <${IriConverter.getFileName(patternIri)}#${IriConverter.extractIndividualNameFromIri(patternIri)}> .`);
     });
 
     return ary.join('\n');
@@ -180,7 +171,6 @@ class PatternLanguage {
     }
     return name;
   }
-
 
 }
 

@@ -42,7 +42,7 @@ export class DefaultPlLoaderService extends Loader<any> {
                     }
                  ORDER BY ?pattern`;
     const graphs = [IriConverter.getFileName(this.supportedIRI)];
-    graphs.push(IriConverter.getFileName(this.supportedIRI) + '/' + IriConverter.extractIndividualNameFromIri(IriConverter.getFileName(this.supportedIRI)) + '-Patterns');
+    graphs.push(IriConverter.getPatternListIriForPLIri(this.supportedIRI));
     return this.executor.exec(qry, graphs);
   }
 

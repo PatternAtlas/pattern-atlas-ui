@@ -7,8 +7,8 @@ import { switchMap } from 'rxjs/internal/operators';
 import { GithubUploadRequestInfo } from './data/GithubUploadRequestInfo.interface';
 import { CookieService } from 'ngx-cookie-service';
 import { GithubFileResponse } from './data/GithubFileResponse.interface';
-import Pattern from '../model/pattern.model';
 import { IriConverter } from '../util/iri-converter';
+import { PatternLanguagePatterns } from '../model/pattern-language-patterns.model';
 
 @Injectable({
   providedIn: 'root'
@@ -40,9 +40,8 @@ export class GithubPersistenceService {
   }
 
   getGithubPathForPatternLanguage(patternLanguage: PatternLanguage): string {
-    return patternLanguage.iri.indexOf('patternlanguage') === -1 ?
-      `${this.githubBaseUrl}/${patternLanguage.name}/${patternLanguage.name}.ttl` :
-      `${this.githubBaseUrl}/patternlanguages/${patternLanguage.name}/${patternLanguage.name}.ttl`;
+    return;
+    `${this.githubBaseUrl}/patternlanguages/${patternLanguage.name}/${patternLanguage.name}.ttl`;
   }
 
   addPatternLanguageToPatternPedia(patternlanguage: PatternLanguage, existingPatternlanguages: PatternLanguage[]): Observable<any> {
@@ -81,9 +80,10 @@ export class GithubPersistenceService {
 
 
   updatePL(patternLanguage: PatternLanguage): Observable<any> {
-    return this.getFile(this.getGithubPathForPatternLanguage(patternLanguage)).pipe(
+    const githubUrlPL = this.getGithubPathForPatternLanguage(patternLanguage);
+    return this.getFile(githubUrlPL).pipe(
       switchMap((res: GithubFileResponse) => {
-        return this.httpClient.put(this.getGithubPathForPatternLanguage(patternLanguage), {
+        return this.httpClient.put(githubUrlPL, {
             message: 'update patternlanguage ' + patternLanguage.name,
             content: btoa(patternLanguage.toTurtle()),
             sha: res.sha
@@ -94,17 +94,36 @@ export class GithubPersistenceService {
       }));
   }
 
-  uploadPattern(pattern: Pattern, patternLanguage: PatternLanguage): Observable<any> {
-    const url =
-      `${this.githubBaseUrl}/patternlanguages/${patternLanguage.name}/${IriConverter.removeWhitespace(pattern.name)}.ttl`;
-    return this.httpClient.put(url, {
-            message: 'update patternlanguage ' + patternLanguage.name,
-            content: btoa(pattern.toTurtle()),
-          }
-          , {
+  updatePLPatterns(patternLanguagePatterns: PatternLanguagePatterns): Observable<any> {
+    const githubUrlPLPatterns = this.getGithubPathForPatternLanguagePatterns(patternLanguagePatterns);
+    return this.getFile(githubUrlPLPatterns).pipe(
+      switchMap((res: GithubFileResponse) => {
+          return this.httpClient.put(githubUrlPLPatterns, {
+              message: 'update patterns of' + IriConverter.extractIndividualNameFromIri(patternLanguagePatterns.plIri),
+              content: btoa(patternLanguagePatterns.toTurtle()),
+              sha: res.sha
+            }
+            , {
+              headers: this.getHeaders()
+            });
+        }
+      ));
+  }
+
+  uploadPLPatterns(patternLanguagePatterns: PatternLanguagePatterns): Observable<any> {
+    const githubUrlPLPatterns = this.getGithubPathForPatternLanguagePatterns(patternLanguagePatterns);
+    return this.httpClient.put(githubUrlPLPatterns, {
+        message: 'initialize patternslist (currently empty)  of' + IriConverter.extractIndividualNameFromIri(patternLanguagePatterns.plIri),
+        content: btoa(patternLanguagePatterns.toTurtle())
+      }
+      , {
         headers: this.getHeaders()
-          });
+      });
   }
 
 
+  private getGithubPathForPatternLanguagePatterns(patternLanguagePatterns: PatternLanguagePatterns): string {
+
+    return `${this.githubBaseUrl}/patternlanguages/${IriConverter.extractIndividualNameFromIri(patternLanguagePatterns.plIri)}/${IriConverter.extractIndividualNameFromIri(patternLanguagePatterns.iri)}.ttl`;
+  }
 }

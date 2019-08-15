@@ -14,6 +14,7 @@
 
 import { IriConverter } from '../util/iri-converter';
 import { globals } from '../../globals';
+import { PatternPedia } from './pattern-pedia.model';
 
 class Pattern {
   protected _id: string;
@@ -40,31 +41,15 @@ class Pattern {
     this.patternLanguageIri = patternLanguageIri;
   }
 
-  getPrefixes(): Array<string> {
-    const ary: Array<string> = [];
-    ary.push(
-      `@prefix : <${IriConverter.getFileName(this.iri)}#> .`,
-      `@prefix pp: <${this.patternpediaBaseURI}#> .`,
-      `@prefix owl: <http://www.w3.org/2002/07/owl#> .`,
-      `@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .`,
-      `@prefix xml: <http://www.w3.org/XML/1998/namespace> .`,
-      `@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .`,
-      `@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .`,
-      `@base <${IriConverter.getFileName(this.iri)}> .`
-    );
-    return ary;
-  }
 
   getSectionIdentifier(section: string): string {
     return ':has' + section.replace(/\s/g, '');
   }
 
   toTurtle(): string {
-    const ary = this.getPrefixes();
+    const ary = new PatternPedia().getPrefixesToTurtle(this.iri);
 
-    ary.push('#################################################################');
-    ary.push('# Individuals');
-    ary.push('##############################################################');
+
     ary.push('\n\n');
     ary.push(`###  ${this.iri}`);
     ary.push(`:${IriConverter.removeWhitespace(this.name)} rdf:type owl:NamedIndividual ,`);
