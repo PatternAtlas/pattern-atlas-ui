@@ -105,6 +105,7 @@ export class CreatePatternComponent implements OnInit {
 
     const patternIris = !this.patterns ? [] : this.patterns.map(p => p.uri);
     patternIris.push(pattern.iri);
+    this.patterns.push(pattern);
 
     const restrictions = [];
     this.wasSaveButtonClicked = true;
@@ -118,10 +119,11 @@ export class CreatePatternComponent implements OnInit {
       }
       restrictions.push(...this.plRestrictions.get(key));
     }
+
     const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, patternIris, this.sections, restrictions, null);
     this.uploadService.updatePL(patternLanguage).pipe(
       switchMap(() => {
-        return this.uploadService.uploadPLPatterns(new PatternLanguagePatterns(IriConverter.getPatternListIriForPLIri(patternLanguage.iri), patternLanguage.iri, []));
+        return this.uploadService.updatePLPatterns(new PatternLanguagePatterns(IriConverter.getPatternListIriForPLIri(patternLanguage.iri), patternLanguage.iri, this.patterns));
       }),
       switchMap(() => {
         return this.pos.loadUrisToStore([{value: this.plIri, token: null}]);
