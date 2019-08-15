@@ -40,8 +40,7 @@ export class GithubPersistenceService {
   }
 
   getGithubPathForPatternLanguage(patternLanguage: PatternLanguage): string {
-    return;
-    `${this.githubBaseUrl}/patternlanguages/${patternLanguage.name}/${patternLanguage.name}.ttl`;
+    return `${this.githubBaseUrl}/patternlanguages/${patternLanguage.name}/${patternLanguage.name}.ttl`;
   }
 
   addPatternLanguageToPatternPedia(patternlanguage: PatternLanguage, existingPatternlanguages: PatternLanguage[]): Observable<any> {
@@ -65,13 +64,14 @@ export class GithubPersistenceService {
   }
 
   getRequestInfosToAddToPatternPedia(): Observable<GithubUploadRequestInfo> {
-    return forkJoin(this.httpClient.get('assets/patternpedia-without-containsPatternGraph.ttl', {responseType: 'text'}), this.getFile(this.githubPatternPediaUrl)).pipe(
+    return forkJoin(this.httpClient.get('assets/patternpedia-without-containsPatternGraph.ttl',
+      {responseType: 'text'}), this.getFile(this.githubPatternPediaUrl)).pipe(
       map(res => <GithubUploadRequestInfo> {content: res[0], fileInfo: res[1]}));
   }
 
 
-  getFile(fileGitApiUrl: string): Observable<GithubFileResponse> {
-    return this.httpClient.get(fileGitApiUrl, {
+  getFile(iri: string): Observable<GithubFileResponse> {
+    return this.httpClient.get(iri, {
       headers: {
         'Authorization': `token ${this.cookieService.get('patternpedia_github_token')}`
       }
@@ -123,7 +123,7 @@ export class GithubPersistenceService {
 
 
   private getGithubPathForPatternLanguagePatterns(patternLanguagePatterns: PatternLanguagePatterns): string {
-
-    return `${this.githubBaseUrl}/patternlanguages/${IriConverter.extractIndividualNameFromIri(patternLanguagePatterns.plIri)}/${IriConverter.extractIndividualNameFromIri(patternLanguagePatterns.iri)}.ttl`;
+    return `${this.githubBaseUrl}/patternlanguages/${IriConverter.extractIndividualNameFromIri(patternLanguagePatterns.plIri)}/
+    ${IriConverter.extractIndividualNameFromIri(patternLanguagePatterns.iri)}.ttl`;
   }
 }
