@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import PatternLanguage from '../model/pattern-language.model';
@@ -28,11 +28,15 @@ export class GithubPersistenceService {
             'content': btoa(patternlanguage.toTurtle())
           }
           , {
-            headers: {
-              'Content-Type': 'application/x-turtle',
-              'Authorization': `token ${this.cookieService.get('patternpedia_github_token')}`
-            }
+            headers: this.getHeaders()
           });
+  }
+
+  getHeaders(): HttpHeaders {
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/x-turtle');
+    headers.append('Authorization', this.cookieService.get('patternpedia_github_token'));
+    return headers;
   }
 
   getGithubPathForPatternLanguage(patternLanguage: PatternLanguage): string {
@@ -56,10 +60,7 @@ export class GithubPersistenceService {
             sha: res.fileInfo.sha
           }
           , {
-            headers: {
-              'Content-Type': 'application/x-turtle',
-              'Authorization': `token ${this.cookieService.get('patternpedia_github_token')}`
-            }
+            headers: this.getHeaders()
           });
       }));
   }
@@ -78,10 +79,6 @@ export class GithubPersistenceService {
     }).pipe(map(res => <GithubFileResponse> res));
   }
 
-  getTTLFile(url: string): Observable<any> {
-    return this.httpClient.get(url, {responseType: 'text'});
-  }
-
 
   updatePL(patternLanguage: PatternLanguage): Observable<any> {
     return this.getFile(this.getGithubPathForPatternLanguage(patternLanguage)).pipe(
@@ -92,10 +89,7 @@ export class GithubPersistenceService {
             sha: res.sha
           }
           , {
-            headers: {
-              'Content-Type': 'application/x-turtle',
-              'Authorization': `token ${this.cookieService.get('patternpedia_github_token')}`
-            }
+            headers: this.getHeaders()
           });
       }));
   }
@@ -108,10 +102,7 @@ export class GithubPersistenceService {
             content: btoa(pattern.toTurtle()),
           }
           , {
-            headers: {
-              'Content-Type': 'application/x-turtle',
-              'Authorization': `token ${this.cookieService.get('patternpedia_github_token')}`
-            }
+        headers: this.getHeaders()
           });
   }
 
