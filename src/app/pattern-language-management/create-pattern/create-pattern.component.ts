@@ -14,7 +14,7 @@ import { ToasterService } from 'angular2-toaster';
 import { PlRestrictionLoaderService } from '../../core/service/loader/pattern-language-loader/pl-restriction-loader.service';
 import { PatternLanguageSectionRestriction, SectionRestrictionsResult } from '../../core/model/PatternLanguageSectionRestriction.model';
 import PatternPedia from '../../core/model/pattern-pedia.model';
-import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ValidationService } from '../../core/service/validation.service';
 import { switchMap } from 'rxjs/internal/operators';
 import PatternLanguage from '../../core/model/pattern-language.model';
@@ -69,8 +69,7 @@ export class CreatePatternComponent implements OnInit {
               private pos: PatternOntologyService,
               private toastService: ToasterService,
               private router: Router,
-              private patternOntologyServce: PatternOntologyService,
-              private formBuilder: FormBuilder) {
+              private patternOntologyServce: PatternOntologyService) {
   }
 
 
@@ -123,7 +122,8 @@ export class CreatePatternComponent implements OnInit {
     const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, patternIris, this.sections, restrictions, null);
     this.uploadService.updatePL(patternLanguage).pipe(
       switchMap(() => {
-        return this.uploadService.updatePLPatterns(new PatternLanguagePatterns(IriConverter.getPatternListIriForPLIri(patternLanguage.iri), patternLanguage.iri, this.patterns));
+        return this.uploadService.updatePLPatterns(new PatternLanguagePatterns(IriConverter.getPatternListIriForPLIri(patternLanguage.iri),
+          patternLanguage.iri, this.patterns));
       }),
       switchMap(() => {
         return this.pos.loadUrisToStore([{value: this.plIri, token: null}]);
