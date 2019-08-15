@@ -585,7 +585,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/index.js");
 /* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/internal/operators */ "./node_modules/rxjs/internal/operators/index.js");
 /* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _service_github_persistence_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../service/github-persistence.service */ "./src/app/core/service/github-persistence.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -600,30 +599,25 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-
 var ProcessOauthCallbackComponent = /** @class */ (function () {
-    function ProcessOauthCallbackComponent(_httpClient, _route, _cookieService, _router, _githubPersistenceService) {
+    function ProcessOauthCallbackComponent(_httpClient, _route, _cookieService, _router) {
         this._httpClient = _httpClient;
         this._route = _route;
         this._cookieService = _cookieService;
         this._router = _router;
-        this._githubPersistenceService = _githubPersistenceService;
         this._route.params.subscribe(function (params) { return console.log(params); });
     }
     ProcessOauthCallbackComponent.prototype.ngOnInit = function () {
         var _this = this;
-        var data = new FormData();
-        data.append('accept', 'json');
-        this._githubPersistenceService.getGithubAppConfig().pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(function (githubAppConfig) {
-            data.append('client_id', githubAppConfig.client_id);
-            data.append('client_secret', githubAppConfig.client_secret);
-        }), Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_4__["switchMap"])(function () { return _this._route.queryParams; }), Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(function (params) { return console.log(params['code']); }), Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_4__["switchMap"])(function (params) {
-            data.append('code', params['code']);
-            return _this._httpClient.post('https://github.com/login/oauth/access_token', data, { responseType: 'text' });
+        this._route.queryParams.pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_4__["switchMap"])(function (params) {
+            return _this._httpClient.get('https://eqjjnlkv6a.execute-api.eu-central-1.amazonaws.com/default/authenticate/' + params['code'], { responseType: 'text' });
         })).subscribe(function (res) {
+            var response = res.replace('"', '');
             // github sends the access_token in url param style (access_token=...&...), so let's use this info to decode the token:
-            var urlResponse = new URLSearchParams(res);
-            _this._cookieService.set('patternpedia_github_token', urlResponse.get('access_token'));
+            var urlResponse = new URLSearchParams(response);
+            if (urlResponse.get('access_token')) {
+                _this._cookieService.set('patternpedia_github_token', urlResponse.get('access_token'));
+            }
             _this._router.navigate(['..'], { relativeTo: _this._route });
         });
     };
@@ -633,8 +627,7 @@ var ProcessOauthCallbackComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./process-oauth-callback.component.html */ "./src/app/core/component/process-oauth-callback/process-oauth-callback.component.html"),
             styles: [__webpack_require__(/*! ./process-oauth-callback.component.scss */ "./src/app/core/component/process-oauth-callback/process-oauth-callback.component.scss")]
         }),
-        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"], ngx_cookie_service__WEBPACK_IMPORTED_MODULE_3__["CookieService"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"],
-            _service_github_persistence_service__WEBPACK_IMPORTED_MODULE_5__["GithubPersistenceService"]])
+        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"], ngx_cookie_service__WEBPACK_IMPORTED_MODULE_3__["CookieService"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]])
     ], ProcessOauthCallbackComponent);
     return ProcessOauthCallbackComponent;
 }());
@@ -2471,12 +2464,6 @@ var GithubPersistenceService = /** @class */ (function () {
             this.githubBaseUrl + "/" + patternLanguage.name + "/" + patternLanguage.name + ".ttl" :
             this.githubBaseUrl + "/patternlanguages/" + patternLanguage.name + "/" + patternLanguage.name + ".ttl";
     };
-    GithubPersistenceService.prototype.getGithubUserConfig = function () {
-        return this.httpClient.get('assets/github-user-config.json').pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) { return res; }));
-    };
-    GithubPersistenceService.prototype.getGithubAppConfig = function () {
-        return this.httpClient.get('assets/github-app-config.json').pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) { return res; }));
-    };
     GithubPersistenceService.prototype.addPatternLanguageToPatternPedia = function (patternlanguage, existingPatternlanguages) {
         var _this = this;
         existingPatternlanguages.push(patternlanguage);
@@ -2497,7 +2484,7 @@ var GithubPersistenceService = /** @class */ (function () {
         }));
     };
     GithubPersistenceService.prototype.getRequestInfosToAddToPatternPedia = function () {
-        return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["forkJoin"])(this.httpClient.get('assets/patternpedia-without-containsPatternGraph.ttl', { responseType: 'text' }), this.getGithubAppConfig(), this.getFile(this.githubPatternPediaUrl)).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) { return ({ content: res[0], config: res[1], fileInfo: res[2] }); }));
+        return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["forkJoin"])(this.httpClient.get('assets/patternpedia-without-containsPatternGraph.ttl', { responseType: 'text' }), this.getFile(this.githubPatternPediaUrl)).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) { return ({ content: res[0], fileInfo: res[1] }); }));
     };
     GithubPersistenceService.prototype.getFile = function (fileGitApiUrl) {
         return this.httpClient.get(fileGitApiUrl, {
@@ -2509,19 +2496,13 @@ var GithubPersistenceService = /** @class */ (function () {
     GithubPersistenceService.prototype.getTTLFile = function (url) {
         return this.httpClient.get(url, { responseType: 'text' });
     };
-    GithubPersistenceService.prototype.getPatternLanguage = function (patternLanguageName) {
-        return this.getTTLFile('https://purl.org/patternpedia' + patternLanguageName);
-    };
-    GithubPersistenceService.prototype.getUpdateFileInfos = function (uploadUrl) {
-        return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["forkJoin"])(this.getGithubAppConfig(), this.getFile(uploadUrl)).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) { return ({ content: '', config: res[0], fileInfo: res[1] }); }));
-    };
     GithubPersistenceService.prototype.updatePL = function (patternLanguage) {
         var _this = this;
-        return this.getUpdateFileInfos(this.getGithubPathForPatternLanguage(patternLanguage)).pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_4__["switchMap"])(function (res) {
+        return this.getFile(this.getGithubPathForPatternLanguage(patternLanguage)).pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_4__["switchMap"])(function (res) {
             return _this.httpClient.put(_this.getGithubPathForPatternLanguage(patternLanguage), {
                 message: 'update patternlanguage ' + patternLanguage.name,
                 content: btoa(patternLanguage.toTurtle()),
-                sha: res.fileInfo.sha
+                sha: res.sha
             }, {
                 headers: {
                     'Content-Type': 'application/x-turtle',
@@ -2531,32 +2512,16 @@ var GithubPersistenceService = /** @class */ (function () {
         }));
     };
     GithubPersistenceService.prototype.uploadPattern = function (pattern, patternLanguage) {
-        var _this = this;
         var url = this.githubBaseUrl + "/patternlanguages/" + patternLanguage.name + "/" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_6__["IriConverter"].removeWhitespace(pattern.name) + ".ttl";
-        return this.getGithubAppConfig().pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_4__["switchMap"])(function (res) {
-            return _this.httpClient.put(url, {
-                message: 'update patternlanguage ' + patternLanguage.name,
-                content: btoa(pattern.toTurtle()),
-            }, {
-                headers: {
-                    'Content-Type': 'application/x-turtle',
-                    'Authorization': "token " + _this.cookieService.get('patternpedia_github_token')
-                }
-            });
-        }));
-    };
-    GithubPersistenceService.prototype.requestOAuthToken = function () {
-        var _this = this;
-        var params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpParams"]()
-            .set('scope', "repo");
-        return this.getGithubAppConfig().pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(function (config) {
-            params.set('client_id', config.client_id);
-        }), Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_4__["switchMap"])(function () {
-            return _this.httpClient.get('https://github.com/login/oauth/authorize', {
-                params: params,
-                responseType: 'text'
-            });
-        }));
+        return this.httpClient.put(url, {
+            message: 'update patternlanguage ' + patternLanguage.name,
+            content: btoa(pattern.toTurtle()),
+        }, {
+            headers: {
+                'Content-Type': 'application/x-turtle',
+                'Authorization': "token " + this.cookieService.get('patternpedia_github_token')
+            }
+        });
     };
     GithubPersistenceService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
