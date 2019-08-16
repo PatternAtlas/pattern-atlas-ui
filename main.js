@@ -6408,12 +6408,12 @@ var EnterpriseIntegrationPatternIncomingLinkLoaderService = /** @class */ (funct
                         // we need a specific pattern of form 'pattern#Pattern'
                         if (!uri)
                             return [2 /*return*/, Promise.resolve()];
-                        uriQry = "SELECT ?sourceUri\n      WHERE {\n        ?targetLink a <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternDirectedRelationDescriptor> ;\n              <https://purl.org/patternpedia#hasTarget> <" + uri + "> ;\n              <https://purl.org/patternpedia#hasSource> ?sourceUri .\n      }";
+                        uriQry = "SELECT ?sourceUri\n      WHERE {\n        ?targetLink a <https://purl.org/patternpedia#DirectedPatternRelationDescriptor> ;\n              <https://purl.org/patternpedia#hasTarget> <" + uri + "> ;\n              <https://purl.org/patternpedia#hasSource> ?sourceUri .\n      }";
                         return [4 /*yield*/, this.executor.exec(uriQry, [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI), src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links'])];
                     case 1:
                         patterns = _a.sent();
-                        qry = "SELECT ?sourceUri ?sourceName ?linkUri ?description\n      WHERE {\n        ?linkUri a <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternDirectedRelationDescriptor> ;\n              <https://purl.org/patternpedia#hasTarget> <" + uri + "> ;\n              <https://purl.org/patternpedia#hasSource> ?sourceUri .\n        ?sourceUri <https://purl.org/patternpedia#hasName> ?sourceName .\n        OPTIONAL { ?linkUri <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description }\n      }";
-                        graphs = [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI), src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links'];
+                        qry = "SELECT ?sourceUri ?sourceName ?linkUri ?description\n      WHERE {\n        ?linkUri a <https://purl.org/patternpedia#DirectedPatternRelationDescriptor> ;\n              <https://purl.org/patternpedia#hasTarget> <" + uri + "> ;\n              <https://purl.org/patternpedia#hasSource> ?sourceUri .\n        ?sourceUri <https://purl.org/patternpedia#hasName> ?sourceName .\n        OPTIONAL { ?linkUri <https://purl.org/patternpedia#hasDescription> ?description }\n      }";
+                        graphs = [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI), src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns'];
                         for (_i = 0, patterns_1 = patterns; _i < patterns_1.length; _i++) {
                             entry = patterns_1[_i];
                             graphs.push(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(entry.sourceUri.value));
@@ -6574,8 +6574,8 @@ var EnterpriseIntegrationPatternLoaderService = /** @class */ (function (_super)
                 // we need a specific pattern of form 'pattern#Pattern'
                 if (!uri)
                     return [2 /*return*/, Promise.resolve()];
-                qry = "SELECT ?name ?groupName ?description\n      WHERE {\n        <" + uri + "> <https://purl.org/patternpedia#hasName> ?name .\n        <" + uri + "> <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description .\n        ?group a <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternRelationDescriptor> ;\n              <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasLabel> ?groupName ;\n              <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasPattern> <" + uri + "> .\n      }";
-                graphs = [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI), src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links'];
+                qry = "SELECT ?name ?groupName ?description\n      WHERE {\n        <" + uri + "> <https://purl.org/patternpedia#hasName> ?name .\n        <" + uri + "> <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description .\n        ?group a <https://purl.org/patternpedia#PatternSetRelationDescriptor> ;\n              <https://purl.org/patternpedia#hasLabel> ?groupName ;\n              <https://purl.org/patternpedia#hasPattern> <" + uri + "> .\n      }";
+                graphs = [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI), src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns'];
                 return [2 /*return*/, this.executor.exec(qry, graphs)];
             });
         });
@@ -6731,12 +6731,12 @@ var EnterpriseIntegrationPatternOutgoingLinkLoaderService = /** @class */ (funct
                         // we need a specific pattern of form 'pattern#Pattern'
                         if (!uri)
                             return [2 /*return*/, Promise.resolve()];
-                        uriQry = "SELECT ?targetUri\n      WHERE {\n        ?targetLink a <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternDirectedRelationDescriptor> ;\n              <https://purl.org/patternpedia#hasSource> <" + uri + "> ;\n              <https://purl.org/patternpedia#hasTarget> ?targetUri .\n      }";
+                        uriQry = "SELECT ?targetUri\n      WHERE {\n        ?targetLink a <https://purl.org/patternpedia#DirectedPatternRelationDescriptor> ;\n              <https://purl.org/patternpedia#hasSource> <" + uri + "> ;\n              <https://purl.org/patternpedia#hasTarget> ?targetUri .\n      }";
                         return [4 /*yield*/, this.executor.exec(uriQry, [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(this.supportedIRI), src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links'])];
                     case 1:
                         patterns = _a.sent();
-                        qry = "SELECT ?targetUri ?targetName ?linkUri ?description\n      WHERE {\n        ?linkUri a <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternDirectedRelationDescriptor> ;\n              <https://purl.org/patternpedia#hasSource> <" + uri + "> ;\n              <https://purl.org/patternpedia#hasTarget> ?targetUri .\n        ?targetUri <https://purl.org/patternpedia#hasName> ?targetName .\n        OPTIONAL { ?linkUri <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description }\n      }";
-                        graphs = [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(this.supportedIRI), src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links'];
+                        qry = "SELECT ?targetUri ?targetName ?linkUri ?description\n      WHERE {\n        ?linkUri a <https://purl.org/patternpedia/patternlanguages#DirectedPatternRelationDescriptor> ;\n              <https://purl.org/patternpedia#hasSource> <" + uri + "> ;\n              <https://purl.org/patternpedia#hasTarget> ?targetUri .\n        ?targetUri <https://purl.org/patternpedia#hasName> ?targetName .\n        OPTIONAL { ?linkUri <https://purl.org/patternpedia#hasDescription> ?description }\n      }";
+                        graphs = [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(this.supportedIRI), src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns'];
                         for (_i = 0, patterns_1 = patterns; _i < patterns_1.length; _i++) {
                             entry = patterns_1[_i];
                             graphs.push(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(entry.targetUri.value));
@@ -6889,8 +6889,8 @@ var EnterpriseIntegrationPatternsGroupLoaderService = /** @class */ (function (_
         return __awaiter(this, void 0, void 0, function () {
             var qry;
             return __generator(this, function (_a) {
-                qry = "SELECT ?uri ?group ?pattern\n      WHERE {\n          ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternRelationDescriptor> .\n          ?uri <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasLabel> ?group .\n          ?uri <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasPattern> ?pattern .\n      }";
-                return [2 /*return*/, this.executor.exec(qry, ["https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links"])];
+                qry = "SELECT ?uri ?group ?pattern\n      WHERE {\n          ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://purl.org/patternpedia#PatternSetRelationDescriptor> .\n          ?uri <https://purl.org/patternpedia#hasLabel> ?group .\n          ?uri <https://purl.org/patternpedia#hasPattern> ?pattern .\n      }";
+                return [2 /*return*/, this.executor.exec(qry, ["https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns"])];
             });
         });
     };
@@ -7042,7 +7042,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 var EnterpriseIntegrationPatternsLinkInfoLoaderService = /** @class */ (function (_super) {
     __extends(EnterpriseIntegrationPatternsLinkInfoLoaderService, _super);
     function EnterpriseIntegrationPatternsLinkInfoLoaderService(pos) {
-        var _this = _super.call(this, 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links', pos) || this;
+        var _this = _super.call(this, 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns', pos) || this;
         _this.pos = pos;
         return _this;
     }
@@ -7063,7 +7063,7 @@ var EnterpriseIntegrationPatternsLinkInfoLoaderService = /** @class */ (function
                         return [4 /*yield*/, this.executor.exec(patternQry, [this.supportedIRI])];
                     case 1:
                         patterns = _a.sent();
-                        qry = "SELECT ?sourcePatternUri ?sourcePatternName ?targetPatternUri ?targetPatternName ?description\n      WHERE {\n        <" + uri + "> <https://purl.org/patternpedia#hasSource> ?sourcePatternUri .\n        ?sourcePatternUri <https://purl.org/patternpedia#hasName> ?sourcePatternName .\n        <" + uri + "> <https://purl.org/patternpedia#hasTarget> ?targetPatternUri .\n        ?targetPatternUri <https://purl.org/patternpedia#hasName> ?targetPatternName .\n        OPTIONAL { <" + uri + "> <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description }\n      }";
+                        qry = "SELECT ?sourcePatternUri ?sourcePatternName ?targetPatternUri ?targetPatternName ?description\n      WHERE {\n        <" + uri + "> <https://purl.org/patternpedia#hasSource> ?sourcePatternUri .\n        ?sourcePatternUri <https://purl.org/patternpedia#hasName> ?sourcePatternName .\n        <" + uri + "> <https://purl.org/patternpedia#hasTarget> ?targetPatternUri .\n        ?targetPatternUri <https://purl.org/patternpedia#hasName> ?targetPatternName .\n        OPTIONAL { <" + uri + "> <https://purl.org/patternpedia#hasDescription> ?description }\n      }";
                         graphs = [this.supportedIRI];
                         patterns.forEach(function (p) {
                             // uri of the source pattern (for name)
@@ -7205,9 +7205,9 @@ var EnterpriseIntegrationPatternsLinkLoaderService = /** @class */ (function (_s
         return __awaiter(this, void 0, void 0, function () {
             var qry;
             return __generator(this, function (_a) {
-                qry = "SELECT ?uri ?source ?target ?description\n      WHERE {\n          ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternDirectedRelationDescriptor> .\n          ?uri <https://purl.org/patternpedia#hasSource> ?source .\n          ?uri <https://purl.org/patternpedia#hasTarget> ?target .\n          OPTIONAL { ?uri <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description . }\n      }";
+                qry = "SELECT ?uri ?source ?target ?description\n      WHERE {\n          ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://purl.org/patternpedia#DirectedPatternRelationDescriptor> .\n          ?uri <https://purl.org/patternpedia#hasSource> ?source .\n          ?uri <https://purl.org/patternpedia#hasTarget> ?target .\n          OPTIONAL { ?uri <https://purl.org/patternpedia#hasDescription> ?description . }\n      }";
                 // we only need information from the links, not the actual patterns. Thus the URI of the links is enough
-                return [2 /*return*/, this.executor.exec(qry, ["https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links"])];
+                return [2 /*return*/, this.executor.exec(qry, ["https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns"])];
             });
         });
     };
