@@ -295,6 +295,9 @@ export class PatternOntologyService implements SparqlExecutor {
     console.log(`Load imported graphs to the store:`);
     console.log(patternGraphList);
     const loadResult = await this.loadPatternGraphsByUri(IriConverter.extractDataValue(patternGraphList)).toPromise();
+    if (!loadResult) {
+      return;
+    }
     for (let i = 0; i < loadResult.length; i++) {
       console.log('Result: ', await
         this.loadToStore('text/turtle', loadResult[i], IriConverter.getFileName(patternGraphList[i].value)));
@@ -569,9 +572,9 @@ export class PatternOntologyService implements SparqlExecutor {
   }
 
 
-  async getPatternProperties(graphIri: string): Promise<any[]> {
-    const qryPatternGraph = `SELECT DISTINCT ?property ?predicate WHERE {
-            { ?pattern a owl:NamedIndividual . 
+  async getPatternProperties(graphIri: string, patternIri: string): Promise<any[]> {
+    const qryPatternGraph = `SELECT DISTINCT ?pattern ?property ?predicate WHERE {
+            { <${patternIri}> a owl:NamedIndividual . 
                 ?pattern ?property ?predicate
                 FILTER(?property != rdf:type)
             }

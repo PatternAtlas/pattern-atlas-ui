@@ -17,7 +17,7 @@ export class PatternLanguagePatterns {
   }
 
   toTurtle(): string {
-    const ary = new PatternPedia().getPrefixesToTurtle(this.iri);
+    const ary = new PatternPedia().getPrefixesToTurtle(this.iri, this.plIri);
 
 
     ary.push('\n');

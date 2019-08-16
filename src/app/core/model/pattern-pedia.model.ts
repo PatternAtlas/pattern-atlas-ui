@@ -33,10 +33,10 @@ export class PatternPedia {
     return this._id;
   }
 
-  getPrefixesToTurtle(iri: string): string[] {
+  getPrefixesToTurtle(iri: string, defaultPrefixBegin?: string): string[] {
     const ary: Array<string> = [];
     ary.push(
-      `@prefix : <${IriConverter.getFileName(iri)}#> .`,
+      `@prefix : <${IriConverter.getFileName(defaultPrefixBegin ? defaultPrefixBegin : iri)}#> .`,
       `@prefix pp: <${globals.urlPatternRepoOntology}#> .`,
       `@prefix owl: <http://www.w3.org/2002/07/owl#> .`,
       `@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .`,

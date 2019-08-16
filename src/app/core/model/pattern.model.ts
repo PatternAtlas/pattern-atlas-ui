@@ -14,7 +14,6 @@
 
 import { IriConverter } from '../util/iri-converter';
 import { globals } from '../../globals';
-import { PatternPedia } from './pattern-pedia.model';
 
 class Pattern {
   protected _id: string;
@@ -47,23 +46,25 @@ class Pattern {
   }
 
   toTurtle(): string {
-    const ary = new PatternPedia().getPrefixesToTurtle(this.iri);
-
-
-    ary.push('\n\n');
+    const ary = [];
     ary.push(`###  ${this.iri}`);
     ary.push(`:${IriConverter.removeWhitespace(this.name)} rdf:type owl:NamedIndividual ,`);
     ary.push(`<${IriConverter.getFileName(this.patternLanguageIri)}/${IriConverter.extractIndividualNameFromIri(this.patternLanguageIri)}Individual> ;`);
-    ary.push(`<${IriConverter.getFileName(this.iri)}#hasName> "${this.name}" ;`);
     const sections = Array.from(Object.keys(this.sectionsProperties));
+    ary.push(`<${IriConverter.getFileName(this.patternLanguageIri)}#hasName> "${this.name}" ${sections.length > 0 ? ';' : '.'}`);
 
-    sections.forEach((key, sectionindex) => {
+    console.log(this.iri);
+    console.log(sections);
+    if (sections.length > 0) {
+
+      sections.forEach((key, sectionindex) => {
       const statements: string[] = this.sectionsProperties[key];
       statements.forEach((val, indexStatements) => {
         ary.push(`${this.getPropertyIri(key)} ${this.sectionsProperties[key][indexStatements].startsWith('<') ? '' : '"'}${this.sectionsProperties[key][indexStatements]}${this.sectionsProperties[key][indexStatements].startsWith('<') ? '' : '"'} ${(sectionindex === sections.length - 1) && (indexStatements === statements.length - 1) ? '.' : ';'}`);
       });
 
     });
+    }
     return ary.join('\n');
   }
 

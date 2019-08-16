@@ -28,7 +28,10 @@ export class GithubPersistenceService {
             'content': btoa(patternlanguage.toTurtle())
           }
           , {
-            headers: this.getHeaders()
+            headers: {
+              'Content-Type': 'application/x-turtle',
+              'Authorization': `token ${this.cookieService.get('patternpedia_github_token')}`
+            }
           });
   }
 
@@ -58,7 +61,10 @@ export class GithubPersistenceService {
             sha: res.fileInfo.sha
           }
           , {
-            headers: this.getHeaders()
+            headers: {
+              'Content-Type': 'application/x-turtle',
+              'Authorization': `token ${this.cookieService.get('patternpedia_github_token')}`
+            }
           });
       }));
   }
@@ -71,7 +77,20 @@ export class GithubPersistenceService {
 
 
   getFile(iri: string): Observable<GithubFileResponse> {
-    return this.httpClient.get(iri, {
+    const githuburl = 'https://api.github.com/repos/PatternPedia/patternpediacontent/contents';
+    const iriRelativPath = (iri.split('#')[1]) === 'EnterpriseIntegrationPatterns' || iri.split('#')[1] === 'CloudComputingPatterns' ?
+      iri.split('#')[0].replace('https://purl.org/patternpedia', '') + '/' + iri.split('#')[1].toLowerCase() :
+      iri.replace('#', '/').replace('https://purl.org/patternpedia', '');
+
+    let url = '';
+    if (iri !== 'https://api.github.com/repos/PatternPedia/patternpediacontent/contents/patternpedia.ttl') {
+      url = iriRelativPath.startsWith('https://api.github.com/repos/PatternPedia/patternpediacontent/content') ? iriRelativPath : githuburl + iriRelativPath;
+    } else {
+      url = iri;
+    }
+    console.log(iri);
+    console.log(url);
+    return this.httpClient.get(url.endsWith('.ttl') ? url : url + '.ttl', {
       headers: {
         'Authorization': `token ${this.cookieService.get('patternpedia_github_token')}`
       }
@@ -89,7 +108,10 @@ export class GithubPersistenceService {
             sha: res.sha
           }
           , {
-            headers: this.getHeaders()
+            headers: {
+              'Content-Type': 'application/x-turtle',
+              'Authorization': `token ${this.cookieService.get('patternpedia_github_token')}`
+            }
           });
       }));
   }
@@ -104,7 +126,10 @@ export class GithubPersistenceService {
               sha: res.sha
             }
             , {
-              headers: this.getHeaders()
+              headers: {
+                'Content-Type': 'application/x-turtle',
+                'Authorization': `token ${this.cookieService.get('patternpedia_github_token')}`
+              }
             });
         }
       ));
@@ -117,13 +142,15 @@ export class GithubPersistenceService {
         content: btoa(patternLanguagePatterns.toTurtle())
       }
       , {
-        headers: this.getHeaders()
+        headers: {
+          'Content-Type': 'application/x-turtle',
+          'Authorization': `token ${this.cookieService.get('patternpedia_github_token')}`
+        }
       });
   }
 
 
   private getGithubPathForPatternLanguagePatterns(patternLanguagePatterns: PatternLanguagePatterns): string {
-    return `${this.githubBaseUrl}/patternlanguages/${IriConverter.extractIndividualNameFromIri(patternLanguagePatterns.plIri)}/
-    ${IriConverter.extractIndividualNameFromIri(patternLanguagePatterns.iri)}.ttl`;
+    return `${this.githubBaseUrl}/patternlanguages/${IriConverter.extractIndividualNameFromIri(patternLanguagePatterns.plIri)}/${IriConverter.extractIndividualNameFromIri(patternLanguagePatterns.iri)}.ttl`;
   }
 }

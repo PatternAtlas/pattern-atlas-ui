@@ -71,7 +71,7 @@ export class DefaultPlLoaderService extends Loader<any> {
         for (const row of triples) {
           if (!patterns.get(row.pattern.value)) {
             patterns.set(row.pattern.value,
-              new PatternInstance(row.pattern.value, new Map<string, string | string[]>().set(row.predicate.value, row.property.value), row.type.value));
+              new PatternInstance(row.pattern.value, new Map<string, string[]>().set(row.predicate.value, row.property.value), row.type.value));
           }
           else { // if we already saw this pattern, add the infomation of the triple to it
             const pattern = patterns.get(row.pattern.value).addProperty(row.predicate.value, row.property.value);

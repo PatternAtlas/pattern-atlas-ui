@@ -84,7 +84,7 @@ class PatternLanguage implements TurtleFileModelInterface {
     const ary = this.getPrefixes();
     ary.push('\n');
     ary.push(`<${IriConverter.getFileName(this.iri)}> rdf:type owl:Ontology ;`);
-    ary.push(`owl:imports <${this.patternpediaBaseURI}> .`);
+    ary.push(`owl:imports <${this.patternpediaBaseURI}> , <${IriConverter.getPatternListIriForPLIri(this.iri)}>.`);
     ary.push('\n');
     ary.push('# #################################################################');
     ary.push('# #');
@@ -142,7 +142,7 @@ class PatternLanguage implements TurtleFileModelInterface {
     ary.push('##############################################################');
 
     this.patternIRIs.forEach((patternIri, index) => {
-      ary.push(`:${this.name} pp:containsPattern <${IriConverter.getFileName(patternIri)}#${IriConverter.extractIndividualNameFromIri(patternIri)}> .`);
+      ary.push(`:${this.name} pp:containsPattern :${IriConverter.extractIndividualNameFromIri(patternIri)} .`);
     });
 
     return ary.join('\n');

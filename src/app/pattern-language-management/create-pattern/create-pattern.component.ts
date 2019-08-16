@@ -19,6 +19,8 @@ import { ValidationService } from '../../core/service/validation.service';
 import { switchMap } from 'rxjs/internal/operators';
 import PatternLanguage from '../../core/model/pattern-language.model';
 import { PatternLanguagePatterns } from '../../core/model/pattern-language-patterns.model';
+import { PatternInstance } from '../../core/model/PatternInstance.interface';
+import { DefaultPatternLoaderService } from '../../core/service/loader/default-pattern-loader.service';
 
 
 @Component({
@@ -29,7 +31,7 @@ import { PatternLanguagePatterns } from '../../core/model/pattern-language-patte
 export class CreatePatternComponent implements OnInit {
 
 
-  patterns: any;
+  patterns: PatternInstance[];
   plIri: string;
   plName: string;
   sections: string[];
@@ -69,7 +71,8 @@ export class CreatePatternComponent implements OnInit {
               private pos: PatternOntologyService,
               private toastService: ToasterService,
               private router: Router,
-              private patternOntologyServce: PatternOntologyService) {
+              private patternOntologyServce: PatternOntologyService,
+              private patternLoaderService: DefaultPatternLoaderService) {
   }
 
 
@@ -104,7 +107,9 @@ export class CreatePatternComponent implements OnInit {
 
     const patternIris = !this.patterns ? [] : this.patterns.map(p => p.uri);
     patternIris.push(pattern.iri);
-    this.patterns.push(pattern);
+
+    const patternList = this.patterns.map(it => it.toPattern(this.plIri));
+    patternList.push(pattern);
 
     const restrictions = [];
     this.wasSaveButtonClicked = true;
@@ -123,7 +128,7 @@ export class CreatePatternComponent implements OnInit {
     this.uploadService.updatePL(patternLanguage).pipe(
       switchMap(() => {
         return this.uploadService.updatePLPatterns(new PatternLanguagePatterns(IriConverter.getPatternListIriForPLIri(patternLanguage.iri),
-          patternLanguage.iri, this.patterns));
+          patternLanguage.iri, patternList));
       }),
       switchMap(() => {
         return this.pos.loadUrisToStore([{value: this.plIri, token: null}]);
@@ -277,15 +282,32 @@ export class CreatePatternComponent implements OnInit {
 
             this.loader.loadContentFromStore()
               .then(result => {
-
                 this.patterns = Array.from(result.values());
-                console.log('patterns');
-                console.log(this.patterns);
+                if (this.patterns) {
+                  for (let i = 0; i < this.patterns.length; i++) {
+                    this.patternLoaderService.patternIri = this.patterns[i].uri;
+                    this.patternLoaderService.supportedIRI = IriConverter.getPatternListIriForPLIri(this.plIri);
+                    this.patternLoaderService.selectContentFromStore().then(
+                      (sectionProperties) => {
+                        const secMap = new Map<string, string[]>();
+                        for (let i = 0; i < sectionProperties.length; i++) {
+                          if (!secMap.get(sectionProperties[i].predicate.value)) {
+                            secMap.set(sectionProperties[i].property.value, [sectionProperties[i].predicate.value]);
+                          } else {
+                            const valArray = secMap.get(sectionProperties[i].predicate.value);
+                            valArray.push(sectionProperties[i].property.value);
+                            secMap.set(sectionProperties[i].property.value, valArray);
+                          }
+                        }
+                        this.patterns[i].sectionProperties = secMap;
+                      }
+                    );
+                  }
+                }
                 this.cdr.detectChanges();
               });
           });
-        }
-      );
+      });
   }
 
   updateFormValidationErrors(): string {
