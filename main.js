@@ -5027,6 +5027,108 @@ var CloudComputingPatternsWriterService = /** @class */ (function (_super) {
 
 /***/ }),
 
+/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/directives/draggable.directive.ts":
+/*!*************************************************************************************************************************!*\
+  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/component/directives/draggable.directive.ts ***!
+  \*************************************************************************************************************************/
+/*! exports provided: DraggableDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DraggableDirective", function() { return DraggableDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../model */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/model/index.ts");
+/* harmony import */ var _service_d3_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../service/d3.service */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/service/d3.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var DraggableDirective = /** @class */ (function () {
+    function DraggableDirective(d3Service, _element) {
+        this.d3Service = d3Service;
+        this._element = _element;
+    }
+    DraggableDirective.prototype.ngOnInit = function () {
+        this.d3Service.applyDraggableBehaviour(this._element.nativeElement, this.draggableNode, this.draggableInGraph);
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])('draggableNode'),
+        __metadata("design:type", _model__WEBPACK_IMPORTED_MODULE_1__["Node"])
+    ], DraggableDirective.prototype, "draggableNode", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])('draggableInGraph'),
+        __metadata("design:type", _model__WEBPACK_IMPORTED_MODULE_1__["NetworkGraph"])
+    ], DraggableDirective.prototype, "draggableInGraph", void 0);
+    DraggableDirective = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"])({
+            selector: '[draggableNode]'
+        }),
+        __metadata("design:paramtypes", [_service_d3_service__WEBPACK_IMPORTED_MODULE_2__["D3Service"], _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"]])
+    ], DraggableDirective);
+    return DraggableDirective;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/directives/zoomable.directive.ts":
+/*!************************************************************************************************************************!*\
+  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/component/directives/zoomable.directive.ts ***!
+  \************************************************************************************************************************/
+/*! exports provided: ZoomableDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ZoomableDirective", function() { return ZoomableDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _service_d3_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../service/d3.service */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/service/d3.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var ZoomableDirective = /** @class */ (function () {
+    function ZoomableDirective(d3Service, _element) {
+        this.d3Service = d3Service;
+        this._element = _element;
+    }
+    ZoomableDirective.prototype.ngOnInit = function () {
+        this.d3Service.applyZoomableBehaviour(this.zoomableOf, this._element.nativeElement);
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])('zoomableOf'),
+        __metadata("design:type", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"])
+    ], ZoomableDirective.prototype, "zoomableOf", void 0);
+    ZoomableDirective = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"])({
+            selector: '[zoomableOf]'
+        }),
+        __metadata("design:paramtypes", [_service_d3_service__WEBPACK_IMPORTED_MODULE_1__["D3Service"], _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"]])
+    ], ZoomableDirective);
+    return ZoomableDirective;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/enterprise-integration-pattern/enterprise-integration-pattern.component.html":
 /*!********************************************************************************************************************************************************************!*\
   !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/component/enterprise-integration-pattern/enterprise-integration-pattern.component.html ***!
@@ -5097,7 +5199,7 @@ var EnterpriseIntegrationPatternComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- Toolbar -->\n<div class=\"toolbar\">\n  <!-- to navigate back to the overview of pattern languages -->\n  <button mat-raised-button class=\"back_button\" color=\"primary\" \n    (click)=\"navigateBack()\">\n    <i class=\"material-icons\">keyboard_backspace</i>\n  </button>\n\n  <!-- To filter patterns via name - appearance=\"outline\"-->\n  <mat-form-field class=\"filter_nodes\" floatLabel=\"never\">\n    <!-- <mat-label>Filter Nodes</mat-label> -->\n    <input #filter matInput type=\"text\" placeholder=\"Filter Nodes\" \n      [(ngModel)]=\"filterValue\"\n      (keyup.enter)=\"filterNodes(filter.value)\"\n      (blur)=\"filterNodes(filter.value)\">\n    <button mat-button \n      *ngIf=\"filterValue\"\n      matSuffix\n      mat-icon-button\n      aria-label=\"Clear\"\n      (click)=\"filterValue=''; filterNodes('')\">\n      <mat-icon>close</mat-icon>\n    </button>\n  </mat-form-field>\n</div>\n\n<div *ngIf=\"data; else loading\">\n  <pp-graph \n    #graph\n    [links]=\"data.links\" \n    [nodes]=\"data.nodes\" \n    [selectedNodeId]=\"data.id\"\n    (nodeSelectEvent)=\"selectNode($event)\"\n    (nodeUnselectEvent)=\"unselectNode($event)\">\n  </pp-graph>\n</div>\n<ng-template #loading>Loading Data ... </ng-template>"
+module.exports = "<!-- Toolbar -->\n<div class=\"toolbar\">\n  <!-- to navigate back to the overview of pattern languages -->\n  <button mat-raised-button class=\"back_button\" color=\"primary\" \n    (click)=\"navigateBack()\">\n    <i class=\"material-icons\">keyboard_backspace</i>\n  </button>\n\n  <!-- to open filter dialog -->\n  <button mat-raised-button class=\"filter_dialog\" color=\"primary\"\n    (click)=\"openFilterDialog()\">\n    <i class=\"material-icons\">filter_list</i>\n    Filter Patterns\n  </button>\n</div>\n\n<div *ngIf=\"data; else loading\">\n  <pp-graph \n    #graph\n    [links]=\"data.links\" \n    [nodes]=\"data.nodes\" \n    [selectedNodeId]=\"data.id\"\n    (nodeSelectEvent)=\"selectNode($event)\"\n    (nodeUnselectEvent)=\"unselectNode($event)\">\n  </pp-graph>\n</div>\n<ng-template #loading>Loading Data ... </ng-template>"
 
 /***/ }),
 
@@ -5108,7 +5210,7 @@ module.exports = "<!-- Toolbar -->\n<div class=\"toolbar\">\n  <!-- to navigate 
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".toolbar {\n  margin-bottom: 20px; }\n\n.back_button {\n  /*vertical-align: top;\n    margin-top: 5px;*/ }\n\n.filter_nodes {\n  margin-left: 16px;\n  /*float: right;*/\n  font-size: 16pt; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2V4dGVuc2lvbnMvcGF0dGVybi1sYW5ndWFnZS9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zL2NvbXBvbmVudC9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zL2VudGVycHJpc2UtaW50ZWdyYXRpb24tcGF0dGVybnMuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL2V4dGVuc2lvbnMvcGF0dGVybi1sYW5ndWFnZS9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zL2NvbXBvbmVudC9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zL2VudGVycHJpc2UtaW50ZWdyYXRpb24tcGF0dGVybnMuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxtQkFBbUIsRUFBQTs7QUFHdkI7RUFDSTtxQkNBaUIsRURDQzs7QUFHdEI7RUFDSSxpQkFBaUI7RUFDakIsZ0JBQUE7RUFDQSxlQUFlLEVBQUEiLCJmaWxlIjoic3JjL2FwcC9leHRlbnNpb25zL3BhdHRlcm4tbGFuZ3VhZ2UvZW50ZXJwcmlzZS1pbnRlZ3JhdGlvbi1wYXR0ZXJucy9jb21wb25lbnQvZW50ZXJwcmlzZS1pbnRlZ3JhdGlvbi1wYXR0ZXJucy9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLnRvb2xiYXIge1xuICAgIG1hcmdpbi1ib3R0b206IDIwcHg7XG59XG5cbi5iYWNrX2J1dHRvbiB7XG4gICAgLyp2ZXJ0aWNhbC1hbGlnbjogdG9wO1xuICAgIG1hcmdpbi10b3A6IDVweDsqL1xufVxuXG4uZmlsdGVyX25vZGVzIHtcbiAgICBtYXJnaW4tbGVmdDogMTZweDtcbiAgICAvKmZsb2F0OiByaWdodDsqL1xuICAgIGZvbnQtc2l6ZTogMTZwdDtcbn0iLCIudG9vbGJhciB7XG4gIG1hcmdpbi1ib3R0b206IDIwcHg7IH1cblxuLmJhY2tfYnV0dG9uIHtcbiAgLyp2ZXJ0aWNhbC1hbGlnbjogdG9wO1xuICAgIG1hcmdpbi10b3A6IDVweDsqLyB9XG5cbi5maWx0ZXJfbm9kZXMge1xuICBtYXJnaW4tbGVmdDogMTZweDtcbiAgLypmbG9hdDogcmlnaHQ7Ki9cbiAgZm9udC1zaXplOiAxNnB0OyB9XG4iXX0= */"
+module.exports = ".toolbar {\n  margin-bottom: 20px; }\n  .toolbar button {\n    margin-right: 16px; }\n  .back_button {\n  /*vertical-align: top;\n    margin-top: 5px;*/ }\n  .filter_nodes {\n  margin-left: 16px;\n  /*float: right;*/\n  font-size: 16pt; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2V4dGVuc2lvbnMvcGF0dGVybi1sYW5ndWFnZS9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zL2NvbXBvbmVudC9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zL2VudGVycHJpc2UtaW50ZWdyYXRpb24tcGF0dGVybnMuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL2V4dGVuc2lvbnMvcGF0dGVybi1sYW5ndWFnZS9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zL2NvbXBvbmVudC9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zL2VudGVycHJpc2UtaW50ZWdyYXRpb24tcGF0dGVybnMuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxtQkFBbUIsRUFBQTtFQUR2QjtJQUlRLGtCQUFrQixFQUFBO0VBSTFCO0VBQ0k7cUJDRmlCLEVER0M7RUFHdEI7RUFDSSxpQkFBaUI7RUFDakIsZ0JBQUE7RUFDQSxlQUFlLEVBQUEiLCJmaWxlIjoic3JjL2FwcC9leHRlbnNpb25zL3BhdHRlcm4tbGFuZ3VhZ2UvZW50ZXJwcmlzZS1pbnRlZ3JhdGlvbi1wYXR0ZXJucy9jb21wb25lbnQvZW50ZXJwcmlzZS1pbnRlZ3JhdGlvbi1wYXR0ZXJucy9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLnRvb2xiYXIge1xuICAgIG1hcmdpbi1ib3R0b206IDIwcHg7XG5cbiAgICBidXR0b24ge1xuICAgICAgICBtYXJnaW4tcmlnaHQ6IDE2cHg7XG4gICAgfVxufVxuXG4uYmFja19idXR0b24ge1xuICAgIC8qdmVydGljYWwtYWxpZ246IHRvcDtcbiAgICBtYXJnaW4tdG9wOiA1cHg7Ki9cbn1cblxuLmZpbHRlcl9ub2RlcyB7XG4gICAgbWFyZ2luLWxlZnQ6IDE2cHg7XG4gICAgLypmbG9hdDogcmlnaHQ7Ki9cbiAgICBmb250LXNpemU6IDE2cHQ7XG59IiwiLnRvb2xiYXIge1xuICBtYXJnaW4tYm90dG9tOiAyMHB4OyB9XG4gIC50b29sYmFyIGJ1dHRvbiB7XG4gICAgbWFyZ2luLXJpZ2h0OiAxNnB4OyB9XG5cbi5iYWNrX2J1dHRvbiB7XG4gIC8qdmVydGljYWwtYWxpZ246IHRvcDtcbiAgICBtYXJnaW4tdG9wOiA1cHg7Ki8gfVxuXG4uZmlsdGVyX25vZGVzIHtcbiAgbWFyZ2luLWxlZnQ6IDE2cHg7XG4gIC8qZmxvYXQ6IHJpZ2h0OyovXG4gIGZvbnQtc2l6ZTogMTZwdDsgfVxuIl19 */"
 
 /***/ }),
 
@@ -5130,6 +5232,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _service_enterprise_integration_patterns_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../service/enterprise-integration-patterns-data.service */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/service/enterprise-integration-patterns-data.service.ts");
 /* harmony import */ var _loader_enterprise_integration_pattern_loader_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../loader/enterprise-integration-pattern-loader.service */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/loader/enterprise-integration-pattern-loader.service.ts");
 /* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+/* harmony import */ var src_app_filter_service_filter_factory_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/filter/service/filter-factory.service */ "./src/app/filter/service/filter-factory.service.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var src_app_filter_component_filter_view_filter_view_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! src/app/filter/component/filter-view/filter-view.component */ "./src/app/filter/component/filter-view/filter-view.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5147,8 +5252,11 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
+
 var EnterpriseIntegrationPatternsComponent = /** @class */ (function () {
-    function EnterpriseIntegrationPatternsComponent(http, pos, loader, router, activatedRoute, zone, patternLoader) {
+    function EnterpriseIntegrationPatternsComponent(http, pos, loader, router, activatedRoute, zone, patternLoader, filterFactory, dialog) {
         this.http = http;
         this.pos = pos;
         this.loader = loader;
@@ -5156,68 +5264,81 @@ var EnterpriseIntegrationPatternsComponent = /** @class */ (function () {
         this.activatedRoute = activatedRoute;
         this.zone = zone;
         this.patternLoader = patternLoader;
+        this.filterFactory = filterFactory;
+        this.dialog = dialog;
     }
     EnterpriseIntegrationPatternsComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.pos.getOWLImports('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns')
-            .then(function (res) {
-            var importedPatternIris = res.map(function (i) { return i.import; });
-            _this.pos.loadUrisToStore(importedPatternIris)
-                .then(function () {
-                _this.loader.getAllData()
-                    .then(function (values) {
-                    _this.patternMap = values[0];
-                    _this.linkMap = values[1];
-                    _this.groupMap = values[2];
-                    // links
-                    // links also contains edges to different pattern languages. we don't want to render them as actual links of the network graph
-                    // => filter clp links
-                    _this.links = Array.from(_this.linkMap.values()).filter(function (link) {
-                        var source = "";
-                        var target = "";
-                        if (typeof link.source === 'string')
-                            source = link.source;
-                        else if (link.source instanceof _model_node__WEBPACK_IMPORTED_MODULE_1__["Node"])
-                            source = link.source.id;
-                        if (typeof link.target === 'string')
-                            target = link.target;
-                        else if (link.target instanceof _model_node__WEBPACK_IMPORTED_MODULE_1__["Node"])
-                            target = link.target.id;
-                        // keep link, if its source and destination is from enterpriseintegrationpatterns, and no other language
-                        return source.includes('enterpriseintegrationpatterns') && target.includes('enterpriseintegrationpatterns');
+        // (1) load the base file ...
+        this.pos.loadUrisToStore([{ value: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns' }])
+            .then(function () {
+            // (2) ... in order to get all the imports it defines ...
+            _this.pos.getOWLImports('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns')
+                .then(function (res) {
+                // (3) ... to load all the imported files
+                var importedPatternIris = res.map(function (i) { return i.import; });
+                _this.pos.loadUrisToStore(importedPatternIris)
+                    .then(function () {
+                    // TEST TEST TEST
+                    _this.filterFactory.createFilter('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns').then(function (filter) {
+                        console.log(filter);
                     });
-                    // groups
-                    var groups = {};
-                    _this.groupMap.forEach(function (value) {
-                        groups[value.groupName] = value.patterns;
+                    // get data from store
+                    _this.loader.getAllData()
+                        .then(function (values) {
+                        _this.patternMap = values[0];
+                        _this.linkMap = values[1];
+                        _this.groupMap = values[2];
+                        // links
+                        // links also contains edges to different pattern languages. we don't want to render them as actual links of the network graph
+                        // => filter clp links
+                        _this.links = Array.from(_this.linkMap.values()).filter(function (link) {
+                            var source = "";
+                            var target = "";
+                            if (typeof link.source === 'string')
+                                source = link.source;
+                            else if (link.source instanceof _model_node__WEBPACK_IMPORTED_MODULE_1__["Node"])
+                                source = link.source.id;
+                            if (typeof link.target === 'string')
+                                target = link.target;
+                            else if (link.target instanceof _model_node__WEBPACK_IMPORTED_MODULE_1__["Node"])
+                                target = link.target.id;
+                            // keep link, if its source and destination is from enterpriseintegrationpatterns, and no other language
+                            return source.includes('enterpriseintegrationpatterns') && target.includes('enterpriseintegrationpatterns');
+                        });
+                        // groups
+                        var groups = {};
+                        _this.groupMap.forEach(function (value) {
+                            groups[value.groupName] = value.patterns;
+                        });
+                        // for coloring of nodes
+                        var groupIds = Array.from(Object.keys(groups));
+                        var scale = d3__WEBPACK_IMPORTED_MODULE_3__["scaleOrdinal"](d3__WEBPACK_IMPORTED_MODULE_3__["schemeCategory10"]);
+                        var color = function (d) {
+                            if (d)
+                                return scale('' + groupIds.indexOf(d));
+                            return scale('0');
+                        };
+                        // nodes
+                        _this.nodes = [];
+                        // convert given IRI -> EnterpriseIntegrationPattern Map to Node list for rendering
+                        _this.patternMap.forEach(function (value) {
+                            var n = new _model_node__WEBPACK_IMPORTED_MODULE_1__["Node"](value.id);
+                            n.name = value.name;
+                            n.description = value.description.value;
+                            // go through all groups and check if the current pattern is present in the list of patterns
+                            // return the group (i.e. the group name) that contains the pattern. undefined if no group contains this pattern
+                            n.group = Object.keys(groups).find(function (groupName) { return groups[groupName].includes(value.id); });
+                            n.color = color(n.group);
+                            _this.nodes.push(n);
+                        });
+                        // place data in field
+                        _this.data = {
+                            nodes: _this.nodes,
+                            links: _this.links,
+                            id: _this.pId
+                        };
                     });
-                    // for coloring of nodes
-                    var groupIds = Array.from(Object.keys(groups));
-                    var scale = d3__WEBPACK_IMPORTED_MODULE_3__["scaleOrdinal"](d3__WEBPACK_IMPORTED_MODULE_3__["schemeCategory10"]);
-                    var color = function (d) {
-                        if (d)
-                            return scale('' + groupIds.indexOf(d));
-                        return scale('0');
-                    };
-                    // nodes
-                    _this.nodes = [];
-                    // convert given IRI -> EnterpriseIntegrationPattern Map to Node list for rendering
-                    _this.patternMap.forEach(function (value) {
-                        var n = new _model_node__WEBPACK_IMPORTED_MODULE_1__["Node"](value.id);
-                        n.name = value.name;
-                        n.description = value.description.value;
-                        // go through all groups and check if the current pattern is present in the list of patterns
-                        // return the group (i.e. the group name) that contains the pattern. undefined if no group contains this pattern
-                        n.group = Object.keys(groups).find(function (groupName) { return groups[groupName].includes(value.id); });
-                        n.color = color(n.group);
-                        _this.nodes.push(n);
-                    });
-                    // place data in field
-                    _this.data = {
-                        nodes: _this.nodes,
-                        links: _this.links,
-                        id: _this.pId
-                    };
                 });
             });
         });
@@ -5243,14 +5364,19 @@ var EnterpriseIntegrationPatternsComponent = /** @class */ (function () {
             _this.router.navigate(['..'], { relativeTo: _this.activatedRoute });
         });
     };
-    EnterpriseIntegrationPatternsComponent.prototype.filterNodes = function (value) {
-        if (value !== '' /*&& this.filterValue !== value*/) {
-            this.filterValue = value;
-            this.graph.filterNodes(this.filterValue);
-        }
-        else {
-            this.graph.showAllNodes();
-        }
+    EnterpriseIntegrationPatternsComponent.prototype.openFilterDialog = function () {
+        var _this = this;
+        var dialogRef = this.dialog.open(src_app_filter_component_filter_view_filter_view_component__WEBPACK_IMPORTED_MODULE_10__["FilterViewComponent"], {
+            width: '600px',
+            data: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns'
+        });
+        dialogRef.afterClosed().subscribe(function (result) {
+            if (result) {
+                // there might be new filter values set -> filter data
+                _this.filterFactory.createFilter('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns')
+                    .then(function (filter) { return _this.graph.filterNodes(filter); });
+            }
+        });
     };
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])('graph'),
@@ -5268,7 +5394,9 @@ var EnterpriseIntegrationPatternsComponent = /** @class */ (function () {
             _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"],
             _angular_router__WEBPACK_IMPORTED_MODULE_4__["ActivatedRoute"],
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"],
-            _loader_enterprise_integration_pattern_loader_service__WEBPACK_IMPORTED_MODULE_6__["EnterpriseIntegrationPatternLoaderService"]])
+            _loader_enterprise_integration_pattern_loader_service__WEBPACK_IMPORTED_MODULE_6__["EnterpriseIntegrationPatternLoaderService"],
+            src_app_filter_service_filter_factory_service__WEBPACK_IMPORTED_MODULE_8__["FilterFactoryService"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatDialog"]])
     ], EnterpriseIntegrationPatternsComponent);
     return EnterpriseIntegrationPatternsComponent;
 }());
@@ -5284,7 +5412,7 @@ var EnterpriseIntegrationPatternsComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n  <svg #svg [attr.viewBox]=\"'0 0 ' + options.width + ' ' + options.height\"\n      (click)=\"deselectNode($event)\">\n      <g class=\"links\">\n          <g [linkVisual]=\"link\" *ngFor=\"let link of links\"></g>\n      </g>\n      <g class=\"nodes\">\n          <g [nodeVisual]=\"node\" *ngFor=\"let node of nodes\" \n              (clickEvent)=\"nodeInformation(node.id)\"\n              (mouseEnterEvent)=\"previewNodeInformation(node.id)\"\n              (mouseLeaveEvent)=\"dePreviewNodeInformation(node.id)\">\n          </g>\n      </g>\n\n      <defs>\n          <marker id=\"end\" viewBox=\"0 -5 10 10\" refX=\"15\" refY=\"-1.5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n              <path d=\"M0,-5L10,0L0,5\"></path>\n          </marker>\n      </defs>\n  </svg>\n</div>\n\n<div *ngIf=\"selectedLinkId; else nodeInfo\">\n    <pp-link-infobox\n        [linkId]=\"selectedLinkId\"\n        [currentPatternId]=\"selectedNodeId\"\n        (onPatternClicked)=\"nodeInformation($event)\">\n    </pp-link-infobox>\n</div>\n\n<ng-template #nodeInfo>\n    <div *ngIf=\"selectedNodeId\">\n    <pp-node-infobox \n            [id]=\"selectedNodeId\"\n            (clickEvent)=\"nodeInformation($event)\"\n            (mouseEnterEvent)=\"previewNodeInformation($event)\"\n            (mouseLeaveEvent)=\"dePreviewNodeInformation($event)\"\n            (linkClickEvent)=\"showLinkInfo($event)\">\n    </pp-node-infobox>\n    </div>\n</ng-template>"
+module.exports = "<div>\n  <svg #svg [attr.viewBox]=\"'0 0 ' + options.width + ' ' + options.height\"\n      (click)=\"deselectNode($event)\">\n        <g [zoomableOf]=\"svg\">\n            <g class=\"links\">\n                <g [linkVisual]=\"link\" *ngFor=\"let link of links\"></g>\n            </g>\n            <g class=\"nodes\">\n                <g [nodeVisual]=\"node\" *ngFor=\"let node of nodes\" \n                    [draggableNode]=\"node\"\n                    [draggableInGraph]=\"graph\"\n                    (clickEvent)=\"nodeInformation(node.id)\"\n                    (mouseEnterEvent)=\"previewNodeInformation(node.id)\"\n                    (mouseLeaveEvent)=\"dePreviewNodeInformation(node.id)\">\n                </g>\n            </g>\n\n            <defs>\n                <marker id=\"end\" viewBox=\"0 -5 10 10\" refX=\"15\" refY=\"-1.5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n                    <path d=\"M0,-5L10,0L0,5\"></path>\n                </marker>\n            </defs>\n        </g>\n  </svg>\n</div>\n\n<div *ngIf=\"selectedLinkId; else nodeInfo\">\n    <pp-link-infobox\n        [linkId]=\"selectedLinkId\"\n        [currentPatternId]=\"selectedNodeId\"\n        (onPatternClicked)=\"nodeInformation($event)\">\n    </pp-link-infobox>\n</div>\n\n<ng-template #nodeInfo>\n    <div *ngIf=\"selectedNodeId\">\n    <pp-node-infobox \n            [id]=\"selectedNodeId\"\n            (clickEvent)=\"nodeInformation($event)\"\n            (mouseEnterEvent)=\"previewNodeInformation($event)\"\n            (mouseLeaveEvent)=\"dePreviewNodeInformation($event)\"\n            (linkClickEvent)=\"showLinkInfo($event)\">\n    </pp-node-infobox>\n    </div>\n</ng-template>"
 
 /***/ }),
 
@@ -5504,11 +5632,12 @@ var GraphComponent = /** @class */ (function () {
             _loop_2(link);
         }
     };
-    GraphComponent.prototype.filterNodes = function (filterValue) {
+    GraphComponent.prototype.filterNodes = function (filter) {
         this.showAllNodes();
-        var reg = new RegExp(filterValue);
         // get patterns to hide
-        var nodesToBeFiltered = this.nodes.filter(function (n) { return !reg.test(n.name); });
+        var selectedNodes = filter.filterPatterns(this.nodes);
+        // if a node is in selectedNodes we DON'T want to filter it out
+        var nodesToBeFiltered = this.nodes.filter(function (n) { return !selectedNodes.includes(n); });
         // get all links that contain a pattern that should be filtered 
         var linksToBeFiltered = this.links.filter(function (e) {
             var id = '';
@@ -6096,6 +6225,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
 /* harmony import */ var _component_link_infobox_link_infobox_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./component/link-infobox/link-infobox.component */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/link-infobox/link-infobox.component.ts");
+/* harmony import */ var src_app_filter_component_filter_view_filter_view_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! src/app/filter/component/filter-view/filter-view.component */ "./src/app/filter/component/filter-view/filter-view.component.ts");
+/* harmony import */ var _component_directives_draggable_directive__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./component/directives/draggable.directive */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/directives/draggable.directive.ts");
+/* harmony import */ var _component_directives_zoomable_directive__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./component/directives/zoomable.directive */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/directives/zoomable.directive.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6105,6 +6237,9 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
+
+
 
 
 
@@ -6141,7 +6276,11 @@ var EnterpriseIntegrationPatternsModule = /** @class */ (function () {
                 _component_link_visual_link_visual_component__WEBPACK_IMPORTED_MODULE_6__["LinkVisualComponent"],
                 _component_node_visual_node_visual_component__WEBPACK_IMPORTED_MODULE_7__["NodeVisualComponent"],
                 _component_node_infobox_node_infobox_component__WEBPACK_IMPORTED_MODULE_8__["NodeInfoboxComponent"],
-                _component_enterprise_integration_pattern_enterprise_integration_pattern_component__WEBPACK_IMPORTED_MODULE_9__["EnterpriseIntegrationPatternComponent"], _component_link_infobox_link_infobox_component__WEBPACK_IMPORTED_MODULE_13__["LinkInfoboxComponent"]
+                _component_enterprise_integration_pattern_enterprise_integration_pattern_component__WEBPACK_IMPORTED_MODULE_9__["EnterpriseIntegrationPatternComponent"],
+                _component_link_infobox_link_infobox_component__WEBPACK_IMPORTED_MODULE_13__["LinkInfoboxComponent"],
+                src_app_filter_component_filter_view_filter_view_component__WEBPACK_IMPORTED_MODULE_14__["FilterViewComponent"],
+                _component_directives_draggable_directive__WEBPACK_IMPORTED_MODULE_15__["DraggableDirective"],
+                _component_directives_zoomable_directive__WEBPACK_IMPORTED_MODULE_16__["ZoomableDirective"]
             ],
             imports: [
                 _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
@@ -6149,14 +6288,19 @@ var EnterpriseIntegrationPatternsModule = /** @class */ (function () {
                 _angular_forms__WEBPACK_IMPORTED_MODULE_12__["FormsModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatIconModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatFormFieldModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatInputModule"]
+                _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatInputModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatCardModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatDividerModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatFormFieldModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatCheckboxModule"]
             ],
             providers: [
                 _loader_enterprise_integration_patterns_loader_service__WEBPACK_IMPORTED_MODULE_10__["EnterpriseIntegrationPatternsLoaderService"]
             ],
             entryComponents: [
                 _component_enterprise_integration_patterns_enterprise_integration_patterns_component__WEBPACK_IMPORTED_MODULE_4__["EnterpriseIntegrationPatternsComponent"],
-                _component_enterprise_integration_pattern_enterprise_integration_pattern_component__WEBPACK_IMPORTED_MODULE_9__["EnterpriseIntegrationPatternComponent"]
+                _component_enterprise_integration_pattern_enterprise_integration_pattern_component__WEBPACK_IMPORTED_MODULE_9__["EnterpriseIntegrationPatternComponent"],
+                src_app_filter_component_filter_view_filter_view_component__WEBPACK_IMPORTED_MODULE_14__["FilterViewComponent"]
             ]
         }),
         __metadata("design:paramtypes", [src_app_core_service_component_registry_service__WEBPACK_IMPORTED_MODULE_2__["ComponentRegistryService"]])
@@ -7566,6 +7710,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "D3Service", function() { return D3Service; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../model */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/model/index.ts");
+/* harmony import */ var d3__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! d3 */ "./node_modules/d3/index.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7577,12 +7722,48 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
+
 var D3Service = /** @class */ (function () {
     function D3Service() {
     }
     D3Service.prototype.getNetworkGraph = function (nodes, links, options) {
         var ng = new _model__WEBPACK_IMPORTED_MODULE_1__["NetworkGraph"](nodes, links, options);
         return ng;
+    };
+    D3Service.prototype.applyZoomableBehaviour = function (svgElement, containerElement) {
+        var svg, container, zoomed, zoom;
+        svg = d3__WEBPACK_IMPORTED_MODULE_2__["select"](svgElement);
+        container = d3__WEBPACK_IMPORTED_MODULE_2__["select"](containerElement);
+        zoomed = function () {
+            var transform = d3__WEBPACK_IMPORTED_MODULE_2__["event"].transform;
+            container.attr("transform", "translate(" + transform.x + "," + transform.y + ") scale(" + transform.k + ")");
+        };
+        zoom = d3__WEBPACK_IMPORTED_MODULE_2__["zoom"]().on("zoom", zoomed);
+        svg.call(zoom);
+    };
+    D3Service.prototype.applyDraggableBehaviour = function (element, node, graph) {
+        var d3element = d3__WEBPACK_IMPORTED_MODULE_2__["select"](element);
+        function started() {
+            /** Preventing propagation of dragstart to parent elements */
+            d3__WEBPACK_IMPORTED_MODULE_2__["event"].sourceEvent.stopPropagation();
+            if (!d3__WEBPACK_IMPORTED_MODULE_2__["event"].active) {
+                graph.simulation.alphaTarget(0.3).restart();
+            }
+            d3__WEBPACK_IMPORTED_MODULE_2__["event"].on("drag", dragged).on("end", ended);
+            function dragged() {
+                node.fx = d3__WEBPACK_IMPORTED_MODULE_2__["event"].x;
+                node.fy = d3__WEBPACK_IMPORTED_MODULE_2__["event"].y;
+            }
+            function ended() {
+                if (!d3__WEBPACK_IMPORTED_MODULE_2__["event"].active) {
+                    graph.simulation.alphaTarget(0);
+                }
+                node.fx = null;
+                node.fy = null;
+            }
+        }
+        d3element.call(d3__WEBPACK_IMPORTED_MODULE_2__["drag"]()
+            .on("start", started));
     };
     D3Service = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
@@ -8424,6 +8605,459 @@ var InternetOfThingsPattern = /** @class */ (function (_super) {
     return InternetOfThingsPattern;
 }(_core_model_pattern_model__WEBPACK_IMPORTED_MODULE_0__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (InternetOfThingsPattern);
+
+
+/***/ }),
+
+/***/ "./src/app/filter/component/filter-view/filter-view.component.html":
+/*!*************************************************************************!*\
+  !*** ./src/app/filter/component/filter-view/filter-view.component.html ***!
+  \*************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div *ngIf=\"data\">\n  <h1>Filter Patterns</h1> <!-- maybe add patternlanguage name here? -->\n\n  <div class=\"pattern-options\">\n    <h2>Pattern Options</h2>\n    <!-- input field for every field of the config element -->\n    <mat-form-field class=\"filter-field\" *ngFor=\"let key of objectKeys(data)\">\n      <input matInput placeholder=\"{{key}}\" [(ngModel)]=\"data[key]\">\n    </mat-form-field>\n  </div>\n\n  <div class=\"relation-options\">\n    <h2>Relation Options</h2>\n    <mat-checkbox>Pattern must contain Cross Language Links</mat-checkbox>\n  </div>\n\n  <div class=\"dialog-actions\">\n    <button mat-flat-button color=\"primary\" (click)=\"onCloseConfirm()\">Apply Filter</button>\n    <button mat-stroked-button (click)=\"onCloseClear()\">Clear Values</button>\n    <button mat-stroked-button (click)=\"onCloseCancel()\" class=\"right-button\">Cancel</button>\n  </div>\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/filter/component/filter-view/filter-view.component.scss":
+/*!*************************************************************************!*\
+  !*** ./src/app/filter/component/filter-view/filter-view.component.scss ***!
+  \*************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "h1 {\n  margin: 0; }\n\nh2 {\n  font-size: 12pt;\n  margin-left: -8px; }\n\n.pattern-options {\n  padding-left: 8px;\n  padding-bottom: 16px;\n  border-bottom: solid 2px lightgrey; }\n\n.filter-field {\n  width: 100%;\n  margin-bottom: -16px; }\n\n.relation-options {\n  padding-left: 8px;\n  margin-top: 20px; }\n\n.dialog-actions {\n  margin-top: 32px; }\n\n.dialog-actions button {\n    margin-right: 8px; }\n\n.right-button {\n  float: right;\n  margin-right: 0px !important; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2ZpbHRlci9jb21wb25lbnQvZmlsdGVyLXZpZXcvZmlsdGVyLXZpZXcuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxTQUFTLEVBQUE7O0FBR2I7RUFDSSxlQUFlO0VBQ2YsaUJBQWlCLEVBQUE7O0FBR3JCO0VBQ0ksaUJBQWlCO0VBQ2pCLG9CQUFvQjtFQUNwQixrQ0FBa0MsRUFBQTs7QUFHdEM7RUFDSSxXQUFXO0VBQ1gsb0JBQW9CLEVBQUE7O0FBR3hCO0VBQ0ksaUJBQWlCO0VBQ2pCLGdCQUFlLEVBQUE7O0FBR25CO0VBQ0ksZ0JBQWdCLEVBQUE7O0FBRHBCO0lBSVEsaUJBQWlCLEVBQUE7O0FBSXpCO0VBQ0ksWUFBWTtFQUNaLDRCQUE0QixFQUFBIiwiZmlsZSI6InNyYy9hcHAvZmlsdGVyL2NvbXBvbmVudC9maWx0ZXItdmlldy9maWx0ZXItdmlldy5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbImgxIHtcbiAgICBtYXJnaW46IDA7XG59XG5cbmgyIHtcbiAgICBmb250LXNpemU6IDEycHQ7XG4gICAgbWFyZ2luLWxlZnQ6IC04cHg7XG59XG5cbi5wYXR0ZXJuLW9wdGlvbnMge1xuICAgIHBhZGRpbmctbGVmdDogOHB4O1xuICAgIHBhZGRpbmctYm90dG9tOiAxNnB4O1xuICAgIGJvcmRlci1ib3R0b206IHNvbGlkIDJweCBsaWdodGdyZXk7XG59XG5cbi5maWx0ZXItZmllbGQge1xuICAgIHdpZHRoOiAxMDAlO1xuICAgIG1hcmdpbi1ib3R0b206IC0xNnB4O1xufVxuXG4ucmVsYXRpb24tb3B0aW9ucyB7XG4gICAgcGFkZGluZy1sZWZ0OiA4cHg7XG4gICAgbWFyZ2luLXRvcDoyMHB4O1xufVxuXG4uZGlhbG9nLWFjdGlvbnMge1xuICAgIG1hcmdpbi10b3A6IDMycHg7XG5cbiAgICBidXR0b24ge1xuICAgICAgICBtYXJnaW4tcmlnaHQ6IDhweDtcbiAgICB9XG59XG5cbi5yaWdodC1idXR0b24ge1xuICAgIGZsb2F0OiByaWdodDtcbiAgICBtYXJnaW4tcmlnaHQ6IDBweCAhaW1wb3J0YW50O1xufSJdfQ== */"
+
+/***/ }),
+
+/***/ "./src/app/filter/component/filter-view/filter-view.component.ts":
+/*!***********************************************************************!*\
+  !*** ./src/app/filter/component/filter-view/filter-view.component.ts ***!
+  \***********************************************************************/
+/*! exports provided: FilterViewComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FilterViewComponent", function() { return FilterViewComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _service_filter_factory_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../service/filter-factory.service */ "./src/app/filter/service/filter-factory.service.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (undefined && undefined.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+
+
+var FilterViewComponent = /** @class */ (function () {
+    function FilterViewComponent(filterFactory, thisDialogRef, patternLanguageUri) {
+        this.filterFactory = filterFactory;
+        this.thisDialogRef = thisDialogRef;
+        this.patternLanguageUri = patternLanguageUri;
+        // you can't use Object.keys within a template. We assign it to a separate function
+        this.objectKeys = Object.keys;
+    }
+    FilterViewComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.filterFactory.getConfig(this.patternLanguageUri)
+            .then(function (config) {
+            // copy object, don't use the original reference!
+            _this.data = JSON.parse(JSON.stringify(config));
+        });
+    };
+    FilterViewComponent.prototype.onCloseConfirm = function () {
+        // apply changed config in factory
+        this.filterFactory.setConfig(this.patternLanguageUri, this.data);
+        this.thisDialogRef.close(true);
+    };
+    FilterViewComponent.prototype.onCloseClear = function () {
+        var _this = this;
+        // reset all filter values to empty values
+        Object.keys(this.data).forEach(function (k) { return _this.data[k] = ''; });
+        this.filterFactory.setConfig(this.patternLanguageUri, this.data);
+        this.thisDialogRef.close(true);
+    };
+    FilterViewComponent.prototype.onCloseCancel = function () {
+        // don't apply changes in config
+        this.thisDialogRef.close(false);
+    };
+    FilterViewComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'pp-filter-view',
+            template: __webpack_require__(/*! ./filter-view.component.html */ "./src/app/filter/component/filter-view/filter-view.component.html"),
+            styles: [__webpack_require__(/*! ./filter-view.component.scss */ "./src/app/filter/component/filter-view/filter-view.component.scss")]
+        })
+        /**
+         * Displays the string-fields of a pattern that can be filtered.
+         * Users can set the filter criteria via input fields provided in this view.
+         */
+        ,
+        __param(2, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])(_angular_material__WEBPACK_IMPORTED_MODULE_2__["MAT_DIALOG_DATA"])),
+        __metadata("design:paramtypes", [_service_filter_factory_service__WEBPACK_IMPORTED_MODULE_1__["FilterFactoryService"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialogRef"], String])
+    ], FilterViewComponent);
+    return FilterViewComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/filter/loader/filter-loader.service.ts":
+/*!********************************************************!*\
+  !*** ./src/app/filter/loader/filter-loader.service.ts ***!
+  \********************************************************/
+/*! exports provided: FilterLoaderService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FilterLoaderService", function() { return FilterLoaderService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/core/model/loader */ "./src/app/core/model/loader.ts");
+/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+/* harmony import */ var src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
+
+
+var FilterLoaderService = /** @class */ (function (_super) {
+    __extends(FilterLoaderService, _super);
+    function FilterLoaderService(pos) {
+        var _this = _super.call(this, 'https://purl.org/patternpedia', pos) || this;
+        _this.pos = pos;
+        return _this;
+    }
+    FilterLoaderService.prototype.loadContentFromStore = function (patternlanguageUri) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.selectContentFromStore(patternlanguageUri)
+                        .then(function (triples) { return _this.mapTriples(triples, patternlanguageUri); })];
+            });
+        });
+    };
+    FilterLoaderService.prototype.selectContentFromStore = function (patternlanguageUri) {
+        return __awaiter(this, void 0, void 0, function () {
+            var query, graphs;
+            return __generator(this, function (_a) {
+                query = "SELECT DISTINCT ?predicate\n    WHERE {\n      {\n        ?class rdfs:subClassOf pp:Pattern .\n      }\n      UNION\n      {\n        ?class rdfs:subClassOf ?sub .\n        #?sub a owl:Restriction .\n        ?sub owl:onProperty ?predicate .\n        ?sub ?typeRange xsd:string .\n      }\n      UNION\n      {\n        ?class rdfs:subClassOf ?pp .\n        ?pp a owl:Class .\n        ?pp rdfs:subClassOf ?sub2 .\n        #?sub2 a owl:Restriction .\n        ?sub2 owl:onProperty ?predicate .\n        ?sub2 ?typeRange xsd:string .\n      }\n    }";
+                graphs = [
+                    src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI),
+                    src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(patternlanguageUri)
+                ];
+                return [2 /*return*/, this.executor.exec(query, graphs)];
+            });
+        });
+    };
+    FilterLoaderService.prototype.mapTriples = function (triples, patternlanguageUri) {
+        return __awaiter(this, void 0, void 0, function () {
+            var data, _i, triples_1, t, result;
+            return __generator(this, function (_a) {
+                data = [];
+                for (_i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
+                    t = triples_1[_i];
+                    if (t.predicate && t.predicate.value)
+                        data.push(this.crop(t.predicate.value));
+                }
+                result = new Map();
+                result.set(patternlanguageUri, data);
+                return [2 /*return*/, Promise.resolve(result)];
+            });
+        });
+    };
+    /**
+     * Crops the given predicate uri to a simplified predicate name.
+     *
+     * Example: crop('https://purl.org/patternpedia#hasName') -> 'name'
+     *
+     * @param value the uri of the predicate
+     */
+    FilterLoaderService.prototype.crop = function (value) {
+        var predicate = value.substr(value.indexOf("#") + 1);
+        var result = predicate.replace("has", "");
+        result = result.toLowerCase();
+        return result;
+    };
+    FilterLoaderService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        })
+        /**
+         * Loads all properties from a pattern of the triplestore that have a xsd:string type restriction.
+         * Example: If a pattern defines a property 'hasName' to be a xsd:string, the loader will return 'name'.
+         */
+        ,
+        __metadata("design:paramtypes", [src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__["PatternOntologyService"]])
+    ], FilterLoaderService);
+    return FilterLoaderService;
+}(src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_1__["default"]));
+
+
+
+/***/ }),
+
+/***/ "./src/app/filter/model/filter.ts":
+/*!****************************************!*\
+  !*** ./src/app/filter/model/filter.ts ***!
+  \****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/**
+ * Class that provides filtering functionality for various causes.
+ */
+var Filter = /** @class */ (function () {
+    /**
+     * Creates a new filter based on the given configuration.
+     * The configuration determines how the filter will do the work.
+     *
+     * Example: config contains a field named 'name' and has the string value 'John'.
+     * If later a list of objects should be filtered, the filter checks the individual objects for a field with 'name' and a value that somehow relates to 'John'.
+     * If both checks are passed, the object will remain in the list, otherwise it will be removed.
+     *
+     * @param config an object containing the filter criterias. The filter will be able to filter the later given objects depending on the values of the config object
+     */
+    function Filter(config) {
+        this.config = config;
+    }
+    /**
+     * Filters a given list of patterns based on the config.
+     * TODO what type of filtering? Fuzzy? How?
+     * @param patterns the list of pattern objects that will be filtered based on the config
+     */
+    Filter.prototype.filterPatterns = function (patterns) {
+        var _this = this;
+        // filter based on pattern properties
+        var filtered = patterns.filter(function (p) {
+            var result = true;
+            Object.keys(_this.config).forEach(function (k) {
+                // pattern should contain same fields as the config
+                if (p[k]) {
+                    // FIXME description is a array of strings...
+                    // Quick Hack: ignore description for now until real data is available
+                    if (typeof p[k] !== 'string') {
+                        return;
+                    }
+                    // and the value of that fields should match somehow
+                    var test = _this.matches(p[k], _this.config[k]);
+                    result = result && test;
+                }
+                else {
+                    result = false;
+                }
+            });
+            return result;
+        });
+        // TODO filter based on link properties
+        return filtered;
+    };
+    // TODO use a similarity measure here!
+    // for now, we check if one includes the other somehow
+    Filter.prototype.matches = function (a, b) {
+        // special case: b might be empty, i.e. "" if no filter value has been entered
+        // this method works even in this situation. But keep this in mind, if we switch the match function!
+        var shorter = (a.length < b.length) ? a : b;
+        var longer = (a.length < b.length) ? b : a;
+        return longer.toLowerCase().includes(shorter.toLowerCase());
+    };
+    return Filter;
+}());
+/* harmony default export */ __webpack_exports__["default"] = (Filter);
+
+
+/***/ }),
+
+/***/ "./src/app/filter/service/filter-factory.service.ts":
+/*!**********************************************************!*\
+  !*** ./src/app/filter/service/filter-factory.service.ts ***!
+  \**********************************************************/
+/*! exports provided: FilterFactoryService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FilterFactoryService", function() { return FilterFactoryService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _model_filter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../model/filter */ "./src/app/filter/model/filter.ts");
+/* harmony import */ var _loader_filter_loader_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../loader/filter-loader.service */ "./src/app/filter/loader/filter-loader.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
+
+var FilterFactoryService = /** @class */ (function () {
+    function FilterFactoryService(loader) {
+        this.loader = loader;
+        this.configs = new Map();
+    }
+    FilterFactoryService.prototype.createFilter = function (uri) {
+        return __awaiter(this, void 0, void 0, function () {
+            var config;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getConfig(uri)];
+                    case 1:
+                        config = _a.sent();
+                        return [2 /*return*/, Promise.resolve(new _model_filter__WEBPACK_IMPORTED_MODULE_1__["default"](config))];
+                }
+            });
+        });
+    };
+    FilterFactoryService.prototype.getConfig = function (uri) {
+        return __awaiter(this, void 0, void 0, function () {
+            var config, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        config = this.configs.get(uri);
+                        if (!!config) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.loader.loadContentFromStore(uri)];
+                    case 1:
+                        result = _a.sent();
+                        config = this.createConfig(result.get(uri));
+                        this.configs.set(uri, config);
+                        _a.label = 2;
+                    case 2: return [2 /*return*/, Promise.resolve(config)];
+                }
+            });
+        });
+    };
+    FilterFactoryService.prototype.setConfig = function (uri, config) {
+        this.configs.set(uri, config);
+    };
+    /**
+     * Creates a config object containing the given list of properties as keys and initializes them with an empty string
+     * @param properties list of string properties
+     */
+    FilterFactoryService.prototype.createConfig = function (properties) {
+        var config = {};
+        for (var _i = 0, properties_1 = properties; _i < properties_1.length; _i++) {
+            var p = properties_1[_i];
+            config[p] = '';
+        }
+        return config;
+    };
+    FilterFactoryService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        }),
+        __metadata("design:paramtypes", [_loader_filter_loader_service__WEBPACK_IMPORTED_MODULE_2__["FilterLoaderService"]])
+    ], FilterFactoryService);
+    return FilterFactoryService;
+}());
+
 
 
 /***/ }),
