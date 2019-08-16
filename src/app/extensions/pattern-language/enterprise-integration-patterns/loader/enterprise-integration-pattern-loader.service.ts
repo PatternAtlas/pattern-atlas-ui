@@ -28,13 +28,13 @@ export class EnterpriseIntegrationPatternLoaderService extends Loader<any> {
       WHERE {
         <${uri}> <https://purl.org/patternpedia#hasName> ?name .
         <${uri}> <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description .
-        ?group a <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternRelationDescriptor> ;
-              <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasLabel> ?groupName ;
-              <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasPattern> <${uri}> .
+        ?group a <https://purl.org/patternpedia#PatternSetRelationDescriptor> ;
+              <https://purl.org/patternpedia#hasLabel> ?groupName ;
+              <https://purl.org/patternpedia#hasPattern> <${uri}> .
       }`;
     
     // links URI needed for group
-    const graphs = [IriConverter.getFileName(this.supportedIRI), IriConverter.getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links'];
+    const graphs = [IriConverter.getFileName(this.supportedIRI), IriConverter.getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns'];
 
     return this.executor.exec(qry, graphs);
   }

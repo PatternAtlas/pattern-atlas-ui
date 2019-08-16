@@ -27,7 +27,7 @@ export class EnterpriseIntegrationPatternOutgoingLinkLoaderService extends Loade
     // we need the uri of the referenced pattern in order to retrieve the pattern name
     const uriQry = `SELECT ?targetUri
       WHERE {
-        ?targetLink a <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternDirectedRelationDescriptor> ;
+        ?targetLink a <https://purl.org/patternpedia#DirectedPatternRelationDescriptor> ;
               <https://purl.org/patternpedia#hasSource> <${uri}> ;
               <https://purl.org/patternpedia#hasTarget> ?targetUri .
       }`;
@@ -36,14 +36,14 @@ export class EnterpriseIntegrationPatternOutgoingLinkLoaderService extends Loade
     // get all information about the given pattern uri
     const qry = `SELECT ?targetUri ?targetName ?linkUri ?description
       WHERE {
-        ?linkUri a <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternDirectedRelationDescriptor> ;
+        ?linkUri a <https://purl.org/patternpedia/patternlanguages#DirectedPatternRelationDescriptor> ;
               <https://purl.org/patternpedia#hasSource> <${uri}> ;
               <https://purl.org/patternpedia#hasTarget> ?targetUri .
         ?targetUri <https://purl.org/patternpedia#hasName> ?targetName .
-        OPTIONAL { ?linkUri <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description }
+        OPTIONAL { ?linkUri <https://purl.org/patternpedia#hasDescription> ?description }
       }`;
 
-    const graphs = [IriConverter.getFileName(this.supportedIRI), IriConverter.getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links'];
+    const graphs = [IriConverter.getFileName(this.supportedIRI), IriConverter.getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns'];
     for (const entry of patterns) {
       graphs.push(IriConverter.getFileName(entry.targetUri.value));
     }
