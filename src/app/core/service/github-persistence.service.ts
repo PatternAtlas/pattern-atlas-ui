@@ -77,20 +77,7 @@ export class GithubPersistenceService {
 
 
   getFile(iri: string): Observable<GithubFileResponse> {
-    const githuburl = 'https://api.github.com/repos/PatternPedia/patternpediacontent/contents';
-    const iriRelativPath = (iri.split('#')[1]) === 'EnterpriseIntegrationPatterns' || iri.split('#')[1] === 'CloudComputingPatterns' ?
-      iri.split('#')[0].replace('https://purl.org/patternpedia', '') + '/' + iri.split('#')[1].toLowerCase() :
-      iri.replace('#', '/').replace('https://purl.org/patternpedia', '');
-
-    let url = '';
-    if (iri !== 'https://api.github.com/repos/PatternPedia/patternpediacontent/contents/patternpedia.ttl') {
-      url = iriRelativPath.startsWith('https://api.github.com/repos/PatternPedia/patternpediacontent/content') ? iriRelativPath : githuburl + iriRelativPath;
-    } else {
-      url = iri;
-    }
-    console.log(iri);
-    console.log(url);
-    return this.httpClient.get(url.endsWith('.ttl') ? url : url + '.ttl', {
+    return this.httpClient.get(iri, {
       headers: {
         'Authorization': `token ${this.cookieService.get('patternpedia_github_token')}`
       }
