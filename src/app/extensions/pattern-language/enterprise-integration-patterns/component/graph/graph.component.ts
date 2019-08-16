@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, HostListener, ChangeDetectorRef, ChangeDetectionStrategy, AfterViewInit, EventEmitter, Output } from '@angular/core';
 import { Node, Link, NetworkGraph } from '../../model';
 import { D3Service } from '../../service/d3.service';
+import Filter from 'src/app/filter/model/filter';
 
 @Component({
   selector: 'pp-graph',
@@ -201,13 +202,13 @@ export class GraphComponent implements OnInit, AfterViewInit {
     }
   }
 
-  filterNodes(filterValue: string) {
+  filterNodes(filter: Filter) {
     this.showAllNodes();
 
-    const reg = new RegExp(filterValue);
-
     // get patterns to hide
-    let nodesToBeFiltered = this.nodes.filter(n => !reg.test(n.name));
+    const selectedNodes = filter.filterPatterns(this.nodes);
+    // if a node is in selectedNodes we DON'T want to filter it out
+    let nodesToBeFiltered = this.nodes.filter(n => !selectedNodes.includes(n));
 
     // get all links that contain a pattern that should be filtered 
     let linksToBeFiltered = this.links.filter(e => {

@@ -9,9 +9,12 @@ import { NodeVisualComponent } from './component/node-visual/node-visual.compone
 import { NodeInfoboxComponent } from './component/node-infobox/node-infobox.component';
 import { EnterpriseIntegrationPatternComponent } from './component/enterprise-integration-pattern/enterprise-integration-pattern.component';
 import { EnterpriseIntegrationPatternsLoaderService } from './loader/enterprise-integration-patterns-loader.service';
-import { MatButtonModule, MatIcon, MatIconModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { MatButtonModule, MatIcon, MatIconModule, MatFormFieldModule, MatInputModule, MatCardModule, MatDividerModule, MatCheckboxModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { LinkInfoboxComponent } from './component/link-infobox/link-infobox.component';
+import { FilterViewComponent } from 'src/app/filter/component/filter-view/filter-view.component';
+import { DraggableDirective } from './component/directives/draggable.directive';
+import { ZoomableDirective } from './component/directives/zoomable.directive';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,11 @@ import { LinkInfoboxComponent } from './component/link-infobox/link-infobox.comp
     LinkVisualComponent, 
     NodeVisualComponent, 
     NodeInfoboxComponent, 
-    EnterpriseIntegrationPatternComponent, LinkInfoboxComponent
+    EnterpriseIntegrationPatternComponent, 
+    LinkInfoboxComponent,
+    FilterViewComponent,
+    DraggableDirective,
+    ZoomableDirective
   ],
   imports: [
     CommonModule,
@@ -28,14 +35,19 @@ import { LinkInfoboxComponent } from './component/link-infobox/link-infobox.comp
     FormsModule,
     MatIconModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatCardModule,
+    MatDividerModule,
+    MatFormFieldModule,
+    MatCheckboxModule
   ],
   providers: [
     EnterpriseIntegrationPatternsLoaderService
   ],
   entryComponents: [
     EnterpriseIntegrationPatternsComponent,
-    EnterpriseIntegrationPatternComponent
+    EnterpriseIntegrationPatternComponent,
+    FilterViewComponent
   ]
 })
 export class EnterpriseIntegrationPatternsModule {

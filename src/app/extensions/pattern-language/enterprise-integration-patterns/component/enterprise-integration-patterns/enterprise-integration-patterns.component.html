@@ -6,22 +6,12 @@
     <i class="material-icons">keyboard_backspace</i>
   </button>
 
-  <!-- To filter patterns via name - appearance="outline"-->
-  <mat-form-field class="filter_nodes" floatLabel="never">
-    <!-- <mat-label>Filter Nodes</mat-label> -->
-    <input #filter matInput type="text" placeholder="Filter Nodes" 
-      [(ngModel)]="filterValue"
-      (keyup.enter)="filterNodes(filter.value)"
-      (blur)="filterNodes(filter.value)">
-    <button mat-button 
-      *ngIf="filterValue"
-      matSuffix
-      mat-icon-button
-      aria-label="Clear"
-      (click)="filterValue=''; filterNodes('')">
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-form-field>
+  <!-- to open filter dialog -->
+  <button mat-raised-button class="filter_dialog" color="primary"
+    (click)="openFilterDialog()">
+    <i class="material-icons">filter_list</i>
+    Filter Patterns
+  </button>
 </div>
 
 <div *ngIf="data; else loading">
