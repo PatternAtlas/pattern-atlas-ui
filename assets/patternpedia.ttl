@@ -62,6 +62,14 @@
 :hasName rdf:type owl:DatatypeProperty .
 
 
+# description of of a relation
+###  http://purl.org/patternpedia#hasDescription
+:hasDescription rdf:type owl:DatatypeProperty .
+
+
+###  http://purl.org/patternpedia#hasLabel    
+:hasLabel rdf:type owl:DatatypeProperty .
+
 #################################################################
 #    Classes
 #################################################################
@@ -125,6 +133,54 @@
                                              owl:onClass :Pattern
                                            ] .
 
+
+# Describes the relation between two patterns in a directed manner, i.e. with a source and a target pattern
+# The meaning of the direction depends on the specific use case
+# We can have multiple description string per descriptor. Description is optional
+###  http://purl.org/patternpedia#DirectedPatternRelationDescriptor
+:DirectedPatternRelationDescriptor 
+    rdf:type owl:Class ;
+    rdfs:subClassOf :PatternRelationDescriptor ,
+        [ rdf:type owl:Restriction ;
+          owl:onProperty :hasDescription ;
+          owl:allValuesFrom xsd:string 
+        ] .
+        
+
+# Describes the relation between exactly two patterns without any direction.
+# Contains any number of descriptions
+###  http://purl.org/patternpedia#UndirectedPatternRelationDescriptor
+:UndirectedPatternRelationDescriptor
+    rdf:type owl:Class ;
+    rdfs:subClassOf [ rdf:type owl:Restriction ;
+                      owl:onProperty :hasPattern ;
+                      owl:qualifiedCardinality "2"^^xsd:nonNegativeInteger ;
+                      owl:onClass :Pattern
+                    ] ,
+                    [ rdf:type owl:Restriction ;
+                      owl:onProperty :hasDescription ;
+                      owl:allValuesFrom xsd:string
+                    ] .
+        
+        
+# Hyperedges describe the relation of a set of patterns
+# It has any number of patterns, any number of descriptions, and a single label for displaying purposes
+###  http://purl.org/patternpedia#PatternSetRelationDescriptor
+:PatternSetRelationDescriptor
+    rdf:type owl:Class ;
+    rdfs:subClassOf [ rdf:type owl:Restriction ;
+                      owl:onProperty :hasPattern ;
+                      owl:allValuesFrom :Pattern
+                    ] ,
+                    [ rdf:type owl:Restriction ;
+                      owl:onProperty :hasDescription ;
+                      owl:allValuesFrom xsd:string
+                    ] ,
+                    [ rdf:type owl:Restriction ;
+                      owl:onProperty :hasLabel ;
+                      owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                      owl:onDataRange xsd:string
+                    ] .   
 
 #################################################################
 #    Individuals
