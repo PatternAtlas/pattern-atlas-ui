@@ -27,7 +27,7 @@ export class EnterpriseIntegrationPatternIncomingLinkLoaderService extends Loade
     // we need the uri of the referenced pattern in order to retrieve the pattern name
     const uriQry = `SELECT ?sourceUri
       WHERE {
-        ?targetLink a <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternDirectedRelationDescriptor> ;
+        ?targetLink a <https://purl.org/patternpedia#DirectedPatternRelationDescriptor> ;
               <https://purl.org/patternpedia#hasTarget> <${uri}> ;
               <https://purl.org/patternpedia#hasSource> ?sourceUri .
       }`;
@@ -36,17 +36,21 @@ export class EnterpriseIntegrationPatternIncomingLinkLoaderService extends Loade
     // get all information about the given pattern uri
     const qry = `SELECT ?sourceUri ?sourceName ?linkUri ?description
       WHERE {
-        ?linkUri a <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternDirectedRelationDescriptor> ;
+        ?linkUri a <https://purl.org/patternpedia#DirectedPatternRelationDescriptor> ;
               <https://purl.org/patternpedia#hasTarget> <${uri}> ;
               <https://purl.org/patternpedia#hasSource> ?sourceUri .
         ?sourceUri <https://purl.org/patternpedia#hasName> ?sourceName .
-        OPTIONAL { ?linkUri <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description }
+        OPTIONAL { ?linkUri <https://purl.org/patternpedia#hasDescription> ?description }
       }`;
     
-    const graphs = [IriConverter.getFileName(this.supportedIRI), IriConverter.getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links'];
+    const graphs = [IriConverter.getFileName(this.supportedIRI), IriConverter.getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns'];
     for (const entry of patterns) {
       graphs.push(IriConverter.getFileName(entry.sourceUri.value));
     }
+
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
 
     return this.executor.exec(qry, graphs);
   }

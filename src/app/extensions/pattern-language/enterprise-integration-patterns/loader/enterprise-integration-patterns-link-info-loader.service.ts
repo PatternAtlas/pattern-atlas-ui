@@ -9,7 +9,7 @@ import { IriConverter } from 'src/app/core/util/iri-converter';
 export class EnterpriseIntegrationPatternsLinkInfoLoaderService extends Loader<any> {
 
   constructor(private pos: PatternOntologyService) { 
-    super('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links', pos);
+    super('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns', pos);
   }
 
   loadContentFromStore(uri? : string): Promise<Map<string, any>> {
@@ -35,7 +35,7 @@ export class EnterpriseIntegrationPatternsLinkInfoLoaderService extends Loader<a
         ?sourcePatternUri <https://purl.org/patternpedia#hasName> ?sourcePatternName .
         <${uri}> <https://purl.org/patternpedia#hasTarget> ?targetPatternUri .
         ?targetPatternUri <https://purl.org/patternpedia#hasName> ?targetPatternName .
-        OPTIONAL { <${uri}> <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description }
+        OPTIONAL { <${uri}> <https://purl.org/patternpedia#hasDescription> ?description }
       }`;
 
     const graphs = [this.supportedIRI];
@@ -46,6 +46,9 @@ export class EnterpriseIntegrationPatternsLinkInfoLoaderService extends Loader<a
       graphs.push(IriConverter.getFileName(p.targetUri.value));
     });
 
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
     return this.executor.exec(qry, graphs);
   }
 

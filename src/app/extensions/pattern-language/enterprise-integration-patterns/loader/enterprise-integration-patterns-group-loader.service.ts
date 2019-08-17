@@ -16,12 +16,17 @@ export class EnterpriseIntegrationPatternsGroupLoaderService extends Loader<any>
     // select all hyperedges that represent groups of patterns
     const qry = `SELECT ?uri ?group ?pattern
       WHERE {
-          ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links#EnterpriseIntegrationPatternRelationDescriptor> .
-          ?uri <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasLabel> ?group .
-          ?uri <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasPattern> ?pattern .
+          ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://purl.org/patternpedia#PatternSetRelationDescriptor> .
+          ?uri <https://purl.org/patternpedia#hasLabel> ?group .
+          ?uri <https://purl.org/patternpedia#hasPattern> ?pattern .
       }`;
 
-    return this.executor.exec(qry, ["https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links"]);
+    const graphs = [];
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
+
+    return this.executor.exec(qry, graphs);
   }
 
   mapTriples(triples: any): Promise<Map<string, any>> {

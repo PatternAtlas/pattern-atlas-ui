@@ -35,7 +35,11 @@ export class CloudComputingPatternsLoaderService extends Loader<CloudComputingPa
                     }
                  ORDER BY ?pattern`;
         const graphs = [IriConverter.getFileName(this.supportedIRI)];
-      graphs.push(IriConverter.getPatternListIriForPLIri(this.supportedIRI));
+
+        graphs.push('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns');
+        graphs.push('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Patterns');
+        graphs.push('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Relations');
+
         return this.executor.exec(qry, graphs);
     }
 

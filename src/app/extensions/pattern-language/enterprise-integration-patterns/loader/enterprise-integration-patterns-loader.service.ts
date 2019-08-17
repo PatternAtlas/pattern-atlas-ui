@@ -40,6 +40,10 @@ export class EnterpriseIntegrationPatternsLoaderService extends Loader<Enterpris
       // patterns contains list of objects with field pattern via the query above (qryPatterns)
       graphs.push(IriConverter.getFileName(entry.pattern.value));
     }
+
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
     return this.executor.exec(qry, graphs);
   }
 
