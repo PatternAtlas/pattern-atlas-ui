@@ -5287,6 +5287,7 @@ var EnterpriseIntegrationPatternsComponent = /** @class */ (function () {
         var _this = this;
         // load base file, patterns file, and relations file
         var uris = [
+            { value: 'https://purl.org/patternpedia' },
             { value: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns' },
             { value: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns' },
             { value: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations' }
@@ -8837,7 +8838,7 @@ var FilterLoaderService = /** @class */ (function (_super) {
         return __awaiter(this, void 0, void 0, function () {
             var query, graphs;
             return __generator(this, function (_a) {
-                query = "SELECT DISTINCT ?predicate\n    WHERE {\n      {\n        ?class rdfs:subClassOf pp:Pattern .\n      }\n      UNION\n      {\n        ?class rdfs:subClassOf ?sub .\n        #?sub a owl:Restriction .\n        ?sub owl:onProperty ?predicate .\n        ?sub ?typeRange xsd:string .\n      }\n      UNION\n      {\n        ?class rdfs:subClassOf ?pp .\n        ?pp a owl:Class .\n        ?pp rdfs:subClassOf ?sub2 .\n        #?sub2 a owl:Restriction .\n        ?sub2 owl:onProperty ?predicate .\n        ?sub2 ?typeRange xsd:string .\n      }\n    }";
+                query = "SELECT DISTINCT ?predicate\n    WHERE {\n      {\n        ?predicate a owl:DatatypeProperty .\n        pp:Pattern rdfs:subClassOf ?sub .\n        ?sub a owl:Restriction .\n        ?sub owl:onProperty ?predicate .\n        ?sub ?typeRange xsd:string .\n      }\n      UNION\n      {\n        ?predicate a owl:DatatypeProperty .\n        ?class rdfs:subClassOf pp:Pattern .\n        ?class rdfs:subClassOf ?sub .\n        ?sub a owl:Restriction .\n        ?sub owl:onProperty ?predicate .\n        ?sub ?typeRange xsd:string .\n      }\n    }";
                 graphs = [
                     src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI),
                     src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(patternlanguageUri)
@@ -8921,7 +8922,13 @@ var Filter = /** @class */ (function () {
     }
     /**
      * Filters a given list of patterns based on the config.
-     * TODO what type of filtering? Fuzzy? How?
+     *
+     * The Filter method checks, if the given config value is contained in the pattern fields.
+     * Example:
+     * Pattern Name - Message Filter
+     * Config Name  - message
+     * Filtering will include this pattern, as the test will be successful.
+     *
      * @param patterns the list of pattern objects that will be filtered based on the config
      */
     Filter.prototype.filterPatterns = function (patterns) {
@@ -8932,13 +8939,9 @@ var Filter = /** @class */ (function () {
             Object.keys(_this.config).forEach(function (k) {
                 // pattern should contain same fields as the config
                 if (p[k]) {
-                    // FIXME description is a array of strings...
-                    // Quick Hack: ignore description for now until real data is available
-                    if (typeof p[k] !== 'string') {
-                        return;
-                    }
                     // and the value of that fields should match somehow
                     var test = _this.matches(p[k], _this.config[k]);
+                    // all tests have to be successful! Aggregate the individual results
                     result = result && test;
                 }
                 else {
@@ -8952,12 +8955,26 @@ var Filter = /** @class */ (function () {
     };
     // TODO use a similarity measure here!
     // for now, we check if one includes the other somehow
-    Filter.prototype.matches = function (a, b) {
+    // values can be string arrays! E.g. when there are multiple description values -> description is a string array
+    Filter.prototype.matches = function (value, config) {
         // special case: b might be empty, i.e. "" if no filter value has been entered
         // this method works even in this situation. But keep this in mind, if we switch the match function!
-        var shorter = (a.length < b.length) ? a : b;
-        var longer = (a.length < b.length) ? b : a;
-        return longer.toLowerCase().includes(shorter.toLowerCase());
+        if (value instanceof Array) {
+            var result = false;
+            for (var _i = 0, value_1 = value; _i < value_1.length; _i++) {
+                var s = value_1[_i];
+                var shorter = (s.length < config.length) ? s : config;
+                var longer = (s.length < config.length) ? config : s;
+                // if one element of the list passes the test, return true
+                result = result || longer.toLowerCase().includes(shorter.toLowerCase());
+            }
+            return result;
+        }
+        else {
+            var shorter = (value.length < config.length) ? value : config;
+            var longer = (value.length < config.length) ? config : value;
+            return longer.toLowerCase().includes(shorter.toLowerCase());
+        }
     };
     return Filter;
 }());
