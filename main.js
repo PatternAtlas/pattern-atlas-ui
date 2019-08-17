@@ -4500,20 +4500,33 @@ var CloudComputingPatternsComponent = /** @class */ (function () {
     CloudComputingPatternsComponent.prototype.ngOnInit = function () {
         var _this = this;
         // we have to load the individual patterns first by getting all imports from the base file
-        this.pos.getOWLImports('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns')
-            .then(function (res) {
-            var importedIris = res.map(function (i) { return i.import; });
-            _this.pos.loadUrisToStore(importedIris)
-                .then(function () {
-                // we can now query the data, as all patterns have been loaded
-                _this.loader.loadContentFromStore()
-                    .then(function (patternMap) {
-                    _this.patternMap = patternMap;
-                    _this.patterns = Array.from(patternMap.values());
-                    _this.cdr.detectChanges();
-                });
+        var uris = [
+            { value: 'https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns' },
+            { value: 'https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Patterns' },
+            { value: 'https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Relations' }
+        ];
+        this.pos.loadUrisToStore(uris).then(function () {
+            _this.loader.loadContentFromStore()
+                .then(function (patternMap) {
+                _this.patternMap = patternMap;
+                _this.patterns = Array.from(patternMap.values());
+                _this.cdr.detectChanges();
             });
         });
+        // this.pos.getOWLImports('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns')
+        //     .then(res => {
+        //         const importedIris = res.map(i => i.import);
+        //       this.pos.loadUrisToStore(importedIris)
+        //             .then(() => {
+        //                 // we can now query the data, as all patterns have been loaded
+        //                 this.loader.loadContentFromStore()
+        //                     .then(patternMap => {
+        //                         this.patternMap = patternMap;
+        //                         this.patterns = Array.from(patternMap.values());
+        //                         this.cdr.detectChanges();
+        //                     });
+        //             });
+        //     });
     };
     CloudComputingPatternsComponent.prototype.navigate = function (id) {
         var _this = this;
@@ -4660,6 +4673,9 @@ var CloudComputingPatternsLoaderService = /** @class */ (function (_super) {
                             entry = patterns_1[_i];
                             graphs.push(_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getFileName(entry.pattern.value));
                         }
+                        graphs.push('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns');
+                        graphs.push('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Patterns');
+                        graphs.push('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Relations');
                         return [2 /*return*/, this.executor.exec(qry, graphs)];
                 }
             });
@@ -5269,77 +5285,68 @@ var EnterpriseIntegrationPatternsComponent = /** @class */ (function () {
     }
     EnterpriseIntegrationPatternsComponent.prototype.ngOnInit = function () {
         var _this = this;
-        // (1) load the base file ...
-        this.pos.loadUrisToStore([{ value: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns' }])
-            .then(function () {
-            // (2) ... in order to get all the imports it defines ...
-            _this.pos.getOWLImports('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns')
-                .then(function (res) {
-                // (3) ... to load all the imported files
-                var importedPatternIris = res.map(function (i) { return i.import; });
-                _this.pos.loadUrisToStore(importedPatternIris)
-                    .then(function () {
-                    // TEST TEST TEST
-                    _this.filterFactory.createFilter('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns').then(function (filter) {
-                        console.log(filter);
-                    });
-                    // get data from store
-                    _this.loader.getAllData()
-                        .then(function (values) {
-                        _this.patternMap = values[0];
-                        _this.linkMap = values[1];
-                        _this.groupMap = values[2];
-                        // links
-                        // links also contains edges to different pattern languages. we don't want to render them as actual links of the network graph
-                        // => filter clp links
-                        _this.links = Array.from(_this.linkMap.values()).filter(function (link) {
-                            var source = "";
-                            var target = "";
-                            if (typeof link.source === 'string')
-                                source = link.source;
-                            else if (link.source instanceof _model_node__WEBPACK_IMPORTED_MODULE_1__["Node"])
-                                source = link.source.id;
-                            if (typeof link.target === 'string')
-                                target = link.target;
-                            else if (link.target instanceof _model_node__WEBPACK_IMPORTED_MODULE_1__["Node"])
-                                target = link.target.id;
-                            // keep link, if its source and destination is from enterpriseintegrationpatterns, and no other language
-                            return source.includes('enterpriseintegrationpatterns') && target.includes('enterpriseintegrationpatterns');
-                        });
-                        // groups
-                        var groups = {};
-                        _this.groupMap.forEach(function (value) {
-                            groups[value.groupName] = value.patterns;
-                        });
-                        // for coloring of nodes
-                        var groupIds = Array.from(Object.keys(groups));
-                        var scale = d3__WEBPACK_IMPORTED_MODULE_3__["scaleOrdinal"](d3__WEBPACK_IMPORTED_MODULE_3__["schemeCategory10"]);
-                        var color = function (d) {
-                            if (d)
-                                return scale('' + groupIds.indexOf(d));
-                            return scale('0');
-                        };
-                        // nodes
-                        _this.nodes = [];
-                        // convert given IRI -> EnterpriseIntegrationPattern Map to Node list for rendering
-                        _this.patternMap.forEach(function (value) {
-                            var n = new _model_node__WEBPACK_IMPORTED_MODULE_1__["Node"](value.id);
-                            n.name = value.name;
-                            n.description = value.description.value;
-                            // go through all groups and check if the current pattern is present in the list of patterns
-                            // return the group (i.e. the group name) that contains the pattern. undefined if no group contains this pattern
-                            n.group = Object.keys(groups).find(function (groupName) { return groups[groupName].includes(value.id); });
-                            n.color = color(n.group);
-                            _this.nodes.push(n);
-                        });
-                        // place data in field
-                        _this.data = {
-                            nodes: _this.nodes,
-                            links: _this.links,
-                            id: _this.pId
-                        };
-                    });
+        // load base file, patterns file, and relations file
+        var uris = [
+            { value: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns' },
+            { value: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns' },
+            { value: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations' }
+        ];
+        this.pos.loadUrisToStore(uris).then(function () {
+            // get data from store
+            _this.loader.getAllData()
+                .then(function (values) {
+                _this.patternMap = values[0];
+                _this.linkMap = values[1];
+                _this.groupMap = values[2];
+                // links
+                // links also contains edges to different pattern languages. we don't want to render them as actual links of the network graph
+                // => filter clp links
+                _this.links = Array.from(_this.linkMap.values()).filter(function (link) {
+                    var source = "";
+                    var target = "";
+                    if (typeof link.source === 'string')
+                        source = link.source;
+                    else if (link.source instanceof _model_node__WEBPACK_IMPORTED_MODULE_1__["Node"])
+                        source = link.source.id;
+                    if (typeof link.target === 'string')
+                        target = link.target;
+                    else if (link.target instanceof _model_node__WEBPACK_IMPORTED_MODULE_1__["Node"])
+                        target = link.target.id;
+                    // keep link, if its source and destination is from enterpriseintegrationpatterns, and no other language
+                    return source.includes('enterpriseintegrationpatterns') && target.includes('enterpriseintegrationpatterns');
                 });
+                // groups
+                var groups = {};
+                _this.groupMap.forEach(function (value) {
+                    groups[value.groupName] = value.patterns;
+                });
+                // for coloring of nodes
+                var groupIds = Array.from(Object.keys(groups));
+                var scale = d3__WEBPACK_IMPORTED_MODULE_3__["scaleOrdinal"](d3__WEBPACK_IMPORTED_MODULE_3__["schemeCategory10"]);
+                var color = function (d) {
+                    if (d)
+                        return scale('' + groupIds.indexOf(d));
+                    return scale('0');
+                };
+                // nodes
+                _this.nodes = [];
+                // convert given IRI -> EnterpriseIntegrationPattern Map to Node list for rendering
+                _this.patternMap.forEach(function (value) {
+                    var n = new _model_node__WEBPACK_IMPORTED_MODULE_1__["Node"](value.id);
+                    n.name = value.name;
+                    n.description = value.description.value;
+                    // go through all groups and check if the current pattern is present in the list of patterns
+                    // return the group (i.e. the group name) that contains the pattern. undefined if no group contains this pattern
+                    n.group = Object.keys(groups).find(function (groupName) { return groups[groupName].includes(value.id); });
+                    n.color = color(n.group);
+                    _this.nodes.push(n);
+                });
+                // place data in field
+                _this.data = {
+                    nodes: _this.nodes,
+                    links: _this.links,
+                    id: _this.pId
+                };
             });
         });
     };
@@ -5935,7 +5942,7 @@ module.exports = "<div class=\"info\" *ngIf=\"info; else loading\">\n  <div clas
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".info {\n  width: 350px;\n  padding: 10px;\n  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;\n  border-width: 2px;\n  border-style: solid;\n  border-color: grey;\n  background: rgba(255, 255, 255, 0.7); }\n\n.headline {\n  padding-bottom: 10px;\n  border-bottom-width: 2px;\n  border-bottom-style: solid;\n  border-bottom-color: lightgrey; }\n\n.headline h1 {\n    padding: 0;\n    margin: 0; }\n\n.headline p {\n    padding: 0;\n    margin: 0;\n    font-style: italic; }\n\n.description {\n  word-break: normal; }\n\n.referenced {\n  border-top-width: 2px;\n  border-top-style: solid;\n  border-top-color: lightgrey; }\n\n.referenced ul {\n    padding-left: 20px;\n    list-style: none; }\n\n.referenced li {\n    margin-bottom: 10px; }\n\n.referenced h1 {\n    padding: 0;\n    margin: 0;\n    font-variant: small-caps;\n    font-size: 14pt; }\n\n.related {\n  margin-bottom: 10px;\n  padding: 4px; }\n\n.related i {\n    margin-right: 8px; }\n\n.related .item {\n    margin-bottom: 4px; }\n\n.related .info-icon {\n    float: right; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2V4dGVuc2lvbnMvcGF0dGVybi1sYW5ndWFnZS9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zL2NvbXBvbmVudC9ub2RlLWluZm9ib3gvbm9kZS1pbmZvYm94LmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksWUFBWTtFQUNaLGFBQWE7RUFDYiw2RUFBNkU7RUFDN0UsaUJBQWlCO0VBQ2pCLG1CQUFtQjtFQUNuQixrQkFBa0I7RUFDbEIsb0NBQW9DLEVBQUE7O0FBR3hDO0VBQ0ksb0JBQW9CO0VBQ3BCLHdCQUF3QjtFQUN4QiwwQkFBMEI7RUFDMUIsOEJBQThCLEVBQUE7O0FBSmxDO0lBT1EsVUFBVTtJQUNWLFNBQVMsRUFBQTs7QUFSakI7SUFZUSxVQUFVO0lBQ1YsU0FBUztJQUNULGtCQUFrQixFQUFBOztBQUkxQjtFQUNJLGtCQUFrQixFQUFBOztBQUd0QjtFQUNJLHFCQUFxQjtFQUNyQix1QkFBdUI7RUFDdkIsMkJBQTJCLEVBQUE7O0FBSC9CO0lBTVEsa0JBQWlCO0lBQ2pCLGdCQUFlLEVBQUE7O0FBUHZCO0lBV1EsbUJBQWtCLEVBQUE7O0FBWDFCO0lBZVEsVUFBVTtJQUNWLFNBQVM7SUFDVCx3QkFBd0I7SUFDeEIsZUFBZSxFQUFBOztBQUl2QjtFQUNJLG1CQUFtQjtFQUNuQixZQUFZLEVBQUE7O0FBRmhCO0lBS1EsaUJBQWlCLEVBQUE7O0FBTHpCO0lBU1Esa0JBQWtCLEVBQUE7O0FBVDFCO0lBYVEsWUFBWSxFQUFBIiwiZmlsZSI6InNyYy9hcHAvZXh0ZW5zaW9ucy9wYXR0ZXJuLWxhbmd1YWdlL2VudGVycHJpc2UtaW50ZWdyYXRpb24tcGF0dGVybnMvY29tcG9uZW50L25vZGUtaW5mb2JveC9ub2RlLWluZm9ib3guY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuaW5mbyB7XG4gICAgd2lkdGg6IDM1MHB4O1xuICAgIHBhZGRpbmc6IDEwcHg7XG4gICAgZm9udC1mYW1pbHk6ICdHaWxsIFNhbnMnLCAnR2lsbCBTYW5zIE1UJywgQ2FsaWJyaSwgJ1RyZWJ1Y2hldCBNUycsIHNhbnMtc2VyaWY7XG4gICAgYm9yZGVyLXdpZHRoOiAycHg7XG4gICAgYm9yZGVyLXN0eWxlOiBzb2xpZDtcbiAgICBib3JkZXItY29sb3I6IGdyZXk7XG4gICAgYmFja2dyb3VuZDogcmdiYSgyNTUsIDI1NSwgMjU1LCAwLjcpO1xufVxuXG4uaGVhZGxpbmUge1xuICAgIHBhZGRpbmctYm90dG9tOiAxMHB4O1xuICAgIGJvcmRlci1ib3R0b20td2lkdGg6IDJweDtcbiAgICBib3JkZXItYm90dG9tLXN0eWxlOiBzb2xpZDtcbiAgICBib3JkZXItYm90dG9tLWNvbG9yOiBsaWdodGdyZXk7XG5cbiAgICBoMSB7XG4gICAgICAgIHBhZGRpbmc6IDA7XG4gICAgICAgIG1hcmdpbjogMDtcbiAgICB9XG5cbiAgICBwIHtcbiAgICAgICAgcGFkZGluZzogMDtcbiAgICAgICAgbWFyZ2luOiAwO1xuICAgICAgICBmb250LXN0eWxlOiBpdGFsaWM7XG4gICAgfVxufVxuXG4uZGVzY3JpcHRpb24ge1xuICAgIHdvcmQtYnJlYWs6IG5vcm1hbDtcbn1cblxuLnJlZmVyZW5jZWQge1xuICAgIGJvcmRlci10b3Atd2lkdGg6IDJweDtcbiAgICBib3JkZXItdG9wLXN0eWxlOiBzb2xpZDtcbiAgICBib3JkZXItdG9wLWNvbG9yOiBsaWdodGdyZXk7XG5cbiAgICB1bCB7IFxuICAgICAgICBwYWRkaW5nLWxlZnQ6MjBweDsgXG4gICAgICAgIGxpc3Qtc3R5bGU6bm9uZTsgXG4gICAgfVxuICAgIFxuICAgIGxpIHsgXG4gICAgICAgIG1hcmdpbi1ib3R0b206MTBweDsgXG4gICAgfVxuXG4gICAgaDEge1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGZvbnQtdmFyaWFudDogc21hbGwtY2FwcztcbiAgICAgICAgZm9udC1zaXplOiAxNHB0O1xuICAgIH1cbn1cblxuLnJlbGF0ZWQge1xuICAgIG1hcmdpbi1ib3R0b206IDEwcHg7XG4gICAgcGFkZGluZzogNHB4O1xuXG4gICAgaSB7XG4gICAgICAgIG1hcmdpbi1yaWdodDogOHB4O1xuICAgIH1cblxuICAgIC5pdGVtIHtcbiAgICAgICAgbWFyZ2luLWJvdHRvbTogNHB4O1xuICAgIH1cblxuICAgIC5pbmZvLWljb24ge1xuICAgICAgICBmbG9hdDogcmlnaHQ7XG4gICAgfVxufSJdfQ== */"
+module.exports = ".info {\n  width: 350px;\n  padding: 10px;\n  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;\n  border-width: 2px;\n  border-style: solid;\n  border-color: grey;\n  background: rgba(255, 255, 255, 0.7); }\n\n.headline {\n  padding-bottom: 10px;\n  border-bottom-width: 2px;\n  border-bottom-style: solid;\n  border-bottom-color: lightgrey;\n  word-break: keep-all; }\n\n.headline h1 {\n    padding: 0;\n    margin: 0; }\n\n.headline p {\n    padding: 0;\n    margin: 0;\n    font-style: italic; }\n\n.description {\n  word-break: normal; }\n\n.referenced {\n  border-top-width: 2px;\n  border-top-style: solid;\n  border-top-color: lightgrey; }\n\n.referenced ul {\n    padding-left: 20px;\n    list-style: none; }\n\n.referenced li {\n    margin-bottom: 10px; }\n\n.referenced h1 {\n    padding: 0;\n    margin: 0;\n    font-variant: small-caps;\n    font-size: 14pt; }\n\n.related {\n  margin-bottom: 10px;\n  padding: 4px; }\n\n.related i {\n    margin-right: 8px; }\n\n.related .item {\n    margin-bottom: 4px; }\n\n.related .info-icon {\n    float: right; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2V4dGVuc2lvbnMvcGF0dGVybi1sYW5ndWFnZS9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zL2NvbXBvbmVudC9ub2RlLWluZm9ib3gvbm9kZS1pbmZvYm94LmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksWUFBWTtFQUNaLGFBQWE7RUFDYiw2RUFBNkU7RUFDN0UsaUJBQWlCO0VBQ2pCLG1CQUFtQjtFQUNuQixrQkFBa0I7RUFDbEIsb0NBQW9DLEVBQUE7O0FBR3hDO0VBQ0ksb0JBQW9CO0VBQ3BCLHdCQUF3QjtFQUN4QiwwQkFBMEI7RUFDMUIsOEJBQThCO0VBQzlCLG9CQUFvQixFQUFBOztBQUx4QjtJQVFRLFVBQVU7SUFDVixTQUFTLEVBQUE7O0FBVGpCO0lBYVEsVUFBVTtJQUNWLFNBQVM7SUFDVCxrQkFBa0IsRUFBQTs7QUFJMUI7RUFDSSxrQkFBa0IsRUFBQTs7QUFHdEI7RUFDSSxxQkFBcUI7RUFDckIsdUJBQXVCO0VBQ3ZCLDJCQUEyQixFQUFBOztBQUgvQjtJQU1RLGtCQUFpQjtJQUNqQixnQkFBZSxFQUFBOztBQVB2QjtJQVdRLG1CQUFrQixFQUFBOztBQVgxQjtJQWVRLFVBQVU7SUFDVixTQUFTO0lBQ1Qsd0JBQXdCO0lBQ3hCLGVBQWUsRUFBQTs7QUFJdkI7RUFDSSxtQkFBbUI7RUFDbkIsWUFBWSxFQUFBOztBQUZoQjtJQUtRLGlCQUFpQixFQUFBOztBQUx6QjtJQVNRLGtCQUFrQixFQUFBOztBQVQxQjtJQWFRLFlBQVksRUFBQSIsImZpbGUiOiJzcmMvYXBwL2V4dGVuc2lvbnMvcGF0dGVybi1sYW5ndWFnZS9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zL2NvbXBvbmVudC9ub2RlLWluZm9ib3gvbm9kZS1pbmZvYm94LmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmluZm8ge1xuICAgIHdpZHRoOiAzNTBweDtcbiAgICBwYWRkaW5nOiAxMHB4O1xuICAgIGZvbnQtZmFtaWx5OiAnR2lsbCBTYW5zJywgJ0dpbGwgU2FucyBNVCcsIENhbGlicmksICdUcmVidWNoZXQgTVMnLCBzYW5zLXNlcmlmO1xuICAgIGJvcmRlci13aWR0aDogMnB4O1xuICAgIGJvcmRlci1zdHlsZTogc29saWQ7XG4gICAgYm9yZGVyLWNvbG9yOiBncmV5O1xuICAgIGJhY2tncm91bmQ6IHJnYmEoMjU1LCAyNTUsIDI1NSwgMC43KTtcbn1cblxuLmhlYWRsaW5lIHtcbiAgICBwYWRkaW5nLWJvdHRvbTogMTBweDtcbiAgICBib3JkZXItYm90dG9tLXdpZHRoOiAycHg7XG4gICAgYm9yZGVyLWJvdHRvbS1zdHlsZTogc29saWQ7XG4gICAgYm9yZGVyLWJvdHRvbS1jb2xvcjogbGlnaHRncmV5O1xuICAgIHdvcmQtYnJlYWs6IGtlZXAtYWxsO1xuXG4gICAgaDEge1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgfVxuXG4gICAgcCB7XG4gICAgICAgIHBhZGRpbmc6IDA7XG4gICAgICAgIG1hcmdpbjogMDtcbiAgICAgICAgZm9udC1zdHlsZTogaXRhbGljO1xuICAgIH1cbn1cblxuLmRlc2NyaXB0aW9uIHtcbiAgICB3b3JkLWJyZWFrOiBub3JtYWw7XG59XG5cbi5yZWZlcmVuY2VkIHtcbiAgICBib3JkZXItdG9wLXdpZHRoOiAycHg7XG4gICAgYm9yZGVyLXRvcC1zdHlsZTogc29saWQ7XG4gICAgYm9yZGVyLXRvcC1jb2xvcjogbGlnaHRncmV5O1xuXG4gICAgdWwgeyBcbiAgICAgICAgcGFkZGluZy1sZWZ0OjIwcHg7IFxuICAgICAgICBsaXN0LXN0eWxlOm5vbmU7IFxuICAgIH1cbiAgICBcbiAgICBsaSB7IFxuICAgICAgICBtYXJnaW4tYm90dG9tOjEwcHg7IFxuICAgIH1cblxuICAgIGgxIHtcbiAgICAgICAgcGFkZGluZzogMDtcbiAgICAgICAgbWFyZ2luOiAwO1xuICAgICAgICBmb250LXZhcmlhbnQ6IHNtYWxsLWNhcHM7XG4gICAgICAgIGZvbnQtc2l6ZTogMTRwdDtcbiAgICB9XG59XG5cbi5yZWxhdGVkIHtcbiAgICBtYXJnaW4tYm90dG9tOiAxMHB4O1xuICAgIHBhZGRpbmc6IDRweDtcblxuICAgIGkge1xuICAgICAgICBtYXJnaW4tcmlnaHQ6IDhweDtcbiAgICB9XG5cbiAgICAuaXRlbSB7XG4gICAgICAgIG1hcmdpbi1ib3R0b206IDRweDtcbiAgICB9XG5cbiAgICAuaW5mby1pY29uIHtcbiAgICAgICAgZmxvYXQ6IHJpZ2h0O1xuICAgIH1cbn0iXX0= */"
 
 /***/ }),
 
@@ -6418,6 +6425,9 @@ var EnterpriseIntegrationPatternIncomingLinkLoaderService = /** @class */ (funct
                             entry = patterns_1[_i];
                             graphs.push(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(entry.sourceUri.value));
                         }
+                        graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
+                        graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
+                        graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
                         return [2 /*return*/, this.executor.exec(qry, graphs)];
                 }
             });
@@ -6576,6 +6586,9 @@ var EnterpriseIntegrationPatternLoaderService = /** @class */ (function (_super)
                     return [2 /*return*/, Promise.resolve()];
                 qry = "SELECT ?name ?groupName ?description\n      WHERE {\n        <" + uri + "> <https://purl.org/patternpedia#hasName> ?name .\n        <" + uri + "> <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description .\n        ?group a <https://purl.org/patternpedia#PatternSetRelationDescriptor> ;\n              <https://purl.org/patternpedia#hasLabel> ?groupName ;\n              <https://purl.org/patternpedia#hasPattern> <" + uri + "> .\n      }";
                 graphs = [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI), src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns'];
+                graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
+                graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
+                graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
                 return [2 /*return*/, this.executor.exec(qry, graphs)];
             });
         });
@@ -6741,6 +6754,9 @@ var EnterpriseIntegrationPatternOutgoingLinkLoaderService = /** @class */ (funct
                             entry = patterns_1[_i];
                             graphs.push(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(entry.targetUri.value));
                         }
+                        graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
+                        graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
+                        graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
                         return [2 /*return*/, this.executor.exec(qry, graphs)];
                 }
             });
@@ -6887,10 +6903,14 @@ var EnterpriseIntegrationPatternsGroupLoaderService = /** @class */ (function (_
     }
     EnterpriseIntegrationPatternsGroupLoaderService.prototype.selectContentFromStore = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var qry;
+            var qry, graphs;
             return __generator(this, function (_a) {
                 qry = "SELECT ?uri ?group ?pattern\n      WHERE {\n          ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://purl.org/patternpedia#PatternSetRelationDescriptor> .\n          ?uri <https://purl.org/patternpedia#hasLabel> ?group .\n          ?uri <https://purl.org/patternpedia#hasPattern> ?pattern .\n      }";
-                return [2 /*return*/, this.executor.exec(qry, ["https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns"])];
+                graphs = [];
+                graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
+                graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
+                graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
+                return [2 /*return*/, this.executor.exec(qry, graphs)];
             });
         });
     };
@@ -7071,6 +7091,9 @@ var EnterpriseIntegrationPatternsLinkInfoLoaderService = /** @class */ (function
                             // uri of the target pattern (for name)
                             graphs.push(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(p.targetUri.value));
                         });
+                        graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
+                        graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
+                        graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
                         return [2 /*return*/, this.executor.exec(qry, graphs)];
                 }
             });
@@ -7203,11 +7226,14 @@ var EnterpriseIntegrationPatternsLinkLoaderService = /** @class */ (function (_s
     }
     EnterpriseIntegrationPatternsLinkLoaderService.prototype.selectContentFromStore = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var qry;
+            var qry, graphs;
             return __generator(this, function (_a) {
                 qry = "SELECT ?uri ?source ?target ?description\n      WHERE {\n          ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://purl.org/patternpedia#DirectedPatternRelationDescriptor> .\n          ?uri <https://purl.org/patternpedia#hasSource> ?source .\n          ?uri <https://purl.org/patternpedia#hasTarget> ?target .\n          OPTIONAL { ?uri <https://purl.org/patternpedia#hasDescription> ?description . }\n      }";
-                // we only need information from the links, not the actual patterns. Thus the URI of the links is enough
-                return [2 /*return*/, this.executor.exec(qry, ["https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns"])];
+                graphs = [];
+                graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
+                graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
+                graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
+                return [2 /*return*/, this.executor.exec(qry, graphs)];
             });
         });
     };
@@ -7388,6 +7414,9 @@ var EnterpriseIntegrationPatternsLoaderService = /** @class */ (function (_super
                             // patterns contains list of objects with field pattern via the query above (qryPatterns)
                             graphs.push(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getFileName(entry.pattern.value));
                         }
+                        graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
+                        graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
+                        graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
                         return [2 /*return*/, this.executor.exec(qry, graphs)];
                 }
             });
