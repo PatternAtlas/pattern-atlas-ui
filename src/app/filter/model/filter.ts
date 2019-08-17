@@ -21,7 +21,13 @@ export default class Filter {
 
     /**
      * Filters a given list of patterns based on the config.
-     * TODO what type of filtering? Fuzzy? How?
+     * 
+     * The Filter method checks, if the given config value is contained in the pattern fields.
+     * Example: 
+     * Pattern Name - Message Filter
+     * Config Name  - message
+     * Filtering will include this pattern, as the test will be successful.
+     * 
      * @param patterns the list of pattern objects that will be filtered based on the config
      */
     filterPatterns(patterns: Array<any>): Array<any> {
@@ -30,15 +36,10 @@ export default class Filter {
             let result = true;
             Object.keys(this.config).forEach(k => {
                 // pattern should contain same fields as the config
-                if (p[k]) {
-                    // FIXME description is a array of strings...
-                    // Quick Hack: ignore description for now until real data is available
-                    if (typeof p[k] !== 'string') {
-                        return;
-                    }
-        
+                if (p[k]) {        
                     // and the value of that fields should match somehow
                     let test = this.matches(p[k], this.config[k]);
+                    // all tests have to be successful! Aggregate the individual results
                     result = result && test;
                 } else {
                     result = false;
@@ -54,13 +55,25 @@ export default class Filter {
 
     // TODO use a similarity measure here!
     // for now, we check if one includes the other somehow
-    private matches(a: string, b: string): boolean {
+    // values can be string arrays! E.g. when there are multiple description values -> description is a string array
+    private matches(value: string | Array<string>, config: string): boolean {
         // special case: b might be empty, i.e. "" if no filter value has been entered
         // this method works even in this situation. But keep this in mind, if we switch the match function!
 
-        let shorter = (a.length < b.length) ? a : b;
-        let longer = (a.length < b.length) ? b : a;
+        if (value instanceof Array) {
+            let result = false;
+            for (const s of value) {
+                let shorter = (s.length < config.length) ? s : config;
+                let longer = (s.length < config.length) ? config : s;
+                // if one element of the list passes the test, return true
+                result = result || longer.toLowerCase().includes(shorter.toLowerCase());
+            }
+            return result;
+        } else {
+            let shorter = (value.length < config.length) ? value : config;
+            let longer = (value.length < config.length) ? config : value;
 
-        return longer.toLowerCase().includes(shorter.toLowerCase());
+            return longer.toLowerCase().includes(shorter.toLowerCase());
+        }
     }
 }
