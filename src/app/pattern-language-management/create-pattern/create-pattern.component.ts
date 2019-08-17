@@ -16,11 +16,11 @@ import { PatternLanguageSectionRestriction, SectionRestrictionsResult } from '..
 import PatternPedia from '../../core/model/pattern-pedia.model';
 import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ValidationService } from '../../core/service/validation.service';
-import { switchMap } from 'rxjs/internal/operators';
 import PatternLanguage from '../../core/model/pattern-language.model';
-import { PatternLanguagePatterns } from '../../core/model/pattern-language-patterns.model';
 import { PatternInstance } from '../../core/model/PatternInstance.interface';
 import { DefaultPatternLoaderService } from '../../core/service/loader/default-pattern-loader.service';
+import { switchMap } from 'rxjs/internal/operators';
+import { PatternLanguagePatterns } from '../../core/model/pattern-language-patterns.model';
 
 
 @Component({
@@ -159,7 +159,7 @@ export class CreatePatternComponent implements OnInit {
   onChangeMarkdownText(): void {
     let currentText = this.parseMarkdownText();
     if (this.invalidTextEdit(currentText)) {
-      console.log('invalid');
+      console.log('invalid markdowntext detected, undoing last editing');
       this._textEditor.value = this.previousTextEditorValue;
       currentText = this.parseMarkdownText();
       this.toastService.pop('warning', 'Reset text', `Title of Sections changed, this is not allowed`);
@@ -221,7 +221,7 @@ export class CreatePatternComponent implements OnInit {
               sectioncontent[i] = '<' + sectioncontent[i] + '>';
             }
         }
-        sectionMap[section] = sectioncontent;
+        sectionMap.set(section, sectioncontent);
 
       }
 
@@ -284,25 +284,8 @@ export class CreatePatternComponent implements OnInit {
               .then(result => {
                 this.patterns = Array.from(result.values());
                 if (this.patterns) {
-                  for (let i = 0; i < this.patterns.length; i++) {
-                    this.patternLoaderService.patternIri = this.patterns[i].uri;
-                    this.patternLoaderService.supportedIRI = IriConverter.getPatternListIriForPLIri(this.plIri);
-                    this.patternLoaderService.selectContentFromStore().then(
-                      (sectionProperties) => {
-                        const secMap = new Map<string, string[]>();
-                        for (let i = 0; i < sectionProperties.length; i++) {
-                          if (!secMap.get(sectionProperties[i].predicate.value)) {
-                            secMap.set(sectionProperties[i].property.value, [sectionProperties[i].predicate.value]);
-                          } else {
-                            const valArray = secMap.get(sectionProperties[i].predicate.value);
-                            valArray.push(sectionProperties[i].property.value);
-                            secMap.set(sectionProperties[i].property.value, valArray);
-                          }
-                        }
-                        this.patterns[i].sectionProperties = secMap;
-                      }
-                    );
-                  }
+                  this.loadPatternSections();
+
                 }
                 this.cdr.detectChanges();
               });
@@ -350,14 +333,11 @@ export class CreatePatternComponent implements OnInit {
 
               validators.push(ValidationService.xsdImage());
 
-              console.log('added xsdImage validator');
             } else if (allRestrictions.type.startsWith(this.xsdPrefix) &&
               (allRestrictions.type.endsWith('integer') || allRestrictions.type.endsWith('positiveInteger') || allRestrictions.type.endsWith('negativeInteger'))) {
-              console.log('added xsdinteger validator');
               validators.push(ValidationService.xsdInteger());
             } else if (allRestrictions.type.startsWith(this.xsdPrefix) && allRestrictions.type.endsWith('anyURI')) {
               validators.push(ValidationService.xsdAnyURI());
-              console.log('added xsdAnyURI validator');
             }
           }
           this.patternValuesFormGroup.addControl(key,
@@ -387,5 +367,25 @@ export class CreatePatternComponent implements OnInit {
         return dataRessponse.logo.value;
       });
     });
+  }
+
+  async loadPatternSections() {
+    for (let i = 0; i < this.patterns.length; i++) {
+      this.patternLoaderService.patternIri = this.patterns[i].uri;
+      this.patternLoaderService.supportedIRI = IriConverter.getPatternListIriForPLIri(this.plIri);
+      const sectionProperties = await this.patternLoaderService.selectContentFromStore();
+
+      const secMap = new Map<string, string[]>();
+      for (let i = 0; i < sectionProperties.length; i++) {
+        if (!secMap.get(sectionProperties[i].predicate.value)) {
+          secMap.set(sectionProperties[i].property.value, [sectionProperties[i].predicate.value]);
+        } else {
+          const valArray = secMap.get(sectionProperties[i].predicate.value);
+          valArray.push(sectionProperties[i].property.value);
+          secMap.set(sectionProperties[i].property.value, valArray);
+        }
+      }
+      this.patterns[i].sectionProperties = secMap;
+    }
   }
 }
