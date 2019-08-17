@@ -35,6 +35,9 @@ export class EnterpriseIntegrationPatternLoaderService extends Loader<any> {
     
     // links URI needed for group
     const graphs = [IriConverter.getFileName(this.supportedIRI), IriConverter.getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns'];
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
 
     return this.executor.exec(qry, graphs);
   }

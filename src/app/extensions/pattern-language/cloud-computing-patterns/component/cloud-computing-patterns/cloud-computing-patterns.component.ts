@@ -38,21 +38,35 @@ export class CloudComputingPatternsComponent implements OnInit {
 
     ngOnInit() {
         // we have to load the individual patterns first by getting all imports from the base file
-        this.pos.getOWLImports('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns')
-            .then(res => {
-                const importedIris = res.map(i => i.import);
+        const uris = [
+            {value: 'https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns'},
+            {value: 'https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Patterns'},
+            {value: 'https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Relations'}
+        ];
 
-              this.pos.loadUrisToStore(importedIris)
-                    .then(() => {
-                        // we can now query the data, as all patterns have been loaded
-                        this.loader.loadContentFromStore()
-                            .then(patternMap => {
-                                this.patternMap = patternMap;
-                                this.patterns = Array.from(patternMap.values());
-                                this.cdr.detectChanges();
-                            });
-                    });
-            });
+        this.pos.loadUrisToStore(uris).then(() => {
+            this.loader.loadContentFromStore()
+                .then(patternMap => {
+                    this.patternMap = patternMap;
+                    this.patterns = Array.from(patternMap.values());
+                    this.cdr.detectChanges();
+                });
+        });
+        // this.pos.getOWLImports('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns')
+        //     .then(res => {
+        //         const importedIris = res.map(i => i.import);
+
+        //       this.pos.loadUrisToStore(importedIris)
+        //             .then(() => {
+        //                 // we can now query the data, as all patterns have been loaded
+        //                 this.loader.loadContentFromStore()
+        //                     .then(patternMap => {
+        //                         this.patternMap = patternMap;
+        //                         this.patterns = Array.from(patternMap.values());
+        //                         this.cdr.detectChanges();
+        //                     });
+        //             });
+        //     });
     }
 
     navigate(id: string): void {

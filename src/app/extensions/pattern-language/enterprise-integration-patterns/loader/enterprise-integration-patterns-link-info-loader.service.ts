@@ -46,6 +46,9 @@ export class EnterpriseIntegrationPatternsLinkInfoLoaderService extends Loader<a
       graphs.push(IriConverter.getFileName(p.targetUri.value));
     });
 
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
     return this.executor.exec(qry, graphs);
   }
 

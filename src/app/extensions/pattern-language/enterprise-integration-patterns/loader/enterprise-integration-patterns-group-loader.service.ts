@@ -21,7 +21,12 @@ export class EnterpriseIntegrationPatternsGroupLoaderService extends Loader<any>
           ?uri <https://purl.org/patternpedia#hasPattern> ?pattern .
       }`;
 
-    return this.executor.exec(qry, ["https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns"]);
+    const graphs = [];
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
+
+    return this.executor.exec(qry, graphs);
   }
 
   mapTriples(triples: any): Promise<Map<string, any>> {

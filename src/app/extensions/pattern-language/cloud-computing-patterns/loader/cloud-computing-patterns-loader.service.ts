@@ -43,6 +43,11 @@ export class CloudComputingPatternsLoaderService extends Loader<CloudComputingPa
         for (const entry of patterns) {
             graphs.push(IriConverter.getFileName(entry.pattern.value));
         }
+
+        graphs.push('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns');
+        graphs.push('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Patterns');
+        graphs.push('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Relations');
+
         return this.executor.exec(qry, graphs);
     }
 

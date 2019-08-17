@@ -48,6 +48,10 @@ export class EnterpriseIntegrationPatternIncomingLinkLoaderService extends Loade
       graphs.push(IriConverter.getFileName(entry.sourceUri.value));
     }
 
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
+
     return this.executor.exec(qry, graphs);
   }
 
