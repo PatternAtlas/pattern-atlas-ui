@@ -47,6 +47,7 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
   ngOnInit() {
     // load base file, patterns file, and relations file
     const uris = [
+      { value: 'https://purl.org/patternpedia' },
       { value: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns' },
       { value: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns' },
       { value: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations' }

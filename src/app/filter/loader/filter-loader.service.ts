@@ -24,26 +24,25 @@ export class FilterLoaderService extends Loader<any> {
   }
 
   async selectContentFromStore(patternlanguageUri?: string): Promise<any> {
+    // select all properties that are somehow restricted to string
+    // consider the class within the given uri graph as well as the possible base class 'Pattern'
     const query = `SELECT DISTINCT ?predicate
     WHERE {
       {
-        ?class rdfs:subClassOf pp:Pattern .
-      }
-      UNION
-      {
-        ?class rdfs:subClassOf ?sub .
-        #?sub a owl:Restriction .
+        ?predicate a owl:DatatypeProperty .
+        pp:Pattern rdfs:subClassOf ?sub .
+        ?sub a owl:Restriction .
         ?sub owl:onProperty ?predicate .
         ?sub ?typeRange xsd:string .
       }
       UNION
       {
-        ?class rdfs:subClassOf ?pp .
-        ?pp a owl:Class .
-        ?pp rdfs:subClassOf ?sub2 .
-        #?sub2 a owl:Restriction .
-        ?sub2 owl:onProperty ?predicate .
-        ?sub2 ?typeRange xsd:string .
+        ?predicate a owl:DatatypeProperty .
+        ?class rdfs:subClassOf pp:Pattern .
+        ?class rdfs:subClassOf ?sub .
+        ?sub a owl:Restriction .
+        ?sub owl:onProperty ?predicate .
+        ?sub ?typeRange xsd:string .
       }
     }`;
 
