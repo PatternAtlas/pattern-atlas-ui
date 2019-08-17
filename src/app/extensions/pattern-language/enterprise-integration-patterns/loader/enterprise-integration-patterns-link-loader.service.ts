@@ -22,8 +22,12 @@ export class EnterpriseIntegrationPatternsLinkLoaderService extends Loader<Link>
           ?uri <https://purl.org/patternpedia#hasTarget> ?target .
           OPTIONAL { ?uri <https://purl.org/patternpedia#hasDescription> ?description . }
       }`;
-    // we only need information from the links, not the actual patterns. Thus the URI of the links is enough
-    return this.executor.exec(qry, ["https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns"]);
+
+    const graphs = [];
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
+    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
+    return this.executor.exec(qry, graphs);
   }
 
   mapTriples(triples: any): Promise<Map<string, any>> {

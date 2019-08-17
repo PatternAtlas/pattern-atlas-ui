@@ -45,95 +45,82 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
     public dialog: MatDialog) { }
 
   ngOnInit() {
-    // (1) load the base file ...
-    this.pos.loadUrisToStore([{ value: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns' }])
-      .then(() => {
-        // (2) ... in order to get all the imports it defines ...
-        this.pos.getOWLImports('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns')
-          .then(res => {
-            // (3) ... to load all the imported files
-            const importedPatternIris = res.map(i => i.import);
-            this.pos.loadUrisToStore(importedPatternIris)
-              .then(() => {
+    // load base file, patterns file, and relations file
+    const uris = [
+      { value: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns' },
+      { value: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns' },
+      { value: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations' }
+    ];
+    this.pos.loadUrisToStore(uris).then(() => {
+      // get data from store
+      this.loader.getAllData()
+        .then(values => {
+          this.patternMap = values[0];
+          this.linkMap = values[1];
+          this.groupMap = values[2];
 
-                // TEST TEST TEST
-                this.filterFactory.createFilter('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns').then(
-                  filter => {
-                    console.log(filter);
-                  }
-                );
+          // links
+          // links also contains edges to different pattern languages. we don't want to render them as actual links of the network graph
+          // => filter clp links
+          this.links = Array.from(this.linkMap.values()).filter(link => {
+            let source = "";
+            let target = "";
 
-                // get data from store
-                this.loader.getAllData()
-                  .then(values => {
-                    this.patternMap = values[0];
-                    this.linkMap = values[1];
-                    this.groupMap = values[2];
+            if (typeof link.source === 'string')
+              source = link.source;
+            else if (link.source instanceof Node)
+              source = link.source.id;
 
-                    // links
-                    // links also contains edges to different pattern languages. we don't want to render them as actual links of the network graph
-                    // => filter clp links
-                    this.links = Array.from(this.linkMap.values()).filter(link => {
-                      let source = "";
-                      let target = "";
+            if (typeof link.target === 'string')
+              target = link.target;
+            else if (link.target instanceof Node)
+              target = link.target.id;
 
-                      if (typeof link.source === 'string')
-                        source = link.source;
-                      else if (link.source instanceof Node)
-                        source = link.source.id;
-
-                      if (typeof link.target === 'string')
-                        target = link.target;
-                      else if (link.target instanceof Node)
-                        target = link.target.id;
-
-                      // keep link, if its source and destination is from enterpriseintegrationpatterns, and no other language
-                      return source.includes('enterpriseintegrationpatterns') && target.includes('enterpriseintegrationpatterns');
-                    });
-
-                    // groups
-                    let groups = {};
-                    this.groupMap.forEach(value => {
-                      groups[value.groupName] = value.patterns;
-                    });
-
-                    // for coloring of nodes
-                    let groupIds = Array.from(Object.keys(groups));
-                    let scale = d3.scaleOrdinal(d3.schemeCategory10);
-                    let color = function (d: any) {
-                      if (d)
-                        return scale('' + groupIds.indexOf(d));
-                      return scale('0');
-                    }
-
-                    // nodes
-                    this.nodes = [];
-
-                    // convert given IRI -> EnterpriseIntegrationPattern Map to Node list for rendering
-                    this.patternMap.forEach((value) => {
-                      let n = new Node(value.id);
-                      n.name = value.name;
-                      n.description = value.description.value;
-
-                      // go through all groups and check if the current pattern is present in the list of patterns
-                      // return the group (i.e. the group name) that contains the pattern. undefined if no group contains this pattern
-                      n.group = Object.keys(groups).find(groupName => groups[groupName].includes(value.id));
-
-                      n.color = color(n.group);
-
-                      this.nodes.push(n);
-                    });
-
-                    // place data in field
-                    this.data = {
-                      nodes: this.nodes,
-                      links: this.links,
-                      id: this.pId
-                    };
-                  });
-              });
+            // keep link, if its source and destination is from enterpriseintegrationpatterns, and no other language
+            return source.includes('enterpriseintegrationpatterns') && target.includes('enterpriseintegrationpatterns');
           });
-      });
+
+          // groups
+          let groups = {};
+          this.groupMap.forEach(value => {
+            groups[value.groupName] = value.patterns;
+          });
+
+          // for coloring of nodes
+          let groupIds = Array.from(Object.keys(groups));
+          let scale = d3.scaleOrdinal(d3.schemeCategory10);
+          let color = function (d: any) {
+            if (d)
+              return scale('' + groupIds.indexOf(d));
+            return scale('0');
+          }
+
+          // nodes
+          this.nodes = [];
+
+          // convert given IRI -> EnterpriseIntegrationPattern Map to Node list for rendering
+          this.patternMap.forEach((value) => {
+            let n = new Node(value.id);
+            n.name = value.name;
+            n.description = value.description.value;
+
+            // go through all groups and check if the current pattern is present in the list of patterns
+            // return the group (i.e. the group name) that contains the pattern. undefined if no group contains this pattern
+            n.group = Object.keys(groups).find(groupName => groups[groupName].includes(value.id));
+
+            n.color = color(n.group);
+
+            this.nodes.push(n);
+          });
+
+          // place data in field
+          this.data = {
+            nodes: this.nodes,
+            links: this.links,
+            id: this.pId
+          };
+        });
+    });
   }
 
   // called when a node from the network graph was selected
