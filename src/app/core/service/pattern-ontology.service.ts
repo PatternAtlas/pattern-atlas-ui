@@ -575,7 +575,7 @@ export class PatternOntologyService implements SparqlExecutor {
   async getPatternProperties(graphIri: string, patternIri: string): Promise<any[]> {
     const qryPatternGraph = `SELECT DISTINCT ?pattern ?property ?predicate WHERE {
             { <${patternIri}> a owl:NamedIndividual . 
-                ?pattern ?property ?predicate
+              <${patternIri}> ?property ?predicate
                 FILTER(?property != rdf:type)
             }
         } `;

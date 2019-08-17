@@ -370,10 +370,9 @@ export class CreatePatternComponent implements OnInit {
   }
 
   async loadPatternSections() {
+    const patternFilesIri = IriConverter.getPatternListIriForPLIri(this.plIri);
     for (let i = 0; i < this.patterns.length; i++) {
-      this.patternLoaderService.patternIri = this.patterns[i].uri;
-      this.patternLoaderService.supportedIRI = IriConverter.getPatternListIriForPLIri(this.plIri);
-      const sectionProperties = await this.patternLoaderService.selectContentFromStore();
+      const sectionProperties = await this.pos.getPatternProperties(patternFilesIri, this.patterns[i].uri);
 
       const secMap = new Map<string, string[]>();
       for (let i = 0; i < sectionProperties.length; i++) {
