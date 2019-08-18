@@ -1,5 +1,5 @@
 <div style="display: flex; justify-content: space-between; align-items: baseline">
-    <h1 mat-dialog-title>Edit '{{data.label}}'</h1>
+  <h1 mat-dialog-title>Edit {{data.label? "'" + data.label + "'" : ''}}</h1>
     <button mat-flat-button (click)="close()" tabindex="-1">
         <i class="material-icons">close</i>
     </button>
