@@ -4,11 +4,13 @@ import { IriConverter } from '../util/iri-converter';
 /* This class models how a pattern can be reconstructed from the SPARQL queries. */
 export class PatternInstance {
   uri: string;
+  type: string;
   sectionProperties: Map<string, string[]>;
 
-  constructor(uri: string = null, sectionProperties: Map<string, string[]> = null) {
+  constructor(uri: string = null, sectionProperties: Map<string, string[]> = null, type: string = null) {
     this.uri = uri;
     this.sectionProperties = sectionProperties;
+    this.type = type;
   }
 
 
