@@ -79,8 +79,10 @@ export class DefaultPatternRendererComponent implements OnInit {
 
           const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
           const componentRef = viewContainerRef.createComponent(componentFactory);
-          (<DataRenderingComponent>componentRef.instance).data = property.predicate.value;
-          (<DataRenderingComponent>componentRef.instance).title = sectionTitle;
+          const instance = (<DataRenderingComponent>componentRef.instance);
+          instance.data = property.predicate.value;
+          instance.title = sectionTitle;
+          instance.changeContent.subscribe((data) => console.log('Trigger saving new data :' + data));
 
           viewContainerRef.createComponent(componentDividerFactory); // create divider
         }

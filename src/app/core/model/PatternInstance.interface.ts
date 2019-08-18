@@ -22,7 +22,6 @@ export class PatternInstance {
   toPattern(plIri: string): Pattern {
     const nameKey = IriConverter.getFileName(plIri) + '#hasName';
     return new Pattern(this.uri, this.sectionProperties.get(nameKey).join(''), this.sectionProperties, plIri);
-
   }
 
 
