@@ -3,28 +3,31 @@
     <h1>{{info.name}}</h1>
     <p>{{info.group}}</p>
   </div>
-  <div class="description">
-    <p *ngFor="let desc of info.description">{{desc}}</p>
-  </div>
-  <div class="referenced"
-    *ngFor="let group of info.related">
 
-    <h1>{{group.id}}</h1>
-    
+  <div class="description">
+    <p>{{info.summary}}</p>
+  </div>
+
+  <div class="referenced"
+    *ngFor="let group of info.languageRelations">
+
+    <!-- navigate to group.languageId somehow... -->
+    <h1>{{group.languageName}}</h1>
+
     <!-- Outgoing Related Nodes -->
     <div class="related">
       <div class="item"
-        *ngFor="let o of group.outgoing">
+        *ngFor="let o of outgoing(group.relations)">
         <!-- Arrow (->) -->
         <i class="fa fa-long-arrow-right"></i>
         <!-- Caption -->
-        <span 
-          (click)="onClick($event, o.nodeId)"
-          (mouseenter)="onMouseEnter($event, o.nodeId)"
-          (mouseleave)="onMouseLeave($event, o.nodeId)">{{o.name}}
+        <span
+          (click)="onClick($event, o.patternId)"
+          (mouseenter)="onMouseEnter($event, o.patternId)"
+          (mouseleave)="onMouseLeave($event, o.patternId)">{{o.label}}
         </span>
-        
-        <i class="info-icon fa fa-info-circle" 
+
+        <i class="info-icon fa fa-info-circle"
           *ngIf="o.hasDescription"
           (click)="onInfoClick($event, o);"></i>
       </div>
@@ -33,22 +36,23 @@
     <!-- Incoming Related Nodes -->
     <div class="related">
       <div class="item"
-        *ngFor="let i of group.incoming">
+        *ngFor="let i of incoming(group.relations)">
         <!-- Arrow (<-) -->
         <i class="fa fa-long-arrow-left"></i>
         <!-- Caption -->
         <span
-          (click)="onClick($event, i.nodeId)"
-          (mouseenter)="onMouseEnter($event, i.nodeId)"
-          (mouseleave)="onMouseLeave($event, i.nodeId)">{{i.name}}
+          (click)="onClick($event, i.patternId)"
+          (mouseenter)="onMouseEnter($event, i.patternId)"
+          (mouseleave)="onMouseLeave($event, i.patternId)">{{i.label}}
         </span>
 
-        <i class="info-icon fa fa-info-circle" 
+        <i class="info-icon fa fa-info-circle"
           *ngIf="i.hasDescription"
           (click)="onInfoClick($event, i)"></i>
       </div>
     </div>
   </div>
+
 </div>
 <ng-template #loading>
   <div class="info">

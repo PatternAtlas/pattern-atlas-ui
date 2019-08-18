@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import Loader from 'src/app/core/model/loader';
 import { PatternOntologyService } from 'src/app/core/service/pattern-ontology.service';
-import { Link } from '../model';
 import { IriConverter } from 'src/app/core/util/iri-converter';
+import { Link } from 'src/app/graph/model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EnterpriseIntegrationPatternsLinkLoaderService extends Loader<Link> {
 
-  constructor(private pos: PatternOntologyService) { 
+  constructor(private pos: PatternOntologyService) {
     super('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos);
   }
 
@@ -64,11 +64,11 @@ export class EnterpriseIntegrationPatternsLinkLoaderService extends Loader<Link>
     */
     const data = [];
     for (const t of triples) {
-      
+
       let item = data.find(i => i.uri === t.uri.value);
 
       // if no entry for link yet, create new one
-      if(!item) {
+      if (!item) {
         item = {
           id: IriConverter.convertIriToId(t.uri.value),
           source: IriConverter.convertIriToId(t.source.value),
@@ -88,7 +88,7 @@ export class EnterpriseIntegrationPatternsLinkLoaderService extends Loader<Link>
     // create new Link objects from collected data
     const result = new Map<string, Link>();
     for (const l of data) {
-      let link = new Link(
+      const link = new Link(
         l.source, l.target, null, l.description
       );
       result.set(l.id, link);

@@ -6,7 +6,7 @@
                 <g [linkVisual]="link" *ngFor="let link of links"></g>
             </g>
             <g class="nodes">
-                <g [nodeVisual]="node" *ngFor="let node of nodes" 
+                <g [nodeVisual]="node" *ngFor="let node of nodes"
                     [draggableNode]="node"
                     [draggableInGraph]="graph"
                     (clickEvent)="nodeInformation(node.id)"
@@ -24,22 +24,22 @@
   </svg>
 </div>
 
-<div *ngIf="selectedLinkId; else nodeInfo">
-    <pp-link-infobox
-        [linkId]="selectedLinkId"
-        [currentPatternId]="selectedNodeId"
-        (onPatternClicked)="nodeInformation($event)">
-    </pp-link-infobox>
-</div>
+<!--<div *ngIf="selectedLinkId; else nodeInfo">-->
+    <!--<pp-link-infobox-->
+        <!--[linkId]="selectedLinkId"-->
+        <!--[currentPatternId]="selectedNodeId"-->
+        <!--(onPatternClicked)="nodeInformation($event)">-->
+    <!--</pp-link-infobox>-->
+<!--</div>-->
 
-<ng-template #nodeInfo>
-    <div *ngIf="selectedNodeId">
-    <pp-node-infobox 
-            [id]="selectedNodeId"
+<!--<ng-template #nodeInfo>-->
+    <div *ngIf="selectedNodeId && selectedNodeInfo">
+    <pp-node-infobox
+            [info]="selectedNodeInfo"
             (clickEvent)="nodeInformation($event)"
             (mouseEnterEvent)="previewNodeInformation($event)"
             (mouseLeaveEvent)="dePreviewNodeInformation($event)"
             (linkClickEvent)="showLinkInfo($event)">
     </pp-node-infobox>
     </div>
-</ng-template>
+<!--</ng-template>-->

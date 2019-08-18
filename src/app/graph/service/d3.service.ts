@@ -9,7 +9,7 @@ export class D3Service {
 
   constructor() { }
 
-  getNetworkGraph(nodes: Node[], links: Link[], options: {width: number, height: number}) : NetworkGraph {
+  getNetworkGraph(nodes: Node[], links: Link[], options: {width: number, height: number}): NetworkGraph {
     const ng = new NetworkGraph(nodes, links, options);
     return ng;
   }
@@ -22,10 +22,10 @@ export class D3Service {
 
     zoomed = () => {
       const transform = d3.event.transform;
-      container.attr("transform", "translate(" + transform.x + "," + transform.y + ") scale(" + transform.k + ")");
-    }
+      container.attr('transform', 'translate(' + transform.x + ',' + transform.y + ') scale(' + transform.k + ')');
+    };
 
-    zoom = d3.zoom().on("zoom", zoomed);
+    zoom = d3.zoom().on('zoom', zoomed);
     svg.call(zoom);
   }
 
@@ -35,12 +35,12 @@ export class D3Service {
     function started() {
       /** Preventing propagation of dragstart to parent elements */
       d3.event.sourceEvent.stopPropagation();
-      
+
       if (!d3.event.active) {
         graph.simulation.alphaTarget(0.3).restart();
       }
 
-      d3.event.on("drag", dragged).on("end", ended);
+      d3.event.on('drag', dragged).on('end', ended);
 
       function dragged() {
         node.fx = d3.event.x;
@@ -58,6 +58,6 @@ export class D3Service {
     }
 
     d3element.call(d3.drag()
-      .on("start", started));
+      .on('start', started));
   }
 }

@@ -1,31 +1,30 @@
+import { ZoomableDirective } from './../../../graph/component/directives/zoomable.directive';
+import { GraphComponent } from './../../../graph/component/graph/graph.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ComponentRegistryService } from 'src/app/core/service/component-registry.service';
 import { IriConverter } from 'src/app/core/util/iri-converter';
 import { EnterpriseIntegrationPatternsComponent } from './component/enterprise-integration-patterns/enterprise-integration-patterns.component';
-import { GraphComponent } from './component/graph/graph.component';
-import { LinkVisualComponent } from './component/link-visual/link-visual.component';
-import { NodeVisualComponent } from './component/node-visual/node-visual.component';
-import { NodeInfoboxComponent } from './component/node-infobox/node-infobox.component';
 import { EnterpriseIntegrationPatternComponent } from './component/enterprise-integration-pattern/enterprise-integration-pattern.component';
 import { EnterpriseIntegrationPatternsLoaderService } from './loader/enterprise-integration-patterns-loader.service';
 import { MatButtonModule, MatIcon, MatIconModule, MatFormFieldModule, MatInputModule, MatCardModule, MatDividerModule, MatCheckboxModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
-import { LinkInfoboxComponent } from './component/link-infobox/link-infobox.component';
 import { FilterViewComponent } from 'src/app/filter/component/filter-view/filter-view.component';
-import { DraggableDirective } from './component/directives/draggable.directive';
-import { ZoomableDirective } from './component/directives/zoomable.directive';
+import { NodeVisualComponent } from 'src/app/graph/component/node-visual/node-visual.component';
+import { LinkVisualComponent } from 'src/app/graph/component/link-visual/link-visual.component';
+import { NodeInfoboxComponent } from 'src/app/graph/component/node-infobox/node-infobox.component';
+import { DraggableDirective } from 'src/app/graph/component/directives/draggable.directive';
+import { GraphModule } from 'src/app/graph/graph.module';
 
 @NgModule({
   declarations: [
-    EnterpriseIntegrationPatternsComponent, 
-    GraphComponent, 
-    LinkVisualComponent, 
-    NodeVisualComponent, 
-    NodeInfoboxComponent, 
-    EnterpriseIntegrationPatternComponent, 
-    LinkInfoboxComponent,
+    EnterpriseIntegrationPatternsComponent,
+    EnterpriseIntegrationPatternComponent,
     FilterViewComponent,
+    GraphComponent,
+    NodeVisualComponent,
+    LinkVisualComponent,
+    NodeInfoboxComponent,
     DraggableDirective,
     ZoomableDirective
   ],
@@ -61,7 +60,7 @@ export class EnterpriseIntegrationPatternsModule {
     });
 
     // adding a secondary renderer (dummy)
-    // this.cr.registerComponent(IriConverter.convertIriToId('https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns'), 
+    // this.cr.registerComponent(IriConverter.convertIriToId('https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns'),
     //   this.cr.getPLRenderingComponents("default"));
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, HostListener, ChangeDetectorRef, ChangeDetectionStrategy, AfterViewInit, EventEmitter, Output } from '@angular/core';
-import { Node, Link, NetworkGraph } from '../../model';
+import { Node, Link, NetworkGraph, NodeInfo } from '../../model';
 import { D3Service } from '../../service/d3.service';
 import Filter from 'src/app/filter/model/filter';
 
@@ -9,10 +9,15 @@ import Filter from 'src/app/filter/model/filter';
   styleUrls: ['./graph.component.scss']
 })
 export class GraphComponent implements OnInit, AfterViewInit {
-  @Input('selectedNodeId') selectedNodeId?: string;
-  
-  @Input('nodes') nodes: Node[];
-  @Input('links') links: Link[];
+  // set if there should already be a selected node in the graph
+  @Input() selectedNodeId?: string;
+
+  // the list of nodes to be displayed
+  @Input() nodes: Node[];
+  // the list of links to be displayed
+  @Input() links: Link[];
+
+  @Input() getNodeInfo: (id: string) => Promise<NodeInfo>;
 
   @Output() nodeSelectEvent = new EventEmitter<string>();
   @Output() nodeUnselectEvent = new EventEmitter<string>();
@@ -21,6 +26,8 @@ export class GraphComponent implements OnInit, AfterViewInit {
 
   // the node that is currently selected or null, if there is no selection
   selectedNode?: Node;
+  // the info of the currently selected node
+  selectedNodeInfo?: NodeInfo;
   // selectedNodeInfo?: NodeInfo;
 
   selectedLinkId: string;
@@ -29,8 +36,9 @@ export class GraphComponent implements OnInit, AfterViewInit {
 
   @HostListener('window:resize', ['$event'])
   onresize(event: any) {
-    if(this.graph)
+    if (this.graph) {
       this.graph.initSimulation(this.options);
+    }
   }
 
   constructor(
@@ -61,47 +69,47 @@ export class GraphComponent implements OnInit, AfterViewInit {
   }
 
   previewNodeInformation(event: string) {
-    for(let l of this.links) {
+    for (const l of this.links) {
       l.preview = true;
     }
-    for(let n of this.nodes) {
+    for (const n of this.nodes) {
       n.preview = true;
     }
 
-    let currNode = this.nodes.find(n => n.id === event);
+    const currNode = this.nodes.find(n => n.id === event);
 
     currNode.preview = false;
 
-    // iterate through all links and get neighbours 
-    for(let link of this.links) {
+    // iterate through all links and get neighbours
+    for (const link of this.links) {
       // check source
-      if(link.source instanceof Node) {
-        if(link.source.name === currNode.name) {
+      if (link.source instanceof Node) {
+        if (link.source.name === currNode.name) {
           link.preview = false;
-          if(link.target instanceof Node) {
+          if (link.target instanceof Node) {
             link.target.preview = false;
           }
         }
-      } else if(typeof link.source === 'string') {
-        if(link.source === currNode.name) {
+      } else if (typeof link.source === 'string') {
+        if (link.source === currNode.name) {
           link.preview = false;
-          let n = this.nodes.find(n => n.name === link.target);
+          const n = this.nodes.find(node => node.name === link.target);
           n.preview = false;
         }
       }
 
       // check target
-      if(link.target instanceof Node) {
-        if(link.target.name === currNode.name) {
+      if (link.target instanceof Node) {
+        if (link.target.name === currNode.name) {
           link.preview = false;
-          if(link.source instanceof Node) {
+          if (link.source instanceof Node) {
             link.source.preview = false;
           }
         }
-      } else if(typeof link.target === 'string') {
-        if(link.target === currNode.name) {
+      } else if (typeof link.target === 'string') {
+        if (link.target === currNode.name) {
           link.preview = false;
-          let n = this.nodes.find(n => n.name === link.source);
+          const n = this.nodes.find(node => node.name === link.source);
           n.preview = false;
         }
       }
@@ -109,10 +117,10 @@ export class GraphComponent implements OnInit, AfterViewInit {
   }
 
   dePreviewNodeInformation(event: string) {
-    for(let l of this.links) {
+    for (const l of this.links) {
       l.preview = false;
     }
-    for(let n of this.nodes) {
+    for (const n of this.nodes) {
       n.preview = false;
     }
   }
@@ -122,10 +130,10 @@ export class GraphComponent implements OnInit, AfterViewInit {
     this.nodeUnselectEvent.emit();
 
     // remove selection of nodes and links
-    for(let n of this.nodes) {
+    for (const n of this.nodes) {
       n.selected = false;
     }
-    for(let l of this.links) {
+    for (const l of this.links) {
       l.selected = false;
     }
 
@@ -137,64 +145,65 @@ export class GraphComponent implements OnInit, AfterViewInit {
   // $event is the clicked node id!
   nodeInformation($event: string) {
     this.selectedLinkId = null;
-    
+
     // call listener
     this.nodeSelectEvent.emit($event);
 
-    let node = this.nodes.find(n => n.id === $event);
+    const node = this.nodes.find(n => n.id === $event);
 
     // remove selection of nodes and links
-    for(let n of this.nodes) {
+    for (const n of this.nodes) {
       n.selected = false;
     }
-    for(let l of this.links) {
+    for (const l of this.links) {
       l.selected = false;
     }
 
     // set clicked node as current node to display infobox (separate component) about node
-    // in HTML we can do *ngIf to show infobox component 
+    // in HTML we can do *ngIf to show infobox component
     this.selectedNode = node;
     this.selectedNode.selected = true;
 
     this.selectedNodeId = $event;
+    this.retrieveNodeInfo();
 
     // this.selectedNodeInfo = new NodeInfo();
     // this.selectedNodeInfo.currNode = this.selectedNode;
 
 
-    // // iterate through all links and get neighbours 
-    for(let link of this.links) {
+    // // iterate through all links and get neighbours
+    for (const link of this.links) {
       // check source
-      if(link.source instanceof Node) {
-        if(link.source.name === node.name) {
+      if (link.source instanceof Node) {
+        if (link.source.name === node.name) {
           link.selected = true;
-          if(link.target instanceof Node) {
+          if (link.target instanceof Node) {
             link.target.selected = true;
             // this.selectedNodeInfo.outgoing.push(link.target)
           }
         }
-      } else if(typeof link.source === 'string') {
-        if(link.source === node.name) {
+      } else if (typeof link.source === 'string') {
+        if (link.source === node.name) {
           link.selected = true;
-          let n = this.nodes.find(n => n.name === link.target);
+          const n = this.nodes.find(n => n.name === link.target);
           n.selected = true;
           // this.selectedNodeInfo.outgoing.push(n);
         }
       }
 
       // check target
-      if(link.target instanceof Node) {
-        if(link.target.name === node.name) {
+      if (link.target instanceof Node) {
+        if (link.target.name === node.name) {
           link.selected = true;
-          if(link.source instanceof Node) {
+          if (link.source instanceof Node) {
             link.source.selected = true;
             // this.selectedNodeInfo.incoming.push(link.source);
           }
         }
-      } else if(typeof link.target === 'string') {
-        if(link.target === node.name) {
+      } else if (typeof link.target === 'string') {
+        if (link.target === node.name) {
           link.selected = true;
-          let n = this.nodes.find(n => n.name === link.source);
+          const n = this.nodes.find(n => n.name === link.source);
           n.selected = true;
           // this.selectedNodeInfo.incoming.push(n);
         }
@@ -202,32 +211,39 @@ export class GraphComponent implements OnInit, AfterViewInit {
     }
   }
 
+  // FIXME this has to be changed: the actual filtering should be done in the parent-component. Give a list of filtered patterns to hide them here
   filterNodes(filter: Filter) {
     this.showAllNodes();
 
     // get patterns to hide
     const selectedNodes = filter.filterPatterns(this.nodes);
     // if a node is in selectedNodes we DON'T want to filter it out
-    let nodesToBeFiltered = this.nodes.filter(n => !selectedNodes.includes(n));
+    const nodesToBeFiltered = this.nodes.filter(n => !selectedNodes.includes(n));
 
-    // get all links that contain a pattern that should be filtered 
-    let linksToBeFiltered = this.links.filter(e => {
+    // get all links that contain a pattern that should be filtered
+    const linksToBeFiltered = this.links.filter(e => {
       let id = '';
-      if (typeof e.source === 'string')
+      if (typeof e.source === 'string') {
         id = e.source;
-      else if (e.source instanceof Node) 
+      } else if (e.source instanceof Node) {
         id = e.source.id;
+      }
 
-      let s = nodesToBeFiltered.find(n => n.id === id);
-      if (s) return true;
+      const s = nodesToBeFiltered.find(n => n.id === id);
+      if (s) {
+        return true;
+      }
 
-      if (typeof e.target === 'string')
+      if (typeof e.target === 'string') {
         id = e.target;
-      else if (e.target instanceof Node)
+      } else if (e.target instanceof Node) {
         id = e.target.id;
-      
-      let t = nodesToBeFiltered.find(n => n.id === id);
-      if (t) return true;
+      }
+
+      const t = nodesToBeFiltered.find(n => n.id === id);
+      if (t) {
+        return true;
+      }
 
       return false;
     });
@@ -244,5 +260,9 @@ export class GraphComponent implements OnInit, AfterViewInit {
 
   showLinkInfo(linkId: string) {
     this.selectedLinkId = linkId;
+  }
+
+  async retrieveNodeInfo() {
+    this.selectedNodeInfo = await this.getNodeInfo(this.selectedNodeId);
   }
 }

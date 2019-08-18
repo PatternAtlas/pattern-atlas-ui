@@ -1,6 +1,6 @@
+import { EnterpriseIntegrationPatternIncomingLinkLoaderService } from './../../loader/enterprise-integration-pattern-incoming-link-loader.service';
+import { IriConverter } from './../../../../../core/util/iri-converter';
 import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
-import { Link } from '../../model/link';
-import { Node } from '../../model/node';
 import { HttpClient } from '@angular/common/http';
 import * as d3 from 'd3';
 import EnterpriseIntegrationPattern from '../../model/enterprise-integration-pattern';
@@ -12,6 +12,8 @@ import { PatternOntologyService } from 'src/app/core/service/pattern-ontology.se
 import { FilterFactoryService } from 'src/app/filter/service/filter-factory.service';
 import { MatDialog } from '@angular/material';
 import { FilterViewComponent } from 'src/app/filter/component/filter-view/filter-view.component';
+import { Node, Link, NodeInfo } from 'src/app/graph/model';
+import { EnterpriseIntegrationPatternOutgoingLinkLoaderService } from '../../loader/enterprise-integration-pattern-outgoing-link-loader.service';
 
 @Component({
   selector: 'pp-enterprise-integration-patterns',
@@ -41,6 +43,8 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
     private activatedRoute: ActivatedRoute,
     private zone: NgZone,
     private patternLoader: EnterpriseIntegrationPatternLoaderService,
+    private outgoingLinkLoader: EnterpriseIntegrationPatternOutgoingLinkLoaderService,
+    private incomingLinkLoader: EnterpriseIntegrationPatternIncomingLinkLoaderService,
     private filterFactory: FilterFactoryService,
     public dialog: MatDialog) { }
 
@@ -64,52 +68,53 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
           // links also contains edges to different pattern languages. we don't want to render them as actual links of the network graph
           // => filter clp links
           this.links = Array.from(this.linkMap.values()).filter(link => {
-            let source = "";
-            let target = "";
+            let source = '';
+            let target = '';
 
-            if (typeof link.source === 'string')
+            if (typeof link.source === 'string') {
               source = link.source;
-            else if (link.source instanceof Node)
+            } else if (link.source instanceof Node) {
               source = link.source.id;
+            }
 
-            if (typeof link.target === 'string')
+            if (typeof link.target === 'string') {
               target = link.target;
-            else if (link.target instanceof Node)
+            } else if (link.target instanceof Node) {
               target = link.target.id;
+            }
 
             // keep link, if its source and destination is from enterpriseintegrationpatterns, and no other language
             return source.includes('enterpriseintegrationpatterns') && target.includes('enterpriseintegrationpatterns');
           });
 
           // groups
-          let groups = {};
+          const groups = {};
           this.groupMap.forEach(value => {
             groups[value.groupName] = value.patterns;
           });
 
           // for coloring of nodes
-          let groupIds = Array.from(Object.keys(groups));
-          let scale = d3.scaleOrdinal(d3.schemeCategory10);
-          let color = function (d: any) {
-            if (d)
+          const groupIds = Array.from(Object.keys(groups));
+          const scale = d3.scaleOrdinal(d3.schemeCategory10);
+          const color = function (d: any) {
+            if (d) {
               return scale('' + groupIds.indexOf(d));
+            }
             return scale('0');
-          }
+          };
 
           // nodes
           this.nodes = [];
 
           // convert given IRI -> EnterpriseIntegrationPattern Map to Node list for rendering
           this.patternMap.forEach((value) => {
-            let n = new Node(value.id);
+            const n = new Node(value.id);
             n.name = value.name;
-            n.description = value.description.value;
 
             // go through all groups and check if the current pattern is present in the list of patterns
             // return the group (i.e. the group name) that contains the pattern. undefined if no group contains this pattern
-            n.group = Object.keys(groups).find(groupName => groups[groupName].includes(value.id));
-
-            n.color = color(n.group);
+            const group = Object.keys(groups).find(groupName => groups[groupName].includes(value.id));
+            n.color = color(group);
 
             this.nodes.push(n);
           });
@@ -130,7 +135,7 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
     console.log(nodeId);
     // should not be relative, as we might click multiple nodes!
     this.zone.run(() => {
-      let route = this.pId ? ['..', nodeId] : [nodeId];
+      const route = this.pId ? ['..', nodeId] : [nodeId];
       this.router.navigate(route, { relativeTo: this.activatedRoute });
     });
   }
@@ -147,7 +152,7 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
   }
 
   openFilterDialog() {
-    let dialogRef = this.dialog.open(FilterViewComponent, {
+    const dialogRef = this.dialog.open(FilterViewComponent, {
       width: '600px',
       data: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns'
     });
@@ -159,5 +164,38 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
           .then(filter => this.graph.filterNodes(filter));
       }
     });
+  }
+
+  /**
+   * This closure returns the nodeinfo from the loader.
+   * Important: It has to be a closure to use 'this' correctly, otherwise it won't work.
+   * Refer to this: https://stackoverflow.com/a/39981813
+   * Thank you Isaac
+   */
+  getNodeInfo = async (id: string): Promise<NodeInfo> => {
+    const uri = IriConverter.convertIdToIri(id);
+    const values = await Promise.all([
+      this.patternLoader.loadContentFromStore(uri),
+      this.outgoingLinkLoader.loadContentFromStore(uri),
+      this.incomingLinkLoader.loadContentFromStore(uri)
+    ]);
+
+    const pattern = values[0].get(uri);
+
+    const outgoing = Array.from(values[1].values());
+    const incoming = Array.from(values[2].values());
+
+    const info = new NodeInfo();
+    info.name = pattern.name;
+    info.group = pattern.groupName;
+    info.summary = pattern.description.join('\n');
+    info.languageRelations = [
+      {
+        languageId: 'https//purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns',
+        languageName: 'Enterprise Integration Patterns',
+        relations: outgoing.concat(incoming)
+      }
+    ];
+    return Promise.resolve(info);
   }
 }
