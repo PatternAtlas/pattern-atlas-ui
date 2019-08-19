@@ -17,9 +17,19 @@ export class DefaultPatternLoaderService extends Loader<any> {
   }
 
   mapTriples(triples: any): Promise<Map<string, any>> {
-    const map = new Map<string, any>();
-    triples.map(x => map.set(x, x));
-    return Promise.resolve(map);
+
+    const sectionProperties = Array.from(triples);
+    const secMap = new Map<string, string[]>();
+    for (let i = 0; i < sectionProperties.length; i++) {
+      if (!secMap.has(sectionProperties[i].predicate.value)) {
+        secMap.set(sectionProperties[i].property.value, [sectionProperties[i].predicate.value]);
+      } else {
+        const valArray = secMap.get(sectionProperties[i].predicate.value);
+        valArray.push(sectionProperties[i].property.value);
+        secMap.set(sectionProperties[i].property.value, valArray);
+      }
+    }
+    return Promise.resolve(secMap);
   }
 
 }
