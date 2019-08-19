@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { DefaultPatternLoaderService } from '../service/loader/default-pattern-loader.service';
 import { DefaultPlLoaderService } from '../service/loader/default-pl-loader.service';
 import { PatternOntologyService } from '../service/pattern-ontology.service';
-import { PatternProperty } from '../service/data/PatternProperty.interface';
 import { ToasterService } from 'angular2-toaster';
 import { SectionResponse } from '../service/data/SectionResponse.interface';
 import { PlRestrictionLoaderService } from '../service/loader/pattern-language-loader/pl-restriction-loader.service';
@@ -12,11 +11,11 @@ import { PatternLanguageSectionRestriction } from '../model/PatternLanguageSecti
 import PatternPedia from '../model/pattern-pedia.model';
 import { IriConverter } from '../util/iri-converter';
 import { DividerComponent } from '../component/type-templates/divider/divider.component';
-import { DataRenderingComponent } from '../component/type-templates/interfaces/DataRenderingComponent.interface';
 import { StringComponent } from '../component/type-templates/xsd/string/string.component';
 import { IntegerComponent } from '../component/type-templates/xsd/integer/integer.component';
 import { DateComponent } from '../component/type-templates/xsd/date/date.component';
 import { ImageComponent } from '../component/type-templates/dcmitype/image/image.component';
+import { DataRenderingComponent } from '../component/type-templates/interfaces/DataRenderingComponent.interface';
 
 @Component({
   selector: 'pp-default-pattern-renderer',
@@ -32,13 +31,14 @@ export class DefaultPatternRendererComponent implements OnInit {
               private componentFactoryResolver: ComponentFactoryResolver) {
   }
 
+  @ViewChild(PatternpropertyDirective) ppPatternproperty: PatternpropertyDirective;
   plIri: string;
   patternIri: string;
-  patternProperties: PatternProperty[];
+  patternProperties: Map<string, string[]>;
   sections: SectionResponse[];
   isLoadingPattern = true;
   isLoadingSection = true;
-  @ViewChild(PatternpropertyDirective) ppPatternproperty: PatternpropertyDirective;
+
 
   standardPrefixes = new PatternPedia().defaultPrefixes;
   xsdPrefix = this.standardPrefixes.get('xsd').replace('<', '').replace('>', '');
@@ -68,41 +68,14 @@ export class DefaultPatternRendererComponent implements OnInit {
       viewContainerRef.clear();
 
       const componentDividerFactory = this.componentFactoryResolver.resolveComponentFactory(DividerComponent);
-      this.patternProperties.forEach((property: PatternProperty) => {
-
-        const sectionRestrictions = this.sectionRestritions.get(property.property.value);
-        if (property.property.value.indexOf('#has') !== -1) {
-          const sectionTitle = property.property.value.split('#has')[1].replace(/([A-Z])/g, ' $1').trim();
-
-          const type = (sectionRestrictions && !!sectionRestrictions[0] && sectionRestrictions[0].type) ? sectionRestrictions[0].type : this.xsdPrefix + 'string';
-          let component = this.defaultComponentForType.get(type) ? this.defaultComponentForType.get(type) : StringComponent;
-
-          const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
-          const componentRef = viewContainerRef.createComponent(componentFactory);
-          const instance = (<DataRenderingComponent>componentRef.instance);
-          instance.data = property.predicate.value;
-          instance.title = sectionTitle;
-          instance.changeContent.subscribe((data) => console.log('Trigger saving new data :' + data));
-
-          viewContainerRef.createComponent(componentDividerFactory); // create divider
-        }
-
+      this.sections.forEach((sec: SectionResponse) => {
+        this.createSectionComponent(sec.section.value, viewContainerRef, componentDividerFactory);
       });
     });
 
 
   }
 
-  getSectionName(iri: string): string {
-    return IriConverter.getSectionName(iri);
-  }
-
-  getSectionInfo(iri: string): SectionResponse {
-    if (!iri || !this.sections) {
-      return;
-    }
-    return this.sections.filter(s => s.section.value === iri)[0];
-  }
 
   private async loadInfos(): Promise<any> {
 
@@ -117,11 +90,10 @@ export class DefaultPatternRendererComponent implements OnInit {
     this.patternLoaderService.patternIri = this.patternIri;
     this.patternLoaderService.supportedIRI = IriConverter.getPatternListIriForPLIri(this.plIri);
     this.sectionLoader.supportedIRI = this.plIri;
-    const loadingResult = await this.patternLoaderService.selectContentFromStore();
-    this.patternProperties = Array.from(loadingResult.values());
+    this.patternProperties = await this.patternLoaderService.loadContentFromStore();
     this.isLoadingPattern = false;
 
-    // not that we loaded the data for the pattern, load all the data from patternlanguage
+    // now that we loaded the data for the pattern, load all the data from patternlanguage
 
     this.plLoader.supportedIRI = this.plIri;
     await this.plLoader.loadContentFromStore();
@@ -131,12 +103,33 @@ export class DefaultPatternRendererComponent implements OnInit {
     this.sections = await this.plLoader.getPLSections(this.plIri);
     this.isLoadingSection = false;
 
+
     if (!this.patternProperties) {
       this.toasterService.pop('success', 'Loaded all infos');
       Promise.reject(null);
 
     } else {
       Promise.resolve(null);
+    }
+  }
+
+  private createSectionComponent(section: string, viewContainerRef: any, componentDividerFactory) {
+    const properties = this.patternProperties.get(section);
+    const sectionRestrictions = this.sectionRestritions.get(section);
+    if (section.indexOf('#has') !== -1) {
+      const sectionTitle = section.split('#has')[1].replace(/([A-Z])/g, ' $1').trim();
+
+      const type = (sectionRestrictions && !!sectionRestrictions[0] && sectionRestrictions[0].type) ? sectionRestrictions[0].type : this.xsdPrefix + 'string';
+      const component = this.defaultComponentForType.get(type) ? this.defaultComponentForType.get(type) : StringComponent;
+
+      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
+      const componentRef = viewContainerRef.createComponent(componentFactory);
+      const instance = (<DataRenderingComponent>componentRef.instance);
+      instance.data = properties.join('\n');
+      instance.title = sectionTitle;
+      instance.changeContent.subscribe((data) => console.log('Trigger saving new data :' + data));
+
+      viewContainerRef.createComponent(componentDividerFactory); // create divider
     }
   }
 }

@@ -28,6 +28,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { GithubPersistenceService } from './github-persistence.service';
 import { GithubFileResponse } from './data/GithubFileResponse.interface';
 import { RestrictionResponse } from './data/RestrictionResponse.interface';
+import { PatternProperty } from './data/PatternProperty.interface';
 
 @Injectable()
 export class PatternOntologyService implements SparqlExecutor {
@@ -589,7 +590,7 @@ export class PatternOntologyService implements SparqlExecutor {
   }
 
 
-  async getPatternProperties(graphIri: string, patternIri: string): Promise<any[]> {
+  async getPatternProperties(graphIri: string, patternIri: string): Promise<PatternProperty[]> {
     const qryPatternGraph = `SELECT DISTINCT ?pattern ?property ?predicate WHERE {
             { <${patternIri}> a owl:NamedIndividual . 
               <${patternIri}> ?property ?predicate
