@@ -6,13 +6,14 @@ import { PatternOntologyService } from '../pattern-ontology.service';
   providedIn: 'root'
 })
 export class DefaultPatternLoaderService extends Loader<any> {
+  patternIri = '';
 
   constructor(private pos: PatternOntologyService) {
     super(null, pos);
   }
 
   selectContentFromStore(): Promise<any> {
-    return this.pos.getPatternProperties(this.supportedIRI);
+    return this.pos.getPatternProperties(this.supportedIRI, this.patternIri);
   }
 
   mapTriples(triples: any): Promise<Map<string, any>> {

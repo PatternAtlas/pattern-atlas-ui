@@ -40,45 +40,32 @@ class Pattern {
     this.patternLanguageIri = patternLanguageIri;
   }
 
-  getPrefixes(): Array<string> {
-    const ary: Array<string> = [];
-    ary.push(
-      `@prefix : <${IriConverter.getFileName(this.iri)}#> .`,
-      `@prefix pp: <${this.patternpediaBaseURI}#> .`,
-      `@prefix owl: <http://www.w3.org/2002/07/owl#> .`,
-      `@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .`,
-      `@prefix xml: <http://www.w3.org/XML/1998/namespace> .`,
-      `@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .`,
-      `@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .`,
-      `@base <${IriConverter.getFileName(this.iri)}> .`
-    );
-    return ary;
-  }
 
   getSectionIdentifier(section: string): string {
     return ':has' + section.replace(/\s/g, '');
   }
 
   toTurtle(): string {
-    const ary = this.getPrefixes();
-
-    ary.push('#################################################################');
-    ary.push('# Individuals');
-    ary.push('##############################################################');
-    ary.push('\n\n');
+    const ary = [];
     ary.push(`###  ${this.iri}`);
     ary.push(`:${IriConverter.removeWhitespace(this.name)} rdf:type owl:NamedIndividual ,`);
     ary.push(`<${IriConverter.getFileName(this.patternLanguageIri)}/${IriConverter.extractIndividualNameFromIri(this.patternLanguageIri)}Individual> ;`);
-    ary.push(`<${IriConverter.getFileName(this.iri)}#hasName> "${this.name}" ;`);
-    const sections = Array.from(Object.keys(this.sectionsProperties));
+    const sections = Array.from(this.sectionsProperties.keys()).filter(it => it !== 'http://www.w3.org/2002/07/owl#imports' &&
+      it !== (IriConverter.getFileName(this.patternLanguageIri) + '#hasName')); // ignore owl:imports and the name, because we can use this.name instead
+    ary.push(`<${IriConverter.getFileName(this.patternLanguageIri)}#hasName> "${this.name}" ${sections.length > 0 ? ';' : '.'}`);
 
-    sections.forEach((key, sectionindex) => {
-      const statements: string[] = this.sectionsProperties[key];
-      statements.forEach((val, indexStatements) => {
-        ary.push(`${this.getPropertyIri(key)} ${this.sectionsProperties[key][indexStatements].startsWith('<') ? '' : '"'}${this.sectionsProperties[key][indexStatements]}${this.sectionsProperties[key][indexStatements].startsWith('<') ? '' : '"'} ${(sectionindex === sections.length - 1) && (indexStatements === statements.length - 1) ? '.' : ';'}`);
+    if (sections) {
+      sections.forEach((key, sectionindex) => {
+        const statements: string[] = this.sectionsProperties.get(key);
+        if (statements) {
+          statements.forEach((val, indexStatements) => {
+            ary.push(`${this.getPropertyIri(key)} ${this.sectionsProperties.get(key)[indexStatements].startsWith('<') ? '' : '"'}${this.sectionsProperties.get(key)[indexStatements]}${this.sectionsProperties.get(key)[indexStatements].startsWith('<') ? '' : '"'} ${(sectionindex === sections.length - 1) && (indexStatements === statements.length - 1) ? '.' : ';'}`);
+          });
+        }
+
       });
-
-    });
+    }
+    ary.push('');
     return ary.join('\n');
   }
 

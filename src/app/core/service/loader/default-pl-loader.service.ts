@@ -33,11 +33,6 @@ export class DefaultPlLoaderService extends Loader<any> {
     }
 
   async selectContentFromStore(): Promise<any> {
-    const qryPatterns = `SELECT DISTINCT ?pattern
-                                      WHERE {
-                                          <${this.supportedIRI}> <https://purl.org/patternpedia#containsPattern> ?pattern
-                                      }`;
-    const patterns = await this.executor.exec(qryPatterns, [IriConverter.getFileName(this.supportedIRI)]);
     const qry = `SELECT DISTINCT ?type ?pattern ?predicate ?property
                  WHERE {
                     <${this.supportedIRI}> pp:containsPattern ?pattern .
@@ -47,9 +42,7 @@ export class DefaultPlLoaderService extends Loader<any> {
                     }
                  ORDER BY ?pattern`;
     const graphs = [IriConverter.getFileName(this.supportedIRI)];
-    for (const entry of patterns) {
-      graphs.push(IriConverter.getFileName(entry.pattern.value));
-    }
+    graphs.push(IriConverter.getPatternListIriForPLIri(this.supportedIRI));
     return this.executor.exec(qry, graphs);
   }
 
@@ -78,7 +71,7 @@ export class DefaultPlLoaderService extends Loader<any> {
         for (const row of triples) {
           if (!patterns.get(row.pattern.value)) {
             patterns.set(row.pattern.value,
-              new PatternInstance(row.pattern.value, new Map<string, string | string[]>().set(row.predicate.value, row.property.value), row.type.value));
+              new PatternInstance(row.pattern.value, new Map<string, string[]>().set(row.predicate.value, row.property.value), row.type.value));
           }
           else { // if we already saw this pattern, add the infomation of the triple to it
             const pattern = patterns.get(row.pattern.value).addProperty(row.predicate.value, row.property.value);

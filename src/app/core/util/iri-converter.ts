@@ -60,4 +60,8 @@ export class IriConverter {
   }
 
 
+  static getPatternListIriForPLIri(supportedIRI: string) {
+    return this.getFileName(supportedIRI) + '/' + this.extractIndividualNameFromIri(this.getFileName(supportedIRI)) + '-Patterns';
+
+  }
 }

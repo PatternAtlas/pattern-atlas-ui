@@ -26,11 +26,6 @@ export class CloudComputingPatternsLoaderService extends Loader<CloudComputingPa
     }
 
     async selectContentFromStore(): Promise<any> {
-        const qryPatterns = `SELECT DISTINCT ?pattern
-                                      WHERE {
-                                          <${this.supportedIRI}> <https://purl.org/patternpedia#containsPattern> ?pattern
-                                      }`;
-        const patterns = await this.executor.exec(qryPatterns, [IriConverter.getFileName(this.supportedIRI)]);
         const qry = `SELECT DISTINCT ?type ?pattern ?predicate ?property
                  WHERE {
                     <${this.supportedIRI}> pp:containsPattern ?pattern .
@@ -40,9 +35,6 @@ export class CloudComputingPatternsLoaderService extends Loader<CloudComputingPa
                     }
                  ORDER BY ?pattern`;
         const graphs = [IriConverter.getFileName(this.supportedIRI)];
-        for (const entry of patterns) {
-            graphs.push(IriConverter.getFileName(entry.pattern.value));
-        }
 
         graphs.push('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns');
         graphs.push('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Patterns');

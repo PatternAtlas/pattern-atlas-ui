@@ -1,9 +1,11 @@
-import { MatDialog } from '@angular/material';
+import { EventEmitter } from '@angular/core';
 
 export class DataRenderingComponent {
   data: any;
 
   title: string;
 
-  dialog: MatDialog;
+  changeContent: EventEmitter<string>;
+
+
 }

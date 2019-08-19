@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataRenderingComponent } from '../../interfaces/DataRenderingComponent.interface';
 import { DialogData, MdEditorComponent } from '../../../md-editor/md-editor.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'pp-integer',
@@ -15,7 +16,7 @@ export class IntegerComponent extends DataRenderingComponent implements OnInit {
 
   showActionButtons = false;
 
-  constructor() {
+  constructor(private dialog: MatDialog) {
     super();
   }
 

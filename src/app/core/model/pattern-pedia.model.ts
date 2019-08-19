@@ -15,7 +15,7 @@
 import { IriConverter } from '../util/iri-converter';
 import { globals } from '../../globals';
 
-class PatternPedia {
+export class PatternPedia {
   private _id: string;
   iri: string;
   name: string;
@@ -33,6 +33,22 @@ class PatternPedia {
     return this._id;
   }
 
+  getPrefixesToTurtle(iri: string, defaultPrefixBegin?: string): string[] {
+    const ary: Array<string> = [];
+    ary.push(
+      `@prefix : <${IriConverter.getFileName(defaultPrefixBegin ? defaultPrefixBegin : iri)}#> .`,
+      `@prefix pp: <${globals.urlPatternRepoOntology}#> .`,
+      `@prefix owl: <http://www.w3.org/2002/07/owl#> .`,
+      `@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .`,
+      `@prefix xml: <http://www.w3.org/XML/1998/namespace> .`,
+      `@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .`,
+      `@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .`,
+      `@base <${IriConverter.getFileName(iri)}> .`
+    );
+    return ary;
+  }
+
+
   public constructor(iri: string = null, name: string = null, logo: string = null) {
     this.name = name;
     this.logo = logo;
@@ -44,7 +60,8 @@ class PatternPedia {
     this.defaultPrefixes.set('rdf', `<http://www.w3.org/1999/02/22-rdf-syntax-ns#>`);
     this.defaultPrefixes.set('rdfs', '<http://www.w3.org/2000/01/rdf-schema#>');
     this.defaultPrefixes.set('xsd', '<http://www.w3.org/2001/XMLSchema#>');
-  }
 
+
+  }
 }
 export default PatternPedia;

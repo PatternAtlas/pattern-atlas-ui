@@ -23,9 +23,11 @@ import { CreateEditPatternLanguageComponent } from '../create-edit-pattern-langu
 import { MatDialog } from '@angular/material';
 import { GithubPersistenceService } from '../../core/service/github-persistence.service';
 import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
-import { switchMap, tap } from 'rxjs/internal/operators';
 import { CookieService } from 'ngx-cookie-service';
 import { ToasterService } from 'angular2-toaster';
+import { IriConverter } from '../../core/util/iri-converter';
+import { PatternLanguagePatterns } from '../../core/model/pattern-language-patterns.model';
+import { switchMap, tap } from 'rxjs/internal/operators';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -109,11 +111,18 @@ export class PatternLanguageManagementComponent implements OnInit {
 
     // update patternpedia, when user saves a patternlanguage:
     (<CreateEditPatternLanguageComponent> dialogRef.componentInstance).saveClicked.subscribe((result: DialogPatternLanguageResult) => {
-      const patternlanguage = new PatternLanguage(this.urlPatternPedia + '/patternlanguages/' + result.name.replace(/\s/g, ''), result.name, [result.iconUrl], null,
-        result.sections, result.restrictions, result.prefixes);
+      const patternlanguage = new PatternLanguage(this.urlPatternPedia + '/patternlanguages/' + result.name.replace(/\s/g, ''),
+        result.name, [result.iconUrl], null, result.sections, result.restrictions, result.prefixes);
+      const patternLanguagePatterns = new PatternLanguagePatterns(IriConverter.getPatternListIriForPLIri(patternlanguage.iri), patternlanguage.iri, []);
+
+      console.log(patternlanguage.iri);
+      console.log(patternLanguagePatterns.iri);
       this.uploadService.uploadPatternLanguage(patternlanguage).pipe(
         switchMap(() => {
           return this.uploadService.addPatternLanguageToPatternPedia(patternlanguage, this.patternLanguages);
+        }),
+        switchMap(() => {
+          return this.uploadService.uploadPLPatterns(patternLanguagePatterns);
         }),
         tap(() => this._toasterService.pop('success', 'Created new patternlanguage')),
         switchMap(() => {
