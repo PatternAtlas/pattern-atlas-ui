@@ -591,19 +591,29 @@ export class PatternOntologyService implements SparqlExecutor {
 
   async getDataPropertyList(graphIri: string): Promise<any[]> {
     // get position: count the nodes between the start of the list (:DatatypePropertyList) and the current list element
-    const qryPatternGraph = `SELECT ?dataProperty (count(?innerNodes)-1 as ?position) where { 
-      :DatatypePropertyList :list/rdf:rest* ?innerNodes . ?innerNodes rdf:rest* ?node .
+    const qryPatternGraph = `SELECT (count(?innerNodes)-1 as ?position) ?element where { 
+      :DatatypePropertyList :list/rdf:rest* ?innerNodes . 
+  	  ?innerNodes rdf:rest* ?node .
       ?node rdf:first ?element .
     }
-    group by ?node ?dataProperty
+    group by ?node ?dataProperty ?element
     order by ?position`;
     return this.exec(qryPatternGraph, [IriConverter.getFileName(graphIri)]);
   }
 
   getPLSections(graphIri: string): Promise<SectionResponse[]> {
-    const qryPatternGraph = `SELECT ?section WHERE {
-            ?section a owl:DatatypeProperty .
-        } `;
+    const qryPatternGraph = `SELECT ?section ?index
+    WHERE {
+    {
+     ?section a owl:DatatypeProperty .
+    }
+    UNION
+      {
+    ?section a pp:DatatypePropertyListItem .
+    optional{ ?section pp:hasListIndex  ?index .}
+    }
+    }
+    ORDER BY ?index`;
     return this.exec(qryPatternGraph, [IriConverter.getFileName(graphIri)]);
   }
 }

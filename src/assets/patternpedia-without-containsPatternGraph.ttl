@@ -69,12 +69,24 @@
 :hasDescription rdf:type owl:DatatypeProperty .
 
 
-###  http://purl.org/patternpedia#hasLabel    
+###  http://purl.org/patternpedia#hasLabel
 :hasLabel rdf:type owl:DatatypeProperty .
+
+###  https://purl.org/patternpedia#hasListIndex
+:hasListIndex rdf:type owl:DatatypeProperty .
 
 #################################################################
 #    Classes
 #################################################################
+
+###  https://purl.org/patternpedia#DatatypePropertyListItem
+:DatatypePropertyListItem rdf:type owl:Class ;
+                 rdfs:subClassOf owl:DatatypeProperty;
+                 rdfs:subClassOf [ rdf:type owl:Restriction ;
+                           owl:onProperty :hasListIndex ;
+                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                           owl:onDataRange xsd:integer
+                         ] .
 
 ###  https://purl.org/patternpedia#Pattern
 :Pattern rdf:type owl:Class ;
@@ -140,14 +152,14 @@
 # The meaning of the direction depends on the specific use case
 # We can have multiple description string per descriptor. Description is optional
 ###  http://purl.org/patternpedia#DirectedPatternRelationDescriptor
-:DirectedPatternRelationDescriptor 
+:DirectedPatternRelationDescriptor
     rdf:type owl:Class ;
     rdfs:subClassOf :PatternRelationDescriptor ,
         [ rdf:type owl:Restriction ;
           owl:onProperty :hasDescription ;
-          owl:allValuesFrom xsd:string 
+          owl:allValuesFrom xsd:string
         ] .
-        
+
 
 # Describes the relation between exactly two patterns without any direction.
 # Contains any number of descriptions
@@ -163,8 +175,8 @@
                       owl:onProperty :hasDescription ;
                       owl:allValuesFrom xsd:string
                     ] .
-        
-        
+
+
 # Hyperedges describe the relation of a set of patterns
 # It has any number of patterns, any number of descriptions, and a single label for displaying purposes
 ###  http://purl.org/patternpedia#PatternSetRelationDescriptor
@@ -182,7 +194,7 @@
                       owl:onProperty :hasLabel ;
                       owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
                       owl:onDataRange xsd:string
-                    ] .                          
+                    ] .
 
 #################################################################
 #    Individuals
