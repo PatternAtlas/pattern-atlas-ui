@@ -29,7 +29,7 @@ export class PatternLanguageContainerDirective implements OnInit {
     }
 
     ngOnInit(): void {
-        let renderingComponent = this.compRegistry.getPLRenderingComponents(this.plId, this.index);
+        const renderingComponent = this.compRegistry.getPLRenderingComponents(this.plId, this.index);
 
         const componentFactory = renderingComponent ?
             this.componentFactoryResolver.resolveComponentFactory(renderingComponent.plcomponent) :
