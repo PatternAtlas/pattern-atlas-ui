@@ -373,7 +373,7 @@ var AppModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"display: flex; justify-content: space-between; align-items: baseline\">\n    <h1 mat-dialog-title>Edit '{{data.label}}'</h1>\n    <button mat-flat-button (click)=\"close()\" tabindex=\"-1\">\n        <i class=\"material-icons\">close</i>\n    </button>\n</div>\n<div mat-dialog-content>\n    <td-text-editor #mdEditor [value]=\"data.content\"></td-text-editor>\n</div>\n<div mat-dialog-actions>\n    <button mat-raised-button color=\"warn\"\n            (click)=\"revert()\" matTooltip=\"Revert Changes\">\n        <i class=\"material-icons\">restore</i> Revert\n    </button>\n    <button mat-raised-button color=\"primary\" (click)=\"saveChanges()\"><i\n            class=\"material-icons\">save</i> Save\n    </button>\n</div>\n"
+module.exports = "<div style=\"display: flex; justify-content: space-between; align-items: baseline\">\n  <h1 mat-dialog-title>Edit {{data.label? \"'\" + data.label + \"'\" : ''}}</h1>\n    <button mat-flat-button (click)=\"close()\" tabindex=\"-1\">\n        <i class=\"material-icons\">close</i>\n    </button>\n</div>\n<div mat-dialog-content>\n    <td-text-editor #mdEditor [value]=\"data.content\"></td-text-editor>\n</div>\n<div mat-dialog-actions>\n    <button mat-raised-button color=\"warn\"\n            (click)=\"revert()\" matTooltip=\"Revert Changes\">\n        <i class=\"material-icons\">restore</i> Revert\n    </button>\n    <button mat-raised-button color=\"primary\" (click)=\"saveChanges()\"><i\n            class=\"material-icons\">save</i> Save\n    </button>\n</div>\n"
 
 /***/ }),
 
@@ -1054,6 +1054,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _interfaces_DataRenderingComponent_interface__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../interfaces/DataRenderingComponent.interface */ "./src/app/core/component/type-templates/interfaces/DataRenderingComponent.interface.ts");
 /* harmony import */ var _md_editor_md_editor_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../md-editor/md-editor.component */ "./src/app/core/component/md-editor/md-editor.component.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -1114,10 +1115,12 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 
+
 var IntegerComponent = /** @class */ (function (_super) {
     __extends(IntegerComponent, _super);
-    function IntegerComponent() {
+    function IntegerComponent(dialog) {
         var _this = _super.call(this) || this;
+        _this.dialog = dialog;
         _this.title = '';
         _this.showActionButtons = false;
         return _this;
@@ -1139,7 +1142,7 @@ var IntegerComponent = /** @class */ (function (_super) {
             template: __webpack_require__(/*! ./integer.component.html */ "./src/app/core/component/type-templates/xsd/integer/integer.component.html"),
             styles: [__webpack_require__(/*! ./integer.component.scss */ "./src/app/core/component/type-templates/xsd/integer/integer.component.scss")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_3__["MatDialog"]])
     ], IntegerComponent);
     return IntegerComponent;
 }(_interfaces_DataRenderingComponent_interface__WEBPACK_IMPORTED_MODULE_1__["DataRenderingComponent"]));
@@ -1183,6 +1186,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _interfaces_DataRenderingComponent_interface__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../interfaces/DataRenderingComponent.interface */ "./src/app/core/component/type-templates/interfaces/DataRenderingComponent.interface.ts");
 /* harmony import */ var _md_editor_md_editor_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../md-editor/md-editor.component */ "./src/app/core/component/md-editor/md-editor.component.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -1240,15 +1244,19 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+///<reference path="../../interfaces/DataRenderingComponent.interface.ts"/>
+
 
 
 
 var StringComponent = /** @class */ (function (_super) {
     __extends(StringComponent, _super);
-    function StringComponent() {
+    function StringComponent(dialog) {
         var _this = _super.call(this) || this;
+        _this.dialog = dialog;
         _this.title = '';
         _this.showActionButtons = false;
+        _this.changeContent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
         return _this;
     }
     StringComponent.prototype.ngOnInit = function () {
@@ -1258,6 +1266,8 @@ var StringComponent = /** @class */ (function (_super) {
         var dialogRef = this.dialog.open(_md_editor_md_editor_component__WEBPACK_IMPORTED_MODULE_2__["MdEditorComponent"], { data: { content: this.data } });
         dialogRef.afterClosed().subscribe(function (result) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
+                console.log(result);
+                this.changeContent.emit(result.content);
                 return [2 /*return*/];
             });
         }); });
@@ -1268,7 +1278,7 @@ var StringComponent = /** @class */ (function (_super) {
             template: __webpack_require__(/*! ./string.component.html */ "./src/app/core/component/type-templates/xsd/string/string.component.html"),
             styles: [__webpack_require__(/*! ./string.component.scss */ "./src/app/core/component/type-templates/xsd/string/string.component.scss")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_3__["MatDialog"]])
     ], StringComponent);
     return StringComponent;
 }(_interfaces_DataRenderingComponent_interface__WEBPACK_IMPORTED_MODULE_1__["DataRenderingComponent"]));
@@ -1569,14 +1579,18 @@ var DefaultPatternRendererComponent = /** @class */ (function () {
             var componentDividerFactory = _this.componentFactoryResolver.resolveComponentFactory(_component_type_templates_divider_divider_component__WEBPACK_IMPORTED_MODULE_10__["DividerComponent"]);
             _this.patternProperties.forEach(function (property) {
                 var sectionRestrictions = _this.sectionRestritions.get(property.property.value);
-                var sectionTitle = property.property.value.split('#has')[1].replace(/([A-Z])/g, ' $1').trim();
-                var type = (sectionRestrictions && !!sectionRestrictions[0] && sectionRestrictions[0].type) ? sectionRestrictions[0].type : _this.xsdPrefix + 'string';
-                var component = _this.defaultComponentForType.get(type) ? _this.defaultComponentForType.get(type) : _component_type_templates_xsd_string_string_component__WEBPACK_IMPORTED_MODULE_11__["StringComponent"];
-                var componentFactory = _this.componentFactoryResolver.resolveComponentFactory(component);
-                var componentRef = viewContainerRef.createComponent(componentFactory);
-                componentRef.instance.data = property.predicate.value;
-                componentRef.instance.title = sectionTitle;
-                viewContainerRef.createComponent(componentDividerFactory); // create divider
+                if (property.property.value.indexOf('#has') !== -1) {
+                    var sectionTitle = property.property.value.split('#has')[1].replace(/([A-Z])/g, ' $1').trim();
+                    var type = (sectionRestrictions && !!sectionRestrictions[0] && sectionRestrictions[0].type) ? sectionRestrictions[0].type : _this.xsdPrefix + 'string';
+                    var component = _this.defaultComponentForType.get(type) ? _this.defaultComponentForType.get(type) : _component_type_templates_xsd_string_string_component__WEBPACK_IMPORTED_MODULE_11__["StringComponent"];
+                    var componentFactory = _this.componentFactoryResolver.resolveComponentFactory(component);
+                    var componentRef = viewContainerRef.createComponent(componentFactory);
+                    var instance = componentRef.instance;
+                    instance.data = property.predicate.value;
+                    instance.title = sectionTitle;
+                    instance.changeContent.subscribe(function (data) { return console.log('Trigger saving new data :' + data); });
+                    viewContainerRef.createComponent(componentDividerFactory); // create divider
+                }
             });
         });
     };
@@ -1591,36 +1605,39 @@ var DefaultPatternRendererComponent = /** @class */ (function () {
     };
     DefaultPatternRendererComponent.prototype.loadInfos = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var loadingResult, _a, _b;
+            var imports, importedPatternIris, loadingResult, _a, _b;
             return __generator(this, function (_c) {
                 switch (_c.label) {
-                    case 0:
-                        this.patternLoaderService.supportedIRI = this.patternIri;
-                        this.sectionLoader.supportedIRI = this.plIri;
-                        return [4 /*yield*/, this.pos.loadUrisToStore([{ token: this.patternIri, value: _util_iri_converter__WEBPACK_IMPORTED_MODULE_9__["IriConverter"].getFileName(this.patternIri) }])];
+                    case 0: return [4 /*yield*/, this.pos.loadUrisToStore([{ token: this.plIri, value: this.plIri }])];
                     case 1:
                         _c.sent();
-                        return [4 /*yield*/, this.patternLoaderService.selectContentFromStore()];
+                        return [4 /*yield*/, this.pos.getOWLImports(this.plIri)];
                     case 2:
+                        imports = _c.sent();
+                        importedPatternIris = imports.map(function (i) { return i.import; });
+                        return [4 /*yield*/, this.pos.loadUrisToStore(importedPatternIris)];
+                    case 3:
+                        _c.sent();
+                        this.patternLoaderService.patternIri = this.patternIri;
+                        this.patternLoaderService.supportedIRI = _util_iri_converter__WEBPACK_IMPORTED_MODULE_9__["IriConverter"].getPatternListIriForPLIri(this.plIri);
+                        this.sectionLoader.supportedIRI = this.plIri;
+                        return [4 /*yield*/, this.patternLoaderService.selectContentFromStore()];
+                    case 4:
                         loadingResult = _c.sent();
                         this.patternProperties = Array.from(loadingResult.values());
                         this.isLoadingPattern = false;
                         // not that we loaded the data for the pattern, load all the data from patternlanguage
-                        return [4 /*yield*/, this.pos.loadUrisToStore([{ token: this.patternIri, value: _util_iri_converter__WEBPACK_IMPORTED_MODULE_9__["IriConverter"].getFileName(this.plIri) }])];
-                    case 3:
-                        // not that we loaded the data for the pattern, load all the data from patternlanguage
-                        _c.sent();
                         this.plLoader.supportedIRI = this.plIri;
                         return [4 /*yield*/, this.plLoader.loadContentFromStore()];
-                    case 4:
+                    case 5:
                         _c.sent();
                         _a = this;
                         return [4 /*yield*/, this.sectionLoader.loadContentFromStore()];
-                    case 5:
+                    case 6:
                         _a.sectionRestritions = _c.sent();
                         _b = this;
                         return [4 /*yield*/, this.plLoader.getPLSections(this.plIri)];
-                    case 6:
+                    case 7:
                         _b.sections = _c.sent();
                         this.isLoadingSection = false;
                         if (!this.patternProperties) {
@@ -1645,7 +1662,8 @@ var DefaultPatternRendererComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./default-pattern-renderer.component.html */ "./src/app/core/default-pattern-renderer/default-pattern-renderer.component.html"),
             styles: [__webpack_require__(/*! ./default-pattern-renderer.component.scss */ "./src/app/core/default-pattern-renderer/default-pattern-renderer.component.scss")]
         }),
-        __metadata("design:paramtypes", [_service_loader_default_pattern_loader_service__WEBPACK_IMPORTED_MODULE_2__["DefaultPatternLoaderService"], _service_loader_pattern_language_loader_pl_restriction_loader_service__WEBPACK_IMPORTED_MODULE_6__["PlRestrictionLoaderService"], _service_loader_default_pl_loader_service__WEBPACK_IMPORTED_MODULE_3__["DefaultPlLoaderService"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"],
+        __metadata("design:paramtypes", [_service_loader_default_pattern_loader_service__WEBPACK_IMPORTED_MODULE_2__["DefaultPatternLoaderService"],
+            _service_loader_pattern_language_loader_pl_restriction_loader_service__WEBPACK_IMPORTED_MODULE_6__["PlRestrictionLoaderService"], _service_loader_default_pl_loader_service__WEBPACK_IMPORTED_MODULE_3__["DefaultPlLoaderService"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"],
             _service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_4__["PatternOntologyService"], angular2_toaster__WEBPACK_IMPORTED_MODULE_5__["ToasterService"], _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"],
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ComponentFactoryResolver"]])
     ], DefaultPatternRendererComponent);
@@ -1857,18 +1875,27 @@ var EmitEventOnKeyupDirective = /** @class */ (function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PatternInstance", function() { return PatternInstance; });
+/* harmony import */ var _pattern_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pattern.model */ "./src/app/core/model/pattern.model.ts");
+/* harmony import */ var _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+
+
+/* This class models how a pattern can be reconstructed from the SPARQL queries. */
 var PatternInstance = /** @class */ (function () {
     function PatternInstance(uri, sectionProperties, type) {
         if (uri === void 0) { uri = null; }
         if (sectionProperties === void 0) { sectionProperties = null; }
         if (type === void 0) { type = null; }
         this.uri = uri;
-        this.type = type;
         this.sectionProperties = sectionProperties;
+        this.type = type;
     }
     PatternInstance.prototype.addProperty = function (property, value) {
-        this.sectionProperties.set(property, value);
+        this.sectionProperties.set(property, this.sectionProperties.has(property) ? this.sectionProperties.get(property).concat(value) : [value]);
         return this;
+    };
+    PatternInstance.prototype.toPattern = function (plIri) {
+        var nameKey = _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].getFileName(plIri) + '#hasName';
+        return new _pattern_model__WEBPACK_IMPORTED_MODULE_0__["default"](this.uri, this.sectionProperties.get(nameKey).join(''), this.sectionProperties, plIri);
     };
     return PatternInstance;
 }());
@@ -1961,6 +1988,44 @@ var Loader = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/core/model/pattern-language-patterns.model.ts":
+/*!***************************************************************!*\
+  !*** ./src/app/core/model/pattern-language-patterns.model.ts ***!
+  \***************************************************************/
+/*! exports provided: PatternLanguagePatterns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PatternLanguagePatterns", function() { return PatternLanguagePatterns; });
+/* harmony import */ var _pattern_pedia_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pattern-pedia.model */ "./src/app/core/model/pattern-pedia.model.ts");
+/* harmony import */ var _globals__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../globals */ "./src/app/globals.ts");
+
+
+var PatternLanguagePatterns = /** @class */ (function () {
+    function PatternLanguagePatterns(iri, plIri, patterns) {
+        this.iri = iri;
+        this.plIri = plIri;
+        this.patterns = patterns;
+    }
+    PatternLanguagePatterns.prototype.toTurtle = function () {
+        var ary = new _pattern_pedia_model__WEBPACK_IMPORTED_MODULE_0__["PatternPedia"]().getPrefixesToTurtle(this.iri, this.plIri);
+        ary.push('\n');
+        ary.push("<" + this.iri + "> rdf:type owl:Ontology ;");
+        ary.push("owl:imports <" + _globals__WEBPACK_IMPORTED_MODULE_1__["globals"].urlPatternRepoOntology + ">, <" + this.plIri + "> .");
+        ary.push('\n');
+        this.patterns.forEach(function (pat) {
+            ary.push(pat.toTurtle());
+        });
+        return ary.join('\n');
+    };
+    return PatternLanguagePatterns;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/core/model/pattern-language.model.ts":
 /*!******************************************************!*\
   !*** ./src/app/core/model/pattern-language.model.ts ***!
@@ -2042,7 +2107,7 @@ var PatternLanguage = /** @class */ (function () {
         var ary = this.getPrefixes();
         ary.push('\n');
         ary.push("<" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].getFileName(this.iri) + "> rdf:type owl:Ontology ;");
-        ary.push("owl:imports <" + this.patternpediaBaseURI + "> .");
+        ary.push("owl:imports <" + this.patternpediaBaseURI + "> , <" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].getPatternListIriForPLIri(this.iri) + ">.");
         ary.push('\n');
         ary.push('# #################################################################');
         ary.push('# #');
@@ -2086,9 +2151,6 @@ var PatternLanguage = /** @class */ (function () {
                 ary.push("\n");
             });
         }
-        ary.push('#################################################################');
-        ary.push('# Individuals');
-        ary.push('##############################################################');
         ary.push("###  " + this.iri);
         ary.push(":" + this.name + " rdf:type owl:NamedIndividual ,");
         ary.push('pp:PatternLanguage ;');
@@ -2096,15 +2158,11 @@ var PatternLanguage = /** @class */ (function () {
             ary.push("pp:hasLogo \"" + this.logos[0] + "\"^^xsd:anyURI ;");
         }
         ary.push("pp:hasName \"" + this.name + "\"^^xsd:string .");
-        // Todo solutionSketches and variations
-        this.patternIRIs.forEach(function (patternIri, index) {
-            ary.push(":" + _this.name + " pp:containsPattern <" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].getFileName(patternIri) + "#" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].extractIndividualNameFromIri(patternIri) + "> .");
-        });
         ary.push('#################################################################');
-        ary.push('# Pattern Import Statements');
+        ary.push('# Individuals');
         ary.push('##############################################################');
         this.patternIRIs.forEach(function (patternIri, index) {
-            ary.push("<" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].getFileName(_this.iri) + "> owl:imports <" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].getFileName(patternIri) + "> .");
+            ary.push(":" + _this.name + " pp:containsPattern :" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].extractIndividualNameFromIri(patternIri) + " .");
         });
         return ary.join('\n');
     };
@@ -2139,11 +2197,12 @@ var PatternLanguage = /** @class */ (function () {
 /*!***************************************************!*\
   !*** ./src/app/core/model/pattern-pedia.model.ts ***!
   \***************************************************/
-/*! exports provided: default */
+/*! exports provided: PatternPedia, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PatternPedia", function() { return PatternPedia; });
 /* harmony import */ var _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/iri-converter */ "./src/app/core/util/iri-converter.ts");
 /* harmony import */ var _globals__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../globals */ "./src/app/globals.ts");
 /*
@@ -2188,8 +2247,14 @@ var PatternPedia = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    PatternPedia.prototype.getPrefixesToTurtle = function (iri, defaultPrefixBegin) {
+        var ary = [];
+        ary.push("@prefix : <" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].getFileName(defaultPrefixBegin ? defaultPrefixBegin : iri) + "#> .", "@prefix pp: <" + _globals__WEBPACK_IMPORTED_MODULE_1__["globals"].urlPatternRepoOntology + "#> .", "@prefix owl: <http://www.w3.org/2002/07/owl#> .", "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .", "@prefix xml: <http://www.w3.org/XML/1998/namespace> .", "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .", "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .", "@base <" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].getFileName(iri) + "> .");
+        return ary;
+    };
     return PatternPedia;
 }());
+
 /* harmony default export */ __webpack_exports__["default"] = (PatternPedia);
 
 
@@ -2244,32 +2309,29 @@ var Pattern = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Pattern.prototype.getPrefixes = function () {
-        var ary = [];
-        ary.push("@prefix : <" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].getFileName(this.iri) + "#> .", "@prefix pp: <" + this.patternpediaBaseURI + "#> .", "@prefix owl: <http://www.w3.org/2002/07/owl#> .", "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .", "@prefix xml: <http://www.w3.org/XML/1998/namespace> .", "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .", "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .", "@base <" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].getFileName(this.iri) + "> .");
-        return ary;
-    };
     Pattern.prototype.getSectionIdentifier = function (section) {
         return ':has' + section.replace(/\s/g, '');
     };
     Pattern.prototype.toTurtle = function () {
         var _this = this;
-        var ary = this.getPrefixes();
-        ary.push('#################################################################');
-        ary.push('# Individuals');
-        ary.push('##############################################################');
-        ary.push('\n\n');
+        var ary = [];
         ary.push("###  " + this.iri);
         ary.push(":" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].removeWhitespace(this.name) + " rdf:type owl:NamedIndividual ,");
         ary.push("<" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].getFileName(this.patternLanguageIri) + "/" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].extractIndividualNameFromIri(this.patternLanguageIri) + "Individual> ;");
-        ary.push("<" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].getFileName(this.iri) + "#hasName> \"" + this.name + "\" ;");
-        var sections = Array.from(Object.keys(this.sectionsProperties));
-        sections.forEach(function (key, sectionindex) {
-            var statements = _this.sectionsProperties[key];
-            statements.forEach(function (val, indexStatements) {
-                ary.push(_this.getPropertyIri(key) + " " + (_this.sectionsProperties[key][indexStatements].startsWith('<') ? '' : '"') + _this.sectionsProperties[key][indexStatements] + (_this.sectionsProperties[key][indexStatements].startsWith('<') ? '' : '"') + " " + ((sectionindex === sections.length - 1) && (indexStatements === statements.length - 1) ? '.' : ';'));
+        var sections = Array.from(this.sectionsProperties.keys()).filter(function (it) { return it !== 'http://www.w3.org/2002/07/owl#imports' &&
+            it !== (_util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].getFileName(_this.patternLanguageIri) + '#hasName'); }); // ignore owl:imports and the name, because we can use this.name instead
+        ary.push("<" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].getFileName(this.patternLanguageIri) + "#hasName> \"" + this.name + "\" " + (sections.length > 0 ? ';' : '.'));
+        if (sections) {
+            sections.forEach(function (key, sectionindex) {
+                var statements = _this.sectionsProperties.get(key);
+                if (statements) {
+                    statements.forEach(function (val, indexStatements) {
+                        ary.push(_this.getPropertyIri(key) + " " + (_this.sectionsProperties.get(key)[indexStatements].startsWith('<') ? '' : '"') + _this.sectionsProperties.get(key)[indexStatements] + (_this.sectionsProperties.get(key)[indexStatements].startsWith('<') ? '' : '"') + " " + ((sectionindex === sections.length - 1) && (indexStatements === statements.length - 1) ? '.' : ';'));
+                    });
+                }
             });
-        });
+        }
+        ary.push('');
         return ary.join('\n');
     };
     Pattern.prototype.getPropertyIri = function (key) {
@@ -2459,10 +2521,14 @@ var GithubPersistenceService = /** @class */ (function () {
             }
         });
     };
+    GithubPersistenceService.prototype.getHeaders = function () {
+        var headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]();
+        headers.append('Content-Type', 'application/x-turtle');
+        headers.append('Authorization', this.cookieService.get('patternpedia_github_token'));
+        return headers;
+    };
     GithubPersistenceService.prototype.getGithubPathForPatternLanguage = function (patternLanguage) {
-        return patternLanguage.iri.indexOf('patternlanguage') === -1 ?
-            this.githubBaseUrl + "/" + patternLanguage.name + "/" + patternLanguage.name + ".ttl" :
-            this.githubBaseUrl + "/patternlanguages/" + patternLanguage.name + "/" + patternLanguage.name + ".ttl";
+        return this.githubBaseUrl + "/patternlanguages/" + patternLanguage.name + "/" + patternLanguage.name + ".ttl";
     };
     GithubPersistenceService.prototype.addPatternLanguageToPatternPedia = function (patternlanguage, existingPatternlanguages) {
         var _this = this;
@@ -2486,20 +2552,18 @@ var GithubPersistenceService = /** @class */ (function () {
     GithubPersistenceService.prototype.getRequestInfosToAddToPatternPedia = function () {
         return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["forkJoin"])(this.httpClient.get('assets/patternpedia-without-containsPatternGraph.ttl', { responseType: 'text' }), this.getFile(this.githubPatternPediaUrl)).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) { return ({ content: res[0], fileInfo: res[1] }); }));
     };
-    GithubPersistenceService.prototype.getFile = function (fileGitApiUrl) {
-        return this.httpClient.get(fileGitApiUrl, {
+    GithubPersistenceService.prototype.getFile = function (iri) {
+        return this.httpClient.get(iri, {
             headers: {
                 'Authorization': "token " + this.cookieService.get('patternpedia_github_token')
             }
         }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) { return res; }));
     };
-    GithubPersistenceService.prototype.getTTLFile = function (url) {
-        return this.httpClient.get(url, { responseType: 'text' });
-    };
     GithubPersistenceService.prototype.updatePL = function (patternLanguage) {
         var _this = this;
-        return this.getFile(this.getGithubPathForPatternLanguage(patternLanguage)).pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_4__["switchMap"])(function (res) {
-            return _this.httpClient.put(_this.getGithubPathForPatternLanguage(patternLanguage), {
+        var githubUrlPL = this.getGithubPathForPatternLanguage(patternLanguage);
+        return this.getFile(githubUrlPL).pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_4__["switchMap"])(function (res) {
+            return _this.httpClient.put(githubUrlPL, {
                 message: 'update patternlanguage ' + patternLanguage.name,
                 content: btoa(patternLanguage.toTurtle()),
                 sha: res.sha
@@ -2511,17 +2575,36 @@ var GithubPersistenceService = /** @class */ (function () {
             });
         }));
     };
-    GithubPersistenceService.prototype.uploadPattern = function (pattern, patternLanguage) {
-        var url = this.githubBaseUrl + "/patternlanguages/" + patternLanguage.name + "/" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_6__["IriConverter"].removeWhitespace(pattern.name) + ".ttl";
-        return this.httpClient.put(url, {
-            message: 'update patternlanguage ' + patternLanguage.name,
-            content: btoa(pattern.toTurtle()),
+    GithubPersistenceService.prototype.updatePLPatterns = function (patternLanguagePatterns) {
+        var _this = this;
+        var githubUrlPLPatterns = this.getGithubPathForPatternLanguagePatterns(patternLanguagePatterns);
+        return this.getFile(githubUrlPLPatterns).pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_4__["switchMap"])(function (res) {
+            return _this.httpClient.put(githubUrlPLPatterns, {
+                message: 'update patterns of' + _util_iri_converter__WEBPACK_IMPORTED_MODULE_6__["IriConverter"].extractIndividualNameFromIri(patternLanguagePatterns.plIri),
+                content: btoa(patternLanguagePatterns.toTurtle()),
+                sha: res.sha
+            }, {
+                headers: {
+                    'Content-Type': 'application/x-turtle',
+                    'Authorization': "token " + _this.cookieService.get('patternpedia_github_token')
+                }
+            });
+        }));
+    };
+    GithubPersistenceService.prototype.uploadPLPatterns = function (patternLanguagePatterns) {
+        var githubUrlPLPatterns = this.getGithubPathForPatternLanguagePatterns(patternLanguagePatterns);
+        return this.httpClient.put(githubUrlPLPatterns, {
+            message: 'initialize patternslist (currently empty)  of' + _util_iri_converter__WEBPACK_IMPORTED_MODULE_6__["IriConverter"].extractIndividualNameFromIri(patternLanguagePatterns.plIri),
+            content: btoa(patternLanguagePatterns.toTurtle())
         }, {
             headers: {
                 'Content-Type': 'application/x-turtle',
                 'Authorization': "token " + this.cookieService.get('patternpedia_github_token')
             }
         });
+    };
+    GithubPersistenceService.prototype.getGithubPathForPatternLanguagePatterns = function (patternLanguagePatterns) {
+        return this.githubBaseUrl + "/patternlanguages/" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_6__["IriConverter"].extractIndividualNameFromIri(patternLanguagePatterns.plIri) + "/" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_6__["IriConverter"].extractIndividualNameFromIri(patternLanguagePatterns.iri) + ".ttl";
     };
     GithubPersistenceService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
@@ -2579,10 +2662,11 @@ var DefaultPatternLoaderService = /** @class */ (function (_super) {
     function DefaultPatternLoaderService(pos) {
         var _this = _super.call(this, null, pos) || this;
         _this.pos = pos;
+        _this.patternIri = '';
         return _this;
     }
     DefaultPatternLoaderService.prototype.selectContentFromStore = function () {
-        return this.pos.getPatternProperties(this.supportedIRI);
+        return this.pos.getPatternProperties(this.supportedIRI, this.patternIri);
     };
     DefaultPatternLoaderService.prototype.mapTriples = function (triples) {
         var map = new Map();
@@ -2703,22 +2787,12 @@ var DefaultPlLoaderService = /** @class */ (function (_super) {
     }
     DefaultPlLoaderService.prototype.selectContentFromStore = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var qryPatterns, patterns, qry, graphs, _i, patterns_1, entry;
+            var qry, graphs;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        qryPatterns = "SELECT DISTINCT ?pattern\n                                      WHERE {\n                                          <" + this.supportedIRI + "> <https://purl.org/patternpedia#containsPattern> ?pattern\n                                      }";
-                        return [4 /*yield*/, this.executor.exec(qryPatterns, [_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getFileName(this.supportedIRI)])];
-                    case 1:
-                        patterns = _a.sent();
-                        qry = "SELECT DISTINCT ?type ?pattern ?predicate ?property\n                 WHERE {\n                    <" + this.supportedIRI + "> pp:containsPattern ?pattern .\n                    ?pattern ?predicate ?property .\n                    ?pattern rdf:type ?type .\n                    FILTER (?type != owl:NamedIndividual && ?predicate != rdf:type)\n                    }\n                 ORDER BY ?pattern";
-                        graphs = [_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getFileName(this.supportedIRI)];
-                        for (_i = 0, patterns_1 = patterns; _i < patterns_1.length; _i++) {
-                            entry = patterns_1[_i];
-                            graphs.push(_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getFileName(entry.pattern.value));
-                        }
-                        return [2 /*return*/, this.executor.exec(qry, graphs)];
-                }
+                qry = "SELECT DISTINCT ?type ?pattern ?predicate ?property\n                 WHERE {\n                    <" + this.supportedIRI + "> pp:containsPattern ?pattern .\n                    ?pattern ?predicate ?property .\n                    ?pattern rdf:type ?type .\n                    FILTER (?type != owl:NamedIndividual && ?predicate != rdf:type)\n                    }\n                 ORDER BY ?pattern";
+                graphs = [_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getFileName(this.supportedIRI)];
+                graphs.push(_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getPatternListIriForPLIri(this.supportedIRI));
+                return [2 /*return*/, this.executor.exec(qry, graphs)];
             });
         });
     };
@@ -3574,6 +3648,9 @@ var PatternOntologyService = /** @class */ (function () {
                         return [4 /*yield*/, this.loadPatternGraphsByUri(_util_iri_converter__WEBPACK_IMPORTED_MODULE_5__["IriConverter"].extractDataValue(patternGraphList)).toPromise()];
                     case 1:
                         loadResult = _d.sent();
+                        if (!loadResult) {
+                            return [2 /*return*/];
+                        }
                         i = 0;
                         _d.label = 2;
                     case 2:
@@ -3862,11 +3939,11 @@ var PatternOntologyService = /** @class */ (function () {
             });
         });
     };
-    PatternOntologyService.prototype.getPatternProperties = function (graphIri) {
+    PatternOntologyService.prototype.getPatternProperties = function (graphIri, patternIri) {
         return __awaiter(this, void 0, void 0, function () {
             var qryPatternGraph;
             return __generator(this, function (_a) {
-                qryPatternGraph = "SELECT DISTINCT ?property ?predicate WHERE {\n            { ?pattern a owl:NamedIndividual . \n                ?pattern ?property ?predicate\n                FILTER(?property != rdf:type)\n            }\n        } ";
+                qryPatternGraph = "SELECT DISTINCT ?pattern ?property ?predicate WHERE {\n            { <" + patternIri + "> a owl:NamedIndividual . \n              <" + patternIri + "> ?property ?predicate\n                FILTER(?property != rdf:type)\n            }\n        } ";
                 return [2 /*return*/, this.exec(qryPatternGraph, [_util_iri_converter__WEBPACK_IMPORTED_MODULE_5__["IriConverter"].getFileName(graphIri)])];
             });
         });
@@ -4092,6 +4169,9 @@ var IriConverter = /** @class */ (function () {
     };
     IriConverter.isIri = function (name) {
         return (name.indexOf('#') >= 0) || (name.indexOf('://') >= 0) || (name.indexOf('purl.org/patternpedia') >= 0);
+    };
+    IriConverter.getPatternListIriForPLIri = function (supportedIRI) {
+        return this.getFileName(supportedIRI) + '/' + this.extractIndividualNameFromIri(this.getFileName(supportedIRI)) + '-Patterns';
     };
     return IriConverter;
 }());
@@ -4659,25 +4739,14 @@ var CloudComputingPatternsLoaderService = /** @class */ (function (_super) {
     }
     CloudComputingPatternsLoaderService.prototype.selectContentFromStore = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var qryPatterns, patterns, qry, graphs, _i, patterns_1, entry;
+            var qry, graphs;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        qryPatterns = "SELECT DISTINCT ?pattern\n                                      WHERE {\n                                          <" + this.supportedIRI + "> <https://purl.org/patternpedia#containsPattern> ?pattern\n                                      }";
-                        return [4 /*yield*/, this.executor.exec(qryPatterns, [_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getFileName(this.supportedIRI)])];
-                    case 1:
-                        patterns = _a.sent();
-                        qry = "SELECT DISTINCT ?type ?pattern ?predicate ?property\n                 WHERE {\n                    <" + this.supportedIRI + "> pp:containsPattern ?pattern .\n                    ?pattern ?predicate ?property .\n                    ?pattern a ?type .\n                    FILTER (?type != owl:NamedIndividual && ?predicate != rdf:type)\n                    }\n                 ORDER BY ?pattern";
-                        graphs = [_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getFileName(this.supportedIRI)];
-                        for (_i = 0, patterns_1 = patterns; _i < patterns_1.length; _i++) {
-                            entry = patterns_1[_i];
-                            graphs.push(_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getFileName(entry.pattern.value));
-                        }
-                        graphs.push('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns');
-                        graphs.push('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Patterns');
-                        graphs.push('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Relations');
-                        return [2 /*return*/, this.executor.exec(qry, graphs)];
-                }
+                qry = "SELECT DISTINCT ?type ?pattern ?predicate ?property\n                 WHERE {\n                    <" + this.supportedIRI + "> pp:containsPattern ?pattern .\n                    ?pattern ?predicate ?property .\n                    ?pattern a ?type .\n                    FILTER (?type != owl:NamedIndividual && ?predicate != rdf:type)\n                    }\n                 ORDER BY ?pattern";
+                graphs = [_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getFileName(this.supportedIRI)];
+                graphs.push('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns');
+                graphs.push('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Patterns');
+                graphs.push('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Relations');
+                return [2 /*return*/, this.executor.exec(qry, graphs)];
             });
         });
     };
@@ -9680,9 +9749,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _core_model_pattern_pedia_model__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../core/model/pattern-pedia.model */ "./src/app/core/model/pattern-pedia.model.ts");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
 /* harmony import */ var _core_service_validation_service__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../core/service/validation.service */ "./src/app/core/service/validation.service.ts");
-/* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! rxjs/internal/operators */ "./node_modules/rxjs/internal/operators/index.js");
-/* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_14__);
-/* harmony import */ var _core_model_pattern_language_model__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../core/model/pattern-language.model */ "./src/app/core/model/pattern-language.model.ts");
+/* harmony import */ var _core_model_pattern_language_model__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../core/model/pattern-language.model */ "./src/app/core/model/pattern-language.model.ts");
+/* harmony import */ var _core_service_loader_default_pattern_loader_service__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../core/service/loader/default-pattern-loader.service */ "./src/app/core/service/loader/default-pattern-loader.service.ts");
+/* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! rxjs/internal/operators */ "./node_modules/rxjs/internal/operators/index.js");
+/* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_16__);
+/* harmony import */ var _core_model_pattern_language_patterns_model__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../core/model/pattern-language-patterns.model */ "./src/app/core/model/pattern-language-patterns.model.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -9692,6 +9763,43 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
 
 
 
@@ -9709,7 +9817,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 var CreatePatternComponent = /** @class */ (function () {
-    function CreatePatternComponent(loader, PlRestrictionLoader, activatedRoute, cdr, uploadService, pos, toastService, router, patternOntologyServce, formBuilder) {
+    function CreatePatternComponent(loader, PlRestrictionLoader, activatedRoute, cdr, uploadService, pos, toastService, router, patternOntologyServce, patternLoaderService) {
         this.loader = loader;
         this.PlRestrictionLoader = PlRestrictionLoader;
         this.activatedRoute = activatedRoute;
@@ -9719,7 +9827,7 @@ var CreatePatternComponent = /** @class */ (function () {
         this.toastService = toastService;
         this.router = router;
         this.patternOntologyServce = patternOntologyServce;
-        this.formBuilder = formBuilder;
+        this.patternLoaderService = patternLoaderService;
         this.sectionRestrictions = new Map();
         this.xsdPrefix = new _core_model_pattern_pedia_model__WEBPACK_IMPORTED_MODULE_11__["default"]().defaultPrefixes.get('xsd').replace('<', '').replace('>', '');
         this.wasSaveButtonClicked = false;
@@ -9762,6 +9870,8 @@ var CreatePatternComponent = /** @class */ (function () {
         var pattern = this.parsePatternInput();
         var patternIris = !this.patterns ? [] : this.patterns.map(function (p) { return p.uri; });
         patternIris.push(pattern.iri);
+        var patternList = this.patterns.map(function (it) { return it.toPattern(_this.plIri); });
+        patternList.push(pattern);
         var restrictions = [];
         this.wasSaveButtonClicked = true;
         if (!this.patternValuesFormGroup.valid) {
@@ -9775,10 +9885,10 @@ var CreatePatternComponent = /** @class */ (function () {
             }
             restrictions.push.apply(restrictions, this.plRestrictions.get(key));
         }
-        var patternLanguage = new _core_model_pattern_language_model__WEBPACK_IMPORTED_MODULE_15__["default"](this.plIri, this.plName, this.plLogos, patternIris, this.sections, restrictions, null);
-        this.uploadService.updatePL(patternLanguage).pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_14__["switchMap"])(function () {
-            return _this.uploadService.uploadPattern(pattern, patternLanguage);
-        }), Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_14__["switchMap"])(function () {
+        var patternLanguage = new _core_model_pattern_language_model__WEBPACK_IMPORTED_MODULE_14__["default"](this.plIri, this.plName, this.plLogos, patternIris, this.sections, restrictions, null);
+        this.uploadService.updatePL(patternLanguage).pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_16__["switchMap"])(function () {
+            return _this.uploadService.updatePLPatterns(new _core_model_pattern_language_patterns_model__WEBPACK_IMPORTED_MODULE_17__["PatternLanguagePatterns"](_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getPatternListIriForPLIri(patternLanguage.iri), patternLanguage.iri, patternList));
+        }), Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_16__["switchMap"])(function () {
             return _this.pos.loadUrisToStore([{ value: _this.plIri, token: null }]);
         })).subscribe(function () {
             _this.toastService.pop('success', 'Pattern created');
@@ -9800,7 +9910,7 @@ var CreatePatternComponent = /** @class */ (function () {
     CreatePatternComponent.prototype.onChangeMarkdownText = function () {
         var currentText = this.parseMarkdownText();
         if (this.invalidTextEdit(currentText)) {
-            console.log('invalid');
+            console.log('invalid markdowntext detected, undoing last editing');
             this._textEditor.value = this.previousTextEditorValue;
             currentText = this.parseMarkdownText();
             this.toastService.pop('warning', 'Reset text', "Title of Sections changed, this is not allowed");
@@ -9864,7 +9974,7 @@ var CreatePatternComponent = /** @class */ (function () {
                         sectioncontent[i] = '<' + sectioncontent[i] + '>';
                     }
                 }
-                sectionMap[section] = sectioncontent;
+                sectionMap.set(section, sectioncontent);
             }
         });
         return new _core_model_pattern_model__WEBPACK_IMPORTED_MODULE_7__["default"](this.getPatternUri(patternname, this.plIri), patternname, sectionMap, this.plIri);
@@ -9909,8 +10019,9 @@ var CreatePatternComponent = /** @class */ (function () {
                 _this.loader.loadContentFromStore()
                     .then(function (result) {
                     _this.patterns = Array.from(result.values());
-                    console.log('patterns');
-                    console.log(_this.patterns);
+                    if (_this.patterns) {
+                        _this.loadPatternSections();
+                    }
                     _this.cdr.detectChanges();
                 });
             });
@@ -9954,16 +10065,13 @@ var CreatePatternComponent = /** @class */ (function () {
                         }
                         if (allRestrictions.type === 'https://purl.org/dc/dcmitype/Image') {
                             validators.push(_core_service_validation_service__WEBPACK_IMPORTED_MODULE_13__["ValidationService"].xsdImage());
-                            console.log('added xsdImage validator');
                         }
                         else if (allRestrictions.type.startsWith(_this.xsdPrefix) &&
                             (allRestrictions.type.endsWith('integer') || allRestrictions.type.endsWith('positiveInteger') || allRestrictions.type.endsWith('negativeInteger'))) {
-                            console.log('added xsdinteger validator');
                             validators.push(_core_service_validation_service__WEBPACK_IMPORTED_MODULE_13__["ValidationService"].xsdInteger());
                         }
                         else if (allRestrictions.type.startsWith(_this.xsdPrefix) && allRestrictions.type.endsWith('anyURI')) {
                             validators.push(_core_service_validation_service__WEBPACK_IMPORTED_MODULE_13__["ValidationService"].xsdAnyURI());
-                            console.log('added xsdAnyURI validator');
                         }
                     }
                     _this.patternValuesFormGroup.addControl(key, new _angular_forms__WEBPACK_IMPORTED_MODULE_12__["FormControl"]('', validators));
@@ -9982,6 +10090,41 @@ var CreatePatternComponent = /** @class */ (function () {
         this.loader.getPLLogo(this.plIri).then(function (res) {
             _this.plLogos = res.map(function (dataRessponse) {
                 return dataRessponse.logo.value;
+            });
+        });
+    };
+    CreatePatternComponent.prototype.loadPatternSections = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var patternFilesIri, i, sectionProperties, secMap, i_1, valArray;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        patternFilesIri = _core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getPatternListIriForPLIri(this.plIri);
+                        i = 0;
+                        _a.label = 1;
+                    case 1:
+                        if (!(i < this.patterns.length)) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.pos.getPatternProperties(patternFilesIri, this.patterns[i].uri)];
+                    case 2:
+                        sectionProperties = _a.sent();
+                        secMap = new Map();
+                        for (i_1 = 0; i_1 < sectionProperties.length; i_1++) {
+                            if (!secMap.get(sectionProperties[i_1].predicate.value)) {
+                                secMap.set(sectionProperties[i_1].property.value, [sectionProperties[i_1].predicate.value]);
+                            }
+                            else {
+                                valArray = secMap.get(sectionProperties[i_1].predicate.value);
+                                valArray.push(sectionProperties[i_1].property.value);
+                                secMap.set(sectionProperties[i_1].property.value, valArray);
+                            }
+                        }
+                        this.patterns[i].sectionProperties = secMap;
+                        _a.label = 3;
+                    case 3:
+                        i++;
+                        return [3 /*break*/, 1];
+                    case 4: return [2 /*return*/];
+                }
             });
         });
     };
@@ -10004,7 +10147,7 @@ var CreatePatternComponent = /** @class */ (function () {
             angular2_toaster__WEBPACK_IMPORTED_MODULE_9__["ToasterService"],
             _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
             _core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_8__["PatternOntologyService"],
-            _angular_forms__WEBPACK_IMPORTED_MODULE_12__["FormBuilder"]])
+            _core_service_loader_default_pattern_loader_service__WEBPACK_IMPORTED_MODULE_15__["DefaultPatternLoaderService"]])
     ], CreatePatternComponent);
     return CreatePatternComponent;
 }());
@@ -10669,11 +10812,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _create_edit_pattern_language_create_edit_pattern_language_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../create-edit-pattern-language/create-edit-pattern-language.component */ "./src/app/pattern-language-management/create-edit-pattern-language/create-edit-pattern-language.component.ts");
 /* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
 /* harmony import */ var _core_service_github_persistence_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../core/service/github-persistence.service */ "./src/app/core/service/github-persistence.service.ts");
-/* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! rxjs/internal/operators */ "./node_modules/rxjs/internal/operators/index.js");
-/* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/index.js");
-/* harmony import */ var angular2_toaster__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! angular2-toaster */ "./node_modules/angular2-toaster/angular2-toaster.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/index.js");
+/* harmony import */ var angular2_toaster__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! angular2-toaster */ "./node_modules/angular2-toaster/angular2-toaster.js");
+/* harmony import */ var _core_util_iri_converter__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+/* harmony import */ var _core_model_pattern_language_patterns_model__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../core/model/pattern-language-patterns.model */ "./src/app/core/model/pattern-language-patterns.model.ts");
+/* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! rxjs/internal/operators */ "./node_modules/rxjs/internal/operators/index.js");
+/* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -10731,6 +10876,8 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+
+
 
 
 
@@ -10829,10 +10976,15 @@ var PatternLanguageManagementComponent = /** @class */ (function () {
         // update patternpedia, when user saves a patternlanguage:
         dialogRef.componentInstance.saveClicked.subscribe(function (result) {
             var patternlanguage = new _core_model_pattern_language_model__WEBPACK_IMPORTED_MODULE_1__["default"](_this.urlPatternPedia + '/patternlanguages/' + result.name.replace(/\s/g, ''), result.name, [result.iconUrl], null, result.sections, result.restrictions, result.prefixes);
-            _this.uploadService.uploadPatternLanguage(patternlanguage).pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_10__["switchMap"])(function () {
+            var patternLanguagePatterns = new _core_model_pattern_language_patterns_model__WEBPACK_IMPORTED_MODULE_13__["PatternLanguagePatterns"](_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_12__["IriConverter"].getPatternListIriForPLIri(patternlanguage.iri), patternlanguage.iri, []);
+            console.log(patternlanguage.iri);
+            console.log(patternLanguagePatterns.iri);
+            _this.uploadService.uploadPatternLanguage(patternlanguage).pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_14__["switchMap"])(function () {
                 return _this.uploadService.addPatternLanguageToPatternPedia(patternlanguage, _this.patternLanguages);
-            }), Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_10__["tap"])(function () { return _this._toasterService.pop('success', 'Created new patternlanguage'); }), Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_10__["switchMap"])(function () {
-                return Object(rxjs__WEBPACK_IMPORTED_MODULE_13__["forkJoin"])(
+            }), Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_14__["switchMap"])(function () {
+                return _this.uploadService.uploadPLPatterns(patternLanguagePatterns);
+            }), Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_14__["tap"])(function () { return _this._toasterService.pop('success', 'Created new patternlanguage'); }), Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_14__["switchMap"])(function () {
+                return Object(rxjs__WEBPACK_IMPORTED_MODULE_15__["forkJoin"])(
                 // load the new patternlanguage's data into the store, so we can use it's metadata when we navigate to it
                 _this.pos.loadUrisToStore([{ value: patternlanguage.iri, token: null }]), 
                 // load the updated patternpedia file which contains the new patternlanguage into store
@@ -10888,8 +11040,8 @@ var PatternLanguageManagementComponent = /** @class */ (function () {
             _core_service_loader_pattern_language_loader_linked_open_patterns_loader_service__WEBPACK_IMPORTED_MODULE_6__["LinkedOpenPatternsLoader"],
             _angular_material__WEBPACK_IMPORTED_MODULE_8__["MatDialog"],
             _core_service_github_persistence_service__WEBPACK_IMPORTED_MODULE_9__["GithubPersistenceService"],
-            ngx_cookie_service__WEBPACK_IMPORTED_MODULE_11__["CookieService"],
-            angular2_toaster__WEBPACK_IMPORTED_MODULE_12__["ToasterService"]])
+            ngx_cookie_service__WEBPACK_IMPORTED_MODULE_10__["CookieService"],
+            angular2_toaster__WEBPACK_IMPORTED_MODULE_11__["ToasterService"]])
     ], PatternLanguageManagementComponent);
     return PatternLanguageManagementComponent;
 }());
