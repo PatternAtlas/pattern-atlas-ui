@@ -284,7 +284,7 @@ export class CreatePatternComponent implements OnInit {
               .then(result => {
                 this.patterns = Array.from(result.values());
                 if (this.patterns) {
-                  this.loadPatternSections();
+                  this.loadPatternSections().then(() => console.log('pattern properties loaded'));
 
                 }
                 this.cdr.detectChanges();
@@ -313,8 +313,11 @@ export class CreatePatternComponent implements OnInit {
       this.sections = res.map((iri: any) => {
         return this.reconstructSectionFromSectionesult(iri);
       });
+      console.log(this.sections);
       this.PlRestrictionLoader.loadContentFromStore().then((response: any) => {
         this.plRestrictions = response;
+        console.log('plRestrictions');
+        console.log(this.plRestrictions);
         this.patternValuesFormGroup = new FormGroup({});
         this.plRestrictions.forEach((value: PatternLanguageSectionRestriction[], key: string) => {
           const allRestrictions = this.PlRestrictionLoader.getRestrictionsForSection(key, this.plRestrictions.get(key));
@@ -377,6 +380,6 @@ export class CreatePatternComponent implements OnInit {
       const secMap = await this.patternLoaderService.loadContentFromStore(); // (patternFilesIri, this.patterns[i].uri);
       this.patterns[i].sectionProperties = secMap;
     }
-    console.log(this.patterns);
+    Promise.resolve();
   }
 }

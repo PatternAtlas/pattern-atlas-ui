@@ -536,17 +536,34 @@ export class PatternOntologyService implements SparqlExecutor {
     const qryPatternGraphs = `SELECT DISTINCT  ?property ?exactCardinality ?minCardinality 
         ?maxCardinality ?dataRange ?allValuesdataRange ?someValuesdataRange 
         WHERE {
-            ?patternLanguageIndividual a owl:Class . 
-            ?patternLanguageIndividual rdfs:subClassOf ?restrictionClass .
-            ?restrictionClass a owl:Restriction . 
-            ?restrictionClass owl:onProperty ?property .
-            ?property a owl:DatatypeProperty .
-            optional { ?restrictionClass owl:allValuesFrom ?allValuesdataRange .} 
-            optional { ?restrictionClass owl:onDataRange   ?dataRange .}
-            optional { ?restrictionClass owl:someValuesFrom ?someValuesdataRange .}
-            optional { ?restrictionClass owl:qualifiedCardinality ?exactCardinality . } 
-            optional { ?restrictionClass owl:minCardinality  ?minCardinality . }  
-            optional { ?restrictionClass owl:maxCardinality  ?maxCardinality . }
+            {
+              ?patternLanguageIndividual a owl:Class . 
+              ?patternLanguageIndividual rdfs:subClassOf ?restrictionClass .
+              ?restrictionClass a owl:Restriction . 
+              ?restrictionClass owl:onProperty ?property .
+              ?property a owl:DatatypeProperty .
+              optional { ?restrictionClass owl:allValuesFrom ?allValuesdataRange .} 
+              optional { ?restrictionClass owl:onDataRange   ?dataRange .}
+              optional { ?restrictionClass owl:someValuesFrom ?someValuesdataRange .}
+              optional { ?restrictionClass owl:qualifiedCardinality ?exactCardinality . } 
+              optional { ?restrictionClass owl:minCardinality  ?minCardinality . }  
+              optional { ?restrictionClass owl:maxCardinality  ?maxCardinality . }
+            }
+            UNION
+              {
+              
+              ?patternLanguageIndividual a owl:Class . 
+              ?patternLanguageIndividual rdfs:subClassOf ?restrictionClass .
+              ?restrictionClass a owl:Restriction . 
+              ?restrictionClass owl:onProperty ?property .
+              ?property a pp:DatatypePropertyListItem .
+              optional { ?restrictionClass owl:allValuesFrom ?allValuesdataRange .} 
+              optional { ?restrictionClass owl:onDataRange   ?dataRange .}
+              optional { ?restrictionClass owl:someValuesFrom ?someValuesdataRange .}
+              optional { ?restrictionClass owl:qualifiedCardinality ?exactCardinality . } 
+              optional { ?restrictionClass owl:minCardinality  ?minCardinality . }  
+              optional { ?restrictionClass owl:maxCardinality  ?maxCardinality . }
+              }
         }`;
 
     return this.exec(qryPatternGraphs, [IriConverter.getFileName(graphIri)]);
