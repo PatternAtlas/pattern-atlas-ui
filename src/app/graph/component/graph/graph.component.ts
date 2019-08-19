@@ -212,13 +212,11 @@ export class GraphComponent implements OnInit, AfterViewInit {
   }
 
   // FIXME this has to be changed: the actual filtering should be done in the parent-component. Give a list of filtered patterns to hide them here
-  filterNodes(filter: Filter) {
+  // toBeFilteredIds contains all NODE IDS that should be filtered from the graph
+  filterNodes(toBeFilteredIds: string[]) {
     this.showAllNodes();
 
-    // get patterns to hide
-    const selectedNodes = filter.filterPatterns(this.nodes);
-    // if a node is in selectedNodes we DON'T want to filter it out
-    const nodesToBeFiltered = this.nodes.filter(n => !selectedNodes.includes(n));
+    const nodesToBeFiltered = this.nodes.filter(n => toBeFilteredIds.includes(n.id));
 
     // get all links that contain a pattern that should be filtered
     const linksToBeFiltered = this.links.filter(e => {

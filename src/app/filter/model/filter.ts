@@ -8,11 +8,11 @@ export default class Filter {
     /**
      * Creates a new filter based on the given configuration.
      * The configuration determines how the filter will do the work.
-     * 
+     *
      * Example: config contains a field named 'name' and has the string value 'John'.
      * If later a list of objects should be filtered, the filter checks the individual objects for a field with 'name' and a value that somehow relates to 'John'.
      * If both checks are passed, the object will remain in the list, otherwise it will be removed.
-     * 
+     *
      * @param config an object containing the filter criterias. The filter will be able to filter the later given objects depending on the values of the config object
      */
     constructor(config: any) {
@@ -21,13 +21,13 @@ export default class Filter {
 
     /**
      * Filters a given list of patterns based on the config.
-     * 
+     *
      * The Filter method checks, if the given config value is contained in the pattern fields.
-     * Example: 
+     * Example:
      * Pattern Name - Message Filter
      * Config Name  - message
      * Filtering will include this pattern, as the test will be successful.
-     * 
+     *
      * @param patterns the list of pattern objects that will be filtered based on the config
      */
     filterPatterns(patterns: Array<any>): Array<any> {
@@ -36,15 +36,15 @@ export default class Filter {
             let result = true;
             Object.keys(this.config).forEach(k => {
                 // pattern should contain same fields as the config
-                if (p[k]) {        
+                if (p[k]) {
                     // and the value of that fields should match somehow
-                    let test = this.matches(p[k], this.config[k]);
+                    const test = this.matches(p[k], this.config[k]);
                     // all tests have to be successful! Aggregate the individual results
                     result = result && test;
                 } else {
-                    result = false;
+                    // result = false;
                 }
-            }); 
+            });
             return result;
         });
 
@@ -63,15 +63,15 @@ export default class Filter {
         if (value instanceof Array) {
             let result = false;
             for (const s of value) {
-                let shorter = (s.length < config.length) ? s : config;
-                let longer = (s.length < config.length) ? config : s;
+                const shorter = (s.length < config.length) ? s : config;
+                const longer = (s.length < config.length) ? config : s;
                 // if one element of the list passes the test, return true
                 result = result || longer.toLowerCase().includes(shorter.toLowerCase());
             }
             return result;
         } else {
-            let shorter = (value.length < config.length) ? value : config;
-            let longer = (value.length < config.length) ? config : value;
+            const shorter = (value.length < config.length) ? value : config;
+            const longer = (value.length < config.length) ? config : value;
 
             return longer.toLowerCase().includes(shorter.toLowerCase());
         }

@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material';
 import { FilterViewComponent } from 'src/app/filter/component/filter-view/filter-view.component';
 import { Node, Link, NodeInfo } from 'src/app/graph/model';
 import { EnterpriseIntegrationPatternOutgoingLinkLoaderService } from '../../loader/enterprise-integration-pattern-outgoing-link-loader.service';
+import { Pattern, Relation } from '../../model/data';
 
 @Component({
   selector: 'pp-enterprise-integration-patterns',
@@ -25,11 +26,13 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
   // id of the pattern that is currently selected. We use the Network-Graph for displaying individual patterns too. Via Infobox.
   pId: string;
 
+  all_data: Array<Pattern>;
+  groups: any;
+
   data: { nodes: Node[], links: Link[], id?: string };
 
   patternMap: Map<string, EnterpriseIntegrationPattern>;
   linkMap: Map<string, Link>;
-  groupMap: Map<string, any>;
 
   nodes: Node[];
   links: Link[];
@@ -62,71 +65,103 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
         .then(values => {
           this.patternMap = values[0];
           this.linkMap = values[1];
-          this.groupMap = values[2];
+          const groupMap = values[2];
 
-          // links
-          // links also contains edges to different pattern languages. we don't want to render them as actual links of the network graph
-          // => filter clp links
-          this.links = Array.from(this.linkMap.values()).filter(link => {
-            let source = '';
-            let target = '';
+          // collect all data
+          const links = Array.from(this.linkMap.values());
+          this.all_data = [];
 
-            if (typeof link.source === 'string') {
-              source = link.source;
-            } else if (link.source instanceof Node) {
-              source = link.source.id;
-            }
+          this.patternMap.forEach((value) => {
+            const p = new Pattern();
+            p.id = value.id;
+            p.name = value.name;
+            p.description = value.description.value;
+            p.relations = new Array<Relation>();
 
-            if (typeof link.target === 'string') {
-              target = link.target;
-            } else if (link.target instanceof Node) {
-              target = link.target.id;
-            }
+            // all links that have the current node either as source or target
+            const relations = links.filter(l => {
+              const s = (l.source instanceof Node) ? l.source.id : l.source;
+              const t = (l.target instanceof Node) ? l.target.id : l.target;
 
-            // keep link, if its source and destination is from enterpriseintegrationpatterns, and no other language
-            return source.includes('enterpriseintegrationpatterns') && target.includes('enterpriseintegrationpatterns');
+              return s === value.id || t === value.id;
+            });
+
+            relations.forEach(r => {
+              const relation = new Relation();
+              relation.id = r.id;
+              relation.sourceId = (r.source instanceof Node) ? r.source.id : '' + r.source;
+              relation.targetId = (r.target instanceof Node) ? r.target.id : '' + r.target;
+              relation.weight = r.weight;
+              relation.description = r.description;
+              relation.isCLR = false;
+
+              p.relations.push(relation);
+            });
+
+            this.all_data.push(p);
           });
 
           // groups
-          const groups = {};
-          this.groupMap.forEach(value => {
-            groups[value.groupName] = value.patterns;
+          this.groups = {};
+          groupMap.forEach(value => {
+            this.groups[value.groupName] = value.patterns;
           });
 
-          // for coloring of nodes
-          const groupIds = Array.from(Object.keys(groups));
-          const scale = d3.scaleOrdinal(d3.schemeCategory10);
-          const color = function (d: any) {
-            if (d) {
-              return scale('' + groupIds.indexOf(d));
-            }
-            return scale('0');
-          };
+          this.data = this.transformGraphData(this.all_data);
 
-          // nodes
-          this.nodes = [];
-
-          // convert given IRI -> EnterpriseIntegrationPattern Map to Node list for rendering
-          this.patternMap.forEach((value) => {
-            const n = new Node(value.id);
-            n.name = value.name;
-
-            // go through all groups and check if the current pattern is present in the list of patterns
-            // return the group (i.e. the group name) that contains the pattern. undefined if no group contains this pattern
-            const group = Object.keys(groups).find(groupName => groups[groupName].includes(value.id));
-            n.color = color(group);
-
-            this.nodes.push(n);
-          });
-
-          // place data in field
-          this.data = {
-            nodes: this.nodes,
-            links: this.links,
-            id: this.pId
-          };
+          this.filterAllData();
         });
     });
+  }
+
+  private groupOf(patternId: string) {
+    return Object.keys(this.groups).find(groupName => this.groups[groupName].includes(patternId));
+  }
+
+  private getColorFunction() {
+    // for coloring of nodes
+    const groupIds = Array.from(Object.keys(this.groups));
+    const scale = d3.scaleOrdinal(d3.schemeCategory10);
+    const color = function (d: any) {
+      if (d) {
+        return scale('' + groupIds.indexOf(d));
+      }
+      return scale('0');
+    };
+    return color;
+  }
+
+  private transformGraphData(data: Array<Pattern>): {nodes: Node[], links: Link[], id?: string} {
+    const color = this.getColorFunction();
+
+    const nodes = new Array<Node>();
+    const links = new Array<Link>();
+    for (const p of data) {
+      const n = new Node(p.id);
+      n.name = p.name;
+
+      const g = this.groupOf(p.id);
+      n.color = color(g);
+
+      nodes.push(n);
+
+      for (const r of p.relations) {
+        const l = new Link(
+          r.sourceId,
+          r.targetId,
+          r.weight,
+          r.description
+        );
+        links.push(l);
+      }
+    }
+
+    const result = {
+      nodes: nodes,
+      links: links,
+      id: this.pId
+    };
+    return result;
   }
 
   // called when a node from the network graph was selected
@@ -159,9 +194,21 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // there might be new filter values set -> filter data
-        this.filterFactory.createFilter('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns')
-          .then(filter => this.graph.filterNodes(filter));
+        this.filterAllData();
+      }
+    });
+  }
+
+  private filterAllData() {
+    this.filterFactory.createFilter('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns').then(filter => {
+      const filtered = filter.filterPatterns(this.all_data);
+      const all = this.all_data.map(p => p.id);
+      const keep = filtered.map(p => p.id);
+
+      const filterIds = all.filter(id => !keep.includes(id));
+
+      if (this.graph) {
+        this.graph.filterNodes(filterIds);
       }
     });
   }

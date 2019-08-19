@@ -14,12 +14,7 @@ import { ZoomableDirective } from './component/directives/zoomable.directive';
     CommonModule
   ],
   exports: [
-    GraphComponent,
-    NodeVisualComponent,
-    LinkVisualComponent,
-    NodeInfoboxComponent,
-    DraggableDirective,
-    ZoomableDirective
+    GraphComponent
   ]
 })
 export class GraphModule { }

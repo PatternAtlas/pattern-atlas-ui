@@ -1,25 +1,30 @@
 import { Node } from './node';
 
 export class Link implements d3.SimulationLinkDatum<Node> {
-    // optional - defining optional implementation properties - required for relevant typing assistance
-    index?: number;
+  index?: number;
 
-    // must - defining enforced implementation properties
-    source: Node | string | number;
-    target: Node | string | number;
+  // the id of the link as defined from the triple
+  id?: string;
 
-    weight: string;
-    description: string[];
+  // the source node
+  source: Node | string | number;
+  // the target node
+  target: Node | string | number;
 
-    selected: boolean;
-    preview: boolean;
-    hide: boolean;
+  // the type of the relation, e.g. 'see also'
+  weight: string;
+  description: string[];
 
-    constructor(source: string | number | Node, target: string | number | Node, weight: string = 'default', description?: string[]) {
-        this.source = source;
-        this.target = target;
+  // state of the link
+  selected: boolean;
+  preview: boolean;
+  hide: boolean;
 
-        this.weight = weight;
-        this.description = description;
-    }
+  constructor(source: string | number | Node, target: string | number | Node, weight: string = 'see also', description?: string[]) {
+    this.source = source;
+    this.target = target;
+
+    this.weight = weight;
+    this.description = description;
+  }
 }

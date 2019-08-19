@@ -37,31 +37,32 @@ import { ToasterModule } from 'angular2-toaster';
 
 @NgModule({
     declarations: [
-        AppComponent,
-        PageNotFoundComponent,
-        LandingPageComponent,
-        AdministrationComponent,
+      AppComponent,
+      PageNotFoundComponent,
+      LandingPageComponent,
+      AdministrationComponent,
       TestComponent
     ],
     imports: [
-        BrowserModule,
-        // NOTE: BrowserAnimationsModule issue https://github.com/angular/angular/issues/20290
-        BrowserAnimationsModule,
-        PatternLanguageManagementModule,
-        SolutionLanguageManagementModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatCardModule,
-        MatButtonModule,
-        MatIconModule,
-        MatTabsModule,
-        NgxMdModule,
-        CovalentTextEditorModule,
-        CoreModule,
-        HttpClientModule,
-        AppRoutingModule,
+      BrowserModule,
+      // NOTE: BrowserAnimationsModule issue https://github.com/angular/angular/issues/20290
+      BrowserAnimationsModule,
+      PatternLanguageManagementModule,
+      SolutionLanguageManagementModule,
+      MatToolbarModule,
+      MatIconModule,
+      MatCardModule,
+      MatButtonModule,
+      MatIconModule,
+      MatTabsModule,
+      NgxMdModule,
+      CovalentTextEditorModule,
+      CoreModule,
+      HttpClientModule,
+      AppRoutingModule,
       ExtensionsModule,
-      FlexLayoutModule, ToasterModule.forRoot()
+      FlexLayoutModule,
+      ToasterModule.forRoot()
     ],
   providers: [CookieService],
     bootstrap: [AppComponent]

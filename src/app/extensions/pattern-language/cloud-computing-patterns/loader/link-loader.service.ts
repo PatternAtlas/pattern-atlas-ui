@@ -1,16 +1,16 @@
+import { PatternOntologyService } from './../../../../core/service/pattern-ontology.service';
 import { Injectable } from '@angular/core';
 import Loader from 'src/app/core/model/loader';
-import { PatternOntologyService } from 'src/app/core/service/pattern-ontology.service';
 import { IriConverter } from 'src/app/core/util/iri-converter';
 import { Link } from 'src/app/graph/model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EnterpriseIntegrationPatternsLinkLoaderService extends Loader<Link> {
+export class LinkLoaderService extends Loader<Link> {
 
   constructor(private pos: PatternOntologyService) {
-    super('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos);
+    super('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#CloudComputingPattens', pos);
   }
 
   async selectContentFromStore(): Promise<any> {
@@ -24,44 +24,13 @@ export class EnterpriseIntegrationPatternsLinkLoaderService extends Loader<Link>
       }`;
 
     const graphs = [];
-    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
-    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
-    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
+    graphs.push('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns');
+    graphs.push('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Patterns');
+    graphs.push('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Relations');
     return this.executor.exec(qry, graphs);
   }
 
   mapTriples(triples: any): Promise<Map<string, any>> {
-    /*
-    triples is list of objects with:
-    {
-      description: null or {
-        token: 'literal',
-        type: 'string',
-        value: string - actual description
-      },
-      source: {
-        token: 'uri',
-        value: 'the actual uri of the source pattern'
-      },
-      target: {
-        token: 'uri',
-        value: 'the actual uri of the target pattern'
-      },
-      uri: {
-        token: 'uri',
-        value: 'uri of the lik itself'
-      }
-    }
-    since there might be multiple triple for the same link but different description (multiple description string allowed)
-    e.g. LooseCoupling has 2 description lines leading to 2 objects in the triples list for the same link
-    we combine the triples to the following objects:
-    {
-      id: string - the identifier of the link derived from the URI,
-      source: string - the source id derived from the URI,
-      target: string - the target id derived from the URI,
-      description: [string] - the descriptions. Might be empty
-    }
-    */
     const data = [];
     for (const t of triples) {
 

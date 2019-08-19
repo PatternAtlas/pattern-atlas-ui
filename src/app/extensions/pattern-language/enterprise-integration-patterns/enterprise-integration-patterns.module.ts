@@ -9,24 +9,13 @@ import { EnterpriseIntegrationPatternComponent } from './component/enterprise-in
 import { EnterpriseIntegrationPatternsLoaderService } from './loader/enterprise-integration-patterns-loader.service';
 import { MatButtonModule, MatIcon, MatIconModule, MatFormFieldModule, MatInputModule, MatCardModule, MatDividerModule, MatCheckboxModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
-import { FilterViewComponent } from 'src/app/filter/component/filter-view/filter-view.component';
-import { NodeVisualComponent } from 'src/app/graph/component/node-visual/node-visual.component';
-import { LinkVisualComponent } from 'src/app/graph/component/link-visual/link-visual.component';
-import { NodeInfoboxComponent } from 'src/app/graph/component/node-infobox/node-infobox.component';
-import { DraggableDirective } from 'src/app/graph/component/directives/draggable.directive';
 import { GraphModule } from 'src/app/graph/graph.module';
+import { FilterModule } from 'src/app/filter/filter.module';
 
 @NgModule({
   declarations: [
     EnterpriseIntegrationPatternsComponent,
-    EnterpriseIntegrationPatternComponent,
-    FilterViewComponent,
-    GraphComponent,
-    NodeVisualComponent,
-    LinkVisualComponent,
-    NodeInfoboxComponent,
-    DraggableDirective,
-    ZoomableDirective
+    EnterpriseIntegrationPatternComponent
   ],
   imports: [
     CommonModule,
@@ -38,15 +27,16 @@ import { GraphModule } from 'src/app/graph/graph.module';
     MatCardModule,
     MatDividerModule,
     MatFormFieldModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    GraphModule,
+    FilterModule
   ],
   providers: [
     EnterpriseIntegrationPatternsLoaderService
   ],
   entryComponents: [
     EnterpriseIntegrationPatternsComponent,
-    EnterpriseIntegrationPatternComponent,
-    FilterViewComponent
+    EnterpriseIntegrationPatternComponent
   ]
 })
 export class EnterpriseIntegrationPatternsModule {
