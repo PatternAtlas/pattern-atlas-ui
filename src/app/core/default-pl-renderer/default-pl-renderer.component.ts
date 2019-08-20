@@ -29,20 +29,11 @@ export class DefaultPlRendererComponent implements OnInit {
       this.loader.supportedIRI = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
       this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
       this.plName = IriConverter.extractIndividualNameFromIri(this.plIri);
-      this.loader.getOWLImports(this.plIri)
-        .then(res => {
-            console.log(res);
-            const importedPatternIris = res.map(i => i.import);
-          this.pos.loadUrisToStore(importedPatternIris).then(() => {
-              this.loader.loadContentFromStore()
-                .then(result => {
-                  this.patterns = Array.from(result.values());
-                  this.isLoading = false;
-                  this.cdr.detectChanges();
-                });
-            });
-          }
-        );
+
+      this.loadData().then(() => {
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      });
     }
 
   getKeys(map) {
@@ -67,5 +58,12 @@ export class DefaultPlRendererComponent implements OnInit {
 
   getSectionName(patternSection: string) {
     return IriConverter.getSectionName(patternSection);
+  }
+
+  async loadData() {
+    await this.pos.loadUrisToStore([{value: this.plIri, token: null}]);
+    const importedPatternIris = await this.loader.getOWLImports(this.plIri);
+    await this.pos.loadUrisToStore(importedPatternIris.map(i => i.import));
+    this.patterns = Array.from((await this.loader.loadContentFromStore()).values());
   }
 }
