@@ -18,7 +18,6 @@ import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/f
 import { ValidationService } from '../../core/service/validation.service';
 import PatternLanguage from '../../core/model/pattern-language.model';
 import { PatternInstance } from '../../core/model/PatternInstance.interface';
-import { DefaultPatternLoaderService } from '../../core/service/loader/default-pattern-loader.service';
 import { switchMap } from 'rxjs/internal/operators';
 import { PatternLanguagePatterns } from '../../core/model/pattern-language-patterns.model';
 
@@ -63,7 +62,7 @@ export class CreatePatternComponent implements OnInit {
   };
   private errormessages: string[];
 
-  constructor(private loader: DefaultPlLoaderService,
+  constructor(private plLoader: DefaultPlLoaderService,
               private PlRestrictionLoader: PlRestrictionLoaderService,
               private activatedRoute: ActivatedRoute,
               private cdr: ChangeDetectorRef,
@@ -71,17 +70,16 @@ export class CreatePatternComponent implements OnInit {
               private pos: PatternOntologyService,
               private toastService: ToasterService,
               private router: Router,
-              private patternOntologyServce: PatternOntologyService,
-              private patternLoaderService: DefaultPatternLoaderService) {
+              private patternOntologyService: PatternOntologyService) {
   }
 
 
   ngOnInit() {
     this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
-    this.loader.supportedIRI = this.plIri;
+    this.plLoader.supportedIRI = this.plIri;
 
 
-    this.patternOntologyServce.loadUrisToStore([{value: this.plIri, token: null}]).then(() => {
+    this.patternOntologyService.loadUrisToStore([{value: this.plIri, token: null}]).then(() => {
       this.loadPatternInfos();
       this.plName = IriConverter.extractIndividualNameFromIri(this.plIri);
       this.PlRestrictionLoader.supportedIRI = this.plIri;
@@ -91,7 +89,7 @@ export class CreatePatternComponent implements OnInit {
     });
   }
 
-  reconstructSectionFromSectionesult(queryResult: SectionResponse): string {
+  reconstructSectionFromSectionResult(queryResult: SectionResponse): string {
     return queryResult.section.value;
   }
 
@@ -169,7 +167,7 @@ export class CreatePatternComponent implements OnInit {
 
   // returns if a user changed the value of the sections headers (which he is not allowed to do)
   private invalidTextEdit(currentText: marked.TokensList): boolean {
-    // we should find a corresponding line (= that starts with ## followed by section name) for each section
+    // we should find a corresponding line (= that starts with ## followed by section patternName) for each section
     for (const section of this.sections) {
       const indexOfCorrespondingLine = currentText.findIndex(line =>
         (line.type === 'heading' && line.depth === 2) &&
@@ -180,7 +178,7 @@ export class CreatePatternComponent implements OnInit {
         return true;
       }
     }
-    // there should be only one patternname (= line that starts with # )
+    // there should be only one name (= line that starts with # )
     return !(currentText.filter(it => it.type === 'heading' && it.depth === 1).length === 1)
       || // there should be as many second headings as sections (= line that starts with # )
       !(currentText.filter(it => it.type === 'heading' && it.depth === 2).length === this.sections.length);
@@ -274,23 +272,7 @@ export class CreatePatternComponent implements OnInit {
   }
 
   private loadPatternInfos() {
-    this.loader.getOWLImports(this.plIri)
-      .then(res => {
-          const importedPatternIris = res.map(i => i.import);
-
-          this.pos.loadUrisToStore(importedPatternIris).then(() => {
-
-            this.loader.loadContentFromStore()
-              .then(result => {
-                this.patterns = Array.from(result.values());
-                if (this.patterns) {
-                  this.loadPatternSections().then(() => console.log('pattern properties loaded'));
-
-                }
-                this.cdr.detectChanges();
-              });
-          });
-      });
+    this.plLoader.loadContentFromStore().then(res => this.patterns = Array.from(res.values()));
   }
 
   updateFormValidationErrors(): string {
@@ -309,15 +291,15 @@ export class CreatePatternComponent implements OnInit {
   }
 
   private loadRestrictionsAndInitPatternEditor() {
-    this.loader.getPLSections(this.plIri).then((res: SectionResponse[]) => {
+    // load sections and restrictions
+    this.plLoader.getPLSections(this.plIri).then((res: SectionResponse[]) => {
       this.sections = res.map((iri: any) => {
-        return this.reconstructSectionFromSectionesult(iri);
+        return this.reconstructSectionFromSectionResult(iri);
       });
-      console.log(this.sections);
       this.PlRestrictionLoader.loadContentFromStore().then((response: any) => {
+
+        // init formgroup based on restrictions
         this.plRestrictions = response;
-        console.log('plRestrictions');
-        console.log(this.plRestrictions);
         this.patternValuesFormGroup = new FormGroup({});
         this.plRestrictions.forEach((value: PatternLanguageSectionRestriction[], key: string) => {
           const allRestrictions = this.PlRestrictionLoader.getRestrictionsForSection(key, this.plRestrictions.get(key));
@@ -365,21 +347,12 @@ export class CreatePatternComponent implements OnInit {
   }
 
   private loadLogoData() {
-    this.loader.getPLLogo(this.plIri).then((res: Logo[]) => {
+    this.plLoader.getPLLogo(this.plIri).then((res: Logo[]) => {
       this.plLogos = res.map((dataRessponse: Logo) => {
         return dataRessponse.logo.value;
       });
     });
   }
 
-  async loadPatternSections() {
-    const patternFilesIri = IriConverter.getPatternListIriForPLIri(this.plIri);
-    this.patternLoaderService.supportedIRI = patternFilesIri;
-    for (let i = 0; i < this.patterns.length; i++) {
-      this.patternLoaderService.patternIri = this.patterns[i].uri;
-      const secMap = await this.patternLoaderService.loadContentFromStore(); // (patternFilesIri, this.patterns[i].uri);
-      this.patterns[i].sectionProperties = secMap;
-    }
-    Promise.resolve();
-  }
+
 }
