@@ -15,21 +15,18 @@
 import { Injectable } from '@angular/core';
 import { PatternOntologyService } from '../pattern-ontology.service';
 import Loader from '../../model/loader';
-import { selectPatternLanguage } from './pl-selector.function';
 import { Logo } from '../data/Logo.interface';
 import { Import } from '../data/Import.interface';
 import { IriConverter } from '../../util/iri-converter';
 import { PatternInstance } from '../../model/PatternInstance.interface';
 import { SectionResponse } from '../data/SectionResponse.interface';
-import { RestrictionResponse } from '../data/RestrictionResponse.interface';
-import { DefaultPatternLoaderService } from './default-pattern-loader.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class DefaultPlLoaderService extends Loader<any> {
 
-  constructor(private pos: PatternOntologyService, private patternLoaderService: DefaultPatternLoaderService) {
+  constructor(private pos: PatternOntologyService) {
         super(null, pos);
     }
 
@@ -47,9 +44,6 @@ export class DefaultPlLoaderService extends Loader<any> {
     return this.executor.exec(qry, graphs);
   }
 
-  selectContentForGraph(supportedIri: string): Promise<any> {
-    return selectPatternLanguage(supportedIri, this.executor);
-  }
 
   getOWLImports(supportedIri: string): Promise<Import[]> {
     return this.pos.getOWLImports(supportedIri);
@@ -57,10 +51,6 @@ export class DefaultPlLoaderService extends Loader<any> {
 
   getPLSections(supportedIri: string): Promise<SectionResponse[]> {
     return this.pos.getPLSections(supportedIri);
-  }
-
-  getPLRestrictions(supportedIri: string): Promise<RestrictionResponse[]> {
-    return this.pos.getRestrictionsOfPL(supportedIri);
   }
 
   getPLLogo(supportedIri: string): Promise<Logo[]> {
