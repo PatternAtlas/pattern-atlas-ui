@@ -45,7 +45,6 @@ import { PatternpropertyDirective } from './component/type-templates/patternprop
 import { ImageComponent } from './component/type-templates/dcmitype/image/image.component';
 import { DateComponent } from './component/type-templates/xsd/date/date.component';
 import { DividerComponent } from './component/type-templates/divider/divider.component';
-import { SectionTitleComponent } from './component/type-templates/section-title/section-title.component';
 import { NgxMdModule } from 'ngx-md';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -83,8 +82,7 @@ import { ReactiveFormsModule } from '@angular/forms';
       PatternpropertyDirective,
       ImageComponent,
       DateComponent,
-      DividerComponent,
-      SectionTitleComponent
+      DividerComponent
     ],
     entryComponents: [
         DefaultPlRendererComponent,

@@ -22,13 +22,14 @@ import { IriConverter } from '../../util/iri-converter';
 import { PatternInstance } from '../../model/PatternInstance.interface';
 import { SectionResponse } from '../data/SectionResponse.interface';
 import { RestrictionResponse } from '../data/RestrictionResponse.interface';
+import { DefaultPatternLoaderService } from './default-pattern-loader.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class DefaultPlLoaderService extends Loader<any> {
 
-    constructor(private pos: PatternOntologyService) {
+  constructor(private pos: PatternOntologyService, private patternLoaderService: DefaultPatternLoaderService) {
         super(null, pos);
     }
 
@@ -71,9 +72,8 @@ export class DefaultPlLoaderService extends Loader<any> {
         for (const row of triples) {
           if (!patterns.get(row.pattern.value)) {
             patterns.set(row.pattern.value,
-              new PatternInstance(row.pattern.value, new Map<string, string[]>().set(row.predicate.value, row.property.value), row.type.value));
-          }
-          else { // if we already saw this pattern, add the infomation of the triple to it
+              new PatternInstance(row.pattern.value, new Map<string, string[]>().set(row.predicate.value, [row.property.value]), row.type.value));
+          } else { // if we already saw this pattern, add the infomation of the triple to it
             const pattern = patterns.get(row.pattern.value).addProperty(row.predicate.value, row.property.value);
             patterns.set(row.pattern.value, pattern);
           }
@@ -81,4 +81,5 @@ export class DefaultPlLoaderService extends Loader<any> {
         }
         return Promise.resolve(patterns);
     }
+
 }
