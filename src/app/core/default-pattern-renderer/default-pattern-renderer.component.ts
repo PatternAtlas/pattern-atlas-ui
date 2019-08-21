@@ -109,7 +109,7 @@ export class DefaultPatternRendererComponent implements OnInit {
     this.relationsLoaderService.selectContentFromStore().then((res) => {
 
         this.allRelations = Array.from(res.values());
-        this.patternRelations = this.allRelations.filter(rel => rel.source.value === this.patternIri || rel.target === this.patternIri);
+      this.patternRelations = this.allRelations.filter(rel => rel.source.value === this.patternIri || rel.target.value === this.patternIri);
         this.cdr.detectChanges();
       }
     );
@@ -182,7 +182,7 @@ export class DefaultPatternRendererComponent implements OnInit {
   private savePatterns() {
     const patternList = Array.from(this.patterns.values()).map(it => it.toPattern(this.plIri));
     this.githubPersistenceService.updatePLPatterns(new PatternLanguagePatterns(IriConverter.getPatternListIriForPLIri(this.plIri),
-      this.plIri, patternList)).subscribe(() => this.toasterService.pop('success', 'updated patterns'),
+      this.plIri, patternList)).subscribe(() => this.toasterService.pop('success', 'Updated patterns'),
       (error) => this.toasterService.pop('error', 'could not update patterns' + error.message));
   }
 

@@ -26,7 +26,7 @@ export class StringComponent extends DataRenderingComponent implements OnInit {
 
   openEditor(): void {
     const dialogRef = this.dialog.open(MdEditorComponent,
-      {data: {content: this.data}});
+      {data: {content: this.data, field: this.title}});
     dialogRef.afterClosed().subscribe(async (result: DialogData) => {
       console.log(result);
       this.changeContent.emit(result.content);
