@@ -60,8 +60,12 @@ export class IriConverter {
   }
 
 
-  static getPatternListIriForPLIri(supportedIRI: string) {
+  static getPatternListIriForPLIri(supportedIRI: string): string {
     return this.getFileName(supportedIRI) + '/' + this.extractIndividualNameFromIri(this.getFileName(supportedIRI)) + '-Patterns';
 
+  }
+
+  static getRelationListIriForPLIri(supportedIRI: string): string {
+    return this.getFileName(supportedIRI) + '/' + this.extractIndividualNameFromIri(this.getFileName(supportedIRI)) + '-Relations';
   }
 }

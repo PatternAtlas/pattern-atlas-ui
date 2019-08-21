@@ -29,6 +29,7 @@ import { GithubPersistenceService } from './github-persistence.service';
 import { GithubFileResponse } from './data/GithubFileResponse.interface';
 import { RestrictionResponse } from './data/RestrictionResponse.interface';
 import { PatternProperty } from './data/PatternProperty.interface';
+import { DirectedPatternRelationDescriptorResponse } from './data/DirectedPatternRelationDescriptorResponse.interface';
 
 @Injectable()
 export class PatternOntologyService implements SparqlExecutor {
@@ -633,5 +634,17 @@ export class PatternOntologyService implements SparqlExecutor {
     }
     ORDER BY ?index`;
     return this.exec(qryPatternGraph, [IriConverter.getFileName(graphIri)]);
+  }
+
+  getDirectedPatternRelations(supportedIRI: string): Promise<DirectedPatternRelationDescriptorResponse[]> {
+    const qryPatternGraph = `SELECT ?source ?target ?description WHERE {
+     ?relationlink a owl:NamedIndividual .
+     ?relationlink a pp:DirectedPatternRelationDescriptor .
+     ?relationlink 	pp:hasSource ?source .
+     ?relationlink 	pp:hasTarget ?target . 
+      optional {?relationlink pp:hasDescription ?description }
+    }
+`;
+    return this.exec(qryPatternGraph, [IriConverter.getFileName(supportedIRI)]);
   }
 }
