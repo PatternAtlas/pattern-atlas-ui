@@ -157,4 +157,8 @@ export class DefaultPatternRendererComponent implements OnInit {
       this.plIri, patternList)).subscribe(() => this.toasterService.pop('success', 'updated patterns'),
       (error) => this.toasterService.pop('error', 'could not update patterns' + error.message));
   }
+
+  addLink() {
+
+  }
 }
