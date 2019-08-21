@@ -793,6 +793,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataRenderingComponent", function() { return DataRenderingComponent; });
 var DataRenderingComponent = /** @class */ (function () {
     function DataRenderingComponent() {
+        this.isEditingEnabled = false;
     }
     return DataRenderingComponent;
 }());
@@ -839,69 +840,6 @@ var PatternpropertyDirective = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/core/component/type-templates/section-title/section-title.component.html":
-/*!******************************************************************************************!*\
-  !*** ./src/app/core/component/type-templates/section-title/section-title.component.html ***!
-  \******************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<p>\n  section-title works!\n</p>\n"
-
-/***/ }),
-
-/***/ "./src/app/core/component/type-templates/section-title/section-title.component.scss":
-/*!******************************************************************************************!*\
-  !*** ./src/app/core/component/type-templates/section-title/section-title.component.scss ***!
-  \******************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvcmUvY29tcG9uZW50L3R5cGUtdGVtcGxhdGVzL3NlY3Rpb24tdGl0bGUvc2VjdGlvbi10aXRsZS5jb21wb25lbnQuc2NzcyJ9 */"
-
-/***/ }),
-
-/***/ "./src/app/core/component/type-templates/section-title/section-title.component.ts":
-/*!****************************************************************************************!*\
-  !*** ./src/app/core/component/type-templates/section-title/section-title.component.ts ***!
-  \****************************************************************************************/
-/*! exports provided: SectionTitleComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SectionTitleComponent", function() { return SectionTitleComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-var SectionTitleComponent = /** @class */ (function () {
-    function SectionTitleComponent() {
-    }
-    SectionTitleComponent.prototype.ngOnInit = function () {
-    };
-    SectionTitleComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'pp-section-title',
-            template: __webpack_require__(/*! ./section-title.component.html */ "./src/app/core/component/type-templates/section-title/section-title.component.html"),
-            styles: [__webpack_require__(/*! ./section-title.component.scss */ "./src/app/core/component/type-templates/section-title/section-title.component.scss")]
-        }),
-        __metadata("design:paramtypes", [])
-    ], SectionTitleComponent);
-    return SectionTitleComponent;
-}());
-
-
-
-/***/ }),
-
 /***/ "./src/app/core/component/type-templates/xsd/date/date.component.html":
 /*!****************************************************************************!*\
   !*** ./src/app/core/component/type-templates/xsd/date/date.component.html ***!
@@ -909,7 +847,7 @@ var SectionTitleComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-card>\n  <p><b>{{title}}</b></p>\n  <div style=\"display: flex; align-items: center;\" (mouseenter)=\"showActionButtons = true\"\n       (mouseleave)=\"showActionButtons = false\">\n    <mat-form-field><input matInput [formControl]=\"date\" [matDatepicker]=\"picker\" >\n      <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n      <mat-datepicker #picker></mat-datepicker></mat-form-field>\n    <ngx-md [data]=\"data\" hidden></ngx-md>\n    <button *ngIf=\"showActionButtons\" mat-stroked-button\n            style=\"margin-left: 5px\" color=\"primary\"\n            (click)=\"openEditor()\" matTooltip=\"Edit\"><i class=\"material-icons\">mode_edit</i></button>\n  </div>\n</mat-card>\n"
+module.exports = "<mat-card>\n  <p><b>{{title}}</b></p>\n  <div style=\"display: flex; align-items: center;\" (mouseenter)=\"showActionButtons = true\"\n       (mouseleave)=\"showActionButtons = false\">\n    <mat-form-field><input matInput [formControl]=\"date\" [matDatepicker]=\"picker\" >\n      <mat-datepicker-toggle *ngIf=\"isEditingEnabled\" matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n      <mat-datepicker #picker></mat-datepicker></mat-form-field>\n    <ngx-md [data]=\"data\" hidden></ngx-md>\n    <button *ngIf=\"showActionButtons\" mat-stroked-button\n            style=\"margin-left: 5px\" color=\"primary\"\n            (click)=\"openEditor()\" matTooltip=\"Edit\"><i class=\"material-icons\">mode_edit</i></button>\n  </div>\n</mat-card>\n"
 
 /***/ }),
 
@@ -938,6 +876,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _md_editor_md_editor_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../md-editor/md-editor.component */ "./src/app/core/component/md-editor/md-editor.component.ts");
 /* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _interfaces_DataRenderingComponent_interface__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../interfaces/DataRenderingComponent.interface */ "./src/app/core/component/type-templates/interfaces/DataRenderingComponent.interface.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -986,12 +938,16 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 
-var DateComponent = /** @class */ (function () {
+
+var DateComponent = /** @class */ (function (_super) {
+    __extends(DateComponent, _super);
     function DateComponent(dialog) {
-        this.dialog = dialog;
-        this.date = new _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormControl"](new Date());
-        this.title = '';
-        this.showActionButtons = false;
+        var _this = _super.call(this) || this;
+        _this.dialog = dialog;
+        _this.date = new _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormControl"](new Date());
+        _this.title = '';
+        _this.showActionButtons = false;
+        return _this;
     }
     DateComponent.prototype.ngOnInit = function () {
     };
@@ -1013,7 +969,7 @@ var DateComponent = /** @class */ (function () {
         __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialog"]])
     ], DateComponent);
     return DateComponent;
-}());
+}(_interfaces_DataRenderingComponent_interface__WEBPACK_IMPORTED_MODULE_4__["DataRenderingComponent"]));
 
 
 
@@ -1026,7 +982,7 @@ var DateComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-card>\n  <p><b>{{title}}</b></p>\n  <div style=\"display: flex; align-items: center;\" (mouseenter)=\"showActionButtons = true\"\n       (mouseleave)=\"showActionButtons = false\">\n    <mat-form-field><input matInput type=\"number\" readonly [value]=\"data\"></mat-form-field>\n    <ngx-md [data]=\"data\" hidden></ngx-md>\n    <button *ngIf=\"showActionButtons\" mat-stroked-button\n            style=\"margin-left: 5px\" color=\"primary\"\n            (click)=\"openEditor()\" matTooltip=\"Edit\"><i class=\"material-icons\">mode_edit</i></button>\n  </div>\n</mat-card>\n\n"
+module.exports = "<mat-card>\n  <p><b>{{title}}</b></p>\n  <div style=\"display: flex; align-items: center;\" (mouseenter)=\"showActionButtons = true\"\n       (mouseleave)=\"showActionButtons = false\">\n    <mat-form-field><input matInput type=\"number\" readonly [value]=\"data\"></mat-form-field>\n    <ngx-md [data]=\"data\" hidden></ngx-md>\n    <button *ngIf=\"showActionButtons && isEditingEnabled\" mat-stroked-button\n            style=\"margin-left: 5px\" color=\"primary\"\n            (click)=\"openEditor()\" matTooltip=\"Edit\"><i class=\"material-icons\">mode_edit</i></button>\n  </div>\n</mat-card>\n\n"
 
 /***/ }),
 
@@ -1158,7 +1114,7 @@ var IntegerComponent = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-card>\n  <p><b>{{title}}</b></p>\n  <div style=\"display: flex; align-items: center;\" (mouseenter)=\"showActionButtons = true\"\n       (mouseleave)=\"showActionButtons = false\">\n    <ngx-md [data]=\"data\"></ngx-md>\n    <button *ngIf=\"showActionButtons\" mat-stroked-button\n            style=\"margin-left: 5px\" color=\"primary\"\n            (click)=\"openEditor()\" matTooltip=\"Edit\"><i class=\"material-icons\">mode_edit</i></button>\n  </div>\n</mat-card>\n\n\n"
+module.exports = "<mat-card>\n  <p><b>{{title}}</b></p>\n  <div style=\"display: flex; align-items: center;\" (mouseenter)=\"showActionButtons = true\"\n       (mouseleave)=\"showActionButtons = false\">\n    <ngx-md [data]=\"data\"></ngx-md>\n    <button *ngIf=\"showActionButtons && isEditingEnabled\" mat-stroked-button\n            style=\"margin-left: 5px\" color=\"primary\"\n            (click)=\"openEditor()\" matTooltip=\"Edit\"><i class=\"material-icons\">mode_edit</i></button>\n  </div>\n</mat-card>\n\n\n"
 
 /***/ }),
 
@@ -1319,9 +1275,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _component_type_templates_dcmitype_image_image_component__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./component/type-templates/dcmitype/image/image.component */ "./src/app/core/component/type-templates/dcmitype/image/image.component.ts");
 /* harmony import */ var _component_type_templates_xsd_date_date_component__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./component/type-templates/xsd/date/date.component */ "./src/app/core/component/type-templates/xsd/date/date.component.ts");
 /* harmony import */ var _component_type_templates_divider_divider_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./component/type-templates/divider/divider.component */ "./src/app/core/component/type-templates/divider/divider.component.ts");
-/* harmony import */ var _component_type_templates_section_title_section_title_component__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./component/type-templates/section-title/section-title.component */ "./src/app/core/component/type-templates/section-title/section-title.component.ts");
-/* harmony import */ var ngx_md__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ngx-md */ "./node_modules/ngx-md/fesm5/ngx-md.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var ngx_md__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ngx-md */ "./node_modules/ngx-md/fesm5/ngx-md.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -1368,7 +1323,6 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-
 var CoreModule = /** @class */ (function () {
     function CoreModule(lr, pos, cr) {
         this.lr = lr;
@@ -1389,11 +1343,11 @@ var CoreModule = /** @class */ (function () {
                 _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatProgressSpinnerModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatListModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatDatepickerModule"], _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatInputModule"],
-                _angular_forms__WEBPACK_IMPORTED_MODULE_24__["ReactiveFormsModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_23__["ReactiveFormsModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatTooltipModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatDialogModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatIconModule"],
-                ngx_md__WEBPACK_IMPORTED_MODULE_23__["NgxMdModule"].forRoot(), _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatNativeDateModule"]
+                ngx_md__WEBPACK_IMPORTED_MODULE_22__["NgxMdModule"].forRoot(), _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatNativeDateModule"]
             ],
             exports: [_covalent_text_editor__WEBPACK_IMPORTED_MODULE_12__["CovalentTextEditorModule"], _directives_emit_event_on_keyup_directive__WEBPACK_IMPORTED_MODULE_13__["EmitEventOnKeyupDirective"], _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatProgressSpinnerModule"], _component_navigate_back_navigate_back_component__WEBPACK_IMPORTED_MODULE_15__["NavigateBackComponent"]],
             providers: [
@@ -1411,8 +1365,7 @@ var CoreModule = /** @class */ (function () {
                 _component_type_templates_patternproperty_directive__WEBPACK_IMPORTED_MODULE_18__["PatternpropertyDirective"],
                 _component_type_templates_dcmitype_image_image_component__WEBPACK_IMPORTED_MODULE_19__["ImageComponent"],
                 _component_type_templates_xsd_date_date_component__WEBPACK_IMPORTED_MODULE_20__["DateComponent"],
-                _component_type_templates_divider_divider_component__WEBPACK_IMPORTED_MODULE_21__["DividerComponent"],
-                _component_type_templates_section_title_section_title_component__WEBPACK_IMPORTED_MODULE_22__["SectionTitleComponent"]
+                _component_type_templates_divider_divider_component__WEBPACK_IMPORTED_MODULE_21__["DividerComponent"]
             ],
             entryComponents: [
                 _default_pl_renderer_default_pl_renderer_component__WEBPACK_IMPORTED_MODULE_4__["DefaultPlRendererComponent"],
@@ -1443,7 +1396,7 @@ var CoreModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<pp-navigate-back></pp-navigate-back>\n<mat-progress-spinner mode=\"indeterminate\" *ngIf=\"isLoadingPattern || isLoadingSection\"></mat-progress-spinner>\n\n<div>\n  <ng-template ppPatternproperty></ng-template>\n</div>\n"
+module.exports = "<pp-navigate-back></pp-navigate-back>\n<mat-progress-spinner mode=\"indeterminate\" *ngIf=\"isLoadingPattern || isLoadingSection\"></mat-progress-spinner>\n<h2>{{patternName? patternName : ''}}</h2>\n<div>\n  <ng-template ppPatternproperty></ng-template>\n</div>\n"
 
 /***/ }),
 
@@ -1483,6 +1436,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _component_type_templates_xsd_integer_integer_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../component/type-templates/xsd/integer/integer.component */ "./src/app/core/component/type-templates/xsd/integer/integer.component.ts");
 /* harmony import */ var _component_type_templates_xsd_date_date_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../component/type-templates/xsd/date/date.component */ "./src/app/core/component/type-templates/xsd/date/date.component.ts");
 /* harmony import */ var _component_type_templates_dcmitype_image_image_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../component/type-templates/dcmitype/image/image.component */ "./src/app/core/component/type-templates/dcmitype/image/image.component.ts");
+/* harmony import */ var _model_pattern_language_patterns_model__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../model/pattern-language-patterns.model */ "./src/app/core/model/pattern-language-patterns.model.ts");
+/* harmony import */ var _service_github_persistence_service__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../service/github-persistence.service */ "./src/app/core/service/github-persistence.service.ts");
+/* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/index.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1542,8 +1498,11 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 
+
+
+
 var DefaultPatternRendererComponent = /** @class */ (function () {
-    function DefaultPatternRendererComponent(patternLoaderService, sectionLoader, plLoader, activatedRoute, pos, toasterService, cdr, componentFactoryResolver) {
+    function DefaultPatternRendererComponent(patternLoaderService, sectionLoader, plLoader, activatedRoute, pos, toasterService, cdr, componentFactoryResolver, githubPersistenceService, cookieService) {
         this.patternLoaderService = patternLoaderService;
         this.sectionLoader = sectionLoader;
         this.plLoader = plLoader;
@@ -1552,8 +1511,11 @@ var DefaultPatternRendererComponent = /** @class */ (function () {
         this.toasterService = toasterService;
         this.cdr = cdr;
         this.componentFactoryResolver = componentFactoryResolver;
+        this.githubPersistenceService = githubPersistenceService;
+        this.cookieService = cookieService;
         this.isLoadingPattern = true;
         this.isLoadingSection = true;
+        this.isEditingEnabled = false;
         this.standardPrefixes = new _model_pattern_pedia_model__WEBPACK_IMPORTED_MODULE_8__["default"]().defaultPrefixes;
         this.xsdPrefix = this.standardPrefixes.get('xsd').replace('<', '').replace('>', '');
         this.dcmiPrefix = 'https://purl.org/dc/dcmitype/';
@@ -1573,75 +1535,55 @@ var DefaultPatternRendererComponent = /** @class */ (function () {
         var _this = this;
         this.plIri = _util_iri_converter__WEBPACK_IMPORTED_MODULE_9__["IriConverter"].convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
         this.patternIri = _util_iri_converter__WEBPACK_IMPORTED_MODULE_9__["IriConverter"].convertIdToIri(this.activatedRoute.snapshot.paramMap.get('pid'));
+        this.isEditingEnabled = !!this.cookieService.get('patternpedia_github_token');
         this.loadInfos().then(function () {
             var viewContainerRef = _this.ppPatternproperty.viewContainerRef;
             viewContainerRef.clear();
             var componentDividerFactory = _this.componentFactoryResolver.resolveComponentFactory(_component_type_templates_divider_divider_component__WEBPACK_IMPORTED_MODULE_10__["DividerComponent"]);
-            _this.patternProperties.forEach(function (property) {
-                var sectionRestrictions = _this.sectionRestritions.get(property.property.value);
-                if (property.property.value.indexOf('#has') !== -1) {
-                    var sectionTitle = property.property.value.split('#has')[1].replace(/([A-Z])/g, ' $1').trim();
-                    var type = (sectionRestrictions && !!sectionRestrictions[0] && sectionRestrictions[0].type) ? sectionRestrictions[0].type : _this.xsdPrefix + 'string';
-                    var component = _this.defaultComponentForType.get(type) ? _this.defaultComponentForType.get(type) : _component_type_templates_xsd_string_string_component__WEBPACK_IMPORTED_MODULE_11__["StringComponent"];
-                    var componentFactory = _this.componentFactoryResolver.resolveComponentFactory(component);
-                    var componentRef = viewContainerRef.createComponent(componentFactory);
-                    var instance = componentRef.instance;
-                    instance.data = property.predicate.value;
-                    instance.title = sectionTitle;
-                    instance.changeContent.subscribe(function (data) { return console.log('Trigger saving new data :' + data); });
-                    viewContainerRef.createComponent(componentDividerFactory); // create divider
-                }
+            _this.sections.forEach(function (sec) {
+                _this.createSectionComponent(sec.section.value, viewContainerRef, componentDividerFactory);
             });
         });
     };
-    DefaultPatternRendererComponent.prototype.getSectionName = function (iri) {
-        return _util_iri_converter__WEBPACK_IMPORTED_MODULE_9__["IriConverter"].getSectionName(iri);
-    };
-    DefaultPatternRendererComponent.prototype.getSectionInfo = function (iri) {
-        if (!iri || !this.sections) {
-            return;
-        }
-        return this.sections.filter(function (s) { return s.section.value === iri; })[0];
-    };
     DefaultPatternRendererComponent.prototype.loadInfos = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var imports, importedPatternIris, loadingResult, _a, _b;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0: return [4 /*yield*/, this.pos.loadUrisToStore([{ token: this.plIri, value: this.plIri }])];
+            var imports, importedPatternIris, _a, _b, _c;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
+                    case 0: return [4 /*yield*/, this.pos.loadUrisToStore([{ token: null, value: this.plIri }])];
                     case 1:
-                        _c.sent();
+                        _d.sent();
                         return [4 /*yield*/, this.pos.getOWLImports(this.plIri)];
                     case 2:
-                        imports = _c.sent();
+                        imports = _d.sent();
                         importedPatternIris = imports.map(function (i) { return i.import; });
                         return [4 /*yield*/, this.pos.loadUrisToStore(importedPatternIris)];
                     case 3:
-                        _c.sent();
-                        this.patternLoaderService.patternIri = this.patternIri;
-                        this.patternLoaderService.supportedIRI = _util_iri_converter__WEBPACK_IMPORTED_MODULE_9__["IriConverter"].getPatternListIriForPLIri(this.plIri);
-                        this.sectionLoader.supportedIRI = this.plIri;
-                        return [4 /*yield*/, this.patternLoaderService.selectContentFromStore()];
-                    case 4:
-                        loadingResult = _c.sent();
-                        this.patternProperties = Array.from(loadingResult.values());
-                        this.isLoadingPattern = false;
-                        // not that we loaded the data for the pattern, load all the data from patternlanguage
+                        _d.sent();
+                        //  load all the data from patternlanguage
                         this.plLoader.supportedIRI = this.plIri;
-                        return [4 /*yield*/, this.plLoader.loadContentFromStore()];
-                    case 5:
-                        _c.sent();
                         _a = this;
-                        return [4 /*yield*/, this.sectionLoader.loadContentFromStore()];
-                    case 6:
-                        _a.sectionRestritions = _c.sent();
+                        return [4 /*yield*/, this.plLoader.loadContentFromStore()];
+                    case 4:
+                        _a.patterns = _d.sent();
+                        this.pattern = this.patterns.get(this.patternIri);
+                        this.patternProperties = this.pattern.sectionProperties;
+                        this.patternName = this.patternProperties.get(_util_iri_converter__WEBPACK_IMPORTED_MODULE_9__["IriConverter"].getFileName(this.plIri) + '#hasName')[0];
+                        this.isLoadingPattern = false;
+                        // load section restrictions to be able to get the type for a section
+                        this.sectionLoader.supportedIRI = this.plIri;
                         _b = this;
+                        return [4 /*yield*/, this.sectionLoader.loadContentFromStore()];
+                    case 5:
+                        _b.sectionRestritions = _d.sent();
+                        // get section in order
+                        _c = this;
                         return [4 /*yield*/, this.plLoader.getPLSections(this.plIri)];
-                    case 7:
-                        _b.sections = _c.sent();
+                    case 6:
+                        // get section in order
+                        _c.sections = _d.sent();
                         this.isLoadingSection = false;
                         if (!this.patternProperties) {
-                            this.toasterService.pop('success', 'Loaded all infos');
                             Promise.reject(null);
                         }
                         else {
@@ -1651,6 +1593,35 @@ var DefaultPatternRendererComponent = /** @class */ (function () {
                 }
             });
         });
+    };
+    DefaultPatternRendererComponent.prototype.createSectionComponent = function (section, viewContainerRef, componentDividerFactory) {
+        var _this = this;
+        var properties = this.patternProperties.get(section);
+        var sectionRestrictions = this.sectionRestritions.get(section);
+        if (section.indexOf('#has') !== -1) {
+            var sectionTitle = section.split('#has')[1].replace(/([A-Z])/g, ' $1').trim();
+            var type = (sectionRestrictions && !!sectionRestrictions[0] && sectionRestrictions[0].type) ? sectionRestrictions[0].type : this.xsdPrefix + 'string';
+            var component = this.defaultComponentForType.get(type) ? this.defaultComponentForType.get(type) : _component_type_templates_xsd_string_string_component__WEBPACK_IMPORTED_MODULE_11__["StringComponent"];
+            var componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
+            var componentRef = viewContainerRef.createComponent(componentFactory);
+            var instance_1 = componentRef.instance;
+            instance_1.data = properties.join('\n');
+            instance_1.title = sectionTitle;
+            instance_1.isEditingEnabled = this.isEditingEnabled;
+            instance_1.changeContent.subscribe(function (data) {
+                _this.patternProperties.set(section, [data]);
+                _this.pattern.sectionProperties = _this.patternProperties;
+                _this.patterns.set(_this.patternIri, _this.pattern);
+                instance_1.data = data;
+                _this.savePatterns();
+            });
+            viewContainerRef.createComponent(componentDividerFactory); // create divider
+        }
+    };
+    DefaultPatternRendererComponent.prototype.savePatterns = function () {
+        var _this = this;
+        var patternList = Array.from(this.patterns.values()).map(function (it) { return it.toPattern(_this.plIri); });
+        this.githubPersistenceService.updatePLPatterns(new _model_pattern_language_patterns_model__WEBPACK_IMPORTED_MODULE_15__["PatternLanguagePatterns"](_util_iri_converter__WEBPACK_IMPORTED_MODULE_9__["IriConverter"].getPatternListIriForPLIri(this.plIri), this.plIri, patternList)).subscribe(function () { return _this.toasterService.pop('success', 'updated patterns'); }, function (error) { return _this.toasterService.pop('error', 'could not update patterns' + error.message); });
     };
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])(_component_type_templates_patternproperty_directive__WEBPACK_IMPORTED_MODULE_7__["PatternpropertyDirective"]),
@@ -1665,7 +1636,9 @@ var DefaultPatternRendererComponent = /** @class */ (function () {
         __metadata("design:paramtypes", [_service_loader_default_pattern_loader_service__WEBPACK_IMPORTED_MODULE_2__["DefaultPatternLoaderService"],
             _service_loader_pattern_language_loader_pl_restriction_loader_service__WEBPACK_IMPORTED_MODULE_6__["PlRestrictionLoaderService"], _service_loader_default_pl_loader_service__WEBPACK_IMPORTED_MODULE_3__["DefaultPlLoaderService"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"],
             _service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_4__["PatternOntologyService"], angular2_toaster__WEBPACK_IMPORTED_MODULE_5__["ToasterService"], _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"],
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ComponentFactoryResolver"]])
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ComponentFactoryResolver"],
+            _service_github_persistence_service__WEBPACK_IMPORTED_MODULE_16__["GithubPersistenceService"],
+            ngx_cookie_service__WEBPACK_IMPORTED_MODULE_17__["CookieService"]])
     ], DefaultPatternRendererComponent);
     return DefaultPatternRendererComponent;
 }());
@@ -1681,7 +1654,7 @@ var DefaultPatternRendererComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<pp-navigate-back></pp-navigate-back>\n<h2>Pattern Language: {{plName}}</h2>\n<div fxLayout=\"row\" fxLayoutAlign=\"start center\">\n  <mat-progress-spinner mode=\"indeterminate\" *ngIf=\"isLoading\"></mat-progress-spinner>\n  <mat-card class=\"landing-card \" *ngFor=\"let pattern of patterns\">\n    <mat-card-header>\n      <mat-card-title>\n        <b>{{getNameForPattern(pattern)}}</b>\n\n      </mat-card-title>\n    </mat-card-header>\n    <mat-card-content class=\"fixed-height-card-content\">\n      <div *ngFor=\"let patternSection of getKeys(pattern.sectionProperties)\">\n        <p><b>{{getSectionName(patternSection)}}</b>: {{pattern.sectionProperties.get(patternSection)}}</p>\n      </div>\n    </mat-card-content>\n    <mat-card-actions>\n      <div style=\"text-align: center\">\n        <button mat-stroked-button color=\"primary\" (click)=\"navigate(pattern)\"><i class=\"material-icons\">pageview</i>View\n        </button>\n      </div>\n    </mat-card-actions>\n  </mat-card>\n<mat-card class=\"landing-card center-content add-card\" (click)=\"goToPatternCreation()\">\n  <i class=\"material-icons\">add_box</i>\n</mat-card>\n</div>\n\n"
+module.exports = "<pp-navigate-back></pp-navigate-back>\n<h2>Pattern Language: {{plName}}</h2>\n<div class=\"container\">\n  <mat-progress-spinner mode=\"indeterminate\" *ngIf=\"isLoading\"></mat-progress-spinner>\n  <mat-card class=\"landing-card \" *ngFor=\"let pattern of patterns\">\n    <mat-card-header>\n      <mat-card-title>\n        <b>{{getNameForPattern(pattern)}}</b>\n\n      </mat-card-title>\n    </mat-card-header>\n    <mat-card-content class=\"fixed-height-card-content\">\n      <div *ngFor=\"let patternSection of getKeys(pattern.sectionProperties)\">\n        <p><b>{{getSectionName(patternSection)}}</b>: {{pattern.sectionProperties.get(patternSection)}}</p>\n      </div>\n    </mat-card-content>\n    <mat-card-actions>\n      <div style=\"text-align: center\">\n        <button mat-stroked-button color=\"primary\" (click)=\"navigate(pattern)\"><i class=\"material-icons\">pageview</i>View\n        </button>\n      </div>\n    </mat-card-actions>\n  </mat-card>\n<mat-card class=\"landing-card center-content add-card\" (click)=\"goToPatternCreation()\">\n  <i class=\"material-icons\">add_box</i>\n</mat-card>\n</div>\n\n"
 
 /***/ }),
 
@@ -1720,6 +1693,41 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 
 
 
@@ -1741,18 +1749,9 @@ var DefaultPlRendererComponent = /** @class */ (function () {
         this.loader.supportedIRI = _util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
         this.plIri = _util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
         this.plName = _util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].extractIndividualNameFromIri(this.plIri);
-        this.loader.getOWLImports(this.plIri)
-            .then(function (res) {
-            console.log(res);
-            var importedPatternIris = res.map(function (i) { return i.import; });
-            _this.pos.loadUrisToStore(importedPatternIris).then(function () {
-                _this.loader.loadContentFromStore()
-                    .then(function (result) {
-                    _this.patterns = Array.from(result.values());
-                    _this.isLoading = false;
-                    _this.cdr.detectChanges();
-                });
-            });
+        this.loadData().then(function () {
+            _this.isLoading = false;
+            _this.cdr.detectChanges();
         });
     };
     DefaultPlRendererComponent.prototype.getKeys = function (map) {
@@ -1775,6 +1774,30 @@ var DefaultPlRendererComponent = /** @class */ (function () {
     };
     DefaultPlRendererComponent.prototype.getSectionName = function (patternSection) {
         return _util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getSectionName(patternSection);
+    };
+    DefaultPlRendererComponent.prototype.loadData = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var importedPatternIris, _a, _b, _c;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
+                    case 0: return [4 /*yield*/, this.pos.loadUrisToStore([{ value: this.plIri, token: null }])];
+                    case 1:
+                        _d.sent();
+                        return [4 /*yield*/, this.loader.getOWLImports(this.plIri)];
+                    case 2:
+                        importedPatternIris = _d.sent();
+                        return [4 /*yield*/, this.pos.loadUrisToStore(importedPatternIris.map(function (i) { return i.import; }))];
+                    case 3:
+                        _d.sent();
+                        _a = this;
+                        _c = (_b = Array).from;
+                        return [4 /*yield*/, this.loader.loadContentFromStore()];
+                    case 4:
+                        _a.patterns = _c.apply(_b, [(_d.sent()).values()]);
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     DefaultPlRendererComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -2114,12 +2137,12 @@ var PatternLanguage = /** @class */ (function () {
         ary.push('# #    Sections / Data Properties');
         ary.push('# #');
         ary.push('# #################################################################');
-        for (var _i = 0, _a = this.sections; _i < _a.length; _i++) {
-            var section = _a[_i];
+        this.sections.forEach(function (section, index) {
             ary.push('\n');
             ary.push("### " + section);
-            ary.push(this.getSectionIdentifier(section) + " rdf:type owl:DatatypeProperty .");
-        }
+            ary.push(_this.getSectionIdentifier(section) + " rdf:type pp:DatatypePropertyListItem  ;");
+            ary.push("pp:hasListIndex \"" + index + "\"^^xsd:integer .");
+        });
         if (this.restrictions && this.restrictions.length > 0) {
             ary.push('\n');
             ary.push('# #################################################################');
@@ -2668,10 +2691,14 @@ var DefaultPatternLoaderService = /** @class */ (function (_super) {
     DefaultPatternLoaderService.prototype.selectContentFromStore = function () {
         return this.pos.getPatternProperties(this.supportedIRI, this.patternIri);
     };
-    DefaultPatternLoaderService.prototype.mapTriples = function (triples) {
-        var map = new Map();
-        triples.map(function (x) { return map.set(x, x); });
-        return Promise.resolve(map);
+    DefaultPatternLoaderService.prototype.mapTriples = function (sectionProperties) {
+        var secMap = new Map();
+        for (var i = 0; i < sectionProperties.length; i++) {
+            var newValue = sectionProperties[i];
+            secMap.set(newValue.property.value, secMap.has(newValue.property.value) ?
+                secMap.get(newValue.property.value).concat(newValue.predicate.value) : [newValue.predicate.value]);
+        }
+        return Promise.resolve(secMap);
     };
     DefaultPatternLoaderService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
@@ -2699,9 +2726,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _pattern_ontology_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
 /* harmony import */ var _model_loader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../model/loader */ "./src/app/core/model/loader.ts");
-/* harmony import */ var _pl_selector_function__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pl-selector.function */ "./src/app/core/service/loader/pl-selector.function.ts");
-/* harmony import */ var _util_iri_converter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../util/iri-converter */ "./src/app/core/util/iri-converter.ts");
-/* harmony import */ var _model_PatternInstance_interface__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../model/PatternInstance.interface */ "./src/app/core/model/PatternInstance.interface.ts");
+/* harmony import */ var _util_iri_converter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+/* harmony import */ var _model_PatternInstance_interface__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../model/PatternInstance.interface */ "./src/app/core/model/PatternInstance.interface.ts");
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -2777,7 +2803,6 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 
-
 var DefaultPlLoaderService = /** @class */ (function (_super) {
     __extends(DefaultPlLoaderService, _super);
     function DefaultPlLoaderService(pos) {
@@ -2790,23 +2815,17 @@ var DefaultPlLoaderService = /** @class */ (function (_super) {
             var qry, graphs;
             return __generator(this, function (_a) {
                 qry = "SELECT DISTINCT ?type ?pattern ?predicate ?property\n                 WHERE {\n                    <" + this.supportedIRI + "> pp:containsPattern ?pattern .\n                    ?pattern ?predicate ?property .\n                    ?pattern rdf:type ?type .\n                    FILTER (?type != owl:NamedIndividual && ?predicate != rdf:type)\n                    }\n                 ORDER BY ?pattern";
-                graphs = [_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getFileName(this.supportedIRI)];
-                graphs.push(_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getPatternListIriForPLIri(this.supportedIRI));
+                graphs = [_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI)];
+                graphs.push(_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getPatternListIriForPLIri(this.supportedIRI));
                 return [2 /*return*/, this.executor.exec(qry, graphs)];
             });
         });
-    };
-    DefaultPlLoaderService.prototype.selectContentForGraph = function (supportedIri) {
-        return Object(_pl_selector_function__WEBPACK_IMPORTED_MODULE_3__["selectPatternLanguage"])(supportedIri, this.executor);
     };
     DefaultPlLoaderService.prototype.getOWLImports = function (supportedIri) {
         return this.pos.getOWLImports(supportedIri);
     };
     DefaultPlLoaderService.prototype.getPLSections = function (supportedIri) {
         return this.pos.getPLSections(supportedIri);
-    };
-    DefaultPlLoaderService.prototype.getPLRestrictions = function (supportedIri) {
-        return this.pos.getRestrictionsOfPL(supportedIri);
     };
     DefaultPlLoaderService.prototype.getPLLogo = function (supportedIri) {
         return this.pos.getPLLogo(supportedIri);
@@ -2816,7 +2835,7 @@ var DefaultPlLoaderService = /** @class */ (function (_super) {
         for (var _i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
             var row = triples_1[_i];
             if (!patterns.get(row.pattern.value)) {
-                patterns.set(row.pattern.value, new _model_PatternInstance_interface__WEBPACK_IMPORTED_MODULE_5__["PatternInstance"](row.pattern.value, new Map().set(row.predicate.value, row.property.value), row.type.value));
+                patterns.set(row.pattern.value, new _model_PatternInstance_interface__WEBPACK_IMPORTED_MODULE_4__["PatternInstance"](row.pattern.value, new Map().set(row.predicate.value, [row.property.value]), row.type.value));
             }
             else { // if we already saw this pattern, add the infomation of the triple to it
                 var pattern = patterns.get(row.pattern.value).addProperty(row.predicate.value, row.property.value);
@@ -3204,37 +3223,6 @@ var PlRestrictionLoaderService = /** @class */ (function (_super) {
     return PlRestrictionLoaderService;
 }(_model_loader__WEBPACK_IMPORTED_MODULE_2__["default"]));
 
-
-
-/***/ }),
-
-/***/ "./src/app/core/service/loader/pl-selector.function.ts":
-/*!*************************************************************!*\
-  !*** ./src/app/core/service/loader/pl-selector.function.ts ***!
-  \*************************************************************/
-/*! exports provided: selectPatternLanguage */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectPatternLanguage", function() { return selectPatternLanguage; });
-/*
- * Copyright (c) 2018 University of Stuttgart.
- *
- * See the NOTICE file(s) distributed with this work for additional
- * information regarding copyright ownership.
- *
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
- * http://www.eclipse.org/legal/epl-2.0, or the Apache Software License 2.0
- * which is available at https://www.apache.org/licenses/LICENSE-2.0.
- *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
- */
-function selectPatternLanguage(plIri, executor) {
-    var qry = "SELECT DISTINCT ?type ?pattern ?predicate ?property\n                 WHERE {\n                    <" + plIri + "> <https://purl.org/patternpedia#containsPattern> ?pattern .\n                    ?pattern ?predicate ?property .\n                    FILTER (?type != owl:NamedIndividual && ?predicate != rdf:type)\n                    }\n                 ORDER BY ?pattern";
-    return executor.exec(qry, [plIri]);
-}
 
 
 /***/ }),
@@ -3916,7 +3904,7 @@ var PatternOntologyService = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             var qryPatternGraphs;
             return __generator(this, function (_a) {
-                qryPatternGraphs = "SELECT DISTINCT  ?property ?exactCardinality ?minCardinality \n        ?maxCardinality ?dataRange ?allValuesdataRange ?someValuesdataRange \n        WHERE {\n            ?patternLanguageIndividual a owl:Class . \n            ?patternLanguageIndividual rdfs:subClassOf ?restrictionClass .\n            ?restrictionClass a owl:Restriction . \n            ?restrictionClass owl:onProperty ?property .\n            ?property a owl:DatatypeProperty .\n            optional { ?restrictionClass owl:allValuesFrom ?allValuesdataRange .} \n            optional { ?restrictionClass owl:onDataRange   ?dataRange .}\n            optional { ?restrictionClass owl:someValuesFrom ?someValuesdataRange .}\n            optional { ?restrictionClass owl:qualifiedCardinality ?exactCardinality . } \n            optional { ?restrictionClass owl:minCardinality  ?minCardinality . }  \n            optional { ?restrictionClass owl:maxCardinality  ?maxCardinality . }\n        }";
+                qryPatternGraphs = "SELECT DISTINCT  ?property ?exactCardinality ?minCardinality \n        ?maxCardinality ?dataRange ?allValuesdataRange ?someValuesdataRange \n        WHERE {\n            {\n              ?patternLanguageIndividual a owl:Class . \n              ?patternLanguageIndividual rdfs:subClassOf ?restrictionClass .\n              ?restrictionClass a owl:Restriction . \n              ?restrictionClass owl:onProperty ?property .\n              ?property a owl:DatatypeProperty .\n              optional { ?restrictionClass owl:allValuesFrom ?allValuesdataRange .} \n              optional { ?restrictionClass owl:onDataRange   ?dataRange .}\n              optional { ?restrictionClass owl:someValuesFrom ?someValuesdataRange .}\n              optional { ?restrictionClass owl:qualifiedCardinality ?exactCardinality . } \n              optional { ?restrictionClass owl:minCardinality  ?minCardinality . }  \n              optional { ?restrictionClass owl:maxCardinality  ?maxCardinality . }\n            }\n            UNION\n              {\n              \n              ?patternLanguageIndividual a owl:Class . \n              ?patternLanguageIndividual rdfs:subClassOf ?restrictionClass .\n              ?restrictionClass a owl:Restriction . \n              ?restrictionClass owl:onProperty ?property .\n              ?property a pp:DatatypePropertyListItem .\n              optional { ?restrictionClass owl:allValuesFrom ?allValuesdataRange .} \n              optional { ?restrictionClass owl:onDataRange   ?dataRange .}\n              optional { ?restrictionClass owl:someValuesFrom ?someValuesdataRange .}\n              optional { ?restrictionClass owl:qualifiedCardinality ?exactCardinality . } \n              optional { ?restrictionClass owl:minCardinality  ?minCardinality . }  \n              optional { ?restrictionClass owl:maxCardinality  ?maxCardinality . }\n              }\n        }";
                 return [2 /*return*/, this.exec(qryPatternGraphs, [_util_iri_converter__WEBPACK_IMPORTED_MODULE_5__["IriConverter"].getFileName(graphIri)])];
             });
         });
@@ -3961,13 +3949,13 @@ var PatternOntologyService = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             var qryPatternGraph;
             return __generator(this, function (_a) {
-                qryPatternGraph = "SELECT ?dataProperty (count(?innerNodes)-1 as ?position) where { \n      :DatatypePropertyList :list/rdf:rest* ?innerNodes . ?innerNodes rdf:rest* ?node .\n      ?node rdf:first ?element .\n    }\n    group by ?node ?dataProperty\n    order by ?position";
+                qryPatternGraph = "SELECT (count(?innerNodes)-1 as ?position) ?element where { \n      :DatatypePropertyList :list/rdf:rest* ?innerNodes . \n  \t  ?innerNodes rdf:rest* ?node .\n      ?node rdf:first ?element .\n    }\n    group by ?node ?dataProperty ?element\n    order by ?position";
                 return [2 /*return*/, this.exec(qryPatternGraph, [_util_iri_converter__WEBPACK_IMPORTED_MODULE_5__["IriConverter"].getFileName(graphIri)])];
             });
         });
     };
     PatternOntologyService.prototype.getPLSections = function (graphIri) {
-        var qryPatternGraph = "SELECT ?section WHERE {\n            ?section a owl:DatatypeProperty .\n        } ";
+        var qryPatternGraph = "SELECT ?section ?index\n    WHERE {\n    {\n     ?section a owl:DatatypeProperty .\n    }\n    UNION\n      {\n    ?section a pp:DatatypePropertyListItem .\n    optional{ ?section pp:hasListIndex  ?index .}\n    }\n    }\n    ORDER BY ?index";
         return this.exec(qryPatternGraph, [_util_iri_converter__WEBPACK_IMPORTED_MODULE_5__["IriConverter"].getFileName(graphIri)]);
     };
     PatternOntologyService = __decorate([
@@ -9750,10 +9738,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
 /* harmony import */ var _core_service_validation_service__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../core/service/validation.service */ "./src/app/core/service/validation.service.ts");
 /* harmony import */ var _core_model_pattern_language_model__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../core/model/pattern-language.model */ "./src/app/core/model/pattern-language.model.ts");
-/* harmony import */ var _core_service_loader_default_pattern_loader_service__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../core/service/loader/default-pattern-loader.service */ "./src/app/core/service/loader/default-pattern-loader.service.ts");
-/* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! rxjs/internal/operators */ "./node_modules/rxjs/internal/operators/index.js");
-/* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_16__);
-/* harmony import */ var _core_model_pattern_language_patterns_model__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../core/model/pattern-language-patterns.model */ "./src/app/core/model/pattern-language-patterns.model.ts");
+/* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! rxjs/internal/operators */ "./node_modules/rxjs/internal/operators/index.js");
+/* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_15__);
+/* harmony import */ var _core_model_pattern_language_patterns_model__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../core/model/pattern-language-patterns.model */ "./src/app/core/model/pattern-language-patterns.model.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -9763,42 +9750,6 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-
 
 
 
@@ -9817,8 +9768,8 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 var CreatePatternComponent = /** @class */ (function () {
-    function CreatePatternComponent(loader, PlRestrictionLoader, activatedRoute, cdr, uploadService, pos, toastService, router, patternOntologyServce, patternLoaderService) {
-        this.loader = loader;
+    function CreatePatternComponent(plLoader, PlRestrictionLoader, activatedRoute, cdr, uploadService, pos, toastService, router, patternOntologyService) {
+        this.plLoader = plLoader;
         this.PlRestrictionLoader = PlRestrictionLoader;
         this.activatedRoute = activatedRoute;
         this.cdr = cdr;
@@ -9826,8 +9777,7 @@ var CreatePatternComponent = /** @class */ (function () {
         this.pos = pos;
         this.toastService = toastService;
         this.router = router;
-        this.patternOntologyServce = patternOntologyServce;
-        this.patternLoaderService = patternLoaderService;
+        this.patternOntologyService = patternOntologyService;
         this.sectionRestrictions = new Map();
         this.xsdPrefix = new _core_model_pattern_pedia_model__WEBPACK_IMPORTED_MODULE_11__["default"]().defaultPrefixes.get('xsd').replace('<', '').replace('>', '');
         this.wasSaveButtonClicked = false;
@@ -9850,8 +9800,8 @@ var CreatePatternComponent = /** @class */ (function () {
     CreatePatternComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.plIri = _core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
-        this.loader.supportedIRI = this.plIri;
-        this.patternOntologyServce.loadUrisToStore([{ value: this.plIri, token: null }]).then(function () {
+        this.plLoader.supportedIRI = this.plIri;
+        this.patternOntologyService.loadUrisToStore([{ value: this.plIri, token: null }]).then(function () {
             _this.loadPatternInfos();
             _this.plName = _core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].extractIndividualNameFromIri(_this.plIri);
             _this.PlRestrictionLoader.supportedIRI = _this.plIri;
@@ -9859,7 +9809,7 @@ var CreatePatternComponent = /** @class */ (function () {
             _this.loadLogoData();
         });
     };
-    CreatePatternComponent.prototype.reconstructSectionFromSectionesult = function (queryResult) {
+    CreatePatternComponent.prototype.reconstructSectionFromSectionResult = function (queryResult) {
         return queryResult.section.value;
     };
     CreatePatternComponent.prototype.containsMoreThanWhitespace = function (teststring) {
@@ -9886,9 +9836,9 @@ var CreatePatternComponent = /** @class */ (function () {
             restrictions.push.apply(restrictions, this.plRestrictions.get(key));
         }
         var patternLanguage = new _core_model_pattern_language_model__WEBPACK_IMPORTED_MODULE_14__["default"](this.plIri, this.plName, this.plLogos, patternIris, this.sections, restrictions, null);
-        this.uploadService.updatePL(patternLanguage).pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_16__["switchMap"])(function () {
-            return _this.uploadService.updatePLPatterns(new _core_model_pattern_language_patterns_model__WEBPACK_IMPORTED_MODULE_17__["PatternLanguagePatterns"](_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getPatternListIriForPLIri(patternLanguage.iri), patternLanguage.iri, patternList));
-        }), Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_16__["switchMap"])(function () {
+        this.uploadService.updatePL(patternLanguage).pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_15__["switchMap"])(function () {
+            return _this.uploadService.updatePLPatterns(new _core_model_pattern_language_patterns_model__WEBPACK_IMPORTED_MODULE_16__["PatternLanguagePatterns"](_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getPatternListIriForPLIri(patternLanguage.iri), patternLanguage.iri, patternList));
+        }), Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_15__["switchMap"])(function () {
             return _this.pos.loadUrisToStore([{ value: _this.plIri, token: null }]);
         })).subscribe(function () {
             _this.toastService.pop('success', 'Pattern created');
@@ -9930,14 +9880,14 @@ var CreatePatternComponent = /** @class */ (function () {
                 return { value: true };
             }
         };
-        // we should find a corresponding line (= that starts with ## followed by section name) for each section
+        // we should find a corresponding line (= that starts with ## followed by section patternName) for each section
         for (var _i = 0, _a = this.sections; _i < _a.length; _i++) {
             var section = _a[_i];
             var state_1 = _loop_1(section);
             if (typeof state_1 === "object")
                 return state_1.value;
         }
-        // there should be only one patternname (= line that starts with # )
+        // there should be only one name (= line that starts with # )
         return !(currentText.filter(function (it) { return it.type === 'heading' && it.depth === 1; }).length === 1)
             || // there should be as many second headings as sections (= line that starts with # )
                 !(currentText.filter(function (it) { return it.type === 'heading' && it.depth === 2; }).length === this.sections.length);
@@ -10012,20 +9962,7 @@ var CreatePatternComponent = /** @class */ (function () {
     };
     CreatePatternComponent.prototype.loadPatternInfos = function () {
         var _this = this;
-        this.loader.getOWLImports(this.plIri)
-            .then(function (res) {
-            var importedPatternIris = res.map(function (i) { return i.import; });
-            _this.pos.loadUrisToStore(importedPatternIris).then(function () {
-                _this.loader.loadContentFromStore()
-                    .then(function (result) {
-                    _this.patterns = Array.from(result.values());
-                    if (_this.patterns) {
-                        _this.loadPatternSections();
-                    }
-                    _this.cdr.detectChanges();
-                });
-            });
-        });
+        this.plLoader.loadContentFromStore().then(function (res) { return _this.patterns = Array.from(res.values()); });
     };
     CreatePatternComponent.prototype.updateFormValidationErrors = function () {
         var _this = this;
@@ -10044,11 +9981,13 @@ var CreatePatternComponent = /** @class */ (function () {
     };
     CreatePatternComponent.prototype.loadRestrictionsAndInitPatternEditor = function () {
         var _this = this;
-        this.loader.getPLSections(this.plIri).then(function (res) {
+        // load sections and restrictions
+        this.plLoader.getPLSections(this.plIri).then(function (res) {
             _this.sections = res.map(function (iri) {
-                return _this.reconstructSectionFromSectionesult(iri);
+                return _this.reconstructSectionFromSectionResult(iri);
             });
             _this.PlRestrictionLoader.loadContentFromStore().then(function (response) {
+                // init formgroup based on restrictions
                 _this.plRestrictions = response;
                 _this.patternValuesFormGroup = new _angular_forms__WEBPACK_IMPORTED_MODULE_12__["FormGroup"]({});
                 _this.plRestrictions.forEach(function (value, key) {
@@ -10087,44 +10026,9 @@ var CreatePatternComponent = /** @class */ (function () {
     };
     CreatePatternComponent.prototype.loadLogoData = function () {
         var _this = this;
-        this.loader.getPLLogo(this.plIri).then(function (res) {
+        this.plLoader.getPLLogo(this.plIri).then(function (res) {
             _this.plLogos = res.map(function (dataRessponse) {
                 return dataRessponse.logo.value;
-            });
-        });
-    };
-    CreatePatternComponent.prototype.loadPatternSections = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var patternFilesIri, i, sectionProperties, secMap, i_1, valArray;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        patternFilesIri = _core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getPatternListIriForPLIri(this.plIri);
-                        i = 0;
-                        _a.label = 1;
-                    case 1:
-                        if (!(i < this.patterns.length)) return [3 /*break*/, 4];
-                        return [4 /*yield*/, this.pos.getPatternProperties(patternFilesIri, this.patterns[i].uri)];
-                    case 2:
-                        sectionProperties = _a.sent();
-                        secMap = new Map();
-                        for (i_1 = 0; i_1 < sectionProperties.length; i_1++) {
-                            if (!secMap.get(sectionProperties[i_1].predicate.value)) {
-                                secMap.set(sectionProperties[i_1].property.value, [sectionProperties[i_1].predicate.value]);
-                            }
-                            else {
-                                valArray = secMap.get(sectionProperties[i_1].predicate.value);
-                                valArray.push(sectionProperties[i_1].property.value);
-                                secMap.set(sectionProperties[i_1].property.value, valArray);
-                            }
-                        }
-                        this.patterns[i].sectionProperties = secMap;
-                        _a.label = 3;
-                    case 3:
-                        i++;
-                        return [3 /*break*/, 1];
-                    case 4: return [2 /*return*/];
-                }
             });
         });
     };
@@ -10146,8 +10050,7 @@ var CreatePatternComponent = /** @class */ (function () {
             _core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_8__["PatternOntologyService"],
             angular2_toaster__WEBPACK_IMPORTED_MODULE_9__["ToasterService"],
             _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
-            _core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_8__["PatternOntologyService"],
-            _core_service_loader_default_pattern_loader_service__WEBPACK_IMPORTED_MODULE_15__["DefaultPatternLoaderService"]])
+            _core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_8__["PatternOntologyService"]])
     ], CreatePatternComponent);
     return CreatePatternComponent;
 }());
