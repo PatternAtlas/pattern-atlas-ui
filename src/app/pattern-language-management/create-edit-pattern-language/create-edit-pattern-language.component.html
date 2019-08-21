@@ -138,9 +138,9 @@
                 <mat-form-field>
                   <mat-label>Restriction Type</mat-label>
                   <mat-select formControlName="restrictionType">
-                    <mat-option *ngFor="let option of restrictionOptions"
+                    <mat-option *ngFor="let pat of patterns"
                                 [value]="option">
-                      {{option}}
+                      {{pat.name}}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>

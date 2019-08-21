@@ -31,6 +31,7 @@ import {
   MatListModule,
   MatNativeDateModule,
   MatProgressSpinnerModule,
+  MatSelectModule,
   MatTooltipModule
 } from '@angular/material';
 import { TextFieldModule } from '@angular/cdk/text-field';
@@ -47,6 +48,7 @@ import { DateComponent } from './component/type-templates/xsd/date/date.componen
 import { DividerComponent } from './component/type-templates/divider/divider.component';
 import { NgxMdModule } from 'ngx-md';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CreatePatternRelationComponent } from './component/create-pattern-relation/create-pattern-relation.component';
 
 @NgModule({
     imports: [
@@ -62,6 +64,7 @@ import { ReactiveFormsModule } from '@angular/forms';
       MatDatepickerModule, MatInputModule,
       ReactiveFormsModule,
       MatTooltipModule,
+      MatSelectModule,
       MatDialogModule,
       MatIconModule,
       NgxMdModule.forRoot(), MatNativeDateModule
@@ -82,7 +85,8 @@ import { ReactiveFormsModule } from '@angular/forms';
       PatternpropertyDirective,
       ImageComponent,
       DateComponent,
-      DividerComponent
+      DividerComponent,
+      CreatePatternRelationComponent
     ],
     entryComponents: [
         DefaultPlRendererComponent,
@@ -92,7 +96,8 @@ import { ReactiveFormsModule } from '@angular/forms';
       StringComponent,
       ImageComponent,
       DateComponent,
-      DividerComponent
+      DividerComponent,
+      CreatePatternRelationComponent
     ]
 })
 export class CoreModule {

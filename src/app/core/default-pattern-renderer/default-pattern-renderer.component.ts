@@ -16,12 +16,14 @@ import { IntegerComponent } from '../component/type-templates/xsd/integer/intege
 import { DateComponent } from '../component/type-templates/xsd/date/date.component';
 import { ImageComponent } from '../component/type-templates/dcmitype/image/image.component';
 import { DataRenderingComponent } from '../component/type-templates/interfaces/DataRenderingComponent.interface';
-import { PatternInstance } from '../model/PatternInstance.interface';
 import { PatternLanguagePatterns } from '../model/pattern-language-patterns.model';
 import { GithubPersistenceService } from '../service/github-persistence.service';
 import { CookieService } from 'ngx-cookie-service';
 import { DefaultPatternRelationsLoaderService } from '../service/loader/pattern-language-loader/default-pattern-relations-loader.service';
 import { DirectedPatternRelationDescriptorResponse } from '../service/data/DirectedPatternRelationDescriptorResponse.interface';
+import { MatDialog } from '@angular/material';
+import { CreatePatternRelationComponent } from '../component/create-pattern-relation/create-pattern-relation.component';
+import Pattern from '../model/pattern.model';
 
 @Component({
   selector: 'pp-default-pattern-renderer',
@@ -31,9 +33,10 @@ import { DirectedPatternRelationDescriptorResponse } from '../service/data/Direc
 export class DefaultPatternRendererComponent implements OnInit {
   private sectionRestritions: Map<string, PatternLanguageSectionRestriction[]>;
   private patterns: Map<string, any>;
-  private pattern: PatternInstance;
+  private pattern: Pattern;
   private allRelations: DirectedPatternRelationDescriptorResponse[];
   private patternRelations: DirectedPatternRelationDescriptorResponse[];
+  private patternList: Pattern[];
 
   constructor(private patternLoaderService: DefaultPatternLoaderService,
               private sectionLoader: PlRestrictionLoaderService, private plLoader: DefaultPlLoaderService, private activatedRoute: ActivatedRoute,
@@ -41,7 +44,8 @@ export class DefaultPatternRendererComponent implements OnInit {
               private componentFactoryResolver: ComponentFactoryResolver,
               private githubPersistenceService: GithubPersistenceService,
               private cookieService: CookieService,
-              private relationsLoaderService: DefaultPatternRelationsLoaderService) {
+              private relationsLoaderService: DefaultPatternRelationsLoaderService,
+              public dialog: MatDialog) {
   }
 
   @ViewChild(PatternpropertyDirective) ppPatternproperty: PatternpropertyDirective;
@@ -49,7 +53,6 @@ export class DefaultPatternRendererComponent implements OnInit {
   patternIri: string;
   patternName: string;
   patternNameProperty: string;
-  patternProperties: Map<string, string[]>;
   sections: SectionResponse[];
   isLoadingPattern = true;
   isLoadingSection = true;
@@ -117,10 +120,9 @@ export class DefaultPatternRendererComponent implements OnInit {
     //  load all the data from patternlanguage
     this.plLoader.supportedIRI = this.plIri;
     this.patterns = await this.plLoader.loadContentFromStore();
-    this.pattern = this.patterns.get(this.patternIri);
-    this.patternProperties = this.pattern.sectionProperties;
+    this.patternList = Array.from(this.patterns.values()).map(it => it.toPattern(this.plIri));
+    this.pattern = this.patterns.get(this.patternIri).toPattern(this.plIri);
     this.patternNameProperty = IriConverter.getFileName(this.plIri) + '#hasName';
-    this.patternName = this.patternProperties.get(this.patternNameProperty)[0];
     this.isLoadingPattern = false;
 
 
@@ -128,12 +130,13 @@ export class DefaultPatternRendererComponent implements OnInit {
     this.sectionLoader.supportedIRI = this.plIri;
     this.sectionRestritions = await this.sectionLoader.loadContentFromStore();
 
+
     // get section in order
     this.sections = await this.plLoader.getPLSections(this.plIri);
     this.isLoadingSection = false;
 
 
-    if (!this.patternProperties) {
+    if (!this.pattern) {
       Promise.reject(null);
 
     } else {
@@ -153,7 +156,7 @@ export class DefaultPatternRendererComponent implements OnInit {
   }
 
   private createSectionComponent(section: string, viewContainerRef: any, componentDividerFactory) {
-    const properties = this.patternProperties.get(section);
+    const properties = this.pattern.sectionsProperties.get(section);
     const sectionRestrictions = this.sectionRestritions.get(section);
     if (section.indexOf('#has') !== -1) {
       const sectionTitle = section.split('#has')[1].replace(/([A-Z])/g, ' $1').trim();
@@ -168,9 +171,9 @@ export class DefaultPatternRendererComponent implements OnInit {
       instance.title = sectionTitle;
       instance.isEditingEnabled = this.isEditingEnabled;
       instance.changeContent.subscribe((data) => {
-        this.patternProperties.set(section, [data]);
-        this.pattern.sectionProperties = this.patternProperties;
+        this.pattern.sectionsProperties.set(section, [data]);
         this.patterns.set(this.patternIri, this.pattern);
+        this.patternList = Array.from(this.patterns.values()).map(it => it.toPattern(this.plIri));
         instance.data = data;
         this.savePatterns();
       });
@@ -180,13 +183,16 @@ export class DefaultPatternRendererComponent implements OnInit {
   }
 
   private savePatterns() {
-    const patternList = Array.from(this.patterns.values()).map(it => it.toPattern(this.plIri));
+
     this.githubPersistenceService.updatePLPatterns(new PatternLanguagePatterns(IriConverter.getPatternListIriForPLIri(this.plIri),
-      this.plIri, patternList)).subscribe(() => this.toasterService.pop('success', 'Updated patterns'),
+      this.plIri, this.patternList)).subscribe(() => this.toasterService.pop('success', 'Updated patterns'),
       (error) => this.toasterService.pop('error', 'could not update patterns' + error.message));
   }
 
   addLink() {
-
+    this.dialog.open(CreatePatternRelationComponent, {
+        data: {patternName: this.pattern.name, patterns: this.patternList}
+      }
+    );
   }
 }
