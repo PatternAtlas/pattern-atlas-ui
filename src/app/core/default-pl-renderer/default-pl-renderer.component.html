@@ -1,6 +1,6 @@
 <pp-navigate-back></pp-navigate-back>
 <h2>Pattern Language: {{plName}}</h2>
-<div fxLayout="row" fxLayoutAlign="start center">
+<div class="container">
   <mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>
   <mat-card class="landing-card " *ngFor="let pattern of patterns">
     <mat-card-header>

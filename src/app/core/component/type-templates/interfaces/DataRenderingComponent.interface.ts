@@ -6,6 +6,8 @@ export class DataRenderingComponent {
   title: string;
 
   changeContent: EventEmitter<string>;
+  isEditingEnabled = false;
 
-
+  constructor() {
+  }
 }

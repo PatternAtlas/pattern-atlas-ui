@@ -3,7 +3,7 @@
   <div style="display: flex; align-items: center;" (mouseenter)="showActionButtons = true"
        (mouseleave)="showActionButtons = false">
     <mat-form-field><input matInput [formControl]="date" [matDatepicker]="picker" >
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker-toggle *ngIf="isEditingEnabled" matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker></mat-form-field>
     <ngx-md [data]="data" hidden></ngx-md>
     <button *ngIf="showActionButtons" mat-stroked-button

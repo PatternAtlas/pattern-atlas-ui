@@ -91,11 +91,12 @@ class PatternLanguage implements TurtleFileModelInterface {
     ary.push('# #    Sections / Data Properties');
     ary.push('# #');
     ary.push('# #################################################################');
-    for (const section of this.sections) {
+    this.sections.forEach((section, index) => {
       ary.push('\n');
       ary.push(`### ${section}`);
-      ary.push(`${this.getSectionIdentifier(section)} rdf:type owl:DatatypeProperty .`);
-    }
+      ary.push(`${this.getSectionIdentifier(section)} rdf:type pp:DatatypePropertyListItem  ;`);
+      ary.push(`pp:hasListIndex "${index}"^^xsd:integer .`);
+    });
 
     if (this.restrictions && this.restrictions.length > 0) {
 

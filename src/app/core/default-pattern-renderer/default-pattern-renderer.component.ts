@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { DefaultPatternLoaderService } from '../service/loader/default-pattern-loader.service';
 import { DefaultPlLoaderService } from '../service/loader/default-pl-loader.service';
 import { PatternOntologyService } from '../service/pattern-ontology.service';
-import { PatternProperty } from '../service/data/PatternProperty.interface';
 import { ToasterService } from 'angular2-toaster';
 import { SectionResponse } from '../service/data/SectionResponse.interface';
 import { PlRestrictionLoaderService } from '../service/loader/pattern-language-loader/pl-restriction-loader.service';
@@ -12,11 +11,15 @@ import { PatternLanguageSectionRestriction } from '../model/PatternLanguageSecti
 import PatternPedia from '../model/pattern-pedia.model';
 import { IriConverter } from '../util/iri-converter';
 import { DividerComponent } from '../component/type-templates/divider/divider.component';
-import { DataRenderingComponent } from '../component/type-templates/interfaces/DataRenderingComponent.interface';
 import { StringComponent } from '../component/type-templates/xsd/string/string.component';
 import { IntegerComponent } from '../component/type-templates/xsd/integer/integer.component';
 import { DateComponent } from '../component/type-templates/xsd/date/date.component';
 import { ImageComponent } from '../component/type-templates/dcmitype/image/image.component';
+import { DataRenderingComponent } from '../component/type-templates/interfaces/DataRenderingComponent.interface';
+import { PatternInstance } from '../model/PatternInstance.interface';
+import { PatternLanguagePatterns } from '../model/pattern-language-patterns.model';
+import { GithubPersistenceService } from '../service/github-persistence.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'pp-default-pattern-renderer',
@@ -25,20 +28,27 @@ import { ImageComponent } from '../component/type-templates/dcmitype/image/image
 })
 export class DefaultPatternRendererComponent implements OnInit {
   private sectionRestritions: Map<string, PatternLanguageSectionRestriction[]>;
+  private patterns: Map<string, any>;
+  private pattern: PatternInstance;
 
   constructor(private patternLoaderService: DefaultPatternLoaderService,
               private sectionLoader: PlRestrictionLoaderService, private plLoader: DefaultPlLoaderService, private activatedRoute: ActivatedRoute,
               private pos: PatternOntologyService, private toasterService: ToasterService, private cdr: ChangeDetectorRef,
-              private componentFactoryResolver: ComponentFactoryResolver) {
+              private componentFactoryResolver: ComponentFactoryResolver,
+              private githubPersistenceService: GithubPersistenceService,
+              private cookieService: CookieService) {
   }
 
+  @ViewChild(PatternpropertyDirective) ppPatternproperty: PatternpropertyDirective;
   plIri: string;
   patternIri: string;
-  patternProperties: PatternProperty[];
+  patternName: string;
+  patternProperties: Map<string, string[]>;
   sections: SectionResponse[];
   isLoadingPattern = true;
   isLoadingSection = true;
-  @ViewChild(PatternpropertyDirective) ppPatternproperty: PatternpropertyDirective;
+  isEditingEnabled = false;
+
 
   standardPrefixes = new PatternPedia().defaultPrefixes;
   xsdPrefix = this.standardPrefixes.get('xsd').replace('<', '').replace('>', '');
@@ -62,81 +72,89 @@ export class DefaultPatternRendererComponent implements OnInit {
 
     this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
     this.patternIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('pid'));
+    this.isEditingEnabled = !!this.cookieService.get('patternpedia_github_token');
 
     this.loadInfos().then(() => {
       const viewContainerRef = this.ppPatternproperty.viewContainerRef;
       viewContainerRef.clear();
 
       const componentDividerFactory = this.componentFactoryResolver.resolveComponentFactory(DividerComponent);
-      this.patternProperties.forEach((property: PatternProperty) => {
-
-        const sectionRestrictions = this.sectionRestritions.get(property.property.value);
-        if (property.property.value.indexOf('#has') !== -1) {
-          const sectionTitle = property.property.value.split('#has')[1].replace(/([A-Z])/g, ' $1').trim();
-
-          const type = (sectionRestrictions && !!sectionRestrictions[0] && sectionRestrictions[0].type) ? sectionRestrictions[0].type : this.xsdPrefix + 'string';
-          let component = this.defaultComponentForType.get(type) ? this.defaultComponentForType.get(type) : StringComponent;
-
-          const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
-          const componentRef = viewContainerRef.createComponent(componentFactory);
-          const instance = (<DataRenderingComponent>componentRef.instance);
-          instance.data = property.predicate.value;
-          instance.title = sectionTitle;
-          instance.changeContent.subscribe((data) => console.log('Trigger saving new data :' + data));
-
-          viewContainerRef.createComponent(componentDividerFactory); // create divider
-        }
-
+      this.sections.forEach((sec: SectionResponse) => {
+        this.createSectionComponent(sec.section.value, viewContainerRef, componentDividerFactory);
       });
     });
 
 
   }
 
-  getSectionName(iri: string): string {
-    return IriConverter.getSectionName(iri);
-  }
-
-  getSectionInfo(iri: string): SectionResponse {
-    if (!iri || !this.sections) {
-      return;
-    }
-    return this.sections.filter(s => s.section.value === iri)[0];
-  }
 
   private async loadInfos(): Promise<any> {
 
 
-    await this.pos.loadUrisToStore([{token: this.plIri, value: this.plIri}]);
+    await this.pos.loadUrisToStore([{token: null, value: this.plIri}]);
 
     // load patternlanguage and patternlanguage-Patterns file
     const imports = await this.pos.getOWLImports(this.plIri);
     const importedPatternIris = imports.map(i => i.import);
     await  this.pos.loadUrisToStore(importedPatternIris);
 
-    this.patternLoaderService.patternIri = this.patternIri;
-    this.patternLoaderService.supportedIRI = IriConverter.getPatternListIriForPLIri(this.plIri);
-    this.sectionLoader.supportedIRI = this.plIri;
-    const loadingResult = await this.patternLoaderService.selectContentFromStore();
-    this.patternProperties = Array.from(loadingResult.values());
+
+    //  load all the data from patternlanguage
+    this.plLoader.supportedIRI = this.plIri;
+    this.patterns = await this.plLoader.loadContentFromStore();
+    this.pattern = this.patterns.get(this.patternIri);
+    this.patternProperties = this.pattern.sectionProperties;
+    this.patternName = this.patternProperties.get(IriConverter.getFileName(this.plIri) + '#hasName')[0];
     this.isLoadingPattern = false;
 
-    // not that we loaded the data for the pattern, load all the data from patternlanguage
-
-    this.plLoader.supportedIRI = this.plIri;
-    await this.plLoader.loadContentFromStore();
-
+    // load section restrictions to be able to get the type for a section
+    this.sectionLoader.supportedIRI = this.plIri;
     this.sectionRestritions = await this.sectionLoader.loadContentFromStore();
 
+    // get section in order
     this.sections = await this.plLoader.getPLSections(this.plIri);
     this.isLoadingSection = false;
 
+
     if (!this.patternProperties) {
-      this.toasterService.pop('success', 'Loaded all infos');
       Promise.reject(null);
 
     } else {
       Promise.resolve(null);
     }
+  }
+
+  private createSectionComponent(section: string, viewContainerRef: any, componentDividerFactory) {
+    const properties = this.patternProperties.get(section);
+    const sectionRestrictions = this.sectionRestritions.get(section);
+    if (section.indexOf('#has') !== -1) {
+      const sectionTitle = section.split('#has')[1].replace(/([A-Z])/g, ' $1').trim();
+
+      const type = (sectionRestrictions && !!sectionRestrictions[0] && sectionRestrictions[0].type) ? sectionRestrictions[0].type : this.xsdPrefix + 'string';
+      const component = this.defaultComponentForType.get(type) ? this.defaultComponentForType.get(type) : StringComponent;
+
+      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
+      const componentRef = viewContainerRef.createComponent(componentFactory);
+      const instance = (<DataRenderingComponent>componentRef.instance);
+      instance.data = properties.join('\n');
+      instance.title = sectionTitle;
+      instance.isEditingEnabled = this.isEditingEnabled;
+      instance.changeContent.subscribe((data) => {
+        this.patternProperties.set(section, [data]);
+        this.pattern.sectionProperties = this.patternProperties;
+        this.patterns.set(this.patternIri, this.pattern);
+        instance.data = data;
+        this.savePatterns();
+      });
+
+      viewContainerRef.createComponent(componentDividerFactory); // create divider
+    }
+  }
+
+  private savePatterns() {
+    const patternList = Array.from(this.patterns.values()).map(it => it.toPattern(this.plIri));
+    this.githubPersistenceService.updatePLPatterns(new PatternLanguagePatterns(IriConverter.getPatternListIriForPLIri(this.plIri),
+      this.plIri, patternList)).subscribe(() => this.toasterService.pop('success', 'updated patterns'),
+      (error) => this.toasterService.pop('error', 'could not update patterns' + error.message));
   }
 }
