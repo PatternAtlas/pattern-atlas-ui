@@ -1,3 +1,4 @@
+import { GroupClrLoaderService } from './../../loader/group-clr-loader.service';
 import { EnterpriseIntegrationPatternIncomingLinkLoaderService } from './../../loader/enterprise-integration-pattern-incoming-link-loader.service';
 import { IriConverter } from './../../../../../core/util/iri-converter';
 import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
@@ -49,15 +50,22 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
     private outgoingLinkLoader: EnterpriseIntegrationPatternOutgoingLinkLoaderService,
     private incomingLinkLoader: EnterpriseIntegrationPatternIncomingLinkLoaderService,
     private filterFactory: FilterFactoryService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    private groupClrLoader: GroupClrLoaderService) { }
 
   ngOnInit() {
     // load base file, patterns file, and relations file
+    // tslint:disable: max-line-length
     const uris = [
       { value: 'https://purl.org/patternpedia' },
       { value: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns' },
       { value: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns' },
-      { value: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations' }
+      { value: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations' },
+      { value: 'https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns' },
+      { value: 'https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Patterns' },
+      { value: 'https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Relations' },
+      { value: 'https://purl.org/patternpedia/patternviews/cloudcomputingpatterns-enterpriseintegrationpatterns-view' },
+      { value: 'https://purl.org/patternpedia/patternviews/cloudcomputingpatterns-enterpriseintegrationpatterns-view/cloudcomputingpatterns-enterpriseintegrationpatterns-view-Relations' }
     ];
     this.pos.loadUrisToStore(uris).then(() => {
       // get data from store
@@ -224,13 +232,16 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
     const values = await Promise.all([
       this.patternLoader.loadContentFromStore(uri),
       this.outgoingLinkLoader.loadContentFromStore(uri),
-      this.incomingLinkLoader.loadContentFromStore(uri)
+      this.incomingLinkLoader.loadContentFromStore(uri),
+      this.groupClrLoader.loadContentFromStore(uri)
     ]);
 
     const pattern = values[0].get(uri);
 
     const outgoing = Array.from(values[1].values());
     const incoming = Array.from(values[2].values());
+
+    const clrs = Array.from(values[3].values());
 
     const info = new NodeInfo();
     info.name = pattern.name;
@@ -243,6 +254,9 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
         relations: outgoing.concat(incoming)
       }
     ];
+    // add all clrs
+    clrs.forEach(lr => info.languageRelations.push(lr));
+
     return Promise.resolve(info);
   }
 }
