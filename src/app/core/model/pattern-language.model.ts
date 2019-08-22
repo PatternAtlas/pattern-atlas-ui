@@ -84,7 +84,7 @@ class PatternLanguage implements TurtleFileModelInterface {
     const ary = this.getPrefixes();
     ary.push('\n');
     ary.push(`<${IriConverter.getFileName(this.iri)}> rdf:type owl:Ontology ;`);
-    ary.push(`owl:imports <${this.patternpediaBaseURI}> , <${IriConverter.getPatternListIriForPLIri(this.iri)}>.`);
+    ary.push(`owl:imports <${this.patternpediaBaseURI}> , <${IriConverter.getPatternListIriForPLIri(this.iri)}>, <${IriConverter.getRelationListIriForPLIri(this.iri)}>.`);
     ary.push('\n');
     ary.push('# #################################################################');
     ary.push('# #');

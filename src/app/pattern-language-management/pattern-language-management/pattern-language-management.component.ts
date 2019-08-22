@@ -29,6 +29,7 @@ import { IriConverter } from '../../core/util/iri-converter';
 import { PatternLanguagePatterns } from '../../core/model/pattern-language-patterns.model';
 import { switchMap, tap } from 'rxjs/internal/operators';
 import { forkJoin } from 'rxjs';
+import { PatternLanguageRelations } from '../../core/model/pattern-language-relations.model';
 
 @Component({
     selector: 'pp-pattern-language-management',
@@ -114,7 +115,7 @@ export class PatternLanguageManagementComponent implements OnInit {
       const patternlanguage = new PatternLanguage(this.urlPatternPedia + '/patternlanguages/' + result.name.replace(/\s/g, ''),
         result.name, [result.iconUrl], null, result.sections, result.restrictions, result.prefixes);
       const patternLanguagePatterns = new PatternLanguagePatterns(IriConverter.getPatternListIriForPLIri(patternlanguage.iri), patternlanguage.iri, []);
-
+      const patternLanguageRelations = new PatternLanguageRelations(IriConverter.getRelationListIriForPLIri(patternlanguage.iri), patternlanguage.iri, []);
       console.log(patternlanguage.iri);
       console.log(patternLanguagePatterns.iri);
       this.uploadService.uploadPatternLanguage(patternlanguage).pipe(
@@ -122,7 +123,7 @@ export class PatternLanguageManagementComponent implements OnInit {
           return this.uploadService.addPatternLanguageToPatternPedia(patternlanguage, this.patternLanguages);
         }),
         switchMap(() => {
-          return this.uploadService.uploadPLPatterns(patternLanguagePatterns);
+          return this.uploadService.uploadPLPatternsAndRelations(patternLanguagePatterns, patternLanguageRelations);
         }),
         tap(() => this._toasterService.pop('success', 'Created new patternlanguage')),
         switchMap(() => {
