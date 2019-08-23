@@ -1,16 +1,16 @@
 import { PatternPedia } from './pattern-pedia.model';
 import { globals } from '../../globals';
-import { DirectedPatternRelationDescriptorResponse } from '../service/data/DirectedPatternRelationDescriptorResponse.interface';
+import { DirectedPatternRelationDescriptorIndividual } from './PatternRelationDescriptorIndividual';
 
 
 export class PatternLanguageRelations {
 
   iri: string;
   plIri: string;
-  relations: DirectedPatternRelationDescriptorResponse[];
+  relations: DirectedPatternRelationDescriptorIndividual[];
 
 
-  constructor(iri: string, plIri: string, relations: DirectedPatternRelationDescriptorResponse[]) {
+  constructor(iri: string, plIri: string, relations: DirectedPatternRelationDescriptorIndividual[]) {
     this.iri = iri;
     this.plIri = plIri;
     this.relations = relations;
@@ -26,10 +26,9 @@ export class PatternLanguageRelations {
     ary.push('\n');
 
 
-    this.relations.forEach((rel: DirectedPatternRelationDescriptorResponse) => {
-      ary.push(''); // rel.toTurtle());
+    this.relations.forEach((rel: DirectedPatternRelationDescriptorIndividual) => {
+      ary.push(rel.toTurtle());
     });
-
     return ary.join('\n');
 
   }

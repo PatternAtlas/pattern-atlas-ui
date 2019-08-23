@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { PatternInstance } from '../../model/PatternInstance.interface';
 import Pattern from '../../model/pattern.model';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'pp-create-pattern-relation',
@@ -19,11 +19,16 @@ export class CreatePatternRelationComponent implements OnInit {
 
   patterns: Pattern[];
   types = [{name: 'directed_right', icon: 'trending_flat'}, {name: 'directed_left', icon: 'trending_flat'}, {name: 'undirected', icon: 'compare_arrows'}];
-  typeForm = new FormControl();
+  relationForm: FormGroup;
 
 
   ngOnInit() {
   console.log(this.data);
+    this.relationForm = this.fb.group({
+      toPattern: ['', [Validators.required]],
+      direction: ['', [Validators.required]],
+      description: ['', []],
+    });
   }
 
   close(): void {
@@ -36,4 +41,15 @@ export interface DialogData {
   type?: string;
   selectedPattern: PatternInstance;
   patterns: Pattern[];
+}
+
+export interface PatternRelationDirection {
+  name: string;
+  icon: string; // angular material icon name
+}
+
+export interface DialogDataResult {
+  direction: PatternRelationDirection;
+  toPattern: Pattern;
+  description: string;
 }

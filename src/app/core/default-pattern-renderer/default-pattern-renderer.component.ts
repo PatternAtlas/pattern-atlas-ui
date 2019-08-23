@@ -22,8 +22,9 @@ import { CookieService } from 'ngx-cookie-service';
 import { DefaultPatternRelationsLoaderService } from '../service/loader/pattern-language-loader/default-pattern-relations-loader.service';
 import { DirectedPatternRelationDescriptorResponse } from '../service/data/DirectedPatternRelationDescriptorResponse.interface';
 import { MatDialog } from '@angular/material';
-import { CreatePatternRelationComponent } from '../component/create-pattern-relation/create-pattern-relation.component';
+import { CreatePatternRelationComponent, DialogDataResult } from '../component/create-pattern-relation/create-pattern-relation.component';
 import Pattern from '../model/pattern.model';
+import { DirectedPatternRelationDescriptorIndividual } from '../model/PatternRelationDescriptorIndividual';
 
 @Component({
   selector: 'pp-default-pattern-renderer',
@@ -35,7 +36,7 @@ export class DefaultPatternRendererComponent implements OnInit {
   private patterns: Map<string, any>;
   private pattern: Pattern;
   private allRelations: DirectedPatternRelationDescriptorResponse[];
-  private patternRelations: DirectedPatternRelationDescriptorResponse[];
+  private patternRelations: DirectedPatternRelationDescriptorIndividual[];
   private patternList: Pattern[];
 
   constructor(private patternLoaderService: DefaultPatternLoaderService,
@@ -107,15 +108,7 @@ export class DefaultPatternRendererComponent implements OnInit {
     const importedPatternIris = imports.map(i => i.import);
     await  this.pos.loadUrisToStore(importedPatternIris);
 
-    // load pattern relations (links)
-    this.relationsLoaderService.supportedIRI = IriConverter.getRelationListIriForPLIri(this.plIri);
-    this.relationsLoaderService.selectContentFromStore().then((res) => {
 
-        this.allRelations = Array.from(res.values());
-      this.patternRelations = this.allRelations.filter(rel => rel.source.value === this.patternIri || rel.target.value === this.patternIri);
-        this.cdr.detectChanges();
-      }
-    );
 
     //  load all the data from patternlanguage
     this.plLoader.supportedIRI = this.plIri;
@@ -124,6 +117,17 @@ export class DefaultPatternRendererComponent implements OnInit {
     this.pattern = this.patterns.get(this.patternIri).toPattern(this.plIri);
     this.patternNameProperty = IriConverter.getFileName(this.plIri) + '#hasName';
     this.isLoadingPattern = false;
+
+    // load pattern relations (links)
+    this.relationsLoaderService.supportedIRI = IriConverter.getRelationListIriForPLIri(this.plIri);
+    this.relationsLoaderService.selectContentFromStore().then((res) => {
+
+        this.allRelations = Array.from(res.values());
+        const patternRelationsResponseList = this.allRelations.filter(rel => rel.source.value === this.patternIri || rel.target.value === this.patternIri);
+        this.patternRelations = patternRelationsResponseList.map(it => this.mapRelationsResponseToObject(it));
+        this.cdr.detectChanges();
+      }
+    );
 
 
     // load section restrictions to be able to get the type for a section
@@ -190,9 +194,38 @@ export class DefaultPatternRendererComponent implements OnInit {
   }
 
   addLink() {
-    this.dialog.open(CreatePatternRelationComponent, {
+    const dialogRef = this.dialog.open(CreatePatternRelationComponent, {
         data: {patternName: this.pattern.name, patterns: this.patternList}
       }
     );
+
+    dialogRef.afterClosed().subscribe((result: DialogDataResult) => {
+      if (result) {
+        this.patternRelations.push(<DirectedPatternRelationDescriptorIndividual>this.mapDialogResultToRelation(result));
+      }
+    });
+
+
+  }
+
+  mapDialogResultToRelation(dialogResult: DialogDataResult): DirectedPatternRelationDescriptorIndividual {
+    if (!dialogResult) {
+      return null;
+    }
+    if (dialogResult.direction.name === 'directed_right') {
+      return new DirectedPatternRelationDescriptorIndividual(this.pattern, dialogResult.toPattern, dialogResult.description ? dialogResult.description : null);
+    }
+    return new DirectedPatternRelationDescriptorIndividual(dialogResult.toPattern, this.pattern, dialogResult.description ? dialogResult.description : null);
+  }
+
+  mapRelationsResponseToObject(patternRelationResponse: DirectedPatternRelationDescriptorResponse): DirectedPatternRelationDescriptorIndividual {
+    if (!patternRelationResponse || !this.patternList) {
+      return null;
+    }
+    return new DirectedPatternRelationDescriptorIndividual(
+      this.patternList.find(pat => pat.iri === patternRelationResponse.source.value),
+      this.patternList.find(pat => pat.iri === patternRelationResponse.target.value),
+      patternRelationResponse.description ? patternRelationResponse.description.value : null);
+
   }
 }
