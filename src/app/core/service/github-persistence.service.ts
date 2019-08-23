@@ -138,6 +138,25 @@ export class GithubPersistenceService {
       ));
   }
 
+  updatePLRelations(patternLanguageRelations: PatternLanguageRelations): Observable<any> {
+    const githubUrlPLPatterns = this.getGithubPathForPatternLanguagePatternsOrRelations(patternLanguageRelations);
+    return this.getFile(githubUrlPLPatterns).pipe(
+      switchMap((res: GithubFileResponse) => {
+          return this.httpClient.put(githubUrlPLPatterns, {
+              message: 'update patterns of' + IriConverter.extractIndividualNameFromIri(patternLanguageRelations.plIri),
+              content: btoa(patternLanguageRelations.toTurtle()),
+              sha: res.sha
+            }
+            , {
+              headers: {
+                'Content-Type': 'application/x-turtle',
+                'Authorization': `token ${this.cookieService.get('patternpedia_github_token')}`
+              }
+            });
+        }
+      ));
+  }
+
   uploadPLPatternsAndRelations(patternLanguagePatterns: PatternLanguagePatterns, patternLanguageRelations: PatternLanguageRelations): Observable<any> {
     const headers = {
       'Content-Type': 'application/x-turtle',

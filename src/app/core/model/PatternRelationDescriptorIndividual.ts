@@ -18,8 +18,8 @@ export class DirectedPatternRelationDescriptorIndividual {
     const ary = [];
     ary.push(`:${this.individualName}`);
     ary.push(`rdf:type owl:NamedIndividual , pp:DirectedPatternRelationDescriptor ;`);
-    ary.push(`pp:hasSource :{this.source.name} ; `);
-    ary.push(`pp:hasTarget :{this.target.name} ${this.description ? '; \n pp:hasDescription "' + this.description + '"^^xsd:string . ' : ''}`);
+    ary.push(`pp:hasSource :${this.source.name} ; `);
+    ary.push(`pp:hasTarget :${this.target.name} ${this.description ? '; \n pp:hasDescription "' + this.description + '"^^xsd:string . ' : '.'}`);
     return ary.join('\n');
   }
 

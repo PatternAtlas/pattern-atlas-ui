@@ -25,6 +25,7 @@ import { MatDialog } from '@angular/material';
 import { CreatePatternRelationComponent, DialogDataResult } from '../component/create-pattern-relation/create-pattern-relation.component';
 import Pattern from '../model/pattern.model';
 import { DirectedPatternRelationDescriptorIndividual } from '../model/PatternRelationDescriptorIndividual';
+import { PatternLanguageRelations } from '../model/pattern-language-relations.model';
 
 @Component({
   selector: 'pp-default-pattern-renderer',
@@ -200,11 +201,22 @@ export class DefaultPatternRendererComponent implements OnInit {
     );
 
     dialogRef.afterClosed().subscribe((result: DialogDataResult) => {
+      const newRelation = <DirectedPatternRelationDescriptorIndividual>this.mapDialogResultToRelation(result);
       if (result) {
-        this.patternRelations.push(<DirectedPatternRelationDescriptorIndividual>this.mapDialogResultToRelation(result));
+        this.patternRelations.push(newRelation);
       }
-    });
+      const patternRelations = new PatternLanguageRelations(IriConverter.getRelationListIriForPLIri(this.plIri), this.plIri, this.patternRelations);
 
+      this.githubPersistenceService.updatePLRelations(patternRelations).subscribe(() => this.toasterService.pop('success', 'Created new Relation'),
+        (error) => {
+          this.toasterService.pop('error', 'Could not create new relation: ', error);
+          const index = this.patternRelations.findIndex(
+            (rel: DirectedPatternRelationDescriptorIndividual) =>
+              rel.individualName === newRelation.individualName && rel.description === newRelation.description);
+          this.patternRelations.splice(index, 1);
+        });
+
+    });
 
   }
 
