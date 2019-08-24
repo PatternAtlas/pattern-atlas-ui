@@ -1,6 +1,6 @@
 
 /**
- * Contains information about the link between patterns to display in the link infobox. 
+ * Contains information about the link between patterns to display in the link infobox.
  */
 export default interface LinkInfo {
     // the currently selected pattern with id and name

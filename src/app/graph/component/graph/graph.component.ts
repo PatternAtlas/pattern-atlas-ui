@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, HostListener, ChangeDetectorRef, ChangeDetectionStrategy, AfterViewInit, EventEmitter, Output } from '@angular/core';
 import { Node, Link, NetworkGraph, NodeInfo } from '../../model';
 import { D3Service } from '../../service/d3.service';
-import Filter from 'src/app/filter/model/filter';
+import LinkData from '../../model/link-data';
 
 @Component({
   selector: 'pp-graph',
@@ -18,6 +18,7 @@ export class GraphComponent implements OnInit, AfterViewInit {
   @Input() links: Link[];
 
   @Input() getNodeInfo: (id: string) => Promise<NodeInfo>;
+  @Input() getLinkInfo: (id: string) => Promise<LinkData>;
 
   @Output() nodeSelectEvent = new EventEmitter<string>();
   @Output() nodeUnselectEvent = new EventEmitter<string>();
@@ -30,6 +31,7 @@ export class GraphComponent implements OnInit, AfterViewInit {
   selectedNodeInfo?: NodeInfo;
   // selectedNodeInfo?: NodeInfo;
 
+  selectedLink: LinkData;
   selectedLinkId: string;
 
   private _options: { width: number, height: number } = { width: 800, height: 600 };
@@ -69,6 +71,11 @@ export class GraphComponent implements OnInit, AfterViewInit {
   }
 
   previewNodeInformation(event: string) {
+    // first check, if the given node id is from the current pattern graph
+    if (!this.checkIfInGraph(event)) {
+      return;
+    }
+
     for (const l of this.links) {
       l.preview = true;
     }
@@ -139,11 +146,24 @@ export class GraphComponent implements OnInit, AfterViewInit {
 
     this.selectedNode = null;
     // this.selectedNodeInfo = null;
+    this.selectedLink = null;
     this.selectedNodeId = null;
+  }
+
+  private checkIfInGraph(nodeId: string): boolean {
+    const node = this.nodes.find(i => i.id === nodeId);
+    return Boolean(node);
   }
 
   // $event is the clicked node id!
   nodeInformation($event: string) {
+    if (!this.checkIfInGraph($event)) {
+      // this node is not contained in this graph -> navigate to corresponding view
+      this.nodeSelectEvent.emit($event);
+      return;
+    }
+
+    this.selectedLink = null;
     this.selectedLinkId = null;
 
     // call listener
@@ -211,7 +231,6 @@ export class GraphComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // FIXME this has to be changed: the actual filtering should be done in the parent-component. Give a list of filtered patterns to hide them here
   // toBeFilteredIds contains all NODE IDS that should be filtered from the graph
   filterNodes(toBeFilteredIds: string[]) {
     this.showAllNodes();
@@ -256,7 +275,8 @@ export class GraphComponent implements OnInit, AfterViewInit {
     this.links.forEach(l => l.hide = false);
   }
 
-  showLinkInfo(linkId: string) {
+  async showLinkInfo(linkId: string) {
+    this.selectedLink = await this.getLinkInfo(linkId);
     this.selectedLinkId = linkId;
   }
 

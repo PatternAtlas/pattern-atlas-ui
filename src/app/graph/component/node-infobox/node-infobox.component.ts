@@ -48,9 +48,9 @@ export class NodeInfoboxComponent implements OnInit {
     this.mouseLeaveEvent.emit(node);
   }
 
-  onInfoClick(event: any/*, link: LinkInfo*/) {
+  onInfoClick(event: any, rel: Relation) {
     event.stopPropagation();
 
-    this.linkClickEvent.emit(/*link.linkId*/);
+    this.linkClickEvent.emit(rel.relationId);
   }
 }

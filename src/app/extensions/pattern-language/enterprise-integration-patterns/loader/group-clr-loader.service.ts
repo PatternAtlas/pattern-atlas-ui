@@ -91,9 +91,9 @@ export class GroupClrLoaderService extends Loader<LanguageRelation> {
       WHERE {
         <${this.supportedIRI}> pp:referredByView ?view .
         ?view pp:containsPatternRelationDescriptors ?linkUri .
-        ?linkUri pp:hasTarget ?sourceUri ;
-                pp:hasSource ?targetUri ;
-                pp:hasDescription ?desc .
+        ?linkUri pp:hasTarget ?targetUri ;
+                pp:hasSource ?sourceUri .
+        OPTIONAL { ?linkUri pp:hasDescription ?desc . }
         { ?otherLangUri pp:containsPattern ?sourceUri } UNION { ?otherLangUri pp:containsPattern ?targetUri }.
         ?otherLangUri pp:hasName ?otherLangName .
         ?sourceUri pp:hasName ?sourceName .

@@ -16,6 +16,9 @@ import { FilterViewComponent } from 'src/app/filter/component/filter-view/filter
 import { Node, Link, NodeInfo } from 'src/app/graph/model';
 import { EnterpriseIntegrationPatternOutgoingLinkLoaderService } from '../../loader/enterprise-integration-pattern-outgoing-link-loader.service';
 import { Pattern, Relation } from '../../model/data';
+import { EnterpriseIntegrationPatternsLinkInfoLoaderService } from '../../loader/enterprise-integration-patterns-link-info-loader.service';
+import LinkData from 'src/app/graph/model/link-data';
+import { LanguageLoaderService } from '../../loader/language-loader.service';
 
 @Component({
   selector: 'pp-enterprise-integration-patterns',
@@ -51,7 +54,9 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
     private incomingLinkLoader: EnterpriseIntegrationPatternIncomingLinkLoaderService,
     private filterFactory: FilterFactoryService,
     public dialog: MatDialog,
-    private groupClrLoader: GroupClrLoaderService) { }
+    private groupClrLoader: GroupClrLoaderService,
+    private linkLoader: EnterpriseIntegrationPatternsLinkInfoLoaderService,
+    private languageLoder: LanguageLoaderService) { }
 
   ngOnInit() {
     // load base file, patterns file, and relations file
@@ -169,11 +174,38 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
       links: links,
       id: this.pId
     };
+
+    this.nodes = nodes;
+    this.links = links;
+
     return result;
   }
 
+  private checkIfInList(nodeId: string): boolean {
+    const node = this.nodes.find(i => i.id === nodeId);
+    return Boolean(node);
+  }
+
   // called when a node from the network graph was selected
-  selectNode(nodeId: string) {
+  async selectNode(nodeId: string) {
+    if (this.nodes && !this.checkIfInList(nodeId)) {
+      // given id is from another language!
+      // determine language, and navigate to it
+      const pattern = IriConverter.convertIdToIri(nodeId);
+      const language = IriConverter.getFileName(pattern);
+
+      const languageUri = await this.languageLoder.loadContentFromStore(language);
+      const languageId = IriConverter.convertIriToId(Array.from(languageUri.values())[0]);
+
+      const route = `patternlanguages/${languageId}/${nodeId}`;
+      this.zone.run(() => {
+        this.router.navigate(['/patternlanguages', languageId, nodeId]);
+      });
+
+      console.log('Routing to: ' + route);
+
+      return;
+    }
     // TODO navigate to pattern via router
     console.log(nodeId);
     // should not be relative, as we might click multiple nodes!
@@ -222,7 +254,7 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
   }
 
   /**
-   * This closure returns the nodeinfo from the loader.
+   * This closure returns the nodeinfo for the given pattern id from the loader.
    * Important: It has to be a closure to use 'this' correctly, otherwise it won't work.
    * Refer to this: https://stackoverflow.com/a/39981813
    * Thank you Isaac
@@ -258,5 +290,16 @@ export class EnterpriseIntegrationPatternsComponent implements PatternRenderingC
     clrs.forEach(lr => info.languageRelations.push(lr));
 
     return Promise.resolve(info);
+  }
+
+  /**
+   * Returns loaded Link data for the given link Id.
+   */
+  getLinkInfo = async (id: string): Promise<LinkData> => {
+    const uri = IriConverter.convertIdToIri(id);
+    const links = await this.linkLoader.loadContentFromStore(uri);
+
+    const data = links.get(uri);
+    return data;
   }
 }
