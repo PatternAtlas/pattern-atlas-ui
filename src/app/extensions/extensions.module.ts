@@ -19,6 +19,7 @@ import { EnterpriseIntegrationPatternsModule } from './pattern-language/enterpri
 
 import { FilterViewComponent } from './../filter/component/filter-view/filter-view.component';
 import { GraphModule } from '../graph/graph.module';
+import { EnterpriseApplicationArchitecturePatternsModule } from './pattern-language/enterprise-application-architecture-patterns/enterprise-application-architecture-patterns.module';
 
 @NgModule({
     // here we import all specific extensions and make them available for the app
@@ -26,6 +27,7 @@ import { GraphModule } from '../graph/graph.module';
       CloudComputingPatternsModule,
       InternetOfThingsPatternsModule,
       EnterpriseIntegrationPatternsModule,
+      EnterpriseApplicationArchitecturePatternsModule,
       GraphModule
     ],
     declarations: [
