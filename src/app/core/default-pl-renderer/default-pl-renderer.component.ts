@@ -66,4 +66,8 @@ export class DefaultPlRendererComponent implements OnInit {
     await this.pos.loadUrisToStore(importedPatternIris.map(i => i.import));
     this.patterns = Array.from((await this.loader.loadContentFromStore()).values());
   }
+
+  addRelationType() {
+    
+  }
 }

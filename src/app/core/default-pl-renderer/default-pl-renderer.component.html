@@ -1,5 +1,11 @@
 <pp-navigate-back></pp-navigate-back>
-<h2>Pattern Language: {{plName}}</h2>
+<h2>Pattern Language: {{plName}}
+  <button mat-stroked-button
+          style="margin-left: 5px" color="primary"
+          (click)="addRelationType()" matTooltip="Add new Relationtype"><i class="material-icons -rotate-90deg">swap_vertical_circle</i>
+    <i class="material-icons" style="height: 2em;
+    font-size: smaller;  ">add</i></button>
+</h2>
 <div class="container">
   <mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>
   <mat-card class="landing-card " *ngFor="let pattern of patterns">
