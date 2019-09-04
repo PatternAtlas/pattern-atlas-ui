@@ -4,6 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IriConverter } from '../util/iri-converter';
 import { PatternOntologyService } from '../service/pattern-ontology.service';
 import { PatternInstance } from '../model/PatternInstance.interface';
+import { CreateEditPatternLanguageComponent } from '../../pattern-language-management/create-edit-pattern-language/create-edit-pattern-language.component';
+import { MatDialog } from '@angular/material';
+import { DialogPatternLanguageResult } from '../../pattern-language-management/data/DialogPatternLanguageResult.interface';
 
 @Component({
     selector: 'pp-default-pl-renderer',
@@ -18,11 +21,12 @@ export class DefaultPlRendererComponent implements OnInit {
   isLoading = true;
 
   constructor(private loader: DefaultPlLoaderService,
-                private activatedRoute: ActivatedRoute,
-                private cdr: ChangeDetectorRef,
-                private zone: NgZone,
-                private router: Router,
-                private pos: PatternOntologyService) {
+              private activatedRoute: ActivatedRoute,
+              private cdr: ChangeDetectorRef,
+              private zone: NgZone,
+              private router: Router,
+              private pos: PatternOntologyService,
+              private dialog: MatDialog) {
     }
 
     ngOnInit() {
@@ -68,6 +72,11 @@ export class DefaultPlRendererComponent implements OnInit {
   }
 
   addRelationType() {
-    
+    const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent, {
+      data: {plIri: this.plIri, plName: this.plName}
+    });
+    (<CreateEditPatternLanguageComponent> dialogRef.componentInstance).saveClicked.subscribe((result: DialogPatternLanguageResult) => {
+
+    });
   }
 }

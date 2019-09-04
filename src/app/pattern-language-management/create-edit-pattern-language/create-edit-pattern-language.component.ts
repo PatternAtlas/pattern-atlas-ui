@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
-import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatDialogRef } from '@angular/material';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatDialogRef } from '@angular/material';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/internal/operators';
@@ -8,6 +8,11 @@ import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult
 import { ValidationService } from '../../core/service/validation.service';
 
 
+interface DialogData {
+  plIri: string;
+  plName: string;
+}
+
 @Component({
   selector: 'pp-create-edit-pattern-language',
   templateUrl: './create-edit-pattern-language.component.html',
@@ -15,6 +20,14 @@ import { ValidationService } from '../../core/service/validation.service';
 })
 export class CreateEditPatternLanguageComponent implements OnInit {
   private sectionRestrictonValidators: ValidatorFn[];
+  isAddLinkTypeDialog = false;
+
+  types = [{name: 'directed_right', icon: 'trending_flat'}, {name: 'directed_left', icon: 'trending_flat'}, {
+    name: 'undirected',
+    icon: 'compare_arrows'
+  }, {name: 'group', icon: 'merge_type'}];
+  relationForm: FormGroup;
+
 
   get name(): AbstractControl {
     return this.patternLanguageForm.get('name');
@@ -33,11 +46,20 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   }
 
 
-  constructor(public dialogRef: MatDialogRef<CreateEditPatternLanguageComponent>, private  _fb: FormBuilder, private cdr: ChangeDetectorRef,
-              private validatorService: ValidationService) {
+  constructor(public dialogRef: MatDialogRef<CreateEditPatternLanguageComponent>, private _fb: FormBuilder, private cdr: ChangeDetectorRef,
+              private validatorService: ValidationService, @Inject(MAT_DIALOG_DATA) public data: DialogData) {
+
+    this.isAddLinkTypeDialog = !!this.data.plIri;
     this.filteredSections = this.sectionCtrl.valueChanges.pipe(
       startWith(null),
       map((section: string | null) => section ? this._filter(section) : this.sectionNames.slice()));
+
+    this.relationForm = this._fb.group({
+      toPattern: ['', [Validators.required]],
+      direction: ['', [Validators.required]],
+      description: ['', []],
+    });
+
   }
 
   isFirstStep = true;
@@ -66,12 +88,13 @@ export class CreateEditPatternLanguageComponent implements OnInit {
 
   @ViewChild('sectionInput') sectionInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
+  plLanguages = ['CloudComputingPatterns', 'EIP'];
 
   ngOnInit(): void {
     const urlRegex = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
     this.patternLanguageForm = this._fb.group({
       name: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9_-\s]+')]],
-      iconUrl: ['', [Validators.required, Validators.pattern(urlRegex)]]
+      iconUrl: ['', this.isAddLinkTypeDialog ? [] : [Validators.required, Validators.pattern(urlRegex)]]
     });
     this.iconUrl.valueChanges.pipe(debounceTime(1000), distinctUntilChanged()).subscribe((urlValue) => {
       this.iconPreviewVisible = urlValue && (urlValue.startsWith('https://') || urlValue.startsWith('http://'));
