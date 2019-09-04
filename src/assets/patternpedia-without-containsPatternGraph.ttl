@@ -50,6 +50,12 @@
 :hasTarget rdf:type owl:ObjectProperty ;
            rdfs:domain :PatternRelationDescriptor ;
            rdfs:range :Pattern .
+           
+
+###  https://purl.org/patternpedia#referredbyView
+:referredbyView rdf:type owl:ObjectProperty ;
+                    rdfs:domain :PatternView ;
+                    rdfs:range :PatternLanguage .
 
 
 #################################################################
