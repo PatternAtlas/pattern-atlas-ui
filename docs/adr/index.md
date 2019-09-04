@@ -1,11 +1,12 @@
 # Architectural Decision Log
 
-This log lists the architectural decisions for [project name].
+This log lists the architectural decisions for patternpedia.
 
 <!-- adrlog -- Regenerate the content by using "adr-log -i". You can install it via "npm install -g adr-log" -->
 
 - [ADR-0000](0000-use-markdown-architectural-decision-records.md) - Use Markdown Architectural Decision Records
 - [ADR-0001](0001-define-pattern-structure.md) - Define the structure of a pattern created by PatternPedia
+- [ADR-0002](0002-use-a-serverside-compont-to-complete-oauth-flow.md) - DUse a server-side component to complete OAuth-flow
 
 <!-- adrlogstop -->
 
