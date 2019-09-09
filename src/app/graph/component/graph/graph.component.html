@@ -33,7 +33,7 @@
 </div>
 
 <ng-template #nodeInfo>
-    <div *ngIf="selectedNodeId && selectedNodeInfo">
+    <div *ngIf="selectedNodeId">
       <pp-node-infobox
               [info]="selectedNodeInfo"
               (clickEvent)="nodeInformation($event)"

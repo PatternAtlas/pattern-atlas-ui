@@ -166,6 +166,9 @@ export class GraphComponent implements OnInit, AfterViewInit {
     this.selectedLink = null;
     this.selectedLinkId = null;
 
+    // reset node info, as the retrieving of the new one takes time - don't show previous info
+    this.selectedNodeInfo = null;
+
     // call listener
     this.nodeSelectEvent.emit($event);
 
