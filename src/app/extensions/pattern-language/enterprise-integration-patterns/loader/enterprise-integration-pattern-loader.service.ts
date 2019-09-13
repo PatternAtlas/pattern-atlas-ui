@@ -12,7 +12,7 @@ export class EnterpriseIntegrationPatternLoaderService extends Loader<any> {
     super('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos);
   }
 
-  loadContentFromStore(uri?: string): Promise<Map<string, any>> {
+  async loadContentFromStore(uri?: string): Promise<Map<string, any>> {
     return this.selectContentFromStore(uri)
             .then(
                 triples => this.mapTriples(triples, uri)
@@ -45,7 +45,7 @@ export class EnterpriseIntegrationPatternLoaderService extends Loader<any> {
     graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
     graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
 
-    return this.executor.exec(qry, graphs);
+    return this.pos.exec(qry, graphs);
   }
 
   mapTriples(triples: any, uri?: string): Promise<Map<string, any>> {

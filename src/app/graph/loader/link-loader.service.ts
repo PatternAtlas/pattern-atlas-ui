@@ -17,7 +17,7 @@ export class LinkLoaderService extends Loader<Link> {
     super(null, pos);
   }
 
-  getGraphs(): Array<string> {
+  getGraphs(): Promise<Array<string>> {
     if (!this.supportedIRI) {
       throw new Error('supportedIRI has not been initialized! Make sure to set the language URI before loading');
     }
@@ -25,16 +25,16 @@ export class LinkLoaderService extends Loader<Link> {
     const uri = IriConverter.getFileName(this.supportedIRI);
 
     // we cut the patternlanguage of the set supportedIRI to create the uris of the patterns and relations file
-    const index = uri.lastIndexOf('/');
+    const index = uri.lastIndexOf('/') + 1;
 
     const base = uri;
     const p = `${uri}/${uri.substr(index)}-Patterns`;
     const r = `${uri}/${uri.substr(index)}-Relations`;
 
-    return [base, p, r];
+    return Promise.resolve([base, p, r]);
   }
 
-  selectContentFromStore(): Promise<any> {
+  async selectContentFromStore(): Promise<any> {
     // select all directed links
     const qry = `SELECT ?uri ?source ?target ?description
       WHERE {
@@ -44,7 +44,7 @@ export class LinkLoaderService extends Loader<Link> {
           OPTIONAL { ?uri <https://purl.org/patternpedia#hasDescription> ?description . }
       }`;
 
-    const graphs = this.getGraphs();
+    const graphs = await this.getGraphs();
     return this.executor.exec(qry, graphs);
   }
 

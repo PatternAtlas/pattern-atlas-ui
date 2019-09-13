@@ -9,6 +9,7 @@ import { FilterViewComponent } from 'src/app/filter/component/filter-view/filter
 import * as d3 from 'd3';
 import { MatDialog } from '@angular/material';
 import { PatternOntologyService } from 'src/app/core/service/pattern-ontology.service';
+import LinkData from '../../model/link-data';
 
 @Component({
   selector: 'pp-pattern-graph-template',
@@ -17,8 +18,12 @@ import { PatternOntologyService } from 'src/app/core/service/pattern-ontology.se
 })
 export class PatternGraphTemplateComponent<T extends Pattern> implements PatternRenderingComponentInterface, OnInit {
 
+  // the loader the loads ALL patterns of a specific language
   patternLoader = null;
+  // the uri of the language in form of <language#Language>
   languageUri = '';
+  // the name of the language that will be displayed
+  languageName = '';
 
   // id of the pattern that is currently selected. We use the Network-Graph for displaying individual patterns too. Via Infobox.
   pId: string;
@@ -56,20 +61,69 @@ export class PatternGraphTemplateComponent<T extends Pattern> implements Pattern
     const uri = IriConverter.getFileName(this.languageUri);
 
     // we cut the patternlanguage of the set supportedIRI to create the uris of the patterns and relations file
-    const index = uri.lastIndexOf('/');
+    const index = uri.lastIndexOf('/') + 1;
 
     const base = uri;
     const p = `${uri}/${uri.substr(index)}-Patterns`;
     const r = `${uri}/${uri.substr(index)}-Relations`;
 
-    const uris = [
-      { value: 'https://purl.org/patternpedia' },
-      { value: base },
-      { value: p },
-      { value: r }
-    ];
+    return this.pos.loadUrisToStore([{ value: 'https://purl.org/patternpedia'}])
+      .then(() => {
+        // load base file
+        console.log('load base file');
+        return this.pos.loadUrisToStore([{ value: base }]);
+      })
+      .then(() => {
+        // load patterns and relations
+        console.log('load patterns and relations');
+        return this.pos.loadUrisToStore([{ value: p }, { value: r }]);
+      })
+      .then(() => {
+        // get all views
+        console.log('get all views');
+        return this.loader.loadViews(this.languageUri);
+      })
+      .then(views => {
+        // load all views and their relations
+        console.log('load all views and their relations');
+        const viewBase = [];
+        const viewRelation = [];
+        for (const v of views) {
+          const uri = IriConverter.getFileName(v);
 
-    return this.pos.loadUrisToStore(uris);
+          viewBase.push({ value: uri });
+
+          const relation = `${uri}/${uri.substr(uri.lastIndexOf('/') + 1)}-Relations`;
+          viewRelation.push({ value: relation });
+        }
+
+        return Promise.all([
+          this.pos.loadUrisToStore(viewBase),
+          this.pos.loadUrisToStore(viewRelation)
+        ]);
+      })
+      .then(() => {
+        // get all neighbour languages
+        console.log('get all neighbour languages');
+        return this.loader.loadReferredLanguages(this.languageUri);
+      })
+      .then(languages => {
+        // load all base, pattern and relation files from the neighbour languages
+        console.log('load all base, pattern and relation files from the neighbour languages');
+        const uris = [];
+        for (const l of languages) {
+          const uri = IriConverter.getFileName(l);
+
+          const base = uri;
+          const p = `${uri}/${uri.substr(index)}-Patterns`;
+          const r = `${uri}/${uri.substr(index)}-Relations`;
+
+          uris.push({ value: base });
+          uris.push({ value: p });
+          uris.push({ value: r });
+        }
+        return this.pos.loadUrisToStore(uris);
+      });
   }
 
   ngOnInit() {
@@ -180,8 +234,32 @@ export class PatternGraphTemplateComponent<T extends Pattern> implements Pattern
     return result;
   }
 
+  private checkIfInList(nodeId: string): boolean {
+    const node = this.nodes.find(i => i.id === nodeId);
+    return Boolean(node);
+  }
+
   // called when a node from the network graph was selected
-  selectNode(nodeId: string) {
+  async selectNode(nodeId: string) {
+    if (this.nodes && !this.checkIfInList(nodeId)) {
+      // given id is from another language!
+      // determine language, and navigate to it
+      const pattern = IriConverter.convertIdToIri(nodeId);
+      const language = IriConverter.getFileName(pattern);
+
+      // TODO implement langauge loader
+      const languageUri = await this.loader.loadLanguage(language);
+      const languageId = IriConverter.convertIriToId(Array.from(languageUri.values())[0]);
+
+      const route = `patternlanguages/${languageId}/${nodeId}`;
+      this.zone.run(() => {
+        this.router.navigate(['/patternlanguages', languageId, nodeId]);
+      });
+
+      console.log('Routing to: ' + route);
+
+      return;
+    }
     // TODO navigate to pattern via router
     console.log(nodeId);
     // should not be relative, as we might click multiple nodes!
@@ -240,7 +318,8 @@ export class PatternGraphTemplateComponent<T extends Pattern> implements Pattern
     const values = await Promise.all([
       this.patternLoader.loadContentFromStore(),
       this.loader.loadOutgoingLinks(this.languageUri, uri),
-      this.loader.loadIncomingLinks(this.languageUri, uri)
+      this.loader.loadIncomingLinks(this.languageUri, uri),
+      this.loader.loadCLRs(this.languageUri, uri)
     ]);
 
     const pattern = values[0].get(uri);
@@ -248,21 +327,35 @@ export class PatternGraphTemplateComponent<T extends Pattern> implements Pattern
     const outgoing = Array.from(values[1].values());
     const incoming = Array.from(values[2].values());
 
+    const clrs = Array.from(values[3].values());
+
     const info = new NodeInfo();
     info.name = pattern.name;
     info.group = this.groupOf(pattern.id);
 
     info.summary = this.extractSummary(pattern); // pattern.intent.value;
 
-    // FIXME how to do this abstractly?
     info.languageRelations = [
       {
-        languageId: 'https//purl.org/patternpedia/patternlanguages/cloudcomputingpatterns',
-        languageName: 'Cloud Computing Patterns',
+        languageId: IriConverter.getFileName(this.languageUri), // 'https//purl.org/patternpedia/patternlanguages/cloudcomputingpatterns',
+        languageName: this.languageName, // 'Cloud Computing Patterns',
         relations: outgoing.concat(incoming)
       }
     ];
+
+    clrs.forEach(lr => info.languageRelations.push(lr));
+
     return Promise.resolve(info);
   }
 
+  /**
+   * Returns loaded Link data for the given link Id.
+   */
+  getLinkInfo = async (id: string): Promise<LinkData> => {
+    const uri = IriConverter.convertIdToIri(id);
+    const links = await this.loader.loadLink(this.languageUri, uri);
+
+    const data = links.get(uri);
+    return data;
+  }
 }

@@ -1,3 +1,4 @@
+import { IriConverter } from 'src/app/core/util/iri-converter';
 import { QueriedData } from './../../core/service/data/QueriedData.interface';
 import { LinkLoaderService } from './link-loader.service';
 import { GroupLoaderService } from './group-loader.service';
@@ -8,6 +9,8 @@ import { Injectable } from '@angular/core';
 import { Link, Relation, LanguageRelation } from 'src/app/graph/model';
 import Group from '../model/group';
 import { PatternOntologyService } from 'src/app/core/service/pattern-ontology.service';
+import { LanguageLoaderService } from './language-loader.service';
+import { LinkInfoLoaderService } from './link-info-loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,12 +26,19 @@ export class PatternDataLoaderService {
     private groupLoader: GroupLoaderService,
     private outgoingLinkLoader: OutgoingLinkLoaderService,
     private incomingLinkLoader: IncomingLinkLoaderService,
-    private clrLoader: ClrLoaderService) { }
+    private clrLoader: ClrLoaderService,
+    private languageLoader: LanguageLoaderService,
+    private linkInfoLoader: LinkInfoLoaderService) { }
 
   private async loadData(loader: any): Promise<void> {
-    const uris: Array<QueriedData> = [];
-    loader.getGraphs().forEach(g => uris.push({ value: g }));
-    return this.pos.loadUrisToStore(uris);
+    return Promise.resolve();
+
+    // const uris: Array<QueriedData> = [];
+
+    // const graphs = await loader.getGraphs();
+    // graphs.forEach(g => uris.push({ value: g }));
+
+    // return this.pos.loadUrisToStore(uris);
   }
 
   /**
@@ -40,7 +50,6 @@ export class PatternDataLoaderService {
     this.linkLoader.supportedIRI = languageUri;
 
     return this.loadData(this.linkLoader).then(() => {
-      console.log('Loaded DirectedLinks data');
       return this.linkLoader.loadContentFromStore();
     });
   }
@@ -54,7 +63,6 @@ export class PatternDataLoaderService {
     this.groupLoader.supportedIRI = languageUri;
 
     return this.loadData(this.groupLoader).then(() => {
-      console.log('Loaded Groups data');
       return this.groupLoader.loadContentFromStore();
     });
   }
@@ -69,7 +77,6 @@ export class PatternDataLoaderService {
     this.outgoingLinkLoader.supportedIRI = languageUri;
 
     return this.loadData(this.outgoingLinkLoader).then(() => {
-      console.log('Loaded OutgoingLinks data');
       return this.outgoingLinkLoader.loadContentFromStore(patternUri);
     });
   }
@@ -84,7 +91,6 @@ export class PatternDataLoaderService {
     this.incomingLinkLoader.supportedIRI = languageUri;
 
     return this.loadData(this.incomingLinkLoader).then(() => {
-      console.log('Loaded IncomingLinks data');
       return this.incomingLinkLoader.loadContentFromStore(patternUri);
     });
   }
@@ -98,10 +104,77 @@ export class PatternDataLoaderService {
     this.clrLoader.supportedIRI = languageUri;
 
     return this.loadData(this.clrLoader).then(() => {
-      console.log('Loaded CLR data');
       return this.clrLoader.loadContentFromStore(patternUri);
     });
   }
 
-  loadLanguage() {}
+  /**
+   * Loads the language URI for the given language ontology uri.
+   * Example: For the following given URI 'https://purl.org/patternlanguages/samplelanguage'
+   * it returns 'https://purl.org/patternlanguages/samplelanguage#SampleLanguage'.
+   * @param languageUri the URI of the ontology of the language in form of <language>
+   * @returns the URI of the language in form of <language#Language>
+   */
+  loadLanguage(languageUri: string): Promise<Map<string, string>> {
+    return this.languageLoader.loadContentFromStore(languageUri);
+  }
+
+  async loadLink(languageUri: string, linkUri: string) {
+    this.linkInfoLoader.supportedIRI = languageUri;
+
+    return this.loadData(this.linkInfoLoader).then(() => {
+      return this.linkInfoLoader.loadContentFromStore(linkUri);
+    });
+  }
+
+  /**
+   * Returns all views specified in the given language in form of <view#View>.
+   * @param languageUri the URI of the language whos views should be returned
+   * @returns all views specified in the given language in form of <view#View>
+   */
+  async loadViews(languageUri: string): Promise<Array<string>> {
+    const qry = `SELECT ?view
+      WHERE {
+        <${languageUri}> <https://purl.org/patternpedia#referredByView> ?view .
+      }`;
+
+    const graphs = [IriConverter.getFileName(languageUri)];
+    const triples = await this.pos.exec(qry, graphs);
+
+    const data = [];
+    for (const t of triples) {
+      data.push(t.view.value);
+    }
+
+    return Promise.resolve(data);
+  }
+
+  /**
+   * Returns all referred languages of the given language in form of <language#Language>.
+   * Referred Languages are the other language mentioned in a view, i.e. not the given language.
+   * @param languageUri the URI of the language whos referred languages should be returned
+   * @returns all referred languages of the given language in form of <language#Language>
+   */
+  async loadReferredLanguages(languageUri: string): Promise<Array<string>> {
+    // get all languages referred in the views, except the given language
+    const qry = `SELECT ?lang
+      WHERE {
+        <${languageUri}> pp:referredByView ?view .
+        ?view pp:containsPatternGraph ?lang .
+        FILTER(?lang != <${languageUri}>) .
+      }`;
+
+    const graphs = [ IriConverter.getFileName(languageUri) ];
+    const views = await this.loadViews(languageUri);
+    for (const v of views) {
+      graphs.push(IriConverter.getFileName(v));
+    }
+    const triples = await this.pos.exec(qry, graphs);
+
+    const data = [];
+    for (const t of triples) {
+      data.push(t.lang.value);
+    }
+    return Promise.resolve(data);
+  }
 }

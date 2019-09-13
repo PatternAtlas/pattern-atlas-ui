@@ -21,7 +21,7 @@ export class ClrLoaderService extends Loader<LanguageRelation> {
             );
   }
 
-  async getGraphs(): Promise<Array<any>> {
+  async getGraphs(): Promise<Array<string>> {
     const graphs = [ 'https://purl.org/patternpedia' ];
 
     if (!this.supportedIRI) {
@@ -30,7 +30,7 @@ export class ClrLoaderService extends Loader<LanguageRelation> {
 
     // all from given language
     const uri = IriConverter.getFileName(this.supportedIRI);
-    const index = uri.lastIndexOf('/');
+    const index = uri.lastIndexOf('/') + 1;
 
     const base = uri;
     const p = `${uri}/${uri.substr(index)}-Patterns`;
@@ -47,6 +47,7 @@ export class ClrLoaderService extends Loader<LanguageRelation> {
     const views = await this.pos.exec(viewsQry, graphs);
     views.map(t => t.view.value).forEach(u => {
       const uri = IriConverter.getFileName(u);
+      const index = uri.lastIndexOf('/') + 1;
       graphs.push(uri);
       graphs.push(`${uri}/${uri.substr(index)}-Relations`);
     });
@@ -61,6 +62,7 @@ export class ClrLoaderService extends Loader<LanguageRelation> {
     const others = await this.pos.exec(othersQry, graphs);
     others.map(t => t.other.value).forEach(u => {
       const uri = IriConverter.getFileName(u);
+      const index = uri.lastIndexOf('/') + 1;
       graphs.push(uri);
       graphs.push(`${uri}/${uri.substr(index)}-Patterns`);
       graphs.push(`${uri}/${uri.substr(index)}-Relations`);
