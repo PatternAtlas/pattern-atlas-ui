@@ -31,6 +31,7 @@ export class EnterpriseIntegrationPatternsComponent extends PatternGraphTemplate
 
   createPattern(value: any): EnterpriseIntegrationPatternData {
     const p = new EnterpriseIntegrationPatternData();
+
     p.id = value.id;
     p.name = value.name;
 
@@ -40,7 +41,7 @@ export class EnterpriseIntegrationPatternsComponent extends PatternGraphTemplate
   }
 
   extractSummary(value: any): string {
-    return value.description.join('\n');
+    return value.description.value.join('\n');
   }
 
   ngOnInit() {

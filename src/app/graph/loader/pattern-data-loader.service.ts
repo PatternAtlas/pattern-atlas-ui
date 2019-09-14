@@ -11,6 +11,7 @@ import Group from '../model/group';
 import { PatternOntologyService } from 'src/app/core/service/pattern-ontology.service';
 import { LanguageLoaderService } from './language-loader.service';
 import { LinkInfoLoaderService } from './link-info-loader.service';
+import { PatternClrCheckLoaderService } from './pattern-clr-check-loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,8 @@ export class PatternDataLoaderService {
     private incomingLinkLoader: IncomingLinkLoaderService,
     private clrLoader: ClrLoaderService,
     private languageLoader: LanguageLoaderService,
-    private linkInfoLoader: LinkInfoLoaderService) { }
+    private linkInfoLoader: LinkInfoLoaderService,
+    private patternClrLoader: PatternClrCheckLoaderService) { }
 
   private async loadData(loader: any): Promise<void> {
     return Promise.resolve();
@@ -176,5 +178,17 @@ export class PatternDataLoaderService {
       data.push(t.lang.value);
     }
     return Promise.resolve(data);
+  }
+
+  /**
+   * Returns a map containing all patterns that are contained in a clr.
+   * The Map has the following structure: Pattern URI -> true.
+   * If a pattern is not present in the list, the pattern does not have any clrs.
+   * @param languageUri the URI of the language whos patterns should be checked for clrs
+   * @returns a map containing all patterns that are contained in a clr
+   */
+  async loadPatternClrs(languageUri: string): Promise<Map<string, boolean>> {
+    this.patternClrLoader.supportedIRI = languageUri;
+    return this.patternClrLoader.loadContentFromStore();
   }
 }

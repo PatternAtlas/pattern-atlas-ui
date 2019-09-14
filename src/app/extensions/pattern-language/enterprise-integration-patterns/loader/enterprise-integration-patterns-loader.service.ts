@@ -52,7 +52,7 @@ export class EnterpriseIntegrationPatternsLoaderService extends Loader<Enterpris
     list contains objects of type:
     {
       description: {
-        token: 'literal', 
+        token: 'literal',
         type: string,
         value: 'One description item of the pattern'
       },
@@ -67,11 +67,11 @@ export class EnterpriseIntegrationPatternsLoaderService extends Loader<Enterpris
       }
     }
     */
-    /* 
+    /*
     we need to collect all patterns by uri and map them with their data as
     {
       'pattern uri': {
-        uri: 'uri again, might be easier as CCP also does it', 
+        uri: 'uri again, might be easier as CCP also does it',
         name: 'name as string',
         description: [string] // all descriptions collected in array
       },
@@ -109,7 +109,7 @@ export class EnterpriseIntegrationPatternsLoaderService extends Loader<Enterpris
         data[p].description
       );
 
-      result.set(eip.id, eip);
+      result.set(data[p].uri, eip);
     }
 
     return Promise.resolve(result);

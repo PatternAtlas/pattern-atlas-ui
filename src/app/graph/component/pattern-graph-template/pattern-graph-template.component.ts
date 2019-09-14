@@ -132,11 +132,13 @@ export class PatternGraphTemplateComponent<T extends Pattern> implements Pattern
       // other data will be loaded indirectly via PatternDataLoaderService
       Promise.all([this.patternLoader.loadContentFromStore(),
       this.loader.loadDirectedLinks(this.languageUri),
-      this.loader.loadGroups(this.languageUri)
+      this.loader.loadGroups(this.languageUri),
+      this.loader.loadPatternClrs(this.languageUri)
       ]).then(values => {
         this.patternMap = values[0];
         this.linkMap = values[1];
         const groupMap = values[2];
+        const patternClrs = values[3];
 
         // collect all data
         const links = Array.from(this.linkMap.values());
@@ -146,6 +148,8 @@ export class PatternGraphTemplateComponent<T extends Pattern> implements Pattern
           const p = this.createPattern(value);
 
           p.relations = new Array<PatternRelation>();
+          // if there is an entry for this pattern in the map, it has clrs
+          p.hasClrs = patternClrs.has(IriConverter.convertIdToIri(p.id));
 
           // all links that have the current node either as source or target
           const relations = links.filter(l => {
@@ -177,6 +181,8 @@ export class PatternGraphTemplateComponent<T extends Pattern> implements Pattern
         });
 
         this.data = this.transformGraphData(this.all_data);
+        this.nodes = this.data.nodes;
+        this.links = this.data.links;
 
         this.filterAllData();
       });
@@ -235,19 +241,21 @@ export class PatternGraphTemplateComponent<T extends Pattern> implements Pattern
   }
 
   private checkIfInList(nodeId: string): boolean {
-    const node = this.nodes.find(i => i.id === nodeId);
+    const node = this.data.nodes.find(i => i.id === nodeId);
     return Boolean(node);
   }
 
   // called when a node from the network graph was selected
   async selectNode(nodeId: string) {
-    if (this.nodes && !this.checkIfInList(nodeId)) {
+    console.log(`Selected [${nodeId}] from the graph`);
+
+    if (this.data.nodes && !this.checkIfInList(nodeId)) {
       // given id is from another language!
       // determine language, and navigate to it
       const pattern = IriConverter.convertIdToIri(nodeId);
       const language = IriConverter.getFileName(pattern);
 
-      // TODO implement langauge loader
+      // implement langauge loader
       const languageUri = await this.loader.loadLanguage(language);
       const languageId = IriConverter.convertIriToId(Array.from(languageUri.values())[0]);
 
@@ -260,8 +268,7 @@ export class PatternGraphTemplateComponent<T extends Pattern> implements Pattern
 
       return;
     }
-    // TODO navigate to pattern via router
-    console.log(nodeId);
+
     // should not be relative, as we might click multiple nodes!
     this.zone.run(() => {
       const route = this.pId ? ['..', nodeId] : [nodeId];

@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, OnInit, Input, Inject, ViewChild } from '@angular/core';
 import { FilterFactoryService } from '../../service/filter-factory.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
+import { MatDialogRef, MAT_DIALOG_DATA, MatCheckbox } from "@angular/material";
 
 @Component({
   selector: 'pp-filter-view',
@@ -13,10 +13,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
  */
 export class FilterViewComponent implements OnInit {
 
-  // you can't use Object.keys within a template. We assign it to a separate function
-  objectKeys = Object.keys;
   // holds a copy of the filter configuration
   data: any;
+
+  @ViewChild('checkClrs') checkClrs: MatCheckbox;
 
   constructor(private filterFactory: FilterFactoryService,
     public thisDialogRef: MatDialogRef<FilterViewComponent>,
@@ -30,7 +30,13 @@ export class FilterViewComponent implements OnInit {
       });
   }
 
+  // you can't use Object.keys within a template. We assign it to a separate function
+  objectKeys(obj: any) {
+    return Object.keys(obj).filter(k => '' + k !== 'filterByClrs');
+  }
+
   onCloseConfirm() {
+    this.data.filterByClrs = this.checkClrs.checked;
     // apply changed config in factory
     this.filterFactory.setConfig(this.patternLanguageUri, this.data);
     this.thisDialogRef.close(true);
@@ -39,6 +45,7 @@ export class FilterViewComponent implements OnInit {
   onCloseClear() {
     // reset all filter values to empty values
     Object.keys(this.data).forEach(k => this.data[k] = '');
+    this.data.filterByClrs = false;
     this.filterFactory.setConfig(this.patternLanguageUri, this.data);
     this.thisDialogRef.close(true);
   }

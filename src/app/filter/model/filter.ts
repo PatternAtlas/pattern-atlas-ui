@@ -32,7 +32,7 @@ export default class Filter {
      */
     filterPatterns(patterns: Array<any>): Array<any> {
         // filter based on pattern properties
-        const filtered = patterns.filter(p => {
+        let filtered = patterns.filter(p => {
             let result = true;
             Object.keys(this.config).forEach(k => {
                 // pattern should contain same fields as the config
@@ -48,7 +48,10 @@ export default class Filter {
             return result;
         });
 
-        // TODO filter based on link properties
+        // filter based on link properties
+        if (this.config.filterByClrs) {
+          filtered = filtered.filter(p => p.hasClrs);
+        }
 
         return filtered;
     }

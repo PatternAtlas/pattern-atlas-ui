@@ -295,13 +295,6 @@ export class PatternOntologyService implements SparqlExecutor {
     console.log(`Load imported graphs to the store:`);
     console.log(patternGraphList);
 
-    // for debugging
-    patternGraphList.forEach(i => {
-      if (i.value === 'https://purl.org/patternpedia/patternviews/cloudcomputingpatterns-enterpriseintegrationpatterns-view/udcomputingpatterns-enterpriseintegrationpatterns-view-Relations') {
-        console.log('THIS ONE');
-      }
-    });
-
     const loadResult = await this.loadPatternGraphsByUri(IriConverter.extractDataValue(patternGraphList)).toPromise();
     for (let i = 0; i < loadResult.length; i++) {
       console.log('Result: ', await

@@ -9,12 +9,12 @@ export class FilterFactoryService {
 
   private configs: Map<string, any>;
 
-  constructor(private loader: FilterLoaderService) { 
+  constructor(private loader: FilterLoaderService) {
     this.configs = new Map<string, any>();
   }
 
   async createFilter(uri: string): Promise<Filter> {
-    let config = await this.getConfig(uri);
+    const config = await this.getConfig(uri);
     return Promise.resolve(new Filter(config));
   }
 
@@ -24,6 +24,7 @@ export class FilterFactoryService {
       // create new default config via loader
       const result = await this.loader.loadContentFromStore(uri);
       config = this.createConfig(result.get(uri));
+      config.filterByClrs = false;
       this.configs.set(uri, config);
     }
 
@@ -39,7 +40,7 @@ export class FilterFactoryService {
    * @param properties list of string properties
    */
   private createConfig(properties: Array<string>) {
-    let config = {};
+    const config = {};
     for (const p of properties) {
       config[p] = '';
     }
