@@ -17,8 +17,8 @@ export class GraphComponent implements OnInit, AfterViewInit {
   // the list of links to be displayed
   @Input() links: Link[];
 
-  @Input() getNodeInfo: (id: string) => Promise<NodeInfo>;
-  @Input() getLinkInfo: (id: string) => Promise<LinkData>;
+  @Input() getNodeInfo?: (id: string) => Promise<NodeInfo>;
+  @Input() getLinkInfo?: (id: string) => Promise<LinkData>;
 
   @Output() nodeSelectEvent = new EventEmitter<string>();
   @Output() nodeUnselectEvent = new EventEmitter<string>();
@@ -279,11 +279,15 @@ export class GraphComponent implements OnInit, AfterViewInit {
   }
 
   async showLinkInfo(linkId: string) {
-    this.selectedLink = await this.getLinkInfo(linkId);
-    this.selectedLinkId = linkId;
+    if (this.getLinkInfo) {
+      this.selectedLink = await this.getLinkInfo(linkId);
+      this.selectedLinkId = linkId;
+    }
   }
 
   async retrieveNodeInfo() {
-    this.selectedNodeInfo = await this.getNodeInfo(this.selectedNodeId);
+    if (this.getNodeInfo) {
+      this.selectedNodeInfo = await this.getNodeInfo(this.selectedNodeId);
+    }
   }
 }

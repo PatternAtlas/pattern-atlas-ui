@@ -1,3 +1,4 @@
+import { PatternLanguageGraphComponent } from './pattern-language-management/pattern-language-graph/pattern-language-graph.component';
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -36,6 +37,10 @@ const routes: Routes = [
     {
         path: 'test',
         component: TestComponent
+    },
+    {
+        path: 'graph',
+        component: PatternLanguageGraphComponent
     },
     {
         path: '**',
