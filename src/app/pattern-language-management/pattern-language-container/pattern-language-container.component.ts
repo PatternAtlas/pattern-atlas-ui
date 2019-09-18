@@ -33,8 +33,18 @@ export class PatternLanguageContainerComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.plId = this.route.snapshot.params['plid'];
-        this.renderer = this.compRegistry.getRenderingComponents(this.plId);
+        // this.plId = this.route.snapshot.params['plid'];
+        // this.renderer = this.compRegistry.getRenderingComponents(this.plId);
+
+        // language id changes if we navigate in component -> container needs to get informed
+        this.route.params.subscribe(params => {
+          this.setUpRenderer(params['plid']);
+        });
+    }
+
+    private setUpRenderer(plid: string) {
+      this.plId = plid;
+      this.renderer = this.compRegistry.getRenderingComponents(this.plId);
     }
 
 }

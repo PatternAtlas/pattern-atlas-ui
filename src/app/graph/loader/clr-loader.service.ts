@@ -82,7 +82,7 @@ export class ClrLoaderService extends Loader<LanguageRelation> {
     const qry = `SELECT DISTINCT ?otherLangUri ?otherLangName ?linkUri ?sourceUri ?sourceName ?targetUri ?targetName ?desc
       WHERE {
         <${this.supportedIRI}> pp:referredByView ?view .
-        ?view pp:containsPatternRelationDescriptors ?linkUri .
+        ?view pp:containsPatternRelationDescriptor ?linkUri .
         ?linkUri pp:hasTarget ?targetUri ;
                 pp:hasSource ?sourceUri .
         OPTIONAL { ?linkUri pp:hasDescription ?desc . }

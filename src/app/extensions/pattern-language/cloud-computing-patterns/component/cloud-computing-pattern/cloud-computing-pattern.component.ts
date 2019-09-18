@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
 import { PatternRenderingComponentInterface } from '../../../../../core/model/pattern-rendering-component.interface';
 import { CloudComputingPatternsLoaderService } from '../../loader/cloud-computing-patterns-loader.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,17 +8,19 @@ import { TdTextEditorComponent } from '@covalent/text-editor';
 import { MatDialog } from '@angular/material';
 import { DialogData, MdEditorComponent } from '../../../../../core/component/md-editor/md-editor.component';
 import { CloudComputingPatternsWriterService } from '../../writer/cloud-computing-patterns-writer.service';
+import { PatternOntologyService } from 'src/app/core/service/pattern-ontology.service';
 
 @Component({
     selector: 'pp-cloud-computing-pattern',
     templateUrl: './cloud-computing-pattern.component.html',
     styleUrls: ['./cloud-computing-pattern.component.scss']
 })
-export class CloudComputingPatternComponent implements PatternRenderingComponentInterface, OnInit {
+export class CloudComputingPatternComponent implements PatternRenderingComponentInterface, OnInit, OnChanges {
 
     @ViewChild('mdEditor') private _textEditor: TdTextEditorComponent;
 
     pId: string;
+
     pattern: CloudComputingPattern;
     mdEditorOptions = {};
     editMode = {
@@ -36,15 +38,37 @@ export class CloudComputingPatternComponent implements PatternRenderingComponent
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private zone: NgZone,
-                private dialog: MatDialog) {
+                private dialog: MatDialog,
+                private pos: PatternOntologyService) {
     }
 
     ngOnInit(): void {
-        this.loader.loadContentFromStore()
+      // we have to load the individual patterns first by getting all imports from the base file
+      const uris = [
+        {value: 'https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns'},
+        {value: 'https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Patterns'},
+        {value: 'https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Relations'}
+      ];
+
+      this.pos.loadUrisToStore(uris)
+        .then(() => this.loader.loadContentFromStore())
+        .then(patternMap => {
+          this.pattern = patternMap.get(IriConverter.convertIdToIri(this.pId));
+          this.cdr.detectChanges();
+        });
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+      console.log('> Changes');
+      if (changes['pId']
+        && JSON.stringify(changes['pId'].currentValue) !== JSON.stringify(changes['pId'].previousValue)) {
+          // reload everything
+          this.loader.loadContentFromStore()
             .then(patternMap => {
                 this.pattern = patternMap.get(IriConverter.convertIdToIri(this.pId));
                 this.cdr.detectChanges();
             });
+      }
     }
 
     openEditor(field: string): void {

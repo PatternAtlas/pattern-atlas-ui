@@ -20,9 +20,19 @@ export class PatternContainerComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.plId = this.route.snapshot.params['plid'];
-        this.pId = this.route.snapshot.params['pid'];
-        this.renderer = this.compRegistry.getRenderingComponents(this.plId);
+        // this.plId = this.route.snapshot.params['plid'];
+        // this.pId = this.route.snapshot.params['pid'];
+        // this.renderer = this.compRegistry.getRenderingComponents(this.plId);
+
+        this.route.params.subscribe(params => {
+          this.setUpRenderer(params['plid'], params['pid']);
+        });
+    }
+
+    private setUpRenderer(plid: string, pid: string) {
+      this.plId = plid;
+      this.pId = pid;
+      this.renderer = this.compRegistry.getRenderingComponents(this.plId);
     }
 
 }

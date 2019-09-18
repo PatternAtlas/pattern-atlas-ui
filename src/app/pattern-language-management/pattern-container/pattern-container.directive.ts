@@ -1,3 +1,4 @@
+import { OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -20,28 +21,40 @@ import { DefaultPatternRendererComponent } from '../../core/default-pattern-rend
 @Directive({
     selector: '[ppPatternContainer]'
 })
-export class PatternContainerDirective implements OnInit {
+export class PatternContainerDirective implements OnInit, OnChanges {
 
-    @Input() plId: string;
-    @Input() pId: string;
+  @Input() plId: string;
+  @Input() pId: string;
 
-    @Input() index?: number;
+  @Input() index?: number;
 
-    constructor(public viewContainerRef: ViewContainerRef,
-                private componentFactoryResolver: ComponentFactoryResolver,
-                private compRegistry: ComponentRegistryService) {
+  private ref: PatternRenderingComponentInterface;
+
+  constructor(public viewContainerRef: ViewContainerRef,
+              private componentFactoryResolver: ComponentFactoryResolver,
+              private compRegistry: ComponentRegistryService,
+              private cdr: ChangeDetectorRef) {
+  }
+
+  ngOnInit(): void {
+    const renderingComponent = this.compRegistry.getPLRenderingComponents(this.plId, this.index);
+
+    const componentFactory = renderingComponent ?
+    this.componentFactoryResolver.resolveComponentFactory(renderingComponent.pcomponent) :
+    this.componentFactoryResolver.resolveComponentFactory(DefaultPatternRendererComponent);
+
+    this.viewContainerRef.clear();
+    const componentRef = this.viewContainerRef.createComponent(componentFactory);
+    this.ref = (<PatternRenderingComponentInterface>componentRef.instance);
+    this.ref.pId = this.pId;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['pId']
+      && this.ref
+      && (JSON.stringify(changes['pId'].currentValue) !== JSON.stringify(changes['pId'].previousValue))) {
+        // this.ref.pId = this.pId;
+        this.cdr.detectChanges();
     }
-
-    ngOnInit(): void {
-      const renderingComponent = this.compRegistry.getPLRenderingComponents(this.plId, this.index);
-
-      const componentFactory = renderingComponent ?
-        this.componentFactoryResolver.resolveComponentFactory(renderingComponent.pcomponent) :
-        this.componentFactoryResolver.resolveComponentFactory(DefaultPatternRendererComponent);
-
-      this.viewContainerRef.clear();
-        const componentRef = this.viewContainerRef.createComponent(componentFactory);
-        (<PatternRenderingComponentInterface>componentRef.instance).pId = this.pId;
-    }
-
+  }
 }

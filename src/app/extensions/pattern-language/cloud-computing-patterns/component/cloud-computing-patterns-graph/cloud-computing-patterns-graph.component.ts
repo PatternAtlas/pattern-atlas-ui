@@ -1,6 +1,6 @@
 import { FilterFactoryService } from 'src/app/filter/service/filter-factory.service';
 import { CloudComputingPatternsLoaderService } from './../../loader/cloud-computing-patterns-loader.service';
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { PatternGraphTemplateComponent } from 'src/app/graph/component/pattern-graph-template/pattern-graph-template.component';
@@ -23,8 +23,9 @@ export class CloudComputingPatternsGraphComponent extends PatternGraphTemplateCo
     public dialog: MatDialog,
     public filterFactory: FilterFactoryService,
     public patternLoader: CloudComputingPatternsLoaderService,
-    public loader: PatternDataLoaderService) {
-      super(pos, loader, dialog, router, activatedRoute, zone, filterFactory);
+    public loader: PatternDataLoaderService,
+    public cdr: ChangeDetectorRef) {
+      super(pos, loader, dialog, router, activatedRoute, zone, filterFactory, cdr);
       this.languageUri = 'https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#CloudComputingPatterns';
       this.languageName = 'Cloud Computing Patterns';
       // patternLoader from super class will be set via DI from this component

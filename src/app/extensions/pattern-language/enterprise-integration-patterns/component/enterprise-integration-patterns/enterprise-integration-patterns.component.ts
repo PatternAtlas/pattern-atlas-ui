@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, NgZone, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PatternOntologyService } from 'src/app/core/service/pattern-ontology.service';
 import { FilterFactoryService } from 'src/app/filter/service/filter-factory.service';
@@ -23,8 +23,9 @@ export class EnterpriseIntegrationPatternsComponent extends PatternGraphTemplate
     public dialog: MatDialog,
     public filterFactory: FilterFactoryService,
     public patternLoader: EnterpriseIntegrationPatternsLoaderService,
-    public loader: PatternDataLoaderService) {
-      super(pos, loader, dialog, router, activatedRoute, zone, filterFactory);
+    public loader: PatternDataLoaderService,
+    public cdr: ChangeDetectorRef) {
+      super(pos, loader, dialog, router, activatedRoute, zone, filterFactory, cdr);
       this.languageUri = 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns';
       this.languageName = 'Enterprise Integration Patterns';
   }

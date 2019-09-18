@@ -1,7 +1,7 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { FilterFactoryService } from 'src/app/filter/service/filter-factory.service';
 import { IriConverter } from 'src/app/core/util/iri-converter';
-import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
+import { Component, OnInit, ViewChild, NgZone, ChangeDetectorRef } from '@angular/core';
 import { PatternDataLoaderService } from '../../loader/pattern-data-loader.service';
 import { PatternRenderingComponentInterface } from 'src/app/core/model/pattern-rendering-component.interface';
 import { Node, Link, Pattern, PatternRelation, NodeInfo } from '../../model';
@@ -47,7 +47,8 @@ export class PatternGraphTemplateComponent<T extends Pattern> implements Pattern
     public router: Router,
     public activatedRoute: ActivatedRoute,
     public zone: NgZone,
-    public filterFactory: FilterFactoryService) { }
+    public filterFactory: FilterFactoryService,
+    public cdr: ChangeDetectorRef) { }
 
   createPattern(value: any): T {
     return null;
@@ -262,6 +263,8 @@ export class PatternGraphTemplateComponent<T extends Pattern> implements Pattern
       const route = `patternlanguages/${languageId}/${nodeId}`;
       this.zone.run(() => {
         this.router.navigate(['/patternlanguages', languageId, nodeId]);
+        // changing the route will not trigger the change of the view!
+        this.cdr.markForCheck();
       });
 
       console.log('Routing to: ' + route);
