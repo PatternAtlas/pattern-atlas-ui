@@ -193,12 +193,8 @@ export class PatternOntologyService implements SparqlExecutor {
     }
     const observables = uri.map((iri) => {
       if (this.cookieService.get('patternpedia_github_token')) {
-        const githubUrl = this.githubPersistenceService.githubBaseUrl;
-        let url = iri;
-        if (iri === 'https://purl.org/patternpedia') {
-          url = githubUrl + '/patternpedia.ttl';
-        }
-        return this.githubPersistenceService.getFile(url).pipe(
+        const githubApiFileUrl = IriConverter.getGithubAPIURLForURI(iri);
+        return this.githubPersistenceService.getFile(githubApiFileUrl).pipe(
           map((fileResponse: GithubFileResponse) => {
             return atob(fileResponse.content);
           }));

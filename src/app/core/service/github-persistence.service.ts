@@ -10,13 +10,14 @@ import { GithubFileResponse } from './data/GithubFileResponse.interface';
 import { IriConverter } from '../util/iri-converter';
 import { PatternLanguagePatterns } from '../model/pattern-language-patterns.model';
 import { PatternLanguageRelations } from '../model/pattern-language-relations.model';
+import { globals } from '../../globals';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GithubPersistenceService {
 
-  githubBaseUrl = 'https://api.github.com/repos/PatternPedia/patternpediacontent/contents';
+  githubBaseUrl = globals.urlGithubAPI;
   githubPatternPediaUrl = this.githubBaseUrl + '/patternpedia.ttl';
 
   constructor(private httpClient: HttpClient, private cookieService: CookieService) {
@@ -78,22 +79,7 @@ export class GithubPersistenceService {
 
 
   getFile(iri: string): Observable<GithubFileResponse> {
-    const githuburl = 'https://api.github.com/repos/PatternPedia/patternpediacontent/contents';
-    const iriRelativPath = (iri.split('#')[1]) === 'EnterpriseIntegrationPatterns' || iri.split('#')[1] === 'CloudComputingPatterns' ?
-      iri.split('#')[0].replace('https://purl.org/patternpedia', '') + '/' + iri.split('#')[1].toLowerCase() :
-      iri.replace('#', '/').replace('https://purl.org/patternpedia', '');
-
-    let url = '';
-    if (iri !== 'https://api.github.com/repos/PatternPedia/patternpediacontent/contents/patternpedia.ttl') {
-      url = iriRelativPath.startsWith('https://api.github.com/repos/PatternPedia/patternpediacontent/content') ? iriRelativPath : githuburl + iriRelativPath;
-    } else {
-      url = iri;
-    }
-    const lastURLSegment = url.substr(url.lastIndexOf('/') + 1);
-    if (url.endsWith('/patternlanguages/' + lastURLSegment)) { // if is purl request for patternlanguage base file
-      url = url + '/' + lastURLSegment;
-    }
-    return this.httpClient.get(url.endsWith('.ttl') ? url : url + '.ttl', {
+    return this.httpClient.get(iri, {
       headers: {
         'Authorization': `token ${this.cookieService.get('patternpedia_github_token')}`
       }

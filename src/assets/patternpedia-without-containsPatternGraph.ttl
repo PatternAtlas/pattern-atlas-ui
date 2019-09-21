@@ -27,7 +27,7 @@
 ###  https://purl.org/patternpedia#containsPatternGraph
 :containsPatternGraph rdf:type owl:ObjectProperty ;
                          rdfs:domain :PatternPedia ;
-                         rdfs:range :PatternLanguage .
+                         rdfs:range :PatternGraph .
 
 
 ###  https://purl.org/patternpedia#hasPatternRelation
@@ -78,7 +78,6 @@
 
 ###  https://purl.org/patternpedia#hasListIndex
 :hasListIndex rdf:type owl:DatatypeProperty .
-
 
 
 #################################################################
