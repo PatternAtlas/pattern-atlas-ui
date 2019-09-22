@@ -6,8 +6,7 @@ export class UndirectedPatternRelationDescriptorIndividual extends PatternRelati
   hasPattern: Pattern[];
 
 
-
-  constructor(firstPattern: Pattern, secondPattern: Pattern, description: string = null) {
+  constructor(firstPattern: Pattern, secondPattern: Pattern = null, description: string = null) {
     super();
     this.hasPattern = [firstPattern, secondPattern];
     this.description = description;

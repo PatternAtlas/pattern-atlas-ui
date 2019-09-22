@@ -7,11 +7,13 @@
     <mat-label>Direction</mat-label>
     <mat-select formControlName="direction">
       <mat-select-trigger>
-        <i class="material-icons" [ngClass]="{'flip': relationForm.value?.direction?.name === 'directed_left'}">{{relationForm.value
+        <i class="material-icons"
+           [ngClass]="{'flip': relationForm.value?.direction?.name === directionEnum.DirectedLeft}">{{relationForm.value
           ? relationForm.value.direction?.icon: ''}}</i>
       </mat-select-trigger>
       <mat-option *ngFor="let type of types" [value]="type">
-        <i class="material-icons" [ngClass]="{'flip': type?.name === 'directed_left'}">{{type?.icon}}</i></mat-option>
+        <i class="material-icons" [ngClass]="{'flip': type?.name === directionEnum.DirectedLeft}">{{type?.icon}}</i>
+      </mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field>

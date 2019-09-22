@@ -1,53 +1,51 @@
 import { Injectable } from '@angular/core';
 import Loader from '../../../model/loader';
 import { PatternOntologyService } from '../../pattern-ontology.service';
-import { DirectedPatternRelationDescriptorResponse } from '../../data/DirectedPatternRelationDescriptorResponse.interface';
-import { DirectedPatternRelationDescriptorIndividual } from '../../../model/directed-pattern-relation-descriptor-individual';
 import Pattern from '../../../model/pattern.model';
+import { UndirectedPatternRelationDescriptorIndividual } from '../../../model/undirected-pattern-relation-descriptor-individual';
+import { UndirectedPatternRelationDescriptorResponse } from '../../data/UndirectedPatternRelationDescriptorResponse.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DefaultPatternUndirectedRelationsLoaderService extends Loader<any> {
-  mapTriples(triples: any): Promise<Map<string, any>> {
-    return undefined;
-  }
+  patterns: Pattern[];
 
   constructor(private pos: PatternOntologyService) {
     super(null, pos);
   }
 
-  selectContentFromStore(): Promise<DirectedPatternRelationDescriptorResponse[]> {
-    return this.pos.getDirectedPatternRelations(this.supportedIRI);
-  }
-
-  loadContentFromStore(): Promise<Map<string, any>> {
-    return this.selectContentFromStore()
-      .then(
-        triples => this.mapTriples(triples)
-      );
-  }
-
-  loadUndirectedPatternRelations(): Promise<DirectedPatternRelationDescriptorResponse[]> {
+  selectContentFromStore(): Promise<UndirectedPatternRelationDescriptorResponse[]> {
     return this.pos.getUndirectedPatternRelations(this.supportedIRI);
   }
 
-  mapTriplesToDirectedRelationDescriptorIndividuals(triples: any, patterns: Map<string, Pattern>): Promise<Map<string, DirectedPatternRelationDescriptorIndividual[]>> {
-    const relations = new Map<string, DirectedPatternRelationDescriptorIndividual[]>();
+  mapTriples(triples: UndirectedPatternRelationDescriptorResponse[]): Promise<Map<string, UndirectedPatternRelationDescriptorIndividual>> {
+    const relations = new Map<string, UndirectedPatternRelationDescriptorIndividual>();
+    const triplesByRelation = new Map<string, UndirectedLinkData[]>();
+    // sort the triples by relations, each undirected relation must be reconstructed by two triples
     for (const row of triples) {
-      const relation = new DirectedPatternRelationDescriptorIndividual(patterns.get(row.source.value), patterns.get(row.target.value), row.description.value);
-      relations.has(relation.individualName) ? relations.get(relation.individualName).concat(relation) : relations.set(relation.individualName, [relation]);
+      const pattern = this.getPatternForIri(row.pattern.value);
+      const relationIndividual = row.relationlink.value;
+      const linkdata = {pat: pattern, description: row.description ? row.description.value : null};
+      triplesByRelation.has(relationIndividual) ? triplesByRelation.set(relationIndividual, triplesByRelation.get(relationIndividual).concat(linkdata)) : triplesByRelation.set(relationIndividual, [linkdata]);
     }
+    // reconstruct relations
+    triplesByRelation.forEach((value: UndirectedLinkData[], key: string) => {
+      relations.set(key, new UndirectedPatternRelationDescriptorIndividual(value[0].pat, value[1].pat, value[1].description ? value[1].description : null));
+    });
+
     return Promise.resolve(relations);
   }
 
-  mapTriplesToUndirectedRelationDescriptorIndividuals(triples: any, patterns: Map<string, Pattern>): Promise<Map<string, DirectedPatternRelationDescriptorIndividual[]>> {
-    const relations = new Map<string, DirectedPatternRelationDescriptorIndividual[]>();
-    for (const row of triples) {
-      const relation = new DirectedPatternRelationDescriptorIndividual(patterns.get(row.source.value), patterns.get(row.target.value), row.description.value);
-      relations.has(relation.individualName) ? relations.get(relation.individualName).concat(relation) : relations.set(relation.individualName, [relation]);
-    }
-    return Promise.resolve(relations);
+
+  private getPatternForIri(iri: string): Pattern {
+    return this.patterns.find(it => it.iri === iri);
   }
 
+
+}
+
+class UndirectedLinkData {
+  pat: Pattern;
+  description?: string;
 }

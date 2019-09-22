@@ -28,6 +28,7 @@ import { PatternRelationDescriptorDirection } from '../model/pattern-relation-de
 import { UndirectedPatternRelationDescriptorIndividual } from '../model/undirected-pattern-relation-descriptor-individual';
 import { DefaultPatternDirectedRelationsLoaderService } from '../service/loader/pattern-language-loader/default-pattern-directed-relations-loader.service';
 import { PatternRelations } from '../model/pattern-relations';
+import { DefaultPatternUndirectedRelationsLoaderService } from '../service/loader/pattern-language-loader/default-pattern-undirected-relations-loader.service';
 
 @Component({
   selector: 'pp-default-pattern-renderer',
@@ -39,6 +40,7 @@ export class DefaultPatternRendererComponent implements OnInit {
   private patterns: Map<string, any>;
   private pattern: Pattern;
   private directedPatternRelations: DirectedPatternRelationDescriptorIndividual[];
+  private undirectedPatternRelations: UndirectedPatternRelationDescriptorIndividual[];
   private allRelations: PatternRelations = new PatternRelations();
   private patternList: Pattern[];
 
@@ -49,6 +51,7 @@ export class DefaultPatternRendererComponent implements OnInit {
               private githubPersistenceService: GithubPersistenceService,
               private cookieService: CookieService,
               private directedRelationsLoaderService: DefaultPatternDirectedRelationsLoaderService,
+              private undirectedRelationsLoaderService: DefaultPatternUndirectedRelationsLoaderService,
               public dialog: MatDialog) {
   }
 
@@ -125,8 +128,12 @@ export class DefaultPatternRendererComponent implements OnInit {
     this.directedRelationsLoaderService.supportedIRI = IriConverter.getRelationListIriForPLIri(this.plIri);
     this.directedRelationsLoaderService.patterns = this.patternList;
     this.allRelations.directed = Array.from((await this.directedRelationsLoaderService.loadContentFromStore()).values());
-    this.updateUIForDirectRelations();
 
+
+    this.undirectedRelationsLoaderService.supportedIRI = IriConverter.getRelationListIriForPLIri(this.plIri);
+    this.undirectedRelationsLoaderService.patterns = this.patternList;
+    this.allRelations.undirected = Array.from((await this.undirectedRelationsLoaderService.loadContentFromStore()).values());
+    this.updateUIForPatternRelations();
 
     // load section restrictions to be able to get the type for a section
     this.sectionLoader.supportedIRI = this.plIri;
@@ -213,25 +220,30 @@ export class DefaultPatternRendererComponent implements OnInit {
     if (!dialogResult || !dialogResult.toPattern || !dialogResult.direction) {
       return;
     }
-    if (dialogResult.direction.name === PatternRelationDescriptorDirection[PatternRelationDescriptorDirection.DirectedRight]) {
-      this.allRelations.directed.push(new DirectedPatternRelationDescriptorIndividual(this.pattern, dialogResult.toPattern,
-        dialogResult.description ? dialogResult.description : null));
+    console.log(dialogResult.direction.name);
+    switch (dialogResult.direction.name) {
+      case PatternRelationDescriptorDirection.DirectedRight:
+        this.allRelations.directed.push(new DirectedPatternRelationDescriptorIndividual(this.pattern, dialogResult.toPattern,
+          dialogResult.description ? dialogResult.description : null));
+        break;
+      case PatternRelationDescriptorDirection.DirectedLeft:
+        this.allRelations.directed.push(new DirectedPatternRelationDescriptorIndividual(dialogResult.toPattern, this.pattern,
+          dialogResult.description ? dialogResult.description : null));
+        break;
+      case PatternRelationDescriptorDirection.UnDirected:
+        this.allRelations.undirected.push(new UndirectedPatternRelationDescriptorIndividual(this.pattern, dialogResult.toPattern,
+          dialogResult.description ? dialogResult.description : null));
+        break;
     }
-    if (dialogResult.direction.name === PatternRelationDescriptorDirection[PatternRelationDescriptorDirection.DirectedLeft]) {
-      this.allRelations.undirected.push(new UndirectedPatternRelationDescriptorIndividual(this.pattern, dialogResult.toPattern,
-        dialogResult.description ? dialogResult.description : null));
-    } else {
-      this.allRelations.directed.push(new DirectedPatternRelationDescriptorIndividual(dialogResult.toPattern, this.pattern,
-        dialogResult.description ? dialogResult.description : null));
-    }
-
-    this.updateUIForDirectRelations();
+    this.updateUIForPatternRelations();
   }
 
 
-  private updateUIForDirectRelations() {
+  private updateUIForPatternRelations() {
     this.directedPatternRelations = this.allRelations.directed.filter((rel: DirectedPatternRelationDescriptorIndividual) =>
       rel.source.iri === this.patternIri || rel.target.iri === this.patternIri);
+    this.undirectedPatternRelations = this.allRelations.undirected.filter((rel: UndirectedPatternRelationDescriptorIndividual) =>
+      rel.hasPattern.some((pat) => pat.iri === this.patternIri));
     this.cdr.detectChanges();
   }
 }

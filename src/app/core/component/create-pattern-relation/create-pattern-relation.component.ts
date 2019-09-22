@@ -18,8 +18,13 @@ export class CreatePatternRelationComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<CreatePatternRelationComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private fb: FormBuilder) {
   }
 
+  directionEnum = PatternRelationDescriptorDirection;
   patterns: Pattern[];
-  types = [{name: PatternRelationDescriptorDirection.DirectedRight, icon: 'trending_flat'}, {name:PatternRelationDescriptorDirection.DirectedLeft, icon: 'trending_flat'}, {name: PatternRelationDescriptorDirection.UnDirected, icon: 'compare_arrows'}];
+  types = [{name: PatternRelationDescriptorDirection.DirectedRight, icon: 'trending_flat'},
+    {name: PatternRelationDescriptorDirection.DirectedLeft, icon: 'trending_flat'}, {
+      name: PatternRelationDescriptorDirection.UnDirected,
+      icon: 'compare_arrows'
+    }];
   relationForm: FormGroup;
 
 
@@ -45,7 +50,7 @@ export interface DialogData {
 }
 
 export interface PatternRelationDirection {
-  name: string;
+  name: PatternRelationDescriptorDirection;
   icon: string; // angular material icon name
 }
 

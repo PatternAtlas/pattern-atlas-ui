@@ -30,6 +30,7 @@ import { GithubFileResponse } from './data/GithubFileResponse.interface';
 import { RestrictionResponse } from './data/RestrictionResponse.interface';
 import { PatternProperty } from './data/PatternProperty.interface';
 import { DirectedPatternRelationDescriptorResponse } from './data/DirectedPatternRelationDescriptorResponse.interface';
+import { UndirectedPatternRelationDescriptorResponse, } from './data/UndirectedPatternRelationDescriptorResponse.interface';
 
 @Injectable()
 export class PatternOntologyService implements SparqlExecutor {
@@ -644,7 +645,7 @@ export class PatternOntologyService implements SparqlExecutor {
     return this.exec(qryPatternGraph, [IriConverter.getFileName(supportedIRI)]);
   }
 
-  getUndirectedPatternRelations(supportedIRI: string): Promise<any[]> {
+  getUndirectedPatternRelations(supportedIRI: string): Promise<UndirectedPatternRelationDescriptorResponse[]> {
     const qryPatternGraph = `SELECT ?relationlink ?pattern
     WHERE {
      ?relationlink a owl:NamedIndividual .
