@@ -30,6 +30,7 @@ import { PatternLanguagePatterns } from '../../core/model/pattern-language-patte
 import { switchMap, tap } from 'rxjs/internal/operators';
 import { forkJoin } from 'rxjs';
 import { PatternLanguageRelations } from '../../core/model/pattern-language-relations.model';
+import { PatternRelations } from '../../core/model/pattern-relations';
 
 @Component({
     selector: 'pp-pattern-language-management',
@@ -115,7 +116,7 @@ export class PatternLanguageManagementComponent implements OnInit {
       const patternlanguage = new PatternLanguage(this.urlPatternPedia + '/patternlanguages/' + result.name.replace(/\s/g, ''),
         result.name, [result.iconUrl], null, result.sections, result.restrictions, result.prefixes);
       const patternLanguagePatterns = new PatternLanguagePatterns(IriConverter.getPatternListIriForPLIri(patternlanguage.iri), patternlanguage.iri, []);
-      const patternLanguageRelations = new PatternLanguageRelations(IriConverter.getRelationListIriForPLIri(patternlanguage.iri), patternlanguage.iri, []);
+      const patternLanguageRelations = new PatternLanguageRelations(IriConverter.getRelationListIriForPLIri(patternlanguage.iri), patternlanguage.iri, new PatternRelations());
       console.log(patternlanguage.iri);
       console.log(patternLanguagePatterns.iri);
       this.uploadService.uploadPatternLanguage(patternlanguage).pipe(

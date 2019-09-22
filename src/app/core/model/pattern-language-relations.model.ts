@@ -1,16 +1,18 @@
 import { PatternPedia } from './pattern-pedia.model';
 import { globals } from '../../globals';
-import { DirectedPatternRelationDescriptorIndividual } from './PatternRelationDescriptorIndividual';
+import { DirectedPatternRelationDescriptorIndividual } from './directed-pattern-relation-descriptor-individual';
+import { UndirectedPatternRelationDescriptorIndividual } from './undirected-pattern-relation-descriptor-individual';
+import { PatternRelations } from './pattern-relations';
 
 
 export class PatternLanguageRelations {
 
   iri: string;
   plIri: string;
-  relations: DirectedPatternRelationDescriptorIndividual[];
+  relations: PatternRelations;
 
 
-  constructor(iri: string, plIri: string, relations: DirectedPatternRelationDescriptorIndividual[]) {
+  constructor(iri: string, plIri: string, relations: PatternRelations) {
     this.iri = iri;
     this.plIri = plIri;
     this.relations = relations;
@@ -26,7 +28,10 @@ export class PatternLanguageRelations {
     ary.push('\n');
 
 
-    this.relations.forEach((rel: DirectedPatternRelationDescriptorIndividual) => {
+    this.relations.directed.forEach((rel: DirectedPatternRelationDescriptorIndividual) => {
+      ary.push(rel.toTurtle());
+    });
+    this.relations.undirected.forEach((rel: UndirectedPatternRelationDescriptorIndividual) => {
       ary.push(rel.toTurtle());
     });
     return ary.join('\n');

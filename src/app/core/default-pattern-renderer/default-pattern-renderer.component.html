@@ -9,8 +9,8 @@
      align-items: flex-start;"><b>Links</b><i class="material-icons" style="margin-left: 0.3em;">
     compare_arrows
   </i></mat-card-title>
-  <div *ngIf="patterns?.size > 0 && patternRelations?.length > 0; else noLinksMessage">
-    <ng-container *ngFor="let relation of patternRelations">
+  <div *ngIf="patterns?.size > 0 && directedPatternRelations?.length > 0; else noLinksMessage">
+    <ng-container *ngFor="let relation of directedPatternRelations">
       <p style="display: flex;
      align-items: center">{{ relation.source.name}} <i class="material-icons">trending_flat</i>
         {{ relation.target.name}} <i>{{relation.description? ': ' + relation.description : ''}}</i></p>

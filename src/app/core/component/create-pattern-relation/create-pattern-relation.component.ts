@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { PatternInstance } from '../../model/PatternInstance.interface';
 import Pattern from '../../model/pattern.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PatternRelationDescriptorDirection } from '../../model/pattern-relation-descriptor-direction.enum';
 
 @Component({
   selector: 'pp-create-pattern-relation',
@@ -18,7 +19,7 @@ export class CreatePatternRelationComponent implements OnInit {
   }
 
   patterns: Pattern[];
-  types = [{name: 'directed_right', icon: 'trending_flat'}, {name: 'directed_left', icon: 'trending_flat'}, {name: 'undirected', icon: 'compare_arrows'}];
+  types = [{name: PatternRelationDescriptorDirection.DirectedRight, icon: 'trending_flat'}, {name:PatternRelationDescriptorDirection.DirectedLeft, icon: 'trending_flat'}, {name: PatternRelationDescriptorDirection.UnDirected, icon: 'compare_arrows'}];
   relationForm: FormGroup;
 
 
@@ -53,3 +54,5 @@ export interface DialogDataResult {
   toPattern: Pattern;
   description: string;
 }
+
+

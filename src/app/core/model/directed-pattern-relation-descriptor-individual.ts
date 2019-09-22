@@ -1,13 +1,14 @@
 import Pattern from './pattern.model';
+import { PatternRelationDescriptorIndividual } from './pattern-relation-descriptor-individual';
 
-export class DirectedPatternRelationDescriptorIndividual {
+
+export class DirectedPatternRelationDescriptorIndividual extends PatternRelationDescriptorIndividual{
   source: Pattern;
   target: Pattern;
-  description?: string;
-  individualName: string;
 
 
   constructor(source: Pattern, target: Pattern, description: string = null) {
+    super();
     this.source = source;
     this.target = target;
     this.description = description;
@@ -20,6 +21,7 @@ export class DirectedPatternRelationDescriptorIndividual {
     ary.push(`rdf:type owl:NamedIndividual , pp:DirectedPatternRelationDescriptor ;`);
     ary.push(`pp:hasSource :${this.source.name} ; `);
     ary.push(`pp:hasTarget :${this.target.name} ${this.description ? '; \n pp:hasDescription "' + this.description + '"^^xsd:string . ' : '.'}`);
+    ary.push(' ');
     return ary.join('\n');
   }
 
