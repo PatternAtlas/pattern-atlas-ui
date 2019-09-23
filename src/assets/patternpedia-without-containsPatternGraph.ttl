@@ -151,7 +151,7 @@
                                  [ rdf:type owl:Restriction ;
                                   owl:onProperty :hasRelationType ;
                                   owl:allValuesFrom xsd:string
-                                 ] ..
+                                 ] .
 
 
 # Describes the relation between two patterns in a directed manner, with a source and a target pattern

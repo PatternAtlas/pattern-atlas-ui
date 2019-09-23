@@ -6,6 +6,7 @@ import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/interna
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
 import { ValidationService } from '../../core/service/validation.service';
+import { PatternLanguageSectionRestriction } from '../../core/model/PatternLanguageSectionRestriction.model';
 
 
 interface DialogData {
@@ -49,7 +50,6 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<CreateEditPatternLanguageComponent>, private _fb: FormBuilder, private cdr: ChangeDetectorRef,
               private validatorService: ValidationService, @Inject(MAT_DIALOG_DATA) public data: DialogData) {
 
-    this.isAddLinkTypeDialog = !!this.data.plIri;
     this.filteredSections = this.sectionCtrl.valueChanges.pipe(
       startWith(null),
       map((section: string | null) => section ? this._filter(section) : this.sectionNames.slice()));
@@ -246,7 +246,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     this.saveRequested = true;
     if (this.patternLanguageForm.valid && this.sectionDetailsGroup.valid) {
       this.saveClicked.emit({
-        restrictions: this.sectionsArray.value,
+        restrictions: this.mapArrayToMap(this.sectionsArray.value),
         sections: this.sections,
         name: this.name.value,
         prefixes: this.prefixArray.value,
@@ -326,6 +326,17 @@ export class CreateEditPatternLanguageComponent implements OnInit {
       control.get('type').markAsDirty();
       control.get('type').markAsTouched();
     }
+  }
+
+
+  private mapArrayToMap(arrayRestrictions: any[]): Map<string, PatternLanguageSectionRestriction[]> {
+    const restrictionMap = new Map<string, PatternLanguageSectionRestriction[]>();
+    arrayRestrictions.forEach(sectionRestriction => {
+      restrictionMap.set(sectionRestriction.name,
+        restrictionMap.has(sectionRestriction.name) ?
+          restrictionMap.get(sectionRestriction.name).concat(<PatternLanguageSectionRestriction> sectionRestriction) : [<PatternLanguageSectionRestriction> sectionRestriction]);
+    });
+    return restrictionMap;
   }
 }
 

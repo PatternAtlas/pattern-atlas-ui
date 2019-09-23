@@ -10,7 +10,7 @@
     <mat-card fxLayout="column" fxLayoutAlign="space-around"
             style="margin: 10px;" *ngIf="isFirstStep; else secondStep">
     <mat-form-field appearance="outline" style="width: 24em;" [floatLabel]="'always'">
-      <mat-label>{{isAddLinkTypeDialog? 'Link Type Name' : 'Pattern language name'}}</mat-label>
+      <mat-label>Pattern language name</mat-label>
       <input matInput formControlName="name" placeholder="Enter the name of your Pattern Language">
       <mat-error *ngIf="saveRequested && name?.hasError('required')">Dies ist ein Pflichtfeld.</mat-error>
       <mat-error *ngIf="saveRequested && name?.hasError('pattern')">Bitte nur alphanumerische Zeichen, _ und
@@ -18,52 +18,21 @@
       </mat-error>
     </mat-form-field>
       <ng-container
-        fxLayout="row" fxLayoutAlign="space-around center"
-        *ngIf="!isAddLinkTypeDialog; then urlFormfield; else directionFormField">
+        fxLayout="row" fxLayoutAlign="space-around center">
+        <mat-form-field class="full-width" appearance="outline" style="width: 24em" [floatLabel]="'always'">
+          <mat-label>Icon URL</mat-label>
+          <input matInput formControlName="iconUrl" placeholder="Enter URL of your icon" type="url">
+          <div fxLayout="row" fxLayoutAlign="space-around center" *ngIf="iconPreviewVisible">
+            <span class="label-preview">Icon-Preview: </span>
+            <div mat-card-avatar #iconPreview [ngStyle]="{ 'background-image': 'url(' + iconUrl?.value + ')'}"
+                 class="example-header-image"></div>
+          </div>
+          <mat-error *ngIf="saveRequested && iconUrl?.hasError('required')">This field is requirec.</mat-error>
+          <mat-error *ngIf="saveRequested && iconUrl?.hasError('pattern')">Please insert a valid URL.
+          </mat-error>
+        </mat-form-field>
       </ng-container>
 
-      <ng-template #urlFormfield>
-      <mat-form-field class="full-width" appearance="outline" style="width: 24em" [floatLabel]="'always'">
-        <mat-label>Icon URL</mat-label>
-        <input matInput formControlName="iconUrl" placeholder="Enter URL of your icon" type="url">
-        <div fxLayout="row" fxLayoutAlign="space-around center" *ngIf="iconPreviewVisible">
-          <span class="label-preview">Icon-Preview: </span>
-          <div mat-card-avatar #iconPreview [ngStyle]="{ 'background-image': 'url(' + iconUrl?.value + ')'}"
-               class="example-header-image"></div>
-        </div>
-        <mat-error *ngIf="saveRequested && iconUrl?.hasError('required')">This field is requirec.</mat-error>
-        <mat-error *ngIf="saveRequested && iconUrl?.hasError('pattern')">Please insert a valid URL.
-        </mat-error>
-      </mat-form-field>
-      </ng-template>
-      <ng-template #directionFormField>
-        <mat-form-field>
-          <input type="text" matInput [value]="data.plName" readonly>
-        </mat-form-field>
-        <mat-form-field [formGroup]="relationForm">
-          <mat-label>Direction</mat-label>
-          <mat-select formControlName="direction">
-            <mat-select-trigger>
-              <i class="material-icons"
-                 [ngClass]="{'flip': relationForm.value?.direction?.name === 'directed_left', 'flip-horizontal': relationForm.value?.direction?.name === 'group'}">{{relationForm.value
-                ? relationForm.value.direction?.icon: ''}}</i>
-            </mat-select-trigger>
-            <mat-option *ngFor="let type of types" [value]="type">
-              <i class="material-icons"
-                 [ngClass]="{'flip': type?.name === 'directed_left', 'flip-horizontal': type?.name  === 'group'}">{{type?.icon}}</i>
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Target Patternlanguage</mat-label>
-          <mat-select>
-            <mat-option *ngFor="let plLanguage of plLanguages" [value]="plLanguage">
-              {{plLanguage}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </ng-template>
 
       <mat-form-field appearance="outline" style="width: 24em" [floatLabel]="'always'">
       <mat-label>Sections</mat-label>
