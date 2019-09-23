@@ -11,13 +11,15 @@
   <mat-card class="landing-card " *ngFor="let pattern of patterns">
     <mat-card-header>
       <mat-card-title>
-        <b>{{getNameForPattern(pattern)}}</b>
+        <b>{{pattern.name}}</b>
 
       </mat-card-title>
     </mat-card-header>
     <mat-card-content class="fixed-height-card-content">
-      <div *ngFor="let patternSection of getKeys(pattern.sectionProperties)">
-        <p><b>{{getSectionName(patternSection)}}</b>: {{pattern.sectionProperties.get(patternSection)}}</p>
+      <div *ngFor="let patternSection of patternLanguage?.sections">
+        <p><b>{{getSectionName(patternSection)}}</b>:
+          {{pattern?.sectionsProperties.get(patternSection)}}
+        </p>
       </div>
     </mat-card-content>
     <mat-card-actions>
