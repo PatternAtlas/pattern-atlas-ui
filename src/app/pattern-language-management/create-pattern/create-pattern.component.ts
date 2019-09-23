@@ -181,7 +181,8 @@ export class CreatePatternComponent implements OnInit {
             break;
           }
           if (lines[i]['text']) {
-            sectioncontent.push(lines[i]['text']);
+            // if a list item was parsed before, add it to the text
+            sectioncontent.push(i > 0 && this.isListItem(i, sectionIndex, lines) ? '* ' + lines[i]['text'] : lines[i]['text']);
           }
         }
         if (this.patternValuesFormGroup.controls[section]) {
@@ -242,7 +243,7 @@ export class CreatePatternComponent implements OnInit {
 
     if (!restrictions.maxCardinality || restrictions.maxCardinality > 1) {
       // propose listitems if multiple entries are allowed
-      defaultText = '* ' + defaultText;
+      defaultText = '* ' + defaultText + '\n\n';
     }
     if (restrictions.minCardinality > 1) {
       defaultText = (defaultText + '\n').repeat(restrictions.minCardinality - 1) + defaultText;
@@ -314,5 +315,12 @@ export class CreatePatternComponent implements OnInit {
   }
 
 
-
+  private isListItem(i: number, sectionIndex: number, lines: marked.TokensList): boolean {
+    for (let index = sectionIndex + 1; index < i; index++) {
+      if (lines[index].type === 'list_item_start') {
+        return true;
+      }
+    }
+    return false;
+  }
 }
