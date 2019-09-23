@@ -3,23 +3,21 @@ import { TdTextEditorComponent } from '@covalent/text-editor';
 import { DefaultPlLoaderService } from '../../core/service/loader/default-pl-loader.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IriConverter } from '../../core/util/iri-converter';
-import { Logo } from '../../core/service/data/Logo.interface';
 import { GithubPersistenceService } from '../../core/service/github-persistence.service';
 import * as marked from 'marked';
 import { TokensList } from 'marked';
 import Pattern from '../../core/model/pattern.model';
 import { PatternOntologyService } from '../../core/service/pattern-ontology.service';
-import { SectionResponse } from '../../core/service/data/SectionResponse.interface';
 import { ToasterService } from 'angular2-toaster';
 import { PlRestrictionLoaderService } from '../../core/service/loader/pattern-language-loader/pl-restriction-loader.service';
 import { PatternLanguageSectionRestriction, SectionRestrictionsResult } from '../../core/model/PatternLanguageSectionRestriction.model';
 import PatternPedia from '../../core/model/pattern-pedia.model';
 import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ValidationService } from '../../core/service/validation.service';
-import PatternLanguage from '../../core/model/pattern-language.model';
-import { PatternInstance } from '../../core/model/PatternInstance.interface';
 import { switchMap } from 'rxjs/internal/operators';
 import { PatternLanguagePatterns } from '../../core/model/pattern-language-patterns.model';
+import { LoadCompletePatternlanguageService } from '../../core/service/loader/complete-patternlanguage-loader.service';
+import { CompletePatternlanguage } from '../../core/model/complete-patternlanguage.interface';
 
 
 @Component({
@@ -30,11 +28,11 @@ import { PatternLanguagePatterns } from '../../core/model/pattern-language-patte
 export class CreatePatternComponent implements OnInit {
 
 
-  patterns: PatternInstance[];
+  patterns: Pattern[];
   plIri: string;
+  completePatternlanguageInfos: CompletePatternlanguage;
   plName: string;
   sections: string[];
-  plLogos: string[];
   plRestrictions: Map<string, PatternLanguageSectionRestriction[]>;
   sectionRestrictions = new Map<string, SectionRestrictionsResult>();
   xsdPrefix = new PatternPedia().defaultPrefixes.get('xsd').replace('<', '').replace('>', '');
@@ -70,7 +68,8 @@ export class CreatePatternComponent implements OnInit {
               private pos: PatternOntologyService,
               private toastService: ToasterService,
               private router: Router,
-              private patternOntologyService: PatternOntologyService) {
+              private patternOntologyService: PatternOntologyService,
+              private completePatternLanguageLoadingService: LoadCompletePatternlanguageService) {
   }
 
 
@@ -78,59 +77,43 @@ export class CreatePatternComponent implements OnInit {
     this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
     this.plLoader.supportedIRI = this.plIri;
 
+    this.completePatternLanguageLoadingService.loadCompletePatternLanguage(this.plIri).then(
+      (completePL) => {
+        this.completePatternlanguageInfos = completePL;
+        this.plName = completePL.patternlanguage.name;
+        this.patterns = completePL.patterns;
+        this.PlRestrictionLoader.supportedIRI = this.plIri;
+        this.sections = completePL.patternlanguage.sections;
 
-    this.patternOntologyService.loadUrisToStore([{value: this.plIri, token: null}]).then(() => {
-      this.loadPatternInfos();
-      this.plName = IriConverter.extractIndividualNameFromIri(this.plIri);
-      this.PlRestrictionLoader.supportedIRI = this.plIri;
+        this.initRestrictions();
+        this.initTextEditor();
 
-      this.loadRestrictionsAndInitPatternEditor();
-      this.loadLogoData();
-    });
+      });
+
   }
-
-  reconstructSectionFromSectionResult(queryResult: SectionResponse): string {
-    return queryResult.section.value;
-  }
-
-
-
-  containsMoreThanWhitespace(teststring: string): boolean {
-    return !teststring.match(new RegExp('^\\s*$', 'g'));
-  }
-
 
   save(): void {
     const pattern = this.parsePatternInput();
 
-    const patternIris = !this.patterns ? [] : this.patterns.map(p => p.uri);
-    patternIris.push(pattern.iri);
-
-    const patternList = this.patterns.map(it => it.toPattern(this.plIri));
-    patternList.push(pattern);
-
-    const restrictions = [];
+    this.patterns.push(pattern);
+    const patternIris = !this.patterns ? [] : this.patterns.map(p => p.iri);
     this.wasSaveButtonClicked = true;
     if (!this.patternValuesFormGroup.valid) {
       this.updateFormValidationErrors();
       return;
     }
-    for (const key of this.sections) {
-      if (!this.plRestrictions.get(key)) {
-        continue;
-      }
-      restrictions.push(...this.plRestrictions.get(key));
-    }
 
-    const patternLanguage = new PatternLanguage(this.plIri, this.plName, this.plLogos, patternIris, this.sections, restrictions, null);
+    const patternLanguage = this.completePatternlanguageInfos.patternlanguage;
+    patternLanguage.patternIRIs = patternIris;
+
+    // patternLanguage.restrictions = restrictions;
     this.uploadService.updatePL(patternLanguage).pipe(
       switchMap(() => {
         return this.uploadService.updatePLPatterns(new PatternLanguagePatterns(IriConverter.getPatternListIriForPLIri(patternLanguage.iri),
-          patternLanguage.iri, patternList));
-      }),
+          patternLanguage.iri, this.patterns));
+      }), // load updated patternlanguage file into store:
       switchMap(() => {
         return this.pos.loadUrisToStore([{value: this.plIri, token: null}]);
-
       })
     ).subscribe(() => {
       this.toastService.pop('success', 'Pattern created');
@@ -167,6 +150,9 @@ export class CreatePatternComponent implements OnInit {
 
   // returns if a user changed the value of the sections headers (which he is not allowed to do)
   private invalidTextEdit(currentText: marked.TokensList): boolean {
+    if (!this.sections) {
+      return false;
+    }
     // we should find a corresponding line (= that starts with ## followed by section patternName) for each section
     for (const section of this.sections) {
       const indexOfCorrespondingLine = currentText.findIndex(line =>
@@ -227,8 +213,6 @@ export class CreatePatternComponent implements OnInit {
     });
 
 
-
-
     return new Pattern(this.getPatternUri(patternname, this.plIri), patternname, sectionMap, this.plIri);
 
   }
@@ -271,9 +255,6 @@ export class CreatePatternComponent implements OnInit {
     return defaultText;
   }
 
-  private loadPatternInfos() {
-    this.plLoader.loadContentFromStore().then(res => this.patterns = Array.from(res.values()));
-  }
 
   updateFormValidationErrors(): string {
     if (this.patternValuesFormGroup.valid) {
@@ -290,16 +271,9 @@ export class CreatePatternComponent implements OnInit {
     });
   }
 
-  private loadRestrictionsAndInitPatternEditor() {
-    // load sections and restrictions
-    this.plLoader.getPLSections(this.plIri).then((res: SectionResponse[]) => {
-      this.sections = res.map((iri: any) => {
-        return this.reconstructSectionFromSectionResult(iri);
-      });
-      this.PlRestrictionLoader.loadContentFromStore().then((response: any) => {
-
-        // init formgroup based on restrictions
-        this.plRestrictions = response;
+  // init formgroup based on restrictions
+  private initRestrictions() {
+    this.plRestrictions = this.completePatternlanguageInfos.patternlanguage.restrictions;
         this.patternValuesFormGroup = new FormGroup({});
         this.plRestrictions.forEach((value: PatternLanguageSectionRestriction[], key: string) => {
           const allRestrictions = this.PlRestrictionLoader.getRestrictionsForSection(key, this.plRestrictions.get(key));
@@ -333,26 +307,17 @@ export class CreatePatternComponent implements OnInit {
         );
 
 
-        for (const section of this.sections) {
-          this.previousTextEditorValue = this.previousTextEditorValue.concat(
-            '\n ## ' + this.addSpaceForCamelCase(this.getSectionTitle(section)) + '\n' + this.getDefaultTextForSection(section));
-        }
-        this._textEditor.value = this.previousTextEditorValue;
-        this.onChangeMarkdownText();
-      });
-
-
-    });
-
   }
 
-  private loadLogoData() {
-    this.plLoader.getPLLogo(this.plIri).then((res: Logo[]) => {
-      this.plLogos = res.map((dataRessponse: Logo) => {
-        return dataRessponse.logo.value;
-      });
-    });
+  private initTextEditor(): void {
+    for (const section of this.completePatternlanguageInfos.patternlanguage.sections) {
+      this.previousTextEditorValue = this.previousTextEditorValue.concat(
+        '\n ## ' + this.addSpaceForCamelCase(this.getSectionTitle(section)) + '\n' + this.getDefaultTextForSection(section));
+    }
+    this._textEditor.value = this.previousTextEditorValue;
+    this.onChangeMarkdownText();
   }
+
 
 
 }

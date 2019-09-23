@@ -22,11 +22,11 @@ class PatternLanguage implements TurtleFileModelInterface {
   private patternpediaBaseURI = 'https://purl.org/patternpedia';
     private _id: string;
     name: string;
-    logos: Array<string>;
+  logos: string[];
     iri: string;
-    patternIRIs: Array<string>;
+  patternIRIs: string[];
   sections: string[];
-  restrictions: PatternLanguageSectionRestriction[];
+  restrictions: Map<string, PatternLanguageSectionRestriction[]>;
   prefixes: CustomPrefix[];
 
 
@@ -38,8 +38,8 @@ class PatternLanguage implements TurtleFileModelInterface {
         return this._id;
     }
 
-  public constructor(iri: string = null, name: string = null, logos: Array<string> = null, patternIRIs: Array<string> = null, sections: string[] = null,
-                     restrictions: PatternLanguageSectionRestriction[] = null, prefixes: CustomPrefix[] = null) {
+  public constructor(iri: string = null, name: string = null, logos: string[] = null, patternIRIs: string[] = null, sections: string[] = null,
+                     restrictions: Map<string, PatternLanguageSectionRestriction[]> = null, prefixes: CustomPrefix[] = null) {
         this.name = name;
         this.logos = logos || [];
         this.patternIRIs = patternIRIs || [];
@@ -98,7 +98,15 @@ class PatternLanguage implements TurtleFileModelInterface {
       ary.push(`pp:hasListIndex "${index}"^^xsd:integer .`);
     });
 
-    if (this.restrictions && this.restrictions.length > 0) {
+    const restrictionsArray = [];
+    for (const key of this.sections) {
+      if (!this.restrictions.get(key)) {
+        continue;
+      }
+      restrictionsArray.push(...this.restrictions.get(key));
+    }
+
+    if (this.restrictions && this.restrictions.size > 0) {
 
       ary.push('\n');
       ary.push('# #################################################################');
@@ -111,7 +119,8 @@ class PatternLanguage implements TurtleFileModelInterface {
       ary.push(`:${this.name}Individual rdf:type owl:Class ; `);
       ary.push(` rdfs:subClassOf pp:Pattern ,`);
 
-      this.restrictions.forEach((restriction, index) => {
+
+      restrictionsArray.forEach((restriction, index) => {
         ary.push(`${'\t'.repeat(3)}[ rdf:type owl:Restriction ;`);
         ary.push(`${'\t'.repeat(3)} owl:onProperty ${this.addPrefixCharacterOrAngleBrackets(restriction.name)} ; `);
         if (restriction.restrictionType === 'min' || restriction.restrictionType === 'max') {
@@ -125,7 +134,7 @@ class PatternLanguage implements TurtleFileModelInterface {
         } else if (restriction.restrictionType === 'only') {
           ary.push(`${'\t'.repeat(3)} owl:allValuesFrom ${this.addAngleBracketsIfNeeded(restriction.type)}`);
         }
-        ary.push(`${'\t'.repeat(4)}] ${index === (this.restrictions.length - 1) ? '.' : ','}`);
+        ary.push(`${'\t'.repeat(4)}] ${index === (restrictionsArray.length - 1) ? '.' : ','}`);
         ary.push(`\n`);
       });
     }

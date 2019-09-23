@@ -618,7 +618,7 @@ export class PatternOntologyService implements SparqlExecutor {
   }
 
   getPLSections(graphIri: string): Promise<SectionResponse[]> {
-    const qryPatternGraph = `SELECT ?section ?index
+    const qryPatternGraph = `SELECT DISTINCT ?section ?index
     WHERE {
     {
      ?section a owl:DatatypeProperty .
