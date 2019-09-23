@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { forkJoin, Observable } from 'rxjs';
+import { EMPTY, forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import PatternLanguage from '../model/pattern-language.model';
 import { switchMap } from 'rxjs/internal/operators';
@@ -125,6 +125,9 @@ export class GithubPersistenceService {
   }
 
   updatePLRelations(patternLanguageRelations: PatternLanguageRelations): Observable<any> {
+    if (!patternLanguageRelations) {
+      return EMPTY;
+    }
     const githubUrlPLPatterns = this.getGithubPathForPatternLanguagePatternsOrRelations(patternLanguageRelations);
     return this.getFile(githubUrlPLPatterns).pipe(
       switchMap((res: GithubFileResponse) => {

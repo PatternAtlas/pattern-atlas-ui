@@ -29,6 +29,8 @@ import { UndirectedPatternRelationDescriptorIndividual } from '../model/undirect
 import { DefaultPatternDirectedRelationsLoaderService } from '../service/loader/pattern-language-loader/default-pattern-directed-relations-loader.service';
 import { PatternRelations } from '../model/pattern-relations';
 import { DefaultPatternUndirectedRelationsLoaderService } from '../service/loader/pattern-language-loader/default-pattern-undirected-relations-loader.service';
+import { switchMap, tap } from 'rxjs/internal/operators';
+import { EMPTY } from 'rxjs';
 
 @Component({
   selector: 'pp-default-pattern-renderer',
@@ -203,22 +205,27 @@ export class DefaultPatternRendererComponent implements OnInit {
         data: {patternName: this.pattern.name, patterns: this.patternList}
       }
     );
-
-    dialogRef.afterClosed().subscribe((result: DialogDataResult) => {
-      this.addRelationCreatedByDialog(result);
-      const patternRelations = new PatternLanguageRelations(IriConverter.getRelationListIriForPLIri(this.plIri), this.plIri, this.allRelations);
-      this.githubPersistenceService.updatePLRelations(patternRelations).subscribe(() => this.toasterService.pop('success', 'Created new Relation'),
-        (error) => {
-          this.toasterService.pop('error', 'Could not create new relation: ', error);
-        });
-
-    });
-
+    let relationAdded = false;
+    let patternRelations;
+    dialogRef.afterClosed().pipe(
+      tap((result: DialogDataResult) => {
+        relationAdded = this.addRelationCreatedByDialog(result);
+        patternRelations = new PatternLanguageRelations(IriConverter.getRelationListIriForPLIri(this.plIri), this.plIri, this.allRelations);
+      }),
+      switchMap(() =>
+        relationAdded ? this.githubPersistenceService.updatePLRelations(patternRelations) : EMPTY)).subscribe(
+      () => {
+        if (relationAdded) {
+          this.toasterService.pop('success', 'Created new Relation');
+        }
+      },
+      (error) => this.toasterService.pop('error', 'Could not create new relation: ', error));
   }
 
-  addRelationCreatedByDialog(dialogResult: DialogDataResult): void {
+  addRelationCreatedByDialog(dialogResult: DialogDataResult): boolean {
     if (!dialogResult || !dialogResult.toPattern || !dialogResult.direction) {
       return;
+      false;
     }
     console.log(dialogResult.direction.name);
     switch (dialogResult.direction.name) {
@@ -234,8 +241,11 @@ export class DefaultPatternRendererComponent implements OnInit {
         this.allRelations.undirected.push(new UndirectedPatternRelationDescriptorIndividual(this.pattern, dialogResult.toPattern,
           dialogResult.description ? dialogResult.description : null));
         break;
+      default:
+        return false;
     }
     this.updateUIForPatternRelations();
+    return true;
   }
 
 
