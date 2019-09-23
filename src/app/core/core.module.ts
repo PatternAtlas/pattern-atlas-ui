@@ -40,15 +40,12 @@ import { CovalentTextEditorModule } from '@covalent/text-editor';
 import { EmitEventOnKeyupDirective } from './directives/emit-event-on-keyup.directive';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NavigateBackComponent } from './component/navigate-back/navigate-back.component';
-import { IntegerComponent } from './component/type-templates/xsd/integer/integer.component';
-import { StringComponent } from './component/type-templates/xsd/string/string.component';
-import { PatternpropertyDirective } from './component/type-templates/patternproperty.directive';
-import { ImageComponent } from './component/type-templates/dcmitype/image/image.component';
-import { DateComponent } from './component/type-templates/xsd/date/date.component';
-import { DividerComponent } from './component/type-templates/divider/divider.component';
+import { PatternpropertyDirective } from './component/markdown-content-container/patternproperty.directive';
+import { DividerComponent } from './component/divider/divider.component';
 import { NgxMdModule } from 'ngx-md';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CreatePatternRelationComponent } from './component/create-pattern-relation/create-pattern-relation.component';
+import { MarkdownPatternSectioncontentComponent } from './component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component';
 
 @NgModule({
     imports: [
@@ -80,24 +77,18 @@ import { CreatePatternRelationComponent } from './component/create-pattern-relat
       MdEditorComponent,
       EmitEventOnKeyupDirective,
       NavigateBackComponent,
-      IntegerComponent,
-      StringComponent,
       PatternpropertyDirective,
-      ImageComponent,
-      DateComponent,
       DividerComponent,
-      CreatePatternRelationComponent
+      CreatePatternRelationComponent,
+      MarkdownPatternSectioncontentComponent
     ],
     entryComponents: [
         DefaultPlRendererComponent,
         DefaultPatternRendererComponent,
       MdEditorComponent,
-      IntegerComponent,
-      StringComponent,
-      ImageComponent,
-      DateComponent,
       DividerComponent,
-      CreatePatternRelationComponent
+      CreatePatternRelationComponent,
+      MarkdownPatternSectioncontentComponent
     ]
 })
 export class CoreModule {

@@ -6,16 +6,11 @@ import { PatternOntologyService } from '../service/pattern-ontology.service';
 import { ToasterService } from 'angular2-toaster';
 import { SectionResponse } from '../service/data/SectionResponse.interface';
 import { PlRestrictionLoaderService } from '../service/loader/pattern-language-loader/pl-restriction-loader.service';
-import { PatternpropertyDirective } from '../component/type-templates/patternproperty.directive';
+import { PatternpropertyDirective } from '../component/markdown-content-container/patternproperty.directive';
 import { PatternLanguageSectionRestriction } from '../model/PatternLanguageSectionRestriction.model';
-import PatternPedia from '../model/pattern-pedia.model';
 import { IriConverter } from '../util/iri-converter';
-import { DividerComponent } from '../component/type-templates/divider/divider.component';
-import { StringComponent } from '../component/type-templates/xsd/string/string.component';
-import { IntegerComponent } from '../component/type-templates/xsd/integer/integer.component';
-import { DateComponent } from '../component/type-templates/xsd/date/date.component';
-import { ImageComponent } from '../component/type-templates/dcmitype/image/image.component';
-import { DataRenderingComponent } from '../component/type-templates/interfaces/DataRenderingComponent.interface';
+import { DividerComponent } from '../component/divider/divider.component';
+import { DataRenderingComponent } from '../component/markdown-content-container/interfaces/DataRenderingComponent.interface';
 import { PatternLanguagePatterns } from '../model/pattern-language-patterns.model';
 import { GithubPersistenceService } from '../service/github-persistence.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -31,6 +26,7 @@ import { PatternRelations } from '../model/pattern-relations';
 import { DefaultPatternUndirectedRelationsLoaderService } from '../service/loader/pattern-language-loader/default-pattern-undirected-relations-loader.service';
 import { switchMap, tap } from 'rxjs/internal/operators';
 import { EMPTY } from 'rxjs';
+import { MarkdownPatternSectioncontentComponent } from '../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component';
 
 @Component({
   selector: 'pp-default-pattern-renderer',
@@ -67,23 +63,6 @@ export class DefaultPatternRendererComponent implements OnInit {
   isLoadingSection = true;
   isEditingEnabled = false;
 
-
-  standardPrefixes = new PatternPedia().defaultPrefixes;
-  xsdPrefix = this.standardPrefixes.get('xsd').replace('<', '').replace('>', '');
-  dcmiPrefix = 'https://purl.org/dc/dcmitype/';
-
-
-  mappings = [
-    {prefix: this.xsdPrefix + 'string', value: StringComponent},
-    {prefix: this.xsdPrefix + 'integer', value: IntegerComponent},
-    {prefix: this.xsdPrefix + 'positiveInteger', value: IntegerComponent},
-    {prefix: this.xsdPrefix + 'nonPositiveInteger', value: IntegerComponent},
-    {prefix: this.xsdPrefix + 'nonNegativeInteger', value: IntegerComponent},
-    {prefix: this.xsdPrefix + 'negativeInteger', value: IntegerComponent},
-    {prefix: this.xsdPrefix + 'date', value: DateComponent},
-    {prefix: this.dcmiPrefix + 'Image', value: ImageComponent},
-  ];
-  defaultComponentForType = new Map(this.mappings.map(x => [x.prefix, x.value] as [string, any]));
 
 
   ngOnInit() {
@@ -142,7 +121,7 @@ export class DefaultPatternRendererComponent implements OnInit {
     this.sectionRestritions = await this.sectionLoader.loadContentFromStore();
 
 
-    // get section in order
+    // get ordered sections
     this.sections = await this.plLoader.getPLSections(this.plIri);
     this.isLoadingSection = false;
 
@@ -168,14 +147,10 @@ export class DefaultPatternRendererComponent implements OnInit {
 
   private createSectionComponent(section: string, viewContainerRef: any, componentDividerFactory) {
     const properties = this.pattern.sectionsProperties.get(section);
-    const sectionRestrictions = this.sectionRestritions.get(section);
     if (section.indexOf('#has') !== -1) {
       const sectionTitle = section.split('#has')[1].replace(/([A-Z])/g, ' $1').trim();
 
-      const type = (sectionRestrictions && !!sectionRestrictions[0] && sectionRestrictions[0].type) ? sectionRestrictions[0].type : this.xsdPrefix + 'string';
-      const component = this.defaultComponentForType.get(type) ? this.defaultComponentForType.get(type) : StringComponent;
-
-      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
+      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MarkdownPatternSectioncontentComponent);
       const componentRef = viewContainerRef.createComponent(componentFactory);
       const instance = (<DataRenderingComponent>componentRef.instance);
       instance.data = properties.join('\n');
