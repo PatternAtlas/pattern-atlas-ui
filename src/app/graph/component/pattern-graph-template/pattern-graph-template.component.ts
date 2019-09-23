@@ -184,6 +184,7 @@ export class PatternGraphTemplateComponent<T extends Pattern> implements Pattern
         this.data = this.transformGraphData(this.all_data);
         this.nodes = this.data.nodes;
         this.links = this.data.links;
+        this.cdr.detectChanges();
 
         this.filterAllData();
       });
