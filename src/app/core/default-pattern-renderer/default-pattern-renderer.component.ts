@@ -225,10 +225,8 @@ export class DefaultPatternRendererComponent implements OnInit {
   // adds a relation created by the dialog to the local data and returns whether this was successful (or not, e.g. when simply closing the dialog)
   addRelationCreatedByDialog(dialogResult: DialogDataResult): boolean {
     if (!dialogResult || !dialogResult.toPattern || !dialogResult.direction) {
-      return;
-      false;
+      return false;
     }
-    console.log(dialogResult.direction.name);
     switch (dialogResult.direction.name) {
       case PatternRelationDescriptorDirection.DirectedRight:
         this.allRelations.directed.push(new DirectedPatternRelationDescriptorIndividual(this.pattern, dialogResult.toPattern,
