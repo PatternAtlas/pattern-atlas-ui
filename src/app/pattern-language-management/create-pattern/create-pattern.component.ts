@@ -16,6 +16,7 @@ import { switchMap } from 'rxjs/internal/operators';
 import { PatternLanguagePatterns } from '../../core/model/pattern-language-patterns.model';
 import { LoadCompletePatternlanguageService } from '../../core/service/loader/complete-patternlanguage-loader.service';
 import { CompletePatternlanguage } from '../../core/model/complete-patternlanguage.interface';
+import { PlRestrictionLoaderService } from '../../core/service/loader/pattern-language-loader/pl-restriction-loader.service';
 
 
 @Component({
@@ -62,6 +63,7 @@ export class CreatePatternComponent implements OnInit {
               private cdr: ChangeDetectorRef,
               private uploadService: GithubPersistenceService,
               private pos: PatternOntologyService,
+              private PlRestrictionLoader: PlRestrictionLoaderService,
               private toastService: ToasterService,
               private router: Router,
               private completePatternLanguageLoadingService: LoadCompletePatternlanguageService) {
