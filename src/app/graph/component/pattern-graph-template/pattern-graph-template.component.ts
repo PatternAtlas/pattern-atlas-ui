@@ -157,7 +157,7 @@ export class PatternGraphTemplateComponent<T extends Pattern> implements Pattern
             const s = (l.source instanceof Node) ? l.source.id : l.source;
             const t = (l.target instanceof Node) ? l.target.id : l.target;
 
-            return s === value.id || t === value.id;
+            return s === p.id || t === p.id;
           });
 
           relations.forEach(r => {

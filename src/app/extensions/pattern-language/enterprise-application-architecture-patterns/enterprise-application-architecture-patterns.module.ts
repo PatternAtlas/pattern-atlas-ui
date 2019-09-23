@@ -34,7 +34,7 @@ export class EnterpriseApplicationArchitecturePatternsModule {
   constructor(private cr: ComponentRegistryService) {
     // register module as rendering for Enterprise Integration Patterns in registry
     // tslint:disable-next-line: max-line-length
-    this.cr.registerComponent(IriConverter.convertIriToId('https://purl.org/patternpedia/patternlanguages/enterpriseapplicationarchitecturepatterns#EnterpriseApplicationArchitecturePatterns'), {
+    this.cr.registerComponent(IriConverter.convertIriToId('https://purl.org/patternpedia/patternlanguages/enterpriseapplicationarchitecturepatterns/enterpriseapplicationarchitecturepatterns#EnterpriseApplicationArchitecturePatterns'), {
       label: 'Network Graph',
       priority: 10, // this is the main renderer for this language
       plcomponent: EnterpriseApplicationArchitecturePatternsComponent, // the rendering for the pattern LANGUAGE
