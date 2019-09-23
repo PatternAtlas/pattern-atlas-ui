@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { TdTextEditorComponent } from '@covalent/text-editor';
-import { DefaultPlLoaderService } from '../../core/service/loader/default-pl-loader.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IriConverter } from '../../core/util/iri-converter';
 import { GithubPersistenceService } from '../../core/service/github-persistence.service';
@@ -9,7 +8,6 @@ import { TokensList } from 'marked';
 import Pattern from '../../core/model/pattern.model';
 import { PatternOntologyService } from '../../core/service/pattern-ontology.service';
 import { ToasterService } from 'angular2-toaster';
-import { PlRestrictionLoaderService } from '../../core/service/loader/pattern-language-loader/pl-restriction-loader.service';
 import { PatternLanguageSectionRestriction, SectionRestrictionsResult } from '../../core/model/PatternLanguageSectionRestriction.model';
 import PatternPedia from '../../core/model/pattern-pedia.model';
 import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
@@ -60,29 +58,24 @@ export class CreatePatternComponent implements OnInit {
   };
   private errormessages: string[];
 
-  constructor(private plLoader: DefaultPlLoaderService,
-              private PlRestrictionLoader: PlRestrictionLoaderService,
-              private activatedRoute: ActivatedRoute,
+  constructor(private activatedRoute: ActivatedRoute,
               private cdr: ChangeDetectorRef,
               private uploadService: GithubPersistenceService,
               private pos: PatternOntologyService,
               private toastService: ToasterService,
               private router: Router,
-              private patternOntologyService: PatternOntologyService,
               private completePatternLanguageLoadingService: LoadCompletePatternlanguageService) {
   }
 
 
   ngOnInit() {
     this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
-    this.plLoader.supportedIRI = this.plIri;
 
     this.completePatternLanguageLoadingService.loadCompletePatternLanguage(this.plIri).then(
       (completePL) => {
         this.completePatternlanguageInfos = completePL;
         this.plName = completePL.patternlanguage.name;
         this.patterns = completePL.patterns;
-        this.PlRestrictionLoader.supportedIRI = this.plIri;
         this.sections = completePL.patternlanguage.sections;
 
         this.initRestrictions();
