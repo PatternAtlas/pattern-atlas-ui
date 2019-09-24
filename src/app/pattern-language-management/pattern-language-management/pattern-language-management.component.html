@@ -25,7 +25,7 @@
 
 </mat-toolbar>
 <div class="container">
-  <mat-progress-spinner mode="indeterminate" *ngIf="isLoadingPattern"></mat-progress-spinner>
+  <mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>
   <mat-card class="landing-card" *ngFor="let patternLanguage of patternLanguages">
         <mat-card-header>
           <img *ngIf="patternLanguage?.logos && patternLanguage.logos[0]; else noImageAvatar" mat-card-avatar
@@ -53,7 +53,7 @@
         </mat-card-actions>
     </mat-card>
   <mat-card class="landing-card center-content add-card" id="add-card"
-            (click)="showAuthentificationButton ? '' : goToPatternLanguageCreation()" *ngIf="!isLoadingPattern">
+            (click)="showAuthentificationButton ? '' : goToPatternLanguageCreation()" *ngIf="!isLoading">
     <div fxLayout="column" fxLayoutAlign="space-around center"><i class="material-icons">add_box</i>
       <span id="hideIfNotHovered" *ngIf="showAuthentificationButton"><br>Please authorize Github </span>
     </div>

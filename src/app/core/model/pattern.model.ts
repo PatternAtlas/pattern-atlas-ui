@@ -13,7 +13,6 @@
  */
 
 import { IriConverter } from '../util/iri-converter';
-import { globals } from '../../globals';
 
 class Pattern {
   protected _id: string;
@@ -22,7 +21,6 @@ class Pattern {
   patternLanguageIri: string;
 
   sectionsProperties: Map<string, string[]>;
-  patternpediaBaseURI = globals.urlPatternRepoOntology;
 
   set id(iri: string) {
     this._id = IriConverter.convertIriToId(iri);
@@ -38,11 +36,6 @@ class Pattern {
     this.id = iri;
     this.sectionsProperties = sectionProperties;
     this.patternLanguageIri = patternLanguageIri;
-  }
-
-
-  getSectionIdentifier(section: string): string {
-    return ':has' + section.replace(/\s/g, '');
   }
 
   toTurtle(): string {

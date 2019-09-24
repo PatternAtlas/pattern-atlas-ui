@@ -162,3 +162,11 @@ body{
 .ignore-css {
   all: initial !important;
 }
+
+.flip {
+  transform: rotate(180deg);
+}
+
+.flip-horizontal {
+  transform: rotate(90deg);
+}

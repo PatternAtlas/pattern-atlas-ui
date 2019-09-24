@@ -13,6 +13,7 @@
  */
 
 import { QueriedData } from '../service/data/QueriedData.interface';
+import { globals } from '../../globals';
 
 export class IriConverter {
     static convertIriToId(iri: string): string {
@@ -60,8 +61,26 @@ export class IriConverter {
   }
 
 
-  static getPatternListIriForPLIri(supportedIRI: string) {
-    return this.getFileName(supportedIRI) + '/' + this.extractIndividualNameFromIri(this.getFileName(supportedIRI)) + '-Patterns';
+  static getPatternListIriForPLIri(plIri: string): string {
+    return this.getFileName(plIri) + '/' + this.extractIndividualNameFromIri(this.getFileName(plIri)) + '-Patterns';
 
+  }
+
+  static getRelationListIriForPLIri(plIri: string): string {
+    return this.getFileName(plIri) + '/' + this.extractIndividualNameFromIri(this.getFileName(plIri)) + '-Relations';
+  }
+
+  static getGithubAPIURLForURI(iri: string): string {
+    if (iri.indexOf('patternlanguages') !== -1 || iri.indexOf('patternviews') !== -1) {
+      const foldername = iri.indexOf('patternlanguages') !== -1 ? 'patternlanguages' : 'patternviews';
+      let relativePath = this.getFileName(iri.split(foldername + '/')[1]);
+      // is this a request for the base file of a patternlanguage add the patternlanguage identifier again (convention)
+      relativePath = relativePath.indexOf('/') !== -1 ? relativePath : `${relativePath}/${relativePath}`;
+      return `${globals.urlGithubAPI}/${foldername}/${relativePath}.ttl`;
+    }
+    if (iri.indexOf('patternpedia') !== -1) {
+      return `${globals.urlGithubAPI}/patternpedia.ttl`;
+    }
+    return iri;
   }
 }

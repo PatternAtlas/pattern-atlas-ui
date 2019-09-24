@@ -1,6 +1,38 @@
 <pp-navigate-back></pp-navigate-back>
-<mat-progress-spinner mode="indeterminate" *ngIf="isLoadingPattern || isLoadingSection"></mat-progress-spinner>
-<h2>{{patternName? patternName : ''}}</h2>
+<mat-progress-spinner mode="indeterminate" *ngIf="isLoading || isLoadingSection"></mat-progress-spinner>
+<h2>{{pattern?.name}}</h2>
 <div>
   <ng-template ppPatternproperty></ng-template>
 </div>
+<mat-card *ngIf="!isLoading">
+  <mat-card-title style="display: flex;
+     align-items: flex-start;"><b>Links</b><i class="material-icons" style="margin-left: 0.3em;">
+    compare_arrows
+  </i></mat-card-title>
+  <div *ngIf="directedPatternRelations?.length > 0">
+    <ng-container *ngFor="let relation of directedPatternRelations">
+      <p style="display: flex;
+     align-items: center">{{ relation.source.name}} <i class="material-icons">trending_flat</i>
+        {{ relation.target.name}} <i>{{relation.description? ': ' + relation.description : ''}}</i></p>
+    </ng-container>
+  </div>
+  <div *ngIf="undirectedPatternRelations?.length > 0">
+    <ng-container *ngFor="let relation of undirectedPatternRelations">
+      <p style="display: flex;
+     align-items: center">{{ relation.hasPattern[0].name}} <i class="material-icons">compare_arrows</i>
+        {{ relation.hasPattern[1].name}} <i>{{relation.description? ': ' + relation.description : ''}}</i></p>
+    </ng-container>
+  </div>
+  <div #noLinksMessage *ngIf="undirectedPatternRelations?.length === 0 && directedPatternRelations?.length === 0"><p> No
+    links found for this pattern.</p></div>
+  <mat-card-actions>
+    <div style="display: flex; align-items: center;">
+      <ngx-md [data]="data"></ngx-md>
+      <button *ngIf="isEditingEnabled" mat-stroked-button
+              style="margin-left: 5px" color="primary"
+              (click)="addLink()" matTooltip="Add Link"><i class="material-icons">trending_flat</i>
+        <i class="material-icons" style="height: 2em;
+    font-size: smaller;  ">add</i></button>
+    </div>
+  </mat-card-actions>
+</mat-card>

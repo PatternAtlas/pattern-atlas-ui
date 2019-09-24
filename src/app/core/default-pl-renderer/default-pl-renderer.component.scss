@@ -2,3 +2,7 @@ mat-card-content.fixed-height-card-content {
   height: 12em;
   overflow: hidden;
 }
+
+.-rotate-90deg {
+  transform: rotate(90deg);
+}

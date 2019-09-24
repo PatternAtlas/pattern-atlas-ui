@@ -4,22 +4,28 @@ import { DefaultPatternLoaderService } from '../service/loader/default-pattern-l
 import { DefaultPlLoaderService } from '../service/loader/default-pl-loader.service';
 import { PatternOntologyService } from '../service/pattern-ontology.service';
 import { ToasterService } from 'angular2-toaster';
-import { SectionResponse } from '../service/data/SectionResponse.interface';
 import { PlRestrictionLoaderService } from '../service/loader/pattern-language-loader/pl-restriction-loader.service';
-import { PatternpropertyDirective } from '../component/type-templates/patternproperty.directive';
-import { PatternLanguageSectionRestriction } from '../model/PatternLanguageSectionRestriction.model';
-import PatternPedia from '../model/pattern-pedia.model';
+import { PatternpropertyDirective } from '../component/markdown-content-container/patternproperty.directive';
 import { IriConverter } from '../util/iri-converter';
-import { DividerComponent } from '../component/type-templates/divider/divider.component';
-import { StringComponent } from '../component/type-templates/xsd/string/string.component';
-import { IntegerComponent } from '../component/type-templates/xsd/integer/integer.component';
-import { DateComponent } from '../component/type-templates/xsd/date/date.component';
-import { ImageComponent } from '../component/type-templates/dcmitype/image/image.component';
-import { DataRenderingComponent } from '../component/type-templates/interfaces/DataRenderingComponent.interface';
-import { PatternInstance } from '../model/PatternInstance.interface';
+import { DividerComponent } from '../component/divider/divider.component';
+import { DataRenderingComponent } from '../component/markdown-content-container/interfaces/DataRenderingComponent.interface';
 import { PatternLanguagePatterns } from '../model/pattern-language-patterns.model';
 import { GithubPersistenceService } from '../service/github-persistence.service';
 import { CookieService } from 'ngx-cookie-service';
+import { MatDialog } from '@angular/material';
+import { CreatePatternRelationComponent, DialogDataResult } from '../component/create-pattern-relation/create-pattern-relation.component';
+import Pattern from '../model/pattern.model';
+import { DirectedPatternRelationDescriptorIndividual } from '../model/directed-pattern-relation-descriptor-individual';
+import { PatternLanguageRelations } from '../model/pattern-language-relations.model';
+import { PatternRelationDescriptorDirection } from '../model/pattern-relation-descriptor-direction.enum';
+import { UndirectedPatternRelationDescriptorIndividual } from '../model/undirected-pattern-relation-descriptor-individual';
+import { DefaultPatternDirectedRelationsLoaderService } from '../service/loader/pattern-language-loader/default-pattern-directed-relations-loader.service';
+import { PatternRelations } from '../model/pattern-relations';
+import { DefaultPatternUndirectedRelationsLoaderService } from '../service/loader/pattern-language-loader/default-pattern-undirected-relations-loader.service';
+import { switchMap, tap } from 'rxjs/internal/operators';
+import { EMPTY } from 'rxjs';
+import { MarkdownPatternSectioncontentComponent } from '../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component';
+import { LoadCompletePatternlanguageService } from '../service/loader/complete-patternlanguage-loader.service';
 
 @Component({
   selector: 'pp-default-pattern-renderer',
@@ -27,122 +33,84 @@ import { CookieService } from 'ngx-cookie-service';
   styleUrls: ['./default-pattern-renderer.component.scss']
 })
 export class DefaultPatternRendererComponent implements OnInit {
-  private sectionRestritions: Map<string, PatternLanguageSectionRestriction[]>;
-  private patterns: Map<string, any>;
-  private pattern: PatternInstance;
+  private pattern: Pattern;
+  private directedPatternRelations: DirectedPatternRelationDescriptorIndividual[];
+  private undirectedPatternRelations: UndirectedPatternRelationDescriptorIndividual[];
+  private allRelations: PatternRelations = new PatternRelations();
+  private patternList: Pattern[];
+  @ViewChild(PatternpropertyDirective) ppPatternproperty: PatternpropertyDirective;
+  plIri: string;
+  patternIri: string;
+  sections: string[];
+  isLoading = true;
+  isEditingEnabled = false;
 
   constructor(private patternLoaderService: DefaultPatternLoaderService,
               private sectionLoader: PlRestrictionLoaderService, private plLoader: DefaultPlLoaderService, private activatedRoute: ActivatedRoute,
               private pos: PatternOntologyService, private toasterService: ToasterService, private cdr: ChangeDetectorRef,
               private componentFactoryResolver: ComponentFactoryResolver,
               private githubPersistenceService: GithubPersistenceService,
-              private cookieService: CookieService) {
+              private cookieService: CookieService,
+              private directedRelationsLoaderService: DefaultPatternDirectedRelationsLoaderService,
+              private undirectedRelationsLoaderService: DefaultPatternUndirectedRelationsLoaderService,
+              private completePatternLanguageLoadingService: LoadCompletePatternlanguageService,
+              public dialog: MatDialog) {
   }
 
-  @ViewChild(PatternpropertyDirective) ppPatternproperty: PatternpropertyDirective;
-  plIri: string;
-  patternIri: string;
-  patternName: string;
-  patternProperties: Map<string, string[]>;
-  sections: SectionResponse[];
-  isLoadingPattern = true;
-  isLoadingSection = true;
-  isEditingEnabled = false;
 
-
-  standardPrefixes = new PatternPedia().defaultPrefixes;
-  xsdPrefix = this.standardPrefixes.get('xsd').replace('<', '').replace('>', '');
-  dcmiPrefix = 'https://purl.org/dc/dcmitype/';
-
-
-  mappings = [
-    {prefix: this.xsdPrefix + 'string', value: StringComponent},
-    {prefix: this.xsdPrefix + 'integer', value: IntegerComponent},
-    {prefix: this.xsdPrefix + 'positiveInteger', value: IntegerComponent},
-    {prefix: this.xsdPrefix + 'nonPositiveInteger', value: IntegerComponent},
-    {prefix: this.xsdPrefix + 'nonNegativeInteger', value: IntegerComponent},
-    {prefix: this.xsdPrefix + 'negativeInteger', value: IntegerComponent},
-    {prefix: this.xsdPrefix + 'date', value: DateComponent},
-    {prefix: this.dcmiPrefix + 'Image', value: ImageComponent},
-  ];
-  defaultComponentForType = new Map(this.mappings.map(x => [x.prefix, x.value] as [string, any]));
-
-
-  ngOnInit() {
+  ngOnInit(): void {
 
     this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
     this.patternIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('pid'));
     this.isEditingEnabled = !!this.cookieService.get('patternpedia_github_token');
 
-    this.loadInfos().then(() => {
+    this.loadInfosAndInitPage();
+
+
+  }
+
+
+  loadInfosAndInitPage(): void {
+    this.completePatternLanguageLoadingService.loadCompletePatternLanguage(this.plIri).then(completePL => {
+      this.plLoader.supportedIRI = this.plIri;
+      this.patternList = completePL.patterns;
+      this.pattern = this.patternList.find(pat => pat.iri === this.patternIri);
+      this.isLoading = false;
+
+      this.allRelations = completePL.patternRelations;
+
+      this.updateUIForPatternRelations();
+      this.sections = completePL.patternlanguage.sections;
+
       const viewContainerRef = this.ppPatternproperty.viewContainerRef;
       viewContainerRef.clear();
 
       const componentDividerFactory = this.componentFactoryResolver.resolveComponentFactory(DividerComponent);
-      this.sections.forEach((sec: SectionResponse) => {
-        this.createSectionComponent(sec.section.value, viewContainerRef, componentDividerFactory);
+      this.sections.forEach((sec: string) => {
+        this.createSectionComponent(sec, viewContainerRef, componentDividerFactory);
       });
+
+      this.isLoading = false;
     });
 
 
   }
 
-
-  private async loadInfos(): Promise<any> {
-
-
-    await this.pos.loadUrisToStore([{token: null, value: this.plIri}]);
-
-    // load patternlanguage and patternlanguage-Patterns file
-    const imports = await this.pos.getOWLImports(this.plIri);
-    const importedPatternIris = imports.map(i => i.import);
-    await  this.pos.loadUrisToStore(importedPatternIris);
-
-
-    //  load all the data from patternlanguage
-    this.plLoader.supportedIRI = this.plIri;
-    this.patterns = await this.plLoader.loadContentFromStore();
-    this.pattern = this.patterns.get(this.patternIri);
-    this.patternProperties = this.pattern.sectionProperties;
-    this.patternName = this.patternProperties.get(IriConverter.getFileName(this.plIri) + '#hasName')[0];
-    this.isLoadingPattern = false;
-
-    // load section restrictions to be able to get the type for a section
-    this.sectionLoader.supportedIRI = this.plIri;
-    this.sectionRestritions = await this.sectionLoader.loadContentFromStore();
-
-    // get section in order
-    this.sections = await this.plLoader.getPLSections(this.plIri);
-    this.isLoadingSection = false;
-
-
-    if (!this.patternProperties) {
-      Promise.reject(null);
-
-    } else {
-      Promise.resolve(null);
-    }
-  }
-
   private createSectionComponent(section: string, viewContainerRef: any, componentDividerFactory) {
-    const properties = this.patternProperties.get(section);
-    const sectionRestrictions = this.sectionRestritions.get(section);
-    if (section.indexOf('#has') !== -1) {
+    const properties = this.pattern.sectionsProperties.get(section);
+    if (section.indexOf('#has') !== -1 && properties) {
       const sectionTitle = section.split('#has')[1].replace(/([A-Z])/g, ' $1').trim();
 
-      const type = (sectionRestrictions && !!sectionRestrictions[0] && sectionRestrictions[0].type) ? sectionRestrictions[0].type : this.xsdPrefix + 'string';
-      const component = this.defaultComponentForType.get(type) ? this.defaultComponentForType.get(type) : StringComponent;
-
-      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
+      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MarkdownPatternSectioncontentComponent);
       const componentRef = viewContainerRef.createComponent(componentFactory);
       const instance = (<DataRenderingComponent>componentRef.instance);
       instance.data = properties.join('\n');
       instance.title = sectionTitle;
       instance.isEditingEnabled = this.isEditingEnabled;
       instance.changeContent.subscribe((data) => {
-        this.patternProperties.set(section, [data]);
-        this.pattern.sectionProperties = this.patternProperties;
-        this.patterns.set(this.patternIri, this.pattern);
+        this.pattern.sectionsProperties.set(section, [data]);
+        const patternIndex = this.patternList.findIndex(pat => pat.iri === this.patternIri);
+        this.patternList[patternIndex] = this.pattern;
         instance.data = data;
         this.savePatterns();
       });
@@ -152,9 +120,65 @@ export class DefaultPatternRendererComponent implements OnInit {
   }
 
   private savePatterns() {
-    const patternList = Array.from(this.patterns.values()).map(it => it.toPattern(this.plIri));
+
     this.githubPersistenceService.updatePLPatterns(new PatternLanguagePatterns(IriConverter.getPatternListIriForPLIri(this.plIri),
-      this.plIri, patternList)).subscribe(() => this.toasterService.pop('success', 'updated patterns'),
+      this.plIri, this.patternList)).subscribe(() => this.toasterService.pop('success', 'Updated patterns'),
       (error) => this.toasterService.pop('error', 'could not update patterns' + error.message));
+  }
+
+  addLink() {
+    const dialogRef = this.dialog.open(CreatePatternRelationComponent, {
+        data: {patternName: this.pattern.name, patterns: this.patternList}
+      }
+    );
+    let relationAdded = false;
+    let patternRelations;
+    dialogRef.afterClosed().pipe(
+      tap((result: DialogDataResult) => {
+        relationAdded = this.addRelationCreatedByDialog(result);
+        patternRelations = new PatternLanguageRelations(IriConverter.getRelationListIriForPLIri(this.plIri), this.plIri, this.allRelations);
+      }),
+      switchMap(() =>
+        relationAdded ? this.githubPersistenceService.updatePLRelations(patternRelations) : EMPTY)).subscribe(
+      () => {
+        if (relationAdded) {
+          this.toasterService.pop('success', 'Created new Relation');
+        }
+      },
+      (error) => this.toasterService.pop('error', 'Could not create new relation: ', error));
+  }
+
+  // adds a relation created by the dialog to the local data and returns whether this was successful (or not, e.g. when simply closing the dialog)
+  addRelationCreatedByDialog(dialogResult: DialogDataResult): boolean {
+    if (!dialogResult || !dialogResult.toPattern || !dialogResult.direction) {
+      return false;
+    }
+    switch (dialogResult.direction.name) {
+      case PatternRelationDescriptorDirection.DirectedRight:
+        this.allRelations.directed.push(new DirectedPatternRelationDescriptorIndividual(this.pattern, dialogResult.toPattern,
+          dialogResult.description ? dialogResult.description : null));
+        break;
+      case PatternRelationDescriptorDirection.DirectedLeft:
+        this.allRelations.directed.push(new DirectedPatternRelationDescriptorIndividual(dialogResult.toPattern, this.pattern,
+          dialogResult.description ? dialogResult.description : null));
+        break;
+      case PatternRelationDescriptorDirection.UnDirected:
+        this.allRelations.undirected.push(new UndirectedPatternRelationDescriptorIndividual(this.pattern, dialogResult.toPattern,
+          dialogResult.description ? dialogResult.description : null));
+        break;
+      default:
+        return false;
+    }
+    this.updateUIForPatternRelations();
+    return true;
+  }
+
+
+  private updateUIForPatternRelations() {
+    this.directedPatternRelations = this.allRelations.directed.filter((rel: DirectedPatternRelationDescriptorIndividual) =>
+      rel.source.iri === this.patternIri || rel.target.iri === this.patternIri);
+    this.undirectedPatternRelations = this.allRelations.undirected.filter((rel: UndirectedPatternRelationDescriptorIndividual) =>
+      rel.hasPattern.some((pat) => pat.iri === this.patternIri));
+    this.cdr.detectChanges();
   }
 }

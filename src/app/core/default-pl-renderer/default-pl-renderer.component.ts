@@ -2,8 +2,11 @@ import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { DefaultPlLoaderService } from '../service/loader/default-pl-loader.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IriConverter } from '../util/iri-converter';
-import { PatternOntologyService } from '../service/pattern-ontology.service';
-import { PatternInstance } from '../model/PatternInstance.interface';
+import { MatDialog } from '@angular/material';
+import { LoadCompletePatternlanguageService } from '../service/loader/complete-patternlanguage-loader.service';
+import { CompletePatternlanguage } from '../model/complete-patternlanguage.interface';
+import Pattern from '../model/pattern.model';
+import PatternLanguage from '../model/pattern-language.model';
 
 @Component({
     selector: 'pp-default-pl-renderer',
@@ -12,17 +15,20 @@ import { PatternInstance } from '../model/PatternInstance.interface';
 })
 export class DefaultPlRendererComponent implements OnInit {
 
-  patterns: PatternInstance[] = [];
+  patterns: Pattern[] = [];
+  patternLanguage: PatternLanguage;
   plIri: string;
   plName: string;
   isLoading = true;
 
+
   constructor(private loader: DefaultPlLoaderService,
-                private activatedRoute: ActivatedRoute,
-                private cdr: ChangeDetectorRef,
-                private zone: NgZone,
-                private router: Router,
-                private pos: PatternOntologyService) {
+              private activatedRoute: ActivatedRoute,
+              private cdr: ChangeDetectorRef,
+              private zone: NgZone,
+              private router: Router,
+              private completePatternLanguageLoadingService: LoadCompletePatternlanguageService,
+              private dialog: MatDialog) {
     }
 
     ngOnInit() {
@@ -30,19 +36,13 @@ export class DefaultPlRendererComponent implements OnInit {
       this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
       this.plName = IriConverter.extractIndividualNameFromIri(this.plIri);
 
-      this.loadData().then(() => {
-        this.isLoading = false;
-        this.cdr.detectChanges();
-      });
+      this.loadData();
     }
 
-  getKeys(map) {
-    return Array.from(map.keys());
-  }
 
-  navigate(pattern: PatternInstance): void {
+  navigate(pattern: Pattern): void {
     this.zone.run(() => {
-      this.router.navigate([IriConverter.convertIriToId(pattern.uri)], {relativeTo: this.activatedRoute});
+      this.router.navigate([IriConverter.convertIriToId(pattern.iri)], {relativeTo: this.activatedRoute});
     });
   }
 
@@ -52,18 +52,19 @@ export class DefaultPlRendererComponent implements OnInit {
     });
   }
 
-  getNameForPattern(pattern: PatternInstance) {
-    return IriConverter.extractIndividualNameFromIri(pattern.uri);
-  }
 
   getSectionName(patternSection: string) {
     return IriConverter.getSectionName(patternSection);
   }
 
-  async loadData() {
-    await this.pos.loadUrisToStore([{value: this.plIri, token: null}]);
-    const importedPatternIris = await this.loader.getOWLImports(this.plIri);
-    await this.pos.loadUrisToStore(importedPatternIris.map(i => i.import));
-    this.patterns = Array.from((await this.loader.loadContentFromStore()).values());
+  loadData() {
+    this.completePatternLanguageLoadingService.loadCompletePatternLanguage(this.plIri).then(
+      (completePL: CompletePatternlanguage) => {
+        this.patterns = completePL.patterns;
+        this.patternLanguage = completePL.patternlanguage;
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      });
   }
+
 }

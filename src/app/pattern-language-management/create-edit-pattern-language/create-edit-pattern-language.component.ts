@@ -1,12 +1,18 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
-import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatDialogRef } from '@angular/material';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatDialogRef } from '@angular/material';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/internal/operators';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
 import { ValidationService } from '../../core/service/validation.service';
+import { PatternLanguageSectionRestriction } from '../../core/model/PatternLanguageSectionRestriction.model';
 
+
+interface DialogData {
+  plIri: string;
+  plName: string;
+}
 
 @Component({
   selector: 'pp-create-edit-pattern-language',
@@ -15,6 +21,14 @@ import { ValidationService } from '../../core/service/validation.service';
 })
 export class CreateEditPatternLanguageComponent implements OnInit {
   private sectionRestrictonValidators: ValidatorFn[];
+  isAddLinkTypeDialog = false;
+
+  types = [{name: 'directed_right', icon: 'trending_flat'}, {name: 'directed_left', icon: 'trending_flat'}, {
+    name: 'undirected',
+    icon: 'compare_arrows'
+  }, {name: 'group', icon: 'merge_type'}];
+  relationForm: FormGroup;
+
 
   get name(): AbstractControl {
     return this.patternLanguageForm.get('name');
@@ -33,11 +47,19 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   }
 
 
-  constructor(public dialogRef: MatDialogRef<CreateEditPatternLanguageComponent>, private  _fb: FormBuilder, private cdr: ChangeDetectorRef,
-              private validatorService: ValidationService) {
+  constructor(public dialogRef: MatDialogRef<CreateEditPatternLanguageComponent>, private _fb: FormBuilder, private cdr: ChangeDetectorRef,
+              @Inject(MAT_DIALOG_DATA) public data: DialogData) {
+
     this.filteredSections = this.sectionCtrl.valueChanges.pipe(
       startWith(null),
       map((section: string | null) => section ? this._filter(section) : this.sectionNames.slice()));
+
+    this.relationForm = this._fb.group({
+      toPattern: ['', [Validators.required]],
+      direction: ['', [Validators.required]],
+      description: ['', []],
+    });
+
   }
 
   isFirstStep = true;
@@ -71,7 +93,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     const urlRegex = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
     this.patternLanguageForm = this._fb.group({
       name: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9_-\s]+')]],
-      iconUrl: ['', [Validators.required, Validators.pattern(urlRegex)]]
+      iconUrl: ['', this.isAddLinkTypeDialog ? [] : [Validators.required, Validators.pattern(urlRegex)]]
     });
     this.iconUrl.valueChanges.pipe(debounceTime(1000), distinctUntilChanged()).subscribe((urlValue) => {
       this.iconPreviewVisible = urlValue && (urlValue.startsWith('https://') || urlValue.startsWith('http://'));
@@ -223,7 +245,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     this.saveRequested = true;
     if (this.patternLanguageForm.valid && this.sectionDetailsGroup.valid) {
       this.saveClicked.emit({
-        restrictions: this.sectionsArray.value,
+        restrictions: this.mapArrayToMap(this.sectionsArray.value),
         sections: this.sections,
         name: this.name.value,
         prefixes: this.prefixArray.value,
@@ -303,6 +325,17 @@ export class CreateEditPatternLanguageComponent implements OnInit {
       control.get('type').markAsDirty();
       control.get('type').markAsTouched();
     }
+  }
+
+
+  private mapArrayToMap(arrayRestrictions: any[]): Map<string, PatternLanguageSectionRestriction[]> {
+    const restrictionMap = new Map<string, PatternLanguageSectionRestriction[]>();
+    arrayRestrictions.forEach(sectionRestriction => {
+      restrictionMap.set(sectionRestriction.name,
+        restrictionMap.has(sectionRestriction.name) ?
+          restrictionMap.get(sectionRestriction.name).concat(<PatternLanguageSectionRestriction> sectionRestriction) : [<PatternLanguageSectionRestriction> sectionRestriction]);
+    });
+    return restrictionMap;
   }
 }
 

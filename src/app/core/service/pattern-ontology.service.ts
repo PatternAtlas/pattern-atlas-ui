@@ -29,6 +29,8 @@ import { GithubPersistenceService } from './github-persistence.service';
 import { GithubFileResponse } from './data/GithubFileResponse.interface';
 import { RestrictionResponse } from './data/RestrictionResponse.interface';
 import { PatternProperty } from './data/PatternProperty.interface';
+import { DirectedPatternRelationDescriptorResponse } from './data/DirectedPatternRelationDescriptorResponse.interface';
+import { UndirectedPatternRelationDescriptorResponse, } from './data/UndirectedPatternRelationDescriptorResponse.interface';
 
 @Injectable()
 export class PatternOntologyService implements SparqlExecutor {
@@ -192,12 +194,8 @@ export class PatternOntologyService implements SparqlExecutor {
     }
     const observables = uri.map((iri) => {
       if (this.cookieService.get('patternpedia_github_token')) {
-        const githubUrl = this.githubPersistenceService.githubBaseUrl;
-        let url = iri;
-        if (iri === 'https://purl.org/patternpedia') {
-          url = githubUrl + '/patternpedia.ttl';
-        }
-        return this.githubPersistenceService.getFile(url).pipe(
+        const githubApiFileUrl = IriConverter.getGithubAPIURLForURI(iri);
+        return this.githubPersistenceService.getFile(githubApiFileUrl).pipe(
           map((fileResponse: GithubFileResponse) => {
             return atob(fileResponse.content);
           }));
@@ -620,7 +618,7 @@ export class PatternOntologyService implements SparqlExecutor {
   }
 
   getPLSections(graphIri: string): Promise<SectionResponse[]> {
-    const qryPatternGraph = `SELECT ?section ?index
+    const qryPatternGraph = `SELECT DISTINCT ?section ?index
     WHERE {
     {
      ?section a owl:DatatypeProperty .
@@ -633,5 +631,29 @@ export class PatternOntologyService implements SparqlExecutor {
     }
     ORDER BY ?index`;
     return this.exec(qryPatternGraph, [IriConverter.getFileName(graphIri)]);
+  }
+
+  getDirectedPatternRelations(supportedIRI: string): Promise<DirectedPatternRelationDescriptorResponse[]> {
+    const qryPatternGraph = `SELECT ?source ?target ?description WHERE {
+     ?relationlink a owl:NamedIndividual .
+     ?relationlink a pp:DirectedPatternRelationDescriptor .
+     ?relationlink 	pp:hasSource ?source .
+     ?relationlink 	pp:hasTarget ?target . 
+      optional {?relationlink pp:hasDescription ?description .}
+    }
+`;
+    return this.exec(qryPatternGraph, [IriConverter.getFileName(supportedIRI)]);
+  }
+
+  getUndirectedPatternRelations(supportedIRI: string): Promise<UndirectedPatternRelationDescriptorResponse[]> {
+    const qryPatternGraph = `SELECT ?relationlink ?pattern
+    WHERE {
+     ?relationlink a owl:NamedIndividual .
+     ?relationlink a pp:UndirectedPatternRelationDescriptor .
+     ?relationlink 	pp:hasPattern ?pattern .
+      optional {?relationlink pp:hasDescription ?description .}
+    }
+`;
+    return this.exec(qryPatternGraph, [IriConverter.getFileName(supportedIRI)]);
   }
 }

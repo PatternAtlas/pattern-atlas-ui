@@ -2,7 +2,7 @@
 <div fxLayout="row" fxLayoutAlign="space-around center"><h2>
   Add a new pattern to {{plName}}
 </h2></div>
-<div fxLayout="row" fxLayoutAlign="space-around center">
+<div fxLayout="row" fxLayoutAlign="center center" class="editor-preview-container">
 
   <td-text-editor ppEmitOnChange (onKeyup)="onChangeMarkdownText()" class="markdownEditor"
                   [(value)]="previousTextEditorValue" [options]="options"
@@ -21,7 +21,7 @@
           <span>{{message}}<br></span>
         </div>
       </mat-error>
-      <button (click)="save()" class="save-button" mat-raised-button color="accent" style="float: right"><i
+      <button (click)="save()" class="save-button" mat-raised-button color="primary" style="float: right"><i
         class="material-icons">save</i>Save
       </button>
     </div>

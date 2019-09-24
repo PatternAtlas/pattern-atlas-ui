@@ -1,18 +1,19 @@
 <div style="display: flex; justify-content: space-between; align-items: baseline">
-  <h1 mat-dialog-title>Edit {{data.label? "'" + data.label + "'" : ''}}</h1>
-    <button mat-flat-button (click)="close()" tabindex="-1">
-        <i class="material-icons">close</i>
-    </button>
+  <h1 mat-dialog-title>Edit '{{data.label}}'</h1>
+  <button mat-flat-button (click)="close()" tabindex="-1">
+    <i class="material-icons">close</i>
+  </button>
 </div>
 <div mat-dialog-content>
-    <td-text-editor #mdEditor [value]="data.content"></td-text-editor>
+  <td-text-editor #mdEditor [value]="data.content"></td-text-editor>
 </div>
 <div mat-dialog-actions>
-    <button mat-raised-button color="warn"
-            (click)="revert()" matTooltip="Revert Changes">
-        <i class="material-icons">restore</i> Revert
-    </button>
-    <button mat-raised-button color="primary" (click)="saveChanges()"><i
-            class="material-icons">save</i> Save
-    </button>
+  <button mat-raised-button color="warn"
+          (click)="revert()" matTooltip="Revert Changes">
+    <i class="material-icons">restore</i> Revert
+  </button>
+  <button mat-raised-button color="primary" (click)="saveChanges()"><i
+    class="material-icons">save</i> Save
+  </button>
 </div>
+

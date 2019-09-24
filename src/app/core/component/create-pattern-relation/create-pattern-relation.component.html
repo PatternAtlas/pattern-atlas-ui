@@ -1,0 +1,37 @@
+<h1 mat-dialog-title>Add a relation to another pattern</h1>
+<div mat-dialog-content [formGroup]="relationForm">
+  <mat-form-field>
+    <input type="text" matInput [value]="data.patternName" readonly>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Direction</mat-label>
+    <mat-select formControlName="direction">
+      <mat-select-trigger>
+        <i class="material-icons"
+           [ngClass]="{'flip': relationForm.value?.direction?.name === directionEnum.DirectedLeft}">{{relationForm.value
+          ? relationForm.value.direction?.icon: ''}}</i>
+      </mat-select-trigger>
+      <mat-option *ngFor="let type of types" [value]="type">
+        <i class="material-icons" [ngClass]="{'flip': type?.name === directionEnum.DirectedLeft}">{{type?.icon}}</i>
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Select a pattern</mat-label>
+    <mat-select formControlName="toPattern">
+      <mat-option *ngFor="let pattern of data.patterns"
+                  [value]="pattern">
+        {{pattern.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field style="display: block">
+    <textarea matInput formControlName="description" placeholder="Provide a description"></textarea>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="close()">Close</button>
+  <button mat-button [mat-dialog-close]="relationForm.value" [disabled]="!relationForm?.valid">Save
+  </button>
+</div>

@@ -16,28 +16,29 @@
 
 ###  https://purl.org/patternpedia#containsPattern
 :containsPattern rdf:type owl:ObjectProperty ;
-                 rdfs:domain :PatternLanguage ;
+                 rdfs:domain :PatternGraph ;
                  rdfs:range :Pattern .
 
  ###  https://purl.org/patternpedia#containsPattern
- :containsPatternRelationDescriptors rdf:type owl:ObjectProperty ;
-                  rdfs:domain :PatternLanguage ;
-                  rdfs:range :Pattern .
+ :containsPatternRelationDescriptor rdf:type owl:ObjectProperty ;
+                  rdfs:domain :PatternGraph ;
+                  rdfs:range :PatternRelationDescriptor .
 
 ###  https://purl.org/patternpedia#containsPatternGraph
 :containsPatternGraph rdf:type owl:ObjectProperty ;
                          rdfs:domain :PatternPedia ;
-                         rdfs:range :PatternLanguage .
+                         rdfs:range :PatternGraph .
 
 
 ###  https://purl.org/patternpedia#hasPatternRelation
-:hasPatternRelation rdf:type owl:ObjectProperty ;
+:hasPattern rdf:type owl:ObjectProperty ;
                     rdfs:domain :Pattern ;
                     rdfs:range :PatternRelationDescriptor .
 
-
-###  https://purl.org/patternpedia#hasRelatedPattern
-:hasRelatedPattern rdf:type owl:ObjectProperty .
+###  https://purl.org/patternpedia#referredByView
+:referredByView rdf:type owl:ObjectProperty ;
+                    rdfs:domain :PatternView ;
+                    rdfs:range :PatternLanguage .
 
 
 ###  https://purl.org/patternpedia#hasSource
@@ -68,6 +69,9 @@
 ###  http://purl.org/patternpedia#hasDescription
 :hasDescription rdf:type owl:DatatypeProperty .
 
+# type of a relation
+###  https://purl.org/patternpedia#hasRelationType
+:hasRelationType rdf:type owl:DatatypeProperty .
 
 ###  http://purl.org/patternpedia#hasLabel
 :hasLabel rdf:type owl:DatatypeProperty .
@@ -75,11 +79,13 @@
 ###  https://purl.org/patternpedia#hasListIndex
 :hasListIndex rdf:type owl:DatatypeProperty .
 
+
 #################################################################
 #    Classes
 #################################################################
 
 ###  https://purl.org/patternpedia#DatatypePropertyListItem
+###  Datatype for which an index must be specified, e.g. for ordered section (=datatypes) of a patternlanguage
 :DatatypePropertyListItem rdf:type owl:Class ;
                  rdfs:subClassOf owl:DatatypeProperty;
                  rdfs:subClassOf [ rdf:type owl:Restriction ;
@@ -135,46 +141,47 @@
 
 
 ###  https://purl.org/patternpedia#PatternRelationDescriptor
+###  A Description is optional
 :PatternRelationDescriptor rdf:type owl:Class ;
-                           rdfs:subClassOf [ rdf:type owl:Restriction ;
-                                             owl:onProperty :hasSource ;
-                                             owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                             owl:onClass :Pattern
-                                           ] ,
-                                           [ rdf:type owl:Restriction ;
-                                             owl:onProperty :hasTarget ;
-                                             owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                             owl:onClass :Pattern
-                                           ] .
+                           rdfs:subClassOf
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty :hasDescription ;
+                                  owl:allValuesFrom xsd:string
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                  owl:onProperty :hasRelationType ;
+                                  owl:allValuesFrom xsd:string
+                                 ] .
 
 
-# Describes the relation between two patterns in a directed manner, i.e. with a source and a target pattern
+# Describes the relation between two patterns in a directed manner, with a source and a target pattern
 # The meaning of the direction depends on the specific use case
-# We can have multiple description string per descriptor. Description is optional
 ###  http://purl.org/patternpedia#DirectedPatternRelationDescriptor
 :DirectedPatternRelationDescriptor
     rdf:type owl:Class ;
     rdfs:subClassOf :PatternRelationDescriptor ,
         [ rdf:type owl:Restriction ;
-          owl:onProperty :hasDescription ;
-          owl:allValuesFrom xsd:string
-        ] .
+          owl:onProperty :hasSource ;
+          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+          owl:onClass :Pattern
+         ] ,
+         [ rdf:type owl:Restriction ;
+           owl:onProperty :hasTarget ;
+           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+           owl:onClass :Pattern
+         ] .
 
 
 # Describes the relation between exactly two patterns without any direction.
-# Contains any number of descriptions
 ###  http://purl.org/patternpedia#UndirectedPatternRelationDescriptor
 :UndirectedPatternRelationDescriptor
     rdf:type owl:Class ;
-    rdfs:subClassOf [ rdf:type owl:Restriction ;
+    rdfs:subClassOf :PatternRelationDescriptor ,
+                    [ rdf:type owl:Restriction ;
                       owl:onProperty :hasPattern ;
                       owl:qualifiedCardinality "2"^^xsd:nonNegativeInteger ;
                       owl:onClass :Pattern
-                    ] ,
-                    [ rdf:type owl:Restriction ;
-                      owl:onProperty :hasDescription ;
-                      owl:allValuesFrom xsd:string
-                    ] .
+                     ] .
 
 
 # Hyperedges describe the relation of a set of patterns

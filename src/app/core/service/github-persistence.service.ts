@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { forkJoin, Observable } from 'rxjs';
+import { EMPTY, forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import PatternLanguage from '../model/pattern-language.model';
 import { switchMap } from 'rxjs/internal/operators';
@@ -9,13 +9,15 @@ import { CookieService } from 'ngx-cookie-service';
 import { GithubFileResponse } from './data/GithubFileResponse.interface';
 import { IriConverter } from '../util/iri-converter';
 import { PatternLanguagePatterns } from '../model/pattern-language-patterns.model';
+import { PatternLanguageRelations } from '../model/pattern-language-relations.model';
+import { globals } from '../../globals';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GithubPersistenceService {
 
-  githubBaseUrl = 'https://api.github.com/repos/PatternPedia/patternpediacontent/contents';
+  githubBaseUrl = globals.urlGithubAPI;
   githubPatternPediaUrl = this.githubBaseUrl + '/patternpedia.ttl';
 
   constructor(private httpClient: HttpClient, private cookieService: CookieService) {
@@ -104,7 +106,7 @@ export class GithubPersistenceService {
   }
 
   updatePLPatterns(patternLanguagePatterns: PatternLanguagePatterns): Observable<any> {
-    const githubUrlPLPatterns = this.getGithubPathForPatternLanguagePatterns(patternLanguagePatterns);
+    const githubUrlPLPatterns = this.getGithubPathForPatternLanguagePatternsOrRelations(patternLanguagePatterns);
     return this.getFile(githubUrlPLPatterns).pipe(
       switchMap((res: GithubFileResponse) => {
           return this.httpClient.put(githubUrlPLPatterns, {
@@ -122,22 +124,52 @@ export class GithubPersistenceService {
       ));
   }
 
-  uploadPLPatterns(patternLanguagePatterns: PatternLanguagePatterns): Observable<any> {
-    const githubUrlPLPatterns = this.getGithubPathForPatternLanguagePatterns(patternLanguagePatterns);
-    return this.httpClient.put(githubUrlPLPatterns, {
-        message: 'initialize patternslist (currently empty)  of' + IriConverter.extractIndividualNameFromIri(patternLanguagePatterns.plIri),
+  updatePLRelations(patternLanguageRelations: PatternLanguageRelations): Observable<any> {
+    if (!patternLanguageRelations) {
+      return EMPTY;
+    }
+    const githubUrlPLPatterns = this.getGithubPathForPatternLanguagePatternsOrRelations(patternLanguageRelations);
+    return this.getFile(githubUrlPLPatterns).pipe(
+      switchMap((res: GithubFileResponse) => {
+          return this.httpClient.put(githubUrlPLPatterns, {
+              message: 'update patterns of' + IriConverter.extractIndividualNameFromIri(patternLanguageRelations.plIri),
+              content: btoa(patternLanguageRelations.toTurtle()),
+              sha: res.sha
+            }
+            , {
+              headers: {
+                'Content-Type': 'application/x-turtle',
+                'Authorization': `token ${this.cookieService.get('patternpedia_github_token')}`
+              }
+            });
+        }
+      ));
+  }
+
+  uploadPLPatternsAndRelations(patternLanguagePatterns: PatternLanguagePatterns, patternLanguageRelations: PatternLanguageRelations): Observable<any> {
+    const headers = {
+      'Content-Type': 'application/x-turtle',
+      'Authorization': `token ${this.cookieService.get('patternpedia_github_token')}`
+    };
+    return this.httpClient.put(this.getGithubPathForPatternLanguagePatternsOrRelations(patternLanguagePatterns), {
+        message: 'initialize patternslist (currently empty)  of ' + IriConverter.extractIndividualNameFromIri(patternLanguagePatterns.plIri),
         content: btoa(patternLanguagePatterns.toTurtle())
       }
       , {
-        headers: {
-          'Content-Type': 'application/x-turtle',
-          'Authorization': `token ${this.cookieService.get('patternpedia_github_token')}`
-        }
-      });
+        headers: headers
+      }).pipe(
+      switchMap(() =>
+        this.httpClient.put(this.getGithubPathForPatternLanguagePatternsOrRelations(patternLanguageRelations), {
+            message: 'initialize patternrelationslist (currently empty)  of ' + IriConverter.extractIndividualNameFromIri(patternLanguageRelations.plIri),
+            content: btoa(patternLanguageRelations.toTurtle())
+          }
+          , {
+            headers: headers
+          })));
   }
 
 
-  private getGithubPathForPatternLanguagePatterns(patternLanguagePatterns: PatternLanguagePatterns): string {
-    return `${this.githubBaseUrl}/patternlanguages/${IriConverter.extractIndividualNameFromIri(patternLanguagePatterns.plIri)}/${IriConverter.extractIndividualNameFromIri(patternLanguagePatterns.iri)}.ttl`;
+  private getGithubPathForPatternLanguagePatternsOrRelations(patternLanguagePatternsOrRelations: PatternLanguagePatterns | PatternLanguageRelations): string {
+    return `${this.githubBaseUrl}/patternlanguages/${IriConverter.extractIndividualNameFromIri(patternLanguagePatternsOrRelations.plIri)}/${IriConverter.extractIndividualNameFromIri(patternLanguagePatternsOrRelations.iri)}.ttl`;
   }
 }
