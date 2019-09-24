@@ -94,9 +94,9 @@ export class ClrLoaderService extends Loader<LanguageRelation> {
         ?sourceUri pp:hasName ?sourceName .
         ?targetUri pp:hasName ?targetName .
         FILTER(?sourceUri = <${uri}> || ?targetUri = <${uri}>) .
-            FILTER(?otherLangUri != <${this.supportedIRI}>) .
+        FILTER(?otherLangUri != <${this.supportedIRI}>) .
       }`;
-
+      
     return this.executor.exec(qry, graphs);
   }
 
