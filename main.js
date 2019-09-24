@@ -1284,7 +1284,10 @@ var DefaultPatternRendererComponent = /** @class */ (function () {
     };
     DefaultPatternRendererComponent.prototype.savePatterns = function () {
         var _this = this;
-        this.githubPersistenceService.updatePLPatterns(new _model_pattern_language_patterns_model__WEBPACK_IMPORTED_MODULE_10__["PatternLanguagePatterns"](_util_iri_converter__WEBPACK_IMPORTED_MODULE_8__["IriConverter"].getPatternListIriForPLIri(this.plIri), this.plIri, this.patternList)).subscribe(function () { return _this.toasterService.pop('success', 'Updated patterns'); }, function (error) { return _this.toasterService.pop('error', 'could not update patterns' + error.message); });
+        this.githubPersistenceService.updatePLPatterns(new _model_pattern_language_patterns_model__WEBPACK_IMPORTED_MODULE_10__["PatternLanguagePatterns"](_util_iri_converter__WEBPACK_IMPORTED_MODULE_8__["IriConverter"].getPatternListIriForPLIri(this.plIri), this.plIri, this.patternList)).subscribe(function () {
+            _this.reloadInfoAfterPatternUpdate();
+            _this.toasterService.pop('success', 'Updated patterns');
+        }, function (error) { return _this.toasterService.pop('error', 'could not update patterns' + error.message); });
     };
     DefaultPatternRendererComponent.prototype.addLink = function () {
         var _this = this;
@@ -1334,6 +1337,13 @@ var DefaultPatternRendererComponent = /** @class */ (function () {
             return rel.hasPattern.some(function (pat) { return pat.iri === _this.patternIri; });
         });
         this.cdr.detectChanges();
+    };
+    DefaultPatternRendererComponent.prototype.reloadInfoAfterPatternUpdate = function () {
+        var _this = this;
+        // remove the old data for patterns from our local storage, because we just updated it
+        this.pos.clearGraph(_util_iri_converter__WEBPACK_IMPORTED_MODULE_8__["IriConverter"].getPatternListIriForPLIri(this.plIri)).then(function () {
+            return _this.loadInfosAndInitPage();
+        });
     };
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])(_component_markdown_content_container_patternproperty_directive__WEBPACK_IMPORTED_MODULE_7__["PatternpropertyDirective"]),
@@ -3885,6 +3895,21 @@ var PatternOntologyService = /** @class */ (function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
             _this.store.load(mediaType, data, graphIri, function (err, result) {
+                if (!err) {
+                    resolve(result);
+                }
+                else {
+                    console.log('error while loading ' + graphIri);
+                    reject(err);
+                }
+            });
+        });
+    };
+    // clear graph to remove locally stored data, so loading the URI into the graph storage will show only the updated data
+    PatternOntologyService.prototype.clearGraph = function (graphIri) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            _this.store.clear(graphIri, function (err, result) {
                 if (!err) {
                     resolve(result);
                 }
