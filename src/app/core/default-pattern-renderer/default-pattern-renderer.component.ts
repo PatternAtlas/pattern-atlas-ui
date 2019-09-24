@@ -122,7 +122,10 @@ export class DefaultPatternRendererComponent implements OnInit {
   private savePatterns() {
 
     this.githubPersistenceService.updatePLPatterns(new PatternLanguagePatterns(IriConverter.getPatternListIriForPLIri(this.plIri),
-      this.plIri, this.patternList)).subscribe(() => this.toasterService.pop('success', 'Updated patterns'),
+      this.plIri, this.patternList)).subscribe(() => {
+        this.reloadInfoAfterPatternUpdate();
+        this.toasterService.pop('success', 'Updated patterns');
+      },
       (error) => this.toasterService.pop('error', 'could not update patterns' + error.message));
   }
 
@@ -180,5 +183,12 @@ export class DefaultPatternRendererComponent implements OnInit {
     this.undirectedPatternRelations = this.allRelations.undirected.filter((rel: UndirectedPatternRelationDescriptorIndividual) =>
       rel.hasPattern.some((pat) => pat.iri === this.patternIri));
     this.cdr.detectChanges();
+  }
+
+  private reloadInfoAfterPatternUpdate() {
+    // remove the old data for patterns from our local storage, because we just updated it
+    this.pos.clearGraph(IriConverter.getPatternListIriForPLIri(this.plIri)).then(
+      () =>  // reload the data to get the new values
+        this.loadInfosAndInitPage());
   }
 }
