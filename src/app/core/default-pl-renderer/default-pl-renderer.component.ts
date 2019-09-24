@@ -2,9 +2,7 @@ import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { DefaultPlLoaderService } from '../service/loader/default-pl-loader.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IriConverter } from '../util/iri-converter';
-import { CreateEditPatternLanguageComponent } from '../../pattern-language-management/create-edit-pattern-language/create-edit-pattern-language.component';
 import { MatDialog } from '@angular/material';
-import { DialogPatternLanguageResult } from '../../pattern-language-management/data/DialogPatternLanguageResult.interface';
 import { LoadCompletePatternlanguageService } from '../service/loader/complete-patternlanguage-loader.service';
 import { CompletePatternlanguage } from '../model/complete-patternlanguage.interface';
 import Pattern from '../model/pattern.model';
@@ -69,12 +67,4 @@ export class DefaultPlRendererComponent implements OnInit {
       });
   }
 
-  addRelationType() {
-    const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent, {
-      data: {plIri: this.plIri, plName: this.plName}
-    });
-    (<CreateEditPatternLanguageComponent> dialogRef.componentInstance).saveClicked.subscribe((result: DialogPatternLanguageResult) => {
-
-    });
-  }
 }
