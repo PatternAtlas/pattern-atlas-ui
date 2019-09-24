@@ -24,6 +24,9 @@ import { IriConverter } from '../../../core/util/iri-converter';
 import { NgxMdModule } from 'ngx-md';
 import { CloudComputingPatternsWriterService } from './writer/cloud-computing-patterns-writer.service';
 import { CoreModule } from '../../../core/core.module';
+import { CloudComputingPatternsGraphComponent } from './component/cloud-computing-patterns-graph/cloud-computing-patterns-graph.component';
+import { GraphModule } from 'src/app/graph/graph.module';
+import { FilterModule } from 'src/app/filter/filter.module';
 
 @NgModule({
     imports: [
@@ -35,11 +38,14 @@ import { CoreModule } from '../../../core/core.module';
         MatIconModule,
         NgxMdModule.forRoot(),
         CoreModule,
-        RouterModule
+        RouterModule,
+        GraphModule,
+        FilterModule
     ],
     declarations: [
         CloudComputingPatternComponent,
         CloudComputingPatternsComponent,
+        CloudComputingPatternsGraphComponent
     ],
     providers: [
         CloudComputingPatternsLoaderService,
@@ -49,13 +55,21 @@ import { CoreModule } from '../../../core/core.module';
     entryComponents: [
         CloudComputingPatternComponent,
         CloudComputingPatternsComponent,
+        CloudComputingPatternsGraphComponent
     ]
 })
 export class CloudComputingPatternsModule {
     constructor(private cr: ComponentRegistryService) {
       this.cr.registerComponent(IriConverter.convertIriToId('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#CloudComputingPatterns'), {
-            plcomponent: CloudComputingPatternsComponent,
-            pcomponent: CloudComputingPatternComponent
+          plcomponent: CloudComputingPatternsComponent,
+          pcomponent: CloudComputingPatternComponent,
+          label: 'Cards'
         }); // tslint:disable-line:max-line-length
+
+      this.cr.registerComponent(IriConverter.convertIriToId('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#CloudComputingPatterns'), {
+          plcomponent: CloudComputingPatternsGraphComponent,
+          pcomponent: CloudComputingPatternsGraphComponent,
+          label: 'Network Graph'
+      }); // tslint:disable-line:max-line-length
     }
 }

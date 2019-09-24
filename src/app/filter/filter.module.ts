@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FilterViewComponent } from './component/filter-view/filter-view.component';
-import { MatCardModule, MatDividerModule, MatFormFieldModule, MatCheckboxModule } from "@angular/material";
+import { MatCardModule, MatDividerModule, MatFormFieldModule, MatCheckboxModule, MatInputModule, MatButtonModule } from '@angular/material';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [FilterViewComponent],
@@ -10,7 +11,10 @@ import { MatCardModule, MatDividerModule, MatFormFieldModule, MatCheckboxModule 
     MatCardModule,
     MatDividerModule,
     MatFormFieldModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    FormsModule,
+    MatInputModule,
+    MatButtonModule
   ],
   exports: [
     FilterViewComponent

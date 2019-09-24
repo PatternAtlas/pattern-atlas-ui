@@ -1,3 +1,4 @@
+import { PatternLanguageGraphComponent } from './pattern-language-management/pattern-language-graph/pattern-language-graph.component';
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -38,13 +39,17 @@ const routes: Routes = [
         component: TestComponent
     },
     {
+        path: 'graph',
+        component: PatternLanguageGraphComponent
+    },
+    {
         path: '**',
         component: PageNotFoundComponent
     }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {useHash: false}), ToasterModule.forRoot()],
+  imports: [RouterModule.forRoot(routes, {useHash: false, onSameUrlNavigation: 'reload'}), ToasterModule.forRoot()],
     exports: [RouterModule]
 })
 export class AppRoutingModule {

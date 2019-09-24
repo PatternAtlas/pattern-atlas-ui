@@ -8,11 +8,11 @@ import { IriConverter } from 'src/app/core/util/iri-converter';
 })
 export class EnterpriseIntegrationPatternLoaderService extends Loader<any> {
 
-  constructor(private pos: PatternOntologyService) { 
+  constructor(private pos: PatternOntologyService) {
     super('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos);
   }
 
-  loadContentFromStore(uri?: string): Promise<Map<string, any>> {
+  async loadContentFromStore(uri?: string): Promise<Map<string, any>> {
     return this.selectContentFromStore(uri)
             .then(
                 triples => this.mapTriples(triples, uri)
@@ -21,7 +21,9 @@ export class EnterpriseIntegrationPatternLoaderService extends Loader<any> {
 
   async selectContentFromStore(uri?: string): Promise<any> {
     // we need a specific pattern of form 'pattern#Pattern'
-    if (!uri) return Promise.resolve();
+    if (!uri) {
+      return Promise.resolve();
+    }
 
     // get all information about the given pattern uri
     const qry = `SELECT ?name ?groupName ?description
@@ -32,14 +34,18 @@ export class EnterpriseIntegrationPatternLoaderService extends Loader<any> {
               <https://purl.org/patternpedia#hasLabel> ?groupName ;
               <https://purl.org/patternpedia#hasPattern> <${uri}> .
       }`;
-    
+
     // links URI needed for group
-    const graphs = [IriConverter.getFileName(this.supportedIRI), IriConverter.getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns'];
+    const graphs = [
+      IriConverter.getFileName(this.supportedIRI),
+      IriConverter.getFileName(uri),
+      'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns'
+    ];
     graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
     graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
     graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
 
-    return this.executor.exec(qry, graphs);
+    return this.pos.exec(qry, graphs);
   }
 
   mapTriples(triples: any, uri?: string): Promise<Map<string, any>> {
@@ -85,7 +91,7 @@ export class EnterpriseIntegrationPatternLoaderService extends Loader<any> {
 
     const result = new Map<string, any>();
     result.set(uri, data);
-    
+
     return Promise.resolve(result);
   }
 }

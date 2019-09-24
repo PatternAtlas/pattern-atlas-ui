@@ -1,3 +1,5 @@
+import { GraphModule } from './../graph/graph.module';
+import { GraphComponent } from './../graph/component/graph/graph.component';
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -45,6 +47,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ProcessOauthCallbackComponent } from '../core/component/process-oauth-callback/process-oauth-callback.component';
 import { ToasterModule } from 'angular2-toaster';
+import { PatternLanguageGraphComponent } from './pattern-language-graph/pattern-language-graph.component';
 
 @NgModule({
     imports: [
@@ -68,7 +71,8 @@ import { ToasterModule } from 'angular2-toaster';
       MatSelectModule,
       MatRadioModule,
       MatCheckboxModule,
-      ToasterModule
+      ToasterModule,
+      GraphModule
     ],
     declarations: [
         PatternLanguageManagementComponent,
@@ -78,7 +82,8 @@ import { ToasterModule } from 'angular2-toaster';
         PatternContainerDirective,
       CreateEditPatternLanguageComponent,
       CreatePatternComponent,
-      ProcessOauthCallbackComponent
+      ProcessOauthCallbackComponent,
+      PatternLanguageGraphComponent
     ],
   entryComponents: [
     CreateEditPatternLanguageComponent

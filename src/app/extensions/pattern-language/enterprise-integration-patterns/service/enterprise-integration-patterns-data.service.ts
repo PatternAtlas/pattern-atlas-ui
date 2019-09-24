@@ -3,7 +3,7 @@ import { EnterpriseIntegrationPatternsLoaderService } from '../loader/enterprise
 import { EnterpriseIntegrationPatternsLinkLoaderService } from '../loader/enterprise-integration-patterns-link-loader.service';
 import { EnterpriseIntegrationPatternsGroupLoaderService } from '../loader/enterprise-integration-patterns-group-loader.service';
 import EnterpriseIntegrationPattern from '../model/enterprise-integration-pattern';
-import { Link } from '../model';
+import { Link } from 'src/app/graph/model';
 
 @Injectable({
   providedIn: 'root'
@@ -27,50 +27,14 @@ export class EnterpriseIntegrationPatternsDataService {
 
   getNodeData(): Promise<Map<string, EnterpriseIntegrationPattern>> {
     return this.nodeLoader.loadContentFromStore();
-    
-    // if there is no data yet...
-    // if (!this.nodeData) {
-    //   return new Promise((resolve, reject) => {
-    //     // ... load it
-    //     this.nodeLoader.loadContentFromStore()
-    //       .then(nodeMap => {
-    //         this.nodeData = nodeMap;
-    //         resolve(nodeMap);
-    //       });
-    //   });
-    // } else {
-    //   return Promise.resolve(this.nodeData);
-    // }
   }
 
   getLinkData(): Promise<Map<string, Link>> {
     return this.linkLoader.loadContentFromStore();
-    // if (!this.linkData) {
-    //   return new Promise((resolve, reject) => {
-    //     this.linkLoader.loadContentFromStore()
-    //       .then(linkMap => {
-    //         this.linkData = linkMap;
-    //         resolve(linkMap);
-    //       });
-    //   });
-    // } else {
-    //   return Promise.resolve(this.linkData);
-    // }
   }
 
   getGroupData(): Promise<Map<string, any>> {
     return this.groupLoader.loadContentFromStore();
-    // if (!this.groupData) {
-    //   return new Promise((resolve, reject) => {
-    //     this.groupLoader.loadContentFromStore()
-    //       .then(groupMap => {
-    //         this.groupData = groupMap;
-    //         resolve(groupMap);
-    //       });
-    //   });
-    // } else {
-    //   return Promise.resolve(this.groupData);
-    // }
   }
 
   private lazyLoad(data, loader) {

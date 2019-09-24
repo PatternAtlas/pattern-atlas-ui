@@ -32,7 +32,7 @@ export class LinkInfoboxComponent implements OnInit {
     this.loader.loadContentFromStore(uri)
       .then(linkMap => {
         const data = linkMap.get(uri);
-        
+
         if (this.currentPatternId) {
           if (data.sourcePattern.id === this.currentPatternId) {
             this.linkInfo = {

@@ -1,0 +1,45 @@
+<div>
+  <svg #svg [attr.viewBox]="'0 0 ' + options.width + ' ' + options.height"
+      (click)="deselectNode($event)">
+        <g [zoomableOf]="svg">
+            <g class="links">
+                <g [linkVisual]="link" *ngFor="let link of links"></g>
+            </g>
+            <g class="nodes">
+                <g [nodeVisual]="node" *ngFor="let node of nodes"
+                    [draggableNode]="node"
+                    [draggableInGraph]="graph"
+                    (clickEvent)="nodeInformation(node.id)"
+                    (mouseEnterEvent)="previewNodeInformation(node.id)"
+                    (mouseLeaveEvent)="dePreviewNodeInformation(node.id)">
+                </g>
+            </g>
+
+            <defs>
+                <marker id="end" viewBox="0 -5 10 10" refX="15" refY="-1.5" markerWidth="6" markerHeight="6" orient="auto">
+                    <path d="M0,-5L10,0L0,5"></path>
+                </marker>
+            </defs>
+        </g>
+  </svg>
+</div>
+
+<div *ngIf="selectedLink; else nodeInfo">-->
+    <pp-link-infobox
+        [linkData]="selectedLink"
+        [currentPatternId]="selectedNodeId"
+        (onPatternClicked)="nodeInformation($event)">
+    </pp-link-infobox>
+</div>
+
+<ng-template #nodeInfo>
+    <div *ngIf="selectedNodeId">
+      <pp-node-infobox
+              [info]="selectedNodeInfo"
+              (clickEvent)="nodeInformation($event)"
+              (mouseEnterEvent)="previewNodeInformation($event)"
+              (mouseLeaveEvent)="dePreviewNodeInformation($event)"
+              (linkClickEvent)="showLinkInfo($event)">
+      </pp-node-infobox>
+    </div>
+</ng-template>

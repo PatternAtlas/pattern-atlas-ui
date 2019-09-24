@@ -24,6 +24,8 @@ import { IriConverter } from '../../../core/util/iri-converter';
 import { NgxMdModule } from 'ngx-md';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { CoreModule } from '../../../core/core.module';
+import { InternetOfThingsPatternsGraphComponent } from './component/internet-of-things-patterns-graph/internet-of-things-patterns-graph.component';
+import { GraphModule } from 'src/app/graph/graph.module';
 
 @NgModule({
     imports: [
@@ -36,11 +38,13 @@ import { CoreModule } from '../../../core/core.module';
         TextFieldModule,
         NgxMdModule.forRoot(),
         CoreModule,
-        RouterModule
+        RouterModule,
+        GraphModule
     ],
     declarations: [
         InternetOfThingsPatternComponent,
-        InternetOfThingsPatternsComponent
+        InternetOfThingsPatternsComponent,
+        InternetOfThingsPatternsGraphComponent
     ],
     providers: [
         InternetOfThingsPatternsLoaderService
@@ -48,14 +52,16 @@ import { CoreModule } from '../../../core/core.module';
     exports: [],
     entryComponents: [
         InternetOfThingsPatternComponent,
-        InternetOfThingsPatternsComponent
+        InternetOfThingsPatternsComponent,
+        InternetOfThingsPatternsGraphComponent
     ]
 })
 export class InternetOfThingsPatternsModule {
     constructor(private cr: ComponentRegistryService) {
-      this.cr.registerComponent(IriConverter.convertIriToId('https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#InternetOfThingsPatterns'), {
-            plcomponent: InternetOfThingsPatternsComponent,
-            pcomponent: InternetOfThingsPatternComponent
+      this.cr.registerComponent(IriConverter.convertIriToId('https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#InternetofThingsPatterns'), {
+            plcomponent: InternetOfThingsPatternsGraphComponent,
+            pcomponent: InternetOfThingsPatternsGraphComponent,
+            label: 'Network Graph'
         }); // tslint:disable-line:max-line-length
     }
 }

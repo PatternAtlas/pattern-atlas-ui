@@ -2,18 +2,18 @@ import { Injectable } from '@angular/core';
 import { PatternOntologyService } from 'src/app/core/service/pattern-ontology.service';
 import { IriConverter } from 'src/app/core/util/iri-converter';
 import Loader from 'src/app/core/model/loader';
-import { LinkInfo } from '../model/info';
+import { Relation } from 'src/app/graph/model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EnterpriseIntegrationPatternOutgoingLinkLoaderService extends Loader<LinkInfo> {
+export class EnterpriseIntegrationPatternOutgoingLinkLoaderService extends Loader<Relation> {
 
-  constructor(private pos: PatternOntologyService) { 
+  constructor(private pos: PatternOntologyService) {
     super('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos);
   }
 
-  loadContentFromStore(uri?: string): Promise<Map<string, LinkInfo>> {
+  loadContentFromStore(uri?: string): Promise<Map<string, any>> {
     return this.selectContentFromStore(uri)
             .then(
                 triples => this.mapTriples(triples, uri)
@@ -22,7 +22,16 @@ export class EnterpriseIntegrationPatternOutgoingLinkLoaderService extends Loade
 
   async selectContentFromStore(uri?: string): Promise<any> {
     // we need a specific pattern of form 'pattern#Pattern'
-    if (!uri) return Promise.resolve();
+    if (!uri) {
+      return Promise.resolve();
+    }
+
+    const graphs = [
+      'https://purl.org/patternpedia',
+      'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns',
+      'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns',
+      'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations'
+    ];
 
     // we need the uri of the referenced pattern in order to retrieve the pattern name
     const uriQry = `SELECT ?targetUri
@@ -31,31 +40,27 @@ export class EnterpriseIntegrationPatternOutgoingLinkLoaderService extends Loade
               <https://purl.org/patternpedia#hasSource> <${uri}> ;
               <https://purl.org/patternpedia#hasTarget> ?targetUri .
       }`;
-    const patterns = await this.executor.exec(uriQry, [IriConverter.getFileName(this.supportedIRI), IriConverter.getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links']);
+    const patterns = await this.executor.exec(uriQry, graphs);
 
     // get all information about the given pattern uri
     const qry = `SELECT ?targetUri ?targetName ?linkUri ?description
       WHERE {
-        ?linkUri a <https://purl.org/patternpedia/patternlanguages#DirectedPatternRelationDescriptor> ;
+        ?linkUri a <https://purl.org/patternpedia#DirectedPatternRelationDescriptor> ;
               <https://purl.org/patternpedia#hasSource> <${uri}> ;
               <https://purl.org/patternpedia#hasTarget> ?targetUri .
         ?targetUri <https://purl.org/patternpedia#hasName> ?targetName .
         OPTIONAL { ?linkUri <https://purl.org/patternpedia#hasDescription> ?description }
       }`;
 
-    const graphs = [IriConverter.getFileName(this.supportedIRI), IriConverter.getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns'];
+
     for (const entry of patterns) {
       graphs.push(IriConverter.getFileName(entry.targetUri.value));
     }
 
-    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
-    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
-    graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
-    
     return this.executor.exec(qry, graphs);
   }
 
-  mapTriples(triples: any, uri?: string): Promise<Map<string, LinkInfo>> {
+  mapTriples(triples: any, uri?: string): Promise<Map<string, Relation>> {
     /*
     triples are objects of form:
     {
@@ -84,10 +89,11 @@ export class EnterpriseIntegrationPatternOutgoingLinkLoaderService extends Loade
     const data = [];
 
     for (const t of triples) {
-      let item: LinkInfo = {
-        nodeId: IriConverter.convertIriToId(t.targetUri.value),
-        name: t.targetName.value,
-        linkId: IriConverter.convertIdToIri(t.linkUri.value),
+      const item: Relation = {
+        relationId: IriConverter.convertIdToIri(t.linkUri.value),
+        label: t.targetName.value,
+        patternId: IriConverter.convertIriToId(t.targetUri.value),
+        direction: 'outgoing',
         hasDescription: t.description ? true : false
       };
 
@@ -96,9 +102,9 @@ export class EnterpriseIntegrationPatternOutgoingLinkLoaderService extends Loade
 
     const result = new Map<string, any>();
     for (const item of data) {
-      result.set(item.nodeId, item);
+      result.set(item.patternId, item);
     }
-    
+
     return Promise.resolve(result);
   }
 }
