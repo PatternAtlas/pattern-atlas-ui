@@ -78,7 +78,6 @@ export class DefaultPatternRendererComponent implements OnInit {
       this.isLoading = false;
 
       this.allRelations = completePL.patternRelations;
-      console.log(this.allRelations);
 
       this.updateUIForPatternRelations();
       this.sections = completePL.patternlanguage.sections;

@@ -48,7 +48,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
 
 
   constructor(public dialogRef: MatDialogRef<CreateEditPatternLanguageComponent>, private _fb: FormBuilder, private cdr: ChangeDetectorRef,
-              private validatorService: ValidationService, @Inject(MAT_DIALOG_DATA) public data: DialogData) {
+              @Inject(MAT_DIALOG_DATA) public data: DialogData) {
 
     this.filteredSections = this.sectionCtrl.valueChanges.pipe(
       startWith(null),
@@ -88,7 +88,6 @@ export class CreateEditPatternLanguageComponent implements OnInit {
 
   @ViewChild('sectionInput') sectionInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
-  plLanguages = ['CloudComputingPatterns', 'EIP'];
 
   ngOnInit(): void {
     const urlRegex = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
