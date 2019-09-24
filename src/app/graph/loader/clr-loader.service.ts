@@ -74,7 +74,10 @@ export class ClrLoaderService extends Loader<LanguageRelation> {
   async selectContentFromStore(uri?: string): Promise<any> {
     // execute the query on:
     // patternpedia, both languages (complete) and the view
+    const start = Date.now();
     const graphs = await this.getGraphs();
+    const millis = Date.now() - start;
+    console.log(`getGraphs: ${millis}ms`);
 
     // this query gets all CLRs that contain the given pattern uri either as source or target
     // it also returns the URI and Name of the other patternlanguage

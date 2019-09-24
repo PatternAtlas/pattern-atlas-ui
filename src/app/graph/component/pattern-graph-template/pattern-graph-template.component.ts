@@ -326,19 +326,40 @@ export class PatternGraphTemplateComponent<T extends Pattern> implements Pattern
    */
   getNodeInfo = async (id: string): Promise<NodeInfo> => {
     const uri = IriConverter.convertIdToIri(id);
-    const values = await Promise.all([
-      this.patternLoader.loadContentFromStore(),
-      this.loader.loadOutgoingLinks(this.languageUri, uri),
-      this.loader.loadIncomingLinks(this.languageUri, uri),
-      this.loader.loadCLRs(this.languageUri, uri)
-    ]);
+    
+    let pattern;
+    let outgoing;
+    let incoming;
+    let clrs;
 
-    const pattern = values[0].get(uri);
+    let start;
+    let millis;
 
-    const outgoing = Array.from(values[1].values());
-    const incoming = Array.from(values[2].values());
+    await this.patternLoader.loadContentFromStore()
+      .then(v => {
+        // load pattern data: 1860ms
+        pattern = v.get(uri);
+        return this.loader.loadOutgoingLinks(this.languageUri, uri);
+      })
+      .then(v => {
+        // load outgoing link data: 372ms
+        outgoing = Array.from(v.values());
+        return this.loader.loadIncomingLinks(this.languageUri, uri);
+      })
+      .then(v => {
+        // load incoming link data: 270ms
+        incoming = Array.from(v.values());
+        
+        start = Date.now();
+        return this.loader.loadCLRs(this.languageUri, uri);
+      })
+      .then(v => {
+        // load clr data: 46988ms this takes ages!!
+        clrs = Array.from(v.values());
 
-    const clrs = Array.from(values[3].values());
+        millis = Date.now() - start;
+        console.log(`Load CLRs: ${millis}ms`);
+      });
 
     const info = new NodeInfo();
     info.name = pattern.name;

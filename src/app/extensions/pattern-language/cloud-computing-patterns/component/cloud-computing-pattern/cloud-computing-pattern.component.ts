@@ -51,7 +51,18 @@ export class CloudComputingPatternComponent implements PatternRenderingComponent
       ];
 
       this.pos.loadUrisToStore(uris)
-        .then(() => this.loader.loadContentFromStore())
+        .then(() => this.loadData());
+
+      // to get the changes from the network graph 
+      this.activatedRoute.params.subscribe(params => {
+        if (this.pId != params['pid']) {
+          this.loadData();
+        }
+      });
+    }
+
+    private async loadData(): Promise<void> {
+      return this.loader.loadContentFromStore()
         .then(patternMap => {
           this.pattern = patternMap.get(IriConverter.convertIdToIri(this.pId));
           this.cdr.detectChanges();

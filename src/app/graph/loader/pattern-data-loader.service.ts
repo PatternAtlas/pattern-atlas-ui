@@ -32,17 +32,6 @@ export class PatternDataLoaderService {
     private linkInfoLoader: LinkInfoLoaderService,
     private patternClrLoader: PatternClrCheckLoaderService) { }
 
-  private async loadData(loader: any): Promise<void> {
-    return Promise.resolve();
-
-    // const uris: Array<QueriedData> = [];
-
-    // const graphs = await loader.getGraphs();
-    // graphs.forEach(g => uris.push({ value: g }));
-
-    // return this.pos.loadUrisToStore(uris);
-  }
-
   /**
    * Loads the directed relations from the given langauge uri from the store.
    * @param languageUri the URI of the language whos directed relations should be loaded from the store
@@ -50,10 +39,7 @@ export class PatternDataLoaderService {
    */
   async loadDirectedLinks(languageUri: string): Promise<Map<string, Link>> {
     this.linkLoader.supportedIRI = languageUri;
-
-    return this.loadData(this.linkLoader).then(() => {
-      return this.linkLoader.loadContentFromStore();
-    });
+    return this.linkLoader.loadContentFromStore();
   }
 
   /**
@@ -63,10 +49,7 @@ export class PatternDataLoaderService {
    */
   async loadGroups(languageUri: string): Promise<Map<string, Group>> {
     this.groupLoader.supportedIRI = languageUri;
-
-    return this.loadData(this.groupLoader).then(() => {
-      return this.groupLoader.loadContentFromStore();
-    });
+    return this.groupLoader.loadContentFromStore();
   }
 
   /**
@@ -77,10 +60,7 @@ export class PatternDataLoaderService {
    */
   async loadOutgoingLinks(languageUri: string, patternUri: string): Promise<Map<string, Relation>> {
     this.outgoingLinkLoader.supportedIRI = languageUri;
-
-    return this.loadData(this.outgoingLinkLoader).then(() => {
-      return this.outgoingLinkLoader.loadContentFromStore(patternUri);
-    });
+    return this.outgoingLinkLoader.loadContentFromStore(patternUri);
   }
 
   /**
@@ -91,10 +71,7 @@ export class PatternDataLoaderService {
    */
   async loadIncomingLinks(languageUri: string, patternUri: string): Promise<Map<string, Relation>> {
     this.incomingLinkLoader.supportedIRI = languageUri;
-
-    return this.loadData(this.incomingLinkLoader).then(() => {
-      return this.incomingLinkLoader.loadContentFromStore(patternUri);
-    });
+    return this.incomingLinkLoader.loadContentFromStore(patternUri);
   }
 
   /**
@@ -104,10 +81,7 @@ export class PatternDataLoaderService {
    */
   async loadCLRs(languageUri: string, patternUri: string): Promise<Map<string, LanguageRelation>> {
     this.clrLoader.supportedIRI = languageUri;
-
-    return this.loadData(this.clrLoader).then(() => {
-      return this.clrLoader.loadContentFromStore(patternUri);
-    });
+    return this.clrLoader.loadContentFromStore(patternUri);
   }
 
   /**
@@ -123,10 +97,7 @@ export class PatternDataLoaderService {
 
   async loadLink(languageUri: string, linkUri: string) {
     this.linkInfoLoader.supportedIRI = languageUri;
-
-    return this.loadData(this.linkInfoLoader).then(() => {
-      return this.linkInfoLoader.loadContentFromStore(linkUri);
-    });
+    return this.linkInfoLoader.loadContentFromStore(linkUri);
   }
 
   /**
