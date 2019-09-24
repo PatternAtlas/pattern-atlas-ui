@@ -366,6 +366,353 @@ var AppModule = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/core/component/create-pattern-relation/create-pattern-relation.component.html":
+/*!***********************************************************************************************!*\
+  !*** ./src/app/core/component/create-pattern-relation/create-pattern-relation.component.html ***!
+  \***********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<h1 mat-dialog-title>Add a relation to another pattern</h1>\n<div mat-dialog-content [formGroup]=\"relationForm\">\n  <mat-form-field>\n    <input type=\"text\" matInput [value]=\"data.patternName\" readonly>\n  </mat-form-field>\n  <mat-form-field>\n    <mat-label>Direction</mat-label>\n    <mat-select formControlName=\"direction\">\n      <mat-select-trigger>\n        <i class=\"material-icons\"\n           [ngClass]=\"{'flip': relationForm.value?.direction?.name === directionEnum.DirectedLeft}\">{{relationForm.value\n          ? relationForm.value.direction?.icon: ''}}</i>\n      </mat-select-trigger>\n      <mat-option *ngFor=\"let type of types\" [value]=\"type\">\n        <i class=\"material-icons\" [ngClass]=\"{'flip': type?.name === directionEnum.DirectedLeft}\">{{type?.icon}}</i>\n      </mat-option>\n    </mat-select>\n  </mat-form-field>\n  <mat-form-field>\n    <mat-label>Select a pattern</mat-label>\n    <mat-select formControlName=\"toPattern\">\n      <mat-option *ngFor=\"let pattern of data.patterns\"\n                  [value]=\"pattern\">\n        {{pattern.name}}\n      </mat-option>\n    </mat-select>\n  </mat-form-field>\n\n  <mat-form-field style=\"display: block\">\n    <textarea matInput formControlName=\"description\" placeholder=\"Provide a description\"></textarea>\n  </mat-form-field>\n</div>\n<div mat-dialog-actions>\n  <button mat-button (click)=\"close()\">Close</button>\n  <button mat-button [mat-dialog-close]=\"relationForm.value\" [disabled]=\"!relationForm?.valid\">Save\n  </button>\n</div>\n"
+
+/***/ }),
+
+/***/ "./src/app/core/component/create-pattern-relation/create-pattern-relation.component.scss":
+/*!***********************************************************************************************!*\
+  !*** ./src/app/core/component/create-pattern-relation/create-pattern-relation.component.scss ***!
+  \***********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ".flip {\n  transform: rotate(180deg); }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2NvcmUvY29tcG9uZW50L2NyZWF0ZS1wYXR0ZXJuLXJlbGF0aW9uL2NyZWF0ZS1wYXR0ZXJuLXJlbGF0aW9uLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UseUJBQXlCLEVBQUEiLCJmaWxlIjoic3JjL2FwcC9jb3JlL2NvbXBvbmVudC9jcmVhdGUtcGF0dGVybi1yZWxhdGlvbi9jcmVhdGUtcGF0dGVybi1yZWxhdGlvbi5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5mbGlwe1xuICB0cmFuc2Zvcm06IHJvdGF0ZSgxODBkZWcpO1xufVxuIl19 */"
+
+/***/ }),
+
+/***/ "./src/app/core/component/create-pattern-relation/create-pattern-relation.component.ts":
+/*!*********************************************************************************************!*\
+  !*** ./src/app/core/component/create-pattern-relation/create-pattern-relation.component.ts ***!
+  \*********************************************************************************************/
+/*! exports provided: CreatePatternRelationComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CreatePatternRelationComponent", function() { return CreatePatternRelationComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _model_pattern_relation_descriptor_direction_enum__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../model/pattern-relation-descriptor-direction.enum */ "./src/app/core/model/pattern-relation-descriptor-direction.enum.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (undefined && undefined.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+
+
+
+var CreatePatternRelationComponent = /** @class */ (function () {
+    function CreatePatternRelationComponent(dialogRef, data, fb) {
+        this.dialogRef = dialogRef;
+        this.data = data;
+        this.fb = fb;
+        this.directionEnum = _model_pattern_relation_descriptor_direction_enum__WEBPACK_IMPORTED_MODULE_3__["PatternRelationDescriptorDirection"];
+        this.types = [{ name: _model_pattern_relation_descriptor_direction_enum__WEBPACK_IMPORTED_MODULE_3__["PatternRelationDescriptorDirection"].DirectedRight, icon: 'trending_flat' },
+            { name: _model_pattern_relation_descriptor_direction_enum__WEBPACK_IMPORTED_MODULE_3__["PatternRelationDescriptorDirection"].DirectedLeft, icon: 'trending_flat' }, {
+                name: _model_pattern_relation_descriptor_direction_enum__WEBPACK_IMPORTED_MODULE_3__["PatternRelationDescriptorDirection"].UnDirected,
+                icon: 'compare_arrows'
+            }];
+    }
+    CreatePatternRelationComponent.prototype.ngOnInit = function () {
+        console.log(this.data);
+        this.relationForm = this.fb.group({
+            toPattern: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]],
+            direction: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]],
+            description: ['', []],
+        });
+    };
+    CreatePatternRelationComponent.prototype.close = function () {
+        this.dialogRef.close();
+    };
+    CreatePatternRelationComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'pp-create-pattern-relation',
+            template: __webpack_require__(/*! ./create-pattern-relation.component.html */ "./src/app/core/component/create-pattern-relation/create-pattern-relation.component.html"),
+            styles: [__webpack_require__(/*! ./create-pattern-relation.component.scss */ "./src/app/core/component/create-pattern-relation/create-pattern-relation.component.scss")]
+        }),
+        __param(1, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])(_angular_material__WEBPACK_IMPORTED_MODULE_1__["MAT_DIALOG_DATA"])),
+        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_1__["MatDialogRef"], Object, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"]])
+    ], CreatePatternRelationComponent);
+    return CreatePatternRelationComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/core/component/divider/divider.component.html":
+/*!***************************************************************!*\
+  !*** ./src/app/core/component/divider/divider.component.html ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p style=\"margin: 1em\"></p>\n"
+
+/***/ }),
+
+/***/ "./src/app/core/component/divider/divider.component.scss":
+/*!***************************************************************!*\
+  !*** ./src/app/core/component/divider/divider.component.scss ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvcmUvY29tcG9uZW50L2RpdmlkZXIvZGl2aWRlci5jb21wb25lbnQuc2NzcyJ9 */"
+
+/***/ }),
+
+/***/ "./src/app/core/component/divider/divider.component.ts":
+/*!*************************************************************!*\
+  !*** ./src/app/core/component/divider/divider.component.ts ***!
+  \*************************************************************/
+/*! exports provided: DividerComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DividerComponent", function() { return DividerComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var DividerComponent = /** @class */ (function () {
+    function DividerComponent() {
+    }
+    DividerComponent.prototype.ngOnInit = function () {
+    };
+    DividerComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'pp-divider',
+            template: __webpack_require__(/*! ./divider.component.html */ "./src/app/core/component/divider/divider.component.html"),
+            styles: [__webpack_require__(/*! ./divider.component.scss */ "./src/app/core/component/divider/divider.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], DividerComponent);
+    return DividerComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/core/component/markdown-content-container/interfaces/DataRenderingComponent.interface.ts":
+/*!**********************************************************************************************************!*\
+  !*** ./src/app/core/component/markdown-content-container/interfaces/DataRenderingComponent.interface.ts ***!
+  \**********************************************************************************************************/
+/*! exports provided: DataRenderingComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataRenderingComponent", function() { return DataRenderingComponent; });
+var DataRenderingComponent = /** @class */ (function () {
+    function DataRenderingComponent() {
+        this.isEditingEnabled = false;
+    }
+    return DataRenderingComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/core/component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component.html":
+/*!******************************************************************************************************************************************!*\
+  !*** ./src/app/core/component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component.html ***!
+  \******************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<mat-card>\n  <mat-card-title><b>{{title}}</b></mat-card-title>\n  <div style=\"display: flex; align-items: center;\" (mouseenter)=\"showActionButtons = true\"\n       (mouseleave)=\"showActionButtons = false\">\n    <ngx-md [data]=\"data\"></ngx-md>\n    <button *ngIf=\"showActionButtons && isEditingEnabled\" mat-stroked-button\n            style=\"margin-left: 5px\" color=\"primary\"\n            (click)=\"openEditor()\" matTooltip=\"Edit\"><i class=\"material-icons\">mode_edit</i></button>\n  </div>\n</mat-card>\n"
+
+/***/ }),
+
+/***/ "./src/app/core/component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component.scss":
+/*!******************************************************************************************************************************************!*\
+  !*** ./src/app/core/component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component.scss ***!
+  \******************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ".mat-card {\n  min-height: unset; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2NvcmUvY29tcG9uZW50L21hcmtkb3duLWNvbnRlbnQtY29udGFpbmVyL21hcmtkb3duLXBhdHRlcm4tc2VjdGlvbmNvbnRlbnQvbWFya2Rvd24tcGF0dGVybi1zZWN0aW9uY29udGVudC5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGlCQUFpQixFQUFBIiwiZmlsZSI6InNyYy9hcHAvY29yZS9jb21wb25lbnQvbWFya2Rvd24tY29udGVudC1jb250YWluZXIvbWFya2Rvd24tcGF0dGVybi1zZWN0aW9uY29udGVudC9tYXJrZG93bi1wYXR0ZXJuLXNlY3Rpb25jb250ZW50LmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLm1hdC1jYXJkIHtcbiAgbWluLWhlaWdodDogdW5zZXQ7XG59XG4iXX0= */"
+
+/***/ }),
+
+/***/ "./src/app/core/component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component.ts":
+/*!****************************************************************************************************************************************!*\
+  !*** ./src/app/core/component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component.ts ***!
+  \****************************************************************************************************************************************/
+/*! exports provided: MarkdownPatternSectioncontentComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MarkdownPatternSectioncontentComponent", function() { return MarkdownPatternSectioncontentComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _interfaces_DataRenderingComponent_interface__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../interfaces/DataRenderingComponent.interface */ "./src/app/core/component/markdown-content-container/interfaces/DataRenderingComponent.interface.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _md_editor_md_editor_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../md-editor/md-editor.component */ "./src/app/core/component/md-editor/md-editor.component.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
+
+
+var MarkdownPatternSectioncontentComponent = /** @class */ (function (_super) {
+    __extends(MarkdownPatternSectioncontentComponent, _super);
+    function MarkdownPatternSectioncontentComponent(dialog) {
+        var _this = _super.call(this) || this;
+        _this.dialog = dialog;
+        _this.title = '';
+        _this.showActionButtons = false;
+        _this.changeContent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        return _this;
+    }
+    MarkdownPatternSectioncontentComponent.prototype.ngOnInit = function () {
+    };
+    MarkdownPatternSectioncontentComponent.prototype.openEditor = function () {
+        var _this = this;
+        var dialogRef = this.dialog.open(_md_editor_md_editor_component__WEBPACK_IMPORTED_MODULE_3__["MdEditorComponent"], { data: { content: this.data, field: this.title } });
+        dialogRef.afterClosed().subscribe(function (result) { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this.changeContent.emit(result.content);
+                return [2 /*return*/];
+            });
+        }); });
+    };
+    MarkdownPatternSectioncontentComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'pp-markdown-pattern-sectioncontent',
+            template: __webpack_require__(/*! ./markdown-pattern-sectioncontent.component.html */ "./src/app/core/component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component.html"),
+            styles: [__webpack_require__(/*! ./markdown-pattern-sectioncontent.component.scss */ "./src/app/core/component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component.scss")]
+        }),
+        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialog"]])
+    ], MarkdownPatternSectioncontentComponent);
+    return MarkdownPatternSectioncontentComponent;
+}(_interfaces_DataRenderingComponent_interface__WEBPACK_IMPORTED_MODULE_1__["DataRenderingComponent"]));
+
+
+
+/***/ }),
+
+/***/ "./src/app/core/component/markdown-content-container/patternproperty.directive.ts":
+/*!****************************************************************************************!*\
+  !*** ./src/app/core/component/markdown-content-container/patternproperty.directive.ts ***!
+  \****************************************************************************************/
+/*! exports provided: PatternpropertyDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PatternpropertyDirective", function() { return PatternpropertyDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var PatternpropertyDirective = /** @class */ (function () {
+    function PatternpropertyDirective(viewContainerRef) {
+        this.viewContainerRef = viewContainerRef;
+    }
+    PatternpropertyDirective = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"])({
+            selector: '[ppPatternproperty]'
+        }),
+        __metadata("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewContainerRef"]])
+    ], PatternpropertyDirective);
+    return PatternpropertyDirective;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/core/component/md-editor/md-editor.component.html":
 /*!*******************************************************************!*\
   !*** ./src/app/core/component/md-editor/md-editor.component.html ***!
@@ -373,7 +720,7 @@ var AppModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"display: flex; justify-content: space-between; align-items: baseline\">\n  <h1 mat-dialog-title>Edit {{data.label? \"'\" + data.label + \"'\" : ''}}</h1>\n    <button mat-flat-button (click)=\"close()\" tabindex=\"-1\">\n        <i class=\"material-icons\">close</i>\n    </button>\n</div>\n<div mat-dialog-content>\n    <td-text-editor #mdEditor [value]=\"data.content\"></td-text-editor>\n</div>\n<div mat-dialog-actions>\n    <button mat-raised-button color=\"warn\"\n            (click)=\"revert()\" matTooltip=\"Revert Changes\">\n        <i class=\"material-icons\">restore</i> Revert\n    </button>\n    <button mat-raised-button color=\"primary\" (click)=\"saveChanges()\"><i\n            class=\"material-icons\">save</i> Save\n    </button>\n</div>\n"
+module.exports = "<div style=\"display: flex; justify-content: space-between; align-items: baseline\">\n  <h1 mat-dialog-title>Edit '{{data.label}}'</h1>\n  <button mat-flat-button (click)=\"close()\" tabindex=\"-1\">\n    <i class=\"material-icons\">close</i>\n  </button>\n</div>\n<div mat-dialog-content>\n  <td-text-editor #mdEditor [value]=\"data.content\"></td-text-editor>\n</div>\n<div mat-dialog-actions>\n  <button mat-raised-button color=\"warn\"\n          (click)=\"revert()\" matTooltip=\"Revert Changes\">\n    <i class=\"material-icons\">restore</i> Revert\n  </button>\n  <button mat-raised-button color=\"primary\" (click)=\"saveChanges()\"><i\n    class=\"material-icons\">save</i> Save\n  </button>\n</div>\n\n"
 
 /***/ }),
 
@@ -636,613 +983,6 @@ var ProcessOauthCallbackComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/core/component/type-templates/dcmitype/image/image.component.html":
-/*!***********************************************************************************!*\
-  !*** ./src/app/core/component/type-templates/dcmitype/image/image.component.html ***!
-  \***********************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<img [src]=\"data.replace('<', '').replace('>', '')\">"
-
-/***/ }),
-
-/***/ "./src/app/core/component/type-templates/dcmitype/image/image.component.scss":
-/*!***********************************************************************************!*\
-  !*** ./src/app/core/component/type-templates/dcmitype/image/image.component.scss ***!
-  \***********************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvcmUvY29tcG9uZW50L3R5cGUtdGVtcGxhdGVzL2RjbWl0eXBlL2ltYWdlL2ltYWdlLmNvbXBvbmVudC5zY3NzIn0= */"
-
-/***/ }),
-
-/***/ "./src/app/core/component/type-templates/dcmitype/image/image.component.ts":
-/*!*********************************************************************************!*\
-  !*** ./src/app/core/component/type-templates/dcmitype/image/image.component.ts ***!
-  \*********************************************************************************/
-/*! exports provided: ImageComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ImageComponent", function() { return ImageComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _interfaces_DataRenderingComponent_interface__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../interfaces/DataRenderingComponent.interface */ "./src/app/core/component/type-templates/interfaces/DataRenderingComponent.interface.ts");
-var __extends = (undefined && undefined.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var ImageComponent = /** @class */ (function (_super) {
-    __extends(ImageComponent, _super);
-    function ImageComponent() {
-        var _this = _super.call(this) || this;
-        _this.title = '';
-        return _this;
-    }
-    ImageComponent.prototype.ngOnInit = function () {
-    };
-    ImageComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'pp-image',
-            template: __webpack_require__(/*! ./image.component.html */ "./src/app/core/component/type-templates/dcmitype/image/image.component.html"),
-            styles: [__webpack_require__(/*! ./image.component.scss */ "./src/app/core/component/type-templates/dcmitype/image/image.component.scss")]
-        }),
-        __metadata("design:paramtypes", [])
-    ], ImageComponent);
-    return ImageComponent;
-}(_interfaces_DataRenderingComponent_interface__WEBPACK_IMPORTED_MODULE_1__["DataRenderingComponent"]));
-
-
-
-/***/ }),
-
-/***/ "./src/app/core/component/type-templates/divider/divider.component.html":
-/*!******************************************************************************!*\
-  !*** ./src/app/core/component/type-templates/divider/divider.component.html ***!
-  \******************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<p style=\"margin: 1em\"></p>\n"
-
-/***/ }),
-
-/***/ "./src/app/core/component/type-templates/divider/divider.component.scss":
-/*!******************************************************************************!*\
-  !*** ./src/app/core/component/type-templates/divider/divider.component.scss ***!
-  \******************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvcmUvY29tcG9uZW50L3R5cGUtdGVtcGxhdGVzL2RpdmlkZXIvZGl2aWRlci5jb21wb25lbnQuc2NzcyJ9 */"
-
-/***/ }),
-
-/***/ "./src/app/core/component/type-templates/divider/divider.component.ts":
-/*!****************************************************************************!*\
-  !*** ./src/app/core/component/type-templates/divider/divider.component.ts ***!
-  \****************************************************************************/
-/*! exports provided: DividerComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DividerComponent", function() { return DividerComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-var DividerComponent = /** @class */ (function () {
-    function DividerComponent() {
-    }
-    DividerComponent.prototype.ngOnInit = function () {
-    };
-    DividerComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'pp-divider',
-            template: __webpack_require__(/*! ./divider.component.html */ "./src/app/core/component/type-templates/divider/divider.component.html"),
-            styles: [__webpack_require__(/*! ./divider.component.scss */ "./src/app/core/component/type-templates/divider/divider.component.scss")]
-        }),
-        __metadata("design:paramtypes", [])
-    ], DividerComponent);
-    return DividerComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/core/component/type-templates/interfaces/DataRenderingComponent.interface.ts":
-/*!**********************************************************************************************!*\
-  !*** ./src/app/core/component/type-templates/interfaces/DataRenderingComponent.interface.ts ***!
-  \**********************************************************************************************/
-/*! exports provided: DataRenderingComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataRenderingComponent", function() { return DataRenderingComponent; });
-var DataRenderingComponent = /** @class */ (function () {
-    function DataRenderingComponent() {
-        this.isEditingEnabled = false;
-    }
-    return DataRenderingComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/core/component/type-templates/patternproperty.directive.ts":
-/*!****************************************************************************!*\
-  !*** ./src/app/core/component/type-templates/patternproperty.directive.ts ***!
-  \****************************************************************************/
-/*! exports provided: PatternpropertyDirective */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PatternpropertyDirective", function() { return PatternpropertyDirective; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-var PatternpropertyDirective = /** @class */ (function () {
-    function PatternpropertyDirective(viewContainerRef) {
-        this.viewContainerRef = viewContainerRef;
-    }
-    PatternpropertyDirective = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"])({
-            selector: '[ppPatternproperty]'
-        }),
-        __metadata("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewContainerRef"]])
-    ], PatternpropertyDirective);
-    return PatternpropertyDirective;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/core/component/type-templates/xsd/date/date.component.html":
-/*!****************************************************************************!*\
-  !*** ./src/app/core/component/type-templates/xsd/date/date.component.html ***!
-  \****************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<mat-card>\n  <p><b>{{title}}</b></p>\n  <div style=\"display: flex; align-items: center;\" (mouseenter)=\"showActionButtons = true\"\n       (mouseleave)=\"showActionButtons = false\">\n    <mat-form-field><input matInput [formControl]=\"date\" [matDatepicker]=\"picker\" >\n      <mat-datepicker-toggle *ngIf=\"isEditingEnabled\" matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n      <mat-datepicker #picker></mat-datepicker></mat-form-field>\n    <ngx-md [data]=\"data\" hidden></ngx-md>\n    <button *ngIf=\"showActionButtons\" mat-stroked-button\n            style=\"margin-left: 5px\" color=\"primary\"\n            (click)=\"openEditor()\" matTooltip=\"Edit\"><i class=\"material-icons\">mode_edit</i></button>\n  </div>\n</mat-card>\n"
-
-/***/ }),
-
-/***/ "./src/app/core/component/type-templates/xsd/date/date.component.scss":
-/*!****************************************************************************!*\
-  !*** ./src/app/core/component/type-templates/xsd/date/date.component.scss ***!
-  \****************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = ".mat-card {\n  min-height: unset; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2NvcmUvY29tcG9uZW50L3R5cGUtdGVtcGxhdGVzL3hzZC9kYXRlL2RhdGUuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxpQkFBaUIsRUFBQSIsImZpbGUiOiJzcmMvYXBwL2NvcmUvY29tcG9uZW50L3R5cGUtdGVtcGxhdGVzL3hzZC9kYXRlL2RhdGUuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIubWF0LWNhcmQge1xuICBtaW4taGVpZ2h0OiB1bnNldDtcbn1cbiJdfQ== */"
-
-/***/ }),
-
-/***/ "./src/app/core/component/type-templates/xsd/date/date.component.ts":
-/*!**************************************************************************!*\
-  !*** ./src/app/core/component/type-templates/xsd/date/date.component.ts ***!
-  \**************************************************************************/
-/*! exports provided: DateComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DateComponent", function() { return DateComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _md_editor_md_editor_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../md-editor/md-editor.component */ "./src/app/core/component/md-editor/md-editor.component.ts");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
-/* harmony import */ var _interfaces_DataRenderingComponent_interface__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../interfaces/DataRenderingComponent.interface */ "./src/app/core/component/type-templates/interfaces/DataRenderingComponent.interface.ts");
-var __extends = (undefined && undefined.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-
-
-
-
-
-var DateComponent = /** @class */ (function (_super) {
-    __extends(DateComponent, _super);
-    function DateComponent(dialog) {
-        var _this = _super.call(this) || this;
-        _this.dialog = dialog;
-        _this.date = new _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormControl"](new Date());
-        _this.title = '';
-        _this.showActionButtons = false;
-        return _this;
-    }
-    DateComponent.prototype.ngOnInit = function () {
-    };
-    DateComponent.prototype.openEditor = function () {
-        var _this = this;
-        var dialogRef = this.dialog.open(_md_editor_md_editor_component__WEBPACK_IMPORTED_MODULE_1__["MdEditorComponent"], { data: { content: this.data } });
-        dialogRef.afterClosed().subscribe(function (result) { return __awaiter(_this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/];
-            });
-        }); });
-    };
-    DateComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'pp-date',
-            template: __webpack_require__(/*! ./date.component.html */ "./src/app/core/component/type-templates/xsd/date/date.component.html"),
-            styles: [__webpack_require__(/*! ./date.component.scss */ "./src/app/core/component/type-templates/xsd/date/date.component.scss")]
-        }),
-        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialog"]])
-    ], DateComponent);
-    return DateComponent;
-}(_interfaces_DataRenderingComponent_interface__WEBPACK_IMPORTED_MODULE_4__["DataRenderingComponent"]));
-
-
-
-/***/ }),
-
-/***/ "./src/app/core/component/type-templates/xsd/integer/integer.component.html":
-/*!**********************************************************************************!*\
-  !*** ./src/app/core/component/type-templates/xsd/integer/integer.component.html ***!
-  \**********************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<mat-card>\n  <p><b>{{title}}</b></p>\n  <div style=\"display: flex; align-items: center;\" (mouseenter)=\"showActionButtons = true\"\n       (mouseleave)=\"showActionButtons = false\">\n    <mat-form-field><input matInput type=\"number\" readonly [value]=\"data\"></mat-form-field>\n    <ngx-md [data]=\"data\" hidden></ngx-md>\n    <button *ngIf=\"showActionButtons && isEditingEnabled\" mat-stroked-button\n            style=\"margin-left: 5px\" color=\"primary\"\n            (click)=\"openEditor()\" matTooltip=\"Edit\"><i class=\"material-icons\">mode_edit</i></button>\n  </div>\n</mat-card>\n\n"
-
-/***/ }),
-
-/***/ "./src/app/core/component/type-templates/xsd/integer/integer.component.scss":
-/*!**********************************************************************************!*\
-  !*** ./src/app/core/component/type-templates/xsd/integer/integer.component.scss ***!
-  \**********************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = ".mat-card {\n  min-height: unset; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2NvcmUvY29tcG9uZW50L3R5cGUtdGVtcGxhdGVzL3hzZC9pbnRlZ2VyL2ludGVnZXIuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxpQkFBaUIsRUFBQSIsImZpbGUiOiJzcmMvYXBwL2NvcmUvY29tcG9uZW50L3R5cGUtdGVtcGxhdGVzL3hzZC9pbnRlZ2VyL2ludGVnZXIuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIubWF0LWNhcmQge1xuICBtaW4taGVpZ2h0OiB1bnNldDtcbn1cbiJdfQ== */"
-
-/***/ }),
-
-/***/ "./src/app/core/component/type-templates/xsd/integer/integer.component.ts":
-/*!********************************************************************************!*\
-  !*** ./src/app/core/component/type-templates/xsd/integer/integer.component.ts ***!
-  \********************************************************************************/
-/*! exports provided: IntegerComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IntegerComponent", function() { return IntegerComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _interfaces_DataRenderingComponent_interface__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../interfaces/DataRenderingComponent.interface */ "./src/app/core/component/type-templates/interfaces/DataRenderingComponent.interface.ts");
-/* harmony import */ var _md_editor_md_editor_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../md-editor/md-editor.component */ "./src/app/core/component/md-editor/md-editor.component.ts");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-var __extends = (undefined && undefined.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-
-
-
-
-var IntegerComponent = /** @class */ (function (_super) {
-    __extends(IntegerComponent, _super);
-    function IntegerComponent(dialog) {
-        var _this = _super.call(this) || this;
-        _this.dialog = dialog;
-        _this.title = '';
-        _this.showActionButtons = false;
-        return _this;
-    }
-    IntegerComponent.prototype.ngOnInit = function () {
-    };
-    IntegerComponent.prototype.openEditor = function () {
-        var _this = this;
-        var dialogRef = this.dialog.open(_md_editor_md_editor_component__WEBPACK_IMPORTED_MODULE_2__["MdEditorComponent"], { data: { content: this.data } });
-        dialogRef.afterClosed().subscribe(function (result) { return __awaiter(_this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/];
-            });
-        }); });
-    };
-    IntegerComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'pp-integer',
-            template: __webpack_require__(/*! ./integer.component.html */ "./src/app/core/component/type-templates/xsd/integer/integer.component.html"),
-            styles: [__webpack_require__(/*! ./integer.component.scss */ "./src/app/core/component/type-templates/xsd/integer/integer.component.scss")]
-        }),
-        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_3__["MatDialog"]])
-    ], IntegerComponent);
-    return IntegerComponent;
-}(_interfaces_DataRenderingComponent_interface__WEBPACK_IMPORTED_MODULE_1__["DataRenderingComponent"]));
-
-
-
-/***/ }),
-
-/***/ "./src/app/core/component/type-templates/xsd/string/string.component.html":
-/*!********************************************************************************!*\
-  !*** ./src/app/core/component/type-templates/xsd/string/string.component.html ***!
-  \********************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<mat-card>\n  <p><b>{{title}}</b></p>\n  <div style=\"display: flex; align-items: center;\" (mouseenter)=\"showActionButtons = true\"\n       (mouseleave)=\"showActionButtons = false\">\n    <ngx-md [data]=\"data\"></ngx-md>\n    <button *ngIf=\"showActionButtons && isEditingEnabled\" mat-stroked-button\n            style=\"margin-left: 5px\" color=\"primary\"\n            (click)=\"openEditor()\" matTooltip=\"Edit\"><i class=\"material-icons\">mode_edit</i></button>\n  </div>\n</mat-card>\n\n\n"
-
-/***/ }),
-
-/***/ "./src/app/core/component/type-templates/xsd/string/string.component.scss":
-/*!********************************************************************************!*\
-  !*** ./src/app/core/component/type-templates/xsd/string/string.component.scss ***!
-  \********************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = ".mat-card {\n  min-height: unset; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2NvcmUvY29tcG9uZW50L3R5cGUtdGVtcGxhdGVzL3hzZC9zdHJpbmcvc3RyaW5nLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsaUJBQWlCLEVBQUEiLCJmaWxlIjoic3JjL2FwcC9jb3JlL2NvbXBvbmVudC90eXBlLXRlbXBsYXRlcy94c2Qvc3RyaW5nL3N0cmluZy5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5tYXQtY2FyZCB7XG4gIG1pbi1oZWlnaHQ6IHVuc2V0O1xufVxuIl19 */"
-
-/***/ }),
-
-/***/ "./src/app/core/component/type-templates/xsd/string/string.component.ts":
-/*!******************************************************************************!*\
-  !*** ./src/app/core/component/type-templates/xsd/string/string.component.ts ***!
-  \******************************************************************************/
-/*! exports provided: StringComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StringComponent", function() { return StringComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _interfaces_DataRenderingComponent_interface__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../interfaces/DataRenderingComponent.interface */ "./src/app/core/component/type-templates/interfaces/DataRenderingComponent.interface.ts");
-/* harmony import */ var _md_editor_md_editor_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../md-editor/md-editor.component */ "./src/app/core/component/md-editor/md-editor.component.ts");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-var __extends = (undefined && undefined.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-///<reference path="../../interfaces/DataRenderingComponent.interface.ts"/>
-
-
-
-
-var StringComponent = /** @class */ (function (_super) {
-    __extends(StringComponent, _super);
-    function StringComponent(dialog) {
-        var _this = _super.call(this) || this;
-        _this.dialog = dialog;
-        _this.title = '';
-        _this.showActionButtons = false;
-        _this.changeContent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
-        return _this;
-    }
-    StringComponent.prototype.ngOnInit = function () {
-    };
-    StringComponent.prototype.openEditor = function () {
-        var _this = this;
-        var dialogRef = this.dialog.open(_md_editor_md_editor_component__WEBPACK_IMPORTED_MODULE_2__["MdEditorComponent"], { data: { content: this.data } });
-        dialogRef.afterClosed().subscribe(function (result) { return __awaiter(_this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                console.log(result);
-                this.changeContent.emit(result.content);
-                return [2 /*return*/];
-            });
-        }); });
-    };
-    StringComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'pp-string',
-            template: __webpack_require__(/*! ./string.component.html */ "./src/app/core/component/type-templates/xsd/string/string.component.html"),
-            styles: [__webpack_require__(/*! ./string.component.scss */ "./src/app/core/component/type-templates/xsd/string/string.component.scss")]
-        }),
-        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_3__["MatDialog"]])
-    ], StringComponent);
-    return StringComponent;
-}(_interfaces_DataRenderingComponent_interface__WEBPACK_IMPORTED_MODULE_1__["DataRenderingComponent"]));
-
-
-
-/***/ }),
-
 /***/ "./src/app/core/core.module.ts":
 /*!*************************************!*\
   !*** ./src/app/core/core.module.ts ***!
@@ -1269,14 +1009,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _directives_emit_event_on_keyup_directive__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./directives/emit-event-on-keyup.directive */ "./src/app/core/directives/emit-event-on-keyup.directive.ts");
 /* harmony import */ var _angular_flex_layout__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/flex-layout */ "./node_modules/@angular/flex-layout/esm5/flex-layout.es5.js");
 /* harmony import */ var _component_navigate_back_navigate_back_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./component/navigate-back/navigate-back.component */ "./src/app/core/component/navigate-back/navigate-back.component.ts");
-/* harmony import */ var _component_type_templates_xsd_integer_integer_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./component/type-templates/xsd/integer/integer.component */ "./src/app/core/component/type-templates/xsd/integer/integer.component.ts");
-/* harmony import */ var _component_type_templates_xsd_string_string_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./component/type-templates/xsd/string/string.component */ "./src/app/core/component/type-templates/xsd/string/string.component.ts");
-/* harmony import */ var _component_type_templates_patternproperty_directive__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./component/type-templates/patternproperty.directive */ "./src/app/core/component/type-templates/patternproperty.directive.ts");
-/* harmony import */ var _component_type_templates_dcmitype_image_image_component__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./component/type-templates/dcmitype/image/image.component */ "./src/app/core/component/type-templates/dcmitype/image/image.component.ts");
-/* harmony import */ var _component_type_templates_xsd_date_date_component__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./component/type-templates/xsd/date/date.component */ "./src/app/core/component/type-templates/xsd/date/date.component.ts");
-/* harmony import */ var _component_type_templates_divider_divider_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./component/type-templates/divider/divider.component */ "./src/app/core/component/type-templates/divider/divider.component.ts");
-/* harmony import */ var ngx_md__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ngx-md */ "./node_modules/ngx-md/fesm5/ngx-md.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _component_markdown_content_container_patternproperty_directive__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./component/markdown-content-container/patternproperty.directive */ "./src/app/core/component/markdown-content-container/patternproperty.directive.ts");
+/* harmony import */ var _component_divider_divider_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./component/divider/divider.component */ "./src/app/core/component/divider/divider.component.ts");
+/* harmony import */ var ngx_md__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ngx-md */ "./node_modules/ngx-md/fesm5/ngx-md.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _component_create_pattern_relation_create_pattern_relation_component__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./component/create-pattern-relation/create-pattern-relation.component */ "./src/app/core/component/create-pattern-relation/create-pattern-relation.component.ts");
+/* harmony import */ var _component_markdown_content_container_markdown_pattern_sectioncontent_markdown_pattern_sectioncontent_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component */ "./src/app/core/component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component.ts");
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -1321,8 +1059,6 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-
-
 var CoreModule = /** @class */ (function () {
     function CoreModule(lr, pos, cr) {
         this.lr = lr;
@@ -1343,11 +1079,12 @@ var CoreModule = /** @class */ (function () {
                 _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatProgressSpinnerModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatListModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatDatepickerModule"], _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatInputModule"],
-                _angular_forms__WEBPACK_IMPORTED_MODULE_23__["ReactiveFormsModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_19__["ReactiveFormsModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatTooltipModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatSelectModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatDialogModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatIconModule"],
-                ngx_md__WEBPACK_IMPORTED_MODULE_22__["NgxMdModule"].forRoot(), _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatNativeDateModule"]
+                ngx_md__WEBPACK_IMPORTED_MODULE_18__["NgxMdModule"].forRoot(), _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatNativeDateModule"]
             ],
             exports: [_covalent_text_editor__WEBPACK_IMPORTED_MODULE_12__["CovalentTextEditorModule"], _directives_emit_event_on_keyup_directive__WEBPACK_IMPORTED_MODULE_13__["EmitEventOnKeyupDirective"], _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatProgressSpinnerModule"], _component_navigate_back_navigate_back_component__WEBPACK_IMPORTED_MODULE_15__["NavigateBackComponent"]],
             providers: [
@@ -1360,22 +1097,18 @@ var CoreModule = /** @class */ (function () {
                 _component_md_editor_md_editor_component__WEBPACK_IMPORTED_MODULE_11__["MdEditorComponent"],
                 _directives_emit_event_on_keyup_directive__WEBPACK_IMPORTED_MODULE_13__["EmitEventOnKeyupDirective"],
                 _component_navigate_back_navigate_back_component__WEBPACK_IMPORTED_MODULE_15__["NavigateBackComponent"],
-                _component_type_templates_xsd_integer_integer_component__WEBPACK_IMPORTED_MODULE_16__["IntegerComponent"],
-                _component_type_templates_xsd_string_string_component__WEBPACK_IMPORTED_MODULE_17__["StringComponent"],
-                _component_type_templates_patternproperty_directive__WEBPACK_IMPORTED_MODULE_18__["PatternpropertyDirective"],
-                _component_type_templates_dcmitype_image_image_component__WEBPACK_IMPORTED_MODULE_19__["ImageComponent"],
-                _component_type_templates_xsd_date_date_component__WEBPACK_IMPORTED_MODULE_20__["DateComponent"],
-                _component_type_templates_divider_divider_component__WEBPACK_IMPORTED_MODULE_21__["DividerComponent"]
+                _component_markdown_content_container_patternproperty_directive__WEBPACK_IMPORTED_MODULE_16__["PatternpropertyDirective"],
+                _component_divider_divider_component__WEBPACK_IMPORTED_MODULE_17__["DividerComponent"],
+                _component_create_pattern_relation_create_pattern_relation_component__WEBPACK_IMPORTED_MODULE_20__["CreatePatternRelationComponent"],
+                _component_markdown_content_container_markdown_pattern_sectioncontent_markdown_pattern_sectioncontent_component__WEBPACK_IMPORTED_MODULE_21__["MarkdownPatternSectioncontentComponent"]
             ],
             entryComponents: [
                 _default_pl_renderer_default_pl_renderer_component__WEBPACK_IMPORTED_MODULE_4__["DefaultPlRendererComponent"],
                 _default_pattern_renderer_default_pattern_renderer_component__WEBPACK_IMPORTED_MODULE_5__["DefaultPatternRendererComponent"],
                 _component_md_editor_md_editor_component__WEBPACK_IMPORTED_MODULE_11__["MdEditorComponent"],
-                _component_type_templates_xsd_integer_integer_component__WEBPACK_IMPORTED_MODULE_16__["IntegerComponent"],
-                _component_type_templates_xsd_string_string_component__WEBPACK_IMPORTED_MODULE_17__["StringComponent"],
-                _component_type_templates_dcmitype_image_image_component__WEBPACK_IMPORTED_MODULE_19__["ImageComponent"],
-                _component_type_templates_xsd_date_date_component__WEBPACK_IMPORTED_MODULE_20__["DateComponent"],
-                _component_type_templates_divider_divider_component__WEBPACK_IMPORTED_MODULE_21__["DividerComponent"]
+                _component_divider_divider_component__WEBPACK_IMPORTED_MODULE_17__["DividerComponent"],
+                _component_create_pattern_relation_create_pattern_relation_component__WEBPACK_IMPORTED_MODULE_20__["CreatePatternRelationComponent"],
+                _component_markdown_content_container_markdown_pattern_sectioncontent_markdown_pattern_sectioncontent_component__WEBPACK_IMPORTED_MODULE_21__["MarkdownPatternSectioncontentComponent"]
             ]
         }),
         __metadata("design:paramtypes", [_service_loader_pattern_language_loader_loader_registry_service__WEBPACK_IMPORTED_MODULE_3__["LoaderRegistryService"],
@@ -1396,7 +1129,7 @@ var CoreModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<pp-navigate-back></pp-navigate-back>\n<mat-progress-spinner mode=\"indeterminate\" *ngIf=\"isLoadingPattern || isLoadingSection\"></mat-progress-spinner>\n<h2>{{patternName? patternName : ''}}</h2>\n<div>\n  <ng-template ppPatternproperty></ng-template>\n</div>\n"
+module.exports = "<pp-navigate-back></pp-navigate-back>\n<mat-progress-spinner mode=\"indeterminate\" *ngIf=\"isLoading || isLoadingSection\"></mat-progress-spinner>\n<h2>{{pattern?.name}}</h2>\n<div>\n  <ng-template ppPatternproperty></ng-template>\n</div>\n<mat-card *ngIf=\"!isLoading\">\n  <mat-card-title style=\"display: flex;\n     align-items: flex-start;\"><b>Links</b><i class=\"material-icons\" style=\"margin-left: 0.3em;\">\n    compare_arrows\n  </i></mat-card-title>\n  <div *ngIf=\"directedPatternRelations?.length > 0\">\n    <ng-container *ngFor=\"let relation of directedPatternRelations\">\n      <p style=\"display: flex;\n     align-items: center\">{{ relation.source.name}} <i class=\"material-icons\">trending_flat</i>\n        {{ relation.target.name}} <i>{{relation.description? ': ' + relation.description : ''}}</i></p>\n    </ng-container>\n  </div>\n  <div *ngIf=\"undirectedPatternRelations?.length > 0\">\n    <ng-container *ngFor=\"let relation of undirectedPatternRelations\">\n      <p style=\"display: flex;\n     align-items: center\">{{ relation.hasPattern[0].name}} <i class=\"material-icons\">compare_arrows</i>\n        {{ relation.hasPattern[1].name}} <i>{{relation.description? ': ' + relation.description : ''}}</i></p>\n    </ng-container>\n  </div>\n  <div #noLinksMessage *ngIf=\"undirectedPatternRelations?.length === 0 && directedPatternRelations?.length === 0\"><p> No\n    links found for this pattern.</p></div>\n  <mat-card-actions>\n    <div style=\"display: flex; align-items: center;\">\n      <ngx-md [data]=\"data\"></ngx-md>\n      <button *ngIf=\"isEditingEnabled\" mat-stroked-button\n              style=\"margin-left: 5px\" color=\"primary\"\n              (click)=\"addLink()\" matTooltip=\"Add Link\"><i class=\"material-icons\">trending_flat</i>\n        <i class=\"material-icons\" style=\"height: 2em;\n    font-size: smaller;  \">add</i></button>\n    </div>\n  </mat-card-actions>\n</mat-card>\n"
 
 /***/ }),
 
@@ -1407,7 +1140,7 @@ module.exports = "<pp-navigate-back></pp-navigate-back>\n<mat-progress-spinner m
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvcmUvZGVmYXVsdC1wYXR0ZXJuLXJlbmRlcmVyL2RlZmF1bHQtcGF0dGVybi1yZW5kZXJlci5jb21wb25lbnQuc2NzcyJ9 */"
+module.exports = ".mat-card {\n  min-height: unset; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2NvcmUvZGVmYXVsdC1wYXR0ZXJuLXJlbmRlcmVyL2RlZmF1bHQtcGF0dGVybi1yZW5kZXJlci5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGlCQUFpQixFQUFBIiwiZmlsZSI6InNyYy9hcHAvY29yZS9kZWZhdWx0LXBhdHRlcm4tcmVuZGVyZXIvZGVmYXVsdC1wYXR0ZXJuLXJlbmRlcmVyLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLm1hdC1jYXJkIHtcbiAgbWluLWhlaWdodDogdW5zZXQ7XG59XG4iXX0= */"
 
 /***/ }),
 
@@ -1428,17 +1161,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
 /* harmony import */ var angular2_toaster__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! angular2-toaster */ "./node_modules/angular2-toaster/angular2-toaster.js");
 /* harmony import */ var _service_loader_pattern_language_loader_pl_restriction_loader_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../service/loader/pattern-language-loader/pl-restriction-loader.service */ "./src/app/core/service/loader/pattern-language-loader/pl-restriction-loader.service.ts");
-/* harmony import */ var _component_type_templates_patternproperty_directive__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../component/type-templates/patternproperty.directive */ "./src/app/core/component/type-templates/patternproperty.directive.ts");
-/* harmony import */ var _model_pattern_pedia_model__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../model/pattern-pedia.model */ "./src/app/core/model/pattern-pedia.model.ts");
-/* harmony import */ var _util_iri_converter__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../util/iri-converter */ "./src/app/core/util/iri-converter.ts");
-/* harmony import */ var _component_type_templates_divider_divider_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../component/type-templates/divider/divider.component */ "./src/app/core/component/type-templates/divider/divider.component.ts");
-/* harmony import */ var _component_type_templates_xsd_string_string_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../component/type-templates/xsd/string/string.component */ "./src/app/core/component/type-templates/xsd/string/string.component.ts");
-/* harmony import */ var _component_type_templates_xsd_integer_integer_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../component/type-templates/xsd/integer/integer.component */ "./src/app/core/component/type-templates/xsd/integer/integer.component.ts");
-/* harmony import */ var _component_type_templates_xsd_date_date_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../component/type-templates/xsd/date/date.component */ "./src/app/core/component/type-templates/xsd/date/date.component.ts");
-/* harmony import */ var _component_type_templates_dcmitype_image_image_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../component/type-templates/dcmitype/image/image.component */ "./src/app/core/component/type-templates/dcmitype/image/image.component.ts");
-/* harmony import */ var _model_pattern_language_patterns_model__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../model/pattern-language-patterns.model */ "./src/app/core/model/pattern-language-patterns.model.ts");
-/* harmony import */ var _service_github_persistence_service__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../service/github-persistence.service */ "./src/app/core/service/github-persistence.service.ts");
-/* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/index.js");
+/* harmony import */ var _component_markdown_content_container_patternproperty_directive__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../component/markdown-content-container/patternproperty.directive */ "./src/app/core/component/markdown-content-container/patternproperty.directive.ts");
+/* harmony import */ var _util_iri_converter__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+/* harmony import */ var _component_divider_divider_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../component/divider/divider.component */ "./src/app/core/component/divider/divider.component.ts");
+/* harmony import */ var _model_pattern_language_patterns_model__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../model/pattern-language-patterns.model */ "./src/app/core/model/pattern-language-patterns.model.ts");
+/* harmony import */ var _service_github_persistence_service__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../service/github-persistence.service */ "./src/app/core/service/github-persistence.service.ts");
+/* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/index.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _component_create_pattern_relation_create_pattern_relation_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../component/create-pattern-relation/create-pattern-relation.component */ "./src/app/core/component/create-pattern-relation/create-pattern-relation.component.ts");
+/* harmony import */ var _model_directed_pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../model/directed-pattern-relation-descriptor-individual */ "./src/app/core/model/directed-pattern-relation-descriptor-individual.ts");
+/* harmony import */ var _model_pattern_language_relations_model__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../model/pattern-language-relations.model */ "./src/app/core/model/pattern-language-relations.model.ts");
+/* harmony import */ var _model_pattern_relation_descriptor_direction_enum__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../model/pattern-relation-descriptor-direction.enum */ "./src/app/core/model/pattern-relation-descriptor-direction.enum.ts");
+/* harmony import */ var _model_undirected_pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../model/undirected-pattern-relation-descriptor-individual */ "./src/app/core/model/undirected-pattern-relation-descriptor-individual.ts");
+/* harmony import */ var _service_loader_pattern_language_loader_default_pattern_directed_relations_loader_service__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../service/loader/pattern-language-loader/default-pattern-directed-relations-loader.service */ "./src/app/core/service/loader/pattern-language-loader/default-pattern-directed-relations-loader.service.ts");
+/* harmony import */ var _model_pattern_relations__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../model/pattern-relations */ "./src/app/core/model/pattern-relations.ts");
+/* harmony import */ var _service_loader_pattern_language_loader_default_pattern_undirected_relations_loader_service__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../service/loader/pattern-language-loader/default-pattern-undirected-relations-loader.service */ "./src/app/core/service/loader/pattern-language-loader/default-pattern-undirected-relations-loader.service.ts");
+/* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! rxjs/internal/operators */ "./node_modules/rxjs/internal/operators/index.js");
+/* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_22___default = /*#__PURE__*/__webpack_require__.n(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_22__);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _component_markdown_content_container_markdown_pattern_sectioncontent_markdown_pattern_sectioncontent_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component */ "./src/app/core/component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component.ts");
+/* harmony import */ var _service_loader_complete_patternlanguage_loader_service__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ../service/loader/complete-patternlanguage-loader.service */ "./src/app/core/service/loader/complete-patternlanguage-loader.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1448,41 +1190,14 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
+
+
+
+
+
+
+
+
 
 
 
@@ -1502,7 +1217,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 var DefaultPatternRendererComponent = /** @class */ (function () {
-    function DefaultPatternRendererComponent(patternLoaderService, sectionLoader, plLoader, activatedRoute, pos, toasterService, cdr, componentFactoryResolver, githubPersistenceService, cookieService) {
+    function DefaultPatternRendererComponent(patternLoaderService, sectionLoader, plLoader, activatedRoute, pos, toasterService, cdr, componentFactoryResolver, githubPersistenceService, cookieService, directedRelationsLoaderService, undirectedRelationsLoaderService, completePatternLanguageLoadingService, dialog) {
         this.patternLoaderService = patternLoaderService;
         this.sectionLoader = sectionLoader;
         this.plLoader = plLoader;
@@ -1513,105 +1228,54 @@ var DefaultPatternRendererComponent = /** @class */ (function () {
         this.componentFactoryResolver = componentFactoryResolver;
         this.githubPersistenceService = githubPersistenceService;
         this.cookieService = cookieService;
-        this.isLoadingPattern = true;
-        this.isLoadingSection = true;
+        this.directedRelationsLoaderService = directedRelationsLoaderService;
+        this.undirectedRelationsLoaderService = undirectedRelationsLoaderService;
+        this.completePatternLanguageLoadingService = completePatternLanguageLoadingService;
+        this.dialog = dialog;
+        this.allRelations = new _model_pattern_relations__WEBPACK_IMPORTED_MODULE_20__["PatternRelations"]();
+        this.isLoading = true;
         this.isEditingEnabled = false;
-        this.standardPrefixes = new _model_pattern_pedia_model__WEBPACK_IMPORTED_MODULE_8__["default"]().defaultPrefixes;
-        this.xsdPrefix = this.standardPrefixes.get('xsd').replace('<', '').replace('>', '');
-        this.dcmiPrefix = 'https://purl.org/dc/dcmitype/';
-        this.mappings = [
-            { prefix: this.xsdPrefix + 'string', value: _component_type_templates_xsd_string_string_component__WEBPACK_IMPORTED_MODULE_11__["StringComponent"] },
-            { prefix: this.xsdPrefix + 'integer', value: _component_type_templates_xsd_integer_integer_component__WEBPACK_IMPORTED_MODULE_12__["IntegerComponent"] },
-            { prefix: this.xsdPrefix + 'positiveInteger', value: _component_type_templates_xsd_integer_integer_component__WEBPACK_IMPORTED_MODULE_12__["IntegerComponent"] },
-            { prefix: this.xsdPrefix + 'nonPositiveInteger', value: _component_type_templates_xsd_integer_integer_component__WEBPACK_IMPORTED_MODULE_12__["IntegerComponent"] },
-            { prefix: this.xsdPrefix + 'nonNegativeInteger', value: _component_type_templates_xsd_integer_integer_component__WEBPACK_IMPORTED_MODULE_12__["IntegerComponent"] },
-            { prefix: this.xsdPrefix + 'negativeInteger', value: _component_type_templates_xsd_integer_integer_component__WEBPACK_IMPORTED_MODULE_12__["IntegerComponent"] },
-            { prefix: this.xsdPrefix + 'date', value: _component_type_templates_xsd_date_date_component__WEBPACK_IMPORTED_MODULE_13__["DateComponent"] },
-            { prefix: this.dcmiPrefix + 'Image', value: _component_type_templates_dcmitype_image_image_component__WEBPACK_IMPORTED_MODULE_14__["ImageComponent"] },
-        ];
-        this.defaultComponentForType = new Map(this.mappings.map(function (x) { return [x.prefix, x.value]; }));
     }
     DefaultPatternRendererComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.plIri = _util_iri_converter__WEBPACK_IMPORTED_MODULE_9__["IriConverter"].convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
-        this.patternIri = _util_iri_converter__WEBPACK_IMPORTED_MODULE_9__["IriConverter"].convertIdToIri(this.activatedRoute.snapshot.paramMap.get('pid'));
+        this.plIri = _util_iri_converter__WEBPACK_IMPORTED_MODULE_8__["IriConverter"].convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
+        this.patternIri = _util_iri_converter__WEBPACK_IMPORTED_MODULE_8__["IriConverter"].convertIdToIri(this.activatedRoute.snapshot.paramMap.get('pid'));
         this.isEditingEnabled = !!this.cookieService.get('patternpedia_github_token');
-        this.loadInfos().then(function () {
+        this.loadInfosAndInitPage();
+    };
+    DefaultPatternRendererComponent.prototype.loadInfosAndInitPage = function () {
+        var _this = this;
+        this.completePatternLanguageLoadingService.loadCompletePatternLanguage(this.plIri).then(function (completePL) {
+            _this.plLoader.supportedIRI = _this.plIri;
+            _this.patternList = completePL.patterns;
+            _this.pattern = _this.patternList.find(function (pat) { return pat.iri === _this.patternIri; });
+            _this.isLoading = false;
+            _this.allRelations = completePL.patternRelations;
+            _this.updateUIForPatternRelations();
+            _this.sections = completePL.patternlanguage.sections;
             var viewContainerRef = _this.ppPatternproperty.viewContainerRef;
             viewContainerRef.clear();
-            var componentDividerFactory = _this.componentFactoryResolver.resolveComponentFactory(_component_type_templates_divider_divider_component__WEBPACK_IMPORTED_MODULE_10__["DividerComponent"]);
+            var componentDividerFactory = _this.componentFactoryResolver.resolveComponentFactory(_component_divider_divider_component__WEBPACK_IMPORTED_MODULE_9__["DividerComponent"]);
             _this.sections.forEach(function (sec) {
-                _this.createSectionComponent(sec.section.value, viewContainerRef, componentDividerFactory);
+                _this.createSectionComponent(sec, viewContainerRef, componentDividerFactory);
             });
-        });
-    };
-    DefaultPatternRendererComponent.prototype.loadInfos = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var imports, importedPatternIris, _a, _b, _c;
-            return __generator(this, function (_d) {
-                switch (_d.label) {
-                    case 0: return [4 /*yield*/, this.pos.loadUrisToStore([{ token: null, value: this.plIri }])];
-                    case 1:
-                        _d.sent();
-                        return [4 /*yield*/, this.pos.getOWLImports(this.plIri)];
-                    case 2:
-                        imports = _d.sent();
-                        importedPatternIris = imports.map(function (i) { return i.import; });
-                        return [4 /*yield*/, this.pos.loadUrisToStore(importedPatternIris)];
-                    case 3:
-                        _d.sent();
-                        //  load all the data from patternlanguage
-                        this.plLoader.supportedIRI = this.plIri;
-                        _a = this;
-                        return [4 /*yield*/, this.plLoader.loadContentFromStore()];
-                    case 4:
-                        _a.patterns = _d.sent();
-                        this.pattern = this.patterns.get(this.patternIri);
-                        this.patternProperties = this.pattern.sectionProperties;
-                        this.patternName = this.patternProperties.get(_util_iri_converter__WEBPACK_IMPORTED_MODULE_9__["IriConverter"].getFileName(this.plIri) + '#hasName')[0];
-                        this.isLoadingPattern = false;
-                        // load section restrictions to be able to get the type for a section
-                        this.sectionLoader.supportedIRI = this.plIri;
-                        _b = this;
-                        return [4 /*yield*/, this.sectionLoader.loadContentFromStore()];
-                    case 5:
-                        _b.sectionRestritions = _d.sent();
-                        // get section in order
-                        _c = this;
-                        return [4 /*yield*/, this.plLoader.getPLSections(this.plIri)];
-                    case 6:
-                        // get section in order
-                        _c.sections = _d.sent();
-                        this.isLoadingSection = false;
-                        if (!this.patternProperties) {
-                            Promise.reject(null);
-                        }
-                        else {
-                            Promise.resolve(null);
-                        }
-                        return [2 /*return*/];
-                }
-            });
+            _this.isLoading = false;
         });
     };
     DefaultPatternRendererComponent.prototype.createSectionComponent = function (section, viewContainerRef, componentDividerFactory) {
         var _this = this;
-        var properties = this.patternProperties.get(section);
-        var sectionRestrictions = this.sectionRestritions.get(section);
-        if (section.indexOf('#has') !== -1) {
+        var properties = this.pattern.sectionsProperties.get(section);
+        if (section.indexOf('#has') !== -1 && properties) {
             var sectionTitle = section.split('#has')[1].replace(/([A-Z])/g, ' $1').trim();
-            var type = (sectionRestrictions && !!sectionRestrictions[0] && sectionRestrictions[0].type) ? sectionRestrictions[0].type : this.xsdPrefix + 'string';
-            var component = this.defaultComponentForType.get(type) ? this.defaultComponentForType.get(type) : _component_type_templates_xsd_string_string_component__WEBPACK_IMPORTED_MODULE_11__["StringComponent"];
-            var componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
+            var componentFactory = this.componentFactoryResolver.resolveComponentFactory(_component_markdown_content_container_markdown_pattern_sectioncontent_markdown_pattern_sectioncontent_component__WEBPACK_IMPORTED_MODULE_24__["MarkdownPatternSectioncontentComponent"]);
             var componentRef = viewContainerRef.createComponent(componentFactory);
             var instance_1 = componentRef.instance;
             instance_1.data = properties.join('\n');
             instance_1.title = sectionTitle;
             instance_1.isEditingEnabled = this.isEditingEnabled;
             instance_1.changeContent.subscribe(function (data) {
-                _this.patternProperties.set(section, [data]);
-                _this.pattern.sectionProperties = _this.patternProperties;
-                _this.patterns.set(_this.patternIri, _this.pattern);
+                _this.pattern.sectionsProperties.set(section, [data]);
+                var patternIndex = _this.patternList.findIndex(function (pat) { return pat.iri === _this.patternIri; });
+                _this.patternList[patternIndex] = _this.pattern;
                 instance_1.data = data;
                 _this.savePatterns();
             });
@@ -1620,12 +1284,60 @@ var DefaultPatternRendererComponent = /** @class */ (function () {
     };
     DefaultPatternRendererComponent.prototype.savePatterns = function () {
         var _this = this;
-        var patternList = Array.from(this.patterns.values()).map(function (it) { return it.toPattern(_this.plIri); });
-        this.githubPersistenceService.updatePLPatterns(new _model_pattern_language_patterns_model__WEBPACK_IMPORTED_MODULE_15__["PatternLanguagePatterns"](_util_iri_converter__WEBPACK_IMPORTED_MODULE_9__["IriConverter"].getPatternListIriForPLIri(this.plIri), this.plIri, patternList)).subscribe(function () { return _this.toasterService.pop('success', 'updated patterns'); }, function (error) { return _this.toasterService.pop('error', 'could not update patterns' + error.message); });
+        this.githubPersistenceService.updatePLPatterns(new _model_pattern_language_patterns_model__WEBPACK_IMPORTED_MODULE_10__["PatternLanguagePatterns"](_util_iri_converter__WEBPACK_IMPORTED_MODULE_8__["IriConverter"].getPatternListIriForPLIri(this.plIri), this.plIri, this.patternList)).subscribe(function () { return _this.toasterService.pop('success', 'Updated patterns'); }, function (error) { return _this.toasterService.pop('error', 'could not update patterns' + error.message); });
+    };
+    DefaultPatternRendererComponent.prototype.addLink = function () {
+        var _this = this;
+        var dialogRef = this.dialog.open(_component_create_pattern_relation_create_pattern_relation_component__WEBPACK_IMPORTED_MODULE_14__["CreatePatternRelationComponent"], {
+            data: { patternName: this.pattern.name, patterns: this.patternList }
+        });
+        var relationAdded = false;
+        var patternRelations;
+        dialogRef.afterClosed().pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_22__["tap"])(function (result) {
+            relationAdded = _this.addRelationCreatedByDialog(result);
+            patternRelations = new _model_pattern_language_relations_model__WEBPACK_IMPORTED_MODULE_16__["PatternLanguageRelations"](_util_iri_converter__WEBPACK_IMPORTED_MODULE_8__["IriConverter"].getRelationListIriForPLIri(_this.plIri), _this.plIri, _this.allRelations);
+        }), Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_22__["switchMap"])(function () {
+            return relationAdded ? _this.githubPersistenceService.updatePLRelations(patternRelations) : rxjs__WEBPACK_IMPORTED_MODULE_23__["EMPTY"];
+        })).subscribe(function () {
+            if (relationAdded) {
+                _this.toasterService.pop('success', 'Created new Relation');
+            }
+        }, function (error) { return _this.toasterService.pop('error', 'Could not create new relation: ', error); });
+    };
+    // adds a relation created by the dialog to the local data and returns whether this was successful (or not, e.g. when simply closing the dialog)
+    DefaultPatternRendererComponent.prototype.addRelationCreatedByDialog = function (dialogResult) {
+        if (!dialogResult || !dialogResult.toPattern || !dialogResult.direction) {
+            return false;
+        }
+        switch (dialogResult.direction.name) {
+            case _model_pattern_relation_descriptor_direction_enum__WEBPACK_IMPORTED_MODULE_17__["PatternRelationDescriptorDirection"].DirectedRight:
+                this.allRelations.directed.push(new _model_directed_pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_15__["DirectedPatternRelationDescriptorIndividual"](this.pattern, dialogResult.toPattern, dialogResult.description ? dialogResult.description : null));
+                break;
+            case _model_pattern_relation_descriptor_direction_enum__WEBPACK_IMPORTED_MODULE_17__["PatternRelationDescriptorDirection"].DirectedLeft:
+                this.allRelations.directed.push(new _model_directed_pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_15__["DirectedPatternRelationDescriptorIndividual"](dialogResult.toPattern, this.pattern, dialogResult.description ? dialogResult.description : null));
+                break;
+            case _model_pattern_relation_descriptor_direction_enum__WEBPACK_IMPORTED_MODULE_17__["PatternRelationDescriptorDirection"].UnDirected:
+                this.allRelations.undirected.push(new _model_undirected_pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_18__["UndirectedPatternRelationDescriptorIndividual"](this.pattern, dialogResult.toPattern, dialogResult.description ? dialogResult.description : null));
+                break;
+            default:
+                return false;
+        }
+        this.updateUIForPatternRelations();
+        return true;
+    };
+    DefaultPatternRendererComponent.prototype.updateUIForPatternRelations = function () {
+        var _this = this;
+        this.directedPatternRelations = this.allRelations.directed.filter(function (rel) {
+            return rel.source.iri === _this.patternIri || rel.target.iri === _this.patternIri;
+        });
+        this.undirectedPatternRelations = this.allRelations.undirected.filter(function (rel) {
+            return rel.hasPattern.some(function (pat) { return pat.iri === _this.patternIri; });
+        });
+        this.cdr.detectChanges();
     };
     __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])(_component_type_templates_patternproperty_directive__WEBPACK_IMPORTED_MODULE_7__["PatternpropertyDirective"]),
-        __metadata("design:type", _component_type_templates_patternproperty_directive__WEBPACK_IMPORTED_MODULE_7__["PatternpropertyDirective"])
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])(_component_markdown_content_container_patternproperty_directive__WEBPACK_IMPORTED_MODULE_7__["PatternpropertyDirective"]),
+        __metadata("design:type", _component_markdown_content_container_patternproperty_directive__WEBPACK_IMPORTED_MODULE_7__["PatternpropertyDirective"])
     ], DefaultPatternRendererComponent.prototype, "ppPatternproperty", void 0);
     DefaultPatternRendererComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -1637,8 +1349,12 @@ var DefaultPatternRendererComponent = /** @class */ (function () {
             _service_loader_pattern_language_loader_pl_restriction_loader_service__WEBPACK_IMPORTED_MODULE_6__["PlRestrictionLoaderService"], _service_loader_default_pl_loader_service__WEBPACK_IMPORTED_MODULE_3__["DefaultPlLoaderService"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"],
             _service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_4__["PatternOntologyService"], angular2_toaster__WEBPACK_IMPORTED_MODULE_5__["ToasterService"], _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"],
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ComponentFactoryResolver"],
-            _service_github_persistence_service__WEBPACK_IMPORTED_MODULE_16__["GithubPersistenceService"],
-            ngx_cookie_service__WEBPACK_IMPORTED_MODULE_17__["CookieService"]])
+            _service_github_persistence_service__WEBPACK_IMPORTED_MODULE_11__["GithubPersistenceService"],
+            ngx_cookie_service__WEBPACK_IMPORTED_MODULE_12__["CookieService"],
+            _service_loader_pattern_language_loader_default_pattern_directed_relations_loader_service__WEBPACK_IMPORTED_MODULE_19__["DefaultPatternDirectedRelationsLoaderService"],
+            _service_loader_pattern_language_loader_default_pattern_undirected_relations_loader_service__WEBPACK_IMPORTED_MODULE_21__["DefaultPatternUndirectedRelationsLoaderService"],
+            _service_loader_complete_patternlanguage_loader_service__WEBPACK_IMPORTED_MODULE_25__["LoadCompletePatternlanguageService"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_13__["MatDialog"]])
     ], DefaultPatternRendererComponent);
     return DefaultPatternRendererComponent;
 }());
@@ -1654,7 +1370,7 @@ var DefaultPatternRendererComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<pp-navigate-back></pp-navigate-back>\n<h2>Pattern Language: {{plName}}</h2>\n<div class=\"container\">\n  <mat-progress-spinner mode=\"indeterminate\" *ngIf=\"isLoading\"></mat-progress-spinner>\n  <mat-card class=\"landing-card \" *ngFor=\"let pattern of patterns\">\n    <mat-card-header>\n      <mat-card-title>\n        <b>{{getNameForPattern(pattern)}}</b>\n\n      </mat-card-title>\n    </mat-card-header>\n    <mat-card-content class=\"fixed-height-card-content\">\n      <div *ngFor=\"let patternSection of getKeys(pattern.sectionProperties)\">\n        <p><b>{{getSectionName(patternSection)}}</b>: {{pattern.sectionProperties.get(patternSection)}}</p>\n      </div>\n    </mat-card-content>\n    <mat-card-actions>\n      <div style=\"text-align: center\">\n        <button mat-stroked-button color=\"primary\" (click)=\"navigate(pattern)\"><i class=\"material-icons\">pageview</i>View\n        </button>\n      </div>\n    </mat-card-actions>\n  </mat-card>\n<mat-card class=\"landing-card center-content add-card\" (click)=\"goToPatternCreation()\">\n  <i class=\"material-icons\">add_box</i>\n</mat-card>\n</div>\n\n"
+module.exports = "<pp-navigate-back></pp-navigate-back>\n<h2>Pattern Language: {{plName}}\n  <!--This button may be implemented in the future-->\n  <!--<button mat-stroked-button-- >\n          <!--style=\"margin-left: 5px\" color=\"primary\"-->\n  <!--(click)=\"addRelationType()\" matTooltip=\"Add new Relationtype\"><i class=\"material-icons -rotate-90deg\">swap_vertical_circle</i>-->\n  <!--<i class=\"material-icons\" style=\"height: 2em;-->\n  <!--font-size: smaller;  \">add</i></button>-->\n</h2>\n<div class=\"container\">\n  <mat-progress-spinner mode=\"indeterminate\" *ngIf=\"isLoading\"></mat-progress-spinner>\n  <mat-card class=\"landing-card \" *ngFor=\"let pattern of patterns\">\n    <mat-card-header>\n      <mat-card-title>\n        <b>{{pattern.name}}</b>\n\n      </mat-card-title>\n    </mat-card-header>\n    <mat-card-content class=\"fixed-height-card-content\">\n      <div *ngFor=\"let patternSection of patternLanguage?.sections\">\n        <p><b>{{getSectionName(patternSection)}}</b>:\n          {{pattern?.sectionsProperties.get(patternSection)}}\n        </p>\n      </div>\n    </mat-card-content>\n    <mat-card-actions>\n      <div style=\"text-align: center\">\n        <button mat-stroked-button color=\"primary\" (click)=\"navigate(pattern)\"><i class=\"material-icons\">pageview</i>View\n        </button>\n      </div>\n    </mat-card-actions>\n  </mat-card>\n<mat-card class=\"landing-card center-content add-card\" (click)=\"goToPatternCreation()\">\n  <i class=\"material-icons\">add_box</i>\n</mat-card>\n</div>\n\n"
 
 /***/ }),
 
@@ -1665,7 +1381,7 @@ module.exports = "<pp-navigate-back></pp-navigate-back>\n<h2>Pattern Language: {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "mat-card-content.fixed-height-card-content {\n  height: 12em;\n  overflow: hidden; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2NvcmUvZGVmYXVsdC1wbC1yZW5kZXJlci9kZWZhdWx0LXBsLXJlbmRlcmVyLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsWUFBWTtFQUNaLGdCQUFnQixFQUFBIiwiZmlsZSI6InNyYy9hcHAvY29yZS9kZWZhdWx0LXBsLXJlbmRlcmVyL2RlZmF1bHQtcGwtcmVuZGVyZXIuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJtYXQtY2FyZC1jb250ZW50LmZpeGVkLWhlaWdodC1jYXJkLWNvbnRlbnQge1xuICBoZWlnaHQ6IDEyZW07XG4gIG92ZXJmbG93OiBoaWRkZW47XG59XG4iXX0= */"
+module.exports = "mat-card-content.fixed-height-card-content {\n  height: 12em;\n  overflow: hidden; }\n\n.-rotate-90deg {\n  transform: rotate(90deg); }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2NvcmUvZGVmYXVsdC1wbC1yZW5kZXJlci9kZWZhdWx0LXBsLXJlbmRlcmVyLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsWUFBWTtFQUNaLGdCQUFnQixFQUFBOztBQUdsQjtFQUNFLHdCQUF3QixFQUFBIiwiZmlsZSI6InNyYy9hcHAvY29yZS9kZWZhdWx0LXBsLXJlbmRlcmVyL2RlZmF1bHQtcGwtcmVuZGVyZXIuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJtYXQtY2FyZC1jb250ZW50LmZpeGVkLWhlaWdodC1jYXJkLWNvbnRlbnQge1xuICBoZWlnaHQ6IDEyZW07XG4gIG92ZXJmbG93OiBoaWRkZW47XG59XG5cbi4tcm90YXRlLTkwZGVnIHtcbiAgdHJhbnNmb3JtOiByb3RhdGUoOTBkZWcpO1xufVxuIl19 */"
 
 /***/ }),
 
@@ -1683,7 +1399,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _service_loader_default_pl_loader_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../service/loader/default-pl-loader.service */ "./src/app/core/service/loader/default-pl-loader.service.ts");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _util_iri_converter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../util/iri-converter */ "./src/app/core/util/iri-converter.ts");
-/* harmony import */ var _service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _service_loader_complete_patternlanguage_loader_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../service/loader/complete-patternlanguage-loader.service */ "./src/app/core/service/loader/complete-patternlanguage-loader.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1693,74 +1410,34 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
+
 
 
 
 
 
 var DefaultPlRendererComponent = /** @class */ (function () {
-    function DefaultPlRendererComponent(loader, activatedRoute, cdr, zone, router, pos) {
+    function DefaultPlRendererComponent(loader, activatedRoute, cdr, zone, router, completePatternLanguageLoadingService, dialog) {
         this.loader = loader;
         this.activatedRoute = activatedRoute;
         this.cdr = cdr;
         this.zone = zone;
         this.router = router;
-        this.pos = pos;
+        this.completePatternLanguageLoadingService = completePatternLanguageLoadingService;
+        this.dialog = dialog;
         this.patterns = [];
         this.isLoading = true;
     }
     DefaultPlRendererComponent.prototype.ngOnInit = function () {
-        var _this = this;
         this.loader.supportedIRI = _util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
         this.plIri = _util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
         this.plName = _util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].extractIndividualNameFromIri(this.plIri);
-        this.loadData().then(function () {
-            _this.isLoading = false;
-            _this.cdr.detectChanges();
-        });
-    };
-    DefaultPlRendererComponent.prototype.getKeys = function (map) {
-        return Array.from(map.keys());
+        this.loadData();
     };
     DefaultPlRendererComponent.prototype.navigate = function (pattern) {
         var _this = this;
         this.zone.run(function () {
-            _this.router.navigate([_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIriToId(pattern.uri)], { relativeTo: _this.activatedRoute });
+            _this.router.navigate([_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIriToId(pattern.iri)], { relativeTo: _this.activatedRoute });
         });
     };
     DefaultPlRendererComponent.prototype.goToPatternCreation = function () {
@@ -1769,34 +1446,16 @@ var DefaultPlRendererComponent = /** @class */ (function () {
             _this.router.navigate(['create-pattern'], { relativeTo: _this.activatedRoute });
         });
     };
-    DefaultPlRendererComponent.prototype.getNameForPattern = function (pattern) {
-        return _util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].extractIndividualNameFromIri(pattern.uri);
-    };
     DefaultPlRendererComponent.prototype.getSectionName = function (patternSection) {
         return _util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getSectionName(patternSection);
     };
     DefaultPlRendererComponent.prototype.loadData = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var importedPatternIris, _a, _b, _c;
-            return __generator(this, function (_d) {
-                switch (_d.label) {
-                    case 0: return [4 /*yield*/, this.pos.loadUrisToStore([{ value: this.plIri, token: null }])];
-                    case 1:
-                        _d.sent();
-                        return [4 /*yield*/, this.loader.getOWLImports(this.plIri)];
-                    case 2:
-                        importedPatternIris = _d.sent();
-                        return [4 /*yield*/, this.pos.loadUrisToStore(importedPatternIris.map(function (i) { return i.import; }))];
-                    case 3:
-                        _d.sent();
-                        _a = this;
-                        _c = (_b = Array).from;
-                        return [4 /*yield*/, this.loader.loadContentFromStore()];
-                    case 4:
-                        _a.patterns = _c.apply(_b, [(_d.sent()).values()]);
-                        return [2 /*return*/];
-                }
-            });
+        var _this = this;
+        this.completePatternLanguageLoadingService.loadCompletePatternLanguage(this.plIri).then(function (completePL) {
+            _this.patterns = completePL.patterns;
+            _this.patternLanguage = completePL.patternlanguage;
+            _this.isLoading = false;
+            _this.cdr.detectChanges();
         });
     };
     DefaultPlRendererComponent = __decorate([
@@ -1810,7 +1469,8 @@ var DefaultPlRendererComponent = /** @class */ (function () {
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"],
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"],
             _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"],
-            _service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_4__["PatternOntologyService"]])
+            _service_loader_complete_patternlanguage_loader_service__WEBPACK_IMPORTED_MODULE_5__["LoadCompletePatternlanguageService"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_4__["MatDialog"]])
     ], DefaultPlRendererComponent);
     return DefaultPlRendererComponent;
 }());
@@ -1900,6 +1560,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PatternInstance", function() { return PatternInstance; });
 /* harmony import */ var _pattern_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pattern.model */ "./src/app/core/model/pattern.model.ts");
 /* harmony import */ var _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+/* harmony import */ var _globals__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../globals */ "./src/app/globals.ts");
+
 
 
 /* This class models how a pattern can be reconstructed from the SPARQL queries. */
@@ -1918,7 +1580,9 @@ var PatternInstance = /** @class */ (function () {
     };
     PatternInstance.prototype.toPattern = function (plIri) {
         var nameKey = _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].getFileName(plIri) + '#hasName';
-        return new _pattern_model__WEBPACK_IMPORTED_MODULE_0__["default"](this.uri, this.sectionProperties.get(nameKey).join(''), this.sectionProperties, plIri);
+        var name = this.sectionProperties.has(nameKey) ? this.sectionProperties.get(nameKey).join('') :
+            this.sectionProperties.get(_globals__WEBPACK_IMPORTED_MODULE_2__["globals"].urlPatternRepoOntology + '#hasName').join('');
+        return new _pattern_model__WEBPACK_IMPORTED_MODULE_0__["default"](this.uri, name, this.sectionProperties, plIri);
     };
     return PatternInstance;
 }());
@@ -1954,6 +1618,60 @@ var SectionRestrictionsResult = /** @class */ (function () {
     }
     return SectionRestrictionsResult;
 }());
+
+
+
+/***/ }),
+
+/***/ "./src/app/core/model/directed-pattern-relation-descriptor-individual.ts":
+/*!*******************************************************************************!*\
+  !*** ./src/app/core/model/directed-pattern-relation-descriptor-individual.ts ***!
+  \*******************************************************************************/
+/*! exports provided: DirectedPatternRelationDescriptorIndividual */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DirectedPatternRelationDescriptorIndividual", function() { return DirectedPatternRelationDescriptorIndividual; });
+/* harmony import */ var _pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pattern-relation-descriptor-individual */ "./src/app/core/model/pattern-relation-descriptor-individual.ts");
+/* harmony import */ var _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+var DirectedPatternRelationDescriptorIndividual = /** @class */ (function (_super) {
+    __extends(DirectedPatternRelationDescriptorIndividual, _super);
+    function DirectedPatternRelationDescriptorIndividual(source, target, description) {
+        if (description === void 0) { description = null; }
+        var _this = _super.call(this) || this;
+        _this.source = source;
+        _this.target = target;
+        _this.description = description;
+        _this.individualName = _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].removeWhitespace(_this.source.name) + '-to-' + _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].removeWhitespace(_this.target.name);
+        return _this;
+    }
+    DirectedPatternRelationDescriptorIndividual.prototype.toTurtle = function () {
+        var ary = [];
+        ary.push(":" + this.individualName);
+        ary.push("rdf:type owl:NamedIndividual , pp:DirectedPatternRelationDescriptor ;");
+        ary.push("pp:hasSource :" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].removeWhitespace(this.source.name) + " ; ");
+        ary.push("pp:hasTarget :" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].removeWhitespace(this.target.name) + " " + (this.description ? '; \n pp:hasDescription "' + this.description + '"^^xsd:string . ' : '.'));
+        ary.push(' ');
+        return ary.join('\n');
+    };
+    return DirectedPatternRelationDescriptorIndividual;
+}(_pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_0__["PatternRelationDescriptorIndividual"]));
 
 
 
@@ -2049,6 +1767,47 @@ var PatternLanguagePatterns = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/core/model/pattern-language-relations.model.ts":
+/*!****************************************************************!*\
+  !*** ./src/app/core/model/pattern-language-relations.model.ts ***!
+  \****************************************************************/
+/*! exports provided: PatternLanguageRelations */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PatternLanguageRelations", function() { return PatternLanguageRelations; });
+/* harmony import */ var _pattern_pedia_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pattern-pedia.model */ "./src/app/core/model/pattern-pedia.model.ts");
+/* harmony import */ var _globals__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../globals */ "./src/app/globals.ts");
+
+
+var PatternLanguageRelations = /** @class */ (function () {
+    function PatternLanguageRelations(iri, plIri, relations) {
+        this.iri = iri;
+        this.plIri = plIri;
+        this.relations = relations;
+    }
+    PatternLanguageRelations.prototype.toTurtle = function () {
+        var ary = new _pattern_pedia_model__WEBPACK_IMPORTED_MODULE_0__["PatternPedia"]().getPrefixesToTurtle(this.iri, this.plIri);
+        ary.push('\n');
+        ary.push("<" + this.iri + "> rdf:type owl:Ontology ;");
+        ary.push("owl:imports <" + _globals__WEBPACK_IMPORTED_MODULE_1__["globals"].urlPatternRepoOntology + ">, <" + this.plIri + "> .");
+        ary.push('\n');
+        this.relations.directed.forEach(function (rel) {
+            ary.push(rel.toTurtle());
+        });
+        this.relations.undirected.forEach(function (rel) {
+            ary.push(rel.toTurtle());
+        });
+        return ary.join('\n');
+    };
+    return PatternLanguageRelations;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/core/model/pattern-language.model.ts":
 /*!******************************************************!*\
   !*** ./src/app/core/model/pattern-language.model.ts ***!
@@ -2130,7 +1889,7 @@ var PatternLanguage = /** @class */ (function () {
         var ary = this.getPrefixes();
         ary.push('\n');
         ary.push("<" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].getFileName(this.iri) + "> rdf:type owl:Ontology ;");
-        ary.push("owl:imports <" + this.patternpediaBaseURI + "> , <" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].getPatternListIriForPLIri(this.iri) + ">.");
+        ary.push("owl:imports <" + this.patternpediaBaseURI + "> , <" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].getPatternListIriForPLIri(this.iri) + ">, <" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].getRelationListIriForPLIri(this.iri) + ">.");
         ary.push('\n');
         ary.push('# #################################################################');
         ary.push('# #');
@@ -2143,7 +1902,15 @@ var PatternLanguage = /** @class */ (function () {
             ary.push(_this.getSectionIdentifier(section) + " rdf:type pp:DatatypePropertyListItem  ;");
             ary.push("pp:hasListIndex \"" + index + "\"^^xsd:integer .");
         });
-        if (this.restrictions && this.restrictions.length > 0) {
+        var restrictionsArray = [];
+        for (var _i = 0, _a = this.sections; _i < _a.length; _i++) {
+            var key = _a[_i];
+            if (!this.restrictions.get(key)) {
+                continue;
+            }
+            restrictionsArray.push.apply(restrictionsArray, this.restrictions.get(key));
+        }
+        if (this.restrictions && this.restrictions.size > 0) {
             ary.push('\n');
             ary.push('# #################################################################');
             ary.push('# #');
@@ -2153,7 +1920,7 @@ var PatternLanguage = /** @class */ (function () {
             ary.push("### " + this.iri);
             ary.push(":" + this.name + "Individual rdf:type owl:Class ; ");
             ary.push(" rdfs:subClassOf pp:Pattern ,");
-            this.restrictions.forEach(function (restriction, index) {
+            restrictionsArray.forEach(function (restriction, index) {
                 ary.push('\t'.repeat(3) + "[ rdf:type owl:Restriction ;");
                 ary.push('\t'.repeat(3) + " owl:onProperty " + _this.addPrefixCharacterOrAngleBrackets(restriction.name) + " ; ");
                 if (restriction.restrictionType === 'min' || restriction.restrictionType === 'max') {
@@ -2170,7 +1937,7 @@ var PatternLanguage = /** @class */ (function () {
                 else if (restriction.restrictionType === 'only') {
                     ary.push('\t'.repeat(3) + " owl:allValuesFrom " + _this.addAngleBracketsIfNeeded(restriction.type));
                 }
-                ary.push('\t'.repeat(4) + "] " + (index === (_this.restrictions.length - 1) ? '.' : ','));
+                ary.push('\t'.repeat(4) + "] " + (index === (restrictionsArray.length - 1) ? '.' : ','));
                 ary.push("\n");
             });
         }
@@ -2283,6 +2050,70 @@ var PatternPedia = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/core/model/pattern-relation-descriptor-direction.enum.ts":
+/*!**************************************************************************!*\
+  !*** ./src/app/core/model/pattern-relation-descriptor-direction.enum.ts ***!
+  \**************************************************************************/
+/*! exports provided: PatternRelationDescriptorDirection */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PatternRelationDescriptorDirection", function() { return PatternRelationDescriptorDirection; });
+var PatternRelationDescriptorDirection;
+(function (PatternRelationDescriptorDirection) {
+    PatternRelationDescriptorDirection[PatternRelationDescriptorDirection["DirectedRight"] = 0] = "DirectedRight";
+    PatternRelationDescriptorDirection[PatternRelationDescriptorDirection["DirectedLeft"] = 1] = "DirectedLeft";
+    PatternRelationDescriptorDirection[PatternRelationDescriptorDirection["UnDirected"] = 2] = "UnDirected";
+})(PatternRelationDescriptorDirection || (PatternRelationDescriptorDirection = {}));
+
+
+/***/ }),
+
+/***/ "./src/app/core/model/pattern-relation-descriptor-individual.ts":
+/*!**********************************************************************!*\
+  !*** ./src/app/core/model/pattern-relation-descriptor-individual.ts ***!
+  \**********************************************************************/
+/*! exports provided: PatternRelationDescriptorIndividual */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PatternRelationDescriptorIndividual", function() { return PatternRelationDescriptorIndividual; });
+var PatternRelationDescriptorIndividual = /** @class */ (function () {
+    function PatternRelationDescriptorIndividual() {
+    }
+    return PatternRelationDescriptorIndividual;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/core/model/pattern-relations.ts":
+/*!*************************************************!*\
+  !*** ./src/app/core/model/pattern-relations.ts ***!
+  \*************************************************/
+/*! exports provided: PatternRelations */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PatternRelations", function() { return PatternRelations; });
+var PatternRelations = /** @class */ (function () {
+    function PatternRelations(directed, undirected) {
+        if (directed === void 0) { directed = []; }
+        if (undirected === void 0) { undirected = []; }
+        this.directed = directed;
+        this.undirected = undirected;
+    }
+    return PatternRelations;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/core/model/pattern.model.ts":
 /*!*********************************************!*\
   !*** ./src/app/core/model/pattern.model.ts ***!
@@ -2293,7 +2124,6 @@ var PatternPedia = /** @class */ (function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/iri-converter */ "./src/app/core/util/iri-converter.ts");
-/* harmony import */ var _globals__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../globals */ "./src/app/globals.ts");
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -2308,14 +2138,12 @@ __webpack_require__.r(__webpack_exports__);
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-
 var Pattern = /** @class */ (function () {
     function Pattern(iri, name, sectionProperties, patternLanguageIri) {
         if (iri === void 0) { iri = null; }
         if (name === void 0) { name = null; }
         if (sectionProperties === void 0) { sectionProperties = null; }
         if (patternLanguageIri === void 0) { patternLanguageIri = null; }
-        this.patternpediaBaseURI = _globals__WEBPACK_IMPORTED_MODULE_1__["globals"].urlPatternRepoOntology;
         this.name = name;
         this.iri = iri;
         this.id = iri;
@@ -2332,9 +2160,6 @@ var Pattern = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Pattern.prototype.getSectionIdentifier = function (section) {
-        return ':has' + section.replace(/\s/g, '');
-    };
     Pattern.prototype.toTurtle = function () {
         var _this = this;
         var ary = [];
@@ -2363,6 +2188,60 @@ var Pattern = /** @class */ (function () {
     return Pattern;
 }());
 /* harmony default export */ __webpack_exports__["default"] = (Pattern);
+
+
+/***/ }),
+
+/***/ "./src/app/core/model/undirected-pattern-relation-descriptor-individual.ts":
+/*!*********************************************************************************!*\
+  !*** ./src/app/core/model/undirected-pattern-relation-descriptor-individual.ts ***!
+  \*********************************************************************************/
+/*! exports provided: UndirectedPatternRelationDescriptorIndividual */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UndirectedPatternRelationDescriptorIndividual", function() { return UndirectedPatternRelationDescriptorIndividual; });
+/* harmony import */ var _pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pattern-relation-descriptor-individual */ "./src/app/core/model/pattern-relation-descriptor-individual.ts");
+/* harmony import */ var _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+var UndirectedPatternRelationDescriptorIndividual = /** @class */ (function (_super) {
+    __extends(UndirectedPatternRelationDescriptorIndividual, _super);
+    function UndirectedPatternRelationDescriptorIndividual(firstPattern, secondPattern, description) {
+        if (secondPattern === void 0) { secondPattern = null; }
+        if (description === void 0) { description = null; }
+        var _this = _super.call(this) || this;
+        _this.hasPattern = [firstPattern, secondPattern];
+        _this.description = description;
+        _this.individualName = _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].removeWhitespace(firstPattern.name) + '-to-' + _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].removeWhitespace(secondPattern.name);
+        return _this;
+    }
+    UndirectedPatternRelationDescriptorIndividual.prototype.toTurtle = function () {
+        var ary = [];
+        ary.push(":" + this.individualName);
+        ary.push("rdf:type owl:NamedIndividual , pp:UndirectedPatternRelationDescriptor ;");
+        ary.push("pp:hasPattern :" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].removeWhitespace(this.hasPattern[0].name) + " ; ");
+        ary.push("pp:hasPattern :" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].removeWhitespace(this.hasPattern[1].name) + " " + (this.description ? '; \n pp:hasDescription "' + this.description + '"^^xsd:string . ' : '.'));
+        ary.push(' ');
+        return ary.join('\n');
+    };
+    return UndirectedPatternRelationDescriptorIndividual;
+}(_pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_0__["PatternRelationDescriptorIndividual"]));
+
 
 
 /***/ }),
@@ -2510,6 +2389,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/index.js");
 /* harmony import */ var _util_iri_converter__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+/* harmony import */ var _globals__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../globals */ "./src/app/globals.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2526,11 +2406,12 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var GithubPersistenceService = /** @class */ (function () {
     function GithubPersistenceService(httpClient, cookieService) {
         this.httpClient = httpClient;
         this.cookieService = cookieService;
-        this.githubBaseUrl = 'https://api.github.com/repos/PatternPedia/patternpediacontent/contents';
+        this.githubBaseUrl = _globals__WEBPACK_IMPORTED_MODULE_7__["globals"].urlGithubAPI;
         this.githubPatternPediaUrl = this.githubBaseUrl + '/patternpedia.ttl';
     }
     GithubPersistenceService.prototype.uploadPatternLanguage = function (patternlanguage) {
@@ -2600,7 +2481,7 @@ var GithubPersistenceService = /** @class */ (function () {
     };
     GithubPersistenceService.prototype.updatePLPatterns = function (patternLanguagePatterns) {
         var _this = this;
-        var githubUrlPLPatterns = this.getGithubPathForPatternLanguagePatterns(patternLanguagePatterns);
+        var githubUrlPLPatterns = this.getGithubPathForPatternLanguagePatternsOrRelations(patternLanguagePatterns);
         return this.getFile(githubUrlPLPatterns).pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_4__["switchMap"])(function (res) {
             return _this.httpClient.put(githubUrlPLPatterns, {
                 message: 'update patterns of' + _util_iri_converter__WEBPACK_IMPORTED_MODULE_6__["IriConverter"].extractIndividualNameFromIri(patternLanguagePatterns.plIri),
@@ -2614,20 +2495,47 @@ var GithubPersistenceService = /** @class */ (function () {
             });
         }));
     };
-    GithubPersistenceService.prototype.uploadPLPatterns = function (patternLanguagePatterns) {
-        var githubUrlPLPatterns = this.getGithubPathForPatternLanguagePatterns(patternLanguagePatterns);
-        return this.httpClient.put(githubUrlPLPatterns, {
-            message: 'initialize patternslist (currently empty)  of' + _util_iri_converter__WEBPACK_IMPORTED_MODULE_6__["IriConverter"].extractIndividualNameFromIri(patternLanguagePatterns.plIri),
+    GithubPersistenceService.prototype.updatePLRelations = function (patternLanguageRelations) {
+        var _this = this;
+        if (!patternLanguageRelations) {
+            return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
+        }
+        var githubUrlPLPatterns = this.getGithubPathForPatternLanguagePatternsOrRelations(patternLanguageRelations);
+        return this.getFile(githubUrlPLPatterns).pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_4__["switchMap"])(function (res) {
+            return _this.httpClient.put(githubUrlPLPatterns, {
+                message: 'update patterns of' + _util_iri_converter__WEBPACK_IMPORTED_MODULE_6__["IriConverter"].extractIndividualNameFromIri(patternLanguageRelations.plIri),
+                content: btoa(patternLanguageRelations.toTurtle()),
+                sha: res.sha
+            }, {
+                headers: {
+                    'Content-Type': 'application/x-turtle',
+                    'Authorization': "token " + _this.cookieService.get('patternpedia_github_token')
+                }
+            });
+        }));
+    };
+    GithubPersistenceService.prototype.uploadPLPatternsAndRelations = function (patternLanguagePatterns, patternLanguageRelations) {
+        var _this = this;
+        var headers = {
+            'Content-Type': 'application/x-turtle',
+            'Authorization': "token " + this.cookieService.get('patternpedia_github_token')
+        };
+        return this.httpClient.put(this.getGithubPathForPatternLanguagePatternsOrRelations(patternLanguagePatterns), {
+            message: 'initialize patternslist (currently empty)  of ' + _util_iri_converter__WEBPACK_IMPORTED_MODULE_6__["IriConverter"].extractIndividualNameFromIri(patternLanguagePatterns.plIri),
             content: btoa(patternLanguagePatterns.toTurtle())
         }, {
-            headers: {
-                'Content-Type': 'application/x-turtle',
-                'Authorization': "token " + this.cookieService.get('patternpedia_github_token')
-            }
-        });
+            headers: headers
+        }).pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_4__["switchMap"])(function () {
+            return _this.httpClient.put(_this.getGithubPathForPatternLanguagePatternsOrRelations(patternLanguageRelations), {
+                message: 'initialize patternrelationslist (currently empty)  of ' + _util_iri_converter__WEBPACK_IMPORTED_MODULE_6__["IriConverter"].extractIndividualNameFromIri(patternLanguageRelations.plIri),
+                content: btoa(patternLanguageRelations.toTurtle())
+            }, {
+                headers: headers
+            });
+        }));
     };
-    GithubPersistenceService.prototype.getGithubPathForPatternLanguagePatterns = function (patternLanguagePatterns) {
-        return this.githubBaseUrl + "/patternlanguages/" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_6__["IriConverter"].extractIndividualNameFromIri(patternLanguagePatterns.plIri) + "/" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_6__["IriConverter"].extractIndividualNameFromIri(patternLanguagePatterns.iri) + ".ttl";
+    GithubPersistenceService.prototype.getGithubPathForPatternLanguagePatternsOrRelations = function (patternLanguagePatternsOrRelations) {
+        return this.githubBaseUrl + "/patternlanguages/" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_6__["IriConverter"].extractIndividualNameFromIri(patternLanguagePatternsOrRelations.plIri) + "/" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_6__["IriConverter"].extractIndividualNameFromIri(patternLanguagePatternsOrRelations.iri) + ".ttl";
     };
     GithubPersistenceService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
@@ -2636,6 +2544,161 @@ var GithubPersistenceService = /** @class */ (function () {
         __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"], ngx_cookie_service__WEBPACK_IMPORTED_MODULE_5__["CookieService"]])
     ], GithubPersistenceService);
     return GithubPersistenceService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/core/service/loader/complete-patternlanguage-loader.service.ts":
+/*!********************************************************************************!*\
+  !*** ./src/app/core/service/loader/complete-patternlanguage-loader.service.ts ***!
+  \********************************************************************************/
+/*! exports provided: LoadCompletePatternlanguageService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoadCompletePatternlanguageService", function() { return LoadCompletePatternlanguageService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+/* harmony import */ var _pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+/* harmony import */ var _default_pl_loader_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./default-pl-loader.service */ "./src/app/core/service/loader/default-pl-loader.service.ts");
+/* harmony import */ var _model_pattern_language_model__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../model/pattern-language.model */ "./src/app/core/model/pattern-language.model.ts");
+/* harmony import */ var _pattern_language_loader_default_pattern_directed_relations_loader_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pattern-language-loader/default-pattern-directed-relations-loader.service */ "./src/app/core/service/loader/pattern-language-loader/default-pattern-directed-relations-loader.service.ts");
+/* harmony import */ var _pattern_language_loader_default_pattern_undirected_relations_loader_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pattern-language-loader/default-pattern-undirected-relations-loader.service */ "./src/app/core/service/loader/pattern-language-loader/default-pattern-undirected-relations-loader.service.ts");
+/* harmony import */ var _model_pattern_relations__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../model/pattern-relations */ "./src/app/core/model/pattern-relations.ts");
+/* harmony import */ var _pattern_language_loader_pl_restriction_loader_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./pattern-language-loader/pl-restriction-loader.service */ "./src/app/core/service/loader/pattern-language-loader/pl-restriction-loader.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
+
+
+
+
+
+
+
+var LoadCompletePatternlanguageService = /** @class */ (function () {
+    function LoadCompletePatternlanguageService(pos, plLoader, directedRelationsLoaderService, undirectedRelationsLoaderService, sectionRestriction) {
+        this.pos = pos;
+        this.plLoader = plLoader;
+        this.directedRelationsLoaderService = directedRelationsLoaderService;
+        this.undirectedRelationsLoaderService = undirectedRelationsLoaderService;
+        this.sectionRestriction = sectionRestriction;
+    }
+    // loads everything for a patternlanguage: base infos, patterns, links
+    // return every info needed to reconstruct all 3 turtle files
+    LoadCompletePatternlanguageService.prototype.loadCompletePatternLanguage = function (plIri) {
+        return __awaiter(this, void 0, void 0, function () {
+            var imports, importedFileIris, sectionRestritions, logoResult, plLogos, sectionsresult, sections, patterns, patternList, allRelations, _a, _b, _c, _d, _e, _f, plName, patternIris, pl;
+            return __generator(this, function (_g) {
+                switch (_g.label) {
+                    case 0: return [4 /*yield*/, this.pos.loadUrisToStore([{ token: null, value: plIri }])];
+                    case 1:
+                        _g.sent();
+                        return [4 /*yield*/, this.pos.getOWLImports(plIri)];
+                    case 2:
+                        imports = _g.sent();
+                        importedFileIris = imports.map(function (i) { return i.import; });
+                        return [4 /*yield*/, this.pos.loadUrisToStore(importedFileIris)];
+                    case 3:
+                        _g.sent();
+                        // load section restrictions to be able to get the type for a section
+                        this.sectionRestriction.supportedIRI = plIri;
+                        return [4 /*yield*/, this.sectionRestriction.loadContentFromStore()];
+                    case 4:
+                        sectionRestritions = _g.sent();
+                        return [4 /*yield*/, this.plLoader.getPLLogo(plIri)];
+                    case 5:
+                        logoResult = _g.sent();
+                        plLogos = logoResult.map(function (it) { return it.logo.value; });
+                        return [4 /*yield*/, this.plLoader.getPLSections(plIri)];
+                    case 6:
+                        sectionsresult = _g.sent();
+                        sections = sectionsresult.map(function (secResult) {
+                            return secResult.section.value;
+                        });
+                        //  load patterns from patternlanguage
+                        this.plLoader.supportedIRI = plIri;
+                        return [4 /*yield*/, this.plLoader.loadContentFromStore()];
+                    case 7:
+                        patterns = _g.sent();
+                        patternList = Array.from(patterns.values()).map(function (it) { return it.toPattern(plIri); });
+                        // load pattern relations (links)
+                        this.directedRelationsLoaderService.supportedIRI = _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].getRelationListIriForPLIri(plIri);
+                        this.directedRelationsLoaderService.patterns = patternList;
+                        _a = _model_pattern_relations__WEBPACK_IMPORTED_MODULE_7__["PatternRelations"].bind;
+                        _c = (_b = Array).from;
+                        return [4 /*yield*/, this.directedRelationsLoaderService.loadContentFromStore()];
+                    case 8:
+                        allRelations = new (_a.apply(_model_pattern_relations__WEBPACK_IMPORTED_MODULE_7__["PatternRelations"], [void 0, _c.apply(_b, [(_g.sent()).values()])]))();
+                        this.undirectedRelationsLoaderService.supportedIRI = _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].getRelationListIriForPLIri(plIri);
+                        this.undirectedRelationsLoaderService.patterns = patternList;
+                        _d = allRelations;
+                        _f = (_e = Array).from;
+                        return [4 /*yield*/, this.undirectedRelationsLoaderService.loadContentFromStore()];
+                    case 9:
+                        _d.undirected = _f.apply(_e, [(_g.sent()).values()]);
+                        plName = _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].extractIndividualNameFromIri(plIri);
+                        patternIris = patternList.map(function (pat) { return pat.iri; });
+                        pl = new _model_pattern_language_model__WEBPACK_IMPORTED_MODULE_4__["default"](plIri, plName, plLogos, patternIris, sections, sectionRestritions);
+                        return [2 /*return*/, Promise.resolve({ patternlanguage: pl, patternRelations: allRelations, patterns: patternList })];
+                }
+            });
+        });
+    };
+    LoadCompletePatternlanguageService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        }),
+        __metadata("design:paramtypes", [_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__["PatternOntologyService"], _default_pl_loader_service__WEBPACK_IMPORTED_MODULE_3__["DefaultPlLoaderService"], _pattern_language_loader_default_pattern_directed_relations_loader_service__WEBPACK_IMPORTED_MODULE_5__["DefaultPatternDirectedRelationsLoaderService"],
+            _pattern_language_loader_default_pattern_undirected_relations_loader_service__WEBPACK_IMPORTED_MODULE_6__["DefaultPatternUndirectedRelationsLoaderService"], _pattern_language_loader_pl_restriction_loader_service__WEBPACK_IMPORTED_MODULE_8__["PlRestrictionLoaderService"]])
+    ], LoadCompletePatternlanguageService);
+    return LoadCompletePatternlanguageService;
 }());
 
 
@@ -2853,6 +2916,169 @@ var DefaultPlLoaderService = /** @class */ (function (_super) {
     return DefaultPlLoaderService;
 }(_model_loader__WEBPACK_IMPORTED_MODULE_2__["default"]));
 
+
+
+/***/ }),
+
+/***/ "./src/app/core/service/loader/pattern-language-loader/default-pattern-directed-relations-loader.service.ts":
+/*!******************************************************************************************************************!*\
+  !*** ./src/app/core/service/loader/pattern-language-loader/default-pattern-directed-relations-loader.service.ts ***!
+  \******************************************************************************************************************/
+/*! exports provided: DefaultPatternDirectedRelationsLoaderService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DefaultPatternDirectedRelationsLoaderService", function() { return DefaultPatternDirectedRelationsLoaderService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _model_loader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../model/loader */ "./src/app/core/model/loader.ts");
+/* harmony import */ var _pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+/* harmony import */ var _model_directed_pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../model/directed-pattern-relation-descriptor-individual */ "./src/app/core/model/directed-pattern-relation-descriptor-individual.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var DefaultPatternDirectedRelationsLoaderService = /** @class */ (function (_super) {
+    __extends(DefaultPatternDirectedRelationsLoaderService, _super);
+    function DefaultPatternDirectedRelationsLoaderService(pos) {
+        var _this = _super.call(this, null, pos) || this;
+        _this.pos = pos;
+        return _this;
+    }
+    DefaultPatternDirectedRelationsLoaderService.prototype.selectContentFromStore = function () {
+        return this.pos.getDirectedPatternRelations(this.supportedIRI);
+    };
+    DefaultPatternDirectedRelationsLoaderService.prototype.mapTriples = function (triples) {
+        var relations = new Map();
+        for (var _i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
+            var row = triples_1[_i];
+            var relation = new _model_directed_pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_3__["DirectedPatternRelationDescriptorIndividual"](this.getPatternForIri(row.source.value), this.getPatternForIri(row.target.value), row.description ? row.description.value : null);
+            relations.set(relation.individualName, relation);
+        }
+        return Promise.resolve(relations);
+    };
+    DefaultPatternDirectedRelationsLoaderService.prototype.getPatternForIri = function (iri) {
+        return this.patterns.find(function (it) { return it.iri === iri; });
+    };
+    DefaultPatternDirectedRelationsLoaderService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        }),
+        __metadata("design:paramtypes", [_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__["PatternOntologyService"]])
+    ], DefaultPatternDirectedRelationsLoaderService);
+    return DefaultPatternDirectedRelationsLoaderService;
+}(_model_loader__WEBPACK_IMPORTED_MODULE_1__["default"]));
+
+
+
+/***/ }),
+
+/***/ "./src/app/core/service/loader/pattern-language-loader/default-pattern-undirected-relations-loader.service.ts":
+/*!********************************************************************************************************************!*\
+  !*** ./src/app/core/service/loader/pattern-language-loader/default-pattern-undirected-relations-loader.service.ts ***!
+  \********************************************************************************************************************/
+/*! exports provided: DefaultPatternUndirectedRelationsLoaderService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DefaultPatternUndirectedRelationsLoaderService", function() { return DefaultPatternUndirectedRelationsLoaderService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _model_loader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../model/loader */ "./src/app/core/model/loader.ts");
+/* harmony import */ var _pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+/* harmony import */ var _model_undirected_pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../model/undirected-pattern-relation-descriptor-individual */ "./src/app/core/model/undirected-pattern-relation-descriptor-individual.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var DefaultPatternUndirectedRelationsLoaderService = /** @class */ (function (_super) {
+    __extends(DefaultPatternUndirectedRelationsLoaderService, _super);
+    function DefaultPatternUndirectedRelationsLoaderService(pos) {
+        var _this = _super.call(this, null, pos) || this;
+        _this.pos = pos;
+        return _this;
+    }
+    DefaultPatternUndirectedRelationsLoaderService.prototype.selectContentFromStore = function () {
+        return this.pos.getUndirectedPatternRelations(this.supportedIRI);
+    };
+    DefaultPatternUndirectedRelationsLoaderService.prototype.mapTriples = function (triples) {
+        var relations = new Map();
+        var triplesByRelation = new Map();
+        // sort the triples by relations, each undirected relation must be reconstructed by two triples
+        for (var _i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
+            var row = triples_1[_i];
+            var pattern = this.getPatternForIri(row.pattern.value);
+            var relationIndividual = row.relationlink.value;
+            var linkdata = { pat: pattern, description: row.description ? row.description.value : null };
+            triplesByRelation.has(relationIndividual) ? triplesByRelation.set(relationIndividual, triplesByRelation.get(relationIndividual).concat(linkdata)) : triplesByRelation.set(relationIndividual, [linkdata]);
+        }
+        // reconstruct relations
+        triplesByRelation.forEach(function (value, key) {
+            relations.set(key, new _model_undirected_pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_3__["UndirectedPatternRelationDescriptorIndividual"](value[0].pat, value[1].pat, value[1].description ? value[1].description : null));
+        });
+        return Promise.resolve(relations);
+    };
+    DefaultPatternUndirectedRelationsLoaderService.prototype.getPatternForIri = function (iri) {
+        return this.patterns.find(function (it) { return it.iri === iri; });
+    };
+    DefaultPatternUndirectedRelationsLoaderService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        }),
+        __metadata("design:paramtypes", [_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__["PatternOntologyService"]])
+    ], DefaultPatternUndirectedRelationsLoaderService);
+    return DefaultPatternUndirectedRelationsLoaderService;
+}(_model_loader__WEBPACK_IMPORTED_MODULE_1__["default"]));
+
+var UndirectedLinkData = /** @class */ (function () {
+    function UndirectedLinkData() {
+    }
+    return UndirectedLinkData;
+}());
 
 
 /***/ }),
@@ -3476,12 +3702,8 @@ var PatternOntologyService = /** @class */ (function () {
         }
         var observables = uri.map(function (iri) {
             if (_this.cookieService.get('patternpedia_github_token')) {
-                var githubUrl = _this.githubPersistenceService.githubBaseUrl;
-                var url = iri;
-                if (iri === 'https://purl.org/patternpedia') {
-                    url = githubUrl + '/patternpedia.ttl';
-                }
-                return _this.githubPersistenceService.getFile(url).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (fileResponse) {
+                var githubApiFileUrl = _util_iri_converter__WEBPACK_IMPORTED_MODULE_5__["IriConverter"].getGithubAPIURLForURI(iri);
+                return _this.githubPersistenceService.getFile(githubApiFileUrl).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (fileResponse) {
                     return atob(fileResponse.content);
                 }));
             }
@@ -3955,8 +4177,16 @@ var PatternOntologyService = /** @class */ (function () {
         });
     };
     PatternOntologyService.prototype.getPLSections = function (graphIri) {
-        var qryPatternGraph = "SELECT ?section ?index\n    WHERE {\n    {\n     ?section a owl:DatatypeProperty .\n    }\n    UNION\n      {\n    ?section a pp:DatatypePropertyListItem .\n    optional{ ?section pp:hasListIndex  ?index .}\n    }\n    }\n    ORDER BY ?index";
+        var qryPatternGraph = "SELECT DISTINCT ?section ?index\n    WHERE {\n    {\n     ?section a owl:DatatypeProperty .\n    }\n    UNION\n      {\n    ?section a pp:DatatypePropertyListItem .\n    optional{ ?section pp:hasListIndex  ?index .}\n    }\n    }\n    ORDER BY ?index";
         return this.exec(qryPatternGraph, [_util_iri_converter__WEBPACK_IMPORTED_MODULE_5__["IriConverter"].getFileName(graphIri)]);
+    };
+    PatternOntologyService.prototype.getDirectedPatternRelations = function (supportedIRI) {
+        var qryPatternGraph = "SELECT ?source ?target ?description WHERE {\n     ?relationlink a owl:NamedIndividual .\n     ?relationlink a pp:DirectedPatternRelationDescriptor .\n     ?relationlink \tpp:hasSource ?source .\n     ?relationlink \tpp:hasTarget ?target . \n      optional {?relationlink pp:hasDescription ?description .}\n    }\n";
+        return this.exec(qryPatternGraph, [_util_iri_converter__WEBPACK_IMPORTED_MODULE_5__["IriConverter"].getFileName(supportedIRI)]);
+    };
+    PatternOntologyService.prototype.getUndirectedPatternRelations = function (supportedIRI) {
+        var qryPatternGraph = "SELECT ?relationlink ?pattern\n    WHERE {\n     ?relationlink a owl:NamedIndividual .\n     ?relationlink a pp:UndirectedPatternRelationDescriptor .\n     ?relationlink \tpp:hasPattern ?pattern .\n      optional {?relationlink pp:hasDescription ?description .}\n    }\n";
+        return this.exec(qryPatternGraph, [_util_iri_converter__WEBPACK_IMPORTED_MODULE_5__["IriConverter"].getFileName(supportedIRI)]);
     };
     PatternOntologyService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
@@ -3980,6 +4210,7 @@ var PatternOntologyService = /** @class */ (function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ValidationService", function() { return ValidationService; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/iri-converter */ "./src/app/core/util/iri-converter.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3989,6 +4220,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 var ValidationService = /** @class */ (function () {
     function ValidationService() {
@@ -4018,7 +4250,7 @@ var ValidationService = /** @class */ (function () {
         var _this = this;
         return function (control) {
             if (control.value !== undefined) {
-                if (!_this.allValuesMatchRegex(control.value, /!\[.*\]\(http:\/\/([a-zA-Z.0-9]+[\/]*)+\)/g)) {
+                if (!_this.allValuesMatchRegex(control.value, /!\[.*\]\(http:\/\/([a-zA-Z.0-9]+[\/]*)+\)/g) && !!_this.allValuesMatchRegex(control.value, /!\[.*\]\(https:\/\/([a-zA-Z.0-9]+[\/]*)+\)/g)) {
                     return { 'xsdImage': true };
                 }
             }
@@ -4075,11 +4307,16 @@ var ValidationService = /** @class */ (function () {
             arrayOfImageValues = [arrayOfImageValues];
         }
         for (var _i = 0, arrayOfImageValues_2 = arrayOfImageValues; _i < arrayOfImageValues_2.length; _i++) {
-            var item = arrayOfImageValues_2[_i];
-            if (!item) {
+            var stringItem = arrayOfImageValues_2[_i];
+            var item = stringItem.startsWith('* ') ? stringItem.substr(2) : stringItem;
+            if (!item || _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].removeWhitespace(item).length === 0) {
                 continue;
             }
-            if (!item.match(regex).length <= item.trim().length) {
+            if (!item.match(regex)) {
+                continue;
+            }
+            var match = item.match(regex);
+            if (item.match(regex)[0].length < item.trim().length) {
                 return false;
             }
         }
@@ -4108,6 +4345,7 @@ var ValidationService = /** @class */ (function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IriConverter", function() { return IriConverter; });
+/* harmony import */ var _globals__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../globals */ "./src/app/globals.ts");
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -4121,6 +4359,7 @@ __webpack_require__.r(__webpack_exports__);
  *
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
+
 var IriConverter = /** @class */ (function () {
     function IriConverter() {
     }
@@ -4158,8 +4397,24 @@ var IriConverter = /** @class */ (function () {
     IriConverter.isIri = function (name) {
         return (name.indexOf('#') >= 0) || (name.indexOf('://') >= 0) || (name.indexOf('purl.org/patternpedia') >= 0);
     };
-    IriConverter.getPatternListIriForPLIri = function (supportedIRI) {
-        return this.getFileName(supportedIRI) + '/' + this.extractIndividualNameFromIri(this.getFileName(supportedIRI)) + '-Patterns';
+    IriConverter.getPatternListIriForPLIri = function (plIri) {
+        return this.getFileName(plIri) + '/' + this.extractIndividualNameFromIri(this.getFileName(plIri)) + '-Patterns';
+    };
+    IriConverter.getRelationListIriForPLIri = function (plIri) {
+        return this.getFileName(plIri) + '/' + this.extractIndividualNameFromIri(this.getFileName(plIri)) + '-Relations';
+    };
+    IriConverter.getGithubAPIURLForURI = function (iri) {
+        if (iri.indexOf('patternlanguages') !== -1 || iri.indexOf('patternviews') !== -1) {
+            var foldername = iri.indexOf('patternlanguages') !== -1 ? 'patternlanguages' : 'patternviews';
+            var relativePath = this.getFileName(iri.split(foldername + '/')[1]);
+            // is this a request for the base file of a patternlanguage add the patternlanguage identifier again (convention)
+            relativePath = relativePath.indexOf('/') !== -1 ? relativePath : relativePath + "/" + relativePath;
+            return _globals__WEBPACK_IMPORTED_MODULE_0__["globals"].urlGithubAPI + "/" + foldername + "/" + relativePath + ".ttl";
+        }
+        if (iri.indexOf('patternpedia') !== -1) {
+            return _globals__WEBPACK_IMPORTED_MODULE_0__["globals"].urlGithubAPI + "/patternpedia.ttl";
+        }
+        return iri;
     };
     return IriConverter;
 }());
@@ -9191,6 +9446,7 @@ __webpack_require__.r(__webpack_exports__);
 var globals = {
     urlPatternRepoOntology: 'https://purl.org/patternpedia',
     iriPatternRepoInstance: 'https://purl.org/patternpedia#LinkedOpenPatterns',
+    urlGithubAPI: 'https://api.github.com/repos/PatternPedia/patternpediacontent/contents',
     loadOntologyLocally: true
 };
 
@@ -9356,7 +9612,7 @@ var PageNotFoundComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"display: flex; justify-content: space-between; align-items: baseline\">\n  <h1 mat-dialog-title>{{isFirstStep ? 'Create a new Patternlanguage' : 'Define the content type of your\n    sections'}}</h1>\n  <button mat-flat-button (click)=\"close()\" tabindex=\"-1\">\n    <i class=\"material-icons\">close</i>\n  </button>\n</div>\n<div mat-dialog-content [formGroup]=\"patternLanguageForm\">\n  <div fxLayout=\"column\" fxLayoutAlign=\"space-around start\">\n    <mat-card fxLayout=\"column\" fxLayoutAlign=\"space-around\"\n            style=\"margin: 10px;\" *ngIf=\"isFirstStep; else secondStep\">\n    <mat-form-field appearance=\"outline\" style=\"width: 24em;\" [floatLabel]=\"'always'\">\n      <mat-label>Pattern language name</mat-label>\n      <input matInput formControlName=\"name\" placeholder=\"Enter the name of your Pattern Language\">\n      <mat-error *ngIf=\"saveRequested && name?.hasError('required')\">Dies ist ein Pflichtfeld.</mat-error>\n      <mat-error *ngIf=\"saveRequested && name?.hasError('pattern')\">Bitte nur alphanumerische Zeichen, _ und\n        Leerzeichen verwenden.\n      </mat-error>\n    </mat-form-field>\n\n    <div fxLayout=\"row\" fxLayoutAlign=\"space-around center\">\n      <mat-form-field class=\"full-width\" appearance=\"outline\" style=\"width: 24em\" [floatLabel]=\"'always'\">\n        <mat-label>Icon URL</mat-label>\n        <input matInput formControlName=\"iconUrl\" placeholder=\"Enter URL of your icon\" type=\"url\">\n        <div fxLayout=\"row\" fxLayoutAlign=\"space-around center\" *ngIf=\"iconPreviewVisible\">\n          <span class=\"label-preview\">Icon-Preview: </span>\n          <div mat-card-avatar #iconPreview [ngStyle]=\"{ 'background-image': 'url(' + iconUrl?.value + ')'}\"\n               class=\"example-header-image\"></div>\n        </div>\n        <mat-error *ngIf=\"saveRequested && iconUrl?.hasError('required')\">This field is requirec.</mat-error>\n        <mat-error *ngIf=\"saveRequested && iconUrl?.hasError('pattern')\">Please insert a valid URL.\n        </mat-error>\n      </mat-form-field>\n\n    </div>\n    <mat-form-field appearance=\"outline\" style=\"width: 24em\" [floatLabel]=\"'always'\">\n      <mat-label>Sections</mat-label>\n      <mat-chip-list #chipList>\n        <div fxLayout=\"column\" fxLayoutAlign=\"space-around start\">\n          <div *ngFor=\"let section of sections, let i = index\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n            <span>{{i+1}}. </span>\n            <mat-chip fxLayout=\"row\" fxLayoutAlign=\"initial\"\n\n                      [selectable]=\"selectable\"\n                      [removable]=\"removable\"\n                      (removed)=\"removeSectionMatChip(section)\">\n            {{section}}\n            <mat-icon matChipRemove *ngIf=\"removable\">cancel</mat-icon>\n          </mat-chip>\n          </div>\n        </div>\n      </mat-chip-list>\n      <input\n        placeholder=\"Add section (press enter to create custom section)\"\n        fxFill\n          #sectionInput\n          [matAutocomplete]=\"auto\"\n          [formControl]=\"sectionCtrl\"\n          [matChipInputFor]=\"chipList\"\n          [matChipInputSeparatorKeyCodes]=\"separatorKeysCodes\"\n          [matChipInputAddOnBlur]=\"addOnBlur\"\n          (matChipInputTokenEnd)=\"add($event)\">\n      <mat-autocomplete #auto=\"matAutocomplete\" (optionSelected)=\"selected($event)\">\n        <mat-option *ngFor=\"let section of filteredSections | async\" [value]=\"section\">\n          {{section}}\n        </mat-option>\n      </mat-autocomplete>\n    </mat-form-field>\n  </mat-card>\n\n</div>\n</div>\n\n<div mat-dialog-actions>\n\n  <button mat-raised-button color=\"primary\" (click)=\"isFirstStep = true\" *ngIf=\"!isFirstStep\"><i\n    class=\"material-icons\"><i className=\"material-icons\">arrow_backward</i></i>\n  </button>\n\n\n  <button mat-raised-button color=\"primary\" *ngIf=\"!isFirstStep\" (click)=\"initForSecondStep()\"><i\n    class=\"material-icons\">restore_page</i> Reset all Restrictions\n  </button>\n\n  <button mat-raised-button color=\"primary\" *ngIf=\"!isFirstStep\" (click)=\"save()\"><i\n    class=\"material-icons\">save</i> Save patternlanguage\n  </button>\n\n\n  <button mat-raised-button color=\"primary\" (click)=\"initForSecondStep()\" *ngIf=\"isFirstStep\"><i\n    class=\"material-icons\"><i className=\"material-icons\">arrow_forward</i></i>\n  </button>\n</div>\n\n<!-- Second Screen -->\n<ng-template #secondStep>\n  <div fxLayout=\"row\" fxLayoutAlign=\"space-around start\">\n    <div [formGroup]=\"prefixForm\">\n      <div formArrayName=\"prefixArray\">\n        <div *ngFor=\"let prefixControl of prefixArray.controls,  let ind = index\">\n          <div [formGroupName]=\"ind\">\n            <mat-checkbox matInput formControlName=\"checked\"> {{prefixControl.value.prefixname}}</mat-checkbox>\n          </div>\n        </div>\n      </div>\n    </div>\n    <div [formGroup]=\"newPrefixForm\" class=\"add-prefix-form\">\n      <mat-form-field id=\"new-prefix\">\n        <mat-label>Prefix</mat-label>\n        <input matInput formControlName=\"prefix\" placeholder=\"Prefix\">\n      </mat-form-field>\n      <mat-form-field>\n        <mat-label>URI</mat-label>\n        <input matInput formControlName=\"uri\" placeholder=\"URI\">\n      </mat-form-field>\n\n      <button mat-icon-button aria-label=\"Add new prefix\" (click)=\"onAddPrefix()\">\n        <i class=\"material-icons\">add_circle</i> Add prefix\n      </button>\n    </div>\n  </div>\n\n  <div [formGroup]=\"sectionDetailsGroup\">\n    <div formArrayName=\"sectionsArray\">\n      <mat-form-field style=\"width: 24em\" [floatLabel]=\"'always'\">\n\n        <mat-chip-list #chipList>\n          <div fxLayout=\"column\" fxLayoutAlign=\"space-around start\">\n            <div fxLayout=\"row\" fxLayoutAlign=\"start center\"\n                 *ngFor=\"let section of sectionsArray.controls, let i = index\">\n              <div [formGroupName]=\"i\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                <mat-chip fxLayout=\"row\" fxLayoutAlign=\"initial\"\n                          [selectable]=\"selectable\"\n                          [removable]=\"removable\"\n                          (removed)=\"removeSectionMatChip(section)\">\n                  {{sectionsArray.controls[i].value.name}}\n                </mat-chip>\n                <mat-form-field>\n                  <mat-label>Restriction Type</mat-label>\n                  <mat-select formControlName=\"restrictionType\">\n                    <mat-option *ngFor=\"let option of restrictionOptions\"\n                                [value]=\"option\">\n                      {{option}}\n                    </mat-option>\n                  </mat-select>\n                </mat-form-field>\n\n                <span *ngIf=\"isCardinalityInputVisible(section)\">&mdash;</span>\n                <mat-form-field class=\"min-max-width\"\n                                *ngIf=\"isCardinalityInputVisible(section)\">\n\n                  <mat-label>Amount</mat-label>\n                  <input matInput type=\"number\" formControlName=\"cardinality\">\n                </mat-form-field>\n\n\n                  <span>of</span>\n                  <mat-form-field>\n\n                    <mat-label>Type</mat-label>\n                    <input type=\"text\" appearance=\"fill\" matInput\n                           formControlName=\"type\"\n                           [matAutocomplete]=\"auto\">\n                    <mat-error *ngIf=\"!sectionsArray.controls[i]?.type?.errors\">Please start\n                      type\n                      value with a\n                      valid prefix.\n                    </mat-error>\n                    <mat-autocomplete #auto=\"matAutocomplete\">\n                      <mat-option *ngFor=\"let option of options\" [value]=\"option\">\n                        {{option}}\n                      </mat-option>\n                    </mat-autocomplete>\n                  </mat-form-field>\n\n              </div>\n              <i (click)=\"deleteSectionRestriction(i)\"\n                 class=\"material-icons\">delete</i>\n              <i (click)=\"addSectionRestriction(section.value.name, i+1)\"\n                 class=\"material-icons\">add_circle</i>\n\n            </div>\n          </div>\n        </mat-chip-list>\n      </mat-form-field>\n    </div>\n  </div>\n</ng-template>\n"
+module.exports = "<div style=\"display: flex; justify-content: space-between; align-items: baseline\">\n  <h1 mat-dialog-title>{{isFirstStep ? 'Create a new Patternlanguage' : 'Define the content type of your\n    sections'}}</h1>\n  <button mat-flat-button (click)=\"close()\" tabindex=\"-1\">\n    <i class=\"material-icons\">close</i>\n  </button>\n</div>\n<div mat-dialog-content [formGroup]=\"patternLanguageForm\">\n  <div fxLayout=\"column\" fxLayoutAlign=\"space-around start\">\n    <mat-card fxLayout=\"column\" fxLayoutAlign=\"space-around\"\n            style=\"margin: 10px;\" *ngIf=\"isFirstStep; else secondStep\">\n    <mat-form-field appearance=\"outline\" style=\"width: 24em;\" [floatLabel]=\"'always'\">\n      <mat-label>Pattern language name</mat-label>\n      <input matInput formControlName=\"name\" placeholder=\"Enter the name of your Pattern Language\">\n      <mat-error *ngIf=\"saveRequested && name?.hasError('required')\">Dies ist ein Pflichtfeld.</mat-error>\n      <mat-error *ngIf=\"saveRequested && name?.hasError('pattern')\">Bitte nur alphanumerische Zeichen, _ und\n        Leerzeichen verwenden.\n      </mat-error>\n    </mat-form-field>\n      <ng-container\n        fxLayout=\"row\" fxLayoutAlign=\"space-around center\">\n        <mat-form-field class=\"full-width\" appearance=\"outline\" style=\"width: 24em\" [floatLabel]=\"'always'\">\n          <mat-label>Icon URL</mat-label>\n          <input matInput formControlName=\"iconUrl\" placeholder=\"Enter URL of your icon\" type=\"url\">\n          <div fxLayout=\"row\" fxLayoutAlign=\"space-around center\" *ngIf=\"iconPreviewVisible\">\n            <span class=\"label-preview\">Icon-Preview: </span>\n            <div mat-card-avatar #iconPreview [ngStyle]=\"{ 'background-image': 'url(' + iconUrl?.value + ')'}\"\n                 class=\"example-header-image\"></div>\n          </div>\n          <mat-error *ngIf=\"saveRequested && iconUrl?.hasError('required')\">This field is requirec.</mat-error>\n          <mat-error *ngIf=\"saveRequested && iconUrl?.hasError('pattern')\">Please insert a valid URL.\n          </mat-error>\n        </mat-form-field>\n      </ng-container>\n\n\n      <mat-form-field appearance=\"outline\" style=\"width: 24em\" [floatLabel]=\"'always'\">\n      <mat-label>Sections</mat-label>\n      <mat-chip-list #chipList>\n        <div fxLayout=\"column\" fxLayoutAlign=\"space-around start\">\n          <div *ngFor=\"let section of sections, let i = index\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n            <span>{{i+1}}. </span>\n            <mat-chip fxLayout=\"row\" fxLayoutAlign=\"initial\"\n\n                      [selectable]=\"selectable\"\n                      [removable]=\"removable\"\n                      (removed)=\"removeSectionMatChip(section)\">\n            {{section}}\n            <mat-icon matChipRemove *ngIf=\"removable\">cancel</mat-icon>\n          </mat-chip>\n          </div>\n        </div>\n      </mat-chip-list>\n      <input\n        placeholder=\"Add section (press enter to create custom section)\"\n        fxFill\n          #sectionInput\n          [matAutocomplete]=\"auto\"\n          [formControl]=\"sectionCtrl\"\n          [matChipInputFor]=\"chipList\"\n          [matChipInputSeparatorKeyCodes]=\"separatorKeysCodes\"\n          [matChipInputAddOnBlur]=\"addOnBlur\"\n          (matChipInputTokenEnd)=\"add($event)\">\n      <mat-autocomplete #auto=\"matAutocomplete\" (optionSelected)=\"selected($event)\">\n        <mat-option *ngFor=\"let section of filteredSections | async\" [value]=\"section\">\n          {{section}}\n        </mat-option>\n      </mat-autocomplete>\n    </mat-form-field>\n  </mat-card>\n\n</div>\n</div>\n\n<div mat-dialog-actions>\n\n  <button mat-raised-button color=\"primary\" (click)=\"isFirstStep = true\" *ngIf=\"!isFirstStep\"><i\n    class=\"material-icons\"><i className=\"material-icons\">arrow_backward</i></i>\n  </button>\n\n\n  <button mat-raised-button color=\"primary\" *ngIf=\"!isFirstStep\" (click)=\"initForSecondStep()\"><i\n    class=\"material-icons\">restore_page</i> Reset all Restrictions\n  </button>\n\n  <button mat-raised-button color=\"primary\" *ngIf=\"!isFirstStep\" (click)=\"save()\"><i\n    class=\"material-icons\">save</i> Save patternlanguage\n  </button>\n\n\n  <button mat-raised-button color=\"primary\" (click)=\"initForSecondStep()\" *ngIf=\"isFirstStep\"><i\n    class=\"material-icons\"><i className=\"material-icons\">arrow_forward</i></i>\n  </button>\n</div>\n\n<!-- Second Screen -->\n<ng-template #secondStep>\n  <div fxLayout=\"row\" fxLayoutAlign=\"space-around start\">\n    <div [formGroup]=\"prefixForm\">\n      <div formArrayName=\"prefixArray\">\n        <div *ngFor=\"let prefixControl of prefixArray.controls,  let ind = index\">\n          <div [formGroupName]=\"ind\">\n            <mat-checkbox matInput formControlName=\"checked\"> {{prefixControl.value.prefixname}}</mat-checkbox>\n          </div>\n        </div>\n      </div>\n    </div>\n    <div [formGroup]=\"newPrefixForm\" class=\"add-prefix-form\">\n      <mat-form-field id=\"new-prefix\">\n        <mat-label>Prefix</mat-label>\n        <input matInput formControlName=\"prefix\" placeholder=\"Prefix\">\n      </mat-form-field>\n      <mat-form-field>\n        <mat-label>URI</mat-label>\n        <input matInput formControlName=\"uri\" placeholder=\"URI\">\n      </mat-form-field>\n\n      <button mat-icon-button aria-label=\"Add new prefix\" (click)=\"onAddPrefix()\">\n        <i class=\"material-icons\">add_circle</i> Add prefix\n      </button>\n    </div>\n  </div>\n\n  <div [formGroup]=\"sectionDetailsGroup\">\n    <div formArrayName=\"sectionsArray\">\n      <mat-form-field style=\"width: 24em\" [floatLabel]=\"'always'\">\n\n        <mat-chip-list #chipList>\n          <div fxLayout=\"column\" fxLayoutAlign=\"space-around start\">\n            <div fxLayout=\"row\" fxLayoutAlign=\"start center\"\n                 *ngFor=\"let section of sectionsArray.controls, let i = index\">\n              <div [formGroupName]=\"i\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                <mat-chip fxLayout=\"row\" fxLayoutAlign=\"initial\"\n                          [selectable]=\"selectable\"\n                          [removable]=\"removable\"\n                          (removed)=\"removeSectionMatChip(section)\">\n                  {{sectionsArray.controls[i].value.name}}\n                </mat-chip>\n                <mat-form-field>\n                  <mat-label>Restriction Type</mat-label>\n                  <mat-select formControlName=\"restrictionType\">\n                    <mat-option *ngFor=\"let option of restrictionOptions\"\n                                [value]=\"option\">\n                      {{option}}\n                    </mat-option>\n                  </mat-select>\n                </mat-form-field>\n\n                <span *ngIf=\"isCardinalityInputVisible(section)\">&mdash;</span>\n                <mat-form-field class=\"min-max-width\"\n                                *ngIf=\"isCardinalityInputVisible(section)\">\n\n                  <mat-label>Amount</mat-label>\n                  <input matInput type=\"number\" formControlName=\"cardinality\">\n                </mat-form-field>\n\n\n                  <span>of</span>\n                  <mat-form-field>\n\n                    <mat-label>Type</mat-label>\n                    <input type=\"text\" appearance=\"fill\" matInput\n                           formControlName=\"type\"\n                           [matAutocomplete]=\"auto\">\n                    <mat-error *ngIf=\"!sectionsArray.controls[i]?.type?.errors\">Please start\n                      type\n                      value with a\n                      valid prefix.\n                    </mat-error>\n                    <mat-autocomplete #auto=\"matAutocomplete\">\n                      <mat-option *ngFor=\"let option of options\" [value]=\"option\">\n                        {{option}}\n                      </mat-option>\n                    </mat-autocomplete>\n                  </mat-form-field>\n\n              </div>\n              <i (click)=\"deleteSectionRestriction(i)\"\n                 class=\"material-icons\">delete</i>\n              <i (click)=\"addSectionRestriction(section.value.name, i+1)\"\n                 class=\"material-icons\">add_circle</i>\n\n            </div>\n          </div>\n        </mat-chip-list>\n      </mat-form-field>\n    </div>\n  </div>\n</ng-template>\n"
 
 /***/ }),
 
@@ -9397,6 +9653,9 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (undefined && undefined.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 
 
 
@@ -9404,12 +9663,17 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 var CreateEditPatternLanguageComponent = /** @class */ (function () {
-    function CreateEditPatternLanguageComponent(dialogRef, _fb, cdr, validatorService) {
+    function CreateEditPatternLanguageComponent(dialogRef, _fb, cdr, data) {
         var _this = this;
         this.dialogRef = dialogRef;
         this._fb = _fb;
         this.cdr = cdr;
-        this.validatorService = validatorService;
+        this.data = data;
+        this.isAddLinkTypeDialog = false;
+        this.types = [{ name: 'directed_right', icon: 'trending_flat' }, { name: 'directed_left', icon: 'trending_flat' }, {
+                name: 'undirected',
+                icon: 'compare_arrows'
+            }, { name: 'group', icon: 'merge_type' }];
         this.isFirstStep = true;
         this.selectable = true;
         this.removable = true;
@@ -9424,6 +9688,11 @@ var CreateEditPatternLanguageComponent = /** @class */ (function () {
         this.restrictionOptions = ['only', 'some', 'min', 'exactly', 'max'];
         this.saveClicked = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
         this.filteredSections = this.sectionCtrl.valueChanges.pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_3__["startWith"])(null), Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (section) { return section ? _this._filter(section) : _this.sectionNames.slice(); }));
+        this.relationForm = this._fb.group({
+            toPattern: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]],
+            direction: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]],
+            description: ['', []],
+        });
     }
     Object.defineProperty(CreateEditPatternLanguageComponent.prototype, "name", {
         get: function () {
@@ -9458,7 +9727,7 @@ var CreateEditPatternLanguageComponent = /** @class */ (function () {
         var urlRegex = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
         this.patternLanguageForm = this._fb.group({
             name: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].pattern('[a-zA-Z0-9_-\s]+')]],
-            iconUrl: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].pattern(urlRegex)]]
+            iconUrl: ['', this.isAddLinkTypeDialog ? [] : [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].pattern(urlRegex)]]
         });
         this.iconUrl.valueChanges.pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_3__["debounceTime"])(1000), Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_3__["distinctUntilChanged"])()).subscribe(function (urlValue) {
             _this.iconPreviewVisible = urlValue && (urlValue.startsWith('https://') || urlValue.startsWith('http://'));
@@ -9590,7 +9859,7 @@ var CreateEditPatternLanguageComponent = /** @class */ (function () {
         this.saveRequested = true;
         if (this.patternLanguageForm.valid && this.sectionDetailsGroup.valid) {
             this.saveClicked.emit({
-                restrictions: this.sectionsArray.value,
+                restrictions: this.mapArrayToMap(this.sectionsArray.value),
                 sections: this.sections,
                 name: this.name.value,
                 prefixes: this.prefixArray.value,
@@ -9662,6 +9931,14 @@ var CreateEditPatternLanguageComponent = /** @class */ (function () {
             control.get('type').markAsTouched();
         }
     };
+    CreateEditPatternLanguageComponent.prototype.mapArrayToMap = function (arrayRestrictions) {
+        var restrictionMap = new Map();
+        arrayRestrictions.forEach(function (sectionRestriction) {
+            restrictionMap.set(sectionRestriction.name, restrictionMap.has(sectionRestriction.name) ?
+                restrictionMap.get(sectionRestriction.name).concat(sectionRestriction) : [sectionRestriction]);
+        });
+        return restrictionMap;
+    };
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
         __metadata("design:type", Object)
@@ -9680,8 +9957,8 @@ var CreateEditPatternLanguageComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./create-edit-pattern-language.component.html */ "./src/app/pattern-language-management/create-edit-pattern-language/create-edit-pattern-language.component.html"),
             styles: [__webpack_require__(/*! ./create-edit-pattern-language.component.scss */ "./src/app/pattern-language-management/create-edit-pattern-language/create-edit-pattern-language.component.scss")]
         }),
-        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_1__["MatDialogRef"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"], _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"],
-            _core_service_validation_service__WEBPACK_IMPORTED_MODULE_5__["ValidationService"]])
+        __param(3, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])(_angular_material__WEBPACK_IMPORTED_MODULE_1__["MAT_DIALOG_DATA"])),
+        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_1__["MatDialogRef"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"], _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"], Object])
     ], CreateEditPatternLanguageComponent);
     return CreateEditPatternLanguageComponent;
 }());
@@ -9697,7 +9974,7 @@ var CreateEditPatternLanguageComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<pp-navigate-back></pp-navigate-back>\n<div fxLayout=\"row\" fxLayoutAlign=\"space-around center\"><h2>\n  Add a new pattern to {{plName}}\n</h2></div>\n<div fxLayout=\"row\" fxLayoutAlign=\"space-around center\">\n\n  <td-text-editor ppEmitOnChange (onKeyup)=\"onChangeMarkdownText()\" class=\"markdownEditor\"\n                  [(value)]=\"previousTextEditorValue\" [options]=\"options\"\n                  #textEditor\n                  id=\"textEditor\"></td-text-editor>\n  <div class=\"preview-tile\">\n\n    <div fxLayout=\"column\" fxLayoutAlign=\"flex-start\">\n\n      <mat-card>\n        <div id=\"preview\"></div>\n      </mat-card>\n\n      <mat-error *ngIf=\"wasSaveButtonClicked && errormessages\">Found errors in the following sections:\n        <div *ngFor=\"let message of errormessages\">\n          <span>{{message}}<br></span>\n        </div>\n      </mat-error>\n      <button (click)=\"save()\" class=\"save-button\" mat-raised-button color=\"accent\" style=\"float: right\"><i\n        class=\"material-icons\">save</i>Save\n      </button>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<pp-navigate-back></pp-navigate-back>\n<div fxLayout=\"row\" fxLayoutAlign=\"space-around center\"><h2>\n  Add a new pattern to {{plName}}\n</h2></div>\n<div fxLayout=\"row\" fxLayoutAlign=\"center center\" class=\"editor-preview-container\">\n\n  <td-text-editor ppEmitOnChange (onKeyup)=\"onChangeMarkdownText()\" class=\"markdownEditor\"\n                  [(value)]=\"previousTextEditorValue\" [options]=\"options\"\n                  #textEditor\n                  id=\"textEditor\"></td-text-editor>\n  <div class=\"preview-tile\">\n\n    <div fxLayout=\"column\" fxLayoutAlign=\"flex-start\">\n\n      <mat-card>\n        <div id=\"preview\"></div>\n      </mat-card>\n\n      <mat-error *ngIf=\"wasSaveButtonClicked && errormessages\">Found errors in the following sections:\n        <div *ngFor=\"let message of errormessages\">\n          <span>{{message}}<br></span>\n        </div>\n      </mat-error>\n      <button (click)=\"save()\" class=\"save-button\" mat-raised-button color=\"primary\" style=\"float: right\"><i\n        class=\"material-icons\">save</i>Save\n      </button>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -9708,7 +9985,7 @@ module.exports = "<pp-navigate-back></pp-navigate-back>\n<div fxLayout=\"row\" f
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3BhdHRlcm4tbGFuZ3VhZ2UtbWFuYWdlbWVudC9jcmVhdGUtcGF0dGVybi9jcmVhdGUtcGF0dGVybi5jb21wb25lbnQuc2NzcyJ9 */"
+module.exports = ".editor-preview-container > * {\n  margin: 0.5em;\n  min-width: 33%; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL3BhdHRlcm4tbGFuZ3VhZ2UtbWFuYWdlbWVudC9jcmVhdGUtcGF0dGVybi9jcmVhdGUtcGF0dGVybi5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGFBQWE7RUFDYixjQUFjLEVBQUEiLCJmaWxlIjoic3JjL2FwcC9wYXR0ZXJuLWxhbmd1YWdlLW1hbmFnZW1lbnQvY3JlYXRlLXBhdHRlcm4vY3JlYXRlLXBhdHRlcm4uY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuZWRpdG9yLXByZXZpZXctY29udGFpbmVyID4gKiB7XG4gIG1hcmdpbjogMC41ZW07XG4gIG1pbi13aWR0aDogMzMlO1xufVxuIl19 */"
 
 /***/ }),
 
@@ -9724,23 +10001,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CreatePatternComponent", function() { return CreatePatternComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _covalent_text_editor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @covalent/text-editor */ "./node_modules/@covalent/text-editor/fesm5/covalent-text-editor.js");
-/* harmony import */ var _core_service_loader_default_pl_loader_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../core/service/loader/default-pl-loader.service */ "./src/app/core/service/loader/default-pl-loader.service.ts");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var _core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
-/* harmony import */ var _core_service_github_persistence_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../core/service/github-persistence.service */ "./src/app/core/service/github-persistence.service.ts");
-/* harmony import */ var marked__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! marked */ "./node_modules/marked/lib/marked.js");
-/* harmony import */ var marked__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(marked__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _core_model_pattern_model__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../core/model/pattern.model */ "./src/app/core/model/pattern.model.ts");
-/* harmony import */ var _core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
-/* harmony import */ var angular2_toaster__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! angular2-toaster */ "./node_modules/angular2-toaster/angular2-toaster.js");
-/* harmony import */ var _core_service_loader_pattern_language_loader_pl_restriction_loader_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../core/service/loader/pattern-language-loader/pl-restriction-loader.service */ "./src/app/core/service/loader/pattern-language-loader/pl-restriction-loader.service.ts");
-/* harmony import */ var _core_model_pattern_pedia_model__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../core/model/pattern-pedia.model */ "./src/app/core/model/pattern-pedia.model.ts");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
-/* harmony import */ var _core_service_validation_service__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../core/service/validation.service */ "./src/app/core/service/validation.service.ts");
-/* harmony import */ var _core_model_pattern_language_model__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../core/model/pattern-language.model */ "./src/app/core/model/pattern-language.model.ts");
-/* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! rxjs/internal/operators */ "./node_modules/rxjs/internal/operators/index.js");
-/* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_15__);
-/* harmony import */ var _core_model_pattern_language_patterns_model__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../core/model/pattern-language-patterns.model */ "./src/app/core/model/pattern-language-patterns.model.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+/* harmony import */ var _core_service_github_persistence_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/service/github-persistence.service */ "./src/app/core/service/github-persistence.service.ts");
+/* harmony import */ var marked__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! marked */ "./node_modules/marked/lib/marked.js");
+/* harmony import */ var marked__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(marked__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _core_model_pattern_model__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../core/model/pattern.model */ "./src/app/core/model/pattern.model.ts");
+/* harmony import */ var _core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+/* harmony import */ var angular2_toaster__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! angular2-toaster */ "./node_modules/angular2-toaster/angular2-toaster.js");
+/* harmony import */ var _core_model_pattern_pedia_model__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../core/model/pattern-pedia.model */ "./src/app/core/model/pattern-pedia.model.ts");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _core_service_validation_service__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../core/service/validation.service */ "./src/app/core/service/validation.service.ts");
+/* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! rxjs/internal/operators */ "./node_modules/rxjs/internal/operators/index.js");
+/* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var _core_model_pattern_language_patterns_model__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../core/model/pattern-language-patterns.model */ "./src/app/core/model/pattern-language-patterns.model.ts");
+/* harmony import */ var _core_service_loader_complete_patternlanguage_loader_service__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../core/service/loader/complete-patternlanguage-loader.service */ "./src/app/core/service/loader/complete-patternlanguage-loader.service.ts");
+/* harmony import */ var _core_service_loader_pattern_language_loader_pl_restriction_loader_service__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../core/service/loader/pattern-language-loader/pl-restriction-loader.service */ "./src/app/core/service/loader/pattern-language-loader/pl-restriction-loader.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -9766,20 +10042,18 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-
 var CreatePatternComponent = /** @class */ (function () {
-    function CreatePatternComponent(plLoader, PlRestrictionLoader, activatedRoute, cdr, uploadService, pos, toastService, router, patternOntologyService) {
-        this.plLoader = plLoader;
-        this.PlRestrictionLoader = PlRestrictionLoader;
+    function CreatePatternComponent(activatedRoute, cdr, uploadService, pos, PlRestrictionLoader, toastService, router, completePatternLanguageLoadingService) {
         this.activatedRoute = activatedRoute;
         this.cdr = cdr;
         this.uploadService = uploadService;
         this.pos = pos;
+        this.PlRestrictionLoader = PlRestrictionLoader;
         this.toastService = toastService;
         this.router = router;
-        this.patternOntologyService = patternOntologyService;
+        this.completePatternLanguageLoadingService = completePatternLanguageLoadingService;
         this.sectionRestrictions = new Map();
-        this.xsdPrefix = new _core_model_pattern_pedia_model__WEBPACK_IMPORTED_MODULE_11__["default"]().defaultPrefixes.get('xsd').replace('<', '').replace('>', '');
+        this.xsdPrefix = new _core_model_pattern_pedia_model__WEBPACK_IMPORTED_MODULE_9__["default"]().defaultPrefixes.get('xsd').replace('<', '').replace('>', '');
         this.wasSaveButtonClicked = false;
         this.defaultTextForType = new Map([
             ['https://purl.org/dc/dcmitype/Image', '![](http://)'],
@@ -9799,46 +10073,33 @@ var CreatePatternComponent = /** @class */ (function () {
     }
     CreatePatternComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.plIri = _core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
-        this.plLoader.supportedIRI = this.plIri;
-        this.patternOntologyService.loadUrisToStore([{ value: this.plIri, token: null }]).then(function () {
-            _this.loadPatternInfos();
-            _this.plName = _core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].extractIndividualNameFromIri(_this.plIri);
-            _this.PlRestrictionLoader.supportedIRI = _this.plIri;
-            _this.loadRestrictionsAndInitPatternEditor();
-            _this.loadLogoData();
+        this.plIri = _core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
+        this.completePatternLanguageLoadingService.loadCompletePatternLanguage(this.plIri).then(function (completePL) {
+            _this.completePatternlanguageInfos = completePL;
+            _this.plName = completePL.patternlanguage.name;
+            _this.patterns = completePL.patterns;
+            _this.sections = completePL.patternlanguage.sections;
+            _this.initRestrictions();
+            _this.initTextEditor();
         });
-    };
-    CreatePatternComponent.prototype.reconstructSectionFromSectionResult = function (queryResult) {
-        return queryResult.section.value;
-    };
-    CreatePatternComponent.prototype.containsMoreThanWhitespace = function (teststring) {
-        return !teststring.match(new RegExp('^\\s*$', 'g'));
     };
     CreatePatternComponent.prototype.save = function () {
         var _this = this;
         var pattern = this.parsePatternInput();
-        var patternIris = !this.patterns ? [] : this.patterns.map(function (p) { return p.uri; });
-        patternIris.push(pattern.iri);
-        var patternList = this.patterns.map(function (it) { return it.toPattern(_this.plIri); });
-        patternList.push(pattern);
-        var restrictions = [];
+        this.patterns.push(pattern);
+        var patternIris = !this.patterns ? [] : this.patterns.map(function (p) { return p.iri; });
         this.wasSaveButtonClicked = true;
         if (!this.patternValuesFormGroup.valid) {
             this.updateFormValidationErrors();
             return;
         }
-        for (var _i = 0, _a = this.sections; _i < _a.length; _i++) {
-            var key = _a[_i];
-            if (!this.plRestrictions.get(key)) {
-                continue;
-            }
-            restrictions.push.apply(restrictions, this.plRestrictions.get(key));
-        }
-        var patternLanguage = new _core_model_pattern_language_model__WEBPACK_IMPORTED_MODULE_14__["default"](this.plIri, this.plName, this.plLogos, patternIris, this.sections, restrictions, null);
-        this.uploadService.updatePL(patternLanguage).pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_15__["switchMap"])(function () {
-            return _this.uploadService.updatePLPatterns(new _core_model_pattern_language_patterns_model__WEBPACK_IMPORTED_MODULE_16__["PatternLanguagePatterns"](_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getPatternListIriForPLIri(patternLanguage.iri), patternLanguage.iri, patternList));
-        }), Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_15__["switchMap"])(function () {
+        var patternLanguage = this.completePatternlanguageInfos.patternlanguage;
+        patternLanguage.patternIRIs = patternIris;
+        // patternLanguage.restrictions = restrictions;
+        this.uploadService.updatePL(patternLanguage).pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_12__["switchMap"])(function () {
+            return _this.uploadService.updatePLPatterns(new _core_model_pattern_language_patterns_model__WEBPACK_IMPORTED_MODULE_13__["PatternLanguagePatterns"](_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getPatternListIriForPLIri(patternLanguage.iri), patternLanguage.iri, _this.patterns));
+        }), // load updated patternlanguage file into store:
+        Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_12__["switchMap"])(function () {
             return _this.pos.loadUrisToStore([{ value: _this.plIri, token: null }]);
         })).subscribe(function () {
             _this.toastService.pop('success', 'Pattern created');
@@ -9849,10 +10110,10 @@ var CreatePatternComponent = /** @class */ (function () {
         });
     };
     CreatePatternComponent.prototype.getPatternUri = function (patternName, plIri) {
-        return _core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getFileName(plIri) + '/' + _core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].removeWhitespace(patternName) + '#' + _core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].removeWhitespace(patternName);
+        return _core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(plIri) + '/' + _core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].removeWhitespace(patternName) + '#' + _core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].removeWhitespace(patternName);
     };
     CreatePatternComponent.prototype.parseMarkdownText = function () {
-        return marked__WEBPACK_IMPORTED_MODULE_6__["lexer"](this._textEditor.value);
+        return marked__WEBPACK_IMPORTED_MODULE_5__["lexer"](this._textEditor.value);
     };
     CreatePatternComponent.prototype.getSectionTitle = function (section) {
         return section.split('#has')[1];
@@ -9865,11 +10126,14 @@ var CreatePatternComponent = /** @class */ (function () {
             currentText = this.parseMarkdownText();
             this.toastService.pop('warning', 'Reset text', "Title of Sections changed, this is not allowed");
         }
-        document.getElementById('preview').innerHTML = marked__WEBPACK_IMPORTED_MODULE_6__["parser"](currentText);
+        document.getElementById('preview').innerHTML = marked__WEBPACK_IMPORTED_MODULE_5__["parser"](currentText);
     };
     // returns if a user changed the value of the sections headers (which he is not allowed to do)
     CreatePatternComponent.prototype.invalidTextEdit = function (currentText) {
         var _this = this;
+        if (!this.sections) {
+            return false;
+        }
         var _loop_1 = function (section) {
             var indexOfCorrespondingLine = currentText.findIndex(function (line) {
                 return (line.type === 'heading' && line.depth === 2) &&
@@ -9908,7 +10172,8 @@ var CreatePatternComponent = /** @class */ (function () {
                         break;
                     }
                     if (lines[i]['text']) {
-                        sectioncontent.push(lines[i]['text']);
+                        // if a list item was parsed before, add it to the text
+                        sectioncontent.push(i > 0 && _this.isListItem(i, sectionIndex, lines) ? '* ' + lines[i]['text'] : lines[i]['text']);
                     }
                 }
                 if (_this.patternValuesFormGroup.controls[section]) {
@@ -9927,7 +10192,7 @@ var CreatePatternComponent = /** @class */ (function () {
                 sectionMap.set(section, sectioncontent);
             }
         });
-        return new _core_model_pattern_model__WEBPACK_IMPORTED_MODULE_7__["default"](this.getPatternUri(patternname, this.plIri), patternname, sectionMap, this.plIri);
+        return new _core_model_pattern_model__WEBPACK_IMPORTED_MODULE_6__["default"](this.getPatternUri(patternname, this.plIri), patternname, sectionMap, this.plIri);
     };
     CreatePatternComponent.prototype.ignoreCaseAndWhitespace = function (text) {
         return text.trim().replace(new RegExp('/s', 'g'), '').toLowerCase();
@@ -9953,16 +10218,12 @@ var CreatePatternComponent = /** @class */ (function () {
         }
         if (!restrictions.maxCardinality || restrictions.maxCardinality > 1) {
             // propose listitems if multiple entries are allowed
-            defaultText = '* ' + defaultText;
+            defaultText = '* ' + defaultText + '\n\n';
         }
         if (restrictions.minCardinality > 1) {
             defaultText = (defaultText + '\n').repeat(restrictions.minCardinality - 1) + defaultText;
         }
         return defaultText;
-    };
-    CreatePatternComponent.prototype.loadPatternInfos = function () {
-        var _this = this;
-        this.plLoader.loadContentFromStore().then(function (res) { return _this.patterns = Array.from(res.values()); });
     };
     CreatePatternComponent.prototype.updateFormValidationErrors = function () {
         var _this = this;
@@ -9974,63 +10235,57 @@ var CreatePatternComponent = /** @class */ (function () {
             var controlErrors = _this.patternValuesFormGroup.controls[key].errors;
             if (controlErrors != null) {
                 Object.keys(controlErrors).forEach(function (keyError) {
-                    _this.errormessages.push(_core_service_validation_service__WEBPACK_IMPORTED_MODULE_13__["ValidationService"].getMessageForError(_this.getSectionTitle(key), keyError, controlErrors[keyError]));
+                    _this.errormessages.push(_core_service_validation_service__WEBPACK_IMPORTED_MODULE_11__["ValidationService"].getMessageForError(_this.getSectionTitle(key), keyError, controlErrors[keyError]));
                 });
             }
         });
     };
-    CreatePatternComponent.prototype.loadRestrictionsAndInitPatternEditor = function () {
+    // init formgroup based on restrictions
+    CreatePatternComponent.prototype.initRestrictions = function () {
         var _this = this;
-        // load sections and restrictions
-        this.plLoader.getPLSections(this.plIri).then(function (res) {
-            _this.sections = res.map(function (iri) {
-                return _this.reconstructSectionFromSectionResult(iri);
-            });
-            _this.PlRestrictionLoader.loadContentFromStore().then(function (response) {
-                // init formgroup based on restrictions
-                _this.plRestrictions = response;
-                _this.patternValuesFormGroup = new _angular_forms__WEBPACK_IMPORTED_MODULE_12__["FormGroup"]({});
-                _this.plRestrictions.forEach(function (value, key) {
-                    var allRestrictions = _this.PlRestrictionLoader.getRestrictionsForSection(key, _this.plRestrictions.get(key));
-                    var validators = [];
-                    if (allRestrictions) {
-                        _this.sectionRestrictions.set(key, allRestrictions);
-                        if (allRestrictions.minCardinality && allRestrictions.minCardinality > 0) {
-                            validators.push(_angular_forms__WEBPACK_IMPORTED_MODULE_12__["Validators"].required);
-                            validators.push(_angular_forms__WEBPACK_IMPORTED_MODULE_12__["Validators"].minLength(allRestrictions.minCardinality));
-                        }
-                        if (allRestrictions.maxCardinality) {
-                            validators.push(_angular_forms__WEBPACK_IMPORTED_MODULE_12__["Validators"].maxLength(allRestrictions.maxCardinality));
-                        }
-                        if (allRestrictions.type === 'https://purl.org/dc/dcmitype/Image') {
-                            validators.push(_core_service_validation_service__WEBPACK_IMPORTED_MODULE_13__["ValidationService"].xsdImage());
-                        }
-                        else if (allRestrictions.type.startsWith(_this.xsdPrefix) &&
-                            (allRestrictions.type.endsWith('integer') || allRestrictions.type.endsWith('positiveInteger') || allRestrictions.type.endsWith('negativeInteger'))) {
-                            validators.push(_core_service_validation_service__WEBPACK_IMPORTED_MODULE_13__["ValidationService"].xsdInteger());
-                        }
-                        else if (allRestrictions.type.startsWith(_this.xsdPrefix) && allRestrictions.type.endsWith('anyURI')) {
-                            validators.push(_core_service_validation_service__WEBPACK_IMPORTED_MODULE_13__["ValidationService"].xsdAnyURI());
-                        }
-                    }
-                    _this.patternValuesFormGroup.addControl(key, new _angular_forms__WEBPACK_IMPORTED_MODULE_12__["FormControl"]('', validators));
-                });
-                for (var _i = 0, _a = _this.sections; _i < _a.length; _i++) {
-                    var section = _a[_i];
-                    _this.previousTextEditorValue = _this.previousTextEditorValue.concat('\n ## ' + _this.addSpaceForCamelCase(_this.getSectionTitle(section)) + '\n' + _this.getDefaultTextForSection(section));
+        this.plRestrictions = this.completePatternlanguageInfos.patternlanguage.restrictions;
+        this.patternValuesFormGroup = new _angular_forms__WEBPACK_IMPORTED_MODULE_10__["FormGroup"]({});
+        this.plRestrictions.forEach(function (value, key) {
+            var allRestrictions = _this.PlRestrictionLoader.getRestrictionsForSection(key, _this.plRestrictions.get(key));
+            var validators = [];
+            if (allRestrictions) {
+                _this.sectionRestrictions.set(key, allRestrictions);
+                if (allRestrictions.minCardinality && allRestrictions.minCardinality > 0) {
+                    validators.push(_angular_forms__WEBPACK_IMPORTED_MODULE_10__["Validators"].required);
+                    validators.push(_angular_forms__WEBPACK_IMPORTED_MODULE_10__["Validators"].minLength(allRestrictions.minCardinality));
                 }
-                _this._textEditor.value = _this.previousTextEditorValue;
-                _this.onChangeMarkdownText();
-            });
+                if (allRestrictions.maxCardinality) {
+                    validators.push(_angular_forms__WEBPACK_IMPORTED_MODULE_10__["Validators"].maxLength(allRestrictions.maxCardinality));
+                }
+                if (allRestrictions.type === 'https://purl.org/dc/dcmitype/Image') {
+                    validators.push(_core_service_validation_service__WEBPACK_IMPORTED_MODULE_11__["ValidationService"].xsdImage());
+                }
+                else if (allRestrictions.type.startsWith(_this.xsdPrefix) &&
+                    (allRestrictions.type.endsWith('integer') || allRestrictions.type.endsWith('positiveInteger') || allRestrictions.type.endsWith('negativeInteger'))) {
+                    validators.push(_core_service_validation_service__WEBPACK_IMPORTED_MODULE_11__["ValidationService"].xsdInteger());
+                }
+                else if (allRestrictions.type.startsWith(_this.xsdPrefix) && allRestrictions.type.endsWith('anyURI')) {
+                    validators.push(_core_service_validation_service__WEBPACK_IMPORTED_MODULE_11__["ValidationService"].xsdAnyURI());
+                }
+            }
+            _this.patternValuesFormGroup.addControl(key, new _angular_forms__WEBPACK_IMPORTED_MODULE_10__["FormControl"]('', validators));
         });
     };
-    CreatePatternComponent.prototype.loadLogoData = function () {
-        var _this = this;
-        this.plLoader.getPLLogo(this.plIri).then(function (res) {
-            _this.plLogos = res.map(function (dataRessponse) {
-                return dataRessponse.logo.value;
-            });
-        });
+    CreatePatternComponent.prototype.initTextEditor = function () {
+        for (var _i = 0, _a = this.completePatternlanguageInfos.patternlanguage.sections; _i < _a.length; _i++) {
+            var section = _a[_i];
+            this.previousTextEditorValue = this.previousTextEditorValue.concat('\n ## ' + this.addSpaceForCamelCase(this.getSectionTitle(section)) + '\n' + this.getDefaultTextForSection(section));
+        }
+        this._textEditor.value = this.previousTextEditorValue;
+        this.onChangeMarkdownText();
+    };
+    CreatePatternComponent.prototype.isListItem = function (i, sectionIndex, lines) {
+        for (var index = sectionIndex + 1; index < i; index++) {
+            if (lines[index].type === 'list_item_start') {
+                return true;
+            }
+        }
+        return false;
     };
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])('textEditor'),
@@ -10042,15 +10297,14 @@ var CreatePatternComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./create-pattern.component.html */ "./src/app/pattern-language-management/create-pattern/create-pattern.component.html"),
             styles: [__webpack_require__(/*! ./create-pattern.component.scss */ "./src/app/pattern-language-management/create-pattern/create-pattern.component.scss")]
         }),
-        __metadata("design:paramtypes", [_core_service_loader_default_pl_loader_service__WEBPACK_IMPORTED_MODULE_2__["DefaultPlLoaderService"],
-            _core_service_loader_pattern_language_loader_pl_restriction_loader_service__WEBPACK_IMPORTED_MODULE_10__["PlRestrictionLoaderService"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"],
+        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"],
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"],
-            _core_service_github_persistence_service__WEBPACK_IMPORTED_MODULE_5__["GithubPersistenceService"],
-            _core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_8__["PatternOntologyService"],
-            angular2_toaster__WEBPACK_IMPORTED_MODULE_9__["ToasterService"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
-            _core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_8__["PatternOntologyService"]])
+            _core_service_github_persistence_service__WEBPACK_IMPORTED_MODULE_4__["GithubPersistenceService"],
+            _core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_7__["PatternOntologyService"],
+            _core_service_loader_pattern_language_loader_pl_restriction_loader_service__WEBPACK_IMPORTED_MODULE_15__["PlRestrictionLoaderService"],
+            angular2_toaster__WEBPACK_IMPORTED_MODULE_8__["ToasterService"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"],
+            _core_service_loader_complete_patternlanguage_loader_service__WEBPACK_IMPORTED_MODULE_14__["LoadCompletePatternlanguageService"]])
     ], CreatePatternComponent);
     return CreatePatternComponent;
 }());
@@ -10680,7 +10934,7 @@ var PatternLanguageManagementResolverService = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--\n  ~ Copyright (c) 2018 University of Stuttgart.\n  ~\n  ~ See the NOTICE file(s) distributed with this work for additional\n  ~ information regarding copyright ownership.\n  ~\n  ~ This program and the accompanying materials are made available under the\n  ~ terms of the Eclipse Public License 2.0 which is available at\n  ~ http://www.eclipse.org/legal/epl-2.0, or the Apache Software License 2.0\n  ~ which is available at https://www.apache.org/licenses/LICENSE-2.0.\n  ~\n  ~ SPDX-License-Identifier: EPL-2.0 OR Apache-2.0\n  -->\n\n<mat-toolbar style=\"margin-top: 10px; margin-bottom: 10px\">\n    <button style=\"margin-left: 10px\" mat-raised-button color=\"accent\" (click)=\"reloadPatternRepo()\"><i\n            class=\"material-icons\">autorenew</i> Reload\n    </button>\n  <button style=\"margin-left: 10px\" mat-raised-button color=\"accent\" (click)=\"getOAuthToken()\"\n          *ngIf=\"showAuthentificationButton\"><i\n    class=\"material-icons\">info</i> Autorize Github\n  </button>\n  <span *ngIf=\"!showAuthentificationButton\"> <i\n    class=\"material-icons\">info</i> You authorized PatternPedia to use your github account </span>\n\n</mat-toolbar>\n<div class=\"container\">\n  <mat-progress-spinner mode=\"indeterminate\" *ngIf=\"isLoadingPattern\"></mat-progress-spinner>\n  <mat-card class=\"landing-card\" *ngFor=\"let patternLanguage of patternLanguages\">\n        <mat-card-header>\n          <img *ngIf=\"patternLanguage?.logos && patternLanguage.logos[0]; else noImageAvatar\" mat-card-avatar\n               [src]=\"patternLanguage.logos[0]\">\n            <ng-template #noImageAvatar><img mat-card-avatar [src]=\"'https://placekitten.com/200/300'\"></ng-template>\n\n          <mat-card-title *ngIf=\"patternLanguage?.name && '' !== patternLanguage.name; else noPLName\"\n                          style=\"width: 10rem\">\n                {{patternLanguage.name}}\n            </mat-card-title>\n            <ng-template #noPLName>\n                <mat-card-title style=\"width: 10rem\">\n                    No Name Provided\n                </mat-card-title>\n            </ng-template>\n        </mat-card-header>\n    <img mat-card-image *ngIf=\"patternLanguage?.logos[0]; else noImage\" [src]=\"patternLanguage.logos[0]\">\n        <ng-template #noImage><img mat-card-image [src]=\"'https://placekitten.com/200/300'\"></ng-template>\n        <mat-card-actions>\n            <div style=\"text-align: center\">\n              <button matBadge=\"{{patternLanguage?.patternIRIs?.length}}\" mat-stroked-button color=\"primary\"\n                      (click)=\"navigateToPL(patternLanguage.id)\"><i class=\"material-icons\">pageview</i>View\n                </button>\n            </div>\n        </mat-card-actions>\n    </mat-card>\n  <mat-card class=\"landing-card center-content add-card\" id=\"add-card\"\n            (click)=\"showAuthentificationButton ? '' : goToPatternLanguageCreation()\" *ngIf=\"!isLoadingPattern\">\n    <div fxLayout=\"column\" fxLayoutAlign=\"space-around center\"><i class=\"material-icons\">add_box</i>\n      <span id=\"hideIfNotHovered\" *ngIf=\"showAuthentificationButton\"><br>Please authorize Github </span>\n    </div>\n  </mat-card>\n</div>\n\n"
+module.exports = "<!--\n  ~ Copyright (c) 2018 University of Stuttgart.\n  ~\n  ~ See the NOTICE file(s) distributed with this work for additional\n  ~ information regarding copyright ownership.\n  ~\n  ~ This program and the accompanying materials are made available under the\n  ~ terms of the Eclipse Public License 2.0 which is available at\n  ~ http://www.eclipse.org/legal/epl-2.0, or the Apache Software License 2.0\n  ~ which is available at https://www.apache.org/licenses/LICENSE-2.0.\n  ~\n  ~ SPDX-License-Identifier: EPL-2.0 OR Apache-2.0\n  -->\n\n<mat-toolbar style=\"margin-top: 10px; margin-bottom: 10px\">\n    <button style=\"margin-left: 10px\" mat-raised-button color=\"accent\" (click)=\"reloadPatternRepo()\"><i\n            class=\"material-icons\">autorenew</i> Reload\n    </button>\n  <button style=\"margin-left: 10px\" mat-raised-button color=\"accent\" (click)=\"getOAuthToken()\"\n          *ngIf=\"showAuthentificationButton\"><i\n    class=\"material-icons\">info</i> Autorize Github\n  </button>\n  <span *ngIf=\"!showAuthentificationButton\"> <i\n    class=\"material-icons\">info</i> You authorized PatternPedia to use your github account </span>\n\n</mat-toolbar>\n<div class=\"container\">\n  <mat-progress-spinner mode=\"indeterminate\" *ngIf=\"isLoading\"></mat-progress-spinner>\n  <mat-card class=\"landing-card\" *ngFor=\"let patternLanguage of patternLanguages\">\n        <mat-card-header>\n          <img *ngIf=\"patternLanguage?.logos && patternLanguage.logos[0]; else noImageAvatar\" mat-card-avatar\n               [src]=\"patternLanguage.logos[0]\">\n            <ng-template #noImageAvatar><img mat-card-avatar [src]=\"'https://placekitten.com/200/300'\"></ng-template>\n\n          <mat-card-title *ngIf=\"patternLanguage?.name && '' !== patternLanguage.name; else noPLName\"\n                          style=\"width: 10rem\">\n                {{patternLanguage.name}}\n            </mat-card-title>\n            <ng-template #noPLName>\n                <mat-card-title style=\"width: 10rem\">\n                    No Name Provided\n                </mat-card-title>\n            </ng-template>\n        </mat-card-header>\n    <img mat-card-image *ngIf=\"patternLanguage?.logos[0]; else noImage\" [src]=\"patternLanguage.logos[0]\">\n        <ng-template #noImage><img mat-card-image [src]=\"'https://placekitten.com/200/300'\"></ng-template>\n        <mat-card-actions>\n            <div style=\"text-align: center\">\n              <button matBadge=\"{{patternLanguage?.patternIRIs?.length}}\" mat-stroked-button color=\"primary\"\n                      (click)=\"navigateToPL(patternLanguage.id)\"><i class=\"material-icons\">pageview</i>View\n                </button>\n            </div>\n        </mat-card-actions>\n    </mat-card>\n  <mat-card class=\"landing-card center-content add-card\" id=\"add-card\"\n            (click)=\"showAuthentificationButton ? '' : goToPatternLanguageCreation()\" *ngIf=\"!isLoading\">\n    <div fxLayout=\"column\" fxLayoutAlign=\"space-around center\"><i class=\"material-icons\">add_box</i>\n      <span id=\"hideIfNotHovered\" *ngIf=\"showAuthentificationButton\"><br>Please authorize Github </span>\n    </div>\n  </mat-card>\n</div>\n\n"
 
 /***/ }),
 
@@ -10722,6 +10976,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! rxjs/internal/operators */ "./node_modules/rxjs/internal/operators/index.js");
 /* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_14__);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _core_model_pattern_language_relations_model__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../core/model/pattern-language-relations.model */ "./src/app/core/model/pattern-language-relations.model.ts");
+/* harmony import */ var _core_model_pattern_relations__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../core/model/pattern-relations */ "./src/app/core/model/pattern-relations.ts");
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -10779,6 +11035,8 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+
+
 
 
 
@@ -10880,12 +11138,13 @@ var PatternLanguageManagementComponent = /** @class */ (function () {
         dialogRef.componentInstance.saveClicked.subscribe(function (result) {
             var patternlanguage = new _core_model_pattern_language_model__WEBPACK_IMPORTED_MODULE_1__["default"](_this.urlPatternPedia + '/patternlanguages/' + result.name.replace(/\s/g, ''), result.name, [result.iconUrl], null, result.sections, result.restrictions, result.prefixes);
             var patternLanguagePatterns = new _core_model_pattern_language_patterns_model__WEBPACK_IMPORTED_MODULE_13__["PatternLanguagePatterns"](_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_12__["IriConverter"].getPatternListIriForPLIri(patternlanguage.iri), patternlanguage.iri, []);
+            var patternLanguageRelations = new _core_model_pattern_language_relations_model__WEBPACK_IMPORTED_MODULE_16__["PatternLanguageRelations"](_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_12__["IriConverter"].getRelationListIriForPLIri(patternlanguage.iri), patternlanguage.iri, new _core_model_pattern_relations__WEBPACK_IMPORTED_MODULE_17__["PatternRelations"]());
             console.log(patternlanguage.iri);
             console.log(patternLanguagePatterns.iri);
             _this.uploadService.uploadPatternLanguage(patternlanguage).pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_14__["switchMap"])(function () {
                 return _this.uploadService.addPatternLanguageToPatternPedia(patternlanguage, _this.patternLanguages);
             }), Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_14__["switchMap"])(function () {
-                return _this.uploadService.uploadPLPatterns(patternLanguagePatterns);
+                return _this.uploadService.uploadPLPatternsAndRelations(patternLanguagePatterns, patternLanguageRelations);
             }), Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_14__["tap"])(function () { return _this._toasterService.pop('success', 'Created new patternlanguage'); }), Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_14__["switchMap"])(function () {
                 return Object(rxjs__WEBPACK_IMPORTED_MODULE_15__["forkJoin"])(
                 // load the new patternlanguage's data into the store, so we can use it's metadata when we navigate to it
