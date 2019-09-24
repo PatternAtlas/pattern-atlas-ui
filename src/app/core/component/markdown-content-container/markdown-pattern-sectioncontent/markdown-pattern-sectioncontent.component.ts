@@ -27,7 +27,6 @@ export class MarkdownPatternSectioncontentComponent extends DataRenderingCompone
     const dialogRef = this.dialog.open(MdEditorComponent,
       {data: {content: this.data, field: this.title}});
     dialogRef.afterClosed().subscribe(async (result: DialogData) => {
-      console.log(result);
       this.changeContent.emit(result.content);
     });
   }
