@@ -1,5 +1,6 @@
 import Pattern from './pattern.model';
 import { IriConverter } from '../util/iri-converter';
+import { globals } from '../../globals';
 
 /* This class models how a pattern can be reconstructed from the SPARQL queries. */
 export class PatternInstance {
@@ -21,7 +22,10 @@ export class PatternInstance {
 
   toPattern(plIri: string): Pattern {
     const nameKey = IriConverter.getFileName(plIri) + '#hasName';
-    return new Pattern(this.uri, this.sectionProperties.get(nameKey).join(''), this.sectionProperties, plIri);
+    const name = this.sectionProperties.has(nameKey) ? this.sectionProperties.get(nameKey).join('') :
+      this.sectionProperties.get(globals.urlPatternRepoOntology + '#hasName').join('');
+    
+    return new Pattern(this.uri, name, this.sectionProperties, plIri);
   }
 
 

@@ -41,7 +41,6 @@ export class DefaultPatternRendererComponent implements OnInit {
   @ViewChild(PatternpropertyDirective) ppPatternproperty: PatternpropertyDirective;
   plIri: string;
   patternIri: string;
-  patternNameProperty: string;
   sections: string[];
   isLoading = true;
   isEditingEnabled = false;
@@ -78,7 +77,6 @@ export class DefaultPatternRendererComponent implements OnInit {
       this.pattern = this.patternList.find(pat => pat.iri === this.patternIri);
       this.isLoading = false;
 
-      this.patternNameProperty = IriConverter.getFileName(this.plIri) + '#hasName';
       this.allRelations = completePL.patternRelations;
       console.log(this.allRelations);
 
@@ -101,7 +99,7 @@ export class DefaultPatternRendererComponent implements OnInit {
 
   private createSectionComponent(section: string, viewContainerRef: any, componentDividerFactory) {
     const properties = this.pattern.sectionsProperties.get(section);
-    if (section.indexOf('#has') !== -1) {
+    if (section.indexOf('#has') !== -1 && properties) {
       const sectionTitle = section.split('#has')[1].replace(/([A-Z])/g, ' $1').trim();
 
       const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MarkdownPatternSectioncontentComponent);
