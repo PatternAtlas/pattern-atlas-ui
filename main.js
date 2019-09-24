@@ -109,13 +109,21 @@ var AdministrationComponent = /** @class */ (function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppRoutingModule", function() { return AppRoutingModule; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var _page_not_found_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./page-not-found.component */ "./src/app/page-not-found.component.ts");
-/* harmony import */ var _administration_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./administration.component */ "./src/app/administration.component.ts");
-/* harmony import */ var _test_test_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./test/test.component */ "./src/app/test/test.component.ts");
-/* harmony import */ var _core_component_process_oauth_callback_process_oauth_callback_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./core/component/process-oauth-callback/process-oauth-callback.component */ "./src/app/core/component/process-oauth-callback/process-oauth-callback.component.ts");
-/* harmony import */ var angular2_toaster__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! angular2-toaster */ "./node_modules/angular2-toaster/angular2-toaster.js");
+/* harmony import */ var _pattern_language_management_pattern_language_graph_pattern_language_graph_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pattern-language-management/pattern-language-graph/pattern-language-graph.component */ "./src/app/pattern-language-management/pattern-language-graph/pattern-language-graph.component.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _page_not_found_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./page-not-found.component */ "./src/app/page-not-found.component.ts");
+/* harmony import */ var _administration_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./administration.component */ "./src/app/administration.component.ts");
+/* harmony import */ var _test_test_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./test/test.component */ "./src/app/test/test.component.ts");
+/* harmony import */ var _core_component_process_oauth_callback_process_oauth_callback_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./core/component/process-oauth-callback/process-oauth-callback.component */ "./src/app/core/component/process-oauth-callback/process-oauth-callback.component.ts");
+/* harmony import */ var angular2_toaster__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! angular2-toaster */ "./node_modules/angular2-toaster/angular2-toaster.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -129,12 +137,6 @@ __webpack_require__.r(__webpack_exports__);
  *
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 
 
 
@@ -145,7 +147,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var routes = [
     {
         path: 'oauth-callback',
-        component: _core_component_process_oauth_callback_process_oauth_callback_component__WEBPACK_IMPORTED_MODULE_5__["ProcessOauthCallbackComponent"]
+        component: _core_component_process_oauth_callback_process_oauth_callback_component__WEBPACK_IMPORTED_MODULE_6__["ProcessOauthCallbackComponent"]
     }, {
         path: '',
         redirectTo: 'patternlanguages',
@@ -153,24 +155,28 @@ var routes = [
     },
     {
         path: 'administration',
-        component: _administration_component__WEBPACK_IMPORTED_MODULE_3__["AdministrationComponent"]
+        component: _administration_component__WEBPACK_IMPORTED_MODULE_4__["AdministrationComponent"]
     },
     {
         path: 'test',
-        component: _test_test_component__WEBPACK_IMPORTED_MODULE_4__["TestComponent"]
+        component: _test_test_component__WEBPACK_IMPORTED_MODULE_5__["TestComponent"]
+    },
+    {
+        path: 'graph',
+        component: _pattern_language_management_pattern_language_graph_pattern_language_graph_component__WEBPACK_IMPORTED_MODULE_0__["PatternLanguageGraphComponent"]
     },
     {
         path: '**',
-        component: _page_not_found_component__WEBPACK_IMPORTED_MODULE_2__["PageNotFoundComponent"]
+        component: _page_not_found_component__WEBPACK_IMPORTED_MODULE_3__["PageNotFoundComponent"]
     }
 ];
 var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {
     }
     AppRoutingModule = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
-            imports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forRoot(routes, { useHash: false }), angular2_toaster__WEBPACK_IMPORTED_MODULE_6__["ToasterModule"].forRoot()],
-            exports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]]
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
+            imports: [_angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"].forRoot(routes, { useHash: false, onSameUrlNavigation: 'reload' }), angular2_toaster__WEBPACK_IMPORTED_MODULE_7__["ToasterModule"].forRoot()],
+            exports: [_angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"]]
         })
     ], AppRoutingModule);
     return AppRoutingModule;
@@ -353,7 +359,8 @@ var AppModule = /** @class */ (function () {
                 _angular_common_http__WEBPACK_IMPORTED_MODULE_8__["HttpClientModule"],
                 _app_routing_module__WEBPACK_IMPORTED_MODULE_2__["AppRoutingModule"],
                 _extensions_extensions_module__WEBPACK_IMPORTED_MODULE_9__["ExtensionsModule"],
-                _angular_flex_layout__WEBPACK_IMPORTED_MODULE_17__["FlexLayoutModule"], angular2_toaster__WEBPACK_IMPORTED_MODULE_19__["ToasterModule"].forRoot()
+                _angular_flex_layout__WEBPACK_IMPORTED_MODULE_17__["FlexLayoutModule"],
+                angular2_toaster__WEBPACK_IMPORTED_MODULE_19__["ToasterModule"].forRoot()
             ],
             providers: [ngx_cookie_service__WEBPACK_IMPORTED_MODULE_18__["CookieService"]],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"]]
@@ -4462,25 +4469,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pattern_language_cloud_computing_patterns_cloud_computing_patterns_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./pattern-language/cloud-computing-patterns/cloud-computing-patterns.module */ "./src/app/extensions/pattern-language/cloud-computing-patterns/cloud-computing-patterns.module.ts");
 /* harmony import */ var _pattern_language_internet_of_things_patterns_internet_of_things_patterns_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pattern-language/internet-of-things-patterns/internet-of-things-patterns.module */ "./src/app/extensions/pattern-language/internet-of-things-patterns/internet-of-things-patterns.module.ts");
 /* harmony import */ var _pattern_language_enterprise_integration_patterns_enterprise_integration_patterns_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pattern-language/enterprise-integration-patterns/enterprise-integration-patterns.module */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/enterprise-integration-patterns.module.ts");
+/* harmony import */ var _filter_component_filter_view_filter_view_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../filter/component/filter-view/filter-view.component */ "./src/app/filter/component/filter-view/filter-view.component.ts");
+/* harmony import */ var _graph_graph_module__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../graph/graph.module */ "./src/app/graph/graph.module.ts");
+/* harmony import */ var _pattern_language_enterprise_application_architecture_patterns_enterprise_application_architecture_patterns_module__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pattern-language/enterprise-application-architecture-patterns/enterprise-application-architecture-patterns.module */ "./src/app/extensions/pattern-language/enterprise-application-architecture-patterns/enterprise-application-architecture-patterns.module.ts");
 /*
- * Copyright (c) 2018 University of Stuttgart.
- *
- * See the NOTICE file(s) distributed with this work for additional
- * information regarding copyright ownership.
- *
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
- * http://www.eclipse.org/legal/epl-2.0, or the Apache Software License 2.0
- * which is available at https://www.apache.org/licenses/LICENSE-2.0.
- *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
- */
+* Copyright (c) 2018 University of Stuttgart.
+*
+* See the NOTICE file(s) distributed with this work for additional
+* information regarding copyright ownership.
+*
+* This program and the accompanying materials are made available under the
+* terms of the Eclipse Public License 2.0 which is available at
+* http://www.eclipse.org/legal/epl-2.0, or the Apache Software License 2.0
+* which is available at https://www.apache.org/licenses/LICENSE-2.0.
+*
+* SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
+*/
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
+
 
 
 
@@ -4494,9 +4507,16 @@ var ExtensionsModule = /** @class */ (function () {
             imports: [
                 _pattern_language_cloud_computing_patterns_cloud_computing_patterns_module__WEBPACK_IMPORTED_MODULE_1__["CloudComputingPatternsModule"],
                 _pattern_language_internet_of_things_patterns_internet_of_things_patterns_module__WEBPACK_IMPORTED_MODULE_2__["InternetOfThingsPatternsModule"],
-                _pattern_language_enterprise_integration_patterns_enterprise_integration_patterns_module__WEBPACK_IMPORTED_MODULE_3__["EnterpriseIntegrationPatternsModule"]
+                _pattern_language_enterprise_integration_patterns_enterprise_integration_patterns_module__WEBPACK_IMPORTED_MODULE_3__["EnterpriseIntegrationPatternsModule"],
+                _pattern_language_enterprise_application_architecture_patterns_enterprise_application_architecture_patterns_module__WEBPACK_IMPORTED_MODULE_6__["EnterpriseApplicationArchitecturePatternsModule"],
+                _graph_graph_module__WEBPACK_IMPORTED_MODULE_5__["GraphModule"]
             ],
-            declarations: [],
+            declarations: [
+            // FilterViewComponent
+            ],
+            entryComponents: [
+                _filter_component_filter_view_filter_view_component__WEBPACK_IMPORTED_MODULE_4__["FilterViewComponent"]
+            ],
             exports: []
         })
     ], ExtensionsModule);
@@ -4529,6 +4549,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var ngx_md__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ngx-md */ "./node_modules/ngx-md/fesm5/ngx-md.js");
 /* harmony import */ var _writer_cloud_computing_patterns_writer_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./writer/cloud-computing-patterns-writer.service */ "./src/app/extensions/pattern-language/cloud-computing-patterns/writer/cloud-computing-patterns-writer.service.ts");
 /* harmony import */ var _core_core_module__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../core/core.module */ "./src/app/core/core.module.ts");
+/* harmony import */ var _component_cloud_computing_patterns_graph_cloud_computing_patterns_graph_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./component/cloud-computing-patterns-graph/cloud-computing-patterns-graph.component */ "./src/app/extensions/pattern-language/cloud-computing-patterns/component/cloud-computing-patterns-graph/cloud-computing-patterns-graph.component.ts");
+/* harmony import */ var src_app_graph_graph_module__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! src/app/graph/graph.module */ "./src/app/graph/graph.module.ts");
+/* harmony import */ var src_app_filter_filter_module__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! src/app/filter/filter.module */ "./src/app/filter/filter.module.ts");
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -4563,12 +4586,21 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
+
 var CloudComputingPatternsModule = /** @class */ (function () {
     function CloudComputingPatternsModule(cr) {
         this.cr = cr;
         this.cr.registerComponent(_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_8__["IriConverter"].convertIriToId('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#CloudComputingPatterns'), {
             plcomponent: _component_cloud_computing_patterns_cloud_computing_patterns_component__WEBPACK_IMPORTED_MODULE_3__["CloudComputingPatternsComponent"],
-            pcomponent: _component_cloud_computing_pattern_cloud_computing_pattern_component__WEBPACK_IMPORTED_MODULE_7__["CloudComputingPatternComponent"]
+            pcomponent: _component_cloud_computing_pattern_cloud_computing_pattern_component__WEBPACK_IMPORTED_MODULE_7__["CloudComputingPatternComponent"],
+            label: 'Cards'
+        }); // tslint:disable-line:max-line-length
+        this.cr.registerComponent(_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_8__["IriConverter"].convertIriToId('https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#CloudComputingPatterns'), {
+            plcomponent: _component_cloud_computing_patterns_graph_cloud_computing_patterns_graph_component__WEBPACK_IMPORTED_MODULE_12__["CloudComputingPatternsGraphComponent"],
+            pcomponent: _component_cloud_computing_patterns_graph_cloud_computing_patterns_graph_component__WEBPACK_IMPORTED_MODULE_12__["CloudComputingPatternsGraphComponent"],
+            label: 'Network Graph'
         }); // tslint:disable-line:max-line-length
     }
     CloudComputingPatternsModule = __decorate([
@@ -4582,11 +4614,14 @@ var CloudComputingPatternsModule = /** @class */ (function () {
                 _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatIconModule"],
                 ngx_md__WEBPACK_IMPORTED_MODULE_9__["NgxMdModule"].forRoot(),
                 _core_core_module__WEBPACK_IMPORTED_MODULE_11__["CoreModule"],
-                _angular_router__WEBPACK_IMPORTED_MODULE_6__["RouterModule"]
+                _angular_router__WEBPACK_IMPORTED_MODULE_6__["RouterModule"],
+                src_app_graph_graph_module__WEBPACK_IMPORTED_MODULE_13__["GraphModule"],
+                src_app_filter_filter_module__WEBPACK_IMPORTED_MODULE_14__["FilterModule"]
             ],
             declarations: [
                 _component_cloud_computing_pattern_cloud_computing_pattern_component__WEBPACK_IMPORTED_MODULE_7__["CloudComputingPatternComponent"],
                 _component_cloud_computing_patterns_cloud_computing_patterns_component__WEBPACK_IMPORTED_MODULE_3__["CloudComputingPatternsComponent"],
+                _component_cloud_computing_patterns_graph_cloud_computing_patterns_graph_component__WEBPACK_IMPORTED_MODULE_12__["CloudComputingPatternsGraphComponent"]
             ],
             providers: [
                 _loader_cloud_computing_patterns_loader_service__WEBPACK_IMPORTED_MODULE_2__["CloudComputingPatternsLoaderService"],
@@ -4596,6 +4631,7 @@ var CloudComputingPatternsModule = /** @class */ (function () {
             entryComponents: [
                 _component_cloud_computing_pattern_cloud_computing_pattern_component__WEBPACK_IMPORTED_MODULE_7__["CloudComputingPatternComponent"],
                 _component_cloud_computing_patterns_cloud_computing_patterns_component__WEBPACK_IMPORTED_MODULE_3__["CloudComputingPatternsComponent"],
+                _component_cloud_computing_patterns_graph_cloud_computing_patterns_graph_component__WEBPACK_IMPORTED_MODULE_12__["CloudComputingPatternsGraphComponent"]
             ]
         }),
         __metadata("design:paramtypes", [_core_service_component_registry_service__WEBPACK_IMPORTED_MODULE_4__["ComponentRegistryService"]])
@@ -4647,6 +4683,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
 /* harmony import */ var _core_component_md_editor_md_editor_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../../../core/component/md-editor/md-editor.component */ "./src/app/core/component/md-editor/md-editor.component.ts");
 /* harmony import */ var _writer_cloud_computing_patterns_writer_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../writer/cloud-computing-patterns-writer.service */ "./src/app/extensions/pattern-language/cloud-computing-patterns/writer/cloud-computing-patterns-writer.service.ts");
+/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4699,8 +4736,9 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 
+
 var CloudComputingPatternComponent = /** @class */ (function () {
-    function CloudComputingPatternComponent(loader, writer, cdr, router, activatedRoute, zone, dialog) {
+    function CloudComputingPatternComponent(loader, writer, cdr, router, activatedRoute, zone, dialog, pos) {
         this.loader = loader;
         this.writer = writer;
         this.cdr = cdr;
@@ -4708,6 +4746,7 @@ var CloudComputingPatternComponent = /** @class */ (function () {
         this.activatedRoute = activatedRoute;
         this.zone = zone;
         this.dialog = dialog;
+        this.pos = pos;
         this.mdEditorOptions = {};
         this.editMode = {
             intent: { showActionButtons: false },
@@ -4720,11 +4759,45 @@ var CloudComputingPatternComponent = /** @class */ (function () {
     }
     CloudComputingPatternComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.loader.loadContentFromStore()
-            .then(function (patternMap) {
-            _this.pattern = patternMap.get(_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIdToIri(_this.pId));
-            _this.cdr.detectChanges();
+        // we have to load the individual patterns first by getting all imports from the base file
+        var uris = [
+            { value: 'https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns' },
+            { value: 'https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Patterns' },
+            { value: 'https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Relations' }
+        ];
+        this.pos.loadUrisToStore(uris)
+            .then(function () { return _this.loadData(); });
+        // to get the changes from the network graph 
+        this.activatedRoute.params.subscribe(function (params) {
+            if (_this.pId != params['pid']) {
+                _this.loadData();
+            }
         });
+    };
+    CloudComputingPatternComponent.prototype.loadData = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.loader.loadContentFromStore()
+                        .then(function (patternMap) {
+                        _this.pattern = patternMap.get(_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIdToIri(_this.pId));
+                        _this.cdr.detectChanges();
+                    })];
+            });
+        });
+    };
+    CloudComputingPatternComponent.prototype.ngOnChanges = function (changes) {
+        var _this = this;
+        console.log('> Changes');
+        if (changes['pId']
+            && JSON.stringify(changes['pId'].currentValue) !== JSON.stringify(changes['pId'].previousValue)) {
+            // reload everything
+            this.loader.loadContentFromStore()
+                .then(function (patternMap) {
+                _this.pattern = patternMap.get(_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIdToIri(_this.pId));
+                _this.cdr.detectChanges();
+            });
+        }
     };
     CloudComputingPatternComponent.prototype.openEditor = function (field) {
         var _this = this;
@@ -4765,10 +4838,123 @@ var CloudComputingPatternComponent = /** @class */ (function () {
             _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"],
             _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"],
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"],
-            _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatDialog"]])
+            _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatDialog"],
+            src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_8__["PatternOntologyService"]])
     ], CloudComputingPatternComponent);
     return CloudComputingPatternComponent;
 }());
+
+
+
+/***/ }),
+
+/***/ "./src/app/extensions/pattern-language/cloud-computing-patterns/component/cloud-computing-patterns-graph/cloud-computing-patterns-graph.component.ts":
+/*!***********************************************************************************************************************************************************!*\
+  !*** ./src/app/extensions/pattern-language/cloud-computing-patterns/component/cloud-computing-patterns-graph/cloud-computing-patterns-graph.component.ts ***!
+  \***********************************************************************************************************************************************************/
+/*! exports provided: CloudComputingPatternsGraphComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CloudComputingPatternsGraphComponent", function() { return CloudComputingPatternsGraphComponent; });
+/* harmony import */ var src_app_filter_service_filter_factory_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/filter/service/filter-factory.service */ "./src/app/filter/service/filter-factory.service.ts");
+/* harmony import */ var _loader_cloud_computing_patterns_loader_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../loader/cloud-computing-patterns-loader.service */ "./src/app/extensions/pattern-language/cloud-computing-patterns/loader/cloud-computing-patterns-loader.service.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var src_app_graph_component_pattern_graph_template_pattern_graph_template_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/graph/component/pattern-graph-template/pattern-graph-template.component */ "./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.ts");
+/* harmony import */ var _model_pattern_data__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../model/pattern-data */ "./src/app/extensions/pattern-language/cloud-computing-patterns/model/pattern-data.ts");
+/* harmony import */ var src_app_graph_loader_pattern_data_loader_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/graph/loader/pattern-data-loader.service */ "./src/app/graph/loader/pattern-data-loader.service.ts");
+/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+var CloudComputingPatternsGraphComponent = /** @class */ (function (_super) {
+    __extends(CloudComputingPatternsGraphComponent, _super);
+    function CloudComputingPatternsGraphComponent(pos, router, activatedRoute, zone, dialog, filterFactory, patternLoader, loader, cdr) {
+        var _this = _super.call(this, pos, loader, dialog, router, activatedRoute, zone, filterFactory, cdr) || this;
+        _this.pos = pos;
+        _this.router = router;
+        _this.activatedRoute = activatedRoute;
+        _this.zone = zone;
+        _this.dialog = dialog;
+        _this.filterFactory = filterFactory;
+        _this.patternLoader = patternLoader;
+        _this.loader = loader;
+        _this.cdr = cdr;
+        _this.languageUri = 'https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns#CloudComputingPatterns';
+        _this.languageName = 'Cloud Computing Patterns';
+        return _this;
+        // patternLoader from super class will be set via DI from this component
+    }
+    CloudComputingPatternsGraphComponent.prototype.createPattern = function (value) {
+        var p = new _model_pattern_data__WEBPACK_IMPORTED_MODULE_6__["CloudComputingPatternData"]();
+        p.id = value.id;
+        p.name = value.name;
+        p.intent = value.intent.value;
+        p.context = value.context.value;
+        p.drivingQuestion = value.drivingQuestion.value;
+        p.solution = value.solution.value;
+        p.result = value.result.value;
+        p.icon = value.icon.value;
+        p.solutionSketches = value.solutionSketches.value;
+        return p;
+    };
+    CloudComputingPatternsGraphComponent.prototype.extractSummary = function (value) {
+        return value.intent.value;
+    };
+    CloudComputingPatternsGraphComponent.prototype.ngOnInit = function () {
+        _super.prototype.ngOnInit.call(this);
+    };
+    CloudComputingPatternsGraphComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Component"])({
+            selector: 'pp-cloud-computing-patterns-graph',
+            template: __webpack_require__(/*! ../../../../../graph/component/pattern-graph-template/pattern-graph-template.component.html */ "./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.html"),
+            styles: [__webpack_require__(/*! ../../../../../graph/component/pattern-graph-template/pattern-graph-template.component.scss */ "./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.scss")]
+        })
+        // tslint:disable-next-line: max-line-length
+        ,
+        __metadata("design:paramtypes", [src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_8__["PatternOntologyService"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"],
+            _angular_core__WEBPACK_IMPORTED_MODULE_2__["NgZone"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_4__["MatDialog"],
+            src_app_filter_service_filter_factory_service__WEBPACK_IMPORTED_MODULE_0__["FilterFactoryService"],
+            _loader_cloud_computing_patterns_loader_service__WEBPACK_IMPORTED_MODULE_1__["CloudComputingPatternsLoaderService"],
+            src_app_graph_loader_pattern_data_loader_service__WEBPACK_IMPORTED_MODULE_7__["PatternDataLoaderService"],
+            _angular_core__WEBPACK_IMPORTED_MODULE_2__["ChangeDetectorRef"]])
+    ], CloudComputingPatternsGraphComponent);
+    return CloudComputingPatternsGraphComponent;
+}(src_app_graph_component_pattern_graph_template_pattern_graph_template_component__WEBPACK_IMPORTED_MODULE_5__["PatternGraphTemplateComponent"]));
 
 
 
@@ -5225,6 +5411,43 @@ var CloudComputingPattern = /** @class */ (function (_super) {
 
 /***/ }),
 
+/***/ "./src/app/extensions/pattern-language/cloud-computing-patterns/model/pattern-data.ts":
+/*!********************************************************************************************!*\
+  !*** ./src/app/extensions/pattern-language/cloud-computing-patterns/model/pattern-data.ts ***!
+  \********************************************************************************************/
+/*! exports provided: CloudComputingPatternData */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CloudComputingPatternData", function() { return CloudComputingPatternData; });
+/* harmony import */ var src_app_graph_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/graph/model */ "./src/app/graph/model/index.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+var CloudComputingPatternData = /** @class */ (function (_super) {
+    __extends(CloudComputingPatternData, _super);
+    function CloudComputingPatternData() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return CloudComputingPatternData;
+}(src_app_graph_model__WEBPACK_IMPORTED_MODULE_0__["Pattern"]));
+
+
+
+/***/ }),
+
 /***/ "./src/app/extensions/pattern-language/cloud-computing-patterns/writer/cloud-computing-patterns-writer.service.ts":
 /*!************************************************************************************************************************!*\
   !*** ./src/app/extensions/pattern-language/cloud-computing-patterns/writer/cloud-computing-patterns-writer.service.ts ***!
@@ -5380,19 +5603,38 @@ var CloudComputingPatternsWriterService = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/directives/draggable.directive.ts":
-/*!*************************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/component/directives/draggable.directive.ts ***!
-  \*************************************************************************************************************************/
-/*! exports provided: DraggableDirective */
+/***/ "./src/app/extensions/pattern-language/enterprise-application-architecture-patterns/component/enterprise-application-architecture-patterns/enterprise-application-architecture-patterns.component.ts":
+/*!***********************************************************************************************************************************************************************************************************!*\
+  !*** ./src/app/extensions/pattern-language/enterprise-application-architecture-patterns/component/enterprise-application-architecture-patterns/enterprise-application-architecture-patterns.component.ts ***!
+  \***********************************************************************************************************************************************************************************************************/
+/*! exports provided: EnterpriseApplicationArchitecturePatternsComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DraggableDirective", function() { return DraggableDirective; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EnterpriseApplicationArchitecturePatternsComponent", function() { return EnterpriseApplicationArchitecturePatternsComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../model */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/model/index.ts");
-/* harmony import */ var _service_d3_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../service/d3.service */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/service/d3.service.ts");
+/* harmony import */ var src_app_graph_component_pattern_graph_template_pattern_graph_template_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/graph/component/pattern-graph-template/pattern-graph-template.component */ "./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.ts");
+/* harmony import */ var _loader_patterns_loader_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../loader/patterns-loader.service */ "./src/app/extensions/pattern-language/enterprise-application-architecture-patterns/loader/patterns-loader.service.ts");
+/* harmony import */ var src_app_filter_service_filter_factory_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/filter/service/filter-factory.service */ "./src/app/filter/service/filter-factory.service.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+/* harmony import */ var src_app_graph_loader_pattern_data_loader_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/graph/loader/pattern-data-loader.service */ "./src/app/graph/loader/pattern-data-loader.service.ts");
+/* harmony import */ var _model_enterprise_application_architecture_pattern_data__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../model/enterprise-application-architecture-pattern-data */ "./src/app/extensions/pattern-language/enterprise-application-architecture-patterns/model/enterprise-application-architecture-pattern-data.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5405,47 +5647,176 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-var DraggableDirective = /** @class */ (function () {
-    function DraggableDirective(d3Service, _element) {
-        this.d3Service = d3Service;
-        this._element = _element;
+
+
+
+
+
+
+var EnterpriseApplicationArchitecturePatternsComponent = /** @class */ (function (_super) {
+    __extends(EnterpriseApplicationArchitecturePatternsComponent, _super);
+    function EnterpriseApplicationArchitecturePatternsComponent(pos, router, activatedRoute, zone, dialog, filterFactory, patternLoader, loader, cdr) {
+        var _this = _super.call(this, pos, loader, dialog, router, activatedRoute, zone, filterFactory, cdr) || this;
+        _this.pos = pos;
+        _this.router = router;
+        _this.activatedRoute = activatedRoute;
+        _this.zone = zone;
+        _this.dialog = dialog;
+        _this.filterFactory = filterFactory;
+        _this.patternLoader = patternLoader;
+        _this.loader = loader;
+        _this.cdr = cdr;
+        _this.languageUri = 'https://purl.org/patternpedia/patternlanguages/enterpriseapplicationarchitecturepatterns#EnterpriseApplicationArchitecturePatterns';
+        _this.languageName = 'Enterprise Appplication Architecture Patterns';
+        return _this;
+        // patternLoader from super class will be set via DI from this component
     }
-    DraggableDirective.prototype.ngOnInit = function () {
-        this.d3Service.applyDraggableBehaviour(this._element.nativeElement, this.draggableNode, this.draggableInGraph);
+    EnterpriseApplicationArchitecturePatternsComponent.prototype.ngOnInit = function () {
+        _super.prototype.ngOnInit.call(this);
     };
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])('draggableNode'),
-        __metadata("design:type", _model__WEBPACK_IMPORTED_MODULE_1__["Node"])
-    ], DraggableDirective.prototype, "draggableNode", void 0);
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])('draggableInGraph'),
-        __metadata("design:type", _model__WEBPACK_IMPORTED_MODULE_1__["NetworkGraph"])
-    ], DraggableDirective.prototype, "draggableInGraph", void 0);
-    DraggableDirective = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"])({
-            selector: '[draggableNode]'
+    EnterpriseApplicationArchitecturePatternsComponent.prototype.createPattern = function (value) {
+        var p = new _model_enterprise_application_architecture_pattern_data__WEBPACK_IMPORTED_MODULE_8__["EnterpriseApplicationArchitecturePatternData"]();
+        p.id = value.id;
+        p.name = value.name;
+        p.intent = value.intent;
+        p.sketch = value.sketch;
+        p.motivation = value.motivation;
+        return p;
+    };
+    EnterpriseApplicationArchitecturePatternsComponent.prototype.extractSummary = function (value) {
+        return value.intent;
+    };
+    EnterpriseApplicationArchitecturePatternsComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'pp-enterprise-application-architecture-patterns',
+            template: __webpack_require__(/*! ../../../../../graph/component/pattern-graph-template/pattern-graph-template.component.html */ "./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.html"),
+            styles: [__webpack_require__(/*! ../../../../../graph/component/pattern-graph-template/pattern-graph-template.component.scss */ "./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.scss")]
         }),
-        __metadata("design:paramtypes", [_service_d3_service__WEBPACK_IMPORTED_MODULE_2__["D3Service"], _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"]])
-    ], DraggableDirective);
-    return DraggableDirective;
+        __metadata("design:paramtypes", [src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_6__["PatternOntologyService"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_5__["ActivatedRoute"],
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_4__["MatDialog"],
+            src_app_filter_service_filter_factory_service__WEBPACK_IMPORTED_MODULE_3__["FilterFactoryService"],
+            _loader_patterns_loader_service__WEBPACK_IMPORTED_MODULE_2__["PatternsLoaderService"],
+            src_app_graph_loader_pattern_data_loader_service__WEBPACK_IMPORTED_MODULE_7__["PatternDataLoaderService"],
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"]])
+    ], EnterpriseApplicationArchitecturePatternsComponent);
+    return EnterpriseApplicationArchitecturePatternsComponent;
+}(src_app_graph_component_pattern_graph_template_pattern_graph_template_component__WEBPACK_IMPORTED_MODULE_1__["PatternGraphTemplateComponent"]));
+
+
+
+/***/ }),
+
+/***/ "./src/app/extensions/pattern-language/enterprise-application-architecture-patterns/enterprise-application-architecture-patterns.module.ts":
+/*!*************************************************************************************************************************************************!*\
+  !*** ./src/app/extensions/pattern-language/enterprise-application-architecture-patterns/enterprise-application-architecture-patterns.module.ts ***!
+  \*************************************************************************************************************************************************/
+/*! exports provided: EnterpriseApplicationArchitecturePatternsModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EnterpriseApplicationArchitecturePatternsModule", function() { return EnterpriseApplicationArchitecturePatternsModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _component_enterprise_application_architecture_patterns_enterprise_application_architecture_patterns_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./component/enterprise-application-architecture-patterns/enterprise-application-architecture-patterns.component */ "./src/app/extensions/pattern-language/enterprise-application-architecture-patterns/component/enterprise-application-architecture-patterns/enterprise-application-architecture-patterns.component.ts");
+/* harmony import */ var src_app_core_service_component_registry_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/core/service/component-registry.service */ "./src/app/core/service/component-registry.service.ts");
+/* harmony import */ var src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var src_app_graph_graph_module__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/graph/graph.module */ "./src/app/graph/graph.module.ts");
+/* harmony import */ var src_app_filter_filter_module__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/filter/filter.module */ "./src/app/filter/filter.module.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+var EnterpriseApplicationArchitecturePatternsModule = /** @class */ (function () {
+    function EnterpriseApplicationArchitecturePatternsModule(cr) {
+        this.cr = cr;
+        // register module as rendering for Enterprise Integration Patterns in registry
+        // tslint:disable-next-line: max-line-length
+        this.cr.registerComponent(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].convertIriToId('https://purl.org/patternpedia/patternlanguages/enterpriseapplicationarchitecturepatterns#EnterpriseApplicationArchitecturePatterns'), {
+            label: 'Network Graph',
+            priority: 10,
+            plcomponent: _component_enterprise_application_architecture_patterns_enterprise_application_architecture_patterns_component__WEBPACK_IMPORTED_MODULE_2__["EnterpriseApplicationArchitecturePatternsComponent"],
+            pcomponent: _component_enterprise_application_architecture_patterns_enterprise_application_architecture_patterns_component__WEBPACK_IMPORTED_MODULE_2__["EnterpriseApplicationArchitecturePatternsComponent"]
+        });
+    }
+    EnterpriseApplicationArchitecturePatternsModule = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
+            declarations: [
+                _component_enterprise_application_architecture_patterns_enterprise_application_architecture_patterns_component__WEBPACK_IMPORTED_MODULE_2__["EnterpriseApplicationArchitecturePatternsComponent"]
+            ],
+            imports: [
+                _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatButtonModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_6__["FormsModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatIconModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatFormFieldModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatInputModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatCardModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatDividerModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatFormFieldModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatCheckboxModule"],
+                src_app_graph_graph_module__WEBPACK_IMPORTED_MODULE_7__["GraphModule"],
+                src_app_filter_filter_module__WEBPACK_IMPORTED_MODULE_8__["FilterModule"]
+            ],
+            entryComponents: [
+                _component_enterprise_application_architecture_patterns_enterprise_application_architecture_patterns_component__WEBPACK_IMPORTED_MODULE_2__["EnterpriseApplicationArchitecturePatternsComponent"]
+            ]
+        }),
+        __metadata("design:paramtypes", [src_app_core_service_component_registry_service__WEBPACK_IMPORTED_MODULE_3__["ComponentRegistryService"]])
+    ], EnterpriseApplicationArchitecturePatternsModule);
+    return EnterpriseApplicationArchitecturePatternsModule;
 }());
 
 
 
 /***/ }),
 
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/directives/zoomable.directive.ts":
-/*!************************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/component/directives/zoomable.directive.ts ***!
-  \************************************************************************************************************************/
-/*! exports provided: ZoomableDirective */
+/***/ "./src/app/extensions/pattern-language/enterprise-application-architecture-patterns/loader/patterns-loader.service.ts":
+/*!****************************************************************************************************************************!*\
+  !*** ./src/app/extensions/pattern-language/enterprise-application-architecture-patterns/loader/patterns-loader.service.ts ***!
+  \****************************************************************************************************************************/
+/*! exports provided: PatternsLoaderService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ZoomableDirective", function() { return ZoomableDirective; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PatternsLoaderService", function() { return PatternsLoaderService; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _service_d3_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../service/d3.service */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/service/d3.service.ts");
+/* harmony import */ var src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/core/model/loader */ "./src/app/core/model/loader.ts");
+/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+/* harmony import */ var _model_enterprise_application_architecture_pattern__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../model/enterprise-application-architecture-pattern */ "./src/app/extensions/pattern-language/enterprise-application-architecture-patterns/model/enterprise-application-architecture-pattern.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5455,29 +5826,163 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-
-
-var ZoomableDirective = /** @class */ (function () {
-    function ZoomableDirective(d3Service, _element) {
-        this.d3Service = d3Service;
-        this._element = _element;
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
-    ZoomableDirective.prototype.ngOnInit = function () {
-        this.d3Service.applyZoomableBehaviour(this.zoomableOf, this._element.nativeElement);
-    };
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])('zoomableOf'),
-        __metadata("design:type", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"])
-    ], ZoomableDirective.prototype, "zoomableOf", void 0);
-    ZoomableDirective = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"])({
-            selector: '[zoomableOf]'
-        }),
-        __metadata("design:paramtypes", [_service_d3_service__WEBPACK_IMPORTED_MODULE_1__["D3Service"], _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"]])
-    ], ZoomableDirective);
-    return ZoomableDirective;
-}());
+};
 
+
+
+
+var PatternsLoaderService = /** @class */ (function (_super) {
+    __extends(PatternsLoaderService, _super);
+    function PatternsLoaderService(pos) {
+        var _this = _super.call(this, 'https://purl.org/patternpedia/patternlanguages/enterpriseapplicationarchitecturepatterns#EnterpriseApplicationArchitecturePatterns', pos) || this;
+        _this.pos = pos;
+        return _this;
+    }
+    PatternsLoaderService.prototype.selectContentFromStore = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var qry, graphs;
+            return __generator(this, function (_a) {
+                qry = "PREFIX : <https://purl.org/patternpedia/patternlanguages/enterpriseapplicationarchitecturepatterns#>\n      SELECT DISTINCT ?pattern ?name ?intent ?sketch ?motivation\n      WHERE {\n        ?pattern a <https://purl.org/patternpedia/patternlanguages/enterpriseapplicationarchitecturepatterns#EnterpriseApplicationArchitecturePattern> .\n        ?pattern pp:hasName ?name .\n        ?pattern :hasIntent ?intent .\n        OPTIONAL {\n          ?pattern :hasSketch ?sketch .\n          ?pattern :hasMotivation ?motivation .\n        }\n      }";
+                graphs = [
+                    'https://purl.org/patternpedia',
+                    'https://purl.org/patternpedia/patternlanguages/enterpriseapplicationarchitecturepatterns',
+                    'https://purl.org/patternpedia/patternlanguages/enterpriseapplicationarchitecturepatterns/enterpriseapplicationarchitecturepatterns-Patterns',
+                    'https://purl.org/patternpedia/patternlanguages/enterpriseapplicationarchitecturepatterns/enterpriseapplicationarchitecturepatterns-Relations'
+                ];
+                return [2 /*return*/, this.pos.exec(qry, graphs)];
+            });
+        });
+    };
+    PatternsLoaderService.prototype.mapTriples = function (triples) {
+        var result = new Map();
+        for (var _i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
+            var t = triples_1[_i];
+            var p = new _model_enterprise_application_architecture_pattern__WEBPACK_IMPORTED_MODULE_3__["default"](t.pattern.value, t.name.value);
+            p.intent = t.intent.value;
+            if (t.sketch)
+                p.sketch = t.sketch.value;
+            if (t.motivation)
+                p.motivation = t.motivation.value;
+            result.set(p.iri, p);
+        }
+        return Promise.resolve(result);
+    };
+    PatternsLoaderService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        }),
+        __metadata("design:paramtypes", [src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__["PatternOntologyService"]])
+    ], PatternsLoaderService);
+    return PatternsLoaderService;
+}(src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_1__["default"]));
+
+
+
+/***/ }),
+
+/***/ "./src/app/extensions/pattern-language/enterprise-application-architecture-patterns/model/enterprise-application-architecture-pattern-data.ts":
+/*!****************************************************************************************************************************************************!*\
+  !*** ./src/app/extensions/pattern-language/enterprise-application-architecture-patterns/model/enterprise-application-architecture-pattern-data.ts ***!
+  \****************************************************************************************************************************************************/
+/*! exports provided: EnterpriseApplicationArchitecturePatternData */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EnterpriseApplicationArchitecturePatternData", function() { return EnterpriseApplicationArchitecturePatternData; });
+/* harmony import */ var src_app_graph_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/graph/model */ "./src/app/graph/model/index.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+var EnterpriseApplicationArchitecturePatternData = /** @class */ (function (_super) {
+    __extends(EnterpriseApplicationArchitecturePatternData, _super);
+    function EnterpriseApplicationArchitecturePatternData() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return EnterpriseApplicationArchitecturePatternData;
+}(src_app_graph_model__WEBPACK_IMPORTED_MODULE_0__["Pattern"]));
+
+
+
+/***/ }),
+
+/***/ "./src/app/extensions/pattern-language/enterprise-application-architecture-patterns/model/enterprise-application-architecture-pattern.ts":
+/*!***********************************************************************************************************************************************!*\
+  !*** ./src/app/extensions/pattern-language/enterprise-application-architecture-patterns/model/enterprise-application-architecture-pattern.ts ***!
+  \***********************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var src_app_core_model_pattern_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/core/model/pattern.model */ "./src/app/core/model/pattern.model.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+var EnterpriseApplicationArchitecturePattern = /** @class */ (function (_super) {
+    __extends(EnterpriseApplicationArchitecturePattern, _super);
+    function EnterpriseApplicationArchitecturePattern(iri, name) {
+        return _super.call(this, iri, name) || this;
+    }
+    return EnterpriseApplicationArchitecturePattern;
+}(src_app_core_model_pattern_model__WEBPACK_IMPORTED_MODULE_0__["default"]));
+/* harmony default export */ __webpack_exports__["default"] = (EnterpriseApplicationArchitecturePattern);
 
 
 /***/ }),
@@ -5545,28 +6050,6 @@ var EnterpriseIntegrationPatternComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/enterprise-integration-patterns/enterprise-integration-patterns.component.html":
-/*!**********************************************************************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/component/enterprise-integration-patterns/enterprise-integration-patterns.component.html ***!
-  \**********************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<!-- Toolbar -->\n<div class=\"toolbar\">\n  <!-- to navigate back to the overview of pattern languages -->\n  <button mat-raised-button class=\"back_button\" color=\"primary\" \n    (click)=\"navigateBack()\">\n    <i class=\"material-icons\">keyboard_backspace</i>\n  </button>\n\n  <!-- to open filter dialog -->\n  <button mat-raised-button class=\"filter_dialog\" color=\"primary\"\n    (click)=\"openFilterDialog()\">\n    <i class=\"material-icons\">filter_list</i>\n    Filter Patterns\n  </button>\n</div>\n\n<div *ngIf=\"data; else loading\">\n  <pp-graph \n    #graph\n    [links]=\"data.links\" \n    [nodes]=\"data.nodes\" \n    [selectedNodeId]=\"data.id\"\n    (nodeSelectEvent)=\"selectNode($event)\"\n    (nodeUnselectEvent)=\"unselectNode($event)\">\n  </pp-graph>\n</div>\n<ng-template #loading>Loading Data ... </ng-template>"
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/enterprise-integration-patterns/enterprise-integration-patterns.component.scss":
-/*!**********************************************************************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/component/enterprise-integration-patterns/enterprise-integration-patterns.component.scss ***!
-  \**********************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = ".toolbar {\n  margin-bottom: 20px; }\n  .toolbar button {\n    margin-right: 16px; }\n  .back_button {\n  /*vertical-align: top;\n    margin-top: 5px;*/ }\n  .filter_nodes {\n  margin-left: 16px;\n  /*float: right;*/\n  font-size: 16pt; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2V4dGVuc2lvbnMvcGF0dGVybi1sYW5ndWFnZS9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zL2NvbXBvbmVudC9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zL2VudGVycHJpc2UtaW50ZWdyYXRpb24tcGF0dGVybnMuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL2V4dGVuc2lvbnMvcGF0dGVybi1sYW5ndWFnZS9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zL2NvbXBvbmVudC9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zL2VudGVycHJpc2UtaW50ZWdyYXRpb24tcGF0dGVybnMuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxtQkFBbUIsRUFBQTtFQUR2QjtJQUlRLGtCQUFrQixFQUFBO0VBSTFCO0VBQ0k7cUJDRmlCLEVER0M7RUFHdEI7RUFDSSxpQkFBaUI7RUFDakIsZ0JBQUE7RUFDQSxlQUFlLEVBQUEiLCJmaWxlIjoic3JjL2FwcC9leHRlbnNpb25zL3BhdHRlcm4tbGFuZ3VhZ2UvZW50ZXJwcmlzZS1pbnRlZ3JhdGlvbi1wYXR0ZXJucy9jb21wb25lbnQvZW50ZXJwcmlzZS1pbnRlZ3JhdGlvbi1wYXR0ZXJucy9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLnRvb2xiYXIge1xuICAgIG1hcmdpbi1ib3R0b206IDIwcHg7XG5cbiAgICBidXR0b24ge1xuICAgICAgICBtYXJnaW4tcmlnaHQ6IDE2cHg7XG4gICAgfVxufVxuXG4uYmFja19idXR0b24ge1xuICAgIC8qdmVydGljYWwtYWxpZ246IHRvcDtcbiAgICBtYXJnaW4tdG9wOiA1cHg7Ki9cbn1cblxuLmZpbHRlcl9ub2RlcyB7XG4gICAgbWFyZ2luLWxlZnQ6IDE2cHg7XG4gICAgLypmbG9hdDogcmlnaHQ7Ki9cbiAgICBmb250LXNpemU6IDE2cHQ7XG59IiwiLnRvb2xiYXIge1xuICBtYXJnaW4tYm90dG9tOiAyMHB4OyB9XG4gIC50b29sYmFyIGJ1dHRvbiB7XG4gICAgbWFyZ2luLXJpZ2h0OiAxNnB4OyB9XG5cbi5iYWNrX2J1dHRvbiB7XG4gIC8qdmVydGljYWwtYWxpZ246IHRvcDtcbiAgICBtYXJnaW4tdG9wOiA1cHg7Ki8gfVxuXG4uZmlsdGVyX25vZGVzIHtcbiAgbWFyZ2luLWxlZnQ6IDE2cHg7XG4gIC8qZmxvYXQ6IHJpZ2h0OyovXG4gIGZvbnQtc2l6ZTogMTZwdDsgfVxuIl19 */"
-
-/***/ }),
-
 /***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/enterprise-integration-patterns/enterprise-integration-patterns.component.ts":
 /*!********************************************************************************************************************************************************************!*\
   !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/component/enterprise-integration-patterns/enterprise-integration-patterns.component.ts ***!
@@ -5578,16 +6061,27 @@ module.exports = ".toolbar {\n  margin-bottom: 20px; }\n  .toolbar button {\n   
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EnterpriseIntegrationPatternsComponent", function() { return EnterpriseIntegrationPatternsComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _model_node__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../model/node */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/model/node.ts");
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
-/* harmony import */ var d3__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! d3 */ "./node_modules/d3/index.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var _service_enterprise_integration_patterns_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../service/enterprise-integration-patterns-data.service */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/service/enterprise-integration-patterns-data.service.ts");
-/* harmony import */ var _loader_enterprise_integration_pattern_loader_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../loader/enterprise-integration-pattern-loader.service */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/loader/enterprise-integration-pattern-loader.service.ts");
-/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
-/* harmony import */ var src_app_filter_service_filter_factory_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/filter/service/filter-factory.service */ "./src/app/filter/service/filter-factory.service.ts");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var src_app_filter_component_filter_view_filter_view_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! src/app/filter/component/filter-view/filter-view.component */ "./src/app/filter/component/filter-view/filter-view.component.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+/* harmony import */ var src_app_filter_service_filter_factory_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/filter/service/filter-factory.service */ "./src/app/filter/service/filter-factory.service.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _model_enterprise_integration_pattern_data__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../model/enterprise-integration-pattern-data */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/model/enterprise-integration-pattern-data.ts");
+/* harmony import */ var src_app_graph_loader_pattern_data_loader_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/graph/loader/pattern-data-loader.service */ "./src/app/graph/loader/pattern-data-loader.service.ts");
+/* harmony import */ var src_app_graph_component_pattern_graph_template_pattern_graph_template_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/graph/component/pattern-graph-template/pattern-graph-template.component */ "./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.ts");
+/* harmony import */ var _loader_enterprise_integration_patterns_loader_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../loader/enterprise-integration-patterns-loader.service */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/loader/enterprise-integration-patterns-loader.service.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5606,941 +6100,56 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-
-
-var EnterpriseIntegrationPatternsComponent = /** @class */ (function () {
-    function EnterpriseIntegrationPatternsComponent(http, pos, loader, router, activatedRoute, zone, patternLoader, filterFactory, dialog) {
-        this.http = http;
-        this.pos = pos;
-        this.loader = loader;
-        this.router = router;
-        this.activatedRoute = activatedRoute;
-        this.zone = zone;
-        this.patternLoader = patternLoader;
-        this.filterFactory = filterFactory;
-        this.dialog = dialog;
+var EnterpriseIntegrationPatternsComponent = /** @class */ (function (_super) {
+    __extends(EnterpriseIntegrationPatternsComponent, _super);
+    function EnterpriseIntegrationPatternsComponent(pos, router, activatedRoute, zone, dialog, filterFactory, patternLoader, loader, cdr) {
+        var _this = _super.call(this, pos, loader, dialog, router, activatedRoute, zone, filterFactory, cdr) || this;
+        _this.pos = pos;
+        _this.router = router;
+        _this.activatedRoute = activatedRoute;
+        _this.zone = zone;
+        _this.dialog = dialog;
+        _this.filterFactory = filterFactory;
+        _this.patternLoader = patternLoader;
+        _this.loader = loader;
+        _this.cdr = cdr;
+        _this.languageUri = 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns';
+        _this.languageName = 'Enterprise Integration Patterns';
+        return _this;
     }
+    EnterpriseIntegrationPatternsComponent.prototype.createPattern = function (value) {
+        var p = new _model_enterprise_integration_pattern_data__WEBPACK_IMPORTED_MODULE_5__["EnterpriseIntegrationPatternData"]();
+        p.id = value.id;
+        p.name = value.name;
+        p.description = value.description.value;
+        return p;
+    };
+    EnterpriseIntegrationPatternsComponent.prototype.extractSummary = function (value) {
+        return value.description.value.join('\n');
+    };
     EnterpriseIntegrationPatternsComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        // load base file, patterns file, and relations file
-        var uris = [
-            { value: 'https://purl.org/patternpedia' },
-            { value: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns' },
-            { value: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns' },
-            { value: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations' }
-        ];
-        this.pos.loadUrisToStore(uris).then(function () {
-            // get data from store
-            _this.loader.getAllData()
-                .then(function (values) {
-                _this.patternMap = values[0];
-                _this.linkMap = values[1];
-                _this.groupMap = values[2];
-                // links
-                // links also contains edges to different pattern languages. we don't want to render them as actual links of the network graph
-                // => filter clp links
-                _this.links = Array.from(_this.linkMap.values()).filter(function (link) {
-                    var source = "";
-                    var target = "";
-                    if (typeof link.source === 'string')
-                        source = link.source;
-                    else if (link.source instanceof _model_node__WEBPACK_IMPORTED_MODULE_1__["Node"])
-                        source = link.source.id;
-                    if (typeof link.target === 'string')
-                        target = link.target;
-                    else if (link.target instanceof _model_node__WEBPACK_IMPORTED_MODULE_1__["Node"])
-                        target = link.target.id;
-                    // keep link, if its source and destination is from enterpriseintegrationpatterns, and no other language
-                    return source.includes('enterpriseintegrationpatterns') && target.includes('enterpriseintegrationpatterns');
-                });
-                // groups
-                var groups = {};
-                _this.groupMap.forEach(function (value) {
-                    groups[value.groupName] = value.patterns;
-                });
-                // for coloring of nodes
-                var groupIds = Array.from(Object.keys(groups));
-                var scale = d3__WEBPACK_IMPORTED_MODULE_3__["scaleOrdinal"](d3__WEBPACK_IMPORTED_MODULE_3__["schemeCategory10"]);
-                var color = function (d) {
-                    if (d)
-                        return scale('' + groupIds.indexOf(d));
-                    return scale('0');
-                };
-                // nodes
-                _this.nodes = [];
-                // convert given IRI -> EnterpriseIntegrationPattern Map to Node list for rendering
-                _this.patternMap.forEach(function (value) {
-                    var n = new _model_node__WEBPACK_IMPORTED_MODULE_1__["Node"](value.id);
-                    n.name = value.name;
-                    n.description = value.description.value;
-                    // go through all groups and check if the current pattern is present in the list of patterns
-                    // return the group (i.e. the group name) that contains the pattern. undefined if no group contains this pattern
-                    n.group = Object.keys(groups).find(function (groupName) { return groups[groupName].includes(value.id); });
-                    n.color = color(n.group);
-                    _this.nodes.push(n);
-                });
-                // place data in field
-                _this.data = {
-                    nodes: _this.nodes,
-                    links: _this.links,
-                    id: _this.pId
-                };
-            });
-        });
+        _super.prototype.ngOnInit.call(this);
     };
-    // called when a node from the network graph was selected
-    EnterpriseIntegrationPatternsComponent.prototype.selectNode = function (nodeId) {
-        var _this = this;
-        // TODO navigate to pattern via router
-        console.log(nodeId);
-        // should not be relative, as we might click multiple nodes!
-        this.zone.run(function () {
-            var route = _this.pId ? ['..', nodeId] : [nodeId];
-            _this.router.navigate(route, { relativeTo: _this.activatedRoute });
-        });
-    };
-    // called when a node was unselected i.e. when clicked somewhere else
-    EnterpriseIntegrationPatternsComponent.prototype.unselectNode = function () {
-        // TODO navigate back to language level
-    };
-    EnterpriseIntegrationPatternsComponent.prototype.navigateBack = function () {
-        var _this = this;
-        this.zone.run(function () {
-            _this.router.navigate(['..'], { relativeTo: _this.activatedRoute });
-        });
-    };
-    EnterpriseIntegrationPatternsComponent.prototype.openFilterDialog = function () {
-        var _this = this;
-        var dialogRef = this.dialog.open(src_app_filter_component_filter_view_filter_view_component__WEBPACK_IMPORTED_MODULE_10__["FilterViewComponent"], {
-            width: '600px',
-            data: 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns'
-        });
-        dialogRef.afterClosed().subscribe(function (result) {
-            if (result) {
-                // there might be new filter values set -> filter data
-                _this.filterFactory.createFilter('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns')
-                    .then(function (filter) { return _this.graph.filterNodes(filter); });
-            }
-        });
-    };
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])('graph'),
-        __metadata("design:type", Object)
-    ], EnterpriseIntegrationPatternsComponent.prototype, "graph", void 0);
     EnterpriseIntegrationPatternsComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'pp-enterprise-integration-patterns',
-            template: __webpack_require__(/*! ./enterprise-integration-patterns.component.html */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/enterprise-integration-patterns/enterprise-integration-patterns.component.html"),
-            styles: [__webpack_require__(/*! ./enterprise-integration-patterns.component.scss */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/enterprise-integration-patterns/enterprise-integration-patterns.component.scss")]
-        }),
-        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"],
-            src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_7__["PatternOntologyService"],
-            _service_enterprise_integration_patterns_data_service__WEBPACK_IMPORTED_MODULE_5__["EnterpriseIntegrationPatternsDataService"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_4__["ActivatedRoute"],
+            template: __webpack_require__(/*! ../../../../../graph/component/pattern-graph-template/pattern-graph-template.component.html */ "./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.html"),
+            styles: [__webpack_require__(/*! ../../../../../graph/component/pattern-graph-template/pattern-graph-template.component.scss */ "./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.scss")]
+        })
+        // tslint:disable-next-line: max-line-length
+        ,
+        __metadata("design:paramtypes", [src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__["PatternOntologyService"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"],
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"],
-            _loader_enterprise_integration_pattern_loader_service__WEBPACK_IMPORTED_MODULE_6__["EnterpriseIntegrationPatternLoaderService"],
-            src_app_filter_service_filter_factory_service__WEBPACK_IMPORTED_MODULE_8__["FilterFactoryService"],
-            _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatDialog"]])
+            _angular_material__WEBPACK_IMPORTED_MODULE_4__["MatDialog"],
+            src_app_filter_service_filter_factory_service__WEBPACK_IMPORTED_MODULE_3__["FilterFactoryService"],
+            _loader_enterprise_integration_patterns_loader_service__WEBPACK_IMPORTED_MODULE_8__["EnterpriseIntegrationPatternsLoaderService"],
+            src_app_graph_loader_pattern_data_loader_service__WEBPACK_IMPORTED_MODULE_6__["PatternDataLoaderService"],
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"]])
     ], EnterpriseIntegrationPatternsComponent);
     return EnterpriseIntegrationPatternsComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/graph/graph.component.html":
-/*!******************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/component/graph/graph.component.html ***!
-  \******************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<div>\n  <svg #svg [attr.viewBox]=\"'0 0 ' + options.width + ' ' + options.height\"\n      (click)=\"deselectNode($event)\">\n        <g [zoomableOf]=\"svg\">\n            <g class=\"links\">\n                <g [linkVisual]=\"link\" *ngFor=\"let link of links\"></g>\n            </g>\n            <g class=\"nodes\">\n                <g [nodeVisual]=\"node\" *ngFor=\"let node of nodes\" \n                    [draggableNode]=\"node\"\n                    [draggableInGraph]=\"graph\"\n                    (clickEvent)=\"nodeInformation(node.id)\"\n                    (mouseEnterEvent)=\"previewNodeInformation(node.id)\"\n                    (mouseLeaveEvent)=\"dePreviewNodeInformation(node.id)\">\n                </g>\n            </g>\n\n            <defs>\n                <marker id=\"end\" viewBox=\"0 -5 10 10\" refX=\"15\" refY=\"-1.5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n                    <path d=\"M0,-5L10,0L0,5\"></path>\n                </marker>\n            </defs>\n        </g>\n  </svg>\n</div>\n\n<div *ngIf=\"selectedLinkId; else nodeInfo\">\n    <pp-link-infobox\n        [linkId]=\"selectedLinkId\"\n        [currentPatternId]=\"selectedNodeId\"\n        (onPatternClicked)=\"nodeInformation($event)\">\n    </pp-link-infobox>\n</div>\n\n<ng-template #nodeInfo>\n    <div *ngIf=\"selectedNodeId\">\n    <pp-node-infobox \n            [id]=\"selectedNodeId\"\n            (clickEvent)=\"nodeInformation($event)\"\n            (mouseEnterEvent)=\"previewNodeInformation($event)\"\n            (mouseLeaveEvent)=\"dePreviewNodeInformation($event)\"\n            (linkClickEvent)=\"showLinkInfo($event)\">\n    </pp-node-infobox>\n    </div>\n</ng-template>"
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/graph/graph.component.scss":
-/*!******************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/component/graph/graph.component.scss ***!
-  \******************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "pp-node-infobox {\n  position: absolute;\n  top: 90px; }\n\npp-link-infobox {\n  position: absolute;\n  top: 90px; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2V4dGVuc2lvbnMvcGF0dGVybi1sYW5ndWFnZS9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zL2NvbXBvbmVudC9ncmFwaC9ncmFwaC5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLGtCQUFrQjtFQUNsQixTQUFTLEVBQUE7O0FBR2I7RUFDSSxrQkFBa0I7RUFDbEIsU0FBUyxFQUFBIiwiZmlsZSI6InNyYy9hcHAvZXh0ZW5zaW9ucy9wYXR0ZXJuLWxhbmd1YWdlL2VudGVycHJpc2UtaW50ZWdyYXRpb24tcGF0dGVybnMvY29tcG9uZW50L2dyYXBoL2dyYXBoLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsicHAtbm9kZS1pbmZvYm94IHtcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgdG9wOiA5MHB4O1xufVxuXG5wcC1saW5rLWluZm9ib3gge1xuICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICB0b3A6IDkwcHg7XG59Il19 */"
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/graph/graph.component.ts":
-/*!****************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/component/graph/graph.component.ts ***!
-  \****************************************************************************************************************/
-/*! exports provided: GraphComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GraphComponent", function() { return GraphComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../model */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/model/index.ts");
-/* harmony import */ var _service_d3_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../service/d3.service */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/service/d3.service.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-var GraphComponent = /** @class */ (function () {
-    function GraphComponent(d3Service, ref) {
-        this.d3Service = d3Service;
-        this.ref = ref;
-        this.nodeSelectEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
-        this.nodeUnselectEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
-        this._options = { width: 800, height: 600 };
-    }
-    GraphComponent.prototype.onresize = function (event) {
-        if (this.graph)
-            this.graph.initSimulation(this.options);
-    };
-    GraphComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.graph = this.d3Service.getNetworkGraph(this.nodes, this.links, this.options);
-        this.graph.ticker.subscribe(function (d) {
-            _this.ref.markForCheck();
-        });
-        if (this.selectedNodeId) {
-            this.nodeInformation(this.selectedNodeId);
-        }
-    };
-    GraphComponent.prototype.ngAfterViewInit = function () {
-        this.graph.initSimulation(this.options);
-    };
-    Object.defineProperty(GraphComponent.prototype, "options", {
-        get: function () {
-            return this._options = {
-                width: window.innerWidth,
-                height: window.innerHeight
-            };
-        },
-        enumerable: true,
-        configurable: true
-    });
-    GraphComponent.prototype.previewNodeInformation = function (event) {
-        for (var _i = 0, _a = this.links; _i < _a.length; _i++) {
-            var l = _a[_i];
-            l.preview = true;
-        }
-        for (var _b = 0, _c = this.nodes; _b < _c.length; _b++) {
-            var n = _c[_b];
-            n.preview = true;
-        }
-        var currNode = this.nodes.find(function (n) { return n.id === event; });
-        currNode.preview = false;
-        var _loop_1 = function (link) {
-            // check source
-            if (link.source instanceof _model__WEBPACK_IMPORTED_MODULE_1__["Node"]) {
-                if (link.source.name === currNode.name) {
-                    link.preview = false;
-                    if (link.target instanceof _model__WEBPACK_IMPORTED_MODULE_1__["Node"]) {
-                        link.target.preview = false;
-                    }
-                }
-            }
-            else if (typeof link.source === 'string') {
-                if (link.source === currNode.name) {
-                    link.preview = false;
-                    var n = this_1.nodes.find(function (n) { return n.name === link.target; });
-                    n.preview = false;
-                }
-            }
-            // check target
-            if (link.target instanceof _model__WEBPACK_IMPORTED_MODULE_1__["Node"]) {
-                if (link.target.name === currNode.name) {
-                    link.preview = false;
-                    if (link.source instanceof _model__WEBPACK_IMPORTED_MODULE_1__["Node"]) {
-                        link.source.preview = false;
-                    }
-                }
-            }
-            else if (typeof link.target === 'string') {
-                if (link.target === currNode.name) {
-                    link.preview = false;
-                    var n = this_1.nodes.find(function (n) { return n.name === link.source; });
-                    n.preview = false;
-                }
-            }
-        };
-        var this_1 = this;
-        // iterate through all links and get neighbours 
-        for (var _d = 0, _e = this.links; _d < _e.length; _d++) {
-            var link = _e[_d];
-            _loop_1(link);
-        }
-    };
-    GraphComponent.prototype.dePreviewNodeInformation = function (event) {
-        for (var _i = 0, _a = this.links; _i < _a.length; _i++) {
-            var l = _a[_i];
-            l.preview = false;
-        }
-        for (var _b = 0, _c = this.nodes; _b < _c.length; _b++) {
-            var n = _c[_b];
-            n.preview = false;
-        }
-    };
-    GraphComponent.prototype.deselectNode = function () {
-        // call listener
-        this.nodeUnselectEvent.emit();
-        // remove selection of nodes and links
-        for (var _i = 0, _a = this.nodes; _i < _a.length; _i++) {
-            var n = _a[_i];
-            n.selected = false;
-        }
-        for (var _b = 0, _c = this.links; _b < _c.length; _b++) {
-            var l = _c[_b];
-            l.selected = false;
-        }
-        this.selectedNode = null;
-        // this.selectedNodeInfo = null;
-        this.selectedNodeId = null;
-    };
-    // $event is the clicked node id!
-    GraphComponent.prototype.nodeInformation = function ($event) {
-        this.selectedLinkId = null;
-        // call listener
-        this.nodeSelectEvent.emit($event);
-        var node = this.nodes.find(function (n) { return n.id === $event; });
-        // remove selection of nodes and links
-        for (var _i = 0, _a = this.nodes; _i < _a.length; _i++) {
-            var n = _a[_i];
-            n.selected = false;
-        }
-        for (var _b = 0, _c = this.links; _b < _c.length; _b++) {
-            var l = _c[_b];
-            l.selected = false;
-        }
-        // set clicked node as current node to display infobox (separate component) about node
-        // in HTML we can do *ngIf to show infobox component 
-        this.selectedNode = node;
-        this.selectedNode.selected = true;
-        this.selectedNodeId = $event;
-        var _loop_2 = function (link) {
-            // check source
-            if (link.source instanceof _model__WEBPACK_IMPORTED_MODULE_1__["Node"]) {
-                if (link.source.name === node.name) {
-                    link.selected = true;
-                    if (link.target instanceof _model__WEBPACK_IMPORTED_MODULE_1__["Node"]) {
-                        link.target.selected = true;
-                        // this.selectedNodeInfo.outgoing.push(link.target)
-                    }
-                }
-            }
-            else if (typeof link.source === 'string') {
-                if (link.source === node.name) {
-                    link.selected = true;
-                    var n = this_2.nodes.find(function (n) { return n.name === link.target; });
-                    n.selected = true;
-                    // this.selectedNodeInfo.outgoing.push(n);
-                }
-            }
-            // check target
-            if (link.target instanceof _model__WEBPACK_IMPORTED_MODULE_1__["Node"]) {
-                if (link.target.name === node.name) {
-                    link.selected = true;
-                    if (link.source instanceof _model__WEBPACK_IMPORTED_MODULE_1__["Node"]) {
-                        link.source.selected = true;
-                        // this.selectedNodeInfo.incoming.push(link.source);
-                    }
-                }
-            }
-            else if (typeof link.target === 'string') {
-                if (link.target === node.name) {
-                    link.selected = true;
-                    var n = this_2.nodes.find(function (n) { return n.name === link.source; });
-                    n.selected = true;
-                    // this.selectedNodeInfo.incoming.push(n);
-                }
-            }
-        };
-        var this_2 = this;
-        // this.selectedNodeInfo = new NodeInfo();
-        // this.selectedNodeInfo.currNode = this.selectedNode;
-        // // iterate through all links and get neighbours 
-        for (var _d = 0, _e = this.links; _d < _e.length; _d++) {
-            var link = _e[_d];
-            _loop_2(link);
-        }
-    };
-    GraphComponent.prototype.filterNodes = function (filter) {
-        this.showAllNodes();
-        // get patterns to hide
-        var selectedNodes = filter.filterPatterns(this.nodes);
-        // if a node is in selectedNodes we DON'T want to filter it out
-        var nodesToBeFiltered = this.nodes.filter(function (n) { return !selectedNodes.includes(n); });
-        // get all links that contain a pattern that should be filtered 
-        var linksToBeFiltered = this.links.filter(function (e) {
-            var id = '';
-            if (typeof e.source === 'string')
-                id = e.source;
-            else if (e.source instanceof _model__WEBPACK_IMPORTED_MODULE_1__["Node"])
-                id = e.source.id;
-            var s = nodesToBeFiltered.find(function (n) { return n.id === id; });
-            if (s)
-                return true;
-            if (typeof e.target === 'string')
-                id = e.target;
-            else if (e.target instanceof _model__WEBPACK_IMPORTED_MODULE_1__["Node"])
-                id = e.target.id;
-            var t = nodesToBeFiltered.find(function (n) { return n.id === id; });
-            if (t)
-                return true;
-            return false;
-        });
-        // aquired elements have to be hidden
-        nodesToBeFiltered.forEach(function (n) { return n.hide = true; });
-        linksToBeFiltered.forEach(function (l) { return l.hide = true; });
-    };
-    GraphComponent.prototype.showAllNodes = function () {
-        this.nodes.forEach(function (n) { return n.hide = false; });
-        this.links.forEach(function (l) { return l.hide = false; });
-    };
-    GraphComponent.prototype.showLinkInfo = function (linkId) {
-        this.selectedLinkId = linkId;
-    };
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])('selectedNodeId'),
-        __metadata("design:type", String)
-    ], GraphComponent.prototype, "selectedNodeId", void 0);
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])('nodes'),
-        __metadata("design:type", Array)
-    ], GraphComponent.prototype, "nodes", void 0);
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])('links'),
-        __metadata("design:type", Array)
-    ], GraphComponent.prototype, "links", void 0);
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
-        __metadata("design:type", Object)
-    ], GraphComponent.prototype, "nodeSelectEvent", void 0);
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
-        __metadata("design:type", Object)
-    ], GraphComponent.prototype, "nodeUnselectEvent", void 0);
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["HostListener"])('window:resize', ['$event']),
-        __metadata("design:type", Function),
-        __metadata("design:paramtypes", [Object]),
-        __metadata("design:returntype", void 0)
-    ], GraphComponent.prototype, "onresize", null);
-    GraphComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'pp-graph',
-            template: __webpack_require__(/*! ./graph.component.html */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/graph/graph.component.html"),
-            styles: [__webpack_require__(/*! ./graph.component.scss */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/graph/graph.component.scss")]
-        }),
-        __metadata("design:paramtypes", [_service_d3_service__WEBPACK_IMPORTED_MODULE_2__["D3Service"],
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"]])
-    ], GraphComponent);
-    return GraphComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/link-infobox/link-infobox.component.html":
-/*!********************************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/component/link-infobox/link-infobox.component.html ***!
-  \********************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"info\" *ngIf=\"linkInfo; else loading\">\n  <div class=\"headline\">\n    \n    <!-- curr pattern name -->\n    <h1 (click)=\"onClick($event, linkInfo.currPattern.id)\">\n      {{linkInfo.currPattern.name}}\n    </h1>\n\n    <!-- link arrow -->\n    <i *ngIf=\"linkInfo.direction === 'outgoing'; else incoming\"\n      class=\"fa fa-long-arrow-right\"></i>\n    <ng-template #incoming>\n      <i class=\"fa fa-long-arrow-left\"></i>\n    </ng-template>\n\n    <!-- linked pattern name -->\n    <span (click)=\"onClick($event, linkInfo.linkedPattern.id)\">\n      {{linkInfo.linkedPattern.name}}\n    </span>\n\n  </div>\n\n  <div class=\"description\">\n    <p *ngFor=\"let d of linkInfo.descriptions\">{{d}}</p>\n  </div>\n</div>\n<ng-template #loading>\n  <div class=\"info\">\n    Loading Link Info...\n  </div>\n</ng-template>"
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/link-infobox/link-infobox.component.scss":
-/*!********************************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/component/link-infobox/link-infobox.component.scss ***!
-  \********************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = ".info {\n  width: 350px;\n  padding: 10px;\n  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;\n  border-width: 2px;\n  border-style: solid;\n  border-color: grey;\n  background: rgba(255, 255, 255, 0.7); }\n\n.headline {\n  padding-bottom: 10px; }\n\n.headline h1 {\n    padding: 0;\n    margin: 0;\n    margin-bottom: 4px; }\n\n.headline span {\n    font-size: 14pt; }\n\n.headline i {\n    font-size: 14pt;\n    padding: 4px;\n    margin-right: 4px; }\n\n.description {\n  word-break: normal;\n  border-top-width: 2px;\n  border-top-style: solid;\n  border-top-color: lightgrey; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2V4dGVuc2lvbnMvcGF0dGVybi1sYW5ndWFnZS9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zL2NvbXBvbmVudC9saW5rLWluZm9ib3gvbGluay1pbmZvYm94LmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksWUFBWTtFQUNaLGFBQWE7RUFDYiw2RUFBNkU7RUFDN0UsaUJBQWlCO0VBQ2pCLG1CQUFtQjtFQUNuQixrQkFBa0I7RUFDbEIsb0NBQW9DLEVBQUE7O0FBR3hDO0VBQ0ksb0JBQW9CLEVBQUE7O0FBRHhCO0lBSVEsVUFBVTtJQUNWLFNBQVM7SUFDVCxrQkFBa0IsRUFBQTs7QUFOMUI7SUFVUSxlQUFlLEVBQUE7O0FBVnZCO0lBY1EsZUFBZTtJQUNmLFlBQVk7SUFDWixpQkFBaUIsRUFBQTs7QUFJekI7RUFDSSxrQkFBa0I7RUFFbEIscUJBQXFCO0VBQ3JCLHVCQUF1QjtFQUN2QiwyQkFBMkIsRUFBQSIsImZpbGUiOiJzcmMvYXBwL2V4dGVuc2lvbnMvcGF0dGVybi1sYW5ndWFnZS9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zL2NvbXBvbmVudC9saW5rLWluZm9ib3gvbGluay1pbmZvYm94LmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmluZm8ge1xuICAgIHdpZHRoOiAzNTBweDtcbiAgICBwYWRkaW5nOiAxMHB4O1xuICAgIGZvbnQtZmFtaWx5OiAnR2lsbCBTYW5zJywgJ0dpbGwgU2FucyBNVCcsIENhbGlicmksICdUcmVidWNoZXQgTVMnLCBzYW5zLXNlcmlmO1xuICAgIGJvcmRlci13aWR0aDogMnB4O1xuICAgIGJvcmRlci1zdHlsZTogc29saWQ7XG4gICAgYm9yZGVyLWNvbG9yOiBncmV5O1xuICAgIGJhY2tncm91bmQ6IHJnYmEoMjU1LCAyNTUsIDI1NSwgMC43KTtcbn1cblxuLmhlYWRsaW5lIHtcbiAgICBwYWRkaW5nLWJvdHRvbTogMTBweDtcblxuICAgIGgxIHtcbiAgICAgICAgcGFkZGluZzogMDtcbiAgICAgICAgbWFyZ2luOiAwO1xuICAgICAgICBtYXJnaW4tYm90dG9tOiA0cHg7XG4gICAgfVxuXG4gICAgc3BhbiB7XG4gICAgICAgIGZvbnQtc2l6ZTogMTRwdDtcbiAgICB9XG4gICAgXG4gICAgaSB7XG4gICAgICAgIGZvbnQtc2l6ZTogMTRwdDtcbiAgICAgICAgcGFkZGluZzogNHB4O1xuICAgICAgICBtYXJnaW4tcmlnaHQ6IDRweDtcbiAgICB9XG59XG5cbi5kZXNjcmlwdGlvbiB7XG4gICAgd29yZC1icmVhazogbm9ybWFsO1xuXG4gICAgYm9yZGVyLXRvcC13aWR0aDogMnB4O1xuICAgIGJvcmRlci10b3Atc3R5bGU6IHNvbGlkO1xuICAgIGJvcmRlci10b3AtY29sb3I6IGxpZ2h0Z3JleTtcbn0iXX0= */"
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/link-infobox/link-infobox.component.ts":
-/*!******************************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/component/link-infobox/link-infobox.component.ts ***!
-  \******************************************************************************************************************************/
-/*! exports provided: LinkInfoboxComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LinkInfoboxComponent", function() { return LinkInfoboxComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _loader_enterprise_integration_patterns_link_info_loader_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../loader/enterprise-integration-patterns-link-info-loader.service */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/loader/enterprise-integration-patterns-link-info-loader.service.ts");
-/* harmony import */ var src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-var LinkInfoboxComponent = /** @class */ (function () {
-    function LinkInfoboxComponent(loader) {
-        this.loader = loader;
-        // gets called if a pattern within the infobox has been clicked, parameter is the corresponding id of the pattern
-        this.onPatternClicked = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
-    }
-    LinkInfoboxComponent.prototype.ngOnInit = function () {
-        this.loadContent();
-    };
-    // loads the link informations from the triplestore with the id
-    LinkInfoboxComponent.prototype.loadContent = function () {
-        var _this = this;
-        var uri = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].convertIdToIri(this.linkId);
-        this.loader.loadContentFromStore(uri)
-            .then(function (linkMap) {
-            var data = linkMap.get(uri);
-            if (_this.currentPatternId) {
-                if (data.sourcePattern.id === _this.currentPatternId) {
-                    _this.linkInfo = {
-                        currPattern: {
-                            id: data.sourcePattern.id,
-                            name: data.sourcePattern.name
-                        },
-                        linkedPattern: {
-                            id: data.targetPattern.id,
-                            name: data.targetPattern.name
-                        },
-                        descriptions: data.descriptions,
-                        direction: 'outgoing'
-                    };
-                }
-                else if (data.targetPattern.id === _this.currentPatternId) {
-                    _this.linkInfo = {
-                        currPattern: {
-                            id: data.targetPattern.id,
-                            name: data.targetPattern.name
-                        },
-                        linkedPattern: {
-                            id: data.sourcePattern.id,
-                            name: data.sourcePattern.name
-                        },
-                        descriptions: data.descriptions,
-                        direction: 'incoming'
-                    };
-                }
-            }
-            else {
-                // default case is, source pattern is the current pattern
-                _this.linkInfo = {
-                    currPattern: {
-                        id: data.sourcePattern.id,
-                        name: data.sourcePattern.name
-                    },
-                    linkedPattern: {
-                        id: data.targetPattern.id,
-                        name: data.targetPattern.name
-                    },
-                    descriptions: data.descriptions,
-                    direction: 'outgoing'
-                };
-            }
-        });
-    };
-    LinkInfoboxComponent.prototype.onClick = function (event, id) {
-        event.stopPropagation();
-        this.onPatternClicked.emit(id);
-    };
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
-        __metadata("design:type", String)
-    ], LinkInfoboxComponent.prototype, "linkId", void 0);
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
-        __metadata("design:type", String)
-    ], LinkInfoboxComponent.prototype, "currentPatternId", void 0);
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
-        __metadata("design:type", Object)
-    ], LinkInfoboxComponent.prototype, "onPatternClicked", void 0);
-    LinkInfoboxComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'pp-link-infobox',
-            template: __webpack_require__(/*! ./link-infobox.component.html */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/link-infobox/link-infobox.component.html"),
-            styles: [__webpack_require__(/*! ./link-infobox.component.scss */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/link-infobox/link-infobox.component.scss")]
-        }),
-        __metadata("design:paramtypes", [_loader_enterprise_integration_patterns_link_info_loader_service__WEBPACK_IMPORTED_MODULE_1__["EnterpriseIntegrationPatternsLinkInfoLoaderService"]])
-    ], LinkInfoboxComponent);
-    return LinkInfoboxComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/link-visual/link-visual.component.html":
-/*!******************************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/component/link-visual/link-visual.component.html ***!
-  \******************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<svg:line\n    [ngClass] = \"{'selected': link.selected, 'not-selected': !(link.selected), 'preview': link.preview, 'hide': link.hide}\"\n    [attr.x1] = \"link.source.x\"\n    [attr.y1] = \"link.source.y\"\n    [attr.x2] = \"link.target.x\"\n    [attr.y2] = \"link.target.y\">\n</svg:line>"
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/link-visual/link-visual.component.scss":
-/*!******************************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/component/link-visual/link-visual.component.scss ***!
-  \******************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "line {\n  stroke-width: 1px;\n  marker-end: url(#end); }\n\n.selected {\n  stroke: red; }\n\n.not-selected {\n  stroke: #7f7f7f; }\n\n.preview {\n  opacity: 0.1; }\n\n.hide {\n  visibility: hidden; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2V4dGVuc2lvbnMvcGF0dGVybi1sYW5ndWFnZS9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zL2NvbXBvbmVudC9saW5rLXZpc3VhbC9saW5rLXZpc3VhbC5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLGlCQUFpQjtFQUNqQixxQkFBcUIsRUFBQTs7QUFHekI7RUFDSSxXQUFXLEVBQUE7O0FBR2Y7RUFDSSxlQUFlLEVBQUE7O0FBR25CO0VBQ0ksWUFBWSxFQUFBOztBQUdoQjtFQUNJLGtCQUFrQixFQUFBIiwiZmlsZSI6InNyYy9hcHAvZXh0ZW5zaW9ucy9wYXR0ZXJuLWxhbmd1YWdlL2VudGVycHJpc2UtaW50ZWdyYXRpb24tcGF0dGVybnMvY29tcG9uZW50L2xpbmstdmlzdWFsL2xpbmstdmlzdWFsLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsibGluZSB7XG4gICAgc3Ryb2tlLXdpZHRoOiAxcHg7XG4gICAgbWFya2VyLWVuZDogdXJsKCNlbmQpO1xufVxuXG4uc2VsZWN0ZWQge1xuICAgIHN0cm9rZTogcmVkO1xufVxuXG4ubm90LXNlbGVjdGVkIHtcbiAgICBzdHJva2U6ICM3ZjdmN2Y7XG59XG5cbi5wcmV2aWV3IHtcbiAgICBvcGFjaXR5OiAwLjE7XG59XG5cbi5oaWRlIHtcbiAgICB2aXNpYmlsaXR5OiBoaWRkZW47XG59Il19 */"
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/link-visual/link-visual.component.ts":
-/*!****************************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/component/link-visual/link-visual.component.ts ***!
-  \****************************************************************************************************************************/
-/*! exports provided: LinkVisualComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LinkVisualComponent", function() { return LinkVisualComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../model */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/model/index.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var LinkVisualComponent = /** @class */ (function () {
-    function LinkVisualComponent() {
-    }
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])('linkVisual'),
-        __metadata("design:type", _model__WEBPACK_IMPORTED_MODULE_1__["Link"])
-    ], LinkVisualComponent.prototype, "link", void 0);
-    LinkVisualComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: '[linkVisual]',
-            template: __webpack_require__(/*! ./link-visual.component.html */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/link-visual/link-visual.component.html"),
-            styles: [__webpack_require__(/*! ./link-visual.component.scss */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/link-visual/link-visual.component.scss")]
-        })
-    ], LinkVisualComponent);
-    return LinkVisualComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/node-infobox/node-infobox.component.html":
-/*!********************************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/component/node-infobox/node-infobox.component.html ***!
-  \********************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"info\" *ngIf=\"info; else loading\">\n  <div class=\"headline\">\n    <h1>{{info.name}}</h1>\n    <p>{{info.group}}</p>\n  </div>\n  <div class=\"description\">\n    <p *ngFor=\"let desc of info.description\">{{desc}}</p>\n  </div>\n  <div class=\"referenced\"\n    *ngFor=\"let group of info.related\">\n\n    <h1>{{group.id}}</h1>\n    \n    <!-- Outgoing Related Nodes -->\n    <div class=\"related\">\n      <div class=\"item\"\n        *ngFor=\"let o of group.outgoing\">\n        <!-- Arrow (->) -->\n        <i class=\"fa fa-long-arrow-right\"></i>\n        <!-- Caption -->\n        <span \n          (click)=\"onClick($event, o.nodeId)\"\n          (mouseenter)=\"onMouseEnter($event, o.nodeId)\"\n          (mouseleave)=\"onMouseLeave($event, o.nodeId)\">{{o.name}}\n        </span>\n        \n        <i class=\"info-icon fa fa-info-circle\" \n          *ngIf=\"o.hasDescription\"\n          (click)=\"onInfoClick($event, o);\"></i>\n      </div>\n    </div>\n\n    <!-- Incoming Related Nodes -->\n    <div class=\"related\">\n      <div class=\"item\"\n        *ngFor=\"let i of group.incoming\">\n        <!-- Arrow (<-) -->\n        <i class=\"fa fa-long-arrow-left\"></i>\n        <!-- Caption -->\n        <span\n          (click)=\"onClick($event, i.nodeId)\"\n          (mouseenter)=\"onMouseEnter($event, i.nodeId)\"\n          (mouseleave)=\"onMouseLeave($event, i.nodeId)\">{{i.name}}\n        </span>\n\n        <i class=\"info-icon fa fa-info-circle\" \n          *ngIf=\"i.hasDescription\"\n          (click)=\"onInfoClick($event, i)\"></i>\n      </div>\n    </div>\n  </div>\n</div>\n<ng-template #loading>\n  <div class=\"info\">\n    Loading Pattern Info...\n  </div>\n</ng-template>"
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/node-infobox/node-infobox.component.scss":
-/*!********************************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/component/node-infobox/node-infobox.component.scss ***!
-  \********************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = ".info {\n  width: 350px;\n  padding: 10px;\n  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;\n  border-width: 2px;\n  border-style: solid;\n  border-color: grey;\n  background: rgba(255, 255, 255, 0.7); }\n\n.headline {\n  padding-bottom: 10px;\n  border-bottom-width: 2px;\n  border-bottom-style: solid;\n  border-bottom-color: lightgrey;\n  word-break: keep-all; }\n\n.headline h1 {\n    padding: 0;\n    margin: 0; }\n\n.headline p {\n    padding: 0;\n    margin: 0;\n    font-style: italic; }\n\n.description {\n  word-break: normal; }\n\n.referenced {\n  border-top-width: 2px;\n  border-top-style: solid;\n  border-top-color: lightgrey; }\n\n.referenced ul {\n    padding-left: 20px;\n    list-style: none; }\n\n.referenced li {\n    margin-bottom: 10px; }\n\n.referenced h1 {\n    padding: 0;\n    margin: 0;\n    font-variant: small-caps;\n    font-size: 14pt; }\n\n.related {\n  margin-bottom: 10px;\n  padding: 4px; }\n\n.related i {\n    margin-right: 8px; }\n\n.related .item {\n    margin-bottom: 4px; }\n\n.related .info-icon {\n    float: right; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2V4dGVuc2lvbnMvcGF0dGVybi1sYW5ndWFnZS9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zL2NvbXBvbmVudC9ub2RlLWluZm9ib3gvbm9kZS1pbmZvYm94LmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksWUFBWTtFQUNaLGFBQWE7RUFDYiw2RUFBNkU7RUFDN0UsaUJBQWlCO0VBQ2pCLG1CQUFtQjtFQUNuQixrQkFBa0I7RUFDbEIsb0NBQW9DLEVBQUE7O0FBR3hDO0VBQ0ksb0JBQW9CO0VBQ3BCLHdCQUF3QjtFQUN4QiwwQkFBMEI7RUFDMUIsOEJBQThCO0VBQzlCLG9CQUFvQixFQUFBOztBQUx4QjtJQVFRLFVBQVU7SUFDVixTQUFTLEVBQUE7O0FBVGpCO0lBYVEsVUFBVTtJQUNWLFNBQVM7SUFDVCxrQkFBa0IsRUFBQTs7QUFJMUI7RUFDSSxrQkFBa0IsRUFBQTs7QUFHdEI7RUFDSSxxQkFBcUI7RUFDckIsdUJBQXVCO0VBQ3ZCLDJCQUEyQixFQUFBOztBQUgvQjtJQU1RLGtCQUFpQjtJQUNqQixnQkFBZSxFQUFBOztBQVB2QjtJQVdRLG1CQUFrQixFQUFBOztBQVgxQjtJQWVRLFVBQVU7SUFDVixTQUFTO0lBQ1Qsd0JBQXdCO0lBQ3hCLGVBQWUsRUFBQTs7QUFJdkI7RUFDSSxtQkFBbUI7RUFDbkIsWUFBWSxFQUFBOztBQUZoQjtJQUtRLGlCQUFpQixFQUFBOztBQUx6QjtJQVNRLGtCQUFrQixFQUFBOztBQVQxQjtJQWFRLFlBQVksRUFBQSIsImZpbGUiOiJzcmMvYXBwL2V4dGVuc2lvbnMvcGF0dGVybi1sYW5ndWFnZS9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zL2NvbXBvbmVudC9ub2RlLWluZm9ib3gvbm9kZS1pbmZvYm94LmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmluZm8ge1xuICAgIHdpZHRoOiAzNTBweDtcbiAgICBwYWRkaW5nOiAxMHB4O1xuICAgIGZvbnQtZmFtaWx5OiAnR2lsbCBTYW5zJywgJ0dpbGwgU2FucyBNVCcsIENhbGlicmksICdUcmVidWNoZXQgTVMnLCBzYW5zLXNlcmlmO1xuICAgIGJvcmRlci13aWR0aDogMnB4O1xuICAgIGJvcmRlci1zdHlsZTogc29saWQ7XG4gICAgYm9yZGVyLWNvbG9yOiBncmV5O1xuICAgIGJhY2tncm91bmQ6IHJnYmEoMjU1LCAyNTUsIDI1NSwgMC43KTtcbn1cblxuLmhlYWRsaW5lIHtcbiAgICBwYWRkaW5nLWJvdHRvbTogMTBweDtcbiAgICBib3JkZXItYm90dG9tLXdpZHRoOiAycHg7XG4gICAgYm9yZGVyLWJvdHRvbS1zdHlsZTogc29saWQ7XG4gICAgYm9yZGVyLWJvdHRvbS1jb2xvcjogbGlnaHRncmV5O1xuICAgIHdvcmQtYnJlYWs6IGtlZXAtYWxsO1xuXG4gICAgaDEge1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgfVxuXG4gICAgcCB7XG4gICAgICAgIHBhZGRpbmc6IDA7XG4gICAgICAgIG1hcmdpbjogMDtcbiAgICAgICAgZm9udC1zdHlsZTogaXRhbGljO1xuICAgIH1cbn1cblxuLmRlc2NyaXB0aW9uIHtcbiAgICB3b3JkLWJyZWFrOiBub3JtYWw7XG59XG5cbi5yZWZlcmVuY2VkIHtcbiAgICBib3JkZXItdG9wLXdpZHRoOiAycHg7XG4gICAgYm9yZGVyLXRvcC1zdHlsZTogc29saWQ7XG4gICAgYm9yZGVyLXRvcC1jb2xvcjogbGlnaHRncmV5O1xuXG4gICAgdWwgeyBcbiAgICAgICAgcGFkZGluZy1sZWZ0OjIwcHg7IFxuICAgICAgICBsaXN0LXN0eWxlOm5vbmU7IFxuICAgIH1cbiAgICBcbiAgICBsaSB7IFxuICAgICAgICBtYXJnaW4tYm90dG9tOjEwcHg7IFxuICAgIH1cblxuICAgIGgxIHtcbiAgICAgICAgcGFkZGluZzogMDtcbiAgICAgICAgbWFyZ2luOiAwO1xuICAgICAgICBmb250LXZhcmlhbnQ6IHNtYWxsLWNhcHM7XG4gICAgICAgIGZvbnQtc2l6ZTogMTRwdDtcbiAgICB9XG59XG5cbi5yZWxhdGVkIHtcbiAgICBtYXJnaW4tYm90dG9tOiAxMHB4O1xuICAgIHBhZGRpbmc6IDRweDtcblxuICAgIGkge1xuICAgICAgICBtYXJnaW4tcmlnaHQ6IDhweDtcbiAgICB9XG5cbiAgICAuaXRlbSB7XG4gICAgICAgIG1hcmdpbi1ib3R0b206IDRweDtcbiAgICB9XG5cbiAgICAuaW5mby1pY29uIHtcbiAgICAgICAgZmxvYXQ6IHJpZ2h0O1xuICAgIH1cbn0iXX0= */"
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/node-infobox/node-infobox.component.ts":
-/*!******************************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/component/node-infobox/node-infobox.component.ts ***!
-  \******************************************************************************************************************************/
-/*! exports provided: NodeInfoboxComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NodeInfoboxComponent", function() { return NodeInfoboxComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _loader_enterprise_integration_pattern_loader_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../loader/enterprise-integration-pattern-loader.service */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/loader/enterprise-integration-pattern-loader.service.ts");
-/* harmony import */ var _loader_enterprise_integration_pattern_incoming_link_loader_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../loader/enterprise-integration-pattern-incoming-link-loader.service */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/loader/enterprise-integration-pattern-incoming-link-loader.service.ts");
-/* harmony import */ var _loader_enterprise_integration_pattern_outgoing_link_loader_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../loader/enterprise-integration-pattern-outgoing-link-loader.service */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/loader/enterprise-integration-pattern-outgoing-link-loader.service.ts");
-/* harmony import */ var src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-var NodeInfoboxComponent = /** @class */ (function () {
-    function NodeInfoboxComponent(patternLoader, outgoingLoader, incomingLoader) {
-        this.patternLoader = patternLoader;
-        this.outgoingLoader = outgoingLoader;
-        this.incomingLoader = incomingLoader;
-        this.clickEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
-        this.mouseEnterEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
-        this.mouseLeaveEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
-        this.linkClickEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
-    }
-    NodeInfoboxComponent.prototype.ngOnInit = function () {
-        this.loadContent();
-    };
-    NodeInfoboxComponent.prototype.ngOnChanges = function (changes) {
-        if (changes['id']) {
-            var chng = changes['id'];
-            var cur = JSON.stringify(chng.currentValue);
-            var prev = JSON.stringify(chng.previousValue);
-            // new id, load new data
-            if (cur !== prev) {
-                this.loadContent();
-            }
-        }
-    };
-    NodeInfoboxComponent.prototype.loadContent = function () {
-        var _this = this;
-        var uri = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].convertIdToIri(this.id);
-        Promise.all([this.patternLoader.loadContentFromStore(uri),
-            this.outgoingLoader.loadContentFromStore(uri),
-            this.incomingLoader.loadContentFromStore(uri)]).then(function (values) {
-            var pattern = values[0].get(uri);
-            var outgoingMap = values[1];
-            var incomingMap = values[2];
-            var outgoing = [];
-            outgoingMap.forEach(function (value) { return outgoing.push(value); });
-            var incoming = [];
-            incomingMap.forEach(function (value) { return incoming.push(value); });
-            // group outgoing and incoming links into pattern language groups
-            var groups = [];
-            var _loop_1 = function (o) {
-                var groupName = _this.filterGroupId(o.nodeId);
-                if (!groups.find(function (g) { return g.id === groupName; })) {
-                    var g_1 = {
-                        id: groupName,
-                        outgoing: [],
-                        incoming: []
-                    };
-                    groups.push(g_1);
-                }
-                var g = groups.find(function (g) { return g.id === groupName; });
-                g.outgoing.push(o);
-            };
-            for (var _i = 0, outgoing_1 = outgoing; _i < outgoing_1.length; _i++) {
-                var o = outgoing_1[_i];
-                _loop_1(o);
-            }
-            var _loop_2 = function (i) {
-                var groupName = _this.filterGroupId(i.nodeId);
-                if (!groups.find(function (g) { return g.id === groupName; })) {
-                    var g_2 = {
-                        id: groupName,
-                        outgoing: [],
-                        incoming: []
-                    };
-                    groups.push(g_2);
-                }
-                var g = groups.find(function (g) { return g.id === groupName; });
-                g.incoming.push(i);
-            };
-            for (var _a = 0, incoming_1 = incoming; _a < incoming_1.length; _a++) {
-                var i = incoming_1[_a];
-                _loop_2(i);
-            }
-            _this.info = {
-                name: pattern.name,
-                group: pattern.groupName,
-                description: pattern.description,
-                related: groups
-            };
-        });
-    };
-    NodeInfoboxComponent.prototype.filterGroupId = function (id) {
-        var uri = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].convertIdToIri(id);
-        var noPrefix = uri.includes('patternlanguages')
-            ? uri.replace('https://purl.org/patternpedia/patternlanguages/', '')
-            : uri.replace('https://purl.org/patternpedia/', '');
-        var slash = noPrefix.indexOf('/');
-        return noPrefix.substr(0, slash);
-    };
-    NodeInfoboxComponent.prototype.onClick = function (event, node) {
-        event.stopPropagation();
-        this.clickEvent.emit(node);
-    };
-    NodeInfoboxComponent.prototype.onMouseEnter = function (event, node) {
-        event.stopPropagation();
-        this.mouseEnterEvent.emit(node);
-    };
-    NodeInfoboxComponent.prototype.onMouseLeave = function (event, node) {
-        event.stopPropagation();
-        this.mouseLeaveEvent.emit(node);
-    };
-    NodeInfoboxComponent.prototype.onInfoClick = function (event, link) {
-        event.stopPropagation();
-        this.linkClickEvent.emit(link.linkId);
-    };
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
-        __metadata("design:type", String)
-    ], NodeInfoboxComponent.prototype, "id", void 0);
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
-        __metadata("design:type", Object)
-    ], NodeInfoboxComponent.prototype, "clickEvent", void 0);
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
-        __metadata("design:type", Object)
-    ], NodeInfoboxComponent.prototype, "mouseEnterEvent", void 0);
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
-        __metadata("design:type", Object)
-    ], NodeInfoboxComponent.prototype, "mouseLeaveEvent", void 0);
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
-        __metadata("design:type", Object)
-    ], NodeInfoboxComponent.prototype, "linkClickEvent", void 0);
-    NodeInfoboxComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: 'pp-node-infobox',
-            template: __webpack_require__(/*! ./node-infobox.component.html */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/node-infobox/node-infobox.component.html"),
-            styles: [__webpack_require__(/*! ./node-infobox.component.scss */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/node-infobox/node-infobox.component.scss")]
-        }),
-        __metadata("design:paramtypes", [_loader_enterprise_integration_pattern_loader_service__WEBPACK_IMPORTED_MODULE_1__["EnterpriseIntegrationPatternLoaderService"],
-            _loader_enterprise_integration_pattern_outgoing_link_loader_service__WEBPACK_IMPORTED_MODULE_3__["EnterpriseIntegrationPatternOutgoingLinkLoaderService"],
-            _loader_enterprise_integration_pattern_incoming_link_loader_service__WEBPACK_IMPORTED_MODULE_2__["EnterpriseIntegrationPatternIncomingLinkLoaderService"]])
-    ], NodeInfoboxComponent);
-    return NodeInfoboxComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/node-visual/node-visual.component.html":
-/*!******************************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/component/node-visual/node-visual.component.html ***!
-  \******************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<svg:g class=\"node-element\" \n  [attr.transform]=\"'translate(' + node.x + ',' + node.y + ')'\" \n  [ngClass]=\"{'selected': node.selected, 'preview': node.preview, 'hide': node.hide}\"\n  (click)=\"onClick($event)\"\n  (mouseenter)=\"onMouseEnter($event)\"\n  (mouseleave)=\"onMouseLeave($event)\">\n  <svg:circle\n      r=\"5\"\n      [attr.fill]=\"node.color\">\n  </svg:circle>\n  <svg:text\n      class=\"node-text\"\n      dx=\"12\"\n      dy=\".35em\">\n    {{node.name}}\n  </svg:text>\n</svg:g>"
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/node-visual/node-visual.component.scss":
-/*!******************************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/component/node-visual/node-visual.component.scss ***!
-  \******************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = ".selected circle {\n  stroke: red;\n  stroke-width: 2px; }\n\n.selected text {\n  fill: red;\n  font-weight: bold; }\n\n.preview {\n  opacity: 0.1; }\n\n.hide {\n  visibility: hidden; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2V4dGVuc2lvbnMvcGF0dGVybi1sYW5ndWFnZS9lbnRlcnByaXNlLWludGVncmF0aW9uLXBhdHRlcm5zL2NvbXBvbmVudC9ub2RlLXZpc3VhbC9ub2RlLXZpc3VhbC5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUVRLFdBQVc7RUFDWCxpQkFBaUIsRUFBQTs7QUFIekI7RUFPUSxTQUFTO0VBQ1QsaUJBQWlCLEVBQUE7O0FBSXpCO0VBQ0ksWUFBWSxFQUFBOztBQUdoQjtFQUNJLGtCQUFrQixFQUFBIiwiZmlsZSI6InNyYy9hcHAvZXh0ZW5zaW9ucy9wYXR0ZXJuLWxhbmd1YWdlL2VudGVycHJpc2UtaW50ZWdyYXRpb24tcGF0dGVybnMvY29tcG9uZW50L25vZGUtdmlzdWFsL25vZGUtdmlzdWFsLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLnNlbGVjdGVkIHtcbiAgICBjaXJjbGUge1xuICAgICAgICBzdHJva2U6IHJlZDtcbiAgICAgICAgc3Ryb2tlLXdpZHRoOiAycHg7XG4gICAgfVxuXG4gICAgdGV4dCB7XG4gICAgICAgIGZpbGw6IHJlZDtcbiAgICAgICAgZm9udC13ZWlnaHQ6IGJvbGQ7XG4gICAgfVxufVxuXG4ucHJldmlldyB7XG4gICAgb3BhY2l0eTogMC4xO1xufVxuXG4uaGlkZSB7XG4gICAgdmlzaWJpbGl0eTogaGlkZGVuO1xufSJdfQ== */"
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/node-visual/node-visual.component.ts":
-/*!****************************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/component/node-visual/node-visual.component.ts ***!
-  \****************************************************************************************************************************/
-/*! exports provided: NodeVisualComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NodeVisualComponent", function() { return NodeVisualComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../model */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/model/index.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var NodeVisualComponent = /** @class */ (function () {
-    function NodeVisualComponent() {
-        this.clickEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
-        this.mouseEnterEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
-        this.mouseLeaveEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
-    }
-    NodeVisualComponent.prototype.onClick = function (event) {
-        event.stopPropagation();
-        this.clickEvent.emit(this.node);
-    };
-    NodeVisualComponent.prototype.onMouseEnter = function (event) {
-        this.mouseEnterEvent.emit(this.node);
-    };
-    NodeVisualComponent.prototype.onMouseLeave = function (event) {
-        this.mouseLeaveEvent.emit(this.node);
-    };
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])('nodeVisual'),
-        __metadata("design:type", _model__WEBPACK_IMPORTED_MODULE_1__["Node"])
-    ], NodeVisualComponent.prototype, "node", void 0);
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
-        __metadata("design:type", Object)
-    ], NodeVisualComponent.prototype, "clickEvent", void 0);
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
-        __metadata("design:type", Object)
-    ], NodeVisualComponent.prototype, "mouseEnterEvent", void 0);
-    __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
-        __metadata("design:type", Object)
-    ], NodeVisualComponent.prototype, "mouseLeaveEvent", void 0);
-    NodeVisualComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            selector: '[nodeVisual]',
-            template: __webpack_require__(/*! ./node-visual.component.html */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/node-visual/node-visual.component.html"),
-            styles: [__webpack_require__(/*! ./node-visual.component.scss */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/node-visual/node-visual.component.scss")]
-        })
-    ], NodeVisualComponent);
-    return NodeVisualComponent;
-}());
+}(src_app_graph_component_pattern_graph_template_pattern_graph_template_component__WEBPACK_IMPORTED_MODULE_7__["PatternGraphTemplateComponent"]));
 
 
 
@@ -6561,18 +6170,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var src_app_core_service_component_registry_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/core/service/component-registry.service */ "./src/app/core/service/component-registry.service.ts");
 /* harmony import */ var src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
 /* harmony import */ var _component_enterprise_integration_patterns_enterprise_integration_patterns_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./component/enterprise-integration-patterns/enterprise-integration-patterns.component */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/enterprise-integration-patterns/enterprise-integration-patterns.component.ts");
-/* harmony import */ var _component_graph_graph_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./component/graph/graph.component */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/graph/graph.component.ts");
-/* harmony import */ var _component_link_visual_link_visual_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./component/link-visual/link-visual.component */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/link-visual/link-visual.component.ts");
-/* harmony import */ var _component_node_visual_node_visual_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./component/node-visual/node-visual.component */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/node-visual/node-visual.component.ts");
-/* harmony import */ var _component_node_infobox_node_infobox_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./component/node-infobox/node-infobox.component */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/node-infobox/node-infobox.component.ts");
-/* harmony import */ var _component_enterprise_integration_pattern_enterprise_integration_pattern_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./component/enterprise-integration-pattern/enterprise-integration-pattern.component */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/enterprise-integration-pattern/enterprise-integration-pattern.component.ts");
-/* harmony import */ var _loader_enterprise_integration_patterns_loader_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./loader/enterprise-integration-patterns-loader.service */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/loader/enterprise-integration-patterns-loader.service.ts");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
-/* harmony import */ var _component_link_infobox_link_infobox_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./component/link-infobox/link-infobox.component */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/link-infobox/link-infobox.component.ts");
-/* harmony import */ var src_app_filter_component_filter_view_filter_view_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! src/app/filter/component/filter-view/filter-view.component */ "./src/app/filter/component/filter-view/filter-view.component.ts");
-/* harmony import */ var _component_directives_draggable_directive__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./component/directives/draggable.directive */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/directives/draggable.directive.ts");
-/* harmony import */ var _component_directives_zoomable_directive__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./component/directives/zoomable.directive */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/directives/zoomable.directive.ts");
+/* harmony import */ var _component_enterprise_integration_pattern_enterprise_integration_pattern_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./component/enterprise-integration-pattern/enterprise-integration-pattern.component */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/component/enterprise-integration-pattern/enterprise-integration-pattern.component.ts");
+/* harmony import */ var _loader_enterprise_integration_patterns_loader_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./loader/enterprise-integration-patterns-loader.service */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/loader/enterprise-integration-patterns-loader.service.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var src_app_graph_graph_module__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/graph/graph.module */ "./src/app/graph/graph.module.ts");
+/* harmony import */ var src_app_filter_filter_module__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! src/app/filter/filter.module */ "./src/app/filter/filter.module.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6582,12 +6185,6 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-
-
-
-
-
-
 
 
 
@@ -6610,1042 +6207,41 @@ var EnterpriseIntegrationPatternsModule = /** @class */ (function () {
             pcomponent: _component_enterprise_integration_patterns_enterprise_integration_patterns_component__WEBPACK_IMPORTED_MODULE_4__["EnterpriseIntegrationPatternsComponent"] // TODO is this actually used?
         });
         // adding a secondary renderer (dummy)
-        // this.cr.registerComponent(IriConverter.convertIriToId('https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns'), 
+        // this.cr.registerComponent(IriConverter.convertIriToId('https://purl.org/patternpedia/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns'),
         //   this.cr.getPLRenderingComponents("default"));
     }
     EnterpriseIntegrationPatternsModule = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
             declarations: [
                 _component_enterprise_integration_patterns_enterprise_integration_patterns_component__WEBPACK_IMPORTED_MODULE_4__["EnterpriseIntegrationPatternsComponent"],
-                _component_graph_graph_component__WEBPACK_IMPORTED_MODULE_5__["GraphComponent"],
-                _component_link_visual_link_visual_component__WEBPACK_IMPORTED_MODULE_6__["LinkVisualComponent"],
-                _component_node_visual_node_visual_component__WEBPACK_IMPORTED_MODULE_7__["NodeVisualComponent"],
-                _component_node_infobox_node_infobox_component__WEBPACK_IMPORTED_MODULE_8__["NodeInfoboxComponent"],
-                _component_enterprise_integration_pattern_enterprise_integration_pattern_component__WEBPACK_IMPORTED_MODULE_9__["EnterpriseIntegrationPatternComponent"],
-                _component_link_infobox_link_infobox_component__WEBPACK_IMPORTED_MODULE_13__["LinkInfoboxComponent"],
-                src_app_filter_component_filter_view_filter_view_component__WEBPACK_IMPORTED_MODULE_14__["FilterViewComponent"],
-                _component_directives_draggable_directive__WEBPACK_IMPORTED_MODULE_15__["DraggableDirective"],
-                _component_directives_zoomable_directive__WEBPACK_IMPORTED_MODULE_16__["ZoomableDirective"]
+                _component_enterprise_integration_pattern_enterprise_integration_pattern_component__WEBPACK_IMPORTED_MODULE_5__["EnterpriseIntegrationPatternComponent"]
             ],
             imports: [
                 _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatButtonModule"],
-                _angular_forms__WEBPACK_IMPORTED_MODULE_12__["FormsModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatIconModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatFormFieldModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatInputModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatCardModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatDividerModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatFormFieldModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatCheckboxModule"]
+                _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatButtonModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_8__["FormsModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatIconModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatFormFieldModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatInputModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatCardModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatDividerModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatFormFieldModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatCheckboxModule"],
+                src_app_graph_graph_module__WEBPACK_IMPORTED_MODULE_9__["GraphModule"],
+                src_app_filter_filter_module__WEBPACK_IMPORTED_MODULE_10__["FilterModule"]
             ],
             providers: [
-                _loader_enterprise_integration_patterns_loader_service__WEBPACK_IMPORTED_MODULE_10__["EnterpriseIntegrationPatternsLoaderService"]
+                _loader_enterprise_integration_patterns_loader_service__WEBPACK_IMPORTED_MODULE_6__["EnterpriseIntegrationPatternsLoaderService"]
             ],
             entryComponents: [
                 _component_enterprise_integration_patterns_enterprise_integration_patterns_component__WEBPACK_IMPORTED_MODULE_4__["EnterpriseIntegrationPatternsComponent"],
-                _component_enterprise_integration_pattern_enterprise_integration_pattern_component__WEBPACK_IMPORTED_MODULE_9__["EnterpriseIntegrationPatternComponent"],
-                src_app_filter_component_filter_view_filter_view_component__WEBPACK_IMPORTED_MODULE_14__["FilterViewComponent"]
+                _component_enterprise_integration_pattern_enterprise_integration_pattern_component__WEBPACK_IMPORTED_MODULE_5__["EnterpriseIntegrationPatternComponent"]
             ]
         }),
         __metadata("design:paramtypes", [src_app_core_service_component_registry_service__WEBPACK_IMPORTED_MODULE_2__["ComponentRegistryService"]])
     ], EnterpriseIntegrationPatternsModule);
     return EnterpriseIntegrationPatternsModule;
 }());
-
-
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/loader/enterprise-integration-pattern-incoming-link-loader.service.ts":
-/*!***************************************************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/loader/enterprise-integration-pattern-incoming-link-loader.service.ts ***!
-  \***************************************************************************************************************************************************/
-/*! exports provided: EnterpriseIntegrationPatternIncomingLinkLoaderService */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EnterpriseIntegrationPatternIncomingLinkLoaderService", function() { return EnterpriseIntegrationPatternIncomingLinkLoaderService; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
-/* harmony import */ var src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/core/model/loader */ "./src/app/core/model/loader.ts");
-/* harmony import */ var src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
-var __extends = (undefined && undefined.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-
-
-
-
-var EnterpriseIntegrationPatternIncomingLinkLoaderService = /** @class */ (function (_super) {
-    __extends(EnterpriseIntegrationPatternIncomingLinkLoaderService, _super);
-    function EnterpriseIntegrationPatternIncomingLinkLoaderService(pos) {
-        var _this = _super.call(this, 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos) || this;
-        _this.pos = pos;
-        return _this;
-    }
-    EnterpriseIntegrationPatternIncomingLinkLoaderService.prototype.loadContentFromStore = function (uri) {
-        var _this = this;
-        return this.selectContentFromStore(uri)
-            .then(function (triples) { return _this.mapTriples(triples, uri); });
-    };
-    EnterpriseIntegrationPatternIncomingLinkLoaderService.prototype.selectContentFromStore = function (uri) {
-        return __awaiter(this, void 0, void 0, function () {
-            var uriQry, patterns, qry, graphs, _i, patterns_1, entry;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        // we need a specific pattern of form 'pattern#Pattern'
-                        if (!uri)
-                            return [2 /*return*/, Promise.resolve()];
-                        uriQry = "SELECT ?sourceUri\n      WHERE {\n        ?targetLink a <https://purl.org/patternpedia#DirectedPatternRelationDescriptor> ;\n              <https://purl.org/patternpedia#hasTarget> <" + uri + "> ;\n              <https://purl.org/patternpedia#hasSource> ?sourceUri .\n      }";
-                        return [4 /*yield*/, this.executor.exec(uriQry, [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI), src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links'])];
-                    case 1:
-                        patterns = _a.sent();
-                        qry = "SELECT ?sourceUri ?sourceName ?linkUri ?description\n      WHERE {\n        ?linkUri a <https://purl.org/patternpedia#DirectedPatternRelationDescriptor> ;\n              <https://purl.org/patternpedia#hasTarget> <" + uri + "> ;\n              <https://purl.org/patternpedia#hasSource> ?sourceUri .\n        ?sourceUri <https://purl.org/patternpedia#hasName> ?sourceName .\n        OPTIONAL { ?linkUri <https://purl.org/patternpedia#hasDescription> ?description }\n      }";
-                        graphs = [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI), src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns'];
-                        for (_i = 0, patterns_1 = patterns; _i < patterns_1.length; _i++) {
-                            entry = patterns_1[_i];
-                            graphs.push(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(entry.sourceUri.value));
-                        }
-                        graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
-                        graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
-                        graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
-                        return [2 /*return*/, this.executor.exec(qry, graphs)];
-                }
-            });
-        });
-    };
-    EnterpriseIntegrationPatternIncomingLinkLoaderService.prototype.mapTriples = function (triples, uri) {
-        /*
-        triples are objects of form:
-        {
-          sourceUri: {
-            token: "uri",
-            value: string - uri of the source pattern
-          },
-          sourceName: {
-            token: "literal",
-            type: string,
-            value: string - the name of the source pattern
-          },
-          linkUri: {
-            token: "uri",
-            value: string - the uri of the link itself
-          },
-          description: {
-            token: "literal",
-            type: string,
-            value: string - the description or undefined since optional
-          }
-        }
-    
-        we convert the given triples to LinkInfo
-        */
-        var data = [];
-        for (var _i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
-            var t = triples_1[_i];
-            var item = {
-                nodeId: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIriToId(t.sourceUri.value),
-                name: t.sourceName.value,
-                linkId: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIdToIri(t.linkUri.value),
-                hasDescription: t.description ? true : false
-            };
-            data.push(item);
-        }
-        var result = new Map();
-        for (var _a = 0, data_1 = data; _a < data_1.length; _a++) {
-            var item = data_1[_a];
-            result.set(item.nodeId, item);
-        }
-        return Promise.resolve(result);
-    };
-    EnterpriseIntegrationPatternIncomingLinkLoaderService = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
-            providedIn: 'root'
-        }),
-        __metadata("design:paramtypes", [src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_1__["PatternOntologyService"]])
-    ], EnterpriseIntegrationPatternIncomingLinkLoaderService);
-    return EnterpriseIntegrationPatternIncomingLinkLoaderService;
-}(src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_2__["default"]));
-
-
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/loader/enterprise-integration-pattern-loader.service.ts":
-/*!*************************************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/loader/enterprise-integration-pattern-loader.service.ts ***!
-  \*************************************************************************************************************************************/
-/*! exports provided: EnterpriseIntegrationPatternLoaderService */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EnterpriseIntegrationPatternLoaderService", function() { return EnterpriseIntegrationPatternLoaderService; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/core/model/loader */ "./src/app/core/model/loader.ts");
-/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
-/* harmony import */ var src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
-var __extends = (undefined && undefined.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-
-
-
-
-var EnterpriseIntegrationPatternLoaderService = /** @class */ (function (_super) {
-    __extends(EnterpriseIntegrationPatternLoaderService, _super);
-    function EnterpriseIntegrationPatternLoaderService(pos) {
-        var _this = _super.call(this, 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos) || this;
-        _this.pos = pos;
-        return _this;
-    }
-    EnterpriseIntegrationPatternLoaderService.prototype.loadContentFromStore = function (uri) {
-        var _this = this;
-        return this.selectContentFromStore(uri)
-            .then(function (triples) { return _this.mapTriples(triples, uri); });
-    };
-    EnterpriseIntegrationPatternLoaderService.prototype.selectContentFromStore = function (uri) {
-        return __awaiter(this, void 0, void 0, function () {
-            var qry, graphs;
-            return __generator(this, function (_a) {
-                // we need a specific pattern of form 'pattern#Pattern'
-                if (!uri)
-                    return [2 /*return*/, Promise.resolve()];
-                qry = "SELECT ?name ?groupName ?description\n      WHERE {\n        <" + uri + "> <https://purl.org/patternpedia#hasName> ?name .\n        <" + uri + "> <https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#hasDescription> ?description .\n        ?group a <https://purl.org/patternpedia#PatternSetRelationDescriptor> ;\n              <https://purl.org/patternpedia#hasLabel> ?groupName ;\n              <https://purl.org/patternpedia#hasPattern> <" + uri + "> .\n      }";
-                graphs = [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI), src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns'];
-                graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
-                graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
-                graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
-                return [2 /*return*/, this.executor.exec(qry, graphs)];
-            });
-        });
-    };
-    EnterpriseIntegrationPatternLoaderService.prototype.mapTriples = function (triples, uri) {
-        /*
-        triples are objects of form:
-        {
-          description: {
-            token: "literal",
-            type: string,
-            value: string - description of the selected pattern
-          },
-          groupName: {
-            token: "literal",
-            type: string,
-            value: string - the group name
-          }
-          name: {
-            token: "literal",
-            type: string,
-            value: string - the name of the selected pattern
-          }
-        }
-    
-        we convert the given triples to the following object:
-        {
-          name: string - the name of the pattern,
-          group: string - the group name of the pattern,
-          description: [string] - descriptions of the pattern
-        }
-        */
-        var data = {};
-        for (var _i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
-            var t = triples_1[_i];
-            data['name'] = t.name.value;
-            data['groupName'] = t.groupName.value;
-            if (!data['description']) {
-                data['description'] = Array();
-            }
-            data['description'].push(t.description.value);
-        }
-        var result = new Map();
-        result.set(uri, data);
-        return Promise.resolve(result);
-    };
-    EnterpriseIntegrationPatternLoaderService = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
-            providedIn: 'root'
-        }),
-        __metadata("design:paramtypes", [src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__["PatternOntologyService"]])
-    ], EnterpriseIntegrationPatternLoaderService);
-    return EnterpriseIntegrationPatternLoaderService;
-}(src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_1__["default"]));
-
-
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/loader/enterprise-integration-pattern-outgoing-link-loader.service.ts":
-/*!***************************************************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/loader/enterprise-integration-pattern-outgoing-link-loader.service.ts ***!
-  \***************************************************************************************************************************************************/
-/*! exports provided: EnterpriseIntegrationPatternOutgoingLinkLoaderService */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EnterpriseIntegrationPatternOutgoingLinkLoaderService", function() { return EnterpriseIntegrationPatternOutgoingLinkLoaderService; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
-/* harmony import */ var src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
-/* harmony import */ var src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/core/model/loader */ "./src/app/core/model/loader.ts");
-var __extends = (undefined && undefined.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-
-
-
-
-var EnterpriseIntegrationPatternOutgoingLinkLoaderService = /** @class */ (function (_super) {
-    __extends(EnterpriseIntegrationPatternOutgoingLinkLoaderService, _super);
-    function EnterpriseIntegrationPatternOutgoingLinkLoaderService(pos) {
-        var _this = _super.call(this, 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos) || this;
-        _this.pos = pos;
-        return _this;
-    }
-    EnterpriseIntegrationPatternOutgoingLinkLoaderService.prototype.loadContentFromStore = function (uri) {
-        var _this = this;
-        return this.selectContentFromStore(uri)
-            .then(function (triples) { return _this.mapTriples(triples, uri); });
-    };
-    EnterpriseIntegrationPatternOutgoingLinkLoaderService.prototype.selectContentFromStore = function (uri) {
-        return __awaiter(this, void 0, void 0, function () {
-            var uriQry, patterns, qry, graphs, _i, patterns_1, entry;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        // we need a specific pattern of form 'pattern#Pattern'
-                        if (!uri)
-                            return [2 /*return*/, Promise.resolve()];
-                        uriQry = "SELECT ?targetUri\n      WHERE {\n        ?targetLink a <https://purl.org/patternpedia#DirectedPatternRelationDescriptor> ;\n              <https://purl.org/patternpedia#hasSource> <" + uri + "> ;\n              <https://purl.org/patternpedia#hasTarget> ?targetUri .\n      }";
-                        return [4 /*yield*/, this.executor.exec(uriQry, [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(this.supportedIRI), src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/links'])];
-                    case 1:
-                        patterns = _a.sent();
-                        qry = "SELECT ?targetUri ?targetName ?linkUri ?description\n      WHERE {\n        ?linkUri a <https://purl.org/patternpedia/patternlanguages#DirectedPatternRelationDescriptor> ;\n              <https://purl.org/patternpedia#hasSource> <" + uri + "> ;\n              <https://purl.org/patternpedia#hasTarget> ?targetUri .\n        ?targetUri <https://purl.org/patternpedia#hasName> ?targetName .\n        OPTIONAL { ?linkUri <https://purl.org/patternpedia#hasDescription> ?description }\n      }";
-                        graphs = [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(this.supportedIRI), src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(uri), 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns'];
-                        for (_i = 0, patterns_1 = patterns; _i < patterns_1.length; _i++) {
-                            entry = patterns_1[_i];
-                            graphs.push(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(entry.targetUri.value));
-                        }
-                        graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
-                        graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
-                        graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
-                        return [2 /*return*/, this.executor.exec(qry, graphs)];
-                }
-            });
-        });
-    };
-    EnterpriseIntegrationPatternOutgoingLinkLoaderService.prototype.mapTriples = function (triples, uri) {
-        /*
-        triples are objects of form:
-        {
-          targetUri: {
-            token: "uri",
-            value: string - uri of the target pattern
-          },
-          targetName: {
-            token: "literal",
-            type: string,
-            value: string - the name of the target pattern
-          },
-          linkUri: {
-            token: "uri",
-            value: string - the uri of the link itself
-          },
-          description: {
-            token: "literal",
-            type: string,
-            value: string - the description or undefined since optional
-          }
-        }
-    
-        we convert the given triples to LinkInfo
-        */
-        var data = [];
-        for (var _i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
-            var t = triples_1[_i];
-            var item = {
-                nodeId: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].convertIriToId(t.targetUri.value),
-                name: t.targetName.value,
-                linkId: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].convertIdToIri(t.linkUri.value),
-                hasDescription: t.description ? true : false
-            };
-            data.push(item);
-        }
-        var result = new Map();
-        for (var _a = 0, data_1 = data; _a < data_1.length; _a++) {
-            var item = data_1[_a];
-            result.set(item.nodeId, item);
-        }
-        return Promise.resolve(result);
-    };
-    EnterpriseIntegrationPatternOutgoingLinkLoaderService = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
-            providedIn: 'root'
-        }),
-        __metadata("design:paramtypes", [src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_1__["PatternOntologyService"]])
-    ], EnterpriseIntegrationPatternOutgoingLinkLoaderService);
-    return EnterpriseIntegrationPatternOutgoingLinkLoaderService;
-}(src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_3__["default"]));
-
-
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/loader/enterprise-integration-patterns-group-loader.service.ts":
-/*!********************************************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/loader/enterprise-integration-patterns-group-loader.service.ts ***!
-  \********************************************************************************************************************************************/
-/*! exports provided: EnterpriseIntegrationPatternsGroupLoaderService */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EnterpriseIntegrationPatternsGroupLoaderService", function() { return EnterpriseIntegrationPatternsGroupLoaderService; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/core/model/loader */ "./src/app/core/model/loader.ts");
-/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
-/* harmony import */ var src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
-var __extends = (undefined && undefined.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-
-
-
-
-var EnterpriseIntegrationPatternsGroupLoaderService = /** @class */ (function (_super) {
-    __extends(EnterpriseIntegrationPatternsGroupLoaderService, _super);
-    function EnterpriseIntegrationPatternsGroupLoaderService(pos) {
-        var _this = _super.call(this, 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos) || this;
-        _this.pos = pos;
-        return _this;
-    }
-    EnterpriseIntegrationPatternsGroupLoaderService.prototype.selectContentFromStore = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var qry, graphs;
-            return __generator(this, function (_a) {
-                qry = "SELECT ?uri ?group ?pattern\n      WHERE {\n          ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://purl.org/patternpedia#PatternSetRelationDescriptor> .\n          ?uri <https://purl.org/patternpedia#hasLabel> ?group .\n          ?uri <https://purl.org/patternpedia#hasPattern> ?pattern .\n      }";
-                graphs = [];
-                graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
-                graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
-                graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
-                return [2 /*return*/, this.executor.exec(qry, graphs)];
-            });
-        });
-    };
-    EnterpriseIntegrationPatternsGroupLoaderService.prototype.mapTriples = function (triples) {
-        /*
-        triples is list of objects with:
-        {
-          group: {
-            token: 'literal',
-            type: 'string',
-            value: string - group name
-          },
-          pattern: {
-            token: 'uri',
-            value: string - uri of the pattern in the group
-          },
-          uri: {
-            token: 'uri',
-            value: string - uri of the group object
-          }
-        }
-        we combine the data into following structure:
-        [
-          {
-            uri: string - uri of the group,
-            groupName: string - group name,
-            patterns: [
-              list of ids of the patterns contained in the group
-            ]
-          },
-          next group ...
-        ]
-        */
-        var data = [];
-        var _loop_1 = function (t) {
-            var item = data.find(function (i) { return i.uri === t.uri.value; });
-            // create new group if there is no for current uri
-            if (!item) {
-                item = {
-                    uri: t.uri.value,
-                    groupName: t.group.value,
-                    patterns: []
-                };
-                data.push(item);
-            }
-            // add pattern to group
-            item.patterns.push(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIriToId(t.pattern.value));
-        };
-        for (var _i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
-            var t = triples_1[_i];
-            _loop_1(t);
-        }
-        // there is no group class as we need to inject the data into the individual patterns later on
-        var result = new Map();
-        for (var _a = 0, data_1 = data; _a < data_1.length; _a++) {
-            var i = data_1[_a];
-            result.set(i.uri, i);
-        }
-        return Promise.resolve(result);
-    };
-    EnterpriseIntegrationPatternsGroupLoaderService = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
-            providedIn: 'root'
-        }),
-        __metadata("design:paramtypes", [src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__["PatternOntologyService"]])
-    ], EnterpriseIntegrationPatternsGroupLoaderService);
-    return EnterpriseIntegrationPatternsGroupLoaderService;
-}(src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_1__["default"]));
-
-
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/loader/enterprise-integration-patterns-link-info-loader.service.ts":
-/*!************************************************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/loader/enterprise-integration-patterns-link-info-loader.service.ts ***!
-  \************************************************************************************************************************************************/
-/*! exports provided: EnterpriseIntegrationPatternsLinkInfoLoaderService */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EnterpriseIntegrationPatternsLinkInfoLoaderService", function() { return EnterpriseIntegrationPatternsLinkInfoLoaderService; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/core/model/loader */ "./src/app/core/model/loader.ts");
-/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
-/* harmony import */ var src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
-var __extends = (undefined && undefined.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-
-
-
-
-var EnterpriseIntegrationPatternsLinkInfoLoaderService = /** @class */ (function (_super) {
-    __extends(EnterpriseIntegrationPatternsLinkInfoLoaderService, _super);
-    function EnterpriseIntegrationPatternsLinkInfoLoaderService(pos) {
-        var _this = _super.call(this, 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns', pos) || this;
-        _this.pos = pos;
-        return _this;
-    }
-    EnterpriseIntegrationPatternsLinkInfoLoaderService.prototype.loadContentFromStore = function (uri) {
-        var _this = this;
-        return this.selectContentFromStore(uri)
-            .then(function (triples) { return _this.mapTriples(triples, uri); });
-    };
-    EnterpriseIntegrationPatternsLinkInfoLoaderService.prototype.selectContentFromStore = function (uri) {
-        return __awaiter(this, void 0, void 0, function () {
-            var patternQry, patterns, qry, graphs;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!uri)
-                            return [2 /*return*/, Promise.resolve()];
-                        patternQry = "SELECT ?sourceUri ?targetUri\n      WHERE {\n        <" + uri + "> <https://purl.org/patternpedia#hasSource> ?sourceUri .\n        <" + uri + "> <https://purl.org/patternpedia#hasTarget> ?targetUri .\n      }";
-                        return [4 /*yield*/, this.executor.exec(patternQry, [this.supportedIRI])];
-                    case 1:
-                        patterns = _a.sent();
-                        qry = "SELECT ?sourcePatternUri ?sourcePatternName ?targetPatternUri ?targetPatternName ?description\n      WHERE {\n        <" + uri + "> <https://purl.org/patternpedia#hasSource> ?sourcePatternUri .\n        ?sourcePatternUri <https://purl.org/patternpedia#hasName> ?sourcePatternName .\n        <" + uri + "> <https://purl.org/patternpedia#hasTarget> ?targetPatternUri .\n        ?targetPatternUri <https://purl.org/patternpedia#hasName> ?targetPatternName .\n        OPTIONAL { <" + uri + "> <https://purl.org/patternpedia#hasDescription> ?description }\n      }";
-                        graphs = [this.supportedIRI];
-                        patterns.forEach(function (p) {
-                            // uri of the source pattern (for name)
-                            graphs.push(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(p.sourceUri.value));
-                            // uri of the target pattern (for name)
-                            graphs.push(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(p.targetUri.value));
-                        });
-                        graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
-                        graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
-                        graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
-                        return [2 /*return*/, this.executor.exec(qry, graphs)];
-                }
-            });
-        });
-    };
-    EnterpriseIntegrationPatternsLinkInfoLoaderService.prototype.mapTriples = function (triples, uri) {
-        var data = {};
-        // multiple triples only if multiple description values. Other fields are the same for all triple
-        for (var _i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
-            var t = triples_1[_i];
-            data.sourcePatternUri = t.sourcePatternUri.value;
-            data.sourcePatternName = t.sourcePatternName.value;
-            data.targetPatternUri = t.targetPatternUri.value;
-            data.targetPatternName = t.targetPatternName.value;
-            if (!data.descriptions)
-                data.descriptions = [];
-            if (t.description && t.description.value)
-                data.descriptions.push(t.description.value);
-        }
-        var result = new Map();
-        result.set(uri, {
-            sourcePattern: {
-                id: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIriToId(data.sourcePatternUri),
-                name: data.sourcePatternName
-            },
-            targetPattern: {
-                id: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIriToId(data.targetPatternUri),
-                name: data.targetPatternName
-            },
-            descriptions: data.descriptions
-        });
-        return Promise.resolve(result);
-    };
-    EnterpriseIntegrationPatternsLinkInfoLoaderService = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
-            providedIn: 'root'
-        }),
-        __metadata("design:paramtypes", [src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__["PatternOntologyService"]])
-    ], EnterpriseIntegrationPatternsLinkInfoLoaderService);
-    return EnterpriseIntegrationPatternsLinkInfoLoaderService;
-}(src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_1__["default"]));
-
-
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/loader/enterprise-integration-patterns-link-loader.service.ts":
-/*!*******************************************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/loader/enterprise-integration-patterns-link-loader.service.ts ***!
-  \*******************************************************************************************************************************************/
-/*! exports provided: EnterpriseIntegrationPatternsLinkLoaderService */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EnterpriseIntegrationPatternsLinkLoaderService", function() { return EnterpriseIntegrationPatternsLinkLoaderService; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/core/model/loader */ "./src/app/core/model/loader.ts");
-/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
-/* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../model */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/model/index.ts");
-/* harmony import */ var src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
-var __extends = (undefined && undefined.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-
-
-
-
-
-var EnterpriseIntegrationPatternsLinkLoaderService = /** @class */ (function (_super) {
-    __extends(EnterpriseIntegrationPatternsLinkLoaderService, _super);
-    function EnterpriseIntegrationPatternsLinkLoaderService(pos) {
-        var _this = _super.call(this, 'https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns#EnterpriseIntegrationPatterns', pos) || this;
-        _this.pos = pos;
-        return _this;
-    }
-    EnterpriseIntegrationPatternsLinkLoaderService.prototype.selectContentFromStore = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var qry, graphs;
-            return __generator(this, function (_a) {
-                qry = "SELECT ?uri ?source ?target ?description\n      WHERE {\n          ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://purl.org/patternpedia#DirectedPatternRelationDescriptor> .\n          ?uri <https://purl.org/patternpedia#hasSource> ?source .\n          ?uri <https://purl.org/patternpedia#hasTarget> ?target .\n          OPTIONAL { ?uri <https://purl.org/patternpedia#hasDescription> ?description . }\n      }";
-                graphs = [];
-                graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns');
-                graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Patterns');
-                graphs.push('https://purl.org/patternpedia/patternlanguages/enterpriseintegrationpatterns/enterpriseintegrationpatterns-Relations');
-                return [2 /*return*/, this.executor.exec(qry, graphs)];
-            });
-        });
-    };
-    EnterpriseIntegrationPatternsLinkLoaderService.prototype.mapTriples = function (triples) {
-        /*
-        triples is list of objects with:
-        {
-          description: null or {
-            token: 'literal',
-            type: 'string',
-            value: string - actual description
-          },
-          source: {
-            token: 'uri',
-            value: 'the actual uri of the source pattern'
-          },
-          target: {
-            token: 'uri',
-            value: 'the actual uri of the target pattern'
-          },
-          uri: {
-            token: 'uri',
-            value: 'uri of the lik itself'
-          }
-        }
-        since there might be multiple triple for the same link but different description (multiple description string allowed)
-        e.g. LooseCoupling has 2 description lines leading to 2 objects in the triples list for the same link
-        we combine the triples to the following objects:
-        {
-          id: string - the identifier of the link derived from the URI,
-          source: string - the source id derived from the URI,
-          target: string - the target id derived from the URI,
-          description: [string] - the descriptions. Might be empty
-        }
-        */
-        var data = [];
-        var _loop_1 = function (t) {
-            var item = data.find(function (i) { return i.uri === t.uri.value; });
-            // if no entry for link yet, create new one
-            if (!item) {
-                item = {
-                    id: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].convertIriToId(t.uri.value),
-                    source: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].convertIriToId(t.source.value),
-                    target: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].convertIriToId(t.target.value),
-                    description: []
-                };
-                data.push(item);
-            }
-            // add description, if available
-            if (t.description) {
-                item.description.push(t.description.value);
-            }
-        };
-        for (var _i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
-            var t = triples_1[_i];
-            _loop_1(t);
-        }
-        // create new Link objects from collected data
-        var result = new Map();
-        for (var _a = 0, data_1 = data; _a < data_1.length; _a++) {
-            var l = data_1[_a];
-            var link = new _model__WEBPACK_IMPORTED_MODULE_3__["Link"](l.source, l.target, null, l.description);
-            result.set(l.id, link);
-        }
-        return Promise.resolve(result);
-    };
-    EnterpriseIntegrationPatternsLinkLoaderService = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
-            providedIn: 'root'
-        }),
-        __metadata("design:paramtypes", [src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__["PatternOntologyService"]])
-    ], EnterpriseIntegrationPatternsLinkLoaderService);
-    return EnterpriseIntegrationPatternsLinkLoaderService;
-}(src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_1__["default"]));
 
 
 
@@ -7815,7 +6411,7 @@ var EnterpriseIntegrationPatternsLoaderService = /** @class */ (function (_super
         for (var _a = 0, _b = Object.keys(data); _a < _b.length; _a++) {
             var p = _b[_a];
             var eip = new _model_enterprise_integration_pattern__WEBPACK_IMPORTED_MODULE_2__["default"](data[p].uri, data[p].name, data[p].description);
-            result.set(eip.id, eip);
+            result.set(data[p].uri, eip);
         }
         return Promise.resolve(result);
     };
@@ -7827,6 +6423,44 @@ var EnterpriseIntegrationPatternsLoaderService = /** @class */ (function (_super
     ], EnterpriseIntegrationPatternsLoaderService);
     return EnterpriseIntegrationPatternsLoaderService;
 }(src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_1__["default"]));
+
+
+
+/***/ }),
+
+/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/model/enterprise-integration-pattern-data.ts":
+/*!**************************************************************************************************************************!*\
+  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/model/enterprise-integration-pattern-data.ts ***!
+  \**************************************************************************************************************************/
+/*! exports provided: EnterpriseIntegrationPatternData */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EnterpriseIntegrationPatternData", function() { return EnterpriseIntegrationPatternData; });
+/* harmony import */ var src_app_graph_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/graph/model */ "./src/app/graph/model/index.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+// TODO add additional fields for complete data
+var EnterpriseIntegrationPatternData = /** @class */ (function (_super) {
+    __extends(EnterpriseIntegrationPatternData, _super);
+    function EnterpriseIntegrationPatternData() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return EnterpriseIntegrationPatternData;
+}(src_app_graph_model__WEBPACK_IMPORTED_MODULE_0__["Pattern"]));
 
 
 
@@ -7871,387 +6505,6 @@ var EnterpriseIntegrationPattern = /** @class */ (function (_super) {
     return EnterpriseIntegrationPattern;
 }(src_app_core_model_pattern_model__WEBPACK_IMPORTED_MODULE_0__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (EnterpriseIntegrationPattern);
-
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/model/index.ts":
-/*!********************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/model/index.ts ***!
-  \********************************************************************************************/
-/*! exports provided: Node, Link, NetworkGraph, NodeInfo */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/model/node.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Node", function() { return _node__WEBPACK_IMPORTED_MODULE_0__["Node"]; });
-
-/* harmony import */ var _link__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./link */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/model/link.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Link", function() { return _link__WEBPACK_IMPORTED_MODULE_1__["Link"]; });
-
-/* harmony import */ var _network_graph__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./network-graph */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/model/network-graph.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "NetworkGraph", function() { return _network_graph__WEBPACK_IMPORTED_MODULE_2__["NetworkGraph"]; });
-
-/* harmony import */ var _node_info__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node-info */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/model/node-info.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "NodeInfo", function() { return _node_info__WEBPACK_IMPORTED_MODULE_3__["NodeInfo"]; });
-
-
-
-
-
-
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/model/link.ts":
-/*!*******************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/model/link.ts ***!
-  \*******************************************************************************************/
-/*! exports provided: Link */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Link", function() { return Link; });
-var Link = /** @class */ (function () {
-    function Link(source, target, type, description) {
-        if (type === void 0) { type = 'default'; }
-        this.source = source;
-        this.target = target;
-        this.type = type;
-        this.description = description;
-    }
-    return Link;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/model/network-graph.ts":
-/*!****************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/model/network-graph.ts ***!
-  \****************************************************************************************************/
-/*! exports provided: NetworkGraph */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NetworkGraph", function() { return NetworkGraph; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _link__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./link */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/model/link.ts");
-/* harmony import */ var d3__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! d3 */ "./node_modules/d3/index.js");
-
-
-
-var DEFAULT_CONFIG = {
-    charge: -4000,
-    xStrength: 1,
-    yStrength: 1,
-    linkDistance: 300,
-    linkStrength: 0.5
-};
-var NetworkGraph = /** @class */ (function () {
-    function NetworkGraph(nodes, links, options, config) {
-        this.ticker = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
-        this.nodes = [];
-        this.links = [];
-        this.nodes = nodes;
-        this.links = links;
-        this.config = config || DEFAULT_CONFIG;
-        this.initSimulation(options);
-    }
-    NetworkGraph.prototype.connectNodes = function (source, target) {
-        var link;
-        if (!this.nodes[source] || !this.nodes[target]) {
-            throw new Error('One of the nodes does not exist');
-        }
-        link = new _link__WEBPACK_IMPORTED_MODULE_1__["Link"](source, target);
-        this.simulation.stop();
-        this.links.push(link);
-        this.simulation.alphaTarget(0.3).restart();
-        this.initLinks();
-    };
-    NetworkGraph.prototype.initNodes = function () {
-        if (!this.simulation) {
-            throw new Error('simulation was not initialized yet');
-        }
-        this.simulation.nodes(this.nodes);
-    };
-    NetworkGraph.prototype.initLinks = function () {
-        if (!this.simulation) {
-            throw new Error('simulation was not initialized yet');
-        }
-        this.simulation.force('links', d3__WEBPACK_IMPORTED_MODULE_2__["forceLink"](this.links)
-            .id(function (d) { return d['id']; })
-            .distance(this.config.linkDistance)
-            .strength(this.config.linkStrength));
-    };
-    NetworkGraph.prototype.initSimulation = function (options) {
-        if (!options || !options.width || !options.height) {
-            throw new Error('missing options when initializing simulation');
-        }
-        /** Creating the simulation */
-        if (!this.simulation) {
-            var ticker_1 = this.ticker;
-            this.simulation = d3__WEBPACK_IMPORTED_MODULE_2__["forceSimulation"]()
-                .force('charge', d3__WEBPACK_IMPORTED_MODULE_2__["forceManyBody"]().strength(this.config.charge))
-                .force('center', d3__WEBPACK_IMPORTED_MODULE_2__["forceCenter"](options.width / 2, options.height / 2))
-                .force('x', d3__WEBPACK_IMPORTED_MODULE_2__["forceX"](options.width / 2).strength(this.config.xStrength))
-                .force('y', d3__WEBPACK_IMPORTED_MODULE_2__["forceY"](options.height / 2).strength(this.config.yStrength));
-            // Connecting the d3 ticker to an angular event emitter
-            this.simulation.on('tick', function () {
-                ticker_1.emit(this);
-            });
-            this.initNodes();
-            this.initLinks();
-        }
-        /** Updating the central force of the simulation */
-        this.simulation.force('centers', d3__WEBPACK_IMPORTED_MODULE_2__["forceCenter"](options.width / 2, options.height / 2));
-        /** Restarting the simulation internal timer */
-        this.simulation.restart();
-    };
-    return NetworkGraph;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/model/node-info.ts":
-/*!************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/model/node-info.ts ***!
-  \************************************************************************************************/
-/*! exports provided: NodeInfo */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NodeInfo", function() { return NodeInfo; });
-var NodeInfo = /** @class */ (function () {
-    function NodeInfo() {
-        this.outgoing = [];
-        this.incoming = [];
-    }
-    return NodeInfo;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/model/node.ts":
-/*!*******************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/model/node.ts ***!
-  \*******************************************************************************************/
-/*! exports provided: Node */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Node", function() { return Node; });
-var Node = /** @class */ (function () {
-    function Node(id) {
-        this.id = id;
-    }
-    Node.prototype.isPseudo = function () {
-        return this.name.endsWith('-CLP');
-    };
-    return Node;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/service/d3.service.ts":
-/*!***************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/service/d3.service.ts ***!
-  \***************************************************************************************************/
-/*! exports provided: D3Service */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "D3Service", function() { return D3Service; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../model */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/model/index.ts");
-/* harmony import */ var d3__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! d3 */ "./node_modules/d3/index.js");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-var D3Service = /** @class */ (function () {
-    function D3Service() {
-    }
-    D3Service.prototype.getNetworkGraph = function (nodes, links, options) {
-        var ng = new _model__WEBPACK_IMPORTED_MODULE_1__["NetworkGraph"](nodes, links, options);
-        return ng;
-    };
-    D3Service.prototype.applyZoomableBehaviour = function (svgElement, containerElement) {
-        var svg, container, zoomed, zoom;
-        svg = d3__WEBPACK_IMPORTED_MODULE_2__["select"](svgElement);
-        container = d3__WEBPACK_IMPORTED_MODULE_2__["select"](containerElement);
-        zoomed = function () {
-            var transform = d3__WEBPACK_IMPORTED_MODULE_2__["event"].transform;
-            container.attr("transform", "translate(" + transform.x + "," + transform.y + ") scale(" + transform.k + ")");
-        };
-        zoom = d3__WEBPACK_IMPORTED_MODULE_2__["zoom"]().on("zoom", zoomed);
-        svg.call(zoom);
-    };
-    D3Service.prototype.applyDraggableBehaviour = function (element, node, graph) {
-        var d3element = d3__WEBPACK_IMPORTED_MODULE_2__["select"](element);
-        function started() {
-            /** Preventing propagation of dragstart to parent elements */
-            d3__WEBPACK_IMPORTED_MODULE_2__["event"].sourceEvent.stopPropagation();
-            if (!d3__WEBPACK_IMPORTED_MODULE_2__["event"].active) {
-                graph.simulation.alphaTarget(0.3).restart();
-            }
-            d3__WEBPACK_IMPORTED_MODULE_2__["event"].on("drag", dragged).on("end", ended);
-            function dragged() {
-                node.fx = d3__WEBPACK_IMPORTED_MODULE_2__["event"].x;
-                node.fy = d3__WEBPACK_IMPORTED_MODULE_2__["event"].y;
-            }
-            function ended() {
-                if (!d3__WEBPACK_IMPORTED_MODULE_2__["event"].active) {
-                    graph.simulation.alphaTarget(0);
-                }
-                node.fx = null;
-                node.fy = null;
-            }
-        }
-        d3element.call(d3__WEBPACK_IMPORTED_MODULE_2__["drag"]()
-            .on("start", started));
-    };
-    D3Service = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
-            providedIn: 'root'
-        }),
-        __metadata("design:paramtypes", [])
-    ], D3Service);
-    return D3Service;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/extensions/pattern-language/enterprise-integration-patterns/service/enterprise-integration-patterns-data.service.ts":
-/*!*************************************************************************************************************************************!*\
-  !*** ./src/app/extensions/pattern-language/enterprise-integration-patterns/service/enterprise-integration-patterns-data.service.ts ***!
-  \*************************************************************************************************************************************/
-/*! exports provided: EnterpriseIntegrationPatternsDataService */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EnterpriseIntegrationPatternsDataService", function() { return EnterpriseIntegrationPatternsDataService; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _loader_enterprise_integration_patterns_loader_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../loader/enterprise-integration-patterns-loader.service */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/loader/enterprise-integration-patterns-loader.service.ts");
-/* harmony import */ var _loader_enterprise_integration_patterns_link_loader_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../loader/enterprise-integration-patterns-link-loader.service */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/loader/enterprise-integration-patterns-link-loader.service.ts");
-/* harmony import */ var _loader_enterprise_integration_patterns_group_loader_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../loader/enterprise-integration-patterns-group-loader.service */ "./src/app/extensions/pattern-language/enterprise-integration-patterns/loader/enterprise-integration-patterns-group-loader.service.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-var EnterpriseIntegrationPatternsDataService = /** @class */ (function () {
-    function EnterpriseIntegrationPatternsDataService(nodeLoader, linkLoader, groupLoader) {
-        this.nodeLoader = nodeLoader;
-        this.linkLoader = linkLoader;
-        this.groupLoader = groupLoader;
-    }
-    EnterpriseIntegrationPatternsDataService.prototype.getAllData = function () {
-        return Promise.all([this.getNodeData(), this.getLinkData(), this.getGroupData()]);
-    };
-    EnterpriseIntegrationPatternsDataService.prototype.getNodeData = function () {
-        return this.nodeLoader.loadContentFromStore();
-        // if there is no data yet...
-        // if (!this.nodeData) {
-        //   return new Promise((resolve, reject) => {
-        //     // ... load it
-        //     this.nodeLoader.loadContentFromStore()
-        //       .then(nodeMap => {
-        //         this.nodeData = nodeMap;
-        //         resolve(nodeMap);
-        //       });
-        //   });
-        // } else {
-        //   return Promise.resolve(this.nodeData);
-        // }
-    };
-    EnterpriseIntegrationPatternsDataService.prototype.getLinkData = function () {
-        return this.linkLoader.loadContentFromStore();
-        // if (!this.linkData) {
-        //   return new Promise((resolve, reject) => {
-        //     this.linkLoader.loadContentFromStore()
-        //       .then(linkMap => {
-        //         this.linkData = linkMap;
-        //         resolve(linkMap);
-        //       });
-        //   });
-        // } else {
-        //   return Promise.resolve(this.linkData);
-        // }
-    };
-    EnterpriseIntegrationPatternsDataService.prototype.getGroupData = function () {
-        return this.groupLoader.loadContentFromStore();
-        // if (!this.groupData) {
-        //   return new Promise((resolve, reject) => {
-        //     this.groupLoader.loadContentFromStore()
-        //       .then(groupMap => {
-        //         this.groupData = groupMap;
-        //         resolve(groupMap);
-        //       });
-        //   });
-        // } else {
-        //   return Promise.resolve(this.groupData);
-        // }
-    };
-    EnterpriseIntegrationPatternsDataService.prototype.lazyLoad = function (data, loader) {
-        if (!data) {
-            return new Promise(function (resolve, reject) {
-                loader.loadContentFromStore()
-                    .then(function (map) {
-                    data = map; // this won't work!
-                    resolve(map);
-                });
-            });
-        }
-        return Promise.resolve(data);
-    };
-    EnterpriseIntegrationPatternsDataService = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
-            providedIn: 'root'
-        })
-        /**
-         * this service holds all the enterprise integration pattern data for usage across components without requesting them with the individual loader.
-         */
-        ,
-        __metadata("design:paramtypes", [_loader_enterprise_integration_patterns_loader_service__WEBPACK_IMPORTED_MODULE_1__["EnterpriseIntegrationPatternsLoaderService"],
-            _loader_enterprise_integration_patterns_link_loader_service__WEBPACK_IMPORTED_MODULE_2__["EnterpriseIntegrationPatternsLinkLoaderService"],
-            _loader_enterprise_integration_patterns_group_loader_service__WEBPACK_IMPORTED_MODULE_3__["EnterpriseIntegrationPatternsGroupLoaderService"]])
-    ], EnterpriseIntegrationPatternsDataService);
-    return EnterpriseIntegrationPatternsDataService;
-}());
-
 
 
 /***/ }),
@@ -8395,6 +6648,120 @@ var InternetOfThingsPatternComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/extensions/pattern-language/internet-of-things-patterns/component/internet-of-things-patterns-graph/internet-of-things-patterns-graph.component.ts":
+/*!********************************************************************************************************************************************************************!*\
+  !*** ./src/app/extensions/pattern-language/internet-of-things-patterns/component/internet-of-things-patterns-graph/internet-of-things-patterns-graph.component.ts ***!
+  \********************************************************************************************************************************************************************/
+/*! exports provided: InternetOfThingsPatternsGraphComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InternetOfThingsPatternsGraphComponent", function() { return InternetOfThingsPatternsGraphComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _model_internet_of_things_pattern_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../model/internet-of-things-pattern-data */ "./src/app/extensions/pattern-language/internet-of-things-patterns/model/internet-of-things-pattern-data.ts");
+/* harmony import */ var src_app_graph_component_pattern_graph_template_pattern_graph_template_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/graph/component/pattern-graph-template/pattern-graph-template.component */ "./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var src_app_filter_service_filter_factory_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/filter/service/filter-factory.service */ "./src/app/filter/service/filter-factory.service.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+/* harmony import */ var src_app_graph_loader_pattern_data_loader_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/graph/loader/pattern-data-loader.service */ "./src/app/graph/loader/pattern-data-loader.service.ts");
+/* harmony import */ var _loader_iot_data_loader_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../loader/iot-data-loader.service */ "./src/app/extensions/pattern-language/internet-of-things-patterns/loader/iot-data-loader.service.ts");
+/* harmony import */ var src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+
+var InternetOfThingsPatternsGraphComponent = /** @class */ (function (_super) {
+    __extends(InternetOfThingsPatternsGraphComponent, _super);
+    function InternetOfThingsPatternsGraphComponent(pos, router, activatedRoute, zone, dialog, filterFactory, patternLoader, loader, cdr) {
+        var _this = _super.call(this, pos, loader, dialog, router, activatedRoute, zone, filterFactory, cdr) || this;
+        _this.pos = pos;
+        _this.router = router;
+        _this.activatedRoute = activatedRoute;
+        _this.zone = zone;
+        _this.dialog = dialog;
+        _this.filterFactory = filterFactory;
+        _this.patternLoader = patternLoader;
+        _this.loader = loader;
+        _this.cdr = cdr;
+        _this.languageUri = 'https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#InternetofThingsPatterns';
+        _this.languageName = 'Internet of Things Patterns';
+        return _this;
+    }
+    InternetOfThingsPatternsGraphComponent.prototype.ngOnInit = function () {
+        _super.prototype.ngOnInit.call(this);
+    };
+    InternetOfThingsPatternsGraphComponent.prototype.createPattern = function (value) {
+        var p = new _model_internet_of_things_pattern_data__WEBPACK_IMPORTED_MODULE_1__["InternetOfThingsPatternData"]();
+        p.id = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_9__["IriConverter"].convertIriToId(value.uri);
+        p.name = value.name;
+        p.summary = value.summary;
+        p.alias = value.alias;
+        p.icon = p.icon;
+        p.problem = value.rpoblem;
+        p.context = value.context;
+        p.force = value.force;
+        p.solution = value.solution;
+        p.solutionSketches = value.solutionSketch;
+        p.result = value.result;
+        p.variants = value.variant;
+        return p;
+    };
+    InternetOfThingsPatternsGraphComponent.prototype.extractSummary = function (value) {
+        return value.summary;
+    };
+    InternetOfThingsPatternsGraphComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'pp-internet-of-things-patterns-graph',
+            template: __webpack_require__(/*! ../../../../../graph/component/pattern-graph-template/pattern-graph-template.component.html */ "./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.html"),
+            styles: [__webpack_require__(/*! ../../../../../graph/component/pattern-graph-template/pattern-graph-template.component.scss */ "./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.scss")]
+        }),
+        __metadata("design:paramtypes", [src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_6__["PatternOntologyService"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"],
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatDialog"],
+            src_app_filter_service_filter_factory_service__WEBPACK_IMPORTED_MODULE_4__["FilterFactoryService"],
+            _loader_iot_data_loader_service__WEBPACK_IMPORTED_MODULE_8__["IotDataLoaderService"],
+            src_app_graph_loader_pattern_data_loader_service__WEBPACK_IMPORTED_MODULE_7__["PatternDataLoaderService"],
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"]])
+    ], InternetOfThingsPatternsGraphComponent);
+    return InternetOfThingsPatternsGraphComponent;
+}(src_app_graph_component_pattern_graph_template_pattern_graph_template_component__WEBPACK_IMPORTED_MODULE_2__["PatternGraphTemplateComponent"]));
+
+
+
+/***/ }),
+
 /***/ "./src/app/extensions/pattern-language/internet-of-things-patterns/component/internet-of-things-patterns/internet-of-things-patterns.component.html":
 /*!**********************************************************************************************************************************************************!*\
   !*** ./src/app/extensions/pattern-language/internet-of-things-patterns/component/internet-of-things-patterns/internet-of-things-patterns.component.html ***!
@@ -8525,6 +6892,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var ngx_md__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ngx-md */ "./node_modules/ngx-md/fesm5/ngx-md.js");
 /* harmony import */ var _angular_cdk_text_field__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/cdk/text-field */ "./node_modules/@angular/cdk/esm5/text-field.es5.js");
 /* harmony import */ var _core_core_module__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../core/core.module */ "./src/app/core/core.module.ts");
+/* harmony import */ var _component_internet_of_things_patterns_graph_internet_of_things_patterns_graph_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./component/internet-of-things-patterns-graph/internet-of-things-patterns-graph.component */ "./src/app/extensions/pattern-language/internet-of-things-patterns/component/internet-of-things-patterns-graph/internet-of-things-patterns-graph.component.ts");
+/* harmony import */ var src_app_graph_graph_module__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! src/app/graph/graph.module */ "./src/app/graph/graph.module.ts");
 /*
  * Copyright (c) 2019 University of Stuttgart.
  *
@@ -8559,12 +6928,15 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
 var InternetOfThingsPatternsModule = /** @class */ (function () {
     function InternetOfThingsPatternsModule(cr) {
         this.cr = cr;
-        this.cr.registerComponent(_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_8__["IriConverter"].convertIriToId('https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#InternetOfThingsPatterns'), {
-            plcomponent: _component_internet_of_things_patterns_internet_of_things_patterns_component__WEBPACK_IMPORTED_MODULE_3__["InternetOfThingsPatternsComponent"],
-            pcomponent: _component_internet_of_things_pattern_internet_of_things_pattern_component__WEBPACK_IMPORTED_MODULE_7__["InternetOfThingsPatternComponent"]
+        this.cr.registerComponent(_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_8__["IriConverter"].convertIriToId('https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#InternetofThingsPatterns'), {
+            plcomponent: _component_internet_of_things_patterns_graph_internet_of_things_patterns_graph_component__WEBPACK_IMPORTED_MODULE_12__["InternetOfThingsPatternsGraphComponent"],
+            pcomponent: _component_internet_of_things_patterns_graph_internet_of_things_patterns_graph_component__WEBPACK_IMPORTED_MODULE_12__["InternetOfThingsPatternsGraphComponent"],
+            label: 'Network Graph'
         }); // tslint:disable-line:max-line-length
     }
     InternetOfThingsPatternsModule = __decorate([
@@ -8579,11 +6951,13 @@ var InternetOfThingsPatternsModule = /** @class */ (function () {
                 _angular_cdk_text_field__WEBPACK_IMPORTED_MODULE_10__["TextFieldModule"],
                 ngx_md__WEBPACK_IMPORTED_MODULE_9__["NgxMdModule"].forRoot(),
                 _core_core_module__WEBPACK_IMPORTED_MODULE_11__["CoreModule"],
-                _angular_router__WEBPACK_IMPORTED_MODULE_6__["RouterModule"]
+                _angular_router__WEBPACK_IMPORTED_MODULE_6__["RouterModule"],
+                src_app_graph_graph_module__WEBPACK_IMPORTED_MODULE_13__["GraphModule"]
             ],
             declarations: [
                 _component_internet_of_things_pattern_internet_of_things_pattern_component__WEBPACK_IMPORTED_MODULE_7__["InternetOfThingsPatternComponent"],
-                _component_internet_of_things_patterns_internet_of_things_patterns_component__WEBPACK_IMPORTED_MODULE_3__["InternetOfThingsPatternsComponent"]
+                _component_internet_of_things_patterns_internet_of_things_patterns_component__WEBPACK_IMPORTED_MODULE_3__["InternetOfThingsPatternsComponent"],
+                _component_internet_of_things_patterns_graph_internet_of_things_patterns_graph_component__WEBPACK_IMPORTED_MODULE_12__["InternetOfThingsPatternsGraphComponent"]
             ],
             providers: [
                 _loader_internet_of_things_patterns_loader_service__WEBPACK_IMPORTED_MODULE_2__["InternetOfThingsPatternsLoaderService"]
@@ -8591,7 +6965,8 @@ var InternetOfThingsPatternsModule = /** @class */ (function () {
             exports: [],
             entryComponents: [
                 _component_internet_of_things_pattern_internet_of_things_pattern_component__WEBPACK_IMPORTED_MODULE_7__["InternetOfThingsPatternComponent"],
-                _component_internet_of_things_patterns_internet_of_things_patterns_component__WEBPACK_IMPORTED_MODULE_3__["InternetOfThingsPatternsComponent"]
+                _component_internet_of_things_patterns_internet_of_things_patterns_component__WEBPACK_IMPORTED_MODULE_3__["InternetOfThingsPatternsComponent"],
+                _component_internet_of_things_patterns_graph_internet_of_things_patterns_graph_component__WEBPACK_IMPORTED_MODULE_12__["InternetOfThingsPatternsGraphComponent"]
             ]
         }),
         __metadata("design:paramtypes", [_core_service_component_registry_service__WEBPACK_IMPORTED_MODULE_4__["ComponentRegistryService"]])
@@ -8894,6 +7269,148 @@ var InternetOfThingsPatternsLoaderService = /** @class */ (function (_super) {
 
 /***/ }),
 
+/***/ "./src/app/extensions/pattern-language/internet-of-things-patterns/loader/iot-data-loader.service.ts":
+/*!***********************************************************************************************************!*\
+  !*** ./src/app/extensions/pattern-language/internet-of-things-patterns/loader/iot-data-loader.service.ts ***!
+  \***********************************************************************************************************/
+/*! exports provided: IotDataLoaderService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IotDataLoaderService", function() { return IotDataLoaderService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/core/model/loader */ "./src/app/core/model/loader.ts");
+/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var IotDataLoaderService = /** @class */ (function (_super) {
+    __extends(IotDataLoaderService, _super);
+    function IotDataLoaderService(pos) {
+        var _this = _super.call(this, 'https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#InternetofThingsPatterns', pos) || this;
+        _this.pos = pos;
+        return _this;
+    }
+    IotDataLoaderService.prototype.selectContentFromStore = function () {
+        var prefix = 'https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#';
+        var qry = "PREFIX : <" + prefix + ">\n    SELECT DISTINCT ?uri ?name ?summary ?alias ?icon ?problem ?context ?force ?solution ?solutionSketch ?result ?variant\n    WHERE {\n      <" + this.supportedIRI + "> pp:containsPattern ?uri .\n      ?uri pp:hasName ?name .\n      ?uri :hasSummary ?summary .\n      OPTIONAL { ?uri :hasAlias ?alias } .\n      ?uri :hasIcon ?icon .\n      ?uri :hasProblem ?problem .\n      ?uri :hasContext ?context .\n      ?uri :hasForce ?force .\n      ?uri :hasSolution ?solution .\n      OPTIONAL { ?uri :hasSolutionSketch ?solutionSketch } .\n      OPTIONAL { ?uri :hasResult ?result } .\n      OPTIONAL { ?uri :hasVariant ?variant } .\n    }";
+        var graphs = [
+            'https://purl.org/patternpedia/patternlanguages/internetofthingspatterns',
+            'https://purl.org/patternpedia/patternlanguages/internetofthingspatterns/internetofthingspatterns-Patterns',
+            'https://purl.org/patternpedia/patternlanguages/internetofthingspatterns/internetofthingspatterns-Relations'
+        ];
+        return this.pos.exec(qry, graphs);
+    };
+    IotDataLoaderService.prototype.mapTriples = function (triples) {
+        var data = new Map();
+        for (var _i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
+            var t = triples_1[_i];
+            var item = data.get(t.uri.value);
+            if (!item) {
+                item = {};
+                data.set(t.uri.value, item);
+            }
+            item.name = t.name.value;
+            item.uri = t.uri.value;
+            item.summary = t.summary.value;
+            if (t.alias) {
+                if (!item.alias) {
+                    item.alias = [];
+                }
+                item.alias.push(t.alias.value);
+            }
+            item.icon = t.icon.value;
+            item.problem = t.problem.value;
+            item.context = t.context.value;
+            if (!item.force) {
+                item.force = [];
+            }
+            item.force.push(t.force.value);
+            item.solution = t.solution.value;
+            if (!item.solutionSketch) {
+                item.solutionSketch = [];
+            }
+            item.solutionSketch.push(t.solutionSketch.value);
+            if (t.result)
+                item.result = t.result.value;
+            if (t.variant)
+                item.variant = t.variant.value;
+        }
+        return Promise.resolve(data);
+    };
+    IotDataLoaderService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        }),
+        __metadata("design:paramtypes", [src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__["PatternOntologyService"]])
+    ], IotDataLoaderService);
+    return IotDataLoaderService;
+}(src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_1__["default"]));
+
+
+
+/***/ }),
+
+/***/ "./src/app/extensions/pattern-language/internet-of-things-patterns/model/internet-of-things-pattern-data.ts":
+/*!******************************************************************************************************************!*\
+  !*** ./src/app/extensions/pattern-language/internet-of-things-patterns/model/internet-of-things-pattern-data.ts ***!
+  \******************************************************************************************************************/
+/*! exports provided: InternetOfThingsPatternData */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InternetOfThingsPatternData", function() { return InternetOfThingsPatternData; });
+/* harmony import */ var src_app_graph_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/graph/model */ "./src/app/graph/model/index.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+var InternetOfThingsPatternData = /** @class */ (function (_super) {
+    __extends(InternetOfThingsPatternData, _super);
+    function InternetOfThingsPatternData() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return InternetOfThingsPatternData;
+}(src_app_graph_model__WEBPACK_IMPORTED_MODULE_0__["Pattern"]));
+
+
+
+/***/ }),
+
 /***/ "./src/app/extensions/pattern-language/internet-of-things-patterns/model/internet-of-things-pattern.ts":
 /*!*************************************************************************************************************!*\
   !*** ./src/app/extensions/pattern-language/internet-of-things-patterns/model/internet-of-things-pattern.ts ***!
@@ -8983,7 +7500,7 @@ var InternetOfThingsPattern = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"data\">\n  <h1>Filter Patterns</h1> <!-- maybe add patternlanguage name here? -->\n\n  <div class=\"pattern-options\">\n    <h2>Pattern Options</h2>\n    <!-- input field for every field of the config element -->\n    <mat-form-field class=\"filter-field\" *ngFor=\"let key of objectKeys(data)\">\n      <input matInput placeholder=\"{{key}}\" [(ngModel)]=\"data[key]\">\n    </mat-form-field>\n  </div>\n\n  <div class=\"relation-options\">\n    <h2>Relation Options</h2>\n    <mat-checkbox>Pattern must contain Cross Language Links</mat-checkbox>\n  </div>\n\n  <div class=\"dialog-actions\">\n    <button mat-flat-button color=\"primary\" (click)=\"onCloseConfirm()\">Apply Filter</button>\n    <button mat-stroked-button (click)=\"onCloseClear()\">Clear Values</button>\n    <button mat-stroked-button (click)=\"onCloseCancel()\" class=\"right-button\">Cancel</button>\n  </div>\n</div>"
+module.exports = "<div *ngIf=\"data\">\n  <h1>Filter Patterns</h1> <!-- maybe add patternlanguage name here? -->\n\n  <div class=\"pattern-options\">\n    <h2>Pattern Options</h2>\n    <!-- input field for every field of the config element -->\n    <mat-form-field class=\"filter-field\" *ngFor=\"let key of objectKeys(data)\">\n      <input matInput placeholder=\"{{key}}\" [(ngModel)]=\"data[key]\">\n    </mat-form-field>\n  </div>\n\n  <div class=\"relation-options\">\n    <h2>Relation Options</h2>\n    <mat-checkbox #checkClrs [checked]=\"data.filterByClrs\">Pattern must contain <i>Cross Language Relations</i></mat-checkbox>\n  </div>\n\n  <div class=\"dialog-actions\">\n    <button mat-flat-button color=\"primary\" (click)=\"onCloseConfirm()\">Apply Filter</button>\n    <button mat-stroked-button (click)=\"onCloseClear()\">Clear Values</button>\n    <button mat-stroked-button (click)=\"onCloseCancel()\" class=\"right-button\">Cancel</button>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -9031,8 +7548,6 @@ var FilterViewComponent = /** @class */ (function () {
         this.filterFactory = filterFactory;
         this.thisDialogRef = thisDialogRef;
         this.patternLanguageUri = patternLanguageUri;
-        // you can't use Object.keys within a template. We assign it to a separate function
-        this.objectKeys = Object.keys;
     }
     FilterViewComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -9042,7 +7557,12 @@ var FilterViewComponent = /** @class */ (function () {
             _this.data = JSON.parse(JSON.stringify(config));
         });
     };
+    // you can't use Object.keys within a template. We assign it to a separate function
+    FilterViewComponent.prototype.objectKeys = function (obj) {
+        return Object.keys(obj).filter(function (k) { return '' + k !== 'filterByClrs'; });
+    };
     FilterViewComponent.prototype.onCloseConfirm = function () {
+        this.data.filterByClrs = this.checkClrs.checked;
         // apply changed config in factory
         this.filterFactory.setConfig(this.patternLanguageUri, this.data);
         this.thisDialogRef.close(true);
@@ -9051,6 +7571,7 @@ var FilterViewComponent = /** @class */ (function () {
         var _this = this;
         // reset all filter values to empty values
         Object.keys(this.data).forEach(function (k) { return _this.data[k] = ''; });
+        this.data.filterByClrs = false;
         this.filterFactory.setConfig(this.patternLanguageUri, this.data);
         this.thisDialogRef.close(true);
     };
@@ -9058,6 +7579,10 @@ var FilterViewComponent = /** @class */ (function () {
         // don't apply changes in config
         this.thisDialogRef.close(false);
     };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])('checkClrs'),
+        __metadata("design:type", _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatCheckbox"])
+    ], FilterViewComponent.prototype, "checkClrs", void 0);
     FilterViewComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'pp-filter-view',
@@ -9074,6 +7599,60 @@ var FilterViewComponent = /** @class */ (function () {
             _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialogRef"], String])
     ], FilterViewComponent);
     return FilterViewComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/filter/filter.module.ts":
+/*!*****************************************!*\
+  !*** ./src/app/filter/filter.module.ts ***!
+  \*****************************************/
+/*! exports provided: FilterModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FilterModule", function() { return FilterModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _component_filter_view_filter_view_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./component/filter-view/filter-view.component */ "./src/app/filter/component/filter-view/filter-view.component.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+
+var FilterModule = /** @class */ (function () {
+    function FilterModule() {
+    }
+    FilterModule = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
+            declarations: [_component_filter_view_filter_view_component__WEBPACK_IMPORTED_MODULE_2__["FilterViewComponent"]],
+            imports: [
+                _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatCardModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatDividerModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatFormFieldModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatCheckboxModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormsModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatInputModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatButtonModule"]
+            ],
+            exports: [
+                _component_filter_view_filter_view_component__WEBPACK_IMPORTED_MODULE_2__["FilterViewComponent"]
+            ]
+        })
+    ], FilterModule);
+    return FilterModule;
 }());
 
 
@@ -9282,12 +7861,15 @@ var Filter = /** @class */ (function () {
                     result = result && test;
                 }
                 else {
-                    result = false;
+                    // result = false;
                 }
             });
             return result;
         });
-        // TODO filter based on link properties
+        // filter based on link properties
+        if (this.config.filterByClrs) {
+            filtered = filtered.filter(function (p) { return p.hasClrs; });
+        }
         return filtered;
     };
     // TODO use a similarity measure here!
@@ -9410,6 +7992,7 @@ var FilterFactoryService = /** @class */ (function () {
                     case 1:
                         result = _a.sent();
                         config = this.createConfig(result.get(uri));
+                        config.filterByClrs = false;
                         this.configs.set(uri, config);
                         _a.label = 2;
                     case 2: return [2 /*return*/, Promise.resolve(config)];
@@ -9474,6 +8057,3382 @@ var globals = {
     urlGithubAPI: 'https://api.github.com/repos/PatternPedia/patternpediacontent/contents',
     loadOntologyLocally: true
 };
+
+
+/***/ }),
+
+/***/ "./src/app/graph/component/directives/draggable.directive.ts":
+/*!*******************************************************************!*\
+  !*** ./src/app/graph/component/directives/draggable.directive.ts ***!
+  \*******************************************************************/
+/*! exports provided: DraggableDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DraggableDirective", function() { return DraggableDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../model */ "./src/app/graph/model/index.ts");
+/* harmony import */ var _service_d3_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../service/d3.service */ "./src/app/graph/service/d3.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var DraggableDirective = /** @class */ (function () {
+    function DraggableDirective(d3Service, _element) {
+        this.d3Service = d3Service;
+        this._element = _element;
+    }
+    DraggableDirective.prototype.ngOnInit = function () {
+        this.d3Service.applyDraggableBehaviour(this._element.nativeElement, this.draggableNode, this.draggableInGraph);
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])('draggableNode'),
+        __metadata("design:type", _model__WEBPACK_IMPORTED_MODULE_1__["Node"])
+    ], DraggableDirective.prototype, "draggableNode", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])('draggableInGraph'),
+        __metadata("design:type", _model__WEBPACK_IMPORTED_MODULE_1__["NetworkGraph"])
+    ], DraggableDirective.prototype, "draggableInGraph", void 0);
+    DraggableDirective = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"])({
+            selector: '[draggableNode]'
+        }),
+        __metadata("design:paramtypes", [_service_d3_service__WEBPACK_IMPORTED_MODULE_2__["D3Service"], _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"]])
+    ], DraggableDirective);
+    return DraggableDirective;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/component/directives/zoomable.directive.ts":
+/*!******************************************************************!*\
+  !*** ./src/app/graph/component/directives/zoomable.directive.ts ***!
+  \******************************************************************/
+/*! exports provided: ZoomableDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ZoomableDirective", function() { return ZoomableDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _service_d3_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../service/d3.service */ "./src/app/graph/service/d3.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var ZoomableDirective = /** @class */ (function () {
+    function ZoomableDirective(d3Service, _element) {
+        this.d3Service = d3Service;
+        this._element = _element;
+    }
+    ZoomableDirective.prototype.ngOnInit = function () {
+        this.d3Service.applyZoomableBehaviour(this.zoomableOf, this._element.nativeElement);
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])('zoomableOf'),
+        __metadata("design:type", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"])
+    ], ZoomableDirective.prototype, "zoomableOf", void 0);
+    ZoomableDirective = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"])({
+            selector: '[zoomableOf]'
+        }),
+        __metadata("design:paramtypes", [_service_d3_service__WEBPACK_IMPORTED_MODULE_1__["D3Service"], _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"]])
+    ], ZoomableDirective);
+    return ZoomableDirective;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/component/graph/graph.component.html":
+/*!************************************************************!*\
+  !*** ./src/app/graph/component/graph/graph.component.html ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div>\n  <svg #svg [attr.viewBox]=\"'0 0 ' + options.width + ' ' + options.height\"\n      (click)=\"deselectNode($event)\">\n        <g [zoomableOf]=\"svg\">\n            <g class=\"links\">\n                <g [linkVisual]=\"link\" *ngFor=\"let link of links\"></g>\n            </g>\n            <g class=\"nodes\">\n                <g [nodeVisual]=\"node\" *ngFor=\"let node of nodes\"\n                    [draggableNode]=\"node\"\n                    [draggableInGraph]=\"graph\"\n                    (clickEvent)=\"nodeInformation(node.id)\"\n                    (mouseEnterEvent)=\"previewNodeInformation(node.id)\"\n                    (mouseLeaveEvent)=\"dePreviewNodeInformation(node.id)\">\n                </g>\n            </g>\n\n            <defs>\n                <marker id=\"end\" viewBox=\"0 -5 10 10\" refX=\"15\" refY=\"-1.5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n                    <path d=\"M0,-5L10,0L0,5\"></path>\n                </marker>\n            </defs>\n        </g>\n  </svg>\n</div>\n\n<div *ngIf=\"selectedLink; else nodeInfo\">-->\n    <pp-link-infobox\n        [linkData]=\"selectedLink\"\n        [currentPatternId]=\"selectedNodeId\"\n        (onPatternClicked)=\"nodeInformation($event)\">\n    </pp-link-infobox>\n</div>\n\n<ng-template #nodeInfo>\n    <div *ngIf=\"selectedNodeId\">\n      <pp-node-infobox\n              [info]=\"selectedNodeInfo\"\n              (clickEvent)=\"nodeInformation($event)\"\n              (mouseEnterEvent)=\"previewNodeInformation($event)\"\n              (mouseLeaveEvent)=\"dePreviewNodeInformation($event)\"\n              (linkClickEvent)=\"showLinkInfo($event)\">\n      </pp-node-infobox>\n    </div>\n</ng-template>\n"
+
+/***/ }),
+
+/***/ "./src/app/graph/component/graph/graph.component.scss":
+/*!************************************************************!*\
+  !*** ./src/app/graph/component/graph/graph.component.scss ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "pp-node-infobox {\n  position: absolute;\n  top: 90px; }\n\npp-link-infobox {\n  position: absolute;\n  top: 90px; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2dyYXBoL2NvbXBvbmVudC9ncmFwaC9ncmFwaC5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGtCQUFrQjtFQUNsQixTQUFTLEVBQUE7O0FBR1g7RUFDRSxrQkFBa0I7RUFDbEIsU0FBUyxFQUFBIiwiZmlsZSI6InNyYy9hcHAvZ3JhcGgvY29tcG9uZW50L2dyYXBoL2dyYXBoLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsicHAtbm9kZS1pbmZvYm94IHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICB0b3A6IDkwcHg7XG59XG5cbnBwLWxpbmstaW5mb2JveCB7XG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgdG9wOiA5MHB4O1xufVxuIl19 */"
+
+/***/ }),
+
+/***/ "./src/app/graph/component/graph/graph.component.ts":
+/*!**********************************************************!*\
+  !*** ./src/app/graph/component/graph/graph.component.ts ***!
+  \**********************************************************/
+/*! exports provided: GraphComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GraphComponent", function() { return GraphComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../model */ "./src/app/graph/model/index.ts");
+/* harmony import */ var _service_d3_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../service/d3.service */ "./src/app/graph/service/d3.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
+
+var GraphComponent = /** @class */ (function () {
+    function GraphComponent(d3Service, ref) {
+        this.d3Service = d3Service;
+        this.ref = ref;
+        this.nodeSelectEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.nodeUnselectEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this._options = { width: 800, height: 600 };
+    }
+    GraphComponent.prototype.onresize = function (event) {
+        if (this.graph) {
+            this.graph.initSimulation(this.options);
+        }
+    };
+    GraphComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.graph = this.d3Service.getNetworkGraph(this.nodes, this.links, this.options);
+        this.graph.ticker.subscribe(function (d) {
+            _this.ref.markForCheck();
+        });
+        if (this.selectedNodeId) {
+            this.nodeInformation(this.selectedNodeId);
+        }
+    };
+    GraphComponent.prototype.ngAfterViewInit = function () {
+        this.graph.initSimulation(this.options);
+    };
+    Object.defineProperty(GraphComponent.prototype, "options", {
+        get: function () {
+            return this._options = {
+                width: window.innerWidth,
+                height: window.innerHeight
+            };
+        },
+        enumerable: true,
+        configurable: true
+    });
+    GraphComponent.prototype.previewNodeInformation = function (event) {
+        // first check, if the given node id is from the current pattern graph
+        if (!this.checkIfInGraph(event)) {
+            return;
+        }
+        for (var _i = 0, _a = this.links; _i < _a.length; _i++) {
+            var l = _a[_i];
+            l.preview = true;
+        }
+        for (var _b = 0, _c = this.nodes; _b < _c.length; _b++) {
+            var n = _c[_b];
+            n.preview = true;
+        }
+        var currNode = this.nodes.find(function (n) { return n.id === event; });
+        currNode.preview = false;
+        var _loop_1 = function (link) {
+            // check source
+            if (link.source instanceof _model__WEBPACK_IMPORTED_MODULE_1__["Node"]) {
+                if (link.source.name === currNode.name) {
+                    link.preview = false;
+                    if (link.target instanceof _model__WEBPACK_IMPORTED_MODULE_1__["Node"]) {
+                        link.target.preview = false;
+                    }
+                }
+            }
+            else if (typeof link.source === 'string') {
+                if (link.source === currNode.name) {
+                    link.preview = false;
+                    var n = this_1.nodes.find(function (node) { return node.name === link.target; });
+                    n.preview = false;
+                }
+            }
+            // check target
+            if (link.target instanceof _model__WEBPACK_IMPORTED_MODULE_1__["Node"]) {
+                if (link.target.name === currNode.name) {
+                    link.preview = false;
+                    if (link.source instanceof _model__WEBPACK_IMPORTED_MODULE_1__["Node"]) {
+                        link.source.preview = false;
+                    }
+                }
+            }
+            else if (typeof link.target === 'string') {
+                if (link.target === currNode.name) {
+                    link.preview = false;
+                    var n = this_1.nodes.find(function (node) { return node.name === link.source; });
+                    n.preview = false;
+                }
+            }
+        };
+        var this_1 = this;
+        // iterate through all links and get neighbours
+        for (var _d = 0, _e = this.links; _d < _e.length; _d++) {
+            var link = _e[_d];
+            _loop_1(link);
+        }
+    };
+    GraphComponent.prototype.dePreviewNodeInformation = function (event) {
+        for (var _i = 0, _a = this.links; _i < _a.length; _i++) {
+            var l = _a[_i];
+            l.preview = false;
+        }
+        for (var _b = 0, _c = this.nodes; _b < _c.length; _b++) {
+            var n = _c[_b];
+            n.preview = false;
+        }
+    };
+    GraphComponent.prototype.deselectNode = function () {
+        // call listener
+        this.nodeUnselectEvent.emit();
+        // remove selection of nodes and links
+        for (var _i = 0, _a = this.nodes; _i < _a.length; _i++) {
+            var n = _a[_i];
+            n.selected = false;
+        }
+        for (var _b = 0, _c = this.links; _b < _c.length; _b++) {
+            var l = _c[_b];
+            l.selected = false;
+        }
+        this.selectedNode = null;
+        // this.selectedNodeInfo = null;
+        this.selectedLink = null;
+        this.selectedNodeId = null;
+    };
+    GraphComponent.prototype.checkIfInGraph = function (nodeId) {
+        var node = this.nodes.find(function (i) { return i.id === nodeId; });
+        return Boolean(node);
+    };
+    // $event is the clicked node id!
+    GraphComponent.prototype.nodeInformation = function ($event) {
+        if (!this.checkIfInGraph($event)) {
+            // this node is not contained in this graph -> navigate to corresponding view
+            this.nodeSelectEvent.emit($event);
+            return;
+        }
+        this.selectedLink = null;
+        this.selectedLinkId = null;
+        // reset node info, as the retrieving of the new one takes time - don't show previous info
+        this.selectedNodeInfo = null;
+        // call listener
+        this.nodeSelectEvent.emit($event);
+        var node = this.nodes.find(function (n) { return n.id === $event; });
+        // remove selection of nodes and links
+        for (var _i = 0, _a = this.nodes; _i < _a.length; _i++) {
+            var n = _a[_i];
+            n.selected = false;
+        }
+        for (var _b = 0, _c = this.links; _b < _c.length; _b++) {
+            var l = _c[_b];
+            l.selected = false;
+        }
+        // set clicked node as current node to display infobox (separate component) about node
+        // in HTML we can do *ngIf to show infobox component
+        this.selectedNode = node;
+        this.selectedNode.selected = true;
+        this.selectedNodeId = $event;
+        this.retrieveNodeInfo();
+        var _loop_2 = function (link) {
+            // check source
+            if (link.source instanceof _model__WEBPACK_IMPORTED_MODULE_1__["Node"]) {
+                if (link.source.name === node.name) {
+                    link.selected = true;
+                    if (link.target instanceof _model__WEBPACK_IMPORTED_MODULE_1__["Node"]) {
+                        link.target.selected = true;
+                        // this.selectedNodeInfo.outgoing.push(link.target)
+                    }
+                }
+            }
+            else if (typeof link.source === 'string') {
+                if (link.source === node.name) {
+                    link.selected = true;
+                    var n = this_2.nodes.find(function (n) { return n.name === link.target; });
+                    n.selected = true;
+                    // this.selectedNodeInfo.outgoing.push(n);
+                }
+            }
+            // check target
+            if (link.target instanceof _model__WEBPACK_IMPORTED_MODULE_1__["Node"]) {
+                if (link.target.name === node.name) {
+                    link.selected = true;
+                    if (link.source instanceof _model__WEBPACK_IMPORTED_MODULE_1__["Node"]) {
+                        link.source.selected = true;
+                        // this.selectedNodeInfo.incoming.push(link.source);
+                    }
+                }
+            }
+            else if (typeof link.target === 'string') {
+                if (link.target === node.name) {
+                    link.selected = true;
+                    var n = this_2.nodes.find(function (n) { return n.name === link.source; });
+                    n.selected = true;
+                    // this.selectedNodeInfo.incoming.push(n);
+                }
+            }
+        };
+        var this_2 = this;
+        // this.selectedNodeInfo = new NodeInfo();
+        // this.selectedNodeInfo.currNode = this.selectedNode;
+        // // iterate through all links and get neighbours
+        for (var _d = 0, _e = this.links; _d < _e.length; _d++) {
+            var link = _e[_d];
+            _loop_2(link);
+        }
+    };
+    // toBeFilteredIds contains all NODE IDS that should be filtered from the graph
+    GraphComponent.prototype.filterNodes = function (toBeFilteredIds) {
+        this.showAllNodes();
+        var nodesToBeFiltered = this.nodes.filter(function (n) { return toBeFilteredIds.includes(n.id); });
+        // get all links that contain a pattern that should be filtered
+        var linksToBeFiltered = this.links.filter(function (e) {
+            var id = '';
+            if (typeof e.source === 'string') {
+                id = e.source;
+            }
+            else if (e.source instanceof _model__WEBPACK_IMPORTED_MODULE_1__["Node"]) {
+                id = e.source.id;
+            }
+            var s = nodesToBeFiltered.find(function (n) { return n.id === id; });
+            if (s) {
+                return true;
+            }
+            if (typeof e.target === 'string') {
+                id = e.target;
+            }
+            else if (e.target instanceof _model__WEBPACK_IMPORTED_MODULE_1__["Node"]) {
+                id = e.target.id;
+            }
+            var t = nodesToBeFiltered.find(function (n) { return n.id === id; });
+            if (t) {
+                return true;
+            }
+            return false;
+        });
+        // aquired elements have to be hidden
+        nodesToBeFiltered.forEach(function (n) { return n.hide = true; });
+        linksToBeFiltered.forEach(function (l) { return l.hide = true; });
+    };
+    GraphComponent.prototype.showAllNodes = function () {
+        this.nodes.forEach(function (n) { return n.hide = false; });
+        this.links.forEach(function (l) { return l.hide = false; });
+    };
+    GraphComponent.prototype.showLinkInfo = function (linkId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        if (!this.getLinkInfo) return [3 /*break*/, 2];
+                        _a = this;
+                        return [4 /*yield*/, this.getLinkInfo(linkId)];
+                    case 1:
+                        _a.selectedLink = _b.sent();
+                        this.selectedLinkId = linkId;
+                        _b.label = 2;
+                    case 2: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    GraphComponent.prototype.retrieveNodeInfo = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        if (!this.getNodeInfo) return [3 /*break*/, 2];
+                        _a = this;
+                        return [4 /*yield*/, this.getNodeInfo(this.selectedNodeId)];
+                    case 1:
+                        _a.selectedNodeInfo = _b.sent();
+                        _b.label = 2;
+                    case 2: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", String)
+    ], GraphComponent.prototype, "selectedNodeId", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Array)
+    ], GraphComponent.prototype, "nodes", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Array)
+    ], GraphComponent.prototype, "links", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Function)
+    ], GraphComponent.prototype, "getNodeInfo", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Function)
+    ], GraphComponent.prototype, "getLinkInfo", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
+        __metadata("design:type", Object)
+    ], GraphComponent.prototype, "nodeSelectEvent", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
+        __metadata("design:type", Object)
+    ], GraphComponent.prototype, "nodeUnselectEvent", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["HostListener"])('window:resize', ['$event']),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Object]),
+        __metadata("design:returntype", void 0)
+    ], GraphComponent.prototype, "onresize", null);
+    GraphComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'pp-graph',
+            template: __webpack_require__(/*! ./graph.component.html */ "./src/app/graph/component/graph/graph.component.html"),
+            styles: [__webpack_require__(/*! ./graph.component.scss */ "./src/app/graph/component/graph/graph.component.scss")]
+        }),
+        __metadata("design:paramtypes", [_service_d3_service__WEBPACK_IMPORTED_MODULE_2__["D3Service"],
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"]])
+    ], GraphComponent);
+    return GraphComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/component/link-infobox/link-infobox.component.html":
+/*!**************************************************************************!*\
+  !*** ./src/app/graph/component/link-infobox/link-infobox.component.html ***!
+  \**************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"info\" *ngIf=\"linkInfo; else loading\">\n  <div class=\"headline\">\n\n    <!-- curr pattern name -->\n    <h1 (click)=\"onClick($event, linkInfo.currPattern.id)\">\n      {{linkInfo.currPattern.name}}\n    </h1>\n\n    <!-- link arrow -->\n    <i *ngIf=\"linkInfo.direction === 'outgoing'; else incoming\"\n      class=\"fa fa-long-arrow-right\"></i>\n    <ng-template #incoming>\n      <i class=\"fa fa-long-arrow-left\"></i>\n    </ng-template>\n\n    <!-- linked pattern name -->\n    <span (click)=\"onClick($event, linkInfo.linkedPattern.id)\">\n      {{linkInfo.linkedPattern.name}}\n    </span>\n\n  </div>\n\n  <div class=\"description\">\n    <p *ngFor=\"let d of linkInfo.descriptions\">{{d}}</p>\n  </div>\n</div>\n<ng-template #loading>\n  <div class=\"info\">\n    Loading Link Info...\n  </div>\n</ng-template>\n"
+
+/***/ }),
+
+/***/ "./src/app/graph/component/link-infobox/link-infobox.component.scss":
+/*!**************************************************************************!*\
+  !*** ./src/app/graph/component/link-infobox/link-infobox.component.scss ***!
+  \**************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ".info {\n  width: 350px;\n  padding: 10px;\n  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;\n  border-width: 2px;\n  border-style: solid;\n  border-color: grey;\n  background: rgba(255, 255, 255, 0.7); }\n\n.headline {\n  padding-bottom: 10px; }\n\n.headline h1 {\n    padding: 0;\n    margin: 0;\n    margin-bottom: 4px; }\n\n.headline span {\n    font-size: 14pt; }\n\n.headline i {\n    font-size: 14pt;\n    padding: 4px;\n    margin-right: 4px; }\n\n.description {\n  word-break: normal;\n  border-top-width: 2px;\n  border-top-style: solid;\n  border-top-color: lightgrey; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2dyYXBoL2NvbXBvbmVudC9saW5rLWluZm9ib3gvbGluay1pbmZvYm94LmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsWUFBWTtFQUNaLGFBQWE7RUFDYiw2RUFBNkU7RUFDN0UsaUJBQWlCO0VBQ2pCLG1CQUFtQjtFQUNuQixrQkFBa0I7RUFDbEIsb0NBQW9DLEVBQUE7O0FBR3RDO0VBQ0Usb0JBQW9CLEVBQUE7O0FBRHRCO0lBSU0sVUFBVTtJQUNWLFNBQVM7SUFDVCxrQkFBa0IsRUFBQTs7QUFOeEI7SUFVTSxlQUFlLEVBQUE7O0FBVnJCO0lBY00sZUFBZTtJQUNmLFlBQVk7SUFDWixpQkFBaUIsRUFBQTs7QUFJdkI7RUFDRSxrQkFBa0I7RUFFbEIscUJBQXFCO0VBQ3JCLHVCQUF1QjtFQUN2QiwyQkFBMkIsRUFBQSIsImZpbGUiOiJzcmMvYXBwL2dyYXBoL2NvbXBvbmVudC9saW5rLWluZm9ib3gvbGluay1pbmZvYm94LmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmluZm8ge1xuICB3aWR0aDogMzUwcHg7XG4gIHBhZGRpbmc6IDEwcHg7XG4gIGZvbnQtZmFtaWx5OiAnR2lsbCBTYW5zJywgJ0dpbGwgU2FucyBNVCcsIENhbGlicmksICdUcmVidWNoZXQgTVMnLCBzYW5zLXNlcmlmO1xuICBib3JkZXItd2lkdGg6IDJweDtcbiAgYm9yZGVyLXN0eWxlOiBzb2xpZDtcbiAgYm9yZGVyLWNvbG9yOiBncmV5O1xuICBiYWNrZ3JvdW5kOiByZ2JhKDI1NSwgMjU1LCAyNTUsIDAuNyk7XG59XG5cbi5oZWFkbGluZSB7XG4gIHBhZGRpbmctYm90dG9tOiAxMHB4O1xuXG4gIGgxIHtcbiAgICAgIHBhZGRpbmc6IDA7XG4gICAgICBtYXJnaW46IDA7XG4gICAgICBtYXJnaW4tYm90dG9tOiA0cHg7XG4gIH1cblxuICBzcGFuIHtcbiAgICAgIGZvbnQtc2l6ZTogMTRwdDtcbiAgfVxuXG4gIGkge1xuICAgICAgZm9udC1zaXplOiAxNHB0O1xuICAgICAgcGFkZGluZzogNHB4O1xuICAgICAgbWFyZ2luLXJpZ2h0OiA0cHg7XG4gIH1cbn1cblxuLmRlc2NyaXB0aW9uIHtcbiAgd29yZC1icmVhazogbm9ybWFsO1xuXG4gIGJvcmRlci10b3Atd2lkdGg6IDJweDtcbiAgYm9yZGVyLXRvcC1zdHlsZTogc29saWQ7XG4gIGJvcmRlci10b3AtY29sb3I6IGxpZ2h0Z3JleTtcbn1cbiJdfQ== */"
+
+/***/ }),
+
+/***/ "./src/app/graph/component/link-infobox/link-infobox.component.ts":
+/*!************************************************************************!*\
+  !*** ./src/app/graph/component/link-infobox/link-infobox.component.ts ***!
+  \************************************************************************/
+/*! exports provided: LinkInfoboxComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LinkInfoboxComponent", function() { return LinkInfoboxComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var LinkInfoboxComponent = /** @class */ (function () {
+    function LinkInfoboxComponent() {
+        // gets called if a pattern within the infobox has been clicked, parameter is the corresponding id of the pattern
+        this.onPatternClicked = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+    }
+    LinkInfoboxComponent.prototype.ngOnInit = function () {
+        this.convertData();
+    };
+    LinkInfoboxComponent.prototype.convertData = function () {
+        var data = this.linkData;
+        if (this.currentPatternId) {
+            if (data.sourcePattern.id === this.currentPatternId) {
+                this.linkInfo = {
+                    currPattern: {
+                        id: data.sourcePattern.id,
+                        name: data.sourcePattern.name
+                    },
+                    linkedPattern: {
+                        id: data.targetPattern.id,
+                        name: data.targetPattern.name
+                    },
+                    descriptions: data.descriptions,
+                    direction: 'outgoing'
+                };
+            }
+            else if (data.targetPattern.id === this.currentPatternId) {
+                this.linkInfo = {
+                    currPattern: {
+                        id: data.targetPattern.id,
+                        name: data.targetPattern.name
+                    },
+                    linkedPattern: {
+                        id: data.sourcePattern.id,
+                        name: data.sourcePattern.name
+                    },
+                    descriptions: data.descriptions,
+                    direction: 'incoming'
+                };
+            }
+        }
+        else {
+            // default case is, source pattern is the current pattern
+            this.linkInfo = {
+                currPattern: {
+                    id: data.sourcePattern.id,
+                    name: data.sourcePattern.name
+                },
+                linkedPattern: {
+                    id: data.targetPattern.id,
+                    name: data.targetPattern.name
+                },
+                descriptions: data.descriptions,
+                direction: 'outgoing'
+            };
+        }
+    };
+    LinkInfoboxComponent.prototype.onClick = function (event, id) {
+        event.stopPropagation();
+        this.onPatternClicked.emit(id);
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Object)
+    ], LinkInfoboxComponent.prototype, "linkData", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", String)
+    ], LinkInfoboxComponent.prototype, "currentPatternId", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
+        __metadata("design:type", Object)
+    ], LinkInfoboxComponent.prototype, "onPatternClicked", void 0);
+    LinkInfoboxComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'pp-link-infobox',
+            template: __webpack_require__(/*! ./link-infobox.component.html */ "./src/app/graph/component/link-infobox/link-infobox.component.html"),
+            styles: [__webpack_require__(/*! ./link-infobox.component.scss */ "./src/app/graph/component/link-infobox/link-infobox.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], LinkInfoboxComponent);
+    return LinkInfoboxComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/component/link-visual/link-visual.component.html":
+/*!************************************************************************!*\
+  !*** ./src/app/graph/component/link-visual/link-visual.component.html ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<svg:line\n    [ngClass] = \"{'selected': link.selected, 'not-selected': !(link.selected), 'preview': link.preview, 'hide': link.hide}\"\n    [attr.x1] = \"link.source.x\"\n    [attr.y1] = \"link.source.y\"\n    [attr.x2] = \"link.target.x\"\n    [attr.y2] = \"link.target.y\">\n</svg:line>\n"
+
+/***/ }),
+
+/***/ "./src/app/graph/component/link-visual/link-visual.component.scss":
+/*!************************************************************************!*\
+  !*** ./src/app/graph/component/link-visual/link-visual.component.scss ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "line {\n  stroke-width: 1px;\n  marker-end: url(#end); }\n\n.selected {\n  stroke: red; }\n\n.not-selected {\n  stroke: #7f7f7f; }\n\n.preview {\n  opacity: 0.1; }\n\n.hide {\n  visibility: hidden; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2dyYXBoL2NvbXBvbmVudC9saW5rLXZpc3VhbC9saW5rLXZpc3VhbC5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGlCQUFpQjtFQUNqQixxQkFBcUIsRUFBQTs7QUFHdkI7RUFDRSxXQUFXLEVBQUE7O0FBR2I7RUFDRSxlQUFlLEVBQUE7O0FBR2pCO0VBQ0UsWUFBWSxFQUFBOztBQUdkO0VBQ0Usa0JBQWtCLEVBQUEiLCJmaWxlIjoic3JjL2FwcC9ncmFwaC9jb21wb25lbnQvbGluay12aXN1YWwvbGluay12aXN1YWwuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJsaW5lIHtcbiAgc3Ryb2tlLXdpZHRoOiAxcHg7XG4gIG1hcmtlci1lbmQ6IHVybCgjZW5kKTtcbn1cblxuLnNlbGVjdGVkIHtcbiAgc3Ryb2tlOiByZWQ7XG59XG5cbi5ub3Qtc2VsZWN0ZWQge1xuICBzdHJva2U6ICM3ZjdmN2Y7XG59XG5cbi5wcmV2aWV3IHtcbiAgb3BhY2l0eTogMC4xO1xufVxuXG4uaGlkZSB7XG4gIHZpc2liaWxpdHk6IGhpZGRlbjtcbn1cbiJdfQ== */"
+
+/***/ }),
+
+/***/ "./src/app/graph/component/link-visual/link-visual.component.ts":
+/*!**********************************************************************!*\
+  !*** ./src/app/graph/component/link-visual/link-visual.component.ts ***!
+  \**********************************************************************/
+/*! exports provided: LinkVisualComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LinkVisualComponent", function() { return LinkVisualComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../model */ "./src/app/graph/model/index.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var LinkVisualComponent = /** @class */ (function () {
+    function LinkVisualComponent() {
+    }
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])('linkVisual'),
+        __metadata("design:type", _model__WEBPACK_IMPORTED_MODULE_1__["Link"])
+    ], LinkVisualComponent.prototype, "link", void 0);
+    LinkVisualComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: '[linkVisual]',
+            template: __webpack_require__(/*! ./link-visual.component.html */ "./src/app/graph/component/link-visual/link-visual.component.html"),
+            styles: [__webpack_require__(/*! ./link-visual.component.scss */ "./src/app/graph/component/link-visual/link-visual.component.scss")]
+        })
+    ], LinkVisualComponent);
+    return LinkVisualComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/component/node-infobox/node-infobox.component.html":
+/*!**************************************************************************!*\
+  !*** ./src/app/graph/component/node-infobox/node-infobox.component.html ***!
+  \**************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"info\" *ngIf=\"info; else loading\">\n  <div class=\"headline\">\n    <h1>{{info.name}}</h1>\n    <p>{{info.group}}</p>\n  </div>\n\n  <div class=\"description\">\n    <p>{{info.summary}}</p>\n  </div>\n\n  <div class=\"referenced\"\n    *ngFor=\"let group of info.languageRelations\">\n\n    <!-- navigate to group.languageId somehow... -->\n    <h1>{{group.languageName}}</h1>\n\n    <!-- Outgoing Related Nodes -->\n    <div class=\"related\">\n      <div class=\"item\"\n        *ngFor=\"let o of outgoing(group.relations)\">\n        <!-- Arrow (->) -->\n        <i class=\"fa fa-long-arrow-right\"></i>\n        <!-- Caption -->\n        <span\n          (click)=\"onClick($event, o.patternId)\"\n          (mouseenter)=\"onMouseEnter($event, o.patternId)\"\n          (mouseleave)=\"onMouseLeave($event, o.patternId)\">{{o.label}}\n        </span>\n\n        <i class=\"info-icon fa fa-info-circle\"\n          *ngIf=\"o.hasDescription\"\n          (click)=\"onInfoClick($event, o);\"></i>\n      </div>\n    </div>\n\n    <!-- Incoming Related Nodes -->\n    <div class=\"related\">\n      <div class=\"item\"\n        *ngFor=\"let i of incoming(group.relations)\">\n        <!-- Arrow (<-) -->\n        <i class=\"fa fa-long-arrow-left\"></i>\n        <!-- Caption -->\n        <span\n          (click)=\"onClick($event, i.patternId)\"\n          (mouseenter)=\"onMouseEnter($event, i.patternId)\"\n          (mouseleave)=\"onMouseLeave($event, i.patternId)\">{{i.label}}\n        </span>\n\n        <i class=\"info-icon fa fa-info-circle\"\n          *ngIf=\"i.hasDescription\"\n          (click)=\"onInfoClick($event, i)\"></i>\n      </div>\n    </div>\n  </div>\n\n</div>\n<ng-template #loading>\n  <div class=\"info\">\n    Loading Pattern Info...\n  </div>\n</ng-template>\n"
+
+/***/ }),
+
+/***/ "./src/app/graph/component/node-infobox/node-infobox.component.scss":
+/*!**************************************************************************!*\
+  !*** ./src/app/graph/component/node-infobox/node-infobox.component.scss ***!
+  \**************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ".info {\n  width: 350px;\n  padding: 10px;\n  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;\n  border-width: 2px;\n  border-style: solid;\n  border-color: grey;\n  background: rgba(255, 255, 255, 0.7); }\n\n.headline {\n  padding-bottom: 10px;\n  border-bottom-width: 2px;\n  border-bottom-style: solid;\n  border-bottom-color: lightgrey;\n  word-break: keep-all; }\n\n.headline h1 {\n    padding: 0;\n    margin: 0; }\n\n.headline p {\n    padding: 0;\n    margin: 0;\n    font-style: italic; }\n\n.description {\n  word-break: normal; }\n\n.referenced {\n  border-top-width: 2px;\n  border-top-style: solid;\n  border-top-color: lightgrey; }\n\n.referenced ul {\n    padding-left: 20px;\n    list-style: none; }\n\n.referenced li {\n    margin-bottom: 10px; }\n\n.referenced h1 {\n    padding: 0;\n    padding-top: 8px;\n    margin: 0;\n    font-variant: small-caps;\n    font-size: 14pt; }\n\n.related {\n  margin-bottom: 10px;\n  padding: 4px; }\n\n.related i {\n    margin-right: 8px; }\n\n.related .item {\n    margin-bottom: 4px; }\n\n.related .info-icon {\n    float: right; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2dyYXBoL2NvbXBvbmVudC9ub2RlLWluZm9ib3gvbm9kZS1pbmZvYm94LmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsWUFBWTtFQUNaLGFBQWE7RUFDYiw2RUFBNkU7RUFDN0UsaUJBQWlCO0VBQ2pCLG1CQUFtQjtFQUNuQixrQkFBa0I7RUFDbEIsb0NBQW9DLEVBQUE7O0FBR3RDO0VBQ0Usb0JBQW9CO0VBQ3BCLHdCQUF3QjtFQUN4QiwwQkFBMEI7RUFDMUIsOEJBQThCO0VBQzlCLG9CQUFvQixFQUFBOztBQUx0QjtJQVFNLFVBQVU7SUFDVixTQUFTLEVBQUE7O0FBVGY7SUFhTSxVQUFVO0lBQ1YsU0FBUztJQUNULGtCQUFrQixFQUFBOztBQUl4QjtFQUNFLGtCQUFrQixFQUFBOztBQUdwQjtFQUNFLHFCQUFxQjtFQUNyQix1QkFBdUI7RUFDdkIsMkJBQTJCLEVBQUE7O0FBSDdCO0lBTU0sa0JBQWlCO0lBQ2pCLGdCQUFlLEVBQUE7O0FBUHJCO0lBV00sbUJBQWtCLEVBQUE7O0FBWHhCO0lBZU0sVUFBVTtJQUNWLGdCQUFnQjtJQUNoQixTQUFTO0lBQ1Qsd0JBQXdCO0lBQ3hCLGVBQWUsRUFBQTs7QUFJckI7RUFDRSxtQkFBbUI7RUFDbkIsWUFBWSxFQUFBOztBQUZkO0lBS00saUJBQWlCLEVBQUE7O0FBTHZCO0lBU00sa0JBQWtCLEVBQUE7O0FBVHhCO0lBYU0sWUFBWSxFQUFBIiwiZmlsZSI6InNyYy9hcHAvZ3JhcGgvY29tcG9uZW50L25vZGUtaW5mb2JveC9ub2RlLWluZm9ib3guY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuaW5mbyB7XG4gIHdpZHRoOiAzNTBweDtcbiAgcGFkZGluZzogMTBweDtcbiAgZm9udC1mYW1pbHk6ICdHaWxsIFNhbnMnLCAnR2lsbCBTYW5zIE1UJywgQ2FsaWJyaSwgJ1RyZWJ1Y2hldCBNUycsIHNhbnMtc2VyaWY7XG4gIGJvcmRlci13aWR0aDogMnB4O1xuICBib3JkZXItc3R5bGU6IHNvbGlkO1xuICBib3JkZXItY29sb3I6IGdyZXk7XG4gIGJhY2tncm91bmQ6IHJnYmEoMjU1LCAyNTUsIDI1NSwgMC43KTtcbn1cblxuLmhlYWRsaW5lIHtcbiAgcGFkZGluZy1ib3R0b206IDEwcHg7XG4gIGJvcmRlci1ib3R0b20td2lkdGg6IDJweDtcbiAgYm9yZGVyLWJvdHRvbS1zdHlsZTogc29saWQ7XG4gIGJvcmRlci1ib3R0b20tY29sb3I6IGxpZ2h0Z3JleTtcbiAgd29yZC1icmVhazoga2VlcC1hbGw7XG5cbiAgaDEge1xuICAgICAgcGFkZGluZzogMDtcbiAgICAgIG1hcmdpbjogMDtcbiAgfVxuXG4gIHAge1xuICAgICAgcGFkZGluZzogMDtcbiAgICAgIG1hcmdpbjogMDtcbiAgICAgIGZvbnQtc3R5bGU6IGl0YWxpYztcbiAgfVxufVxuXG4uZGVzY3JpcHRpb24ge1xuICB3b3JkLWJyZWFrOiBub3JtYWw7XG59XG5cbi5yZWZlcmVuY2VkIHtcbiAgYm9yZGVyLXRvcC13aWR0aDogMnB4O1xuICBib3JkZXItdG9wLXN0eWxlOiBzb2xpZDtcbiAgYm9yZGVyLXRvcC1jb2xvcjogbGlnaHRncmV5O1xuXG4gIHVsIHtcbiAgICAgIHBhZGRpbmctbGVmdDoyMHB4O1xuICAgICAgbGlzdC1zdHlsZTpub25lO1xuICB9XG5cbiAgbGkge1xuICAgICAgbWFyZ2luLWJvdHRvbToxMHB4O1xuICB9XG5cbiAgaDEge1xuICAgICAgcGFkZGluZzogMDtcbiAgICAgIHBhZGRpbmctdG9wOiA4cHg7XG4gICAgICBtYXJnaW46IDA7XG4gICAgICBmb250LXZhcmlhbnQ6IHNtYWxsLWNhcHM7XG4gICAgICBmb250LXNpemU6IDE0cHQ7XG4gIH1cbn1cblxuLnJlbGF0ZWQge1xuICBtYXJnaW4tYm90dG9tOiAxMHB4O1xuICBwYWRkaW5nOiA0cHg7XG5cbiAgaSB7XG4gICAgICBtYXJnaW4tcmlnaHQ6IDhweDtcbiAgfVxuXG4gIC5pdGVtIHtcbiAgICAgIG1hcmdpbi1ib3R0b206IDRweDtcbiAgfVxuXG4gIC5pbmZvLWljb24ge1xuICAgICAgZmxvYXQ6IHJpZ2h0O1xuICB9XG59XG4iXX0= */"
+
+/***/ }),
+
+/***/ "./src/app/graph/component/node-infobox/node-infobox.component.ts":
+/*!************************************************************************!*\
+  !*** ./src/app/graph/component/node-infobox/node-infobox.component.ts ***!
+  \************************************************************************/
+/*! exports provided: NodeInfoboxComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NodeInfoboxComponent", function() { return NodeInfoboxComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../model */ "./src/app/graph/model/index.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var NodeInfoboxComponent = /** @class */ (function () {
+    function NodeInfoboxComponent() {
+        this.clickEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.mouseEnterEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.mouseLeaveEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.linkClickEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+    }
+    NodeInfoboxComponent.prototype.ngOnInit = function () {
+    };
+    NodeInfoboxComponent.prototype.outgoing = function (l) {
+        return l.filter(function (i) { return i.direction === 'outgoing'; });
+    };
+    NodeInfoboxComponent.prototype.incoming = function (l) {
+        return l.filter(function (i) { return i.direction === 'incoming'; });
+    };
+    NodeInfoboxComponent.prototype.onClick = function (event, node) {
+        event.stopPropagation();
+        this.clickEvent.emit(node);
+    };
+    NodeInfoboxComponent.prototype.onMouseEnter = function (event, node) {
+        event.stopPropagation();
+        this.mouseEnterEvent.emit(node);
+    };
+    NodeInfoboxComponent.prototype.onMouseLeave = function (event, node) {
+        event.stopPropagation();
+        this.mouseLeaveEvent.emit(node);
+    };
+    NodeInfoboxComponent.prototype.onInfoClick = function (event, rel) {
+        event.stopPropagation();
+        this.linkClickEvent.emit(rel.relationId);
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", _model__WEBPACK_IMPORTED_MODULE_1__["NodeInfo"])
+    ], NodeInfoboxComponent.prototype, "info", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
+        __metadata("design:type", Object)
+    ], NodeInfoboxComponent.prototype, "clickEvent", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
+        __metadata("design:type", Object)
+    ], NodeInfoboxComponent.prototype, "mouseEnterEvent", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
+        __metadata("design:type", Object)
+    ], NodeInfoboxComponent.prototype, "mouseLeaveEvent", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
+        __metadata("design:type", Object)
+    ], NodeInfoboxComponent.prototype, "linkClickEvent", void 0);
+    NodeInfoboxComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'pp-node-infobox',
+            template: __webpack_require__(/*! ./node-infobox.component.html */ "./src/app/graph/component/node-infobox/node-infobox.component.html"),
+            styles: [__webpack_require__(/*! ./node-infobox.component.scss */ "./src/app/graph/component/node-infobox/node-infobox.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], NodeInfoboxComponent);
+    return NodeInfoboxComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/component/node-visual/node-visual.component.html":
+/*!************************************************************************!*\
+  !*** ./src/app/graph/component/node-visual/node-visual.component.html ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<svg:g class=\"node-element\"\n  [attr.transform]=\"'translate(' + node.x + ',' + node.y + ')'\"\n  [ngClass]=\"{'selected': node.selected, 'preview': node.preview, 'hide': node.hide}\"\n  (click)=\"onClick($event)\"\n  (mouseenter)=\"onMouseEnter($event)\"\n  (mouseleave)=\"onMouseLeave($event)\">\n  <svg:circle\n      r=\"5\"\n      [attr.fill]=\"node.color\">\n  </svg:circle>\n  <svg:text\n      class=\"node-text\"\n      dx=\"12\"\n      dy=\".35em\">\n    {{node.name}}\n  </svg:text>\n</svg:g>\n"
+
+/***/ }),
+
+/***/ "./src/app/graph/component/node-visual/node-visual.component.scss":
+/*!************************************************************************!*\
+  !*** ./src/app/graph/component/node-visual/node-visual.component.scss ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ".selected circle {\n  stroke: red;\n  stroke-width: 2px; }\n\n.selected text {\n  fill: red;\n  font-weight: bold; }\n\n.preview {\n  opacity: 0.1; }\n\n.hide {\n  visibility: hidden; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2dyYXBoL2NvbXBvbmVudC9ub2RlLXZpc3VhbC9ub2RlLXZpc3VhbC5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUVNLFdBQVc7RUFDWCxpQkFBaUIsRUFBQTs7QUFIdkI7RUFPTSxTQUFTO0VBQ1QsaUJBQWlCLEVBQUE7O0FBSXZCO0VBQ0UsWUFBWSxFQUFBOztBQUdkO0VBQ0Usa0JBQWtCLEVBQUEiLCJmaWxlIjoic3JjL2FwcC9ncmFwaC9jb21wb25lbnQvbm9kZS12aXN1YWwvbm9kZS12aXN1YWwuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuc2VsZWN0ZWQge1xuICBjaXJjbGUge1xuICAgICAgc3Ryb2tlOiByZWQ7XG4gICAgICBzdHJva2Utd2lkdGg6IDJweDtcbiAgfVxuXG4gIHRleHQge1xuICAgICAgZmlsbDogcmVkO1xuICAgICAgZm9udC13ZWlnaHQ6IGJvbGQ7XG4gIH1cbn1cblxuLnByZXZpZXcge1xuICBvcGFjaXR5OiAwLjE7XG59XG5cbi5oaWRlIHtcbiAgdmlzaWJpbGl0eTogaGlkZGVuO1xufVxuIl19 */"
+
+/***/ }),
+
+/***/ "./src/app/graph/component/node-visual/node-visual.component.ts":
+/*!**********************************************************************!*\
+  !*** ./src/app/graph/component/node-visual/node-visual.component.ts ***!
+  \**********************************************************************/
+/*! exports provided: NodeVisualComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NodeVisualComponent", function() { return NodeVisualComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../model */ "./src/app/graph/model/index.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var NodeVisualComponent = /** @class */ (function () {
+    function NodeVisualComponent() {
+        this.clickEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.mouseEnterEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.mouseLeaveEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+    }
+    NodeVisualComponent.prototype.onClick = function (event) {
+        event.stopPropagation();
+        this.clickEvent.emit(this.node);
+    };
+    NodeVisualComponent.prototype.onMouseEnter = function (event) {
+        this.mouseEnterEvent.emit(this.node);
+    };
+    NodeVisualComponent.prototype.onMouseLeave = function (event) {
+        this.mouseLeaveEvent.emit(this.node);
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])('nodeVisual'),
+        __metadata("design:type", _model__WEBPACK_IMPORTED_MODULE_1__["Node"])
+    ], NodeVisualComponent.prototype, "node", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
+        __metadata("design:type", Object)
+    ], NodeVisualComponent.prototype, "clickEvent", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
+        __metadata("design:type", Object)
+    ], NodeVisualComponent.prototype, "mouseEnterEvent", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
+        __metadata("design:type", Object)
+    ], NodeVisualComponent.prototype, "mouseLeaveEvent", void 0);
+    NodeVisualComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: '[nodeVisual]',
+            template: __webpack_require__(/*! ./node-visual.component.html */ "./src/app/graph/component/node-visual/node-visual.component.html"),
+            styles: [__webpack_require__(/*! ./node-visual.component.scss */ "./src/app/graph/component/node-visual/node-visual.component.scss")]
+        })
+    ], NodeVisualComponent);
+    return NodeVisualComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.html":
+/*!**********************************************************************************************!*\
+  !*** ./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.html ***!
+  \**********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<!-- Toolbar -->\n<div class=\"toolbar\">\n  <!-- to navigate back to the overview of pattern languages -->\n  <button mat-raised-button class=\"back_button\" color=\"primary\"\n    (click)=\"navigateBack()\">\n    <i class=\"material-icons\">keyboard_backspace</i>\n  </button>\n\n  <!-- to open filter dialog -->\n  <button mat-raised-button class=\"filter_dialog\" color=\"primary\"\n    (click)=\"openFilterDialog()\">\n    <i class=\"material-icons\">filter_list</i>\n    Filter Patterns\n  </button>\n</div>\n\n<div *ngIf=\"data; else loading\">\n  <pp-graph\n    #graph\n    [links]=\"data.links\"\n    [nodes]=\"data.nodes\"\n    [selectedNodeId]=\"data.id\"\n    [getNodeInfo]=\"getNodeInfo\"\n    [getLinkInfo]=\"getLinkInfo\"\n    (nodeSelectEvent)=\"selectNode($event)\"\n    (nodeUnselectEvent)=\"unselectNode($event)\">\n  </pp-graph>\n</div>\n<ng-template #loading>Loading Data ... </ng-template>\n"
+
+/***/ }),
+
+/***/ "./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.scss":
+/*!**********************************************************************************************!*\
+  !*** ./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.scss ***!
+  \**********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ".toolbar {\n  margin-bottom: 20px; }\n  .toolbar button {\n    margin-right: 16px; }\n  .back_button {\n  /*vertical-align: top;\n  margin-top: 5px;*/ }\n  .filter_nodes {\n  margin-left: 16px;\n  /*float: right;*/\n  font-size: 16pt; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2dyYXBoL2NvbXBvbmVudC9wYXR0ZXJuLWdyYXBoLXRlbXBsYXRlL3BhdHRlcm4tZ3JhcGgtdGVtcGxhdGUuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL2dyYXBoL2NvbXBvbmVudC9wYXR0ZXJuLWdyYXBoLXRlbXBsYXRlL3BhdHRlcm4tZ3JhcGgtdGVtcGxhdGUuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxtQkFBbUIsRUFBQTtFQURyQjtJQUlNLGtCQUFrQixFQUFBO0VBSXhCO0VBQ0U7bUJDRmlCLEVER0M7RUFHcEI7RUFDRSxpQkFBaUI7RUFDakIsZ0JBQUE7RUFDQSxlQUFlLEVBQUEiLCJmaWxlIjoic3JjL2FwcC9ncmFwaC9jb21wb25lbnQvcGF0dGVybi1ncmFwaC10ZW1wbGF0ZS9wYXR0ZXJuLWdyYXBoLXRlbXBsYXRlLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLnRvb2xiYXIge1xuICBtYXJnaW4tYm90dG9tOiAyMHB4O1xuXG4gIGJ1dHRvbiB7XG4gICAgICBtYXJnaW4tcmlnaHQ6IDE2cHg7XG4gIH1cbn1cblxuLmJhY2tfYnV0dG9uIHtcbiAgLyp2ZXJ0aWNhbC1hbGlnbjogdG9wO1xuICBtYXJnaW4tdG9wOiA1cHg7Ki9cbn1cblxuLmZpbHRlcl9ub2RlcyB7XG4gIG1hcmdpbi1sZWZ0OiAxNnB4O1xuICAvKmZsb2F0OiByaWdodDsqL1xuICBmb250LXNpemU6IDE2cHQ7XG59XG4iLCIudG9vbGJhciB7XG4gIG1hcmdpbi1ib3R0b206IDIwcHg7IH1cbiAgLnRvb2xiYXIgYnV0dG9uIHtcbiAgICBtYXJnaW4tcmlnaHQ6IDE2cHg7IH1cblxuLmJhY2tfYnV0dG9uIHtcbiAgLyp2ZXJ0aWNhbC1hbGlnbjogdG9wO1xuICBtYXJnaW4tdG9wOiA1cHg7Ki8gfVxuXG4uZmlsdGVyX25vZGVzIHtcbiAgbWFyZ2luLWxlZnQ6IDE2cHg7XG4gIC8qZmxvYXQ6IHJpZ2h0OyovXG4gIGZvbnQtc2l6ZTogMTZwdDsgfVxuIl19 */"
+
+/***/ }),
+
+/***/ "./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.ts":
+/*!********************************************************************************************!*\
+  !*** ./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.ts ***!
+  \********************************************************************************************/
+/*! exports provided: PatternGraphTemplateComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PatternGraphTemplateComponent", function() { return PatternGraphTemplateComponent; });
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var src_app_filter_service_filter_factory_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/filter/service/filter-factory.service */ "./src/app/filter/service/filter-factory.service.ts");
+/* harmony import */ var src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _loader_pattern_data_loader_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../loader/pattern-data-loader.service */ "./src/app/graph/loader/pattern-data-loader.service.ts");
+/* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../model */ "./src/app/graph/model/index.ts");
+/* harmony import */ var src_app_filter_component_filter_view_filter_view_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/filter/component/filter-view/filter-view.component */ "./src/app/filter/component/filter-view/filter-view.component.ts");
+/* harmony import */ var d3__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! d3 */ "./node_modules/d3/index.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
+
+
+
+
+
+
+
+
+var PatternGraphTemplateComponent = /** @class */ (function () {
+    function PatternGraphTemplateComponent(pos, loader, dialog, router, activatedRoute, zone, filterFactory, cdr) {
+        var _this = this;
+        this.pos = pos;
+        this.loader = loader;
+        this.dialog = dialog;
+        this.router = router;
+        this.activatedRoute = activatedRoute;
+        this.zone = zone;
+        this.filterFactory = filterFactory;
+        this.cdr = cdr;
+        // the loader the loads ALL patterns of a specific language
+        this.patternLoader = null;
+        // the uri of the language in form of <language#Language>
+        this.languageUri = '';
+        // the name of the language that will be displayed
+        this.languageName = '';
+        /**
+         * This closure returns the nodeinfo from the loader.
+         * Important: It has to be a closure to use 'this' correctly, otherwise it won't work.
+         * Refer to this: https://stackoverflow.com/a/39981813
+         * Thank you Isaac
+         */
+        this.getNodeInfo = function (id) { return __awaiter(_this, void 0, void 0, function () {
+            var uri, pattern, outgoing, incoming, clrs, start, millis, info;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        uri = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].convertIdToIri(id);
+                        return [4 /*yield*/, this.patternLoader.loadContentFromStore()
+                                .then(function (v) {
+                                // load pattern data: 1860ms
+                                pattern = v.get(uri);
+                                return _this.loader.loadOutgoingLinks(_this.languageUri, uri);
+                            })
+                                .then(function (v) {
+                                // load outgoing link data: 372ms
+                                outgoing = Array.from(v.values());
+                                return _this.loader.loadIncomingLinks(_this.languageUri, uri);
+                            })
+                                .then(function (v) {
+                                // load incoming link data: 270ms
+                                incoming = Array.from(v.values());
+                                start = Date.now();
+                                return _this.loader.loadCLRs(_this.languageUri, uri);
+                            })
+                                .then(function (v) {
+                                // load clr data: 46988ms this takes ages!!
+                                clrs = Array.from(v.values());
+                                millis = Date.now() - start;
+                                console.log("Load CLRs: " + millis + "ms");
+                            })];
+                    case 1:
+                        _a.sent();
+                        info = new _model__WEBPACK_IMPORTED_MODULE_5__["NodeInfo"]();
+                        info.name = pattern.name;
+                        info.group = this.groupOf(pattern.id);
+                        info.summary = this.extractSummary(pattern); // pattern.intent.value;
+                        info.languageRelations = [
+                            {
+                                languageId: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(this.languageUri),
+                                languageName: this.languageName,
+                                relations: outgoing.concat(incoming)
+                            }
+                        ];
+                        clrs.forEach(function (lr) { return info.languageRelations.push(lr); });
+                        return [2 /*return*/, Promise.resolve(info)];
+                }
+            });
+        }); };
+        /**
+         * Returns loaded Link data for the given link Id.
+         */
+        this.getLinkInfo = function (id) { return __awaiter(_this, void 0, void 0, function () {
+            var uri, links, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        uri = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].convertIdToIri(id);
+                        return [4 /*yield*/, this.loader.loadLink(this.languageUri, uri)];
+                    case 1:
+                        links = _a.sent();
+                        data = links.get(uri);
+                        return [2 /*return*/, data];
+                }
+            });
+        }); };
+    }
+    PatternGraphTemplateComponent.prototype.createPattern = function (value) {
+        return null;
+    };
+    PatternGraphTemplateComponent.prototype.extractSummary = function (value) {
+        return '';
+    };
+    PatternGraphTemplateComponent.prototype.loadPatternData = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var uri, index, base, p, r;
+            var _this = this;
+            return __generator(this, function (_a) {
+                uri = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(this.languageUri);
+                index = uri.lastIndexOf('/') + 1;
+                base = uri;
+                p = uri + "/" + uri.substr(index) + "-Patterns";
+                r = uri + "/" + uri.substr(index) + "-Relations";
+                return [2 /*return*/, this.pos.loadUrisToStore([{ value: 'https://purl.org/patternpedia' }])
+                        .then(function () {
+                        // load base file
+                        console.log('load base file');
+                        return _this.pos.loadUrisToStore([{ value: base }]);
+                    })
+                        .then(function () {
+                        // load patterns and relations
+                        console.log('load patterns and relations');
+                        return _this.pos.loadUrisToStore([{ value: p }, { value: r }]);
+                    })
+                        .then(function () {
+                        // get all views
+                        console.log('get all views');
+                        return _this.loader.loadViews(_this.languageUri);
+                    })
+                        .then(function (views) {
+                        // load all views and their relations
+                        console.log('load all views and their relations');
+                        var viewBase = [];
+                        var viewRelation = [];
+                        for (var _i = 0, views_1 = views; _i < views_1.length; _i++) {
+                            var v = views_1[_i];
+                            var uri_1 = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(v);
+                            viewBase.push({ value: uri_1 });
+                            var relation = uri_1 + "/" + uri_1.substr(uri_1.lastIndexOf('/') + 1) + "-Relations";
+                            viewRelation.push({ value: relation });
+                        }
+                        return Promise.all([
+                            _this.pos.loadUrisToStore(viewBase),
+                            _this.pos.loadUrisToStore(viewRelation)
+                        ]);
+                    })
+                        .then(function () {
+                        // get all neighbour languages
+                        console.log('get all neighbour languages');
+                        return _this.loader.loadReferredLanguages(_this.languageUri);
+                    })
+                        .then(function (languages) {
+                        // load all base, pattern and relation files from the neighbour languages
+                        console.log('load all base, pattern and relation files from the neighbour languages');
+                        var uris = [];
+                        for (var _i = 0, languages_1 = languages; _i < languages_1.length; _i++) {
+                            var l = languages_1[_i];
+                            var uri_2 = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(l);
+                            var base_1 = uri_2;
+                            var p_1 = uri_2 + "/" + uri_2.substr(index) + "-Patterns";
+                            var r_1 = uri_2 + "/" + uri_2.substr(index) + "-Relations";
+                            uris.push({ value: base_1 });
+                            uris.push({ value: p_1 });
+                            uris.push({ value: r_1 });
+                        }
+                        return _this.pos.loadUrisToStore(uris);
+                    })];
+            });
+        });
+    };
+    PatternGraphTemplateComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        // load pattern data manually
+        this.loadPatternData().then(function () {
+            // other data will be loaded indirectly via PatternDataLoaderService
+            Promise.all([_this.patternLoader.loadContentFromStore(),
+                _this.loader.loadDirectedLinks(_this.languageUri),
+                _this.loader.loadGroups(_this.languageUri),
+                _this.loader.loadPatternClrs(_this.languageUri)
+            ]).then(function (values) {
+                _this.patternMap = values[0];
+                _this.linkMap = values[1];
+                var groupMap = values[2];
+                var patternClrs = values[3];
+                // collect all data
+                var links = Array.from(_this.linkMap.values());
+                _this.all_data = [];
+                _this.patternMap.forEach(function (value) {
+                    var p = _this.createPattern(value);
+                    p.relations = new Array();
+                    // if there is an entry for this pattern in the map, it has clrs
+                    p.hasClrs = patternClrs.has(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].convertIdToIri(p.id));
+                    // all links that have the current node either as source or target
+                    var relations = links.filter(function (l) {
+                        var s = (l.source instanceof _model__WEBPACK_IMPORTED_MODULE_5__["Node"]) ? l.source.id : l.source;
+                        var t = (l.target instanceof _model__WEBPACK_IMPORTED_MODULE_5__["Node"]) ? l.target.id : l.target;
+                        return s === p.id || t === p.id;
+                    });
+                    relations.forEach(function (r) {
+                        var relation = new _model__WEBPACK_IMPORTED_MODULE_5__["PatternRelation"]();
+                        relation.id = r.id;
+                        relation.sourceId = (r.source instanceof _model__WEBPACK_IMPORTED_MODULE_5__["Node"]) ? r.source.id : '' + r.source;
+                        relation.targetId = (r.target instanceof _model__WEBPACK_IMPORTED_MODULE_5__["Node"]) ? r.target.id : '' + r.target;
+                        relation.weight = r.weight;
+                        relation.description = r.description;
+                        relation.isCLR = false;
+                        p.relations.push(relation);
+                    });
+                    _this.all_data.push(p);
+                });
+                // groups
+                _this.groups = {};
+                groupMap.forEach(function (value) {
+                    _this.groups[value.groupName] = value.patterns;
+                });
+                _this.data = _this.transformGraphData(_this.all_data);
+                _this.nodes = _this.data.nodes;
+                _this.links = _this.data.links;
+                _this.cdr.detectChanges();
+                _this.filterAllData();
+            });
+        });
+    };
+    PatternGraphTemplateComponent.prototype.groupOf = function (patternId) {
+        var _this = this;
+        return Object.keys(this.groups).find(function (groupName) { return _this.groups[groupName].includes(patternId); });
+    };
+    PatternGraphTemplateComponent.prototype.getColorFunction = function () {
+        // for coloring of nodes
+        var groupIds = Array.from(Object.keys(this.groups));
+        var scale = d3__WEBPACK_IMPORTED_MODULE_7__["scaleOrdinal"](d3__WEBPACK_IMPORTED_MODULE_7__["schemeCategory10"]);
+        var color = function (d) {
+            if (d) {
+                return scale('' + groupIds.indexOf(d));
+            }
+            return scale('0');
+        };
+        return color;
+    };
+    PatternGraphTemplateComponent.prototype.transformGraphData = function (data) {
+        var color = this.getColorFunction();
+        var nodes = new Array();
+        var links = new Array();
+        for (var _i = 0, data_1 = data; _i < data_1.length; _i++) {
+            var p = data_1[_i];
+            var n = new _model__WEBPACK_IMPORTED_MODULE_5__["Node"](p.id);
+            n.name = p.name;
+            var g = this.groupOf(p.id);
+            n.color = color(g);
+            nodes.push(n);
+            for (var _a = 0, _b = p.relations; _a < _b.length; _a++) {
+                var r = _b[_a];
+                var l = new _model__WEBPACK_IMPORTED_MODULE_5__["Link"](r.sourceId, r.targetId, r.weight, r.description);
+                links.push(l);
+            }
+        }
+        var result = {
+            nodes: nodes,
+            links: links,
+            id: this.pId
+        };
+        return result;
+    };
+    PatternGraphTemplateComponent.prototype.checkIfInList = function (nodeId) {
+        var node = this.data.nodes.find(function (i) { return i.id === nodeId; });
+        return Boolean(node);
+    };
+    // called when a node from the network graph was selected
+    PatternGraphTemplateComponent.prototype.selectNode = function (nodeId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var pattern, language, languageUri, languageId_1, route;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        console.log("Selected [" + nodeId + "] from the graph");
+                        if (!(this.data.nodes && !this.checkIfInList(nodeId))) return [3 /*break*/, 2];
+                        pattern = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].convertIdToIri(nodeId);
+                        language = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(pattern);
+                        return [4 /*yield*/, this.loader.loadLanguage(language)];
+                    case 1:
+                        languageUri = _a.sent();
+                        languageId_1 = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].convertIriToId(Array.from(languageUri.values())[0]);
+                        route = "patternlanguages/" + languageId_1 + "/" + nodeId;
+                        this.zone.run(function () {
+                            _this.router.navigate(['/patternlanguages', languageId_1, nodeId]);
+                            // changing the route will not trigger the change of the view!
+                            _this.cdr.markForCheck();
+                        });
+                        console.log('Routing to: ' + route);
+                        return [2 /*return*/];
+                    case 2:
+                        // should not be relative, as we might click multiple nodes!
+                        this.zone.run(function () {
+                            var route = _this.pId ? ['..', nodeId] : [nodeId];
+                            _this.router.navigate(route, { relativeTo: _this.activatedRoute });
+                        });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    // called when a node was unselected i.e. when clicked somewhere else
+    PatternGraphTemplateComponent.prototype.unselectNode = function () {
+        // TODO navigate back to language level
+    };
+    PatternGraphTemplateComponent.prototype.navigateBack = function () {
+        var _this = this;
+        this.zone.run(function () {
+            _this.router.navigate(['..'], { relativeTo: _this.activatedRoute });
+        });
+    };
+    PatternGraphTemplateComponent.prototype.openFilterDialog = function () {
+        var _this = this;
+        var dialogRef = this.dialog.open(src_app_filter_component_filter_view_filter_view_component__WEBPACK_IMPORTED_MODULE_6__["FilterViewComponent"], {
+            width: '600px',
+            data: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(this.languageUri)
+        });
+        dialogRef.afterClosed().subscribe(function (result) {
+            if (result) {
+                _this.filterAllData();
+            }
+        });
+    };
+    PatternGraphTemplateComponent.prototype.filterAllData = function () {
+        var _this = this;
+        this.filterFactory.createFilter(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(this.languageUri)).then(function (filter) {
+            var filtered = filter.filterPatterns(_this.all_data);
+            var all = _this.all_data.map(function (p) { return p.id; });
+            var keep = filtered.map(function (p) { return p.id; });
+            var filterIds = all.filter(function (id) { return !keep.includes(id); });
+            if (_this.graph) {
+                _this.graph.filterNodes(filterIds);
+            }
+        });
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"])('graph'),
+        __metadata("design:type", Object)
+    ], PatternGraphTemplateComponent.prototype, "graph", void 0);
+    PatternGraphTemplateComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"])({
+            selector: 'pp-pattern-graph-template',
+            template: __webpack_require__(/*! ./pattern-graph-template.component.html */ "./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.html"),
+            styles: [__webpack_require__(/*! ./pattern-graph-template.component.scss */ "./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.scss")]
+        }),
+        __metadata("design:paramtypes", [src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_9__["PatternOntologyService"],
+            _loader_pattern_data_loader_service__WEBPACK_IMPORTED_MODULE_4__["PatternDataLoaderService"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_8__["MatDialog"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_0__["Router"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_0__["ActivatedRoute"],
+            _angular_core__WEBPACK_IMPORTED_MODULE_3__["NgZone"],
+            src_app_filter_service_filter_factory_service__WEBPACK_IMPORTED_MODULE_1__["FilterFactoryService"],
+            _angular_core__WEBPACK_IMPORTED_MODULE_3__["ChangeDetectorRef"]])
+    ], PatternGraphTemplateComponent);
+    return PatternGraphTemplateComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/graph.module.ts":
+/*!***************************************!*\
+  !*** ./src/app/graph/graph.module.ts ***!
+  \***************************************/
+/*! exports provided: GraphModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GraphModule", function() { return GraphModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _component_graph_graph_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./component/graph/graph.component */ "./src/app/graph/component/graph/graph.component.ts");
+/* harmony import */ var _component_node_visual_node_visual_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./component/node-visual/node-visual.component */ "./src/app/graph/component/node-visual/node-visual.component.ts");
+/* harmony import */ var _component_link_visual_link_visual_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./component/link-visual/link-visual.component */ "./src/app/graph/component/link-visual/link-visual.component.ts");
+/* harmony import */ var _component_node_infobox_node_infobox_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./component/node-infobox/node-infobox.component */ "./src/app/graph/component/node-infobox/node-infobox.component.ts");
+/* harmony import */ var _component_link_infobox_link_infobox_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./component/link-infobox/link-infobox.component */ "./src/app/graph/component/link-infobox/link-infobox.component.ts");
+/* harmony import */ var _component_directives_draggable_directive__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./component/directives/draggable.directive */ "./src/app/graph/component/directives/draggable.directive.ts");
+/* harmony import */ var _component_directives_zoomable_directive__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./component/directives/zoomable.directive */ "./src/app/graph/component/directives/zoomable.directive.ts");
+/* harmony import */ var _component_pattern_graph_template_pattern_graph_template_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./component/pattern-graph-template/pattern-graph-template.component */ "./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+
+
+
+
+
+
+var GraphModule = /** @class */ (function () {
+    function GraphModule() {
+    }
+    GraphModule = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
+            declarations: [
+                _component_graph_graph_component__WEBPACK_IMPORTED_MODULE_2__["GraphComponent"],
+                _component_node_visual_node_visual_component__WEBPACK_IMPORTED_MODULE_3__["NodeVisualComponent"],
+                _component_link_visual_link_visual_component__WEBPACK_IMPORTED_MODULE_4__["LinkVisualComponent"],
+                _component_node_infobox_node_infobox_component__WEBPACK_IMPORTED_MODULE_5__["NodeInfoboxComponent"],
+                _component_link_infobox_link_infobox_component__WEBPACK_IMPORTED_MODULE_6__["LinkInfoboxComponent"],
+                _component_directives_draggable_directive__WEBPACK_IMPORTED_MODULE_7__["DraggableDirective"],
+                _component_directives_zoomable_directive__WEBPACK_IMPORTED_MODULE_8__["ZoomableDirective"],
+                _component_pattern_graph_template_pattern_graph_template_component__WEBPACK_IMPORTED_MODULE_9__["PatternGraphTemplateComponent"]
+            ],
+            imports: [
+                _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"]
+            ],
+            exports: [
+                _component_graph_graph_component__WEBPACK_IMPORTED_MODULE_2__["GraphComponent"]
+            ]
+        })
+    ], GraphModule);
+    return GraphModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/loader/clr-loader.service.ts":
+/*!****************************************************!*\
+  !*** ./src/app/graph/loader/clr-loader.service.ts ***!
+  \****************************************************/
+/*! exports provided: ClrLoaderService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClrLoaderService", function() { return ClrLoaderService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+/* harmony import */ var src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/core/model/loader */ "./src/app/core/model/loader.ts");
+/* harmony import */ var src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
+
+
+var ClrLoaderService = /** @class */ (function (_super) {
+    __extends(ClrLoaderService, _super);
+    function ClrLoaderService(pos) {
+        var _this = _super.call(this, null, pos) || this;
+        _this.pos = pos;
+        return _this;
+    }
+    // load all CLRs that contain the given Pattern URI
+    ClrLoaderService.prototype.loadContentFromStore = function (uri) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.selectContentFromStore(uri)
+                        .then(function (triples) { return _this.mapTriples(triples, uri); })];
+            });
+        });
+    };
+    ClrLoaderService.prototype.getGraphs = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var graphs, uri, index, base, p, r, viewsQry, views, othersQry, others;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        graphs = ['https://purl.org/patternpedia'];
+                        if (!this.supportedIRI) {
+                            throw new Error('supportedIRI has not been initialized! Make sure to set the language URI before loading');
+                        }
+                        uri = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI);
+                        index = uri.lastIndexOf('/') + 1;
+                        base = uri;
+                        p = uri + "/" + uri.substr(index) + "-Patterns";
+                        r = uri + "/" + uri.substr(index) + "-Relations";
+                        graphs.push(base, p, r);
+                        viewsQry = "SELECT DISTINCT ?view\n      WHERE {\n        <" + this.supportedIRI + "> pp:referredByView ?view .\n      }";
+                        return [4 /*yield*/, this.pos.exec(viewsQry, graphs)];
+                    case 1:
+                        views = _a.sent();
+                        views.map(function (t) { return t.view.value; }).forEach(function (u) {
+                            var uri = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(u);
+                            var index = uri.lastIndexOf('/') + 1;
+                            graphs.push(uri);
+                            graphs.push(uri + "/" + uri.substr(index) + "-Relations");
+                        });
+                        othersQry = "SELECT DISTINCT ?other\n      WHERE {\n        <" + this.supportedIRI + "> pp:referredByView ?view .\n        ?view pp:containsPatternGraph ?other .\n      }";
+                        return [4 /*yield*/, this.pos.exec(othersQry, graphs)];
+                    case 2:
+                        others = _a.sent();
+                        others.map(function (t) { return t.other.value; }).forEach(function (u) {
+                            var uri = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(u);
+                            var index = uri.lastIndexOf('/') + 1;
+                            graphs.push(uri);
+                            graphs.push(uri + "/" + uri.substr(index) + "-Patterns");
+                            graphs.push(uri + "/" + uri.substr(index) + "-Relations");
+                        });
+                        return [2 /*return*/, Promise.resolve(graphs)];
+                }
+            });
+        });
+    };
+    ClrLoaderService.prototype.selectContentFromStore = function (uri) {
+        return __awaiter(this, void 0, void 0, function () {
+            var start, graphs, millis, qry;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        start = Date.now();
+                        return [4 /*yield*/, this.getGraphs()];
+                    case 1:
+                        graphs = _a.sent();
+                        millis = Date.now() - start;
+                        console.log("getGraphs: " + millis + "ms");
+                        qry = "SELECT DISTINCT ?otherLangUri ?otherLangName ?linkUri ?sourceUri ?sourceName ?targetUri ?targetName ?desc\n      WHERE {\n        <" + this.supportedIRI + "> pp:referredByView ?view .\n        ?view pp:containsPatternRelationDescriptor ?linkUri .\n        ?linkUri pp:hasTarget ?targetUri ;\n                pp:hasSource ?sourceUri .\n        OPTIONAL { ?linkUri pp:hasDescription ?desc . }\n        { ?otherLangUri pp:containsPattern ?sourceUri } UNION { ?otherLangUri pp:containsPattern ?targetUri }.\n        ?otherLangUri pp:hasName ?otherLangName .\n        ?sourceUri pp:hasName ?sourceName .\n        ?targetUri pp:hasName ?targetName .\n        FILTER(?sourceUri = <" + uri + "> || ?targetUri = <" + uri + ">) .\n        FILTER(?otherLangUri != <" + this.supportedIRI + ">) .\n      }";
+                        return [2 /*return*/, this.executor.exec(qry, graphs)];
+                }
+            });
+        });
+    };
+    ClrLoaderService.prototype.mapTriples = function (triples, uri) {
+        var data = new Map();
+        for (var _i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
+            var t = triples_1[_i];
+            var langId = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIriToId(t.otherLangUri.value);
+            var item = data.get(langId);
+            if (!item) {
+                item = {
+                    languageId: langId,
+                    languageName: t.otherLangName.value,
+                    relations: []
+                };
+                data.set(langId, item);
+            }
+            // check if given uri is source or target
+            var source = t.sourceUri.value;
+            var target = t.targetUri.value;
+            var temp = {};
+            if (uri === source) {
+                // target pattern is relevant
+                temp.label = t.targetName.value;
+                temp.patternId = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIriToId(t.targetUri.value);
+                temp.outgoing = true;
+            }
+            else if (uri === target) {
+                // source pattern is relevant
+                temp.label = t.sourceName.value;
+                temp.patternId = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIriToId(t.sourceUri.value);
+                temp.outgoing = false;
+            }
+            var relation = {
+                relationId: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIriToId(t.linkUri.value),
+                label: temp.label,
+                patternId: temp.patternId,
+                direction: temp.outgoing ? 'outgoing' : 'incoming',
+                hasDescription: (t.desc) ? true : false
+            };
+            item.relations.push(relation);
+        }
+        return Promise.resolve(data);
+    };
+    ClrLoaderService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        }),
+        __metadata("design:paramtypes", [src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_1__["PatternOntologyService"]])
+    ], ClrLoaderService);
+    return ClrLoaderService;
+}(src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_2__["default"]));
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/loader/group-loader.service.ts":
+/*!******************************************************!*\
+  !*** ./src/app/graph/loader/group-loader.service.ts ***!
+  \******************************************************/
+/*! exports provided: GroupLoaderService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GroupLoaderService", function() { return GroupLoaderService; });
+/* harmony import */ var _core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../../core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/core/model/loader */ "./src/app/core/model/loader.ts");
+/* harmony import */ var _model_group__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../model/group */ "./src/app/graph/model/group.ts");
+/* harmony import */ var src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
+
+
+
+var GroupLoaderService = /** @class */ (function (_super) {
+    __extends(GroupLoaderService, _super);
+    function GroupLoaderService(pos) {
+        var _this = _super.call(this, null, pos) || this;
+        _this.pos = pos;
+        return _this;
+    }
+    GroupLoaderService.prototype.getGraphs = function () {
+        if (!this.supportedIRI) {
+            throw new Error('supportedIRI has not been initialized! Make sure to set the language URI before loading');
+        }
+        var uri = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getFileName(this.supportedIRI);
+        // we cut the patternlanguage of the set supportedIRI to create the uris of the patterns and relations file
+        var index = uri.lastIndexOf('/') + 1;
+        var base = uri;
+        var p = uri + "/" + uri.substr(index) + "-Patterns";
+        var r = uri + "/" + uri.substr(index) + "-Relations";
+        return Promise.resolve([base, p, r]);
+    };
+    GroupLoaderService.prototype.selectContentFromStore = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var qry, graphs;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        qry = "SELECT ?uri ?group ?pattern\n      WHERE {\n          ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://purl.org/patternpedia#PatternSetRelationDescriptor> .\n          ?uri <https://purl.org/patternpedia#hasLabel> ?group .\n          ?uri <https://purl.org/patternpedia#hasPattern> ?pattern .\n      }";
+                        return [4 /*yield*/, this.getGraphs()];
+                    case 1:
+                        graphs = _a.sent();
+                        return [2 /*return*/, this.executor.exec(qry, graphs)];
+                }
+            });
+        });
+    };
+    GroupLoaderService.prototype.mapTriples = function (triples) {
+        var data = [];
+        var _loop_1 = function (t) {
+            var item = data.find(function (i) { return i.uri === t.uri.value; });
+            // create new group if there is no for current uri
+            if (!item) {
+                item = new _model_group__WEBPACK_IMPORTED_MODULE_3__["default"]();
+                item.uri = t.uri.value;
+                item.groupName = t.group.value;
+                item.patterns = [];
+                data.push(item);
+            }
+            // add pattern to group
+            item.patterns.push(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].convertIriToId(t.pattern.value));
+        };
+        for (var _i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
+            var t = triples_1[_i];
+            _loop_1(t);
+        }
+        // there is no group class as we need to inject the data into the individual patterns later on
+        var result = new Map();
+        for (var _a = 0, data_1 = data; _a < data_1.length; _a++) {
+            var i = data_1[_a];
+            result.set(i.uri, i);
+        }
+        return Promise.resolve(result);
+    };
+    GroupLoaderService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+            providedIn: 'root'
+        })
+        /**
+         * Loads all the hyperedges of the given language uri representing groups of patterns.
+         */
+        ,
+        __metadata("design:paramtypes", [_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_0__["PatternOntologyService"]])
+    ], GroupLoaderService);
+    return GroupLoaderService;
+}(src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_2__["default"]));
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/loader/incoming-link-loader.service.ts":
+/*!**************************************************************!*\
+  !*** ./src/app/graph/loader/incoming-link-loader.service.ts ***!
+  \**************************************************************/
+/*! exports provided: IncomingLinkLoaderService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IncomingLinkLoaderService", function() { return IncomingLinkLoaderService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+/* harmony import */ var src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/core/model/loader */ "./src/app/core/model/loader.ts");
+/* harmony import */ var src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
+
+
+var IncomingLinkLoaderService = /** @class */ (function (_super) {
+    __extends(IncomingLinkLoaderService, _super);
+    function IncomingLinkLoaderService(pos) {
+        var _this = _super.call(this, null, pos) || this;
+        _this.pos = pos;
+        return _this;
+    }
+    IncomingLinkLoaderService.prototype.loadContentFromStore = function (uri) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.selectContentFromStore(uri)
+                        .then(function (triples) { return _this.mapTriples(triples, uri); })];
+            });
+        });
+    };
+    IncomingLinkLoaderService.prototype.getGraphs = function () {
+        if (!this.supportedIRI) {
+            throw new Error('supportedIRI has not been initialized! Make sure to set the language URI before loading');
+        }
+        var uri = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI);
+        // we cut the patternlanguage of the set supportedIRI to create the uris of the patterns and relations file
+        var index = uri.lastIndexOf('/') + 1;
+        var base = uri;
+        var p = uri + "/" + uri.substr(index) + "-Patterns";
+        var r = uri + "/" + uri.substr(index) + "-Relations";
+        return Promise.resolve(['https://purl.org/patternpedia', base, p, r]);
+    };
+    IncomingLinkLoaderService.prototype.selectContentFromStore = function (uri) {
+        return __awaiter(this, void 0, void 0, function () {
+            var graphs, uriQry, patterns, qry, _i, patterns_1, entry;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        // we need a specific pattern of form 'pattern#Pattern'
+                        if (!uri) {
+                            return [2 /*return*/, Promise.resolve()];
+                        }
+                        return [4 /*yield*/, this.getGraphs()];
+                    case 1:
+                        graphs = _a.sent();
+                        uriQry = "SELECT ?sourceUri\n      WHERE {\n        ?targetLink a <https://purl.org/patternpedia#DirectedPatternRelationDescriptor> ;\n              <https://purl.org/patternpedia#hasTarget> <" + uri + "> ;\n              <https://purl.org/patternpedia#hasSource> ?sourceUri .\n      }";
+                        return [4 /*yield*/, this.executor.exec(uriQry, graphs)];
+                    case 2:
+                        patterns = _a.sent();
+                        qry = "SELECT ?sourceUri ?sourceName ?linkUri ?description\n      WHERE {\n        ?linkUri a <https://purl.org/patternpedia#DirectedPatternRelationDescriptor> ;\n              <https://purl.org/patternpedia#hasTarget> <" + uri + "> ;\n              <https://purl.org/patternpedia#hasSource> ?sourceUri .\n        ?sourceUri <https://purl.org/patternpedia#hasName> ?sourceName .\n        OPTIONAL { ?linkUri <https://purl.org/patternpedia#hasDescription> ?description }\n      }";
+                        for (_i = 0, patterns_1 = patterns; _i < patterns_1.length; _i++) {
+                            entry = patterns_1[_i];
+                            graphs.push(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(entry.sourceUri.value));
+                        }
+                        return [2 /*return*/, this.executor.exec(qry, graphs)];
+                }
+            });
+        });
+    };
+    IncomingLinkLoaderService.prototype.mapTriples = function (triples, uri) {
+        var data = [];
+        for (var _i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
+            var t = triples_1[_i];
+            var item = {
+                relationId: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIdToIri(t.linkUri.value),
+                label: t.sourceName.value,
+                patternId: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIriToId(t.sourceUri.value),
+                direction: 'incoming',
+                hasDescription: t.description ? true : false
+            };
+            data.push(item);
+        }
+        var result = new Map();
+        for (var _a = 0, data_1 = data; _a < data_1.length; _a++) {
+            var item = data_1[_a];
+            result.set(item.patternId, item);
+        }
+        return Promise.resolve(result);
+    };
+    IncomingLinkLoaderService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        })
+        /**
+         * Loads all incoming links of a given pattern uri within its same language.
+         * Incoming links are directed relations that specify the given pattern as target.
+         */
+        ,
+        __metadata("design:paramtypes", [src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_1__["PatternOntologyService"]])
+    ], IncomingLinkLoaderService);
+    return IncomingLinkLoaderService;
+}(src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_2__["default"]));
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/loader/language-loader.service.ts":
+/*!*********************************************************!*\
+  !*** ./src/app/graph/loader/language-loader.service.ts ***!
+  \*********************************************************/
+/*! exports provided: LanguageLoaderService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LanguageLoaderService", function() { return LanguageLoaderService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/core/model/loader */ "./src/app/core/model/loader.ts");
+/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
+
+var LanguageLoaderService = /** @class */ (function (_super) {
+    __extends(LanguageLoaderService, _super);
+    function LanguageLoaderService(pos) {
+        var _this = _super.call(this, null, pos) || this;
+        _this.pos = pos;
+        return _this;
+    }
+    LanguageLoaderService.prototype.getGraphs = function () {
+        return Promise.resolve([]);
+    };
+    // uri of form <language>
+    LanguageLoaderService.prototype.loadContentFromStore = function (uri) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.selectContentFromStore(uri)
+                        .then(function (triples) { return _this.mapTriples(triples, uri); })];
+            });
+        });
+    };
+    LanguageLoaderService.prototype.selectContentFromStore = function (uri) {
+        var query = "SELECT DISTINCT ?lang\n      WHERE {\n        ?lang a pp:PatternLanguage .\n      }";
+        return this.pos.exec(query, [uri]);
+    };
+    LanguageLoaderService.prototype.mapTriples = function (triples, uri) {
+        var result = new Map();
+        for (var _i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
+            var t = triples_1[_i];
+            result.set(t.lang.value, t.lang.value);
+        }
+        return Promise.resolve(result);
+    };
+    LanguageLoaderService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        })
+        /**
+         * Loads the Language Instance from the given language uri, that is <language#Language> instead of <language>
+         */
+        ,
+        __metadata("design:paramtypes", [src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__["PatternOntologyService"]])
+    ], LanguageLoaderService);
+    return LanguageLoaderService;
+}(src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_1__["default"]));
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/loader/link-info-loader.service.ts":
+/*!**********************************************************!*\
+  !*** ./src/app/graph/loader/link-info-loader.service.ts ***!
+  \**********************************************************/
+/*! exports provided: LinkInfoLoaderService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LinkInfoLoaderService", function() { return LinkInfoLoaderService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+/* harmony import */ var src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/core/model/loader */ "./src/app/core/model/loader.ts");
+/* harmony import */ var src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
+
+
+var LinkInfoLoaderService = /** @class */ (function (_super) {
+    __extends(LinkInfoLoaderService, _super);
+    function LinkInfoLoaderService(pos) {
+        var _this = _super.call(this, null, pos) || this;
+        _this.pos = pos;
+        return _this;
+    }
+    LinkInfoLoaderService.prototype.loadContentFromStore = function (uri) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.selectContentFromStore(uri)
+                        .then(function (triples) { return _this.mapTriples(triples, uri); })];
+            });
+        });
+    };
+    LinkInfoLoaderService.prototype.getGraphs = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var graphs, imports, qV, views, q, languages, ontology;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        graphs = new Set([
+                            src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI)
+                        ]);
+                        return [4 /*yield*/, this.pos.getOWLImports(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI))];
+                    case 1:
+                        imports = _a.sent();
+                        imports.map(function (i) { return i.import.value; }).forEach(function (i) { return graphs.add(i); });
+                        qV = "SELECT DISTINCT ?view\n      WHERE {\n        <" + this.supportedIRI + "> pp:referredByView ?view .\n      }";
+                        return [4 /*yield*/, this.pos.exec(qV, Array.from(graphs))];
+                    case 2:
+                        views = _a.sent();
+                        views.map(function (i) { return i.view.value; }).forEach(function (i) {
+                            var u = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(i);
+                            graphs.add(u);
+                            graphs.add(u + "/" + _this.getLang(u) + "-Relations");
+                        });
+                        q = "SELECT DISTINCT ?graph\n      WHERE {\n        <" + this.supportedIRI + "> pp:referredByView ?view .\n        ?view pp:containsPatternGraph ?graph .\n      }";
+                        return [4 /*yield*/, this.pos.exec(q, Array.from(graphs))];
+                    case 3:
+                        languages = _a.sent();
+                        languages.map(function (i) { return i.graph.value; }).forEach(function (i) { return graphs.add(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(i)); });
+                        ontology = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI);
+                        graphs.add(ontology + "/" + this.getLang(ontology) + "-Patterns");
+                        graphs.add(ontology + "/" + this.getLang(ontology) + "-Relations");
+                        languages.map(function (i) { return i.graph.value; }).forEach(function (i) {
+                            var u = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(i);
+                            graphs.add(u + "/" + _this.getLang(u) + "-Patterns");
+                            graphs.add(u + "/" + _this.getLang(u) + "-Relations");
+                        });
+                        return [2 /*return*/, Array.from(graphs)];
+                }
+            });
+        });
+    };
+    // get last part of language uri, add it with -Patterns and -Relations postfix
+    LinkInfoLoaderService.prototype.getLang = function (uri) {
+        var parts = uri.split('/');
+        var lang = parts[parts.length - 1];
+        return lang;
+    };
+    LinkInfoLoaderService.prototype.selectContentFromStore = function (uri) {
+        return __awaiter(this, void 0, void 0, function () {
+            var qry, graphs;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!uri) {
+                            return [2 /*return*/, Promise.resolve()];
+                        }
+                        qry = "SELECT ?sourcePatternUri ?sourcePatternName ?targetPatternUri ?targetPatternName ?description\n      WHERE {\n        <" + uri + "> <https://purl.org/patternpedia#hasSource> ?sourcePatternUri .\n        ?sourcePatternUri <https://purl.org/patternpedia#hasName> ?sourcePatternName .\n        <" + uri + "> <https://purl.org/patternpedia#hasTarget> ?targetPatternUri .\n        ?targetPatternUri <https://purl.org/patternpedia#hasName> ?targetPatternName .\n        OPTIONAL { <" + uri + "> <https://purl.org/patternpedia#hasDescription> ?description }\n      }";
+                        return [4 /*yield*/, this.getGraphs()];
+                    case 1:
+                        graphs = _a.sent();
+                        return [2 /*return*/, this.executor.exec(qry, graphs)];
+                }
+            });
+        });
+    };
+    LinkInfoLoaderService.prototype.mapTriples = function (triples, uri) {
+        var data = {};
+        // multiple triples only if multiple description values. Other fields are the same for all triple
+        for (var _i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
+            var t = triples_1[_i];
+            data.sourcePatternUri = t.sourcePatternUri.value;
+            data.sourcePatternName = t.sourcePatternName.value;
+            data.targetPatternUri = t.targetPatternUri.value;
+            data.targetPatternName = t.targetPatternName.value;
+            if (!data.descriptions) {
+                data.descriptions = [];
+            }
+            if (t.description && t.description.value) {
+                data.descriptions.push(t.description.value);
+            }
+        }
+        var result = new Map();
+        result.set(uri, {
+            sourcePattern: {
+                id: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIriToId(data.sourcePatternUri),
+                name: data.sourcePatternName
+            },
+            targetPattern: {
+                id: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIriToId(data.targetPatternUri),
+                name: data.targetPatternName
+            },
+            descriptions: data.descriptions
+        });
+        return Promise.resolve(result);
+    };
+    LinkInfoLoaderService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        })
+        /**
+         * Loads information of a given link URI.
+         */
+        ,
+        __metadata("design:paramtypes", [src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_1__["PatternOntologyService"]])
+    ], LinkInfoLoaderService);
+    return LinkInfoLoaderService;
+}(src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_2__["default"]));
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/loader/link-loader.service.ts":
+/*!*****************************************************!*\
+  !*** ./src/app/graph/loader/link-loader.service.ts ***!
+  \*****************************************************/
+/*! exports provided: LinkLoaderService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LinkLoaderService", function() { return LinkLoaderService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/core/model/loader */ "./src/app/core/model/loader.ts");
+/* harmony import */ var src_app_graph_model__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/graph/model */ "./src/app/graph/model/index.ts");
+/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+/* harmony import */ var src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
+
+
+
+var LinkLoaderService = /** @class */ (function (_super) {
+    __extends(LinkLoaderService, _super);
+    function LinkLoaderService(pos) {
+        var _this = _super.call(this, null, pos) || this;
+        _this.pos = pos;
+        return _this;
+    }
+    LinkLoaderService.prototype.getGraphs = function () {
+        if (!this.supportedIRI) {
+            throw new Error('supportedIRI has not been initialized! Make sure to set the language URI before loading');
+        }
+        var uri = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getFileName(this.supportedIRI);
+        // we cut the patternlanguage of the set supportedIRI to create the uris of the patterns and relations file
+        var index = uri.lastIndexOf('/') + 1;
+        var base = uri;
+        var p = uri + "/" + uri.substr(index) + "-Patterns";
+        var r = uri + "/" + uri.substr(index) + "-Relations";
+        return Promise.resolve([base, p, r]);
+    };
+    LinkLoaderService.prototype.selectContentFromStore = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var qry, graphs;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        qry = "SELECT ?uri ?source ?target ?description\n      WHERE {\n          ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://purl.org/patternpedia#DirectedPatternRelationDescriptor> .\n          ?uri <https://purl.org/patternpedia#hasSource> ?source .\n          ?uri <https://purl.org/patternpedia#hasTarget> ?target .\n          OPTIONAL { ?uri <https://purl.org/patternpedia#hasDescription> ?description . }\n      }";
+                        return [4 /*yield*/, this.getGraphs()];
+                    case 1:
+                        graphs = _a.sent();
+                        return [2 /*return*/, this.executor.exec(qry, graphs)];
+                }
+            });
+        });
+    };
+    LinkLoaderService.prototype.mapTriples = function (triples) {
+        var data = [];
+        var _loop_1 = function (t) {
+            var item = data.find(function (i) { return i.uri === t.uri.value; });
+            // if no entry for link yet, create new one
+            if (!item) {
+                item = {
+                    id: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].convertIriToId(t.uri.value),
+                    source: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].convertIriToId(t.source.value),
+                    target: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].convertIriToId(t.target.value),
+                    description: []
+                };
+                data.push(item);
+            }
+            // add description, if available
+            if (t.description) {
+                item.description.push(t.description.value);
+            }
+        };
+        for (var _i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
+            var t = triples_1[_i];
+            _loop_1(t);
+        }
+        // create new Link objects from collected data
+        var result = new Map();
+        for (var _a = 0, data_1 = data; _a < data_1.length; _a++) {
+            var l = data_1[_a];
+            var link = new src_app_graph_model__WEBPACK_IMPORTED_MODULE_2__["Link"](l.source, l.target, null, l.description);
+            link.id = l.id;
+            result.set(l.id, link);
+        }
+        return Promise.resolve(result);
+    };
+    LinkLoaderService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        })
+        /**
+         * Loads all directed links of the given language uri.
+         * NOTE: Set the `supportedIRI` with the corresponding language uri from the outside before loading!
+         */
+        ,
+        __metadata("design:paramtypes", [src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_3__["PatternOntologyService"]])
+    ], LinkLoaderService);
+    return LinkLoaderService;
+}(src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_1__["default"]));
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/loader/outgoing-link-loader.service.ts":
+/*!**************************************************************!*\
+  !*** ./src/app/graph/loader/outgoing-link-loader.service.ts ***!
+  \**************************************************************/
+/*! exports provided: OutgoingLinkLoaderService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OutgoingLinkLoaderService", function() { return OutgoingLinkLoaderService; });
+/* harmony import */ var _core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../../core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/core/model/loader */ "./src/app/core/model/loader.ts");
+/* harmony import */ var src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
+
+
+var OutgoingLinkLoaderService = /** @class */ (function (_super) {
+    __extends(OutgoingLinkLoaderService, _super);
+    function OutgoingLinkLoaderService(pos) {
+        var _this = _super.call(this, null, pos) || this;
+        _this.pos = pos;
+        return _this;
+    }
+    OutgoingLinkLoaderService.prototype.loadContentFromStore = function (uri) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.selectContentFromStore(uri)
+                        .then(function (triples) { return _this.mapTriples(triples, uri); })];
+            });
+        });
+    };
+    OutgoingLinkLoaderService.prototype.getGraphs = function () {
+        if (!this.supportedIRI) {
+            throw new Error('supportedIRI has not been initialized! Make sure to set the language URI before loading');
+        }
+        var uri = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI);
+        // we cut the patternlanguage of the set supportedIRI to create the uris of the patterns and relations file
+        var index = uri.lastIndexOf('/') + 1;
+        var base = uri;
+        var p = uri + "/" + uri.substr(index) + "-Patterns";
+        var r = uri + "/" + uri.substr(index) + "-Relations";
+        return Promise.resolve(['https://purl.org/patternpedia', base, p, r]);
+    };
+    OutgoingLinkLoaderService.prototype.selectContentFromStore = function (uri) {
+        return __awaiter(this, void 0, void 0, function () {
+            var graphs, uriQry, patterns, qry, _i, patterns_1, entry;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        // we need a specific pattern of form 'pattern#Pattern'
+                        if (!uri) {
+                            return [2 /*return*/, Promise.resolve()];
+                        }
+                        return [4 /*yield*/, this.getGraphs()];
+                    case 1:
+                        graphs = _a.sent();
+                        uriQry = "SELECT ?targetUri\n      WHERE {\n        ?targetLink a <https://purl.org/patternpedia#DirectedPatternRelationDescriptor> ;\n              <https://purl.org/patternpedia#hasSource> <" + uri + "> ;\n              <https://purl.org/patternpedia#hasTarget> ?targetUri .\n      }";
+                        return [4 /*yield*/, this.executor.exec(uriQry, graphs)];
+                    case 2:
+                        patterns = _a.sent();
+                        qry = "SELECT ?targetUri ?targetName ?linkUri ?description\n      WHERE {\n        ?linkUri a <https://purl.org/patternpedia#DirectedPatternRelationDescriptor> ;\n              <https://purl.org/patternpedia#hasSource> <" + uri + "> ;\n              <https://purl.org/patternpedia#hasTarget> ?targetUri .\n        ?targetUri <https://purl.org/patternpedia#hasName> ?targetName .\n        OPTIONAL { ?linkUri <https://purl.org/patternpedia#hasDescription> ?description }\n      }";
+                        for (_i = 0, patterns_1 = patterns; _i < patterns_1.length; _i++) {
+                            entry = patterns_1[_i];
+                            graphs.push(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(entry.targetUri.value));
+                        }
+                        return [2 /*return*/, this.executor.exec(qry, graphs)];
+                }
+            });
+        });
+    };
+    OutgoingLinkLoaderService.prototype.mapTriples = function (triples, uri) {
+        var data = [];
+        for (var _i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
+            var t = triples_1[_i];
+            var item = {
+                relationId: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIdToIri(t.linkUri.value),
+                label: t.targetName.value,
+                patternId: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIriToId(t.targetUri.value),
+                direction: 'outgoing',
+                hasDescription: t.description ? true : false
+            };
+            data.push(item);
+        }
+        var result = new Map();
+        for (var _a = 0, data_1 = data; _a < data_1.length; _a++) {
+            var item = data_1[_a];
+            result.set(item.patternId, item);
+        }
+        return Promise.resolve(result);
+    };
+    OutgoingLinkLoaderService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+            providedIn: 'root'
+        })
+        /**
+         * Loads all outgoing links of a given pattern uri within its same language.
+         * Outgoing links are directed relations that specify the given pattern as source.
+         */
+        ,
+        __metadata("design:paramtypes", [_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_0__["PatternOntologyService"]])
+    ], OutgoingLinkLoaderService);
+    return OutgoingLinkLoaderService;
+}(src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_2__["default"]));
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/loader/pattern-clr-check-loader.service.ts":
+/*!******************************************************************!*\
+  !*** ./src/app/graph/loader/pattern-clr-check-loader.service.ts ***!
+  \******************************************************************/
+/*! exports provided: PatternClrCheckLoaderService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PatternClrCheckLoaderService", function() { return PatternClrCheckLoaderService; });
+/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/core/model/loader */ "./src/app/core/model/loader.ts");
+/* harmony import */ var src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
+
+
+var PatternClrCheckLoaderService = /** @class */ (function (_super) {
+    __extends(PatternClrCheckLoaderService, _super);
+    function PatternClrCheckLoaderService(pos) {
+        var _this = _super.call(this, null, pos) || this;
+        _this.pos = pos;
+        return _this;
+    }
+    PatternClrCheckLoaderService.prototype.getGraphs = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var graphs, uri, index, base, p, r, viewsQry, views;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        graphs = ['https://purl.org/patternpedia'];
+                        if (!this.supportedIRI) {
+                            throw new Error('supportedIRI has not been initialized! Make sure to set the language URI before loading');
+                        }
+                        uri = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI);
+                        index = uri.lastIndexOf('/') + 1;
+                        base = uri;
+                        p = uri + "/" + uri.substr(index) + "-Patterns";
+                        r = uri + "/" + uri.substr(index) + "-Relations";
+                        graphs.push(base, p, r);
+                        viewsQry = "SELECT DISTINCT ?view\n      WHERE {\n        <" + this.supportedIRI + "> pp:referredByView ?view .\n      }";
+                        return [4 /*yield*/, this.pos.exec(viewsQry, graphs)];
+                    case 1:
+                        views = _a.sent();
+                        views.map(function (t) { return t.view.value; }).forEach(function (u) {
+                            var uri = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(u);
+                            var index = uri.lastIndexOf('/') + 1;
+                            graphs.push(uri);
+                            graphs.push(uri + "/" + uri.substr(index) + "-Relations");
+                        });
+                        return [2 /*return*/, Promise.resolve(graphs)];
+                }
+            });
+        });
+    };
+    PatternClrCheckLoaderService.prototype.selectContentFromStore = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var qry, graphs;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        qry = "SELECT ?pattern\n      WHERE {\n        {\n          <" + this.supportedIRI + "> pp:containsPattern ?pattern .\n          <" + this.supportedIRI + "> pp:referredByView ?view .\n          ?view pp:containsPatternRelationDescriptor ?relation .\n          ?relation pp:hasSource ?pattern .\n          OPTIONAL { ?relation pp:hasTarget ?pattern }\n        }\n        UNION\n        {\n          <" + this.supportedIRI + "> pp:containsPattern ?pattern .\n          <" + this.supportedIRI + "> pp:referredByView ?view .\n          ?view pp:containsPatternRelationDescriptor ?relation .\n          ?relation pp:hasTarget ?pattern .\n          OPTIONAL { ?relation pp:hasSource ?pattern }\n        }\n      }";
+                        return [4 /*yield*/, this.getGraphs()];
+                    case 1:
+                        graphs = _a.sent();
+                        return [2 /*return*/, this.pos.exec(qry, graphs)];
+                }
+            });
+        });
+    };
+    PatternClrCheckLoaderService.prototype.mapTriples = function (triples) {
+        return __awaiter(this, void 0, void 0, function () {
+            var data, _i, triples_1, t;
+            return __generator(this, function (_a) {
+                data = new Map();
+                for (_i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
+                    t = triples_1[_i];
+                    data.set(t.pattern.value, true);
+                }
+                return [2 /*return*/, Promise.resolve(data)];
+            });
+        });
+    };
+    PatternClrCheckLoaderService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+            providedIn: 'root'
+        })
+        /**
+         * Returns a list containing all patterns that are referred in views and thus are contained in Cross Language Relations.
+         * The Map contains only those patterns with a CLR. Pattern which are not present in the map don't have CLRs.
+         */
+        ,
+        __metadata("design:paramtypes", [src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_0__["PatternOntologyService"]])
+    ], PatternClrCheckLoaderService);
+    return PatternClrCheckLoaderService;
+}(src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_2__["default"]));
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/loader/pattern-data-loader.service.ts":
+/*!*************************************************************!*\
+  !*** ./src/app/graph/loader/pattern-data-loader.service.ts ***!
+  \*************************************************************/
+/*! exports provided: PatternDataLoaderService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PatternDataLoaderService", function() { return PatternDataLoaderService; });
+/* harmony import */ var src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+/* harmony import */ var _link_loader_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./link-loader.service */ "./src/app/graph/loader/link-loader.service.ts");
+/* harmony import */ var _group_loader_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./group-loader.service */ "./src/app/graph/loader/group-loader.service.ts");
+/* harmony import */ var _outgoing_link_loader_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./outgoing-link-loader.service */ "./src/app/graph/loader/outgoing-link-loader.service.ts");
+/* harmony import */ var _incoming_link_loader_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./incoming-link-loader.service */ "./src/app/graph/loader/incoming-link-loader.service.ts");
+/* harmony import */ var _clr_loader_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./clr-loader.service */ "./src/app/graph/loader/clr-loader.service.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+/* harmony import */ var _language_loader_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./language-loader.service */ "./src/app/graph/loader/language-loader.service.ts");
+/* harmony import */ var _link_info_loader_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./link-info-loader.service */ "./src/app/graph/loader/link-info-loader.service.ts");
+/* harmony import */ var _pattern_clr_check_loader_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./pattern-clr-check-loader.service */ "./src/app/graph/loader/pattern-clr-check-loader.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+var PatternDataLoaderService = /** @class */ (function () {
+    function PatternDataLoaderService(pos, linkLoader, groupLoader, outgoingLinkLoader, incomingLinkLoader, clrLoader, languageLoader, linkInfoLoader, patternClrLoader) {
+        this.pos = pos;
+        this.linkLoader = linkLoader;
+        this.groupLoader = groupLoader;
+        this.outgoingLinkLoader = outgoingLinkLoader;
+        this.incomingLinkLoader = incomingLinkLoader;
+        this.clrLoader = clrLoader;
+        this.languageLoader = languageLoader;
+        this.linkInfoLoader = linkInfoLoader;
+        this.patternClrLoader = patternClrLoader;
+    }
+    /**
+     * Loads the directed relations from the given langauge uri from the store.
+     * @param languageUri the URI of the language whos directed relations should be loaded from the store
+     * @returns the links contained in a map, mapping link id to the actual link.
+     */
+    PatternDataLoaderService.prototype.loadDirectedLinks = function (languageUri) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this.linkLoader.supportedIRI = languageUri;
+                return [2 /*return*/, this.linkLoader.loadContentFromStore()];
+            });
+        });
+    };
+    /**
+     * Loads the pattern groups contained in hyperedges from the store via the given language uri.
+     * @param languageUri the URI of the language whos pattern groups should be loaded from the store
+     * @returns the groups contained in a map, mapping group URI to the actual group.
+     */
+    PatternDataLoaderService.prototype.loadGroups = function (languageUri) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this.groupLoader.supportedIRI = languageUri;
+                return [2 /*return*/, this.groupLoader.loadContentFromStore()];
+            });
+        });
+    };
+    /**
+     * Loads the outgoing relations from the given pattern.
+     * @param languageUri the URI of the language containing the given pattern
+     * @param patternUri the URI of the pattern whos outgoing relations should be loaded from the store
+     * @returns the relations contained in a map, mapping related pattern ids to the relation of that other pattern, i.e. the target patterns.
+     */
+    PatternDataLoaderService.prototype.loadOutgoingLinks = function (languageUri, patternUri) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this.outgoingLinkLoader.supportedIRI = languageUri;
+                return [2 /*return*/, this.outgoingLinkLoader.loadContentFromStore(patternUri)];
+            });
+        });
+    };
+    /**
+     * Loads the incoming relations from the given pattern.
+     * @param languageUri the URI of the language containing the given pattern
+     * @param patternUri the URI of the pattern whos incoming relations should be loaded from the store
+     * @returns the relations contained in a map, mapping related pattern ids to the relation of that other pattern, i.e. the source patterns.
+     */
+    PatternDataLoaderService.prototype.loadIncomingLinks = function (languageUri, patternUri) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this.incomingLinkLoader.supportedIRI = languageUri;
+                return [2 /*return*/, this.incomingLinkLoader.loadContentFromStore(patternUri)];
+            });
+        });
+    };
+    /**
+     * Loads all the cross language relations for the given pattern.
+     * @param languageUri the URI of the language containing the given pattern
+     * @param patternUri the URI of the pattern whos cross language relations should be loaded
+     */
+    PatternDataLoaderService.prototype.loadCLRs = function (languageUri, patternUri) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this.clrLoader.supportedIRI = languageUri;
+                return [2 /*return*/, this.clrLoader.loadContentFromStore(patternUri)];
+            });
+        });
+    };
+    /**
+     * Loads the language URI for the given language ontology uri.
+     * Example: For the following given URI 'https://purl.org/patternlanguages/samplelanguage'
+     * it returns 'https://purl.org/patternlanguages/samplelanguage#SampleLanguage'.
+     * @param languageUri the URI of the ontology of the language in form of <language>
+     * @returns the URI of the language in form of <language#Language>
+     */
+    PatternDataLoaderService.prototype.loadLanguage = function (languageUri) {
+        return this.languageLoader.loadContentFromStore(languageUri);
+    };
+    PatternDataLoaderService.prototype.loadLink = function (languageUri, linkUri) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this.linkInfoLoader.supportedIRI = languageUri;
+                return [2 /*return*/, this.linkInfoLoader.loadContentFromStore(linkUri)];
+            });
+        });
+    };
+    /**
+     * Returns all views specified in the given language in form of <view#View>.
+     * @param languageUri the URI of the language whos views should be returned
+     * @returns all views specified in the given language in form of <view#View>
+     */
+    PatternDataLoaderService.prototype.loadViews = function (languageUri) {
+        return __awaiter(this, void 0, void 0, function () {
+            var qry, graphs, triples, data, _i, triples_1, t;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        qry = "SELECT ?view\n      WHERE {\n        <" + languageUri + "> <https://purl.org/patternpedia#referredByView> ?view .\n      }";
+                        graphs = [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].getFileName(languageUri)];
+                        return [4 /*yield*/, this.pos.exec(qry, graphs)];
+                    case 1:
+                        triples = _a.sent();
+                        data = [];
+                        for (_i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
+                            t = triples_1[_i];
+                            data.push(t.view.value);
+                        }
+                        return [2 /*return*/, Promise.resolve(data)];
+                }
+            });
+        });
+    };
+    /**
+     * Returns all referred languages of the given language in form of <language#Language>.
+     * Referred Languages are the other language mentioned in a view, i.e. not the given language.
+     * @param languageUri the URI of the language whos referred languages should be returned
+     * @returns all referred languages of the given language in form of <language#Language>
+     */
+    PatternDataLoaderService.prototype.loadReferredLanguages = function (languageUri) {
+        return __awaiter(this, void 0, void 0, function () {
+            var qry, graphs, views, _i, views_1, v, triples, data, _a, triples_2, t;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        qry = "SELECT ?lang\n      WHERE {\n        <" + languageUri + "> pp:referredByView ?view .\n        ?view pp:containsPatternGraph ?lang .\n        FILTER(?lang != <" + languageUri + ">) .\n      }";
+                        graphs = [src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].getFileName(languageUri)];
+                        return [4 /*yield*/, this.loadViews(languageUri)];
+                    case 1:
+                        views = _b.sent();
+                        for (_i = 0, views_1 = views; _i < views_1.length; _i++) {
+                            v = views_1[_i];
+                            graphs.push(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].getFileName(v));
+                        }
+                        return [4 /*yield*/, this.pos.exec(qry, graphs)];
+                    case 2:
+                        triples = _b.sent();
+                        data = [];
+                        for (_a = 0, triples_2 = triples; _a < triples_2.length; _a++) {
+                            t = triples_2[_a];
+                            data.push(t.lang.value);
+                        }
+                        return [2 /*return*/, Promise.resolve(data)];
+                }
+            });
+        });
+    };
+    /**
+     * Returns a map containing all patterns that are contained in a clr.
+     * The Map has the following structure: Pattern URI -> true.
+     * If a pattern is not present in the list, the pattern does not have any clrs.
+     * @param languageUri the URI of the language whos patterns should be checked for clrs
+     * @returns a map containing all patterns that are contained in a clr
+     */
+    PatternDataLoaderService.prototype.loadPatternClrs = function (languageUri) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this.patternClrLoader.supportedIRI = languageUri;
+                return [2 /*return*/, this.patternClrLoader.loadContentFromStore()];
+            });
+        });
+    };
+    PatternDataLoaderService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_6__["Injectable"])({
+            providedIn: 'root'
+        })
+        /**
+         * This service acts as facade for the other pattern loader services.
+         * With this, all the other services do not have to be injected manually every time.
+         */
+        ,
+        __metadata("design:paramtypes", [src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_7__["PatternOntologyService"],
+            _link_loader_service__WEBPACK_IMPORTED_MODULE_1__["LinkLoaderService"],
+            _group_loader_service__WEBPACK_IMPORTED_MODULE_2__["GroupLoaderService"],
+            _outgoing_link_loader_service__WEBPACK_IMPORTED_MODULE_3__["OutgoingLinkLoaderService"],
+            _incoming_link_loader_service__WEBPACK_IMPORTED_MODULE_4__["IncomingLinkLoaderService"],
+            _clr_loader_service__WEBPACK_IMPORTED_MODULE_5__["ClrLoaderService"],
+            _language_loader_service__WEBPACK_IMPORTED_MODULE_8__["LanguageLoaderService"],
+            _link_info_loader_service__WEBPACK_IMPORTED_MODULE_9__["LinkInfoLoaderService"],
+            _pattern_clr_check_loader_service__WEBPACK_IMPORTED_MODULE_10__["PatternClrCheckLoaderService"]])
+    ], PatternDataLoaderService);
+    return PatternDataLoaderService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/model/group.ts":
+/*!**************************************!*\
+  !*** ./src/app/graph/model/group.ts ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/**
+ * Class representing the information of a group of patterns.
+ */
+var Group = /** @class */ (function () {
+    function Group() {
+    }
+    return Group;
+}());
+/* harmony default export */ __webpack_exports__["default"] = (Group);
+
+
+/***/ }),
+
+/***/ "./src/app/graph/model/index.ts":
+/*!**************************************!*\
+  !*** ./src/app/graph/model/index.ts ***!
+  \**************************************/
+/*! exports provided: Node, Link, NetworkGraph, NodeInfo, PatternRelation, Pattern */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node */ "./src/app/graph/model/node.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Node", function() { return _node__WEBPACK_IMPORTED_MODULE_0__["Node"]; });
+
+/* harmony import */ var _link__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./link */ "./src/app/graph/model/link.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Link", function() { return _link__WEBPACK_IMPORTED_MODULE_1__["Link"]; });
+
+/* harmony import */ var _network_graph__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./network-graph */ "./src/app/graph/model/network-graph.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "NetworkGraph", function() { return _network_graph__WEBPACK_IMPORTED_MODULE_2__["NetworkGraph"]; });
+
+/* harmony import */ var _node_info__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node-info */ "./src/app/graph/model/node-info.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "NodeInfo", function() { return _node_info__WEBPACK_IMPORTED_MODULE_3__["NodeInfo"]; });
+
+/* harmony import */ var _group__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./group */ "./src/app/graph/model/group.ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _pattern_relation__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pattern-relation */ "./src/app/graph/model/pattern-relation.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PatternRelation", function() { return _pattern_relation__WEBPACK_IMPORTED_MODULE_5__["PatternRelation"]; });
+
+/* harmony import */ var _pattern__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pattern */ "./src/app/graph/model/pattern.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Pattern", function() { return _pattern__WEBPACK_IMPORTED_MODULE_6__["Pattern"]; });
+
+
+
+
+
+
+
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/model/link.ts":
+/*!*************************************!*\
+  !*** ./src/app/graph/model/link.ts ***!
+  \*************************************/
+/*! exports provided: Link */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Link", function() { return Link; });
+var Link = /** @class */ (function () {
+    function Link(source, target, weight, description) {
+        if (weight === void 0) { weight = 'see also'; }
+        this.source = source;
+        this.target = target;
+        this.weight = weight;
+        this.description = description;
+    }
+    return Link;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/model/network-graph.ts":
+/*!**********************************************!*\
+  !*** ./src/app/graph/model/network-graph.ts ***!
+  \**********************************************/
+/*! exports provided: NetworkGraph */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NetworkGraph", function() { return NetworkGraph; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _link__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./link */ "./src/app/graph/model/link.ts");
+/* harmony import */ var d3__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! d3 */ "./node_modules/d3/index.js");
+
+
+
+var DEFAULT_CONFIG = {
+    charge: -4000,
+    xStrength: 1,
+    yStrength: 1,
+    linkDistance: 300,
+    linkStrength: 0.5
+};
+var NetworkGraph = /** @class */ (function () {
+    function NetworkGraph(nodes, links, options, config) {
+        this.ticker = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.nodes = [];
+        this.links = [];
+        this.nodes = nodes;
+        this.links = links;
+        this.config = config || DEFAULT_CONFIG;
+        this.initSimulation(options);
+    }
+    NetworkGraph.prototype.connectNodes = function (source, target) {
+        var link;
+        if (!this.nodes[source] || !this.nodes[target]) {
+            throw new Error('One of the nodes does not exist');
+        }
+        link = new _link__WEBPACK_IMPORTED_MODULE_1__["Link"](source, target);
+        this.simulation.stop();
+        this.links.push(link);
+        this.simulation.alphaTarget(0.3).restart();
+        this.initLinks();
+    };
+    NetworkGraph.prototype.initNodes = function () {
+        if (!this.simulation) {
+            throw new Error('simulation was not initialized yet');
+        }
+        this.simulation.nodes(this.nodes);
+    };
+    NetworkGraph.prototype.initLinks = function () {
+        if (!this.simulation) {
+            throw new Error('simulation was not initialized yet');
+        }
+        this.simulation.force('links', d3__WEBPACK_IMPORTED_MODULE_2__["forceLink"](this.links)
+            .id(function (d) { return d['id']; })
+            .distance(this.config.linkDistance)
+            .strength(this.config.linkStrength));
+    };
+    NetworkGraph.prototype.initSimulation = function (options) {
+        if (!options || !options.width || !options.height) {
+            throw new Error('missing options when initializing simulation');
+        }
+        /** Creating the simulation */
+        if (!this.simulation) {
+            var ticker_1 = this.ticker;
+            this.simulation = d3__WEBPACK_IMPORTED_MODULE_2__["forceSimulation"]()
+                .force('charge', d3__WEBPACK_IMPORTED_MODULE_2__["forceManyBody"]().strength(this.config.charge))
+                .force('center', d3__WEBPACK_IMPORTED_MODULE_2__["forceCenter"](options.width / 2, options.height / 2))
+                .force('x', d3__WEBPACK_IMPORTED_MODULE_2__["forceX"](options.width / 2).strength(this.config.xStrength))
+                .force('y', d3__WEBPACK_IMPORTED_MODULE_2__["forceY"](options.height / 2).strength(this.config.yStrength));
+            // Connecting the d3 ticker to an angular event emitter
+            this.simulation.on('tick', function () {
+                ticker_1.emit(this);
+            });
+            this.initNodes();
+            this.initLinks();
+        }
+        /** Updating the central force of the simulation */
+        this.simulation.force('centers', d3__WEBPACK_IMPORTED_MODULE_2__["forceCenter"](options.width / 2, options.height / 2));
+        /** Restarting the simulation internal timer */
+        this.simulation.restart();
+    };
+    return NetworkGraph;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/model/node-info.ts":
+/*!******************************************!*\
+  !*** ./src/app/graph/model/node-info.ts ***!
+  \******************************************/
+/*! exports provided: NodeInfo */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NodeInfo", function() { return NodeInfo; });
+/**
+ * Contains the informations displayed in the Node-Infobox component.
+ */
+var NodeInfo = /** @class */ (function () {
+    function NodeInfo() {
+    }
+    return NodeInfo;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/model/node.ts":
+/*!*************************************!*\
+  !*** ./src/app/graph/model/node.ts ***!
+  \*************************************/
+/*! exports provided: Node */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Node", function() { return Node; });
+var Node = /** @class */ (function () {
+    function Node(id) {
+        this.id = id;
+    }
+    return Node;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/model/pattern-relation.ts":
+/*!*************************************************!*\
+  !*** ./src/app/graph/model/pattern-relation.ts ***!
+  \*************************************************/
+/*! exports provided: PatternRelation */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PatternRelation", function() { return PatternRelation; });
+var PatternRelation = /** @class */ (function () {
+    function PatternRelation() {
+    }
+    return PatternRelation;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/model/pattern.ts":
+/*!****************************************!*\
+  !*** ./src/app/graph/model/pattern.ts ***!
+  \****************************************/
+/*! exports provided: Pattern */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Pattern", function() { return Pattern; });
+var Pattern = /** @class */ (function () {
+    function Pattern() {
+    }
+    return Pattern;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/graph/service/d3.service.ts":
+/*!*********************************************!*\
+  !*** ./src/app/graph/service/d3.service.ts ***!
+  \*********************************************/
+/*! exports provided: D3Service */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "D3Service", function() { return D3Service; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../model */ "./src/app/graph/model/index.ts");
+/* harmony import */ var d3__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! d3 */ "./node_modules/d3/index.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var D3Service = /** @class */ (function () {
+    function D3Service() {
+    }
+    D3Service.prototype.getNetworkGraph = function (nodes, links, options) {
+        var ng = new _model__WEBPACK_IMPORTED_MODULE_1__["NetworkGraph"](nodes, links, options);
+        return ng;
+    };
+    D3Service.prototype.applyZoomableBehaviour = function (svgElement, containerElement) {
+        var svg, container, zoomed, zoom;
+        svg = d3__WEBPACK_IMPORTED_MODULE_2__["select"](svgElement);
+        container = d3__WEBPACK_IMPORTED_MODULE_2__["select"](containerElement);
+        zoomed = function () {
+            var transform = d3__WEBPACK_IMPORTED_MODULE_2__["event"].transform;
+            container.attr('transform', 'translate(' + transform.x + ',' + transform.y + ') scale(' + transform.k + ')');
+        };
+        zoom = d3__WEBPACK_IMPORTED_MODULE_2__["zoom"]().on('zoom', zoomed);
+        svg.call(zoom);
+    };
+    D3Service.prototype.applyDraggableBehaviour = function (element, node, graph) {
+        var d3element = d3__WEBPACK_IMPORTED_MODULE_2__["select"](element);
+        function started() {
+            /** Preventing propagation of dragstart to parent elements */
+            d3__WEBPACK_IMPORTED_MODULE_2__["event"].sourceEvent.stopPropagation();
+            if (!d3__WEBPACK_IMPORTED_MODULE_2__["event"].active) {
+                graph.simulation.alphaTarget(0.3).restart();
+            }
+            d3__WEBPACK_IMPORTED_MODULE_2__["event"].on('drag', dragged).on('end', ended);
+            function dragged() {
+                node.fx = d3__WEBPACK_IMPORTED_MODULE_2__["event"].x;
+                node.fy = d3__WEBPACK_IMPORTED_MODULE_2__["event"].y;
+            }
+            function ended() {
+                if (!d3__WEBPACK_IMPORTED_MODULE_2__["event"].active) {
+                    graph.simulation.alphaTarget(0);
+                }
+                node.fx = null;
+                node.fy = null;
+            }
+        }
+        d3element.call(d3__WEBPACK_IMPORTED_MODULE_2__["drag"]()
+            .on('start', started));
+    };
+    D3Service = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        }),
+        __metadata("design:paramtypes", [])
+    ], D3Service);
+    return D3Service;
+}());
+
 
 
 /***/ }),
@@ -10338,6 +12297,320 @@ var CreatePatternComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/pattern-language-management/loader/pl-link-loader.service.ts":
+/*!******************************************************************************!*\
+  !*** ./src/app/pattern-language-management/loader/pl-link-loader.service.ts ***!
+  \******************************************************************************/
+/*! exports provided: PlLinkLoaderService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PlLinkLoaderService", function() { return PlLinkLoaderService; });
+/* harmony import */ var src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+/* harmony import */ var src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/core/model/loader */ "./src/app/core/model/loader.ts");
+/* harmony import */ var src_app_graph_model__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/graph/model */ "./src/app/graph/model/index.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
+
+
+
+var PlLinkLoaderService = /** @class */ (function (_super) {
+    __extends(PlLinkLoaderService, _super);
+    function PlLinkLoaderService(pos) {
+        var _this = _super.call(this, null, pos) || this;
+        _this.pos = pos;
+        return _this;
+    }
+    PlLinkLoaderService.prototype.getGraphs = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var graphs, langsQry, langs, _i, langs_1, l, viewsQry, views, _a, views_1, v;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        graphs = [];
+                        graphs.push('https://purl.org/patternpedia');
+                        langsQry = "SELECT ?lang\n      WHERE {\n        pp:LinkedOpenPatterns pp:containsPatternGraph ?lang .\n      }";
+                        return [4 /*yield*/, this.pos.exec(langsQry, graphs)];
+                    case 1:
+                        langs = _b.sent();
+                        for (_i = 0, langs_1 = langs; _i < langs_1.length; _i++) {
+                            l = langs_1[_i];
+                            graphs.push(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].getFileName(l.lang.value));
+                        }
+                        viewsQry = "SELECT ?view\n      WHERE {\n        pp:LinkedOpenPatterns pp:containsPatternGraph ?lang .\n        ?lang pp:referredByView ?view .\n      }";
+                        return [4 /*yield*/, this.pos.exec(viewsQry, graphs)];
+                    case 2:
+                        views = _b.sent();
+                        for (_a = 0, views_1 = views; _a < views_1.length; _a++) {
+                            v = views_1[_a];
+                            graphs.push(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].getFileName(v.view.value));
+                        }
+                        return [2 /*return*/, Promise.resolve(graphs)];
+                }
+            });
+        });
+    };
+    PlLinkLoaderService.prototype.selectContentFromStore = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var qry, graphs;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        qry = "SELECT ?source ?target\n      WHERE {\n        pp:LinkedOpenPatterns pp:containsPatternGraph ?source .\n        ?source pp:referredByView ?view .\n        ?view pp:containsPatternGraph ?target .\n        FILTER( ?target != ?source ) .\n      }";
+                        return [4 /*yield*/, this.getGraphs()];
+                    case 1:
+                        graphs = _a.sent();
+                        return [2 /*return*/, this.pos.exec(qry, graphs)];
+                }
+            });
+        });
+    };
+    PlLinkLoaderService.prototype.mapTriples = function (triples) {
+        return __awaiter(this, void 0, void 0, function () {
+            var data, _i, triples_1, t, source, target, link;
+            return __generator(this, function (_a) {
+                data = new Map();
+                for (_i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
+                    t = triples_1[_i];
+                    source = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].convertIriToId(t.source.value);
+                    target = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].convertIriToId(t.target.value);
+                    link = new src_app_graph_model__WEBPACK_IMPORTED_MODULE_4__["Link"](source, target);
+                    data.set(source + "-to-" + target, link);
+                }
+                return [2 /*return*/, Promise.resolve(data)];
+            });
+        });
+    };
+    PlLinkLoaderService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+            providedIn: 'root'
+        })
+        /**
+        * Loads all pattern language links as defined by their referred views and returns them.
+        */
+        ,
+        __metadata("design:paramtypes", [src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_2__["PatternOntologyService"]])
+    ], PlLinkLoaderService);
+    return PlLinkLoaderService;
+}(src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_3__["default"]));
+
+
+
+/***/ }),
+
+/***/ "./src/app/pattern-language-management/loader/pl-node-loader.service.ts":
+/*!******************************************************************************!*\
+  !*** ./src/app/pattern-language-management/loader/pl-node-loader.service.ts ***!
+  \******************************************************************************/
+/*! exports provided: PlNodeLoaderService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PlNodeLoaderService", function() { return PlNodeLoaderService; });
+/* harmony import */ var _core_util_iri_converter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../../core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+/* harmony import */ var src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/core/model/loader */ "./src/app/core/model/loader.ts");
+/* harmony import */ var src_app_graph_model__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/graph/model */ "./src/app/graph/model/index.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
+
+
+
+var PlNodeLoaderService = /** @class */ (function (_super) {
+    __extends(PlNodeLoaderService, _super);
+    function PlNodeLoaderService(pos) {
+        var _this = _super.call(this, null, pos) || this;
+        _this.pos = pos;
+        return _this;
+    }
+    PlNodeLoaderService.prototype.getGraphs = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var graphs, langsQry, langs, _i, langs_1, l;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        graphs = [];
+                        graphs.push('https://purl.org/patternpedia');
+                        langsQry = "SELECT ?lang\n    WHERE {\n      pp:LinkedOpenPatterns pp:containsPatternGraph ?lang .\n    }";
+                        return [4 /*yield*/, this.pos.exec(langsQry, graphs)];
+                    case 1:
+                        langs = _a.sent();
+                        for (_i = 0, langs_1 = langs; _i < langs_1.length; _i++) {
+                            l = langs_1[_i];
+                            graphs.push(_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].getFileName(l.lang.value));
+                        }
+                        return [2 /*return*/, Promise.resolve(graphs)];
+                }
+            });
+        });
+    };
+    PlNodeLoaderService.prototype.selectContentFromStore = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var qry, graphs;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        qry = "SELECT ?lang ?name\n      WHERE {\n        pp:LinkedOpenPatterns pp:containsPatternGraph ?lang .\n        ?lang pp:hasName ?name .\n      }";
+                        return [4 /*yield*/, this.getGraphs()];
+                    case 1:
+                        graphs = _a.sent();
+                        return [2 /*return*/, this.pos.exec(qry, graphs)];
+                }
+            });
+        });
+    };
+    PlNodeLoaderService.prototype.mapTriples = function (triples) {
+        return __awaiter(this, void 0, void 0, function () {
+            var data, _i, triples_1, t, node;
+            return __generator(this, function (_a) {
+                data = new Map();
+                for (_i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
+                    t = triples_1[_i];
+                    node = new src_app_graph_model__WEBPACK_IMPORTED_MODULE_4__["Node"](_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].convertIriToId(t.lang.value));
+                    node.name = t.name.value;
+                    data.set(t.lang.value, node);
+                }
+                return [2 /*return*/, Promise.resolve(data)];
+            });
+        });
+    };
+    PlNodeLoaderService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])({
+            providedIn: 'root'
+        })
+        /**
+        * Loads all language URIs and language Name defined in the LinkedOpenPatterns entity and returns them.
+        * URIS are inform of <language#Language>.
+        */
+        ,
+        __metadata("design:paramtypes", [src_app_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_1__["PatternOntologyService"]])
+    ], PlNodeLoaderService);
+    return PlNodeLoaderService;
+}(src_app_core_model_loader__WEBPACK_IMPORTED_MODULE_3__["default"]));
+
+
+
+/***/ }),
+
 /***/ "./src/app/pattern-language-management/pattern-container/pattern-container.component.html":
 /*!************************************************************************************************!*\
   !*** ./src/app/pattern-language-management/pattern-container/pattern-container.component.html ***!
@@ -10345,7 +12618,7 @@ var CreatePatternComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-card>\n    <ng-template ppPatternContainer [plId]=\"plId\" [pId]=\"pId\"></ng-template>\n</mat-card>\n"
+module.exports = "<!-- tab view if there are multiple renderer for the language available -->\n<mat-tab-group *ngIf=\"renderer && renderer.length > 1; else singleRenderer\">\n  <!-- create a new tab for each available renderer -->\n  <mat-tab label=\"{{r.label || 'Tab ' + (i+1)}}\" *ngFor=\"let r of renderer; let i = index\">\n    <mat-card>\n      <ng-template ppPatternContainer [plId]=\"plId\" [pId]=\"pId\" [index]=\"i\"></ng-template>\n    </mat-card>\n  </mat-tab>\n</mat-tab-group>\n\n<!-- else, render everything in a single card -->\n<ng-template #singleRenderer>\n  <mat-card>\n      <ng-template ppPatternContainer [plId]=\"plId\" [pId]=\"pId\"></ng-template>\n  </mat-card>\n</ng-template>\n"
 
 /***/ }),
 
@@ -10372,6 +12645,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PatternContainerComponent", function() { return PatternContainerComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var src_app_core_service_component_registry_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/core/service/component-registry.service */ "./src/app/core/service/component-registry.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -10383,13 +12657,25 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
+
 var PatternContainerComponent = /** @class */ (function () {
-    function PatternContainerComponent(route) {
+    function PatternContainerComponent(route, compRegistry) {
         this.route = route;
+        this.compRegistry = compRegistry;
     }
     PatternContainerComponent.prototype.ngOnInit = function () {
-        this.plId = this.route.snapshot.params['plid'];
-        this.pId = this.route.snapshot.params['pid'];
+        // this.plId = this.route.snapshot.params['plid'];
+        // this.pId = this.route.snapshot.params['pid'];
+        // this.renderer = this.compRegistry.getRenderingComponents(this.plId);
+        var _this = this;
+        this.route.params.subscribe(function (params) {
+            _this.setUpRenderer(params['plid'], params['pid']);
+        });
+    };
+    PatternContainerComponent.prototype.setUpRenderer = function (plid, pid) {
+        this.plId = plid;
+        this.pId = pid;
+        this.renderer = this.compRegistry.getRenderingComponents(this.plId);
     };
     PatternContainerComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -10397,7 +12683,8 @@ var PatternContainerComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./pattern-container.component.html */ "./src/app/pattern-language-management/pattern-container/pattern-container.component.html"),
             styles: [__webpack_require__(/*! ./pattern-container.component.scss */ "./src/app/pattern-language-management/pattern-container/pattern-container.component.scss")]
         }),
-        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"]])
+        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"],
+            src_app_core_service_component_registry_service__WEBPACK_IMPORTED_MODULE_2__["ComponentRegistryService"]])
     ], PatternContainerComponent);
     return PatternContainerComponent;
 }());
@@ -10419,6 +12706,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _core_service_component_registry_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../core/service/component-registry.service */ "./src/app/core/service/component-registry.service.ts");
 /* harmony import */ var _core_default_pattern_renderer_default_pattern_renderer_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../core/default-pattern-renderer/default-pattern-renderer.component */ "./src/app/core/default-pattern-renderer/default-pattern-renderer.component.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -10432,31 +12729,33 @@ __webpack_require__.r(__webpack_exports__);
  *
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 
 
 
 var PatternContainerDirective = /** @class */ (function () {
-    function PatternContainerDirective(viewContainerRef, componentFactoryResolver, compRegistry) {
+    function PatternContainerDirective(viewContainerRef, componentFactoryResolver, compRegistry, cdr) {
         this.viewContainerRef = viewContainerRef;
         this.componentFactoryResolver = componentFactoryResolver;
         this.compRegistry = compRegistry;
+        this.cdr = cdr;
     }
     PatternContainerDirective.prototype.ngOnInit = function () {
-        var componentFactory = this.compRegistry.getPLRenderingComponents(this.plId) ?
-            this.componentFactoryResolver.resolveComponentFactory(this.compRegistry.getPLRenderingComponents(this.plId).pcomponent) :
+        var renderingComponent = this.compRegistry.getPLRenderingComponents(this.plId, this.index);
+        var componentFactory = renderingComponent ?
+            this.componentFactoryResolver.resolveComponentFactory(renderingComponent.pcomponent) :
             this.componentFactoryResolver.resolveComponentFactory(_core_default_pattern_renderer_default_pattern_renderer_component__WEBPACK_IMPORTED_MODULE_2__["DefaultPatternRendererComponent"]);
         this.viewContainerRef.clear();
         var componentRef = this.viewContainerRef.createComponent(componentFactory);
-        componentRef.instance.pId = this.pId;
+        this.ref = componentRef.instance;
+        this.ref.pId = this.pId;
+    };
+    PatternContainerDirective.prototype.ngOnChanges = function (changes) {
+        if (changes['pId']
+            && this.ref
+            && (JSON.stringify(changes['pId'].currentValue) !== JSON.stringify(changes['pId'].previousValue))) {
+            // this.ref.pId = this.pId;
+            this.cdr.detectChanges();
+        }
     };
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
@@ -10466,13 +12765,18 @@ var PatternContainerDirective = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
         __metadata("design:type", String)
     ], PatternContainerDirective.prototype, "pId", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Number)
+    ], PatternContainerDirective.prototype, "index", void 0);
     PatternContainerDirective = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"])({
             selector: '[ppPatternContainer]'
         }),
         __metadata("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewContainerRef"],
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ComponentFactoryResolver"],
-            _core_service_component_registry_service__WEBPACK_IMPORTED_MODULE_1__["ComponentRegistryService"]])
+            _core_service_component_registry_service__WEBPACK_IMPORTED_MODULE_1__["ComponentRegistryService"],
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"]])
     ], PatternContainerDirective);
     return PatternContainerDirective;
 }());
@@ -10547,7 +12851,16 @@ var PatternLanguageContainerComponent = /** @class */ (function () {
         this.compRegistry = compRegistry;
     }
     PatternLanguageContainerComponent.prototype.ngOnInit = function () {
-        this.plId = this.route.snapshot.params['plid'];
+        // this.plId = this.route.snapshot.params['plid'];
+        // this.renderer = this.compRegistry.getRenderingComponents(this.plId);
+        var _this = this;
+        // language id changes if we navigate in component -> container needs to get informed
+        this.route.params.subscribe(function (params) {
+            _this.setUpRenderer(params['plid']);
+        });
+    };
+    PatternLanguageContainerComponent.prototype.setUpRenderer = function (plid) {
+        this.plId = plid;
         this.renderer = this.compRegistry.getRenderingComponents(this.plId);
     };
     PatternLanguageContainerComponent = __decorate([
@@ -10633,6 +12946,196 @@ var PatternLanguageContainerDirective = /** @class */ (function () {
             _core_service_component_registry_service__WEBPACK_IMPORTED_MODULE_1__["ComponentRegistryService"]])
     ], PatternLanguageContainerDirective);
     return PatternLanguageContainerDirective;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/pattern-language-management/pattern-language-graph/pattern-language-graph.component.html":
+/*!**********************************************************************************************************!*\
+  !*** ./src/app/pattern-language-management/pattern-language-graph/pattern-language-graph.component.html ***!
+  \**********************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n<div *ngIf=\"data; else loading\">\n  <pp-graph\n    #graph\n    [links]=\"data.links\"\n    [nodes]=\"data.nodes\"\n    (nodeSelectEvent)=\"selectNode($event)\">\n  </pp-graph>\n</div>\n<ng-template #loading>Loading Data ... </ng-template>\n"
+
+/***/ }),
+
+/***/ "./src/app/pattern-language-management/pattern-language-graph/pattern-language-graph.component.scss":
+/*!**********************************************************************************************************!*\
+  !*** ./src/app/pattern-language-management/pattern-language-graph/pattern-language-graph.component.scss ***!
+  \**********************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3BhdHRlcm4tbGFuZ3VhZ2UtbWFuYWdlbWVudC9wYXR0ZXJuLWxhbmd1YWdlLWdyYXBoL3BhdHRlcm4tbGFuZ3VhZ2UtZ3JhcGguY29tcG9uZW50LnNjc3MifQ== */"
+
+/***/ }),
+
+/***/ "./src/app/pattern-language-management/pattern-language-graph/pattern-language-graph.component.ts":
+/*!********************************************************************************************************!*\
+  !*** ./src/app/pattern-language-management/pattern-language-graph/pattern-language-graph.component.ts ***!
+  \********************************************************************************************************/
+/*! exports provided: PatternLanguageGraphComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PatternLanguageGraphComponent", function() { return PatternLanguageGraphComponent; });
+/* harmony import */ var _core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../../core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+/* harmony import */ var _loader_pl_link_loader_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../loader/pl-link-loader.service */ "./src/app/pattern-language-management/loader/pl-link-loader.service.ts");
+/* harmony import */ var _loader_pl_node_loader_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../loader/pl-node-loader.service */ "./src/app/pattern-language-management/loader/pl-node-loader.service.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
+
+
+
+
+var PatternLanguageGraphComponent = /** @class */ (function () {
+    function PatternLanguageGraphComponent(pos, nodeLoader, linkLoader, zone, router) {
+        this.pos = pos;
+        this.nodeLoader = nodeLoader;
+        this.linkLoader = linkLoader;
+        this.zone = zone;
+        this.router = router;
+    }
+    PatternLanguageGraphComponent.prototype.loadData = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                // load patternpedia
+                return [2 /*return*/, this.pos.loadUrisToStore([{ value: 'https://purl.org/patternpedia' }])
+                        // load language-base-files
+                        // we first need a query to get all defined languages
+                        .then(function () {
+                        var langsQry = "SELECT ?lang\n        WHERE {\n          pp:LinkedOpenPatterns pp:containsPatternGraph ?lang .\n        }";
+                        return _this.pos.exec(langsQry, ['https://purl.org/patternpedia']);
+                    })
+                        .then(function (langs) {
+                        var uris = [];
+                        for (var _i = 0, langs_1 = langs; _i < langs_1.length; _i++) {
+                            var l = langs_1[_i];
+                            uris.push({ value: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getFileName(l.lang.value) });
+                        }
+                        return _this.pos.loadUrisToStore(uris);
+                    })
+                        // load view-base-files
+                        // we need all defined languages as graph for the query to get all views
+                        .then(function () {
+                        var langsQry = "SELECT ?lang\n        WHERE {\n          pp:LinkedOpenPatterns pp:containsPatternGraph ?lang .\n        }";
+                        return _this.pos.exec(langsQry, ['https://purl.org/patternpedia']);
+                    })
+                        .then(function (langs) {
+                        var graphs = ['https://purl.org/patternpedia'];
+                        for (var _i = 0, langs_2 = langs; _i < langs_2.length; _i++) {
+                            var l = langs_2[_i];
+                            graphs.push(src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getFileName(l.lang.value));
+                        }
+                        var viewsQry = "SELECT ?view\n      WHERE {\n        pp:LinkedOpenPatterns pp:containsPatternGraph ?lang .\n        ?lang pp:referredByView ?view .\n      }";
+                        return _this.pos.exec(viewsQry, graphs);
+                    })
+                        .then(function (views) {
+                        var uris = [];
+                        for (var _i = 0, views_1 = views; _i < views_1.length; _i++) {
+                            var v = views_1[_i];
+                            uris.push({ value: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_4__["IriConverter"].getFileName(v.view.value) });
+                        }
+                        return _this.pos.loadUrisToStore(uris);
+                    })];
+            });
+        });
+    };
+    PatternLanguageGraphComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        // load all neccessairy data first: patternpedia, all language-base-files, and all view-base-files
+        this.loadData()
+            // get data
+            .then(function () {
+            return Promise.all([
+                _this.nodeLoader.loadContentFromStore(),
+                _this.linkLoader.loadContentFromStore()
+            ]);
+        })
+            // set data
+            .then(function (values) {
+            _this.nodes = Array.from(values[0].values());
+            _this.links = Array.from(values[1].values());
+            _this.data = {
+                nodes: _this.nodes,
+                links: _this.links
+            };
+        });
+    };
+    PatternLanguageGraphComponent.prototype.selectNode = function (languageId) {
+        var _this = this;
+        console.log("Selected: " + languageId);
+        // navigate to the language
+        this.zone.run(function () {
+            _this.router.navigate(['/patternlanguages', languageId]);
+        });
+    };
+    PatternLanguageGraphComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"])({
+            selector: 'pp-pattern-language-graph',
+            template: __webpack_require__(/*! ./pattern-language-graph.component.html */ "./src/app/pattern-language-management/pattern-language-graph/pattern-language-graph.component.html"),
+            styles: [__webpack_require__(/*! ./pattern-language-graph.component.scss */ "./src/app/pattern-language-management/pattern-language-graph/pattern-language-graph.component.scss")]
+        }),
+        __metadata("design:paramtypes", [_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_0__["PatternOntologyService"],
+            _loader_pl_node_loader_service__WEBPACK_IMPORTED_MODULE_2__["PlNodeLoaderService"],
+            _loader_pl_link_loader_service__WEBPACK_IMPORTED_MODULE_1__["PlLinkLoaderService"],
+            _angular_core__WEBPACK_IMPORTED_MODULE_3__["NgZone"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]])
+    ], PatternLanguageGraphComponent);
+    return PatternLanguageGraphComponent;
 }());
 
 
@@ -10738,22 +13241,31 @@ var PatternLanguageManagementRoutingModule = /** @class */ (function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PatternLanguageManagementModule", function() { return PatternLanguageManagementModule; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
-/* harmony import */ var _pattern_language_management_routing_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pattern-language-management-routing.module */ "./src/app/pattern-language-management/pattern-language-management-routing.module.ts");
-/* harmony import */ var _pattern_language_management_pattern_language_management_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pattern-language-management/pattern-language-management.component */ "./src/app/pattern-language-management/pattern-language-management/pattern-language-management.component.ts");
-/* harmony import */ var _core_core_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../core/core.module */ "./src/app/core/core.module.ts");
-/* harmony import */ var _pattern_language_container_pattern_language_container_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pattern-language-container/pattern-language-container.component */ "./src/app/pattern-language-management/pattern-language-container/pattern-language-container.component.ts");
-/* harmony import */ var _pattern_language_container_pattern_language_container_directive__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pattern-language-container/pattern-language-container.directive */ "./src/app/pattern-language-management/pattern-language-container/pattern-language-container.directive.ts");
-/* harmony import */ var _pattern_container_pattern_container_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./pattern-container/pattern-container.component */ "./src/app/pattern-language-management/pattern-container/pattern-container.component.ts");
-/* harmony import */ var _pattern_container_pattern_container_directive__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./pattern-container/pattern-container.directive */ "./src/app/pattern-language-management/pattern-container/pattern-container.directive.ts");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var _create_edit_pattern_language_create_edit_pattern_language_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./create-edit-pattern-language/create-edit-pattern-language.component */ "./src/app/pattern-language-management/create-edit-pattern-language/create-edit-pattern-language.component.ts");
-/* harmony import */ var _create_pattern_create_pattern_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./create-pattern/create-pattern.component */ "./src/app/pattern-language-management/create-pattern/create-pattern.component.ts");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
-/* harmony import */ var _angular_flex_layout__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/flex-layout */ "./node_modules/@angular/flex-layout/esm5/flex-layout.es5.js");
-/* harmony import */ var _core_component_process_oauth_callback_process_oauth_callback_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../core/component/process-oauth-callback/process-oauth-callback.component */ "./src/app/core/component/process-oauth-callback/process-oauth-callback.component.ts");
-/* harmony import */ var angular2_toaster__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! angular2-toaster */ "./node_modules/angular2-toaster/angular2-toaster.js");
+/* harmony import */ var _graph_graph_module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../graph/graph.module */ "./src/app/graph/graph.module.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _pattern_language_management_routing_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pattern-language-management-routing.module */ "./src/app/pattern-language-management/pattern-language-management-routing.module.ts");
+/* harmony import */ var _pattern_language_management_pattern_language_management_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pattern-language-management/pattern-language-management.component */ "./src/app/pattern-language-management/pattern-language-management/pattern-language-management.component.ts");
+/* harmony import */ var _core_core_module__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../core/core.module */ "./src/app/core/core.module.ts");
+/* harmony import */ var _pattern_language_container_pattern_language_container_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pattern-language-container/pattern-language-container.component */ "./src/app/pattern-language-management/pattern-language-container/pattern-language-container.component.ts");
+/* harmony import */ var _pattern_language_container_pattern_language_container_directive__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./pattern-language-container/pattern-language-container.directive */ "./src/app/pattern-language-management/pattern-language-container/pattern-language-container.directive.ts");
+/* harmony import */ var _pattern_container_pattern_container_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./pattern-container/pattern-container.component */ "./src/app/pattern-language-management/pattern-container/pattern-container.component.ts");
+/* harmony import */ var _pattern_container_pattern_container_directive__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./pattern-container/pattern-container.directive */ "./src/app/pattern-language-management/pattern-container/pattern-container.directive.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _create_edit_pattern_language_create_edit_pattern_language_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./create-edit-pattern-language/create-edit-pattern-language.component */ "./src/app/pattern-language-management/create-edit-pattern-language/create-edit-pattern-language.component.ts");
+/* harmony import */ var _create_pattern_create_pattern_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./create-pattern/create-pattern.component */ "./src/app/pattern-language-management/create-pattern/create-pattern.component.ts");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _angular_flex_layout__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/flex-layout */ "./node_modules/@angular/flex-layout/esm5/flex-layout.es5.js");
+/* harmony import */ var _core_component_process_oauth_callback_process_oauth_callback_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../core/component/process-oauth-callback/process-oauth-callback.component */ "./src/app/core/component/process-oauth-callback/process-oauth-callback.component.ts");
+/* harmony import */ var angular2_toaster__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! angular2-toaster */ "./node_modules/angular2-toaster/angular2-toaster.js");
+/* harmony import */ var _pattern_language_graph_pattern_language_graph_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./pattern-language-graph/pattern-language-graph.component */ "./src/app/pattern-language-management/pattern-language-graph/pattern-language-graph.component.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -10767,12 +13279,6 @@ __webpack_require__.r(__webpack_exports__);
  *
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 
 
 
@@ -10789,46 +13295,49 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
+
 var PatternLanguageManagementModule = /** @class */ (function () {
     function PatternLanguageManagementModule() {
     }
     PatternLanguageManagementModule = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
             imports: [
-                _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
-                _pattern_language_management_routing_module__WEBPACK_IMPORTED_MODULE_2__["PatternLanguageManagementRoutingModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatBadgeModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatButtonModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatToolbarModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatIconModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatSidenavModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatCardModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatDialogModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatTabsModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatInputModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatChipsModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatAutocompleteModule"],
-                _core_core_module__WEBPACK_IMPORTED_MODULE_4__["CoreModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatGridListModule"],
-                _angular_forms__WEBPACK_IMPORTED_MODULE_12__["ReactiveFormsModule"],
-                _angular_flex_layout__WEBPACK_IMPORTED_MODULE_13__["FlexLayoutModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatSelectModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatRadioModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatCheckboxModule"],
-                angular2_toaster__WEBPACK_IMPORTED_MODULE_15__["ToasterModule"]
+                _angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"],
+                _pattern_language_management_routing_module__WEBPACK_IMPORTED_MODULE_3__["PatternLanguageManagementRoutingModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_10__["MatBadgeModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_10__["MatButtonModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_10__["MatToolbarModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_10__["MatIconModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_10__["MatSidenavModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_10__["MatCardModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_10__["MatDialogModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_10__["MatTabsModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_10__["MatInputModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_10__["MatChipsModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_10__["MatAutocompleteModule"],
+                _core_core_module__WEBPACK_IMPORTED_MODULE_5__["CoreModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_10__["MatGridListModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_13__["ReactiveFormsModule"],
+                _angular_flex_layout__WEBPACK_IMPORTED_MODULE_14__["FlexLayoutModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_10__["MatSelectModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_10__["MatRadioModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_10__["MatCheckboxModule"],
+                angular2_toaster__WEBPACK_IMPORTED_MODULE_16__["ToasterModule"],
+                _graph_graph_module__WEBPACK_IMPORTED_MODULE_0__["GraphModule"]
             ],
             declarations: [
-                _pattern_language_management_pattern_language_management_component__WEBPACK_IMPORTED_MODULE_3__["PatternLanguageManagementComponent"],
-                _pattern_language_container_pattern_language_container_component__WEBPACK_IMPORTED_MODULE_5__["PatternLanguageContainerComponent"],
-                _pattern_language_container_pattern_language_container_directive__WEBPACK_IMPORTED_MODULE_6__["PatternLanguageContainerDirective"],
-                _pattern_container_pattern_container_component__WEBPACK_IMPORTED_MODULE_7__["PatternContainerComponent"],
-                _pattern_container_pattern_container_directive__WEBPACK_IMPORTED_MODULE_8__["PatternContainerDirective"],
-                _create_edit_pattern_language_create_edit_pattern_language_component__WEBPACK_IMPORTED_MODULE_10__["CreateEditPatternLanguageComponent"],
-                _create_pattern_create_pattern_component__WEBPACK_IMPORTED_MODULE_11__["CreatePatternComponent"],
-                _core_component_process_oauth_callback_process_oauth_callback_component__WEBPACK_IMPORTED_MODULE_14__["ProcessOauthCallbackComponent"]
+                _pattern_language_management_pattern_language_management_component__WEBPACK_IMPORTED_MODULE_4__["PatternLanguageManagementComponent"],
+                _pattern_language_container_pattern_language_container_component__WEBPACK_IMPORTED_MODULE_6__["PatternLanguageContainerComponent"],
+                _pattern_language_container_pattern_language_container_directive__WEBPACK_IMPORTED_MODULE_7__["PatternLanguageContainerDirective"],
+                _pattern_container_pattern_container_component__WEBPACK_IMPORTED_MODULE_8__["PatternContainerComponent"],
+                _pattern_container_pattern_container_directive__WEBPACK_IMPORTED_MODULE_9__["PatternContainerDirective"],
+                _create_edit_pattern_language_create_edit_pattern_language_component__WEBPACK_IMPORTED_MODULE_11__["CreateEditPatternLanguageComponent"],
+                _create_pattern_create_pattern_component__WEBPACK_IMPORTED_MODULE_12__["CreatePatternComponent"],
+                _core_component_process_oauth_callback_process_oauth_callback_component__WEBPACK_IMPORTED_MODULE_15__["ProcessOauthCallbackComponent"],
+                _pattern_language_graph_pattern_language_graph_component__WEBPACK_IMPORTED_MODULE_17__["PatternLanguageGraphComponent"]
             ],
             entryComponents: [
-                _create_edit_pattern_language_create_edit_pattern_language_component__WEBPACK_IMPORTED_MODULE_10__["CreateEditPatternLanguageComponent"]
+                _create_edit_pattern_language_create_edit_pattern_language_component__WEBPACK_IMPORTED_MODULE_11__["CreateEditPatternLanguageComponent"]
             ]
         })
     ], PatternLanguageManagementModule);
