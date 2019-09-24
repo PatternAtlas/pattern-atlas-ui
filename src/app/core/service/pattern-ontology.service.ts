@@ -318,6 +318,20 @@ export class PatternOntologyService implements SparqlExecutor {
     });
   }
 
+  // clear graph to remove locally stored data, so loading the URI into the graph storage will show only the updated data
+  clearGraph(graphIri: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.store.clear(graphIri, (err, result) => {
+        if (!err) {
+          resolve(result);
+        } else {
+          console.log('error while loading ' + graphIri);
+          reject(err);
+        }
+      });
+    });
+  }
+
   /**
    * Selects triples that suffice { <${ppInstanceIRI}> pp:containsPatternLanguage ?patternlanguage } and converts them into
    * PatternLanguage objects.
