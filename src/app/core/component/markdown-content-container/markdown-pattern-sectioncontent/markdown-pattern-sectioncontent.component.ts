@@ -9,7 +9,7 @@ import { DialogData, MdEditorComponent } from '../../md-editor/md-editor.compone
   styleUrls: ['./markdown-pattern-sectioncontent.component.scss']
 })
 export class MarkdownPatternSectioncontentComponent extends DataRenderingComponent  implements OnInit {
-  data: any;
+  data: string;
 
   title = '';
 
