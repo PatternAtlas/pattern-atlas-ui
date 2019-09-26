@@ -170,3 +170,20 @@ body{
 .flip-horizontal {
   transform: rotate(90deg);
 }
+
+// hide the ink bar that shows that a tab is selected because we want to mimic a toggle-button
+.view-toggle .mat-ink-bar {
+  visibility: hidden !important;
+}
+
+// style the selected tab as 'focused'
+.view-toggle .mat-tab-label-active {
+  opacity: 1 !important;
+}
+
+.view-toggle .mat-tab-label {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  opacity: 0.5;
+  border: solid #3f51b5 1px;
+}
