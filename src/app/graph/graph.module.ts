@@ -8,6 +8,8 @@ import { LinkInfoboxComponent } from './component/link-infobox/link-infobox.comp
 import { DraggableDirective } from './component/directives/draggable.directive';
 import { ZoomableDirective } from './component/directives/zoomable.directive';
 import { PatternGraphTemplateComponent } from './component/pattern-graph-template/pattern-graph-template.component';
+import { DefaultPatternlanguageGraphComponent } from './component/default-patternlanguage-graph/default-patternlanguage-graph.component';
+import { MatButtonModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -18,13 +20,20 @@ import { PatternGraphTemplateComponent } from './component/pattern-graph-templat
     LinkInfoboxComponent,
     DraggableDirective,
     ZoomableDirective,
-    PatternGraphTemplateComponent
+    PatternGraphTemplateComponent,
+    DefaultPatternlanguageGraphComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MatButtonModule
   ],
   exports: [
-    GraphComponent
+    GraphComponent,
+    DefaultPatternlanguageGraphComponent
+  ],
+  entryComponents: [
+    GraphComponent,
+    DefaultPatternlanguageGraphComponent
   ]
 })
 export class GraphModule { }

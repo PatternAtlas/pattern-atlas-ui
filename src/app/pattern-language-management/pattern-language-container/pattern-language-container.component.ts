@@ -27,6 +27,7 @@ export class PatternLanguageContainerComponent implements OnInit {
     plId: string;
     // the list of registered renderer components for the language
     renderer: Array<any>;
+  defaultTabIndex = 0;
 
     constructor(private route: ActivatedRoute,
         private compRegistry: ComponentRegistryService) {
@@ -46,5 +47,6 @@ export class PatternLanguageContainerComponent implements OnInit {
       this.plId = plid;
       this.renderer = this.compRegistry.getRenderingComponents(this.plId);
     }
+
 
 }
