@@ -1597,8 +1597,13 @@ var PatternInstance = /** @class */ (function () {
     };
     PatternInstance.prototype.toPattern = function (plIri) {
         var nameKey = _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].getFileName(plIri) + '#hasName';
-        var name = this.sectionProperties.has(nameKey) ? this.sectionProperties.get(nameKey).join('') :
-            this.sectionProperties.get(_globals__WEBPACK_IMPORTED_MODULE_2__["globals"].urlPatternRepoOntology + '#hasName').join('');
+        var name = '';
+        if (this.sectionProperties.has(nameKey)) {
+            name = this.sectionProperties.get(nameKey).join('');
+        }
+        else if (this.sectionProperties.has(_globals__WEBPACK_IMPORTED_MODULE_2__["globals"].urlPatternRepoOntology + '#hasName')) {
+            name = this.sectionProperties.get(_globals__WEBPACK_IMPORTED_MODULE_2__["globals"].urlPatternRepoOntology + '#hasName').join('');
+        }
         return new _pattern_model__WEBPACK_IMPORTED_MODULE_0__["default"](this.uri, name, this.sectionProperties, plIri);
     };
     return PatternInstance;
@@ -8061,6 +8066,100 @@ var globals = {
 
 /***/ }),
 
+/***/ "./src/app/graph/component/default-patternlanguage-graph/default-patternlanguage-graph.component.ts":
+/*!**********************************************************************************************************!*\
+  !*** ./src/app/graph/component/default-patternlanguage-graph/default-patternlanguage-graph.component.ts ***!
+  \**********************************************************************************************************/
+/*! exports provided: DefaultPatternlanguageGraphComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DefaultPatternlanguageGraphComponent", function() { return DefaultPatternlanguageGraphComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _pattern_graph_template_pattern_graph_template_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../pattern-graph-template/pattern-graph-template.component */ "./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _filter_service_filter_factory_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../filter/service/filter-factory.service */ "./src/app/filter/service/filter-factory.service.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _loader_pattern_data_loader_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../loader/pattern-data-loader.service */ "./src/app/graph/loader/pattern-data-loader.service.ts");
+/* harmony import */ var _core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../core/service/pattern-ontology.service */ "./src/app/core/service/pattern-ontology.service.ts");
+/* harmony import */ var _core_service_loader_default_pl_loader_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../core/service/loader/default-pl-loader.service */ "./src/app/core/service/loader/default-pl-loader.service.ts");
+/* harmony import */ var _core_util_iri_converter__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+var DefaultPatternlanguageGraphComponent = /** @class */ (function (_super) {
+    __extends(DefaultPatternlanguageGraphComponent, _super);
+    function DefaultPatternlanguageGraphComponent(pos, router, activatedRoute, zone, dialog, filterFactory, patternLoader, loader, cdr) {
+        var _this = _super.call(this, pos, loader, dialog, router, activatedRoute, zone, filterFactory, cdr) || this;
+        _this.pos = pos;
+        _this.router = router;
+        _this.activatedRoute = activatedRoute;
+        _this.zone = zone;
+        _this.dialog = dialog;
+        _this.filterFactory = filterFactory;
+        _this.patternLoader = patternLoader;
+        _this.loader = loader;
+        _this.cdr = cdr;
+        return _this;
+    }
+    DefaultPatternlanguageGraphComponent.prototype.createPattern = function (value) {
+        return { id: _core_util_iri_converter__WEBPACK_IMPORTED_MODULE_8__["IriConverter"].convertIriToId(value.uri), name: value.toPattern(this.languageUri).name };
+    };
+    DefaultPatternlanguageGraphComponent.prototype.ngOnInit = function () {
+        _super.prototype.ngOnInit.call(this);
+    };
+    DefaultPatternlanguageGraphComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'pp-default-patternlanguage-graph',
+            template: __webpack_require__(/*! ../pattern-graph-template/pattern-graph-template.component.html */ "./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.html"),
+            styles: [__webpack_require__(/*! ../pattern-graph-template/pattern-graph-template.component.scss */ "./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.scss")]
+        }),
+        __metadata("design:paramtypes", [_core_service_pattern_ontology_service__WEBPACK_IMPORTED_MODULE_6__["PatternOntologyService"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"],
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_4__["MatDialog"],
+            _filter_service_filter_factory_service__WEBPACK_IMPORTED_MODULE_3__["FilterFactoryService"],
+            _core_service_loader_default_pl_loader_service__WEBPACK_IMPORTED_MODULE_7__["DefaultPlLoaderService"],
+            _loader_pattern_data_loader_service__WEBPACK_IMPORTED_MODULE_5__["PatternDataLoaderService"],
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"]])
+    ], DefaultPatternlanguageGraphComponent);
+    return DefaultPatternlanguageGraphComponent;
+}(_pattern_graph_template_pattern_graph_template_component__WEBPACK_IMPORTED_MODULE_1__["PatternGraphTemplateComponent"]));
+
+
+
+/***/ }),
+
 /***/ "./src/app/graph/component/directives/draggable.directive.ts":
 /*!*******************************************************************!*\
   !*** ./src/app/graph/component/directives/draggable.directive.ts ***!
@@ -9434,12 +9533,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _component_directives_draggable_directive__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./component/directives/draggable.directive */ "./src/app/graph/component/directives/draggable.directive.ts");
 /* harmony import */ var _component_directives_zoomable_directive__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./component/directives/zoomable.directive */ "./src/app/graph/component/directives/zoomable.directive.ts");
 /* harmony import */ var _component_pattern_graph_template_pattern_graph_template_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./component/pattern-graph-template/pattern-graph-template.component */ "./src/app/graph/component/pattern-graph-template/pattern-graph-template.component.ts");
+/* harmony import */ var _component_default_patternlanguage_graph_default_patternlanguage_graph_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./component/default-patternlanguage-graph/default-patternlanguage-graph.component */ "./src/app/graph/component/default-patternlanguage-graph/default-patternlanguage-graph.component.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -9463,13 +9566,20 @@ var GraphModule = /** @class */ (function () {
                 _component_link_infobox_link_infobox_component__WEBPACK_IMPORTED_MODULE_6__["LinkInfoboxComponent"],
                 _component_directives_draggable_directive__WEBPACK_IMPORTED_MODULE_7__["DraggableDirective"],
                 _component_directives_zoomable_directive__WEBPACK_IMPORTED_MODULE_8__["ZoomableDirective"],
-                _component_pattern_graph_template_pattern_graph_template_component__WEBPACK_IMPORTED_MODULE_9__["PatternGraphTemplateComponent"]
+                _component_pattern_graph_template_pattern_graph_template_component__WEBPACK_IMPORTED_MODULE_9__["PatternGraphTemplateComponent"],
+                _component_default_patternlanguage_graph_default_patternlanguage_graph_component__WEBPACK_IMPORTED_MODULE_10__["DefaultPatternlanguageGraphComponent"]
             ],
             imports: [
-                _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"]
+                _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_11__["MatButtonModule"]
             ],
             exports: [
-                _component_graph_graph_component__WEBPACK_IMPORTED_MODULE_2__["GraphComponent"]
+                _component_graph_graph_component__WEBPACK_IMPORTED_MODULE_2__["GraphComponent"],
+                _component_default_patternlanguage_graph_default_patternlanguage_graph_component__WEBPACK_IMPORTED_MODULE_10__["DefaultPatternlanguageGraphComponent"]
+            ],
+            entryComponents: [
+                _component_graph_graph_component__WEBPACK_IMPORTED_MODULE_2__["GraphComponent"],
+                _component_default_patternlanguage_graph_default_patternlanguage_graph_component__WEBPACK_IMPORTED_MODULE_10__["DefaultPatternlanguageGraphComponent"]
             ]
         })
     ], GraphModule);
@@ -12792,7 +12902,7 @@ var PatternContainerDirective = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--\n  ~ Copyright (c) 2018 University of Stuttgart.\n  ~\n  ~ See the NOTICE file(s) distributed with this work for additional\n  ~ information regarding copyright ownership.\n  ~\n  ~ This program and the accompanying materials are made available under the\n  ~ terms of the Eclipse Public License 2.0 which is available at\n  ~ http://www.eclipse.org/legal/epl-2.0, or the Apache Software License 2.0\n  ~ which is available at https://www.apache.org/licenses/LICENSE-2.0.\n  ~\n  ~ SPDX-License-Identifier: EPL-2.0 OR Apache-2.0\n  -->\n\n<!-- tab view if there are multiple renderer for the language available -->\n<mat-tab-group *ngIf=\"renderer && renderer.length > 1; else singleRenderer\">\n  <!-- create a new tab for each available renderer -->\n  <mat-tab label=\"{{r.label || 'Tab ' + (i+1)}}\" *ngFor=\"let r of renderer; let i = index\">\n    <mat-card>\n      <ng-template ppPatternLanguageContainer [plId]=\"plId\" [index]=\"i\"></ng-template>\n    </mat-card>\n  </mat-tab>\n</mat-tab-group>\n\n<!-- else, render everything in a single card -->\n<ng-template #singleRenderer>\n  <mat-card>\n      <ng-template ppPatternLanguageContainer [plId]=\"plId\"></ng-template>\n  </mat-card>\n</ng-template>"
+module.exports = "<!--\n  ~ Copyright (c) 2018 University of Stuttgart.\n  ~\n  ~ See the NOTICE file(s) distributed with this work for additional\n  ~ information regarding copyright ownership.\n  ~\n  ~ This program and the accompanying materials are made available under the\n  ~ terms of the Eclipse Public License 2.0 which is available at\n  ~ http://www.eclipse.org/legal/epl-2.0, or the Apache Software License 2.0\n  ~ which is available at https://www.apache.org/licenses/LICENSE-2.0.\n  ~\n  ~ SPDX-License-Identifier: EPL-2.0 OR Apache-2.0\n  -->\n\n<!-- tab view if there are multiple renderer for the language available -->\n<mat-tab-group *ngIf=\"renderer && renderer.length > 1; else oneOrNoRenderer\">\n  <!-- create a new tab for each available renderer -->\n  <mat-tab label=\"{{r.label || 'Tab ' + (i+1)}}\" *ngFor=\"let r of renderer; let i = index\">\n    <mat-card>\n      <ng-template ppPatternLanguageContainer [plId]=\"plId\" [index]=\"i\"></ng-template>\n    </mat-card>\n  </mat-tab>\n</mat-tab-group>\n\n<!-- else, use default renderers -->\n<ng-template #oneOrNoRenderer>\n\n  <!--If there is only one renderer registered for this pl, use it: -->\n  <ng-template *ngIf=\"renderer\" ppPatternLanguageContainer [plId]=\"plId\"></ng-template>\n\n  <!--If there is no renderer registered for this pl, offer two default renderers (card or graph view) -->\n  <mat-tab-group class=\"view-toggle\" *ngIf=\"!renderer\" [selectedIndex]=\"0\">\n    <mat-tab>\n      <ng-template mat-tab-label>\n        <mat-icon>view_module</mat-icon>\n        Card View\n      </ng-template>\n      <ng-template #cardsView ppPatternLanguageContainer [plId]=\"plId\"></ng-template>\n    </mat-tab>\n    <mat-tab>\n      <ng-template mat-tab-label>\n        <mat-icon>device_hub</mat-icon>\n        Graph View\n      </ng-template>\n      <ng-template #graphView ppPatternLanguageContainer [plId]=\"plId\" [graphView]=\"true\"></ng-template>\n    </mat-tab>\n  </mat-tab-group>\n\n\n</ng-template>\n"
 
 /***/ }),
 
@@ -12849,6 +12959,7 @@ var PatternLanguageContainerComponent = /** @class */ (function () {
     function PatternLanguageContainerComponent(route, compRegistry) {
         this.route = route;
         this.compRegistry = compRegistry;
+        this.defaultTabIndex = 0;
     }
     PatternLanguageContainerComponent.prototype.ngOnInit = function () {
         // this.plId = this.route.snapshot.params['plid'];
@@ -12891,6 +13002,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PatternLanguageContainerDirective", function() { return PatternLanguageContainerDirective; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _core_service_component_registry_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../core/service/component-registry.service */ "./src/app/core/service/component-registry.service.ts");
+/* harmony import */ var _core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../core/util/iri-converter */ "./src/app/core/util/iri-converter.ts");
+/* harmony import */ var _graph_component_default_patternlanguage_graph_default_patternlanguage_graph_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../graph/component/default-patternlanguage-graph/default-patternlanguage-graph.component */ "./src/app/graph/component/default-patternlanguage-graph/default-patternlanguage-graph.component.ts");
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -12915,6 +13028,8 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
+
+
 var PatternLanguageContainerDirective = /** @class */ (function () {
     function PatternLanguageContainerDirective(viewContainerRef, componentFactoryResolver, compRegistry) {
         this.viewContainerRef = viewContainerRef;
@@ -12922,12 +13037,25 @@ var PatternLanguageContainerDirective = /** @class */ (function () {
         this.compRegistry = compRegistry;
     }
     PatternLanguageContainerDirective.prototype.ngOnInit = function () {
-        var renderingComponent = this.compRegistry.getPLRenderingComponents(this.plId, this.index);
-        var componentFactory = renderingComponent ?
-            this.componentFactoryResolver.resolveComponentFactory(renderingComponent.plcomponent) :
-            this.componentFactoryResolver.resolveComponentFactory(this.compRegistry.getPLRenderingComponents('default').plcomponent);
+        var componentFactory = this.getRenderingComponent();
         this.viewContainerRef.clear();
-        this.viewContainerRef.createComponent(componentFactory);
+        var componentRef = this.viewContainerRef.createComponent(componentFactory);
+        if (this.selectedGraphView) {
+            var instance = componentRef.instance;
+            instance.languageUri = _core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].convertIdToIri(this.plId);
+        }
+    };
+    PatternLanguageContainerDirective.prototype.getRenderingComponent = function () {
+        var renderingComponent = this.compRegistry.getPLRenderingComponents(this.plId, this.index);
+        if (renderingComponent) {
+            return this.componentFactoryResolver.resolveComponentFactory(renderingComponent.plcomponent);
+        }
+        // no special renderer, use default renderer (graph or cards):
+        if (this.graphView) {
+            this.selectedGraphView = true;
+            return this.componentFactoryResolver.resolveComponentFactory(_graph_component_default_patternlanguage_graph_default_patternlanguage_graph_component__WEBPACK_IMPORTED_MODULE_3__["DefaultPatternlanguageGraphComponent"]);
+        }
+        return this.componentFactoryResolver.resolveComponentFactory(this.compRegistry.getPLRenderingComponents('default').plcomponent);
     };
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
@@ -12937,6 +13065,10 @@ var PatternLanguageContainerDirective = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
         __metadata("design:type", Number)
     ], PatternLanguageContainerDirective.prototype, "index", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Boolean)
+    ], PatternLanguageContainerDirective.prototype, "graphView", void 0);
     PatternLanguageContainerDirective = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"])({
             selector: '[ppPatternLanguageContainer]'
@@ -13266,19 +13398,6 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-/*
- * Copyright (c) 2018 University of Stuttgart.
- *
- * See the NOTICE file(s) distributed with this work for additional
- * information regarding copyright ownership.
- *
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
- * http://www.eclipse.org/legal/epl-2.0, or the Apache Software License 2.0
- * which is available at https://www.apache.org/licenses/LICENSE-2.0.
- *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
- */
 
 
 
@@ -13296,6 +13415,19 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
+/*
+ * Copyright (c) 2018 University of Stuttgart.
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0, or the Apache Software License 2.0
+ * which is available at https://www.apache.org/licenses/LICENSE-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
+ */
 var PatternLanguageManagementModule = /** @class */ (function () {
     function PatternLanguageManagementModule() {
     }
