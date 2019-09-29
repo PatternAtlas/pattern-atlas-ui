@@ -104,8 +104,8 @@ export class PatternLanguageManagementComponent implements OnInit {
 
 
   getOAuthToken(): void {
-    window.open('https://github.com/login/oauth/authorize?scope=repo&client_id='
-    + window.location.hostname === 'localhost' ? '2c81550780e16f8c2642' : '4ce2e1263f2e81b69c6e', '_blank');
+    const clientId = window.location.hostname === 'localhost' ? '2c81550780e16f8c2642' : '4ce2e1263f2e81b69c6e';
+    window.open(`https://github.com/login/oauth/authorize?scope=repo&client_id=${clientId}`, '_blank');
   }
 
   goToPatternLanguageCreation(): void {
