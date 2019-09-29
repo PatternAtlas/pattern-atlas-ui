@@ -106,6 +106,7 @@ export class GithubPersistenceService {
   }
 
   updatePLPatterns(patternLanguagePatterns: PatternLanguagePatterns): Observable<any> {
+    console.log('Updating patterns');
     const githubUrlPLPatterns = this.getGithubPathForPatternLanguagePatternsOrRelations(patternLanguagePatterns);
     return this.getFile(githubUrlPLPatterns).pipe(
       switchMap((res: GithubFileResponse) => {

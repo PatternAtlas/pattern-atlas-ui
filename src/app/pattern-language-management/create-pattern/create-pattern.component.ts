@@ -94,6 +94,7 @@ export class CreatePatternComponent implements OnInit {
     const patternIris = !this.patterns ? [] : this.patterns.map(p => p.iri);
     this.wasSaveButtonClicked = true;
     if (!this.patternValuesFormGroup.valid) {
+      console.log('pattern entries not valid');
       this.updateFormValidationErrors();
       return;
     }
