@@ -54,8 +54,8 @@ class PatternLanguage implements TurtleFileModelInterface {
     const ary: Array<string> = [];
     const standardPrefixes = new PatternPedia().defaultPrefixes;
     ary.push(
-      `@prefix : <${this.patternpediaBaseURI + '/patternlanguages/' + this.name}#> .`,
-      `@base <${this.patternpediaBaseURI + '/patternlanguages/' + this.name}> .`
+      `@prefix : <${this.patternpediaBaseURI + '/patternlanguages/' + IriConverter.removeWhitespace(this.name)}#> .`,
+      `@base <${this.patternpediaBaseURI + '/patternlanguages/' + IriConverter.removeWhitespace(this.name)}> .`
     );
     standardPrefixes.forEach((value: boolean, key: string) => {
       ary.push(
@@ -116,7 +116,7 @@ class PatternLanguage implements TurtleFileModelInterface {
       ary.push('# #################################################################');
 
       ary.push(`### ${this.iri}`);
-      ary.push(`:${this.name}Individual rdf:type owl:Class ; `);
+      ary.push(`:${IriConverter.removeWhitespace(this.name)}Individual rdf:type owl:Class ; `);
       ary.push(` rdfs:subClassOf pp:Pattern ,`);
 
 
@@ -140,7 +140,7 @@ class PatternLanguage implements TurtleFileModelInterface {
     }
 
     ary.push(`###  ${this.iri}`);
-    ary.push(`:${this.name} rdf:type owl:NamedIndividual ,`);
+    ary.push(`:${IriConverter.removeWhitespace(this.name)} rdf:type owl:NamedIndividual ,`);
     ary.push('pp:PatternLanguage ;');
     if (this.logos.length > 0) {
       ary.push(`pp:hasLogo "${this.logos[0]}"^^xsd:anyURI ;`);
@@ -159,8 +159,8 @@ class PatternLanguage implements TurtleFileModelInterface {
   }
 
   getIsLinkedOpenPatternLanguageStatement(): string {
-    return this.iri.indexOf('#') > -1 ? `<${this.patternpediaBaseURI}#LinkedOpenPatterns> <${this.patternpediaBaseURI}#containsPatternGraph> <${this.iri}> .`
-      : `<${this.patternpediaBaseURI}#LinkedOpenPatterns> <${this.patternpediaBaseURI}#containsPatternGraph> <${this.iri}#${this.name}> .`;
+    return this.iri.indexOf('#') > -1 ? `:LinkedOpenPatterns :containsPatternGraph <${this.iri}> .`
+      : `:LinkedOpenPatterns :containsPatternGraph  <${this.iri}#${IriConverter.removeWhitespace(this.name)}> .`;
   }
 
   private addAngleBracketsIfNeeded(type: string | undefined) {
