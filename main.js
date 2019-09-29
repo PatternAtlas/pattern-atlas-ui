@@ -2503,6 +2503,7 @@ var GithubPersistenceService = /** @class */ (function () {
     };
     GithubPersistenceService.prototype.updatePLPatterns = function (patternLanguagePatterns) {
         var _this = this;
+        console.log('Updating patterns');
         var githubUrlPLPatterns = this.getGithubPathForPatternLanguagePatternsOrRelations(patternLanguagePatterns);
         return this.getFile(githubUrlPLPatterns).pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_4__["switchMap"])(function (res) {
             return _this.httpClient.put(githubUrlPLPatterns, {
@@ -12184,6 +12185,7 @@ var CreatePatternComponent = /** @class */ (function () {
         var patternIris = !this.patterns ? [] : this.patterns.map(function (p) { return p.iri; });
         this.wasSaveButtonClicked = true;
         if (!this.patternValuesFormGroup.valid) {
+            console.log('pattern entries not valid');
             this.updateFormValidationErrors();
             return;
         }
@@ -13794,7 +13796,8 @@ var PatternLanguageManagementComponent = /** @class */ (function () {
         });
     };
     PatternLanguageManagementComponent.prototype.getOAuthToken = function () {
-        window.open('https://github.com/login/oauth/authorize?client_id=2c81550780e16f8c2642&scope=repo', '_blank');
+        window.open('https://github.com/login/oauth/authorize?scope=repo&client_id='
+            + window.location.hostname === 'localhost' ? '2c81550780e16f8c2642' : '4ce2e1263f2e81b69c6e', '_blank');
     };
     PatternLanguageManagementComponent.prototype.goToPatternLanguageCreation = function () {
         var _this = this;
