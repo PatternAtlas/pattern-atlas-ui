@@ -13,14 +13,16 @@
   -->
 
 <mat-toolbar style="margin-top: 10px; margin-bottom: 10px">
-    <button style="margin-left: 10px" mat-raised-button color="accent" (click)="reloadPatternRepo()"><i
+  <button style="margin-left: 10px; margin-right: 10px" mat-raised-button color="accent" (click)="reloadPatternRepo()">
+    <i
             class="material-icons">autorenew</i> Reload
     </button>
   <button style="margin-left: 10px" mat-raised-button color="accent" (click)="getOAuthToken()"
           *ngIf="showAuthentificationButton"><i
     class="material-icons">info</i> Autorize Github
   </button>
-  <span *ngIf="!showAuthentificationButton"> <i
+  <span *ngIf="!showAuthentificationButton" style="display: flex; align-items: center;
+}"> <i
     class="material-icons">info</i> You authorized PatternPedia to use your github account </span>
 
 </mat-toolbar>
