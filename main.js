@@ -1889,7 +1889,7 @@ var PatternLanguage = /** @class */ (function () {
         var _this = this;
         var ary = [];
         var standardPrefixes = new _pattern_pedia_model__WEBPACK_IMPORTED_MODULE_1__["default"]().defaultPrefixes;
-        ary.push("@prefix : <" + (this.patternpediaBaseURI + '/patternlanguages/' + this.name) + "#> .", "@base <" + (this.patternpediaBaseURI + '/patternlanguages/' + this.name) + "> .");
+        ary.push("@prefix : <" + (this.patternpediaBaseURI + '/patternlanguages/' + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].removeWhitespace(this.name)) + "#> .", "@base <" + (this.patternpediaBaseURI + '/patternlanguages/' + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].removeWhitespace(this.name)) + "> .");
         standardPrefixes.forEach(function (value, key) {
             ary.push("@prefix " + key + ": " + value + " .");
         });
@@ -1940,7 +1940,7 @@ var PatternLanguage = /** @class */ (function () {
             ary.push('# #');
             ary.push('# #################################################################');
             ary.push("### " + this.iri);
-            ary.push(":" + this.name + "Individual rdf:type owl:Class ; ");
+            ary.push(":" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].removeWhitespace(this.name) + "Individual rdf:type owl:Class ; ");
             ary.push(" rdfs:subClassOf pp:Pattern ,");
             restrictionsArray.forEach(function (restriction, index) {
                 ary.push('\t'.repeat(3) + "[ rdf:type owl:Restriction ;");
@@ -1964,7 +1964,7 @@ var PatternLanguage = /** @class */ (function () {
             });
         }
         ary.push("###  " + this.iri);
-        ary.push(":" + this.name + " rdf:type owl:NamedIndividual ,");
+        ary.push(":" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].removeWhitespace(this.name) + " rdf:type owl:NamedIndividual ,");
         ary.push('pp:PatternLanguage ;');
         if (this.logos.length > 0) {
             ary.push("pp:hasLogo \"" + this.logos[0] + "\"^^xsd:anyURI ;");
@@ -1979,8 +1979,8 @@ var PatternLanguage = /** @class */ (function () {
         return ary.join('\n');
     };
     PatternLanguage.prototype.getIsLinkedOpenPatternLanguageStatement = function () {
-        return this.iri.indexOf('#') > -1 ? "<" + this.patternpediaBaseURI + "#LinkedOpenPatterns> <" + this.patternpediaBaseURI + "#containsPatternGraph> <" + this.iri + "> ."
-            : "<" + this.patternpediaBaseURI + "#LinkedOpenPatterns> <" + this.patternpediaBaseURI + "#containsPatternGraph> <" + this.iri + "#" + this.name + "> .";
+        return this.iri.indexOf('#') > -1 ? ":LinkedOpenPatterns :containsPatternGraph <" + this.iri + "> ."
+            : ":LinkedOpenPatterns :containsPatternGraph  <" + this.iri + "#" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].removeWhitespace(this.name) + "> .";
     };
     PatternLanguage.prototype.addAngleBracketsIfNeeded = function (type) {
         if (_util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].isIri(type)) { // if we have a uri
@@ -13796,8 +13796,8 @@ var PatternLanguageManagementComponent = /** @class */ (function () {
         });
     };
     PatternLanguageManagementComponent.prototype.getOAuthToken = function () {
-        window.open('https://github.com/login/oauth/authorize?scope=repo&client_id='
-            + window.location.hostname === 'localhost' ? '2c81550780e16f8c2642' : '4ce2e1263f2e81b69c6e', '_blank');
+        var clientId = window.location.hostname === 'localhost' ? '2c81550780e16f8c2642' : '4ce2e1263f2e81b69c6e';
+        window.open("https://github.com/login/oauth/authorize?scope=repo&client_id=" + clientId, '_blank');
     };
     PatternLanguageManagementComponent.prototype.goToPatternLanguageCreation = function () {
         var _this = this;
