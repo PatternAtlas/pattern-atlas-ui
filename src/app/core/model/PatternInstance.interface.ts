@@ -22,9 +22,15 @@ export class PatternInstance {
 
   toPattern(plIri: string): Pattern {
     const nameKey = IriConverter.getFileName(plIri) + '#hasName';
-    const name = this.sectionProperties.has(nameKey) ? this.sectionProperties.get(nameKey).join('') :
-      this.sectionProperties.get(globals.urlPatternRepoOntology + '#hasName').join('');
-    
+
+    let name = '';
+    if (this.sectionProperties.has(nameKey)) {
+      name = this.sectionProperties.get(nameKey).join('');
+    } else if (this.sectionProperties.has(globals.urlPatternRepoOntology + '#hasName')) {
+      name = this.sectionProperties.get(globals.urlPatternRepoOntology + '#hasName').join('');
+    }
+
+
     return new Pattern(this.uri, name, this.sectionProperties, plIri);
   }
 
