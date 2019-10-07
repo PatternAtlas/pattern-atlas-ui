@@ -26,6 +26,8 @@ export class CreatePatternRelationComponent implements OnInit {
       icon: 'compare_arrows'
     }];
   relationForm: FormGroup;
+  relationTypes = ['isRelatedTo', 'isUsedBefore', 'isUsedAfter', 'dependsOn', 'canBeUsedWith',
+    'cannotBeUsedWith', 'consistsOf', 'uses', 'usedIn', 'isAlternativeTo', 'isVariationOf'];
 
 
   ngOnInit() {
@@ -33,6 +35,7 @@ export class CreatePatternRelationComponent implements OnInit {
     this.relationForm = this.fb.group({
       toPattern: ['', [Validators.required]],
       direction: ['', [Validators.required]],
+      relationType: ['', [Validators.required]],
       description: ['', []],
     });
   }

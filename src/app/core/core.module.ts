@@ -22,6 +22,7 @@ import { ComponentRegistryService } from './service/component-registry.service';
 import { LinkedOpenPatternsLoader } from './service/loader/pattern-language-loader/linked-open-patterns-loader.service';
 import { PrettyJsonModule } from 'angular2-prettyjson';
 import {
+  MatAutocompleteModule,
   MatButtonModule,
   MatCardModule,
   MatDatepickerModule,
@@ -63,6 +64,7 @@ import { MarkdownPatternSectioncontentComponent } from './component/markdown-con
       MatTooltipModule,
       MatSelectModule,
       MatDialogModule,
+      MatAutocompleteModule,
       MatIconModule,
       NgxMdModule.forRoot(), MatNativeDateModule
     ],

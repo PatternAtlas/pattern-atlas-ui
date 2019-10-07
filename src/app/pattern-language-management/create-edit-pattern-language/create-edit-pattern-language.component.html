@@ -61,7 +61,7 @@
           [matChipInputAddOnBlur]="addOnBlur"
           (matChipInputTokenEnd)="add($event)">
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-        <mat-option *ngFor="let section of filteredSections | async" [value]="section">
+        <mat-option *ngFor="let type of relationTypes | async" [value]="section">
           {{section}}
         </mat-option>
       </mat-autocomplete>
