@@ -119,8 +119,6 @@ export class PatternLanguageManagementComponent implements OnInit {
         result.name, [result.iconUrl], null, result.sections, result.restrictions, result.prefixes);
       const patternLanguagePatterns = new PatternLanguagePatterns(IriConverter.getPatternListIriForPLIri(patternlanguage.iri), patternlanguage.iri, []);
       const patternLanguageRelations = new PatternLanguageRelations(IriConverter.getRelationListIriForPLIri(patternlanguage.iri), patternlanguage.iri, new PatternRelations());
-      console.log(patternlanguage.iri);
-      console.log(patternLanguagePatterns.iri);
       this.uploadService.uploadPatternLanguage(patternlanguage).pipe(
         switchMap(() => {
           return this.uploadService.addPatternLanguageToPatternPedia(patternlanguage, this.patternLanguages);
