@@ -3,7 +3,7 @@
   <mat-form-field>
     <input type="text" matInput [value]="data.patternName" readonly>
   </mat-form-field>
-  <mat-form-field style="width: 4em;">
+  <mat-form-field style="width: 4em;" [floatLabel]="'always'">
     <mat-label>Direction</mat-label>
     <mat-select formControlName="direction">
       <mat-select-trigger>

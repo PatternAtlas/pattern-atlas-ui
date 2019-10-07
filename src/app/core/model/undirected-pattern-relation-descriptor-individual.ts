@@ -7,10 +7,11 @@ export class UndirectedPatternRelationDescriptorIndividual extends PatternRelati
   hasPattern: Pattern[];
 
 
-  constructor(firstPattern: Pattern, secondPattern: Pattern = null, description: string = null) {
+  constructor(firstPattern: Pattern, secondPattern: Pattern = null, description: string = null, relationType: string = null) {
     super();
     this.hasPattern = [firstPattern, secondPattern];
     this.description = description;
+    this.relationType = relationType;
     this.individualName = IriConverter.removeWhitespace(firstPattern.name) + '-to-' + IriConverter.removeWhitespace(secondPattern.name);
   }
 
@@ -18,8 +19,13 @@ export class UndirectedPatternRelationDescriptorIndividual extends PatternRelati
     const ary = [];
     ary.push(`:${this.individualName}`);
     ary.push(`rdf:type owl:NamedIndividual , pp:UndirectedPatternRelationDescriptor ;`);
+    if (this.relationType) {
+      ary.push(`pp:hasRelationType "${this.relationType}"^^xsd:string ;`);
+    }
     ary.push(`pp:hasPattern :${IriConverter.removeWhitespace(this.hasPattern[0].name)} ; `);
-    ary.push(`pp:hasPattern :${IriConverter.removeWhitespace(this.hasPattern[1].name)} ${this.description ? '; \n pp:hasDescription "' + this.description + '"^^xsd:string . ' : '.'}`);
+    ary.push(`pp:hasPattern :${IriConverter.removeWhitespace(this.hasPattern[1].name)} ${this.description ?
+      '; \n pp:hasDescription "' + this.description + '"^^xsd:string . '
+      : '.'}`);
     ary.push(' ');
     return ary.join('\n');
   }

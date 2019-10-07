@@ -31,7 +31,6 @@ export class CreatePatternRelationComponent implements OnInit {
 
 
   ngOnInit() {
-  console.log(this.data);
     this.relationForm = this.fb.group({
       toPattern: ['', [Validators.required]],
       direction: ['', [Validators.required]],
@@ -60,7 +59,8 @@ export interface PatternRelationDirection {
 export interface DialogDataResult {
   direction: PatternRelationDirection;
   toPattern: Pattern;
-  description: string;
+  description?: string;
+  relationType?: string;
 }
 
 

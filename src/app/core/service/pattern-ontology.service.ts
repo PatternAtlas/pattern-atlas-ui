@@ -648,24 +648,27 @@ export class PatternOntologyService implements SparqlExecutor {
   }
 
   getDirectedPatternRelations(supportedIRI: string): Promise<DirectedPatternRelationDescriptorResponse[]> {
-    const qryPatternGraph = `SELECT ?source ?target ?description WHERE {
+    const qryPatternGraph = `SELECT ?source ?target ?description ?relationType 
+    WHERE {
      ?relationlink a owl:NamedIndividual .
      ?relationlink a pp:DirectedPatternRelationDescriptor .
      ?relationlink 	pp:hasSource ?source .
      ?relationlink 	pp:hasTarget ?target . 
       optional {?relationlink pp:hasDescription ?description .}
+      optional {?relationlink pp:hasRelationType ?relationType .}
     }
 `;
     return this.exec(qryPatternGraph, [IriConverter.getFileName(supportedIRI)]);
   }
 
   getUndirectedPatternRelations(supportedIRI: string): Promise<UndirectedPatternRelationDescriptorResponse[]> {
-    const qryPatternGraph = `SELECT ?relationlink ?pattern
+    const qryPatternGraph = `SELECT ?relationlink ?pattern ?relationType 
     WHERE {
      ?relationlink a owl:NamedIndividual .
      ?relationlink a pp:UndirectedPatternRelationDescriptor .
      ?relationlink 	pp:hasPattern ?pattern .
       optional {?relationlink pp:hasDescription ?description .}
+      optional {?relationlink pp:hasRelationType ?relationType .}
     }
 `;
     return this.exec(qryPatternGraph, [IriConverter.getFileName(supportedIRI)]);

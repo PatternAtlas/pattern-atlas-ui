@@ -78,6 +78,7 @@ export class DefaultPatternRendererComponent implements OnInit {
       this.isLoading = false;
 
       this.allRelations = completePL.patternRelations;
+      console.log(this.allRelations);
 
       this.updateUIForPatternRelations();
       this.sections = completePL.patternlanguage.sections;
@@ -159,15 +160,15 @@ export class DefaultPatternRendererComponent implements OnInit {
     switch (dialogResult.direction.name) {
       case PatternRelationDescriptorDirection.DirectedRight:
         this.allRelations.directed.push(new DirectedPatternRelationDescriptorIndividual(this.pattern, dialogResult.toPattern,
-          dialogResult.description ? dialogResult.description : null));
+          dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null));
         break;
       case PatternRelationDescriptorDirection.DirectedLeft:
         this.allRelations.directed.push(new DirectedPatternRelationDescriptorIndividual(dialogResult.toPattern, this.pattern,
-          dialogResult.description ? dialogResult.description : null));
+          dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null));
         break;
       case PatternRelationDescriptorDirection.UnDirected:
         this.allRelations.undirected.push(new UndirectedPatternRelationDescriptorIndividual(this.pattern, dialogResult.toPattern,
-          dialogResult.description ? dialogResult.description : null));
+          dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null));
         break;
       default:
         return false;
