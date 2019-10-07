@@ -114,7 +114,8 @@ export class PatternLanguageManagementComponent implements OnInit {
 
     // update patternpedia, when user saves a patternlanguage:
     (<CreateEditPatternLanguageComponent> dialogRef.componentInstance).saveClicked.subscribe((result: DialogPatternLanguageResult) => {
-      const patternlanguage = new PatternLanguage(this.urlPatternPedia + '/patternlanguages/' + result.name.replace(/\s/g, ''),
+      const normalizedPatternlanguageName = IriConverter.removeWhitespace(result.name).toLowerCase();
+      const patternlanguage = new PatternLanguage(this.urlPatternPedia + '/patternlanguages/' + normalizedPatternlanguageName,
         result.name, [result.iconUrl], null, result.sections, result.restrictions, result.prefixes);
       const patternLanguagePatterns = new PatternLanguagePatterns(IriConverter.getPatternListIriForPLIri(patternlanguage.iri), patternlanguage.iri, []);
       const patternLanguageRelations = new PatternLanguageRelations(IriConverter.getRelationListIriForPLIri(patternlanguage.iri), patternlanguage.iri, new PatternRelations());

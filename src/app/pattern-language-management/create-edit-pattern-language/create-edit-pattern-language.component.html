@@ -17,8 +17,7 @@
         Leerzeichen verwenden.
       </mat-error>
     </mat-form-field>
-      <ng-container
-        fxLayout="row" fxLayoutAlign="space-around center">
+      <div fxLayout="row" fxLayoutAlign="space-around center">
         <mat-form-field class="full-width" appearance="outline" style="width: 24em" [floatLabel]="'always'">
           <mat-label>Icon URL</mat-label>
           <input matInput formControlName="iconUrl" placeholder="Enter URL of your icon" type="url">
@@ -31,7 +30,7 @@
           <mat-error *ngIf="saveRequested && iconUrl?.hasError('pattern')">Please insert a valid URL.
           </mat-error>
         </mat-form-field>
-      </ng-container>
+      </div>
 
 
       <mat-form-field appearance="outline" style="width: 24em" [floatLabel]="'always'">

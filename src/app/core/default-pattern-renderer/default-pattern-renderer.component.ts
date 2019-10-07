@@ -16,16 +16,16 @@ import { MatDialog } from '@angular/material';
 import { CreatePatternRelationComponent, DialogDataResult } from '../component/create-pattern-relation/create-pattern-relation.component';
 import Pattern from '../model/pattern.model';
 import { DirectedPatternRelationDescriptorIndividual } from '../model/directed-pattern-relation-descriptor-individual';
-import { PatternLanguageRelations } from '../model/pattern-language-relations.model';
 import { PatternRelationDescriptorDirection } from '../model/pattern-relation-descriptor-direction.enum';
 import { UndirectedPatternRelationDescriptorIndividual } from '../model/undirected-pattern-relation-descriptor-individual';
 import { DefaultPatternDirectedRelationsLoaderService } from '../service/loader/pattern-language-loader/default-pattern-directed-relations-loader.service';
 import { PatternRelations } from '../model/pattern-relations';
 import { DefaultPatternUndirectedRelationsLoaderService } from '../service/loader/pattern-language-loader/default-pattern-undirected-relations-loader.service';
-import { switchMap, tap } from 'rxjs/internal/operators';
-import { EMPTY } from 'rxjs';
 import { MarkdownPatternSectioncontentComponent } from '../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component';
 import { LoadCompletePatternlanguageService } from '../service/loader/complete-patternlanguage-loader.service';
+import { PatternLanguageRelations } from '../model/pattern-language-relations.model';
+import { EMPTY } from 'rxjs';
+import { switchMap, tap } from 'rxjs/internal/operators';
 
 @Component({
   selector: 'pp-default-pattern-renderer',

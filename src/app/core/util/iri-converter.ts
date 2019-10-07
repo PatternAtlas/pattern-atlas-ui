@@ -62,12 +62,12 @@ export class IriConverter {
 
 
   static getPatternListIriForPLIri(plIri: string): string {
-    return this.getFileName(plIri) + '/' + this.extractIndividualNameFromIri(this.getFileName(plIri)) + '-Patterns';
+    return this.getFileName(plIri) + '/' + this.extractIndividualNameFromIri(this.getFileName(plIri)).toLowerCase() + '-Patterns';
 
   }
 
   static getRelationListIriForPLIri(plIri: string): string {
-    return this.getFileName(plIri) + '/' + this.extractIndividualNameFromIri(this.getFileName(plIri)) + '-Relations';
+    return this.getFileName(plIri) + '/' + this.extractIndividualNameFromIri(this.getFileName(plIri)).toLowerCase() + '-Relations';
   }
 
   static getGithubAPIURLForURI(iri: string): string {
