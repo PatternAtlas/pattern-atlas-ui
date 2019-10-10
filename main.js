@@ -380,7 +380,7 @@ var AppModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1 mat-dialog-title>Add a relation to another pattern</h1>\n<div mat-dialog-content [formGroup]=\"relationForm\">\n  <mat-form-field>\n    <input type=\"text\" matInput [value]=\"data.patternName\" readonly>\n  </mat-form-field>\n  <mat-form-field>\n    <mat-label>Direction</mat-label>\n    <mat-select formControlName=\"direction\">\n      <mat-select-trigger>\n        <i class=\"material-icons\"\n           [ngClass]=\"{'flip': relationForm.value?.direction?.name === directionEnum.DirectedLeft}\">{{relationForm.value\n          ? relationForm.value.direction?.icon: ''}}</i>\n      </mat-select-trigger>\n      <mat-option *ngFor=\"let type of types\" [value]=\"type\">\n        <i class=\"material-icons\" [ngClass]=\"{'flip': type?.name === directionEnum.DirectedLeft}\">{{type?.icon}}</i>\n      </mat-option>\n    </mat-select>\n  </mat-form-field>\n  <mat-form-field>\n    <mat-label>Select a pattern</mat-label>\n    <mat-select formControlName=\"toPattern\">\n      <mat-option *ngFor=\"let pattern of data.patterns\"\n                  [value]=\"pattern\">\n        {{pattern.name}}\n      </mat-option>\n    </mat-select>\n  </mat-form-field>\n\n  <mat-form-field style=\"display: block\">\n    <textarea matInput formControlName=\"description\" placeholder=\"Provide a description\"></textarea>\n  </mat-form-field>\n</div>\n<div mat-dialog-actions>\n  <button mat-button (click)=\"close()\">Close</button>\n  <button mat-button [mat-dialog-close]=\"relationForm.value\" [disabled]=\"!relationForm?.valid\">Save\n  </button>\n</div>\n"
+module.exports = "<h1 mat-dialog-title>Add a relation to another pattern</h1>\n<div mat-dialog-content [formGroup]=\"relationForm\">\n  <mat-form-field>\n    <input type=\"text\" matInput [value]=\"data.patternName\" readonly>\n  </mat-form-field>\n  <mat-form-field style=\"width: 4em;\" [floatLabel]=\"'always'\">\n    <mat-label>Direction</mat-label>\n    <mat-select formControlName=\"direction\">\n      <mat-select-trigger>\n        <i class=\"material-icons\"\n           [ngClass]=\"{'flip': relationForm.value?.direction?.name === directionEnum.DirectedLeft}\">{{relationForm.value\n          ? relationForm.value.direction?.icon: ''}}</i>\n      </mat-select-trigger>\n      <mat-option *ngFor=\"let type of types\" [value]=\"type\">\n        <i class=\"material-icons\" [ngClass]=\"{'flip': type?.name === directionEnum.DirectedLeft}\">{{type?.icon}}</i>\n      </mat-option>\n    </mat-select>\n  </mat-form-field>\n  <mat-form-field>\n    <input type=\"text\" matInput formControlName=\"relationType\" placeholder=\"Relationtype\"\n           [matAutocomplete]=\"auto\">\n  </mat-form-field>\n\n  <mat-autocomplete #auto=\"matAutocomplete\">\n    <mat-option *ngFor=\"let type of relationTypes\" [value]=\"type\">{{type}}</mat-option>\n  </mat-autocomplete>\n\n  <mat-form-field>\n    <mat-label>Select a pattern</mat-label>\n    <mat-select formControlName=\"toPattern\">\n      <mat-option *ngFor=\"let pattern of data.patterns\"\n                  [value]=\"pattern\">\n        {{pattern.name}}\n      </mat-option>\n    </mat-select>\n  </mat-form-field>\n  <mat-form-field style=\"display: block\">\n    <textarea matInput formControlName=\"description\" placeholder=\"Provide a description\"></textarea>\n  </mat-form-field>\n</div>\n<div mat-dialog-actions>\n  <button mat-button (click)=\"close()\">Close</button>\n  <button mat-button [mat-dialog-close]=\"relationForm.value\" [disabled]=\"!relationForm?.valid\">Save\n  </button>\n</div>\n"
 
 /***/ }),
 
@@ -391,7 +391,7 @@ module.exports = "<h1 mat-dialog-title>Add a relation to another pattern</h1>\n<
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".flip {\n  transform: rotate(180deg); }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2NvcmUvY29tcG9uZW50L2NyZWF0ZS1wYXR0ZXJuLXJlbGF0aW9uL2NyZWF0ZS1wYXR0ZXJuLXJlbGF0aW9uLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UseUJBQXlCLEVBQUEiLCJmaWxlIjoic3JjL2FwcC9jb3JlL2NvbXBvbmVudC9jcmVhdGUtcGF0dGVybi1yZWxhdGlvbi9jcmVhdGUtcGF0dGVybi1yZWxhdGlvbi5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5mbGlwe1xuICB0cmFuc2Zvcm06IHJvdGF0ZSgxODBkZWcpO1xufVxuIl19 */"
+module.exports = ".flip {\n  transform: rotate(180deg); }\n\n.mat-form-field {\n  margin-left: 2.5rem !important; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2NvcmUvY29tcG9uZW50L2NyZWF0ZS1wYXR0ZXJuLXJlbGF0aW9uL2NyZWF0ZS1wYXR0ZXJuLXJlbGF0aW9uLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UseUJBQXlCLEVBQUE7O0FBRzNCO0VBQ0UsOEJBQThCLEVBQUEiLCJmaWxlIjoic3JjL2FwcC9jb3JlL2NvbXBvbmVudC9jcmVhdGUtcGF0dGVybi1yZWxhdGlvbi9jcmVhdGUtcGF0dGVybi1yZWxhdGlvbi5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5mbGlwe1xuICB0cmFuc2Zvcm06IHJvdGF0ZSgxODBkZWcpO1xufVxuXG4ubWF0LWZvcm0tZmllbGQge1xuICBtYXJnaW4tbGVmdDogMi41cmVtICFpbXBvcnRhbnQ7XG59XG4iXX0= */"
 
 /***/ }),
 
@@ -436,12 +436,14 @@ var CreatePatternRelationComponent = /** @class */ (function () {
                 name: _model_pattern_relation_descriptor_direction_enum__WEBPACK_IMPORTED_MODULE_3__["PatternRelationDescriptorDirection"].UnDirected,
                 icon: 'compare_arrows'
             }];
+        this.relationTypes = ['isRelatedTo', 'isUsedBefore', 'isUsedAfter', 'dependsOn', 'canBeUsedWith',
+            'cannotBeUsedWith', 'consistsOf', 'uses', 'usedIn', 'isAlternativeTo', 'isVariationOf'];
     }
     CreatePatternRelationComponent.prototype.ngOnInit = function () {
-        console.log(this.data);
         this.relationForm = this.fb.group({
             toPattern: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]],
             direction: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]],
+            relationType: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]],
             description: ['', []],
         });
     };
@@ -1090,6 +1092,7 @@ var CoreModule = /** @class */ (function () {
                 _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatTooltipModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatSelectModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatDialogModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatAutocompleteModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatIconModule"],
                 ngx_md__WEBPACK_IMPORTED_MODULE_18__["NgxMdModule"].forRoot(), _angular_material__WEBPACK_IMPORTED_MODULE_9__["MatNativeDateModule"]
             ],
@@ -1136,7 +1139,7 @@ var CoreModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<pp-navigate-back></pp-navigate-back>\n<mat-progress-spinner mode=\"indeterminate\" *ngIf=\"isLoading || isLoadingSection\"></mat-progress-spinner>\n<h2>{{pattern?.name}}</h2>\n<div>\n  <ng-template ppPatternproperty></ng-template>\n</div>\n<mat-card *ngIf=\"!isLoading\">\n  <mat-card-title style=\"display: flex;\n     align-items: flex-start;\"><b>Links</b><i class=\"material-icons\" style=\"margin-left: 0.3em;\">\n    compare_arrows\n  </i></mat-card-title>\n  <div *ngIf=\"directedPatternRelations?.length > 0\">\n    <ng-container *ngFor=\"let relation of directedPatternRelations\">\n      <p style=\"display: flex;\n     align-items: center\">{{ relation.source.name}} <i class=\"material-icons\">trending_flat</i>\n        {{ relation.target.name}} <i>{{relation.description? ': ' + relation.description : ''}}</i></p>\n    </ng-container>\n  </div>\n  <div *ngIf=\"undirectedPatternRelations?.length > 0\">\n    <ng-container *ngFor=\"let relation of undirectedPatternRelations\">\n      <p style=\"display: flex;\n     align-items: center\">{{ relation.hasPattern[0].name}} <i class=\"material-icons\">compare_arrows</i>\n        {{ relation.hasPattern[1].name}} <i>{{relation.description? ': ' + relation.description : ''}}</i></p>\n    </ng-container>\n  </div>\n  <div #noLinksMessage *ngIf=\"undirectedPatternRelations?.length === 0 && directedPatternRelations?.length === 0\"><p> No\n    links found for this pattern.</p></div>\n  <mat-card-actions>\n    <div style=\"display: flex; align-items: center;\">\n      <ngx-md [data]=\"data\"></ngx-md>\n      <button *ngIf=\"isEditingEnabled\" mat-stroked-button\n              style=\"margin-left: 5px\" color=\"primary\"\n              (click)=\"addLink()\" matTooltip=\"Add Link\"><i class=\"material-icons\">trending_flat</i>\n        <i class=\"material-icons\" style=\"height: 2em;\n    font-size: smaller;  \">add</i></button>\n    </div>\n  </mat-card-actions>\n</mat-card>\n"
+module.exports = "<pp-navigate-back></pp-navigate-back>\n<mat-progress-spinner mode=\"indeterminate\" *ngIf=\"isLoading || isLoadingSection\"></mat-progress-spinner>\n<h2>{{pattern?.name}}</h2>\n<div>\n  <ng-template ppPatternproperty></ng-template>\n</div>\n<mat-card *ngIf=\"!isLoading\">\n  <mat-card-title style=\"display: flex;\n     align-items: flex-start;\"><b>Links</b><i class=\"material-icons\" style=\"margin-left: 0.3em;\">\n    compare_arrows\n  </i></mat-card-title>\n  <div *ngIf=\"directedPatternRelations?.length > 0\">\n    <ng-container *ngFor=\"let relation of directedPatternRelations\">\n      <p class=\"horiz-centered\">\n        {{ relation.source.name}}\n        <span class=\"horiz-centered\" *ngIf=\"relation.relationType\"><i class=\"material-icons\">\n          remove\n        </i>{{relation.relationType}}</span>\n        <i class=\"material-icons\">trending_flat</i>\n        {{ relation.target.name}} <i>{{relation.description? ': ' + relation.description : ''}}</i>\n      </p>\n      <br/>\n    </ng-container>\n  </div>\n  <div *ngIf=\"undirectedPatternRelations?.length > 0\">\n    <ng-container *ngFor=\"let relation of undirectedPatternRelations\">\n      <p class=\"horiz-centered\">{{ relation.hasPattern[0].name}}\n        <span *ngIf=\"!relation.relationType\"><i class=\"material-icons\">compare_arrows</i></span>\n        <span class=\"horiz-centered\" *ngIf=\"relation.relationType\"><i class=\"material-icons flip\">trending_flat</i>{{relation.relationType}}\n          <i class=\"material-icons\">trending_flat</i></span>\n        {{ relation.hasPattern[1].name}} <i>{{relation.description? ': ' + relation.description : ''}}</i>\n      </p>\n      <br/>\n    </ng-container>\n  </div>\n  <div #noLinksMessage *ngIf=\"undirectedPatternRelations?.length === 0 && directedPatternRelations?.length === 0\"><p> No\n    links found for this pattern.</p></div>\n  <mat-card-actions>\n    <div style=\"display: flex; align-items: center;\">\n      <ngx-md [data]=\"data\"></ngx-md>\n      <button *ngIf=\"isEditingEnabled\" mat-stroked-button\n              style=\"margin-left: 5px\" color=\"primary\"\n              (click)=\"addLink()\" matTooltip=\"Add Link\"><i class=\"material-icons\">trending_flat</i>\n        <i class=\"material-icons\" style=\"height: 2em;\n    font-size: smaller;  \">add</i></button>\n    </div>\n  </mat-card-actions>\n</mat-card>\n"
 
 /***/ }),
 
@@ -1147,7 +1150,7 @@ module.exports = "<pp-navigate-back></pp-navigate-back>\n<mat-progress-spinner m
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".mat-card {\n  min-height: unset; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2NvcmUvZGVmYXVsdC1wYXR0ZXJuLXJlbmRlcmVyL2RlZmF1bHQtcGF0dGVybi1yZW5kZXJlci5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGlCQUFpQixFQUFBIiwiZmlsZSI6InNyYy9hcHAvY29yZS9kZWZhdWx0LXBhdHRlcm4tcmVuZGVyZXIvZGVmYXVsdC1wYXR0ZXJuLXJlbmRlcmVyLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLm1hdC1jYXJkIHtcbiAgbWluLWhlaWdodDogdW5zZXQ7XG59XG4iXX0= */"
+module.exports = ".mat-card {\n  min-height: unset; }\n\n.horiz-centered {\n  display: inline-flex;\n  align-items: center; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS9zcmMvYXBwL2NvcmUvZGVmYXVsdC1wYXR0ZXJuLXJlbmRlcmVyL2RlZmF1bHQtcGF0dGVybi1yZW5kZXJlci5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGlCQUFpQixFQUFBOztBQUduQjtFQUNFLG9CQUFvQjtFQUNwQixtQkFBbUIsRUFBQSIsImZpbGUiOiJzcmMvYXBwL2NvcmUvZGVmYXVsdC1wYXR0ZXJuLXJlbmRlcmVyL2RlZmF1bHQtcGF0dGVybi1yZW5kZXJlci5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5tYXQtY2FyZCB7XG4gIG1pbi1oZWlnaHQ6IHVuc2V0O1xufVxuXG4uaG9yaXotY2VudGVyZWQge1xuICBkaXNwbGF5OiBpbmxpbmUtZmxleDtcbiAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbn1cbiJdfQ== */"
 
 /***/ }),
 
@@ -1177,17 +1180,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
 /* harmony import */ var _component_create_pattern_relation_create_pattern_relation_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../component/create-pattern-relation/create-pattern-relation.component */ "./src/app/core/component/create-pattern-relation/create-pattern-relation.component.ts");
 /* harmony import */ var _model_directed_pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../model/directed-pattern-relation-descriptor-individual */ "./src/app/core/model/directed-pattern-relation-descriptor-individual.ts");
-/* harmony import */ var _model_pattern_language_relations_model__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../model/pattern-language-relations.model */ "./src/app/core/model/pattern-language-relations.model.ts");
-/* harmony import */ var _model_pattern_relation_descriptor_direction_enum__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../model/pattern-relation-descriptor-direction.enum */ "./src/app/core/model/pattern-relation-descriptor-direction.enum.ts");
-/* harmony import */ var _model_undirected_pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../model/undirected-pattern-relation-descriptor-individual */ "./src/app/core/model/undirected-pattern-relation-descriptor-individual.ts");
-/* harmony import */ var _service_loader_pattern_language_loader_default_pattern_directed_relations_loader_service__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../service/loader/pattern-language-loader/default-pattern-directed-relations-loader.service */ "./src/app/core/service/loader/pattern-language-loader/default-pattern-directed-relations-loader.service.ts");
-/* harmony import */ var _model_pattern_relations__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../model/pattern-relations */ "./src/app/core/model/pattern-relations.ts");
-/* harmony import */ var _service_loader_pattern_language_loader_default_pattern_undirected_relations_loader_service__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../service/loader/pattern-language-loader/default-pattern-undirected-relations-loader.service */ "./src/app/core/service/loader/pattern-language-loader/default-pattern-undirected-relations-loader.service.ts");
-/* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! rxjs/internal/operators */ "./node_modules/rxjs/internal/operators/index.js");
-/* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_22___default = /*#__PURE__*/__webpack_require__.n(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_22__);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var _component_markdown_content_container_markdown_pattern_sectioncontent_markdown_pattern_sectioncontent_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component */ "./src/app/core/component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component.ts");
-/* harmony import */ var _service_loader_complete_patternlanguage_loader_service__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ../service/loader/complete-patternlanguage-loader.service */ "./src/app/core/service/loader/complete-patternlanguage-loader.service.ts");
+/* harmony import */ var _model_pattern_relation_descriptor_direction_enum__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../model/pattern-relation-descriptor-direction.enum */ "./src/app/core/model/pattern-relation-descriptor-direction.enum.ts");
+/* harmony import */ var _model_undirected_pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../model/undirected-pattern-relation-descriptor-individual */ "./src/app/core/model/undirected-pattern-relation-descriptor-individual.ts");
+/* harmony import */ var _service_loader_pattern_language_loader_default_pattern_directed_relations_loader_service__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../service/loader/pattern-language-loader/default-pattern-directed-relations-loader.service */ "./src/app/core/service/loader/pattern-language-loader/default-pattern-directed-relations-loader.service.ts");
+/* harmony import */ var _model_pattern_relations__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../model/pattern-relations */ "./src/app/core/model/pattern-relations.ts");
+/* harmony import */ var _service_loader_pattern_language_loader_default_pattern_undirected_relations_loader_service__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../service/loader/pattern-language-loader/default-pattern-undirected-relations-loader.service */ "./src/app/core/service/loader/pattern-language-loader/default-pattern-undirected-relations-loader.service.ts");
+/* harmony import */ var _component_markdown_content_container_markdown_pattern_sectioncontent_markdown_pattern_sectioncontent_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component */ "./src/app/core/component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component.ts");
+/* harmony import */ var _service_loader_complete_patternlanguage_loader_service__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../service/loader/complete-patternlanguage-loader.service */ "./src/app/core/service/loader/complete-patternlanguage-loader.service.ts");
+/* harmony import */ var _model_pattern_language_relations_model__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ../model/pattern-language-relations.model */ "./src/app/core/model/pattern-language-relations.model.ts");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! rxjs/internal/operators */ "./node_modules/rxjs/internal/operators/index.js");
+/* harmony import */ var rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_25___default = /*#__PURE__*/__webpack_require__.n(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_25__);
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1239,7 +1242,7 @@ var DefaultPatternRendererComponent = /** @class */ (function () {
         this.undirectedRelationsLoaderService = undirectedRelationsLoaderService;
         this.completePatternLanguageLoadingService = completePatternLanguageLoadingService;
         this.dialog = dialog;
-        this.allRelations = new _model_pattern_relations__WEBPACK_IMPORTED_MODULE_20__["PatternRelations"]();
+        this.allRelations = new _model_pattern_relations__WEBPACK_IMPORTED_MODULE_19__["PatternRelations"]();
         this.isLoading = true;
         this.isEditingEnabled = false;
     }
@@ -1257,6 +1260,7 @@ var DefaultPatternRendererComponent = /** @class */ (function () {
             _this.pattern = _this.patternList.find(function (pat) { return pat.iri === _this.patternIri; });
             _this.isLoading = false;
             _this.allRelations = completePL.patternRelations;
+            console.log(_this.allRelations);
             _this.updateUIForPatternRelations();
             _this.sections = completePL.patternlanguage.sections;
             var viewContainerRef = _this.ppPatternproperty.viewContainerRef;
@@ -1273,7 +1277,7 @@ var DefaultPatternRendererComponent = /** @class */ (function () {
         var properties = this.pattern.sectionsProperties.get(section);
         if (section.indexOf('#has') !== -1 && properties) {
             var sectionTitle = section.split('#has')[1].replace(/([A-Z])/g, ' $1').trim();
-            var componentFactory = this.componentFactoryResolver.resolveComponentFactory(_component_markdown_content_container_markdown_pattern_sectioncontent_markdown_pattern_sectioncontent_component__WEBPACK_IMPORTED_MODULE_24__["MarkdownPatternSectioncontentComponent"]);
+            var componentFactory = this.componentFactoryResolver.resolveComponentFactory(_component_markdown_content_container_markdown_pattern_sectioncontent_markdown_pattern_sectioncontent_component__WEBPACK_IMPORTED_MODULE_21__["MarkdownPatternSectioncontentComponent"]);
             var componentRef = viewContainerRef.createComponent(componentFactory);
             var instance_1 = componentRef.instance;
             instance_1.data = properties.join('\n');
@@ -1303,11 +1307,11 @@ var DefaultPatternRendererComponent = /** @class */ (function () {
         });
         var relationAdded = false;
         var patternRelations;
-        dialogRef.afterClosed().pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_22__["tap"])(function (result) {
+        dialogRef.afterClosed().pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_25__["tap"])(function (result) {
             relationAdded = _this.addRelationCreatedByDialog(result);
-            patternRelations = new _model_pattern_language_relations_model__WEBPACK_IMPORTED_MODULE_16__["PatternLanguageRelations"](_util_iri_converter__WEBPACK_IMPORTED_MODULE_8__["IriConverter"].getRelationListIriForPLIri(_this.plIri), _this.plIri, _this.allRelations);
-        }), Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_22__["switchMap"])(function () {
-            return relationAdded ? _this.githubPersistenceService.updatePLRelations(patternRelations) : rxjs__WEBPACK_IMPORTED_MODULE_23__["EMPTY"];
+            patternRelations = new _model_pattern_language_relations_model__WEBPACK_IMPORTED_MODULE_23__["PatternLanguageRelations"](_util_iri_converter__WEBPACK_IMPORTED_MODULE_8__["IriConverter"].getRelationListIriForPLIri(_this.plIri), _this.plIri, _this.allRelations);
+        }), Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_25__["switchMap"])(function () {
+            return relationAdded ? _this.githubPersistenceService.updatePLRelations(patternRelations) : rxjs__WEBPACK_IMPORTED_MODULE_24__["EMPTY"];
         })).subscribe(function () {
             if (relationAdded) {
                 _this.toasterService.pop('success', 'Created new Relation');
@@ -1320,14 +1324,14 @@ var DefaultPatternRendererComponent = /** @class */ (function () {
             return false;
         }
         switch (dialogResult.direction.name) {
-            case _model_pattern_relation_descriptor_direction_enum__WEBPACK_IMPORTED_MODULE_17__["PatternRelationDescriptorDirection"].DirectedRight:
-                this.allRelations.directed.push(new _model_directed_pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_15__["DirectedPatternRelationDescriptorIndividual"](this.pattern, dialogResult.toPattern, dialogResult.description ? dialogResult.description : null));
+            case _model_pattern_relation_descriptor_direction_enum__WEBPACK_IMPORTED_MODULE_16__["PatternRelationDescriptorDirection"].DirectedRight:
+                this.allRelations.directed.push(new _model_directed_pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_15__["DirectedPatternRelationDescriptorIndividual"](this.pattern, dialogResult.toPattern, dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null));
                 break;
-            case _model_pattern_relation_descriptor_direction_enum__WEBPACK_IMPORTED_MODULE_17__["PatternRelationDescriptorDirection"].DirectedLeft:
-                this.allRelations.directed.push(new _model_directed_pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_15__["DirectedPatternRelationDescriptorIndividual"](dialogResult.toPattern, this.pattern, dialogResult.description ? dialogResult.description : null));
+            case _model_pattern_relation_descriptor_direction_enum__WEBPACK_IMPORTED_MODULE_16__["PatternRelationDescriptorDirection"].DirectedLeft:
+                this.allRelations.directed.push(new _model_directed_pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_15__["DirectedPatternRelationDescriptorIndividual"](dialogResult.toPattern, this.pattern, dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null));
                 break;
-            case _model_pattern_relation_descriptor_direction_enum__WEBPACK_IMPORTED_MODULE_17__["PatternRelationDescriptorDirection"].UnDirected:
-                this.allRelations.undirected.push(new _model_undirected_pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_18__["UndirectedPatternRelationDescriptorIndividual"](this.pattern, dialogResult.toPattern, dialogResult.description ? dialogResult.description : null));
+            case _model_pattern_relation_descriptor_direction_enum__WEBPACK_IMPORTED_MODULE_16__["PatternRelationDescriptorDirection"].UnDirected:
+                this.allRelations.undirected.push(new _model_undirected_pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_17__["UndirectedPatternRelationDescriptorIndividual"](this.pattern, dialogResult.toPattern, dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null));
                 break;
             default:
                 return false;
@@ -1368,9 +1372,9 @@ var DefaultPatternRendererComponent = /** @class */ (function () {
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ComponentFactoryResolver"],
             _service_github_persistence_service__WEBPACK_IMPORTED_MODULE_11__["GithubPersistenceService"],
             ngx_cookie_service__WEBPACK_IMPORTED_MODULE_12__["CookieService"],
-            _service_loader_pattern_language_loader_default_pattern_directed_relations_loader_service__WEBPACK_IMPORTED_MODULE_19__["DefaultPatternDirectedRelationsLoaderService"],
-            _service_loader_pattern_language_loader_default_pattern_undirected_relations_loader_service__WEBPACK_IMPORTED_MODULE_21__["DefaultPatternUndirectedRelationsLoaderService"],
-            _service_loader_complete_patternlanguage_loader_service__WEBPACK_IMPORTED_MODULE_25__["LoadCompletePatternlanguageService"],
+            _service_loader_pattern_language_loader_default_pattern_directed_relations_loader_service__WEBPACK_IMPORTED_MODULE_18__["DefaultPatternDirectedRelationsLoaderService"],
+            _service_loader_pattern_language_loader_default_pattern_undirected_relations_loader_service__WEBPACK_IMPORTED_MODULE_20__["DefaultPatternUndirectedRelationsLoaderService"],
+            _service_loader_complete_patternlanguage_loader_service__WEBPACK_IMPORTED_MODULE_22__["LoadCompletePatternlanguageService"],
             _angular_material__WEBPACK_IMPORTED_MODULE_13__["MatDialog"]])
     ], DefaultPatternRendererComponent);
     return DefaultPatternRendererComponent;
@@ -1387,7 +1391,7 @@ var DefaultPatternRendererComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<pp-navigate-back></pp-navigate-back>\n<h2>Pattern Language: {{plName}}\n  <!--This button may be implemented in the future-->\n  <!--<button mat-stroked-button-- >\n          <!--style=\"margin-left: 5px\" color=\"primary\"-->\n  <!--(click)=\"addRelationType()\" matTooltip=\"Add new Relationtype\"><i class=\"material-icons -rotate-90deg\">swap_vertical_circle</i>-->\n  <!--<i class=\"material-icons\" style=\"height: 2em;-->\n  <!--font-size: smaller;  \">add</i></button>-->\n</h2>\n<div class=\"container\">\n  <mat-progress-spinner mode=\"indeterminate\" *ngIf=\"isLoading\"></mat-progress-spinner>\n  <mat-card class=\"landing-card \" *ngFor=\"let pattern of patterns\">\n    <mat-card-header>\n      <mat-card-title>\n        <b>{{pattern.name}}</b>\n\n      </mat-card-title>\n    </mat-card-header>\n    <mat-card-content class=\"fixed-height-card-content\">\n      <div *ngFor=\"let patternSection of patternLanguage?.sections\">\n        <p><b>{{getSectionName(patternSection)}}</b>:\n          {{pattern?.sectionsProperties.get(patternSection)}}\n        </p>\n      </div>\n    </mat-card-content>\n    <mat-card-actions>\n      <div style=\"text-align: center\">\n        <button mat-stroked-button color=\"primary\" (click)=\"navigate(pattern)\"><i class=\"material-icons\">pageview</i>View\n        </button>\n      </div>\n    </mat-card-actions>\n  </mat-card>\n<mat-card class=\"landing-card center-content add-card\" (click)=\"goToPatternCreation()\">\n  <i class=\"material-icons\">add_box</i>\n</mat-card>\n</div>\n\n"
+module.exports = "<pp-navigate-back></pp-navigate-back>\n<h2>Pattern Language: {{plName}}\n  <button mat-stroked-button\n          style=\"margin-left: 5px\" color=\"primary\"\n          (click)=\"addRelationType()\" matTooltip=\"Add new Relationtype\"><i class=\"material-icons -rotate-90deg\">swap_vertical_circle</i>\n    <i class=\"material-icons\" style=\"height: 2em;\nfont-size: smaller;  \">add</i></button>\n</h2>\n<div class=\"container\">\n  <mat-progress-spinner mode=\"indeterminate\" *ngIf=\"isLoading\"></mat-progress-spinner>\n  <mat-card class=\"landing-card \" *ngFor=\"let pattern of patterns\">\n    <mat-card-header>\n      <mat-card-title>\n        <b>{{pattern.name}}</b>\n\n      </mat-card-title>\n    </mat-card-header>\n    <mat-card-content class=\"fixed-height-card-content\">\n      <div *ngFor=\"let patternSection of patternLanguage?.sections\">\n        <p><b>{{getSectionName(patternSection)}}</b>:\n          {{pattern?.sectionsProperties.get(patternSection)}}\n        </p>\n      </div>\n    </mat-card-content>\n    <mat-card-actions>\n      <div style=\"text-align: center\">\n        <button mat-stroked-button color=\"primary\" (click)=\"navigate(pattern)\"><i class=\"material-icons\">pageview</i>View\n        </button>\n      </div>\n    </mat-card-actions>\n  </mat-card>\n<mat-card class=\"landing-card center-content add-card\" (click)=\"goToPatternCreation()\">\n  <i class=\"material-icons\">add_box</i>\n</mat-card>\n</div>\n\n"
 
 /***/ }),
 
@@ -1674,12 +1678,14 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 var DirectedPatternRelationDescriptorIndividual = /** @class */ (function (_super) {
     __extends(DirectedPatternRelationDescriptorIndividual, _super);
-    function DirectedPatternRelationDescriptorIndividual(source, target, description) {
+    function DirectedPatternRelationDescriptorIndividual(source, target, description, relationType) {
         if (description === void 0) { description = null; }
+        if (relationType === void 0) { relationType = null; }
         var _this = _super.call(this) || this;
         _this.source = source;
         _this.target = target;
         _this.description = description;
+        _this.relationType = relationType;
         _this.individualName = _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].removeWhitespace(_this.source.name) + '-to-' + _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].removeWhitespace(_this.target.name);
         return _this;
     }
@@ -1687,8 +1693,13 @@ var DirectedPatternRelationDescriptorIndividual = /** @class */ (function (_supe
         var ary = [];
         ary.push(":" + this.individualName);
         ary.push("rdf:type owl:NamedIndividual , pp:DirectedPatternRelationDescriptor ;");
+        if (this.relationType) {
+            ary.push("pp:hasRelationType \"" + this.relationType + "\"^^xsd:string ;");
+        }
         ary.push("pp:hasSource :" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].removeWhitespace(this.source.name) + " ; ");
-        ary.push("pp:hasTarget :" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].removeWhitespace(this.target.name) + " " + (this.description ? '; \n pp:hasDescription "' + this.description + '"^^xsd:string . ' : '.'));
+        ary.push("pp:hasTarget :" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].removeWhitespace(this.target.name) + " " + (this.description ?
+            '; \n pp:hasDescription "' + this.description + '"^^xsd:string . '
+            : '.'));
         ary.push(' ');
         return ary.join('\n');
     };
@@ -1889,7 +1900,7 @@ var PatternLanguage = /** @class */ (function () {
         var _this = this;
         var ary = [];
         var standardPrefixes = new _pattern_pedia_model__WEBPACK_IMPORTED_MODULE_1__["default"]().defaultPrefixes;
-        ary.push("@prefix : <" + (this.patternpediaBaseURI + '/patternlanguages/' + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].removeWhitespace(this.name)) + "#> .", "@base <" + (this.patternpediaBaseURI + '/patternlanguages/' + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].removeWhitespace(this.name)) + "> .");
+        ary.push("@prefix : <" + (this.patternpediaBaseURI + '/patternlanguages/' + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].removeWhitespace(this.name).toLowerCase()) + "#> .", "@base <" + (this.patternpediaBaseURI + '/patternlanguages/' + _util_iri_converter__WEBPACK_IMPORTED_MODULE_0__["IriConverter"].removeWhitespace(this.name).toLowerCase()) + "> .");
         standardPrefixes.forEach(function (value, key) {
             ary.push("@prefix " + key + ": " + value + " .");
         });
@@ -2243,12 +2254,14 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 var UndirectedPatternRelationDescriptorIndividual = /** @class */ (function (_super) {
     __extends(UndirectedPatternRelationDescriptorIndividual, _super);
-    function UndirectedPatternRelationDescriptorIndividual(firstPattern, secondPattern, description) {
+    function UndirectedPatternRelationDescriptorIndividual(firstPattern, secondPattern, description, relationType) {
         if (secondPattern === void 0) { secondPattern = null; }
         if (description === void 0) { description = null; }
+        if (relationType === void 0) { relationType = null; }
         var _this = _super.call(this) || this;
         _this.hasPattern = [firstPattern, secondPattern];
         _this.description = description;
+        _this.relationType = relationType;
         _this.individualName = _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].removeWhitespace(firstPattern.name) + '-to-' + _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].removeWhitespace(secondPattern.name);
         return _this;
     }
@@ -2256,8 +2269,13 @@ var UndirectedPatternRelationDescriptorIndividual = /** @class */ (function (_su
         var ary = [];
         ary.push(":" + this.individualName);
         ary.push("rdf:type owl:NamedIndividual , pp:UndirectedPatternRelationDescriptor ;");
+        if (this.relationType) {
+            ary.push("pp:hasRelationType \"" + this.relationType + "\"^^xsd:string ;");
+        }
         ary.push("pp:hasPattern :" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].removeWhitespace(this.hasPattern[0].name) + " ; ");
-        ary.push("pp:hasPattern :" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].removeWhitespace(this.hasPattern[1].name) + " " + (this.description ? '; \n pp:hasDescription "' + this.description + '"^^xsd:string . ' : '.'));
+        ary.push("pp:hasPattern :" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_1__["IriConverter"].removeWhitespace(this.hasPattern[1].name) + " " + (this.description ?
+            '; \n pp:hasDescription "' + this.description + '"^^xsd:string . '
+            : '.'));
         ary.push(' ');
         return ary.join('\n');
     };
@@ -2454,7 +2472,7 @@ var GithubPersistenceService = /** @class */ (function () {
         return headers;
     };
     GithubPersistenceService.prototype.getGithubPathForPatternLanguage = function (patternLanguage) {
-        return this.githubBaseUrl + "/patternlanguages/" + patternLanguage.name + "/" + patternLanguage.name + ".ttl";
+        return this.githubBaseUrl + "/patternlanguages/" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_6__["IriConverter"].removeWhitespace(patternLanguage.name).toLowerCase() + "/" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_6__["IriConverter"].removeWhitespace(patternLanguage.name).toLowerCase() + ".ttl";
     };
     GithubPersistenceService.prototype.addPatternLanguageToPatternPedia = function (patternlanguage, existingPatternlanguages) {
         var _this = this;
@@ -2558,7 +2576,7 @@ var GithubPersistenceService = /** @class */ (function () {
         }));
     };
     GithubPersistenceService.prototype.getGithubPathForPatternLanguagePatternsOrRelations = function (patternLanguagePatternsOrRelations) {
-        return this.githubBaseUrl + "/patternlanguages/" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_6__["IriConverter"].extractIndividualNameFromIri(patternLanguagePatternsOrRelations.plIri) + "/" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_6__["IriConverter"].extractIndividualNameFromIri(patternLanguagePatternsOrRelations.iri) + ".ttl";
+        return this.githubBaseUrl + "/patternlanguages/" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_6__["IriConverter"].extractIndividualNameFromIri(patternLanguagePatternsOrRelations.plIri).toLowerCase() + "/" + _util_iri_converter__WEBPACK_IMPORTED_MODULE_6__["IriConverter"].extractIndividualNameFromIri(patternLanguagePatternsOrRelations.iri) + ".ttl";
     };
     GithubPersistenceService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
@@ -2997,7 +3015,7 @@ var DefaultPatternDirectedRelationsLoaderService = /** @class */ (function (_sup
         var relations = new Map();
         for (var _i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
             var row = triples_1[_i];
-            var relation = new _model_directed_pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_3__["DirectedPatternRelationDescriptorIndividual"](this.getPatternForIri(row.source.value), this.getPatternForIri(row.target.value), row.description ? row.description.value : null);
+            var relation = new _model_directed_pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_3__["DirectedPatternRelationDescriptorIndividual"](this.getPatternForIri(row.source.value), this.getPatternForIri(row.target.value), row.description ? row.description.value : null, row.relationType ? row.relationType.value : null);
             relations.set(relation.individualName, relation);
         }
         return Promise.resolve(relations);
@@ -3076,12 +3094,16 @@ var DefaultPatternUndirectedRelationsLoaderService = /** @class */ (function (_s
             var row = triples_1[_i];
             var pattern = this.getPatternForIri(row.pattern.value);
             var relationIndividual = row.relationlink.value;
-            var linkdata = { pat: pattern, description: row.description ? row.description.value : null };
+            var linkdata = {
+                pat: pattern,
+                description: row.description ? row.description.value : null,
+                relationType: row.relationType ? row.relationType.value : null
+            };
             triplesByRelation.has(relationIndividual) ? triplesByRelation.set(relationIndividual, triplesByRelation.get(relationIndividual).concat(linkdata)) : triplesByRelation.set(relationIndividual, [linkdata]);
         }
         // reconstruct relations
         triplesByRelation.forEach(function (value, key) {
-            relations.set(key, new _model_undirected_pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_3__["UndirectedPatternRelationDescriptorIndividual"](value[0].pat, value[1].pat, value[1].description ? value[1].description : null));
+            relations.set(key, new _model_undirected_pattern_relation_descriptor_individual__WEBPACK_IMPORTED_MODULE_3__["UndirectedPatternRelationDescriptorIndividual"](value[0].pat, value[1].pat, value[1].description ? value[1].description : null, value[1].relationType ? value[1].relationType : null));
         });
         return Promise.resolve(relations);
     };
@@ -4219,11 +4241,11 @@ var PatternOntologyService = /** @class */ (function () {
         return this.exec(qryPatternGraph, [_util_iri_converter__WEBPACK_IMPORTED_MODULE_5__["IriConverter"].getFileName(graphIri)]);
     };
     PatternOntologyService.prototype.getDirectedPatternRelations = function (supportedIRI) {
-        var qryPatternGraph = "SELECT ?source ?target ?description WHERE {\n     ?relationlink a owl:NamedIndividual .\n     ?relationlink a pp:DirectedPatternRelationDescriptor .\n     ?relationlink \tpp:hasSource ?source .\n     ?relationlink \tpp:hasTarget ?target . \n      optional {?relationlink pp:hasDescription ?description .}\n    }\n";
+        var qryPatternGraph = "SELECT ?source ?target ?description ?relationType \n    WHERE {\n     ?relationlink a owl:NamedIndividual .\n     ?relationlink a pp:DirectedPatternRelationDescriptor .\n     ?relationlink \tpp:hasSource ?source .\n     ?relationlink \tpp:hasTarget ?target . \n      optional {?relationlink pp:hasDescription ?description .}\n      optional {?relationlink pp:hasRelationType ?relationType .}\n    }\n";
         return this.exec(qryPatternGraph, [_util_iri_converter__WEBPACK_IMPORTED_MODULE_5__["IriConverter"].getFileName(supportedIRI)]);
     };
     PatternOntologyService.prototype.getUndirectedPatternRelations = function (supportedIRI) {
-        var qryPatternGraph = "SELECT ?relationlink ?pattern\n    WHERE {\n     ?relationlink a owl:NamedIndividual .\n     ?relationlink a pp:UndirectedPatternRelationDescriptor .\n     ?relationlink \tpp:hasPattern ?pattern .\n      optional {?relationlink pp:hasDescription ?description .}\n    }\n";
+        var qryPatternGraph = "SELECT ?relationlink ?pattern ?relationType \n    WHERE {\n     ?relationlink a owl:NamedIndividual .\n     ?relationlink a pp:UndirectedPatternRelationDescriptor .\n     ?relationlink \tpp:hasPattern ?pattern .\n      optional {?relationlink pp:hasDescription ?description .}\n      optional {?relationlink pp:hasRelationType ?relationType .}\n    }\n";
         return this.exec(qryPatternGraph, [_util_iri_converter__WEBPACK_IMPORTED_MODULE_5__["IriConverter"].getFileName(supportedIRI)]);
     };
     PatternOntologyService = __decorate([
@@ -4288,7 +4310,7 @@ var ValidationService = /** @class */ (function () {
         var _this = this;
         return function (control) {
             if (control.value !== undefined) {
-                if (!_this.allValuesMatchRegex(control.value, /!\[.*\]\(http:\/\/([a-zA-Z.0-9]+[\/]*)+\)/g) && !!_this.allValuesMatchRegex(control.value, /!\[.*\]\(https:\/\/([a-zA-Z.0-9]+[\/]*)+\)/g)) {
+                if (!_this.allValuesMatchRegex(control.value, /!\[.*\]\(http(s)?:\/\/([a-zA-Z.0-9]+[\/]*)+\)/g)) {
                     return { 'xsdImage': true };
                 }
             }
@@ -4354,7 +4376,7 @@ var ValidationService = /** @class */ (function () {
                 continue;
             }
             var match = item.match(regex);
-            if (item.match(regex)[0].length < item.trim().length) {
+            if (match.length < item.trim().length) {
                 return false;
             }
         }
@@ -4436,10 +4458,10 @@ var IriConverter = /** @class */ (function () {
         return (name.indexOf('#') >= 0) || (name.indexOf('://') >= 0) || (name.indexOf('purl.org/patternpedia') >= 0);
     };
     IriConverter.getPatternListIriForPLIri = function (plIri) {
-        return this.getFileName(plIri) + '/' + this.extractIndividualNameFromIri(this.getFileName(plIri)) + '-Patterns';
+        return this.getFileName(plIri) + '/' + this.extractIndividualNameFromIri(this.getFileName(plIri)).toLowerCase() + '-Patterns';
     };
     IriConverter.getRelationListIriForPLIri = function (plIri) {
-        return this.getFileName(plIri) + '/' + this.extractIndividualNameFromIri(this.getFileName(plIri)) + '-Relations';
+        return this.getFileName(plIri) + '/' + this.extractIndividualNameFromIri(this.getFileName(plIri)).toLowerCase() + '-Relations';
     };
     IriConverter.getGithubAPIURLForURI = function (iri) {
         if (iri.indexOf('patternlanguages') !== -1 || iri.indexOf('patternviews') !== -1) {
@@ -11707,7 +11729,7 @@ var PageNotFoundComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"display: flex; justify-content: space-between; align-items: baseline\">\n  <h1 mat-dialog-title>{{isFirstStep ? 'Create a new Pattern Language' : 'Define the content type of your\n    sections'}}</h1>\n  <button mat-flat-button (click)=\"close()\" tabindex=\"-1\">\n    <i class=\"material-icons\">close</i>\n  </button>\n</div>\n<div mat-dialog-content [formGroup]=\"patternLanguageForm\">\n  <div fxLayout=\"column\" fxLayoutAlign=\"space-around start\">\n    <mat-card fxLayout=\"column\" fxLayoutAlign=\"space-around\"\n            style=\"margin: 10px;\" *ngIf=\"isFirstStep; else secondStep\">\n    <mat-form-field appearance=\"outline\" style=\"width: 24em;\" [floatLabel]=\"'always'\">\n      <mat-label>Pattern language name</mat-label>\n      <input matInput formControlName=\"name\" placeholder=\"Enter the name of your Pattern Language\">\n      <mat-error *ngIf=\"saveRequested && name?.hasError('required')\">Dies ist ein Pflichtfeld.</mat-error>\n      <mat-error *ngIf=\"saveRequested && name?.hasError('pattern')\">Bitte nur alphanumerische Zeichen, _ und\n        Leerzeichen verwenden.\n      </mat-error>\n    </mat-form-field>\n      <ng-container\n        fxLayout=\"row\" fxLayoutAlign=\"space-around center\">\n        <mat-form-field class=\"full-width\" appearance=\"outline\" style=\"width: 24em\" [floatLabel]=\"'always'\">\n          <mat-label>Icon URL</mat-label>\n          <input matInput formControlName=\"iconUrl\" placeholder=\"Enter URL of your icon\" type=\"url\">\n          <div fxLayout=\"row\" fxLayoutAlign=\"space-around center\" *ngIf=\"iconPreviewVisible\">\n            <span class=\"label-preview\">Icon-Preview: </span>\n            <div mat-card-avatar #iconPreview [ngStyle]=\"{ 'background-image': 'url(' + iconUrl?.value + ')'}\"\n                 class=\"example-header-image\"></div>\n          </div>\n          <mat-error *ngIf=\"saveRequested && iconUrl?.hasError('required')\">This field is requirec.</mat-error>\n          <mat-error *ngIf=\"saveRequested && iconUrl?.hasError('pattern')\">Please insert a valid URL.\n          </mat-error>\n        </mat-form-field>\n      </ng-container>\n\n\n      <mat-form-field appearance=\"outline\" style=\"width: 24em\" [floatLabel]=\"'always'\">\n      <mat-label>Sections</mat-label>\n      <mat-chip-list #chipList>\n        <div fxLayout=\"column\" fxLayoutAlign=\"space-around start\">\n          <div *ngFor=\"let section of sections, let i = index\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n            <span>{{i+1}}. </span>\n            <mat-chip fxLayout=\"row\" fxLayoutAlign=\"initial\"\n\n                      [selectable]=\"selectable\"\n                      [removable]=\"removable\"\n                      (removed)=\"removeSectionMatChip(section)\">\n            {{section}}\n            <mat-icon matChipRemove *ngIf=\"removable\">cancel</mat-icon>\n          </mat-chip>\n          </div>\n        </div>\n      </mat-chip-list>\n      <input\n        placeholder=\"Add section (press enter to create custom section)\"\n        fxFill\n          #sectionInput\n          [matAutocomplete]=\"auto\"\n          [formControl]=\"sectionCtrl\"\n          [matChipInputFor]=\"chipList\"\n          [matChipInputSeparatorKeyCodes]=\"separatorKeysCodes\"\n          [matChipInputAddOnBlur]=\"addOnBlur\"\n          (matChipInputTokenEnd)=\"add($event)\">\n      <mat-autocomplete #auto=\"matAutocomplete\" (optionSelected)=\"selected($event)\">\n        <mat-option *ngFor=\"let section of filteredSections | async\" [value]=\"section\">\n          {{section}}\n        </mat-option>\n      </mat-autocomplete>\n    </mat-form-field>\n  </mat-card>\n\n</div>\n</div>\n\n<div mat-dialog-actions>\n\n  <button mat-raised-button color=\"primary\" (click)=\"isFirstStep = true\" *ngIf=\"!isFirstStep\"><i\n    class=\"material-icons\"><i className=\"material-icons\">arrow_backward</i></i>\n  </button>\n\n\n  <button mat-raised-button color=\"primary\" *ngIf=\"!isFirstStep\" (click)=\"initForSecondStep()\"><i\n    class=\"material-icons\">restore_page</i> Reset all Restrictions\n  </button>\n\n  <button mat-raised-button color=\"primary\" *ngIf=\"!isFirstStep\" (click)=\"save()\"><i\n    class=\"material-icons\">save</i> Save patternlanguage\n  </button>\n\n\n  <button mat-raised-button color=\"primary\" (click)=\"initForSecondStep()\" *ngIf=\"isFirstStep\"><i\n    class=\"material-icons\"><i className=\"material-icons\">arrow_forward</i></i>\n  </button>\n</div>\n\n<!-- Second Screen -->\n<ng-template #secondStep>\n  <div fxLayout=\"row\" fxLayoutAlign=\"space-around start\">\n    <div [formGroup]=\"prefixForm\">\n      <div formArrayName=\"prefixArray\">\n        <div *ngFor=\"let prefixControl of prefixArray.controls,  let ind = index\">\n          <div [formGroupName]=\"ind\">\n            <mat-checkbox matInput formControlName=\"checked\"> {{prefixControl.value.prefixname}}</mat-checkbox>\n          </div>\n        </div>\n      </div>\n    </div>\n    <div [formGroup]=\"newPrefixForm\" class=\"add-prefix-form\">\n      <mat-form-field id=\"new-prefix\">\n        <mat-label>Prefix</mat-label>\n        <input matInput formControlName=\"prefix\" placeholder=\"Prefix\">\n      </mat-form-field>\n      <mat-form-field>\n        <mat-label>URI</mat-label>\n        <input matInput formControlName=\"uri\" placeholder=\"URI\">\n      </mat-form-field>\n\n      <button mat-icon-button aria-label=\"Add new prefix\" (click)=\"onAddPrefix()\">\n        <i class=\"material-icons\">add_circle</i> Add prefix\n      </button>\n    </div>\n  </div>\n\n  <div [formGroup]=\"sectionDetailsGroup\">\n    <div formArrayName=\"sectionsArray\">\n      <mat-form-field style=\"width: 24em\" [floatLabel]=\"'always'\">\n\n        <mat-chip-list #chipList>\n          <div fxLayout=\"column\" fxLayoutAlign=\"space-around start\">\n            <div fxLayout=\"row\" fxLayoutAlign=\"start center\"\n                 *ngFor=\"let section of sectionsArray.controls, let i = index\">\n              <div [formGroupName]=\"i\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                <mat-chip fxLayout=\"row\" fxLayoutAlign=\"initial\"\n                          [selectable]=\"selectable\"\n                          [removable]=\"removable\"\n                          (removed)=\"removeSectionMatChip(section)\">\n                  {{sectionsArray.controls[i].value.name}}\n                </mat-chip>\n                <mat-form-field>\n                  <mat-label>Restriction Type</mat-label>\n                  <mat-select formControlName=\"restrictionType\">\n                    <mat-option *ngFor=\"let option of restrictionOptions\"\n                                [value]=\"option\">\n                      {{option}}\n                    </mat-option>\n                  </mat-select>\n                </mat-form-field>\n\n                <span *ngIf=\"isCardinalityInputVisible(section)\">&mdash;</span>\n                <mat-form-field class=\"min-max-width\"\n                                *ngIf=\"isCardinalityInputVisible(section)\">\n\n                  <mat-label>Amount</mat-label>\n                  <input matInput type=\"number\" formControlName=\"cardinality\">\n                </mat-form-field>\n\n\n                  <span>of</span>\n                  <mat-form-field>\n\n                    <mat-label>Type</mat-label>\n                    <input type=\"text\" appearance=\"fill\" matInput\n                           formControlName=\"type\"\n                           [matAutocomplete]=\"auto\">\n                    <mat-error *ngIf=\"!sectionsArray.controls[i]?.type?.errors\">Please start\n                      type\n                      value with a\n                      valid prefix.\n                    </mat-error>\n                    <mat-autocomplete #auto=\"matAutocomplete\">\n                      <mat-option *ngFor=\"let option of options\" [value]=\"option\">\n                        {{option}}\n                      </mat-option>\n                    </mat-autocomplete>\n                  </mat-form-field>\n\n              </div>\n              <i (click)=\"deleteSectionRestriction(i)\"\n                 class=\"material-icons\">delete</i>\n              <i (click)=\"addSectionRestriction(section.value.name, i+1)\"\n                 class=\"material-icons\">add_circle</i>\n\n            </div>\n          </div>\n        </mat-chip-list>\n      </mat-form-field>\n    </div>\n  </div>\n</ng-template>\n"
+module.exports = "<div style=\"display: flex; justify-content: space-between; align-items: baseline\">\n  <h1 mat-dialog-title>{{isFirstStep ? 'Create a new Pattern Language' : 'Define the content type of your\n    sections'}}</h1>\n  <button mat-flat-button (click)=\"close()\" tabindex=\"-1\">\n    <i class=\"material-icons\">close</i>\n  </button>\n</div>\n<div mat-dialog-content [formGroup]=\"patternLanguageForm\">\n  <div fxLayout=\"column\" fxLayoutAlign=\"space-around start\">\n    <mat-card fxLayout=\"column\" fxLayoutAlign=\"space-around\"\n            style=\"margin: 10px;\" *ngIf=\"isFirstStep; else secondStep\">\n    <mat-form-field appearance=\"outline\" style=\"width: 24em;\" [floatLabel]=\"'always'\">\n      <mat-label>Pattern language name</mat-label>\n      <input matInput formControlName=\"name\" placeholder=\"Enter the name of your Pattern Language\">\n      <mat-error *ngIf=\"saveRequested && name?.hasError('required')\">Dies ist ein Pflichtfeld.</mat-error>\n      <mat-error *ngIf=\"saveRequested && name?.hasError('pattern')\">Bitte nur alphanumerische Zeichen, _ und\n        Leerzeichen verwenden.\n      </mat-error>\n    </mat-form-field>\n      <div fxLayout=\"row\" fxLayoutAlign=\"space-around center\">\n        <mat-form-field class=\"full-width\" appearance=\"outline\" style=\"width: 24em\" [floatLabel]=\"'always'\">\n          <mat-label>Icon URL</mat-label>\n          <input matInput formControlName=\"iconUrl\" placeholder=\"Enter URL of your icon\" type=\"url\">\n          <div fxLayout=\"row\" fxLayoutAlign=\"space-around center\" *ngIf=\"iconPreviewVisible\">\n            <span class=\"label-preview\">Icon-Preview: </span>\n            <div mat-card-avatar #iconPreview [ngStyle]=\"{ 'background-image': 'url(' + iconUrl?.value + ')'}\"\n                 class=\"example-header-image\"></div>\n          </div>\n          <mat-error *ngIf=\"saveRequested && iconUrl?.hasError('required')\">This field is requirec.</mat-error>\n          <mat-error *ngIf=\"saveRequested && iconUrl?.hasError('pattern')\">Please insert a valid URL.\n          </mat-error>\n        </mat-form-field>\n      </div>\n\n\n      <mat-form-field appearance=\"outline\" style=\"width: 24em\" [floatLabel]=\"'always'\">\n      <mat-label>Sections</mat-label>\n      <mat-chip-list #chipList>\n        <div fxLayout=\"column\" fxLayoutAlign=\"space-around start\">\n          <div *ngFor=\"let section of sections, let i = index\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n            <span>{{i+1}}. </span>\n            <mat-chip fxLayout=\"row\" fxLayoutAlign=\"initial\"\n\n                      [selectable]=\"selectable\"\n                      [removable]=\"removable\"\n                      (removed)=\"removeSectionMatChip(section)\">\n            {{section}}\n            <mat-icon matChipRemove *ngIf=\"removable\">cancel</mat-icon>\n          </mat-chip>\n          </div>\n        </div>\n      </mat-chip-list>\n      <input\n        placeholder=\"Add section (press enter to create custom section)\"\n        fxFill\n          #sectionInput\n          [matAutocomplete]=\"auto\"\n          [formControl]=\"sectionCtrl\"\n          [matChipInputFor]=\"chipList\"\n          [matChipInputSeparatorKeyCodes]=\"separatorKeysCodes\"\n          [matChipInputAddOnBlur]=\"addOnBlur\"\n          (matChipInputTokenEnd)=\"add($event)\">\n      <mat-autocomplete #auto=\"matAutocomplete\" (optionSelected)=\"selected($event)\">\n        <mat-option *ngFor=\"let type of relationTypes | async\" [value]=\"section\">\n          {{section}}\n        </mat-option>\n      </mat-autocomplete>\n    </mat-form-field>\n  </mat-card>\n\n</div>\n</div>\n\n<div mat-dialog-actions>\n\n  <button mat-raised-button color=\"primary\" (click)=\"isFirstStep = true\" *ngIf=\"!isFirstStep\"><i\n    class=\"material-icons\"><i className=\"material-icons\">arrow_backward</i></i>\n  </button>\n\n\n  <button mat-raised-button color=\"primary\" *ngIf=\"!isFirstStep\" (click)=\"initForSecondStep()\"><i\n    class=\"material-icons\">restore_page</i> Reset all Restrictions\n  </button>\n\n  <button mat-raised-button color=\"primary\" *ngIf=\"!isFirstStep\" (click)=\"save()\"><i\n    class=\"material-icons\">save</i> Save patternlanguage\n  </button>\n\n\n  <button mat-raised-button color=\"primary\" (click)=\"initForSecondStep()\" *ngIf=\"isFirstStep\"><i\n    class=\"material-icons\"><i className=\"material-icons\">arrow_forward</i></i>\n  </button>\n</div>\n\n<!-- Second Screen -->\n<ng-template #secondStep>\n  <div fxLayout=\"row\" fxLayoutAlign=\"space-around start\">\n    <div [formGroup]=\"prefixForm\">\n      <div formArrayName=\"prefixArray\">\n        <div *ngFor=\"let prefixControl of prefixArray.controls,  let ind = index\">\n          <div [formGroupName]=\"ind\">\n            <mat-checkbox matInput formControlName=\"checked\"> {{prefixControl.value.prefixname}}</mat-checkbox>\n          </div>\n        </div>\n      </div>\n    </div>\n    <div [formGroup]=\"newPrefixForm\" class=\"add-prefix-form\">\n      <mat-form-field id=\"new-prefix\">\n        <mat-label>Prefix</mat-label>\n        <input matInput formControlName=\"prefix\" placeholder=\"Prefix\">\n      </mat-form-field>\n      <mat-form-field>\n        <mat-label>URI</mat-label>\n        <input matInput formControlName=\"uri\" placeholder=\"URI\">\n      </mat-form-field>\n\n      <button mat-icon-button aria-label=\"Add new prefix\" (click)=\"onAddPrefix()\">\n        <i class=\"material-icons\">add_circle</i> Add prefix\n      </button>\n    </div>\n  </div>\n\n  <div [formGroup]=\"sectionDetailsGroup\">\n    <div formArrayName=\"sectionsArray\">\n      <mat-form-field style=\"width: 24em\" [floatLabel]=\"'always'\">\n\n        <mat-chip-list #chipList>\n          <div fxLayout=\"column\" fxLayoutAlign=\"space-around start\">\n            <div fxLayout=\"row\" fxLayoutAlign=\"start center\"\n                 *ngFor=\"let section of sectionsArray.controls, let i = index\">\n              <div [formGroupName]=\"i\" fxLayout=\"row\" fxLayoutAlign=\"start center\">\n                <mat-chip fxLayout=\"row\" fxLayoutAlign=\"initial\"\n                          [selectable]=\"selectable\"\n                          [removable]=\"removable\"\n                          (removed)=\"removeSectionMatChip(section)\">\n                  {{sectionsArray.controls[i].value.name}}\n                </mat-chip>\n                <mat-form-field>\n                  <mat-label>Restriction Type</mat-label>\n                  <mat-select formControlName=\"restrictionType\">\n                    <mat-option *ngFor=\"let option of restrictionOptions\"\n                                [value]=\"option\">\n                      {{option}}\n                    </mat-option>\n                  </mat-select>\n                </mat-form-field>\n\n                <span *ngIf=\"isCardinalityInputVisible(section)\">&mdash;</span>\n                <mat-form-field class=\"min-max-width\"\n                                *ngIf=\"isCardinalityInputVisible(section)\">\n\n                  <mat-label>Amount</mat-label>\n                  <input matInput type=\"number\" formControlName=\"cardinality\">\n                </mat-form-field>\n\n\n                  <span>of</span>\n                  <mat-form-field>\n\n                    <mat-label>Type</mat-label>\n                    <input type=\"text\" appearance=\"fill\" matInput\n                           formControlName=\"type\"\n                           [matAutocomplete]=\"auto\">\n                    <mat-error *ngIf=\"!sectionsArray.controls[i]?.type?.errors\">Please start\n                      type\n                      value with a\n                      valid prefix.\n                    </mat-error>\n                    <mat-autocomplete #auto=\"matAutocomplete\">\n                      <mat-option *ngFor=\"let option of options\" [value]=\"option\">\n                        {{option}}\n                      </mat-option>\n                    </mat-autocomplete>\n                  </mat-form-field>\n\n              </div>\n              <i (click)=\"deleteSectionRestriction(i)\"\n                 class=\"material-icons\">delete</i>\n              <i (click)=\"addSectionRestriction(section.value.name, i+1)\"\n                 class=\"material-icons\">add_circle</i>\n\n            </div>\n          </div>\n        </mat-chip-list>\n      </mat-form-field>\n    </div>\n  </div>\n</ng-template>\n"
 
 /***/ }),
 
@@ -11821,7 +11843,7 @@ var CreateEditPatternLanguageComponent = /** @class */ (function () {
         var _this = this;
         var urlRegex = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
         this.patternLanguageForm = this._fb.group({
-            name: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].pattern('[a-zA-Z0-9_-\s]+')]],
+            name: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].pattern('[a-zA-Z0-9 _-]+')]],
             iconUrl: ['', this.isAddLinkTypeDialog ? [] : [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].pattern(urlRegex)]]
         });
         this.iconUrl.valueChanges.pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_3__["debounceTime"])(1000), Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_3__["distinctUntilChanged"])()).subscribe(function (urlValue) {
@@ -12279,7 +12301,7 @@ var CreatePatternComponent = /** @class */ (function () {
                     console.log('missing formcontrol:');
                     console.log(section);
                 }
-                var sectionType = _this.sectionRestrictions.get(section).type;
+                var sectionType = _this.sectionRestrictions.get(section).type ? _this.sectionRestrictions.get(section).type : '';
                 for (var i = 0; i < sectioncontent.length; i++) {
                     if (sectionType === _this.xsdPrefix + 'anyURI') {
                         sectioncontent[i] = '<' + sectioncontent[i] + '>';
@@ -12354,7 +12376,7 @@ var CreatePatternComponent = /** @class */ (function () {
                     validators.push(_angular_forms__WEBPACK_IMPORTED_MODULE_10__["Validators"].maxLength(allRestrictions.maxCardinality));
                 }
                 if (allRestrictions.type === 'https://purl.org/dc/dcmitype/Image') {
-                    validators.push(_core_service_validation_service__WEBPACK_IMPORTED_MODULE_11__["ValidationService"].xsdImage());
+                    // validators.push(ValidationService.xsdImage());
                 }
                 else if (allRestrictions.type.startsWith(_this.xsdPrefix) &&
                     (allRestrictions.type.endsWith('integer') || allRestrictions.type.endsWith('positiveInteger') || allRestrictions.type.endsWith('negativeInteger'))) {
@@ -13805,11 +13827,10 @@ var PatternLanguageManagementComponent = /** @class */ (function () {
         var dialogRef = this.dialog.open(_create_edit_pattern_language_create_edit_pattern_language_component__WEBPACK_IMPORTED_MODULE_7__["CreateEditPatternLanguageComponent"]);
         // update patternpedia, when user saves a patternlanguage:
         dialogRef.componentInstance.saveClicked.subscribe(function (result) {
-            var patternlanguage = new _core_model_pattern_language_model__WEBPACK_IMPORTED_MODULE_1__["default"](_this.urlPatternPedia + '/patternlanguages/' + result.name.replace(/\s/g, ''), result.name, [result.iconUrl], null, result.sections, result.restrictions, result.prefixes);
+            var normalizedPatternlanguageName = _core_util_iri_converter__WEBPACK_IMPORTED_MODULE_12__["IriConverter"].removeWhitespace(result.name).toLowerCase();
+            var patternlanguage = new _core_model_pattern_language_model__WEBPACK_IMPORTED_MODULE_1__["default"](_this.urlPatternPedia + '/patternlanguages/' + normalizedPatternlanguageName, result.name, [result.iconUrl], null, result.sections, result.restrictions, result.prefixes);
             var patternLanguagePatterns = new _core_model_pattern_language_patterns_model__WEBPACK_IMPORTED_MODULE_13__["PatternLanguagePatterns"](_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_12__["IriConverter"].getPatternListIriForPLIri(patternlanguage.iri), patternlanguage.iri, []);
             var patternLanguageRelations = new _core_model_pattern_language_relations_model__WEBPACK_IMPORTED_MODULE_16__["PatternLanguageRelations"](_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_12__["IriConverter"].getRelationListIriForPLIri(patternlanguage.iri), patternlanguage.iri, new _core_model_pattern_relations__WEBPACK_IMPORTED_MODULE_17__["PatternRelations"]());
-            console.log(patternlanguage.iri);
-            console.log(patternLanguagePatterns.iri);
             _this.uploadService.uploadPatternLanguage(patternlanguage).pipe(Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_14__["switchMap"])(function () {
                 return _this.uploadService.addPatternLanguageToPatternPedia(patternlanguage, _this.patternLanguages);
             }), Object(rxjs_internal_operators__WEBPACK_IMPORTED_MODULE_14__["switchMap"])(function () {

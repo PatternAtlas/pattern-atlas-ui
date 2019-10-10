@@ -189,13 +189,10 @@
 ###  http://purl.org/patternpedia#PatternSetRelationDescriptor
 :PatternSetRelationDescriptor
     rdf:type owl:Class ;
-    rdfs:subClassOf [ rdf:type owl:Restriction ;
+    rdfs:subClassOf :PatternRelationDescriptor ,
+                    [ rdf:type owl:Restriction ;
                       owl:onProperty :hasPattern ;
                       owl:allValuesFrom :Pattern
-                    ] ,
-                    [ rdf:type owl:Restriction ;
-                      owl:onProperty :hasDescription ;
-                      owl:allValuesFrom xsd:string
                     ] ,
                     [ rdf:type owl:Restriction ;
                       owl:onProperty :hasLabel ;
