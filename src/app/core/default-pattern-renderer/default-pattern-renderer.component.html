@@ -11,16 +11,26 @@
   </i></mat-card-title>
   <div *ngIf="directedPatternRelations?.length > 0">
     <ng-container *ngFor="let relation of directedPatternRelations">
-      <p style="display: flex;
-     align-items: center">{{ relation.source.name}} <i class="material-icons">trending_flat</i>
-        {{ relation.target.name}} <i>{{relation.description? ': ' + relation.description : ''}}</i></p>
+      <p class="horiz-centered">
+        {{ relation.source.name}}
+        <span class="horiz-centered" *ngIf="relation.relationType"><i class="material-icons">
+          remove
+        </i>{{relation.relationType}}</span>
+        <i class="material-icons">trending_flat</i>
+        {{ relation.target.name}} <i>{{relation.description? ': ' + relation.description : ''}}</i>
+      </p>
+      <br/>
     </ng-container>
   </div>
   <div *ngIf="undirectedPatternRelations?.length > 0">
     <ng-container *ngFor="let relation of undirectedPatternRelations">
-      <p style="display: flex;
-     align-items: center">{{ relation.hasPattern[0].name}} <i class="material-icons">compare_arrows</i>
-        {{ relation.hasPattern[1].name}} <i>{{relation.description? ': ' + relation.description : ''}}</i></p>
+      <p class="horiz-centered">{{ relation.hasPattern[0].name}}
+        <span *ngIf="!relation.relationType"><i class="material-icons">compare_arrows</i></span>
+        <span class="horiz-centered" *ngIf="relation.relationType"><i class="material-icons flip">trending_flat</i>{{relation.relationType}}
+          <i class="material-icons">trending_flat</i></span>
+        {{ relation.hasPattern[1].name}} <i>{{relation.description? ': ' + relation.description : ''}}</i>
+      </p>
+      <br/>
     </ng-container>
   </div>
   <div #noLinksMessage *ngIf="undirectedPatternRelations?.length === 0 && directedPatternRelations?.length === 0"><p> No

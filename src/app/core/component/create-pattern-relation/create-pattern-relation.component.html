@@ -3,7 +3,7 @@
   <mat-form-field>
     <input type="text" matInput [value]="data.patternName" readonly>
   </mat-form-field>
-  <mat-form-field>
+  <mat-form-field style="width: 4em;" [floatLabel]="'always'">
     <mat-label>Direction</mat-label>
     <mat-select formControlName="direction">
       <mat-select-trigger>
@@ -17,6 +17,15 @@
     </mat-select>
   </mat-form-field>
   <mat-form-field>
+    <input type="text" matInput formControlName="relationType" placeholder="Relationtype"
+           [matAutocomplete]="auto">
+  </mat-form-field>
+
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let type of relationTypes" [value]="type">{{type}}</mat-option>
+  </mat-autocomplete>
+
+  <mat-form-field>
     <mat-label>Select a pattern</mat-label>
     <mat-select formControlName="toPattern">
       <mat-option *ngFor="let pattern of data.patterns"
@@ -25,7 +34,6 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-
   <mat-form-field style="display: block">
     <textarea matInput formControlName="description" placeholder="Provide a description"></textarea>
   </mat-form-field>

@@ -16,16 +16,16 @@ import { MatDialog } from '@angular/material';
 import { CreatePatternRelationComponent, DialogDataResult } from '../component/create-pattern-relation/create-pattern-relation.component';
 import Pattern from '../model/pattern.model';
 import { DirectedPatternRelationDescriptorIndividual } from '../model/directed-pattern-relation-descriptor-individual';
-import { PatternLanguageRelations } from '../model/pattern-language-relations.model';
 import { PatternRelationDescriptorDirection } from '../model/pattern-relation-descriptor-direction.enum';
 import { UndirectedPatternRelationDescriptorIndividual } from '../model/undirected-pattern-relation-descriptor-individual';
 import { DefaultPatternDirectedRelationsLoaderService } from '../service/loader/pattern-language-loader/default-pattern-directed-relations-loader.service';
 import { PatternRelations } from '../model/pattern-relations';
 import { DefaultPatternUndirectedRelationsLoaderService } from '../service/loader/pattern-language-loader/default-pattern-undirected-relations-loader.service';
-import { switchMap, tap } from 'rxjs/internal/operators';
-import { EMPTY } from 'rxjs';
 import { MarkdownPatternSectioncontentComponent } from '../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component';
 import { LoadCompletePatternlanguageService } from '../service/loader/complete-patternlanguage-loader.service';
+import { PatternLanguageRelations } from '../model/pattern-language-relations.model';
+import { EMPTY } from 'rxjs';
+import { switchMap, tap } from 'rxjs/internal/operators';
 
 @Component({
   selector: 'pp-default-pattern-renderer',
@@ -78,6 +78,7 @@ export class DefaultPatternRendererComponent implements OnInit {
       this.isLoading = false;
 
       this.allRelations = completePL.patternRelations;
+      console.log(this.allRelations);
 
       this.updateUIForPatternRelations();
       this.sections = completePL.patternlanguage.sections;
@@ -159,15 +160,15 @@ export class DefaultPatternRendererComponent implements OnInit {
     switch (dialogResult.direction.name) {
       case PatternRelationDescriptorDirection.DirectedRight:
         this.allRelations.directed.push(new DirectedPatternRelationDescriptorIndividual(this.pattern, dialogResult.toPattern,
-          dialogResult.description ? dialogResult.description : null));
+          dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null));
         break;
       case PatternRelationDescriptorDirection.DirectedLeft:
         this.allRelations.directed.push(new DirectedPatternRelationDescriptorIndividual(dialogResult.toPattern, this.pattern,
-          dialogResult.description ? dialogResult.description : null));
+          dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null));
         break;
       case PatternRelationDescriptorDirection.UnDirected:
         this.allRelations.undirected.push(new UndirectedPatternRelationDescriptorIndividual(this.pattern, dialogResult.toPattern,
-          dialogResult.description ? dialogResult.description : null));
+          dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null));
         break;
       default:
         return false;

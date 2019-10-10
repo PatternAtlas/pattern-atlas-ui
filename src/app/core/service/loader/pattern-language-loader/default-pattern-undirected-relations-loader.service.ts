@@ -26,12 +26,17 @@ export class DefaultPatternUndirectedRelationsLoaderService extends Loader<any> 
     for (const row of triples) {
       const pattern = this.getPatternForIri(row.pattern.value);
       const relationIndividual = row.relationlink.value;
-      const linkdata = {pat: pattern, description: row.description ? row.description.value : null};
+      const linkdata = {
+        pat: pattern,
+        description: row.description ? row.description.value : null,
+        relationType: row.relationType ? row.relationType.value : null
+      };
       triplesByRelation.has(relationIndividual) ? triplesByRelation.set(relationIndividual, triplesByRelation.get(relationIndividual).concat(linkdata)) : triplesByRelation.set(relationIndividual, [linkdata]);
     }
     // reconstruct relations
     triplesByRelation.forEach((value: UndirectedLinkData[], key: string) => {
-      relations.set(key, new UndirectedPatternRelationDescriptorIndividual(value[0].pat, value[1].pat, value[1].description ? value[1].description : null));
+      relations.set(key, new UndirectedPatternRelationDescriptorIndividual(value[0].pat, value[1].pat,
+        value[1].description ? value[1].description : null, value[1].relationType ? value[1].relationType : null));
     });
 
     return Promise.resolve(relations);
@@ -48,4 +53,5 @@ export class DefaultPatternUndirectedRelationsLoaderService extends Loader<any> 
 class UndirectedLinkData {
   pat: Pattern;
   description?: string;
+  relationType?: string;
 }

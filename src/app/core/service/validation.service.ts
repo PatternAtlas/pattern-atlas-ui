@@ -42,7 +42,7 @@ export class ValidationService {
   static xsdImage(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
       if (control.value !== undefined) {
-        if (!this.allValuesMatchRegex(control.value, /!\[.*\]\(http:\/\/([a-zA-Z.0-9]+[\/]*)+\)/g) && !!this.allValuesMatchRegex(control.value, /!\[.*\]\(https:\/\/([a-zA-Z.0-9]+[\/]*)+\)/g)) {
+        if (!this.allValuesMatchRegex(control.value, /!\[.*\]\(http(s)?:\/\/([a-zA-Z.0-9]+[\/]*)+\)/g)) {
           return {'xsdImage': true};
         }
       }
@@ -110,7 +110,7 @@ export class ValidationService {
         continue;
       }
       const match = item.match(regex);
-      if (item.match(regex)[0].length < item.trim().length) {
+      if (match.length < item.trim().length) {
         return false;
       }
     }

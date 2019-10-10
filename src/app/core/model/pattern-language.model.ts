@@ -54,8 +54,8 @@ class PatternLanguage implements TurtleFileModelInterface {
     const ary: Array<string> = [];
     const standardPrefixes = new PatternPedia().defaultPrefixes;
     ary.push(
-      `@prefix : <${this.patternpediaBaseURI + '/patternlanguages/' + IriConverter.removeWhitespace(this.name)}#> .`,
-      `@base <${this.patternpediaBaseURI + '/patternlanguages/' + IriConverter.removeWhitespace(this.name)}> .`
+      `@prefix : <${this.patternpediaBaseURI + '/patternlanguages/' + IriConverter.removeWhitespace(this.name).toLowerCase()}#> .`,
+      `@base <${this.patternpediaBaseURI + '/patternlanguages/' + IriConverter.removeWhitespace(this.name).toLowerCase()}> .`
     );
     standardPrefixes.forEach((value: boolean, key: string) => {
       ary.push(

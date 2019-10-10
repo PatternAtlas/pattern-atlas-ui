@@ -92,7 +92,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   ngOnInit(): void {
     const urlRegex = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
     this.patternLanguageForm = this._fb.group({
-      name: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9_-\s]+')]],
+      name: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9 _-]+')]],
       iconUrl: ['', this.isAddLinkTypeDialog ? [] : [Validators.required, Validators.pattern(urlRegex)]]
     });
     this.iconUrl.valueChanges.pipe(debounceTime(1000), distinctUntilChanged()).subscribe((urlValue) => {

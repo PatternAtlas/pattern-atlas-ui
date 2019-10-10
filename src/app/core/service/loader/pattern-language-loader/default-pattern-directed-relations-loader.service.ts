@@ -24,7 +24,8 @@ export class DefaultPatternDirectedRelationsLoaderService extends Loader<any> {
     const relations = new Map<string, DirectedPatternRelationDescriptorIndividual>();
     for (const row of triples) {
 
-      const relation = new DirectedPatternRelationDescriptorIndividual(this.getPatternForIri(row.source.value), this.getPatternForIri(row.target.value), row.description ? row.description.value : null);
+      const relation = new DirectedPatternRelationDescriptorIndividual(this.getPatternForIri(row.source.value), this.getPatternForIri(row.target.value),
+        row.description ? row.description.value : null, row.relationType ? row.relationType.value : null);
        relations.set(relation.individualName, relation);
     }
     return Promise.resolve(relations);

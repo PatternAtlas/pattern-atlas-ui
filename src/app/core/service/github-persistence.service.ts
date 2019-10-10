@@ -45,7 +45,7 @@ export class GithubPersistenceService {
   }
 
   getGithubPathForPatternLanguage(patternLanguage: PatternLanguage): string {
-    return `${this.githubBaseUrl}/patternlanguages/${patternLanguage.name}/${patternLanguage.name}.ttl`;
+    return `${this.githubBaseUrl}/patternlanguages/${IriConverter.removeWhitespace(patternLanguage.name).toLowerCase()}/${IriConverter.removeWhitespace(patternLanguage.name).toLowerCase()}.ttl`;
   }
 
   addPatternLanguageToPatternPedia(patternlanguage: PatternLanguage, existingPatternlanguages: PatternLanguage[]): Observable<any> {
@@ -171,6 +171,6 @@ export class GithubPersistenceService {
 
 
   private getGithubPathForPatternLanguagePatternsOrRelations(patternLanguagePatternsOrRelations: PatternLanguagePatterns | PatternLanguageRelations): string {
-    return `${this.githubBaseUrl}/patternlanguages/${IriConverter.extractIndividualNameFromIri(patternLanguagePatternsOrRelations.plIri)}/${IriConverter.extractIndividualNameFromIri(patternLanguagePatternsOrRelations.iri)}.ttl`;
+    return `${this.githubBaseUrl}/patternlanguages/${IriConverter.extractIndividualNameFromIri(patternLanguagePatternsOrRelations.plIri).toLowerCase()}/${IriConverter.extractIndividualNameFromIri(patternLanguagePatternsOrRelations.iri)}.ttl`;
   }
 }

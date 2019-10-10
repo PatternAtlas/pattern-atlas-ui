@@ -192,7 +192,7 @@ export class CreatePatternComponent implements OnInit {
           console.log('missing formcontrol:');
           console.log(section);
         }
-        const sectionType = this.sectionRestrictions.get(section).type;
+        const sectionType = this.sectionRestrictions.get(section).type ? this.sectionRestrictions.get(section).type : '';
 
 
         for (let i = 0; i < sectioncontent.length; i++) {
@@ -287,8 +287,8 @@ export class CreatePatternComponent implements OnInit {
             }
             if (allRestrictions.type === 'https://purl.org/dc/dcmitype/Image') {
 
-              validators.push(ValidationService.xsdImage());
-
+              // validators.push(ValidationService.xsdImage());
+            
             } else if (allRestrictions.type.startsWith(this.xsdPrefix) &&
               (allRestrictions.type.endsWith('integer') || allRestrictions.type.endsWith('positiveInteger') || allRestrictions.type.endsWith('negativeInteger'))) {
               validators.push(ValidationService.xsdInteger());
