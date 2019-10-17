@@ -3,37 +3,33 @@ import { PatternGraphTemplateComponent } from '../pattern-graph-template/pattern
 import { ActivatedRoute, Router } from '@angular/router';
 import { FilterFactoryService } from '../../../filter/service/filter-factory.service';
 import { MatDialog } from '@angular/material';
-import { PatternDataLoaderService } from '../../loader/pattern-data-loader.service';
-import { PatternOntologyService } from '../../../core/service/pattern-ontology.service';
-import { DefaultPlLoaderService } from '../../../core/service/loader/default-pl-loader.service';
-import { IriConverter } from '../../../core/util/iri-converter';
+import { UriConverter } from '../../../core/util/uri-converter';
 
 @Component({
-  selector: 'pp-default-patternlanguage-graph',
-  templateUrl: '../pattern-graph-template/pattern-graph-template.component.html', // ../pattern-graph-template/pattern-graph-template.component.html', // ../../../../../graph/component/pattern-graph-template/pattern-graph-template.component.html
-  styleUrls: ['../pattern-graph-template/pattern-graph-template.component.scss']
+    selector: 'pp-default-patternlanguage-graph',
+    // tslint:disable-next-line:max-line-length
+    templateUrl: '../pattern-graph-template/pattern-graph-template.component.html', // ../patterns-graph-template/patterns-graph-template.component.html', // ../../../../../graph/component/patterns-graph-template/patterns-graph-template.component.html
+    styleUrls: ['../pattern-graph-template/pattern-graph-template.component.scss']
 })
 export class DefaultPatternlanguageGraphComponent extends PatternGraphTemplateComponent<any> implements OnInit {
 
-  constructor(public pos: PatternOntologyService,
-              public router: Router,
-              public activatedRoute: ActivatedRoute,
-              public zone: NgZone,
-              public dialog: MatDialog,
-              public filterFactory: FilterFactoryService,
-              public patternLoader: DefaultPlLoaderService,
-              public loader: PatternDataLoaderService,
-              public cdr: ChangeDetectorRef) {
-    super(pos, loader, dialog, router, activatedRoute, zone, filterFactory, cdr);
-  }
+    constructor(
+        public router: Router,
+        public activatedRoute: ActivatedRoute,
+        public zone: NgZone,
+        public dialog: MatDialog,
+        public filterFactory: FilterFactoryService,
+        public cdr: ChangeDetectorRef) {
+        super(dialog, router, activatedRoute, zone, filterFactory, cdr);
+    }
 
-  createPattern(value: any): any {
-    return {id: IriConverter.convertIriToId(value.uri), name: value.toPattern(this.languageUri).name};
-  }
+    createPattern(value: any): any {
+        return {id: UriConverter.doubleEncodeUri(value.uri), name: value.toPattern(this.languageUri).name};
+    }
 
 
-  ngOnInit() {
-    super.ngOnInit();
-  }
+    ngOnInit() {
+        super.ngOnInit();
+    }
 
 }

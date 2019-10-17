@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 University of Stuttgart.
+ * Copyright (c) 2019 University of Stuttgart.
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -12,19 +12,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-class Pattern {
-    id: string;
-    uri: string;
-    name: string;
+import UriEntity from './uri-entity.model';
 
-    sectionsProperties: Map<string, string[]>;
-
-    constructor(id: string, uri: string = null, name: string = null, sectionProperties: Map<string, string[]> = null) {
-        this.name = name;
-        this.uri = uri;
-        this.id = id;
-        this.sectionsProperties = sectionProperties;
-    }
+class Pattern extends UriEntity {
 }
 
 export default Pattern;

@@ -71,7 +71,7 @@ export class GraphComponent implements OnInit, AfterViewInit {
   }
 
   previewNodeInformation(event: string) {
-    // first check, if the given node id is from the current pattern graph
+    // first check, if the given node id is from the current patterns graph
     if (!this.checkIfInGraph(event)) {
       return;
     }
@@ -240,7 +240,7 @@ export class GraphComponent implements OnInit, AfterViewInit {
 
     const nodesToBeFiltered = this.nodes.filter(n => toBeFilteredIds.includes(n.id));
 
-    // get all links that contain a pattern that should be filtered
+    // get all links that contain a patterns that should be filtered
     const linksToBeFiltered = this.links.filter(e => {
       let id = '';
       if (typeof e.source === 'string') {

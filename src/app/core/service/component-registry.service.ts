@@ -5,7 +5,7 @@ import RenderingComponent from '../model/rendering-component';
     providedIn: 'root'
 })
 /**
- * Service for registering and retreiving rendering components of pattern languages and patterns.
+ * Service for registering and retreiving rendering components of patterns languages and patterns.
  */
 export class ComponentRegistryService {
 
@@ -17,20 +17,20 @@ export class ComponentRegistryService {
 
     /**
      * Returns the rendering component at the given index.
-     * 
-     * @param id the iri of the registered renderer components
+     *
+     * @param id the uri of the registered renderer components
      * @param index (optional) the index of the renderer within the list
      * @returns the rendering component at the given index or null, if there is no registered component
      */
     getPLRenderingComponents(id: string, index: number = 0): RenderingComponent {
-        let componentList = this.dictionary.get(id);
-        return componentList? componentList[index] : null;
+        const componentList = this.dictionary.get(id);
+        return componentList ? componentList[index] : null;
     }
 
     /**
-     * Returns all rendering components that have been registered to the given iri.
-     * 
-     * @param id the iri of the registered renderer components
+     * Returns all rendering components that have been registered to the given uri.
+     *
+     * @param id the uri of the registered renderer components
      * @returns a list containing all rendering components or null, if there are no registered renderer
      */
     getRenderingComponents(id: string): Array<RenderingComponent> {
@@ -38,16 +38,16 @@ export class ComponentRegistryService {
     }
 
     /**
-     * Registers the given components for the given iri.
-     * 
-     * @param id the iri which the components will be registered for
+     * Registers the given components for the given uri.
+     *
+     * @param id the uri which the components will be registered for
      * @param components the components to be registered (higher priority first!)
      */
     registerComponent(id: string, component: RenderingComponent): void {
 
-        let componentList = this.dictionary.get(id);
+        const componentList = this.dictionary.get(id);
         if (!componentList) {
-            this.dictionary.set(id, [component])
+            this.dictionary.set(id, [component]);
         } else {
             componentList.push(component);
             // sort list DESCENDING according to priority (higher prio first)

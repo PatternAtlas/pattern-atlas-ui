@@ -15,7 +15,7 @@
 import { ComponentFactoryResolver, Directive, Input, OnInit, ViewContainerRef } from '@angular/core';
 import { ComponentRegistryService } from '../../core/service/component-registry.service';
 import { PatternGraphTemplateComponent } from '../../graph/component/pattern-graph-template/pattern-graph-template.component';
-import { IriConverter } from '../../core/util/iri-converter';
+import { UriConverter } from '../../core/util/uri-converter';
 import { DefaultPatternlanguageGraphComponent } from '../../graph/component/default-patternlanguage-graph/default-patternlanguage-graph.component';
 
 @Directive({
@@ -25,9 +25,9 @@ export class PatternLanguageContainerDirective implements OnInit {
 
     @Input() plId: string;
     @Input() index?: number;
-  @Input() graphView: boolean;
+    @Input() graphView: boolean;
 
-  selectedGraphView: boolean;
+    selectedGraphView: boolean;
 
     constructor(public viewContainerRef: ViewContainerRef,
                 private componentFactoryResolver: ComponentFactoryResolver,
@@ -36,30 +36,30 @@ export class PatternLanguageContainerDirective implements OnInit {
 
     ngOnInit(): void {
 
-      const componentFactory = this.getRenderingComponent();
+        const componentFactory = this.getRenderingComponent();
 
 
-      this.viewContainerRef.clear();
-      const componentRef = this.viewContainerRef.createComponent(componentFactory);
-      if (this.selectedGraphView) {
-        const instance = (<PatternGraphTemplateComponent<any>>componentRef.instance);
-        instance.languageUri = IriConverter.convertIdToIri(this.plId);
-      }
+        this.viewContainerRef.clear();
+        const componentRef = this.viewContainerRef.createComponent(componentFactory);
+        if (this.selectedGraphView) {
+            const instance = (<PatternGraphTemplateComponent<any>>componentRef.instance);
+            instance.languageUri = UriConverter.doubleDecodeUri(this.plId);
+        }
     }
 
 
-  private getRenderingComponent() {
-    const renderingComponent = this.compRegistry.getPLRenderingComponents(this.plId, this.index);
-    if (renderingComponent) {
-      return this.componentFactoryResolver.resolveComponentFactory(renderingComponent.plcomponent);
-    }
-    // no special renderer, use default renderer (graph or cards):
-    if (this.graphView) {
+    private getRenderingComponent() {
+        const renderingComponent = this.compRegistry.getPLRenderingComponents(this.plId, this.index);
+        if (renderingComponent) {
+            return this.componentFactoryResolver.resolveComponentFactory(renderingComponent.plcomponent);
+        }
+        // no special renderer, use default renderer (graph or cards):
+        if (this.graphView) {
 
-      this.selectedGraphView = true;
-      return this.componentFactoryResolver.resolveComponentFactory(DefaultPatternlanguageGraphComponent);
+            this.selectedGraphView = true;
+            return this.componentFactoryResolver.resolveComponentFactory(DefaultPatternlanguageGraphComponent);
+        }
+        return this.componentFactoryResolver.resolveComponentFactory(this.compRegistry.getPLRenderingComponents('default').plcomponent);
     }
-    return this.componentFactoryResolver.resolveComponentFactory(this.compRegistry.getPLRenderingComponents('default').plcomponent);
-  }
 
 }

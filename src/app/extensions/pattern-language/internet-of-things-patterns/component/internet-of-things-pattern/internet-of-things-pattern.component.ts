@@ -14,10 +14,8 @@
 
 import { ChangeDetectorRef, Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { PatternRenderingComponentInterface } from '../../../../../core/model/pattern-rendering-component.interface';
-import { InternetOfThingsPatternsLoaderService } from '../../loader/internet-of-things-patterns-loader.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import InternetOfThingsPattern from '../../model/internet-of-things-pattern';
-import { IriConverter } from '../../../../../core/util/iri-converter';
 import { TdTextEditorComponent } from '@covalent/text-editor';
 import { MatDialog } from '@angular/material';
 import { DialogData, MdEditorComponent } from '../../../../../core/component/md-editor/md-editor.component';
@@ -50,7 +48,7 @@ export class InternetOfThingsPatternComponent implements PatternRenderingCompone
         variants: {showActionButtons: false},
     };
 
-    constructor(private loader: InternetOfThingsPatternsLoaderService,
+    constructor(
                 private cdr: ChangeDetectorRef,
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
@@ -59,11 +57,11 @@ export class InternetOfThingsPatternComponent implements PatternRenderingCompone
     }
 
     ngOnInit(): void {
-        this.loader.loadContentFromStore()
-            .then(patternMap => {
-                this.pattern = patternMap.get(IriConverter.convertIdToIri(this.pId));
-                this.cdr.detectChanges();
-            });
+        // this.loader.loadContentFromStore()
+        //     .then(patternMap => {
+        //         this.pattern = patternMap.get(UriConverter.doubleDecodeUri(this.pEncodedUri));
+        //         this.cdr.detectChanges();
+        //     });
     }
 
     openEditor(field: string): void {

@@ -14,26 +14,23 @@
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PatternOntologyService } from './service/pattern-ontology.service';
-import { LoaderRegistryService } from './service/loader/pattern-language-loader/loader-registry.service';
 import { DefaultPlRendererComponent } from './default-pl-renderer/default-pl-renderer.component';
 import { DefaultPatternRendererComponent } from './default-pattern-renderer/default-pattern-renderer.component';
 import { ComponentRegistryService } from './service/component-registry.service';
-import { LinkedOpenPatternsLoader } from './service/loader/pattern-language-loader/linked-open-patterns-loader.service';
 import { PrettyJsonModule } from 'angular2-prettyjson';
 import {
-  MatAutocompleteModule,
-  MatButtonModule,
-  MatCardModule,
-  MatDatepickerModule,
-  MatDialogModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatNativeDateModule,
-  MatProgressSpinnerModule,
-  MatSelectModule,
-  MatTooltipModule
+    MatAutocompleteModule,
+    MatButtonModule,
+    MatCardModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatNativeDateModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatTooltipModule
 } from '@angular/material';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { MdEditorComponent } from './component/md-editor/md-editor.component';
@@ -46,7 +43,10 @@ import { DividerComponent } from './component/divider/divider.component';
 import { NgxMdModule } from 'ngx-md';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CreatePatternRelationComponent } from './component/create-pattern-relation/create-pattern-relation.component';
+// tslint:disable-next-line:max-line-length
 import { MarkdownPatternSectioncontentComponent } from './component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component';
+import { PatternLanguageService } from './service/pattern-language.service';
+import { PatternService } from './service/pattern.service';
 
 @NgModule({
     imports: [
@@ -54,49 +54,47 @@ import { MarkdownPatternSectioncontentComponent } from './component/markdown-con
         PrettyJsonModule,
         MatButtonModule,
         TextFieldModule,
-      CovalentTextEditorModule,
-      MatCardModule,
-      FlexLayoutModule,
-      MatProgressSpinnerModule,
-      MatListModule,
-      MatDatepickerModule, MatInputModule,
-      ReactiveFormsModule,
-      MatTooltipModule,
-      MatSelectModule,
-      MatDialogModule,
-      MatAutocompleteModule,
-      MatIconModule,
-      NgxMdModule.forRoot(), MatNativeDateModule
+        CovalentTextEditorModule,
+        MatCardModule,
+        FlexLayoutModule,
+        MatProgressSpinnerModule,
+        MatListModule,
+        MatDatepickerModule, MatInputModule,
+        ReactiveFormsModule,
+        MatTooltipModule,
+        MatSelectModule,
+        MatDialogModule,
+        MatAutocompleteModule,
+        MatIconModule,
+        NgxMdModule.forRoot(), MatNativeDateModule
     ],
-  exports: [CovalentTextEditorModule, EmitEventOnKeyupDirective, MatProgressSpinnerModule, NavigateBackComponent],
+    exports: [CovalentTextEditorModule, EmitEventOnKeyupDirective, MatProgressSpinnerModule, NavigateBackComponent],
     providers: [
-        PatternOntologyService,
-        LinkedOpenPatternsLoader
+        PatternLanguageService,
+        PatternService
     ],
     declarations: [
         DefaultPlRendererComponent,
         DefaultPatternRendererComponent,
-      MdEditorComponent,
-      EmitEventOnKeyupDirective,
-      NavigateBackComponent,
-      PatternpropertyDirective,
-      DividerComponent,
-      CreatePatternRelationComponent,
-      MarkdownPatternSectioncontentComponent
+        MdEditorComponent,
+        EmitEventOnKeyupDirective,
+        NavigateBackComponent,
+        PatternpropertyDirective,
+        DividerComponent,
+        CreatePatternRelationComponent,
+        MarkdownPatternSectioncontentComponent
     ],
     entryComponents: [
         DefaultPlRendererComponent,
         DefaultPatternRendererComponent,
-      MdEditorComponent,
-      DividerComponent,
-      CreatePatternRelationComponent,
-      MarkdownPatternSectioncontentComponent
+        MdEditorComponent,
+        DividerComponent,
+        CreatePatternRelationComponent,
+        MarkdownPatternSectioncontentComponent
     ]
 })
 export class CoreModule {
-    constructor(private lr: LoaderRegistryService,
-                private pos: PatternOntologyService,
-                private cr: ComponentRegistryService) {
+    constructor(private cr: ComponentRegistryService) {
         this.cr.registerComponent('default', {plcomponent: DefaultPlRendererComponent, pcomponent: DefaultPatternRendererComponent});
     }
 }

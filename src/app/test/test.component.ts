@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { PatternOntologyService } from '../core/service/pattern-ontology.service';
 import { forkJoin, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
@@ -10,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class TestComponent implements OnInit {
 
-    constructor(private pos: PatternOntologyService,
+    constructor(
                 private http: HttpClient) {
     }
 

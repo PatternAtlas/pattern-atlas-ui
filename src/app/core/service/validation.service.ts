@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
-import { IriConverter } from '../util/iri-converter';
+import { UriConverter } from '../util/uri-converter';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,7 @@ export class ValidationService {
     }
     if (keyError === 'xsdImage') {
 
-      return section + ': Please follow this pattern: ![](http://) and enter a valid url in the round brackets';
+      return section + ': Please follow this patterns: ![](http://) and enter a valid url in the round brackets';
     }
     if (keyError === 'xsdInteger') {
       return section + ': Please enter an integer.';
@@ -38,7 +38,7 @@ export class ValidationService {
 
 
 
-  // checks if value is an array of strings matching the markdown image pattern (e.g. [![test](http://placekitten.com/200/300), ![](http://any.valid.url.com)]
+  // checks if value is an array of strings matching the markdown image patterns (e.g. [![test](http://placekitten.com/200/300), ![](http://any.valid.url.com)]
   static xsdImage(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
       if (control.value !== undefined) {
@@ -50,7 +50,7 @@ export class ValidationService {
     };
   }
 
-  // checks if value is an array of strings matching the markdown image pattern (e.g. [![test](http://placekitten.com/200/300), ![](http://any.valid.url.com)]
+  // checks if value is an array of strings matching the markdown image patterns (e.g. [![test](http://placekitten.com/200/300), ![](http://any.valid.url.com)]
   static xsdInteger(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
       if (control.value !== undefined) {
@@ -68,7 +68,7 @@ export class ValidationService {
     };
   }
 
-  // checks if value is an array of strings matching the markdown url pattern (e.g. [[test](http://placekitten.com/200/300), [](http://any.valid.url.com)]
+  // checks if value is an array of strings matching the markdown url patterns (e.g. [[test](http://placekitten.com/200/300), [](http://any.valid.url.com)]
   static xsdAnyURI(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
       if (control.value !== undefined) {
@@ -103,7 +103,7 @@ export class ValidationService {
     }
     for (const stringItem of arrayOfImageValues) {
       const item = stringItem.startsWith('* ') ? stringItem.substr(2) : stringItem;
-      if (!item || IriConverter.removeWhitespace(item).length === 0) {
+      if (!item || UriConverter.removeWhitespace(item).length === 0) {
         continue;
       }
       if (!item.match(regex)) {

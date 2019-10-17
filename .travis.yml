@@ -10,4 +10,4 @@ deploy:
   skip-cleanup: true
   github_token: $github_token
   keep-history: true
-  local-dir: dist/pattern-pedia
+  local-dir: dist/patterns-pedia

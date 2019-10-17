@@ -1,14 +1,13 @@
-import { ChangeDetectorRef, Component, NgZone, OnInit, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { PatternRenderingComponentInterface } from '../../../../../core/model/pattern-rendering-component.interface';
-import { CloudComputingPatternsLoaderService } from '../../loader/cloud-computing-patterns-loader.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import CloudComputingPattern from '../../model/cloud-computing-pattern';
-import { IriConverter } from '../../../../../core/util/iri-converter';
 import { TdTextEditorComponent } from '@covalent/text-editor';
 import { MatDialog } from '@angular/material';
 import { DialogData, MdEditorComponent } from '../../../../../core/component/md-editor/md-editor.component';
-import { CloudComputingPatternsWriterService } from '../../writer/cloud-computing-patterns-writer.service';
-import { PatternOntologyService } from 'src/app/core/service/pattern-ontology.service';
+import { PatternService } from '../../../../../core/service/pattern.service';
+import CloudComputingPatternHelper from '../../util/CloudComputingPatternHelper';
+import { UriConverter } from '../../../../../core/util/uri-converter';
 
 @Component({
     selector: 'pp-cloud-computing-pattern',
@@ -32,54 +31,31 @@ export class CloudComputingPatternComponent implements PatternRenderingComponent
         result: {showActionButtons: false},
     };
 
-    constructor(private loader: CloudComputingPatternsLoaderService,
-                private writer: CloudComputingPatternsWriterService,
-                private cdr: ChangeDetectorRef,
+    constructor(private cdr: ChangeDetectorRef,
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private zone: NgZone,
-                private dialog: MatDialog,
-                private pos: PatternOntologyService) {
+                private patternService: PatternService,
+                private dialog: MatDialog) {
     }
 
-    ngOnInit(): void {
-      // we have to load the individual patterns first by getting all imports from the base file
-      const uris = [
-        {value: 'https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns'},
-        {value: 'https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Patterns'},
-        {value: 'https://purl.org/patternpedia/patternlanguages/cloudcomputingpatterns/cloudcomputingpatterns-Relations'}
-      ];
-
-      this.pos.loadUrisToStore(uris)
-        .then(() => this.loadData());
-
-      // to get the changes from the network graph 
-      this.activatedRoute.params.subscribe(params => {
-        if (this.pId != params['pid']) {
-          this.loadData();
-        }
-      });
-    }
-
-    private async loadData(): Promise<void> {
-      return this.loader.loadContentFromStore()
-        .then(patternMap => {
-          this.pattern = patternMap.get(IriConverter.convertIdToIri(this.pId));
-          this.cdr.detectChanges();
-        });
+    async ngOnInit() {
+        const encodedUri = UriConverter.decodeUri(this.activatedRoute.snapshot.paramMap.get('pEncodedUri'));
+        this.pattern = await this.patternService.getPatternByEncodedUri(encodedUri)
+            .then(result => CloudComputingPatternHelper.convertToCloudComputingPattern(result));
     }
 
     ngOnChanges(changes: SimpleChanges) {
-      console.log('> Changes');
-      if (changes['pId']
-        && JSON.stringify(changes['pId'].currentValue) !== JSON.stringify(changes['pId'].previousValue)) {
-          // reload everything
-          this.loader.loadContentFromStore()
-            .then(patternMap => {
-                this.pattern = patternMap.get(IriConverter.convertIdToIri(this.pId));
-                this.cdr.detectChanges();
-            });
-      }
+        console.log('> Changes');
+        if (changes['pEncodedUri']
+            && JSON.stringify(changes['pEncodedUri'].currentValue) !== JSON.stringify(changes['pEncodedUri'].previousValue)) {
+            // reload everything
+            // this.loader.loadContentFromStore()
+            //     .then(patternMap => {
+            //         this.pattern = patternMap.get(UriConverter.doubleDecodeUri(this.pEncodedUri));
+            //         this.cdr.detectChanges();
+            //     });
+        }
     }
 
     openEditor(field: string): void {
@@ -88,7 +64,7 @@ export class CloudComputingPatternComponent implements PatternRenderingComponent
         this.editMode[field].edit = true;
         dialogRef.afterClosed().subscribe(async (result: DialogData) => {
             this.pattern[field].value = result.content;
-            await this.writer.writePatternToStore(this.pattern).catch(err => console.error(err));
+            // await this.writer.writePatternToStore(this.pattern).catch(err => console.error(err));
         });
     }
 

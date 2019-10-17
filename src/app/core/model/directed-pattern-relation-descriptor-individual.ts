@@ -1,6 +1,6 @@
 import Pattern from './pattern.model';
 import { PatternRelationDescriptorIndividual } from './pattern-relation-descriptor-individual';
-import { IriConverter } from '../util/iri-converter';
+import { UriConverter } from '../util/uri-converter';
 
 
 export class DirectedPatternRelationDescriptorIndividual extends PatternRelationDescriptorIndividual {
@@ -14,7 +14,7 @@ export class DirectedPatternRelationDescriptorIndividual extends PatternRelation
     this.target = target;
     this.description = description;
     this.relationType = relationType;
-    this.individualName = IriConverter.removeWhitespace(this.source.name) + '-to-' + IriConverter.removeWhitespace(this.target.name);
+    this.individualName = UriConverter.removeWhitespace(this.source.name) + '-to-' + UriConverter.removeWhitespace(this.target.name);
   }
 
   toTurtle(): string {
@@ -24,8 +24,8 @@ export class DirectedPatternRelationDescriptorIndividual extends PatternRelation
     if (this.relationType) {
       ary.push(`pp:hasRelationType "${this.relationType}"^^xsd:string ;`);
     }
-    ary.push(`pp:hasSource :${IriConverter.removeWhitespace(this.source.name)} ; `);
-    ary.push(`pp:hasTarget :${IriConverter.removeWhitespace(this.target.name)} ${this.description ?
+    ary.push(`pp:hasSource :${UriConverter.removeWhitespace(this.source.name)} ; `);
+    ary.push(`pp:hasTarget :${UriConverter.removeWhitespace(this.target.name)} ${this.description ?
       '; \n pp:hasDescription "' + this.description + '"^^xsd:string . '
       : '.'}`);
     ary.push(' ');

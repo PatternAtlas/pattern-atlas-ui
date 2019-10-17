@@ -8,6 +8,6 @@ export default class Group {
     /** the name of the group for labeling */
     groupName: string;
 
-    /** list of pattern ids of included patterns */
+    /** list of patterns ids of included patterns */
     patterns: Array<string>;
 }

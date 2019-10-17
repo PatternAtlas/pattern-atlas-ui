@@ -14,7 +14,7 @@ export interface LinkInfo {
 }
 
 /**
- * Contains information about a group of relations of a pattern
+ * Contains information about a group of relations of a patterns
  */
 export interface GroupInfo {
     // the name / identifier of the group of related patterns
@@ -26,14 +26,14 @@ export interface GroupInfo {
 }
 
 /**
- * Contains the information of a pattern to display
+ * Contains the information of a patterns to display
  */
 export interface Info {
-    // name of the pattern
+    // name of the patterns
     name: string;
-    // group name of the pattern
+    // group name of the patterns
     group: string;
-    // multiple lines of descriptions of the pattern
+    // multiple lines of descriptions of the patterns
     description: Array<string>;
     // related patterns in groups
     related: Array<GroupInfo>;
