@@ -4797,7 +4797,8 @@ var CloudComputingPatternComponent = /** @class */ (function () {
             .then(function () { return _this.loadData(); });
         // to get the changes from the network graph 
         this.activatedRoute.params.subscribe(function (params) {
-            if (_this.pId != params['pid']) {
+            if (_this.pId !== params['pid']) {
+                _this.pId = params['pid'];
                 _this.loadData();
             }
         });
@@ -4814,19 +4815,14 @@ var CloudComputingPatternComponent = /** @class */ (function () {
             });
         });
     };
-    CloudComputingPatternComponent.prototype.ngOnChanges = function (changes) {
-        var _this = this;
-        console.log('> Changes');
-        if (changes['pId']
-            && JSON.stringify(changes['pId'].currentValue) !== JSON.stringify(changes['pId'].previousValue)) {
-            // reload everything
-            this.loader.loadContentFromStore()
-                .then(function (patternMap) {
-                _this.pattern = patternMap.get(_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIdToIri(_this.pId));
-                _this.cdr.detectChanges();
-            });
-        }
-    };
+    // ngOnChanges(changes: SimpleChanges) {
+    //   console.log('> Changes');
+    //   if (changes['pId']
+    //     && JSON.stringify(changes['pId'].currentValue) !== JSON.stringify(changes['pId'].previousValue)) {
+    //       // reload everything
+    //       this.loadData();
+    //   }
+    // }
     CloudComputingPatternComponent.prototype.openEditor = function (field) {
         var _this = this;
         var dialogRef = this.dialog.open(_core_component_md_editor_md_editor_component__WEBPACK_IMPORTED_MODULE_6__["MdEditorComponent"], { data: { field: field, label: this.pattern[field].label, content: this.pattern[field].value } });
@@ -9205,7 +9201,7 @@ var PatternGraphTemplateComponent = /** @class */ (function () {
          * Refer to this: https://stackoverflow.com/a/39981813
          * Thank you Isaac
          */
-        this.getNodeInfo = function (id) { return __awaiter(_this, void 0, void 0, function () {
+        this.loadNodeInfo = function (id) { return __awaiter(_this, void 0, void 0, function () {
             var uri, pattern, outgoing, incoming, clrs, start, millis, info;
             var _this = this;
             return __generator(this, function (_a) {
@@ -9334,10 +9330,11 @@ var PatternGraphTemplateComponent = /** @class */ (function () {
                             var uri_2 = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].getFileName(l);
                             var base_1 = uri_2;
                             var p_1 = uri_2 + "/" + uri_2.substr(index) + "-Patterns";
-                            var r_1 = uri_2 + "/" + uri_2.substr(index) + "-Relations";
+                            // CLR related Pattern relations are not needed for this language! Will be loaded when navigating to the language
+                            // const r = `${uri}/${uri.substr(index)}-Relations`;
                             uris.push({ value: base_1 });
                             uris.push({ value: p_1 });
-                            uris.push({ value: r_1 });
+                            // uris.push({ value: r });
                         }
                         return _this.pos.loadUrisToStore(uris);
                     })];
@@ -9346,6 +9343,12 @@ var PatternGraphTemplateComponent = /** @class */ (function () {
     };
     PatternGraphTemplateComponent.prototype.ngOnInit = function () {
         var _this = this;
+        // QUICK FIX: pId is sometimes still in IRI form, we convert it here
+        if (this.pId && this.pId.includes("/")) {
+            this.pId = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_2__["IriConverter"].convertIriToId(this.pId);
+        }
+        // if the pId has been set we need the getNodeInfo function to retrieve the details of the patterns
+        this.getNodeInfo = (this.pId) ? this.loadNodeInfo : null;
         // load pattern data manually
         this.loadPatternData().then(function () {
             // other data will be loaded indirectly via PatternDataLoaderService
@@ -9461,7 +9464,7 @@ var PatternGraphTemplateComponent = /** @class */ (function () {
                         this.zone.run(function () {
                             _this.router.navigate(['/patternlanguages', languageId_1, nodeId]);
                             // changing the route will not trigger the change of the view!
-                            _this.cdr.markForCheck();
+                            // this.cdr.markForCheck(); // this is not needed to navigate!
                         });
                         console.log('Routing to: ' + route);
                         return [2 /*return*/];
@@ -9695,116 +9698,139 @@ var ClrLoaderService = /** @class */ (function (_super) {
         _this.pos = pos;
         return _this;
     }
+    ClrLoaderService.prototype.getAllGraphs = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var langUri, viewBaseQry, viewBase, viewRelations, _i, viewBase_1, v, uri, index, r, otherLangsBaseQry, otherLangsBase, otherLangsPattern, _a, otherLangsBase_1, o, uri, index, p;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        langUri = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI);
+                        viewBaseQry = "SELECT DISTINCT ?view\n    WHERE {\n      <" + this.supportedIRI + "> pp:referredByView ?view .\n    }";
+                        return [4 /*yield*/, this.pos.exec(viewBaseQry, [langUri])];
+                    case 1:
+                        viewBase = _b.sent();
+                        viewBase = viewBase.map(function (v) { return src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(v.view.value); });
+                        viewRelations = [];
+                        for (_i = 0, viewBase_1 = viewBase; _i < viewBase_1.length; _i++) {
+                            v = viewBase_1[_i];
+                            uri = v;
+                            index = uri.lastIndexOf('/') + 1;
+                            r = uri + "/" + uri.substr(index) + "-Relations";
+                            viewRelations.push(r);
+                        }
+                        otherLangsBaseQry = "SELECT DISTINCT ?otherLangUri\n    WHERE {\n      <" + this.supportedIRI + "> pp:referredByView ?view .\n      ?view pp:containsPatternGraph ?otherLangUri .\n      FILTER(?otherLangUri != <" + this.supportedIRI + ">)\n    }";
+                        return [4 /*yield*/, this.pos.exec(otherLangsBaseQry, [langUri].concat(viewBase))];
+                    case 2:
+                        otherLangsBase = _b.sent();
+                        otherLangsBase = otherLangsBase.map(function (v) { return src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(v.otherLangUri.value); });
+                        otherLangsPattern = [];
+                        for (_a = 0, otherLangsBase_1 = otherLangsBase; _a < otherLangsBase_1.length; _a++) {
+                            o = otherLangsBase_1[_a];
+                            uri = o;
+                            index = uri.lastIndexOf('/') + 1;
+                            p = uri + "/" + uri.substr(index) + "-Patterns";
+                            otherLangsPattern.push(p);
+                        }
+                        return [2 /*return*/, Promise.resolve({
+                                viewBase: viewBase,
+                                viewRelations: viewRelations,
+                                otherLangsBase: otherLangsBase,
+                                otherLangsPattern: otherLangsPattern
+                            })];
+                }
+            });
+        });
+    };
     // load all CLRs that contain the given Pattern URI
     ClrLoaderService.prototype.loadContentFromStore = function (uri) {
         return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.selectContentFromStore(uri)
-                        .then(function (triples) { return _this.mapTriples(triples, uri); })];
-            });
-        });
-    };
-    ClrLoaderService.prototype.getGraphs = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var graphs, uri, index, base, p, r, viewsQry, views, othersQry, others;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        graphs = ['https://purl.org/patternpedia'];
-                        if (!this.supportedIRI) {
-                            throw new Error('supportedIRI has not been initialized! Make sure to set the language URI before loading');
-                        }
-                        uri = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI);
-                        index = uri.lastIndexOf('/') + 1;
-                        base = uri;
-                        p = uri + "/" + uri.substr(index) + "-Patterns";
-                        r = uri + "/" + uri.substr(index) + "-Relations";
-                        graphs.push(base, p, r);
-                        viewsQry = "SELECT DISTINCT ?view\n      WHERE {\n        <" + this.supportedIRI + "> pp:referredByView ?view .\n      }";
-                        return [4 /*yield*/, this.pos.exec(viewsQry, graphs)];
-                    case 1:
-                        views = _a.sent();
-                        views.map(function (t) { return t.view.value; }).forEach(function (u) {
-                            var uri = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(u);
-                            var index = uri.lastIndexOf('/') + 1;
-                            graphs.push(uri);
-                            graphs.push(uri + "/" + uri.substr(index) + "-Relations");
-                        });
-                        othersQry = "SELECT DISTINCT ?other\n      WHERE {\n        <" + this.supportedIRI + "> pp:referredByView ?view .\n        ?view pp:containsPatternGraph ?other .\n      }";
-                        return [4 /*yield*/, this.pos.exec(othersQry, graphs)];
-                    case 2:
-                        others = _a.sent();
-                        others.map(function (t) { return t.other.value; }).forEach(function (u) {
-                            var uri = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(u);
-                            var index = uri.lastIndexOf('/') + 1;
-                            graphs.push(uri);
-                            graphs.push(uri + "/" + uri.substr(index) + "-Patterns");
-                            graphs.push(uri + "/" + uri.substr(index) + "-Relations");
-                        });
-                        return [2 /*return*/, Promise.resolve(graphs)];
-                }
-            });
-        });
-    };
-    ClrLoaderService.prototype.selectContentFromStore = function (uri) {
-        return __awaiter(this, void 0, void 0, function () {
-            var start, graphs, millis, qry;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var start, allGraphs, langUri, millis, graphs, clrRelationsQry, clrRelations, data, _i, clrRelations_1, entry, otherPatternUri, otherLangQry, otherLang, language, otherNamesQry, otherNames, _a, otherNames_1, other, relation, language;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         start = Date.now();
-                        return [4 /*yield*/, this.getGraphs()];
+                        return [4 /*yield*/, this.getAllGraphs()];
                     case 1:
-                        graphs = _a.sent();
+                        allGraphs = _b.sent();
+                        langUri = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].getFileName(this.supportedIRI);
                         millis = Date.now() - start;
                         console.log("getGraphs: " + millis + "ms");
-                        qry = "SELECT DISTINCT ?otherLangUri ?otherLangName ?linkUri ?sourceUri ?sourceName ?targetUri ?targetName ?desc\n      WHERE {\n        <" + this.supportedIRI + "> pp:referredByView ?view .\n        ?view pp:containsPatternRelationDescriptor ?linkUri .\n        ?linkUri pp:hasTarget ?targetUri ;\n                pp:hasSource ?sourceUri .\n        OPTIONAL { ?linkUri pp:hasDescription ?desc . }\n        { ?otherLangUri pp:containsPattern ?sourceUri } UNION { ?otherLangUri pp:containsPattern ?targetUri }.\n        ?otherLangUri pp:hasName ?otherLangName .\n        ?sourceUri pp:hasName ?sourceName .\n        ?targetUri pp:hasName ?targetName .\n        FILTER(?sourceUri = <" + uri + "> || ?targetUri = <" + uri + ">) .\n        FILTER(?otherLangUri != <" + this.supportedIRI + ">) .\n      }";
-                        return [2 /*return*/, this.executor.exec(qry, graphs)];
+                        clrRelationsQry = "SELECT DISTINCT ?linkUri ?sourceUri ?targetUri ?desc\n      WHERE {\n        <" + this.supportedIRI + "> pp:referredByView ?view .\n        ?view pp:containsPatternRelationDescriptor ?linkUri .\n        ?linkUri pp:hasTarget ?targetUri ;\n                pp:hasSource ?sourceUri .\n        OPTIONAL { ?linkUri pp:hasDescription ?desc . }\n        FILTER(?sourceUri = <" + uri + "> || ?targetUri = <" + uri + ">) .\n      }";
+                        graphs = [langUri].concat(allGraphs.viewBase).concat(allGraphs.viewRelations);
+                        start = Date.now();
+                        return [4 /*yield*/, this.pos.exec(clrRelationsQry, graphs)];
+                    case 2:
+                        clrRelations = _b.sent();
+                        millis = Date.now() - start;
+                        console.log("clrRelations: " + millis + "ms");
+                        start = Date.now();
+                        data = new Map();
+                        _i = 0, clrRelations_1 = clrRelations;
+                        _b.label = 3;
+                    case 3:
+                        if (!(_i < clrRelations_1.length)) return [3 /*break*/, 7];
+                        entry = clrRelations_1[_i];
+                        otherPatternUri = (entry.sourceUri.value === uri) ? entry.targetUri.value : entry.sourceUri.value;
+                        otherLangQry = "SELECT DISTINCT ?otherLangUri ?otherLangName\n      WHERE {\n        ?otherLangUri pp:containsPattern <" + otherPatternUri + "> .\n        ?otherLangUri pp:hasName ?otherLangName .\n      }";
+                        graphs = allGraphs.otherLangsBase;
+                        return [4 /*yield*/, this.pos.exec(otherLangQry, graphs)];
+                    case 4:
+                        otherLang = _b.sent();
+                        // build language structure
+                        if (otherLang && otherLang.length > 0) {
+                            language = data.get(otherLang[0].otherLangUri.value);
+                            if (!language) {
+                                language = {
+                                    languageId: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIriToId(otherLang[0].otherLangUri.value),
+                                    languageName: otherLang[0].otherLangName.value,
+                                    relations: []
+                                };
+                                data.set(otherLang[0].otherLangUri.value, language);
+                            }
+                        }
+                        otherNamesQry = "SELECT DISTINCT ?otherPatternName ?otherLangUri\n      WHERE {\n        ?otherLangUri pp:containsPattern <" + otherPatternUri + "> .\n        <" + otherPatternUri + "> pp:hasName ?otherPatternName .\n      }";
+                        graphs = allGraphs.otherLangsBase.concat(allGraphs.otherLangsPattern);
+                        return [4 /*yield*/, this.pos.exec(otherNamesQry, graphs)];
+                    case 5:
+                        otherNames = _b.sent();
+                        // build relations 
+                        for (_a = 0, otherNames_1 = otherNames; _a < otherNames_1.length; _a++) {
+                            other = otherNames_1[_a];
+                            relation = {
+                                label: other.otherPatternName.value,
+                                patternId: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIriToId(otherPatternUri),
+                                direction: (entry.sourceUri.value === uri) ? 'outgoing' : 'incoming',
+                                relationId: entry.linkUri.value,
+                                hasDescription: (entry.desc) ? true : false
+                            };
+                            language = data.get(other.otherLangUri.value);
+                            if (language) {
+                                language.relations.push(relation);
+                            }
+                        }
+                        _b.label = 6;
+                    case 6:
+                        _i++;
+                        return [3 /*break*/, 3];
+                    case 7:
+                        millis = Date.now() - start;
+                        console.log("build language data: " + millis + "ms");
+                        return [2 /*return*/, Promise.resolve(data)];
                 }
             });
         });
     };
+    /** NOT IMPLEMENTED */
+    ClrLoaderService.prototype.selectContentFromStore = function (uri) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, Promise.resolve(null)];
+            });
+        });
+    };
+    /** NOT IMPLEMENTED */
     ClrLoaderService.prototype.mapTriples = function (triples, uri) {
-        var data = new Map();
-        for (var _i = 0, triples_1 = triples; _i < triples_1.length; _i++) {
-            var t = triples_1[_i];
-            var langId = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIriToId(t.otherLangUri.value);
-            var item = data.get(langId);
-            if (!item) {
-                item = {
-                    languageId: langId,
-                    languageName: t.otherLangName.value,
-                    relations: []
-                };
-                data.set(langId, item);
-            }
-            // check if given uri is source or target
-            var source = t.sourceUri.value;
-            var target = t.targetUri.value;
-            var temp = {};
-            if (uri === source) {
-                // target pattern is relevant
-                temp.label = t.targetName.value;
-                temp.patternId = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIriToId(t.targetUri.value);
-                temp.outgoing = true;
-            }
-            else if (uri === target) {
-                // source pattern is relevant
-                temp.label = t.sourceName.value;
-                temp.patternId = src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIriToId(t.sourceUri.value);
-                temp.outgoing = false;
-            }
-            var relation = {
-                relationId: src_app_core_util_iri_converter__WEBPACK_IMPORTED_MODULE_3__["IriConverter"].convertIriToId(t.linkUri.value),
-                label: temp.label,
-                patternId: temp.patternId,
-                direction: temp.outgoing ? 'outgoing' : 'incoming',
-                hasDescription: (t.desc) ? true : false
-            };
-            item.relations.push(relation);
-        }
-        return Promise.resolve(data);
+        return Promise.resolve(null);
     };
     ClrLoaderService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
@@ -12874,6 +12900,9 @@ var PatternContainerDirective = /** @class */ (function () {
         this.cdr = cdr;
     }
     PatternContainerDirective.prototype.ngOnInit = function () {
+        this.createContent();
+    };
+    PatternContainerDirective.prototype.createContent = function () {
         var renderingComponent = this.compRegistry.getPLRenderingComponents(this.plId, this.index);
         var componentFactory = renderingComponent ?
             this.componentFactoryResolver.resolveComponentFactory(renderingComponent.pcomponent) :
@@ -12884,6 +12913,12 @@ var PatternContainerDirective = /** @class */ (function () {
         this.ref.pId = this.pId;
     };
     PatternContainerDirective.prototype.ngOnChanges = function (changes) {
+        // changes of the langauge itself
+        if (changes['plId'] && JSON.stringify(changes['plId'].currentValue) !== JSON.stringify(changes['plId'].previousValue)) {
+            this.createContent();
+            // this.cdr.detectChanges();
+        }
+        // changes of the pattern
         if (changes['pId']
             && this.ref
             && (JSON.stringify(changes['pId'].currentValue) !== JSON.stringify(changes['pId'].previousValue))) {
@@ -12926,7 +12961,7 @@ var PatternContainerDirective = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--\n  ~ Copyright (c) 2018 University of Stuttgart.\n  ~\n  ~ See the NOTICE file(s) distributed with this work for additional\n  ~ information regarding copyright ownership.\n  ~\n  ~ This program and the accompanying materials are made available under the\n  ~ terms of the Eclipse Public License 2.0 which is available at\n  ~ http://www.eclipse.org/legal/epl-2.0, or the Apache Software License 2.0\n  ~ which is available at https://www.apache.org/licenses/LICENSE-2.0.\n  ~\n  ~ SPDX-License-Identifier: EPL-2.0 OR Apache-2.0\n  -->\n\n<!-- tab view if there are multiple renderer for the language available -->\n<mat-tab-group *ngIf=\"renderer && renderer.length > 1; else oneOrNoRenderer\">\n  <!-- create a new tab for each available renderer -->\n  <mat-tab label=\"{{r.label || 'Tab ' + (i+1)}}\" *ngFor=\"let r of renderer; let i = index\">\n    <mat-card>\n      <ng-template ppPatternLanguageContainer [plId]=\"plId\" [index]=\"i\"></ng-template>\n    </mat-card>\n  </mat-tab>\n</mat-tab-group>\n\n<!-- else, use default renderers -->\n<ng-template #oneOrNoRenderer>\n\n  <!--If there is only one renderer registered for this pl, use it: -->\n  <ng-template *ngIf=\"renderer\" ppPatternLanguageContainer [plId]=\"plId\"></ng-template>\n\n  <!--If there is no renderer registered for this pl, offer two default renderers (card or graph view) -->\n  <mat-tab-group class=\"view-toggle\" *ngIf=\"!renderer\" [selectedIndex]=\"0\">\n    <mat-tab>\n      <ng-template mat-tab-label>\n        <mat-icon>view_module</mat-icon>\n        Card View\n      </ng-template>\n      <ng-template #cardsView ppPatternLanguageContainer [plId]=\"plId\"></ng-template>\n    </mat-tab>\n    <mat-tab>\n      <ng-template mat-tab-label>\n        <mat-icon>device_hub</mat-icon>\n        Graph View\n      </ng-template>\n      <ng-template #graphView ppPatternLanguageContainer [plId]=\"plId\" [graphView]=\"true\"></ng-template>\n    </mat-tab>\n  </mat-tab-group>\n\n\n</ng-template>\n"
+module.exports = "<!--\n  ~ Copyright (c) 2018 University of Stuttgart.\n  ~\n  ~ See the NOTICE file(s) distributed with this work for additional\n  ~ information regarding copyright ownership.\n  ~\n  ~ This program and the accompanying materials are made available under the\n  ~ terms of the Eclipse Public License 2.0 which is available at\n  ~ http://www.eclipse.org/legal/epl-2.0, or the Apache Software License 2.0\n  ~ which is available at https://www.apache.org/licenses/LICENSE-2.0.\n  ~\n  ~ SPDX-License-Identifier: EPL-2.0 OR Apache-2.0\n  -->\n\n<!-- tab view if there are multiple renderer for the language available -->\n<mat-tab-group *ngIf=\"renderer && renderer.length > 1; else oneOrNoRenderer\">\n  <!-- create a new tab for each available renderer -->\n  <mat-tab label=\"{{r.label || 'Tab ' + (i+1)}}\" *ngFor=\"let r of renderer; let i = index\">\n    <mat-card>\n      <ng-template ppPatternLanguageContainer [plId]=\"plId\" [index]=\"i\"></ng-template>\n    </mat-card>\n  </mat-tab>\n</mat-tab-group>\n\n<!-- else, use default renderers -->\n<ng-template #oneOrNoRenderer>\n\n  <!--If there is only one renderer registered for this pl, use it: -->\n  <mat-card *ngIf=\"renderer\">\n    <ng-template ppPatternLanguageContainer [plId]=\"plId\"></ng-template>\n  </mat-card>\n\n  <!--If there is no renderer registered for this pl, offer two default renderers (card or graph view) -->\n  <mat-tab-group class=\"view-toggle\" *ngIf=\"!renderer\" [selectedIndex]=\"0\">\n    <mat-tab>\n      <ng-template mat-tab-label>\n        <mat-icon>view_module</mat-icon>\n        Card View\n      </ng-template>\n      <ng-template #cardsView ppPatternLanguageContainer [plId]=\"plId\"></ng-template>\n    </mat-tab>\n    <mat-tab>\n      <ng-template mat-tab-label>\n        <mat-icon>device_hub</mat-icon>\n        Graph View\n      </ng-template>\n      <ng-template #graphView ppPatternLanguageContainer [plId]=\"plId\" [graphView]=\"true\"></ng-template>\n    </mat-tab>\n  </mat-tab-group>\n\n\n</ng-template>\n"
 
 /***/ }),
 
