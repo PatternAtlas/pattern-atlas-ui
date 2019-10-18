@@ -117,17 +117,27 @@ export class PatternGraphTemplateComponent<T extends Pattern> implements Pattern
 
           const base = uri;
           const p = `${uri}/${uri.substr(index)}-Patterns`;
-          const r = `${uri}/${uri.substr(index)}-Relations`;
+          // CLR related Pattern relations are not needed for this language! Will be loaded when navigating to the language
+          // const r = `${uri}/${uri.substr(index)}-Relations`;
 
           uris.push({ value: base });
           uris.push({ value: p });
-          uris.push({ value: r });
+          // uris.push({ value: r });
         }
         return this.pos.loadUrisToStore(uris);
       });
   }
 
   ngOnInit() {
+
+    // QUICK FIX: pId is sometimes still in IRI form, we convert it here
+    if (this.pId && this.pId.includes("/")) {
+      this.pId = IriConverter.convertIriToId(this.pId);
+    }
+    
+    // if the pId has been set we need the getNodeInfo function to retrieve the details of the patterns
+    this.getNodeInfo = (this.pId) ? this.loadNodeInfo : null;
+
     // load pattern data manually
     this.loadPatternData().then(() => {
       // other data will be loaded indirectly via PatternDataLoaderService
@@ -265,7 +275,7 @@ export class PatternGraphTemplateComponent<T extends Pattern> implements Pattern
       this.zone.run(() => {
         this.router.navigate(['/patternlanguages', languageId, nodeId]);
         // changing the route will not trigger the change of the view!
-        this.cdr.markForCheck();
+        // this.cdr.markForCheck(); // this is not needed to navigate!
       });
 
       console.log('Routing to: ' + route);
@@ -318,13 +328,16 @@ export class PatternGraphTemplateComponent<T extends Pattern> implements Pattern
     });
   }
 
+  /** function that returns the nodeinfo or null */
+  getNodeInfo;
+
   /**
    * This closure returns the nodeinfo from the loader.
    * Important: It has to be a closure to use 'this' correctly, otherwise it won't work.
    * Refer to this: https://stackoverflow.com/a/39981813
    * Thank you Isaac
    */
-  getNodeInfo = async (id: string): Promise<NodeInfo> => {
+  loadNodeInfo = async (id: string): Promise<NodeInfo> => {
     const uri = IriConverter.convertIdToIri(id);
     
     let pattern;

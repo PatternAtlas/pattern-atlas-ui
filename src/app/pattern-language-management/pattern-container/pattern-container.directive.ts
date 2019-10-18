@@ -37,6 +37,10 @@ export class PatternContainerDirective implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    this.createContent();
+  }
+
+  private createContent(): void {
     const renderingComponent = this.compRegistry.getPLRenderingComponents(this.plId, this.index);
 
     const componentFactory = renderingComponent ?
@@ -50,6 +54,12 @@ export class PatternContainerDirective implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    // changes of the langauge itself
+    if (changes['plId'] && JSON.stringify(changes['plId'].currentValue) !== JSON.stringify(changes['plId'].previousValue)) {
+      this.createContent();
+      // this.cdr.detectChanges();
+    }
+    // changes of the pattern
     if (changes['pId']
       && this.ref
       && (JSON.stringify(changes['pId'].currentValue) !== JSON.stringify(changes['pId'].previousValue))) {
