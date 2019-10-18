@@ -26,7 +26,9 @@
 <ng-template #oneOrNoRenderer>
 
   <!--If there is only one renderer registered for this pl, use it: -->
-  <ng-template *ngIf="renderer" ppPatternLanguageContainer [plId]="plId"></ng-template>
+  <mat-card *ngIf="renderer">
+    <ng-template ppPatternLanguageContainer [plId]="plId"></ng-template>
+  </mat-card>
 
   <!--If there is no renderer registered for this pl, offer two default renderers (card or graph view) -->
   <mat-tab-group class="view-toggle" *ngIf="!renderer" [selectedIndex]="0">

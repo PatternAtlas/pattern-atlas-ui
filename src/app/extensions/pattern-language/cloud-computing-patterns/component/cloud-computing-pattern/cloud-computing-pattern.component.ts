@@ -15,7 +15,7 @@ import { PatternOntologyService } from 'src/app/core/service/pattern-ontology.se
     templateUrl: './cloud-computing-pattern.component.html',
     styleUrls: ['./cloud-computing-pattern.component.scss']
 })
-export class CloudComputingPatternComponent implements PatternRenderingComponentInterface, OnInit, OnChanges {
+export class CloudComputingPatternComponent implements PatternRenderingComponentInterface, OnInit {
 
     @ViewChild('mdEditor') private _textEditor: TdTextEditorComponent;
 
@@ -55,7 +55,8 @@ export class CloudComputingPatternComponent implements PatternRenderingComponent
 
       // to get the changes from the network graph 
       this.activatedRoute.params.subscribe(params => {
-        if (this.pId != params['pid']) {
+        if (this.pId !== params['pid']) {
+          this.pId = params['pid'];
           this.loadData();
         }
       });
@@ -69,18 +70,14 @@ export class CloudComputingPatternComponent implements PatternRenderingComponent
         });
     }
 
-    ngOnChanges(changes: SimpleChanges) {
-      console.log('> Changes');
-      if (changes['pId']
-        && JSON.stringify(changes['pId'].currentValue) !== JSON.stringify(changes['pId'].previousValue)) {
-          // reload everything
-          this.loader.loadContentFromStore()
-            .then(patternMap => {
-                this.pattern = patternMap.get(IriConverter.convertIdToIri(this.pId));
-                this.cdr.detectChanges();
-            });
-      }
-    }
+    // ngOnChanges(changes: SimpleChanges) {
+    //   console.log('> Changes');
+    //   if (changes['pId']
+    //     && JSON.stringify(changes['pId'].currentValue) !== JSON.stringify(changes['pId'].previousValue)) {
+    //       // reload everything
+    //       this.loadData();
+    //   }
+    // }
 
     openEditor(field: string): void {
         const dialogRef = this.dialog.open(MdEditorComponent,
