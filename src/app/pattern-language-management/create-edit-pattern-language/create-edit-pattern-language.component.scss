@@ -1,31 +1,32 @@
 .example-header-image {
-  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-  background-size: cover;
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
 
 }
 
 .add-prefix-form {
-  .mat-form-field {
-    margin: 0 0.5em;
-  }
-  #new-prefix {
-    width: 4em;
-  }
+    .mat-form-field {
+        margin: 0 0.5em;
+    }
+
+    #new-prefix {
+        width: 4em;
+    }
 }
+
 .icon-wrapper {
-  margin-top: -1.34375em !important;
+    margin-top: -1.34375em !important;
 }
 
 .label-preview {
-  color: grey;
+    color: grey;
 }
 
 .mat-chip {
-  height: fit-content;
+    height: fit-content;
 }
 
 .min-max-width {
-  width: 3em;
+    width: 3em;
 }
-
 

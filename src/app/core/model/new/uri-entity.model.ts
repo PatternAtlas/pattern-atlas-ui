@@ -13,33 +13,10 @@
  */
 
 class UriEntity {
-    private _id: string;
-    private _uri: string;
-    private _name: string;
-
-    get id(): string {
-        return this._id;
-    }
-
-    get uri(): string {
-        return this._uri;
-    }
-
-    get name(): string {
-        return this._name;
-    }
-
-    set id(value: string) {
-        this._id = value;
-    }
-
-    set uri(value: string) {
-        this._uri = value;
-    }
-
-    set name(value: string) {
-        this._name = value;
-    }
+    id: string;
+    uri: string;
+    name: string;
+    _links: {self: {href: string}};
 }
 
 export default UriEntity;

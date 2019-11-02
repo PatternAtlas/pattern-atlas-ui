@@ -12,19 +12,14 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import Pattern from './pattern.model';
-import UriEntity from './uri-entity.model';
-import PatternSchema from './pattern-schema.model';
-
-class PatternLanguage extends UriEntity {
-    patterns: Array<Pattern>;
-    logo: string;
-    patternSchema: PatternSchema;
-    _links: {
-        self: {href: string},
-        patterns: {href: string},
-        patternLanguages: {href: string}
-    };
+class PatternSectionSchema {
+    id: number;
+    label: string;
+    name: string;
+    type: string;
+    position: number;
+    // Todo: Add restrictions in backend
+    // restrictions: any;
 }
 
-export default PatternLanguage;
+export default PatternSectionSchema;

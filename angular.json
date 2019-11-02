@@ -30,8 +30,6 @@
               "src/styles.scss"
             ],
             "scripts": [
-              "node_modules/rdfstore/dist/rdfstore.js",
-              "src/libs/jquery-1.3.2.js"
             ]
           },
           "configurations": {
@@ -82,7 +80,6 @@
               "src/styles.scss"
             ],
             "scripts": [
-              "node_modules/rdfstore/dist/rdfstore.js"
             ],
             "assets": [
               "src/favicon.ico",

@@ -59,12 +59,12 @@ export class CloudComputingPatternsModule {
             plcomponent: CloudComputingPatternsComponent,
             pcomponent: CloudComputingPatternComponent,
             label: 'Cards'
-        }); // tslint:disable-line:max-line-length
+        });
 
         this.cr.registerComponent(UriConverter.doubleEncodeUri('https://patternpedia.org/patternlanguages/cloudcomputingpatterns'), {
             plcomponent: CloudComputingPatternsGraphComponent,
             pcomponent: CloudComputingPatternsGraphComponent,
             label: 'Network Graph'
-        }); // tslint:disable-line:max-line-length
+        });
     }
 }

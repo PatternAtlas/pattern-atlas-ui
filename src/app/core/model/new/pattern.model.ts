@@ -15,6 +15,12 @@
 import UriEntity from './uri-entity.model';
 
 class Pattern extends UriEntity {
+    content: any;
+    _links: {
+        self: { href: string },
+        content: { href: string },
+        patternLanguage: { href: string },
+    };
 }
 
 export default Pattern;

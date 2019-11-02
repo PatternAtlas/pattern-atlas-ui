@@ -15,12 +15,13 @@
 import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import PatternLanguage from '../../core/model/new/pattern-language.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { globals } from '../../globals';
 import { MatDialog } from '@angular/material';
 import { CookieService } from 'ngx-cookie-service';
 import { ToasterService } from 'angular2-toaster';
 import { PatternLanguageService } from '../../core/service/pattern-language.service';
 import { UriConverter } from '../../core/util/uri-converter';
+import { CreateEditPatternLanguageComponent } from '../create-edit-pattern-language/create-edit-pattern-language.component';
+import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
 
 @Component({
     selector: 'pp-pattern-language-management',
@@ -30,11 +31,6 @@ import { UriConverter } from '../../core/util/uri-converter';
 
 
 export class PatternLanguageManagementComponent implements OnInit {
-
-    // NOTE: These are currently the config params
-    private urlPatternPedia = globals.urlPatternRepoOntology;
-    private patternPediaInstance = globals.iriPatternRepoInstance;
-    showAuthentificationButton = true;
 
     patternLanguages: Array<PatternLanguage>;
 
@@ -69,17 +65,13 @@ export class PatternLanguageManagementComponent implements OnInit {
     async reloadPatternRepo() {
         this.patternLanguages = await this.patternLanguageService.getPatternLanguages()
             .then(result => {
-                console.log(JSON.stringify(result));
-                console.log('TEST1');
                 return result.sort(PatternLanguageManagementComponent.sortPatternlanguages);
             })
             .then(result => {
-                console.log('TEST2');
-                this._toasterService.pop('success', 'Reloaded Linked Open Patterns from Patternpedia');
+                this._toasterService.pop('success', 'Reloaded Pattern Languages');
                 this.cdr.detectChanges();
                 return result;
             });
-        console.log('TEST');
         this.cdr.detectChanges();
     }
 
@@ -88,6 +80,27 @@ export class PatternLanguageManagementComponent implements OnInit {
         this.zone.run(() => {
             console.log(JSON.stringify(patternLanguage));
             this.router.navigate([UriConverter.doubleEncodeUri(patternLanguage.uri)], {relativeTo: this.activatedRoute});
+        });
+    }
+
+    goToPatternLanguageCreation(): void {
+        const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent);
+
+        // Save PatternLanguage when user presses save
+        (<CreateEditPatternLanguageComponent>dialogRef.componentInstance)
+            .saveClicked.subscribe((result: DialogPatternLanguageResult) => {
+            const patternLanguage = result.patternLanguage;
+            this.patternLanguageService.savePatternLanguage(patternLanguage)
+                .then(postResult => {
+                    const url = postResult.headers.get('location');
+                    this.patternLanguageService.getPatternLanguageByUrl(url)
+                        .then(newPatternLanguage => this.patternLanguages.push(newPatternLanguage));
+                    this._toasterService.pop('success', 'Pattern Language created');
+                })
+                .catch(err => {
+                    console.error(err);
+                    this._toasterService.pop('error', 'Error occurred', JSON.stringify(err));
+                });
         });
     }
 }

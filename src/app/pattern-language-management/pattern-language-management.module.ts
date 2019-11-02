@@ -10,21 +10,21 @@ import { PatternLanguageContainerDirective } from './pattern-language-container/
 import { PatternContainerComponent } from './pattern-container/pattern-container.component';
 import { PatternContainerDirective } from './pattern-container/pattern-container.directive';
 import {
-  MatAutocompleteModule,
-  MatBadgeModule,
-  MatButtonModule,
-  MatCardModule,
-  MatCheckboxModule,
-  MatChipsModule,
-  MatDialogModule,
-  MatGridListModule,
-  MatIconModule,
-  MatInputModule,
-  MatRadioModule,
-  MatSelectModule,
-  MatSidenavModule,
-  MatTabsModule,
-  MatToolbarModule
+    MatAutocompleteModule,
+    MatBadgeModule,
+    MatButtonModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatDialogModule,
+    MatGridListModule,
+    MatIconModule,
+    MatInputModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatTabsModule,
+    MatToolbarModule
 } from '@angular/material';
 import { CreateEditPatternLanguageComponent } from './create-edit-pattern-language/create-edit-pattern-language.component';
 import { CreatePatternComponent } from './create-pattern/create-pattern.component';
@@ -33,6 +33,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ProcessOauthCallbackComponent } from '../core/component/process-oauth-callback/process-oauth-callback.component';
 import { ToasterModule } from 'angular2-toaster';
 import { PatternLanguageGraphComponent } from './pattern-language-graph/pattern-language-graph.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatListModule } from '@angular/material/list';
+import { MatRippleModule } from '@angular/material/core';
 
 /*
  * Copyright (c) 2018 University of Stuttgart.
@@ -61,17 +64,20 @@ import { PatternLanguageGraphComponent } from './pattern-language-graph/pattern-
         MatDialogModule,
         MatTabsModule,
         MatInputModule,
-      MatChipsModule,
-      MatAutocompleteModule,
-      CoreModule,
-      MatGridListModule,
-      ReactiveFormsModule,
-      FlexLayoutModule,
-      MatSelectModule,
-      MatRadioModule,
-      MatCheckboxModule,
-      ToasterModule,
-      GraphModule
+        MatChipsModule,
+        MatAutocompleteModule,
+        CoreModule,
+        MatGridListModule,
+        ReactiveFormsModule,
+        FlexLayoutModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatCheckboxModule,
+        ToasterModule,
+        GraphModule,
+        DragDropModule,
+        MatListModule,
+        MatRippleModule
     ],
     declarations: [
         PatternLanguageManagementComponent,
@@ -79,14 +85,14 @@ import { PatternLanguageGraphComponent } from './pattern-language-graph/pattern-
         PatternLanguageContainerDirective,
         PatternContainerComponent,
         PatternContainerDirective,
-      CreateEditPatternLanguageComponent,
-      CreatePatternComponent,
-      ProcessOauthCallbackComponent,
-      PatternLanguageGraphComponent
+        CreateEditPatternLanguageComponent,
+        CreatePatternComponent,
+        ProcessOauthCallbackComponent,
+        PatternLanguageGraphComponent
     ],
-  entryComponents: [
-    CreateEditPatternLanguageComponent
-  ]
+    entryComponents: [
+        CreateEditPatternLanguageComponent
+    ]
 })
 export class PatternLanguageManagementModule {
 }

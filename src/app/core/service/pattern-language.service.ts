@@ -32,8 +32,9 @@ export class PatternLanguageService {
         patternLanguage.uri = response['uri'];
         patternLanguage.name = response['name'];
         patternLanguage.logo = response['logo'];
-        const selfLink = response['_links']['self']['href'];
-        patternLanguage.id = selfLink.substring(selfLink.lastIndexOf('/') + 1);
+        patternLanguage.id = response['id'];
+        patternLanguage.patterns = response['patterns'];
+        patternLanguage._links = response['_links'];
         return patternLanguage;
     }
 
@@ -41,13 +42,18 @@ export class PatternLanguageService {
         return this.http.get<Array<PatternLanguage>>(this.repoEndpoint + '/patternLanguages').toPromise()
             .then(async result => {
                 const resultAry = new Array<PatternLanguage>();
-                for (const entry of result['_embedded']['patternLanguages']) {
-                    const patternLanguage = PatternLanguageService.getPatternLanguageFromResponse(entry);
-                    patternLanguage.patterns = await this.patternService.getPatternsByUrl(entry['_links']['patterns']['href']);
-                    resultAry.push(patternLanguage);
+                if (result['_embedded'] && result['_embedded']['patternLanguages']) {
+                    for (const entry of result['_embedded']['patternLanguages']) {
+                        const patternLanguage = PatternLanguageService.getPatternLanguageFromResponse(entry);
+                        resultAry.push(patternLanguage);
+                    }
                 }
                 return resultAry;
             });
+    }
+
+    public async getPatternLanguageByUrl(url: string): Promise<PatternLanguage> {
+        return this.http.get<PatternLanguage>(url).toPromise();
     }
 
     public async getPatternLanguageByEncodedUri(encodedUri: string): Promise<PatternLanguage> {
@@ -61,9 +67,7 @@ export class PatternLanguageService {
             });
     }
 
-    public savePatternLanguage(patternLanguage: PatternLanguage): void {
-        this.http.post(this.repoEndpoint + '/patternLanguages', patternLanguage).toPromise()
-            .then(response => console.log(response))
-            .catch(error => console.error(error));
+    public savePatternLanguage(patternLanguage: PatternLanguage): Promise<any> {
+        return this.http.post<any>(this.repoEndpoint + '/patternLanguages', patternLanguage, {observe: 'response'}).toPromise();
     }
 }

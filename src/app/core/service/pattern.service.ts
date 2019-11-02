@@ -36,15 +36,20 @@ export class PatternService {
         return this.http.get(patternsUrl).toPromise()
             .then(result => {
                 const resultAry = new Array<Pattern>();
-                for (const entry of result['_embedded']['patterns']) {
+                const embedded = result['_embedded'];
+                const patterns = embedded['patterns'];
+                for (const entry of patterns) {
                     const pattern = new Pattern();
                     pattern.uri = entry['uri'];
                     pattern.name = entry['name'];
-                    const selfLink = entry['_links']['self']['href'];
-                    pattern.id = selfLink.substring(selfLink.lastIndexOf('/') + 1);
+                    pattern.id = entry['id'];
                     resultAry.push(pattern);
                 }
                 return resultAry;
             });
+    }
+
+    async getPatternContentByPattern(pattern: Pattern): Promise<{content: any}> {
+        return this.http.get<{content: any}>(pattern._links.content.href).toPromise();
     }
 }

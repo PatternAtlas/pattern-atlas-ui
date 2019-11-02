@@ -41,7 +41,7 @@ export class ComponentRegistryService {
      * Registers the given components for the given uri.
      *
      * @param id the uri which the components will be registered for
-     * @param components the components to be registered (higher priority first!)
+     * @param component the components to be registered (higher priority first!)
      */
     registerComponent(id: string, component: RenderingComponent): void {
 
