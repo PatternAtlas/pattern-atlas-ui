@@ -34,7 +34,8 @@ export class PatternLanguageContainerComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.plEncodedUri = this.activatedRoute.snapshot.params['plEncodedUri'];
+        // Todo: We use encoded uris just for navigation. Now we can get the Uri from the patternlanguage entity. We have to add redux!
+        this.plEncodedUri = this.activatedRoute.snapshot.params['patternLanguageUri'];
         this.renderer = this.compRegistry.getRenderingComponents(UriConverter.doubleDecodeUri(this.plEncodedUri));
     }
 }
