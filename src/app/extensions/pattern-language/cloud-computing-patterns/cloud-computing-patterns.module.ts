@@ -19,7 +19,6 @@ import { ComponentRegistryService } from '../../../core/service/component-regist
 import { MatButtonModule, MatCardModule, MatDialogModule, MatIconModule, MatTooltipModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 import { CloudComputingPatternComponent } from './component/cloud-computing-pattern/cloud-computing-pattern.component';
-import { UriConverter } from '../../../core/util/uri-converter';
 import { NgxMdModule } from 'ngx-md';
 import { CoreModule } from '../../../core/core.module';
 import { CloudComputingPatternsGraphComponent } from './component/cloud-computing-patterns-graph/cloud-computing-patterns-graph.component';
@@ -55,13 +54,13 @@ import { FilterModule } from 'src/app/filter/filter.module';
 })
 export class CloudComputingPatternsModule {
     constructor(private cr: ComponentRegistryService) {
-        this.cr.registerComponent(UriConverter.doubleEncodeUri('https://patternpedia.org/patternlanguages/cloudcomputingpatterns'), {
+        this.cr.registerComponent('https://patternpedia.org/patternlanguages/cloudcomputingpatterns', {
             plcomponent: CloudComputingPatternsComponent,
             pcomponent: CloudComputingPatternComponent,
             label: 'Cards'
         });
 
-        this.cr.registerComponent(UriConverter.doubleEncodeUri('https://patternpedia.org/patternlanguages/cloudcomputingpatterns'), {
+        this.cr.registerComponent('https://patternpedia.org/patternlanguages/cloudcomputingpatterns', {
             plcomponent: CloudComputingPatternsGraphComponent,
             pcomponent: CloudComputingPatternsGraphComponent,
             label: 'Network Graph'
