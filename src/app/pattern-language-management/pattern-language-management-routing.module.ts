@@ -34,14 +34,14 @@ const routes: Routes = [
                 path: '',
                 component: PatternLanguageManagementComponent
             }, {
-                path: ':plEncodedUri',
+                path: ':patternLanguageUri',
                 component: PatternLanguageContainerComponent,
             }, {
-                path: ':plEncodedUri/create-patterns',
+                path: ':patternLanguageUri/create-patterns',
                 component: CreatePatternComponent,
             },
             {
-                path: ':plEncodedUri/:pEncodedUri',
+                path: ':patternLanguageUri/:pEncodedUri',
                 component: PatternContainerComponent
             }
 
