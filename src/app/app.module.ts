@@ -34,6 +34,8 @@ import { TestComponent } from './test/test.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { CookieService } from 'ngx-cookie-service';
 import { ToasterModule } from 'angular2-toaster';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
@@ -44,25 +46,27 @@ import { ToasterModule } from 'angular2-toaster';
       TestComponent
     ],
     imports: [
-      BrowserModule,
-      // NOTE: BrowserAnimationsModule issue https://github.com/angular/angular/issues/20290
-      BrowserAnimationsModule,
-      PatternLanguageManagementModule,
-      SolutionLanguageManagementModule,
-      MatToolbarModule,
-      MatIconModule,
-      MatCardModule,
-      MatButtonModule,
-      MatIconModule,
-      MatTabsModule,
-      NgxMdModule,
-      CovalentTextEditorModule,
-      CoreModule,
-      HttpClientModule,
-      AppRoutingModule,
-      ExtensionsModule,
-      FlexLayoutModule,
-      ToasterModule.forRoot()
+        BrowserModule,
+        // NOTE: BrowserAnimationsModule issue https://github.com/angular/angular/issues/20290
+        BrowserAnimationsModule,
+        PatternLanguageManagementModule,
+        SolutionLanguageManagementModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatCardModule,
+        MatButtonModule,
+        MatIconModule,
+        MatTabsModule,
+        NgxMdModule,
+        CovalentTextEditorModule,
+        CoreModule,
+        HttpClientModule,
+        AppRoutingModule,
+        ExtensionsModule,
+        FlexLayoutModule,
+        ToasterModule.forRoot(),
+        MatInputModule,
+        FormsModule
     ],
   providers: [CookieService],
     bootstrap: [AppComponent]
