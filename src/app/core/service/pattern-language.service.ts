@@ -57,7 +57,7 @@ export class PatternLanguageService {
     }
 
     public async getPatternLanguageByEncodedUri(encodedUri: string): Promise<PatternLanguage> {
-        const url = this.repoEndpoint + '/patternLanguages/search/findByUri?uri=' + encodedUri;
+        const url = this.repoEndpoint + '/patternLanguages/search/findByUri?encodedUri=' + encodedUri;
         return this.http.get<PatternLanguage>(url)
             .toPromise()
             .then(async result => {
