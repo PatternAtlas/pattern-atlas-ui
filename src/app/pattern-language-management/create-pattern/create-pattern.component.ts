@@ -11,6 +11,9 @@ import {ValidationService} from '../../core/service/validation.service';
 import {PatternLanguageService} from '../../core/service/pattern-language.service';
 import PatternLanguage from '../../core/model/new/pattern-language.model';
 import PatternSectionSchema from '../../core/model/new/pattern-section-schema.model';
+import * as MarkdownIt from 'markdown-it';
+import * as markdownitKatex from 'markdown-it-katex';
+import {PatternService} from '../../core/service/pattern.service';
 
 
 @Component({
@@ -37,15 +40,21 @@ export class CreatePatternComponent implements OnInit {
     private errormessages: string[];
   private patternlanguage: PatternLanguage;
   private sections: string[];
+  private markdown;
 
     constructor(private activatedRoute: ActivatedRoute,
                 private cdr: ChangeDetectorRef,
-                private toastService: ToasterService, private patternLanguageService: PatternLanguageService) {
+                private toastService: ToasterService,
+                private patternLanguageService: PatternLanguageService,
+                private patternService: PatternService) {
     }
 
 
     ngOnInit() {
       this.encodedUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
+
+      this.markdown = new MarkdownIt();
+      this.markdown.use(markdownitKatex);
 
       this.patternLanguageService.getPatternLanguageByEncodedUri(this.encodedUri).subscribe((pl: PatternLanguage) => {
         this.patternlanguage = pl;
@@ -58,15 +67,21 @@ export class CreatePatternComponent implements OnInit {
     save(): void {
         const pattern = this.parsePatternInput();
 
-        this.patterns.push(pattern);
         this.wasSaveButtonClicked = true;
-        if (!this.patternValuesFormGroup.valid) {
+      if (this.patternValuesFormGroup && !this.patternValuesFormGroup.valid) {
             console.log('patterns entries not valid');
             this.updateFormValidationErrors();
             return;
         }
 
-
+      this.patternService.savePattern(this.patternlanguage._links.patterns.href, JSON.stringify({
+          content: {
+            name: 'patternA',
+            sec1: 'test',
+            sec2: 'test2'
+          }
+        })
+      ).subscribe(res => console.log(res));
 
     }
 
@@ -78,12 +93,11 @@ export class CreatePatternComponent implements OnInit {
     onChangeMarkdownText(): void {
         let currentText = this.parseMarkdownText();
         if (this.invalidTextEdit(currentText)) {
-            console.log('invalid markdowntext detected, undoing last editing');
-            this._textEditor.value = this.previousTextEditorValue;
-            currentText = this.parseMarkdownText();
-            this.toastService.pop('warning', 'Reset text', `Title of Sections changed, this is not allowed`);
+          // TODO
         }
-        document.getElementById('preview').innerHTML = marked.parser(currentText);
+      if (this.markdown) {
+        document.getElementById('preview').innerHTML = this.markdown.render(this._textEditor.value);
+      }
     }
 
     // returns if a user changed the value of the sections headers (which he is not allowed to do)

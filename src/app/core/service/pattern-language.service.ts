@@ -61,7 +61,7 @@ export class PatternLanguageService {
   }
 
   public getPatternLanguageByEncodedUri(encodedUri: string): Observable<PatternLanguage> {
-    const url = this.repoEndpoint + '/patternLanguages/search/findByUri?uri=' + encodedUri;
+    const url = this.repoEndpoint + '/patternLanguages/findByUri?encodedUri=' + encodedUri;
     return this.http.get<PatternLanguage>(url);
   }
 

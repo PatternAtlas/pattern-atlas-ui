@@ -34,6 +34,8 @@
     "jsonld": "1.5.0",
     "lodash": "^4.17.15",
     "madr": "2.1.2",
+    "markdown-it": "^10.0.0",
+    "markdown-it-katex": "^2.0.3",
     "material-design-icons": "3.0.1",
     "ngx-cookie-service": "2.1.0",
     "ngx-md": "7.0.0",
