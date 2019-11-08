@@ -41,7 +41,7 @@ const routes: Routes = [
                 component: CreatePatternComponent,
             },
             {
-                path: ':patternLanguageUri/:pEncodedUri',
+                path: ':patternLanguageUri/:patternUri',
                 component: PatternContainerComponent
             }
 

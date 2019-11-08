@@ -65,7 +65,7 @@ export class CreatePatternComponent implements OnInit {
     ngOnInit() {
         this.plIri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('plid'));
 
-        // this.completePatternLanguageLoadingService.loadCompletePatternLanguage(this.plIri).then(
+        // this.completePatternLanguageLoadingService.loadCompletePatternLanguage(this.patternLanguageUri).then(
         //     (completePL) => {
         //         this.completePatternlanguageInfos = completePL;
         //         this.plName = completePL.patternlanguage.name;
@@ -101,7 +101,7 @@ export class CreatePatternComponent implements OnInit {
         //             patternLanguage.iri, this.patterns));
         //     }), // load updated patternlanguage file into store:
         //     switchMap(() => {
-        //         return this.pos.loadUrisToStore([{value: this.plIri, token: null}]);
+        //         return this.pos.loadUrisToStore([{value: this.patternLanguageUri, token: null}]);
         //     })
         // ).subscribe(() => {
         //     this.toastService.pop('success', 'Pattern created');
