@@ -15,15 +15,16 @@
 import Pattern from './pattern.model';
 import UriEntity from './uri-entity.model';
 import PatternSchema from './pattern-schema.model';
+import {HalLink} from './HalLink.interface';
 
 class PatternLanguage extends UriEntity {
-    patterns: Array<Pattern>;
+  patterns?: Array<Pattern>;
     logo: string;
     patternSchema: PatternSchema;
     _links: {
-        self: {href: string},
-        patterns: {href: string},
-        patternLanguages: {href: string}
+      self: HalLink,
+      patterns: HalLink,
+      patternLanguages: HalLink
     };
 }
 

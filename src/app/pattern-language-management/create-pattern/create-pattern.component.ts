@@ -1,18 +1,16 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { TdTextEditorComponent } from '@covalent/text-editor';
-import { ActivatedRoute, Router } from '@angular/router';
-import { UriConverter } from '../../core/util/uri-converter';
+import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {TdTextEditorComponent} from '@covalent/text-editor';
+import {ActivatedRoute} from '@angular/router';
+import {UriConverter} from '../../core/util/uri-converter';
 import * as marked from 'marked';
-import { TokensList } from 'marked';
+import {TokensList} from 'marked';
 import Pattern from '../../core/model/pattern.model';
-import { ToasterService } from 'angular2-toaster';
-import { PatternLanguageSectionRestriction, SectionRestrictionsResult } from '../../core/model/PatternLanguageSectionRestriction.model';
-import PatternPedia from '../../core/model/pattern-pedia.model';
-import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { ValidationService } from '../../core/service/validation.service';
-import { switchMap } from 'rxjs/internal/operators';
-import { PatternLanguagePatterns } from '../../core/model/pattern-language-patterns.model';
-import { CompletePatternlanguage } from '../../core/model/complete-patternlanguage.interface';
+import {ToasterService} from 'angular2-toaster';
+import {FormGroup, ValidationErrors} from '@angular/forms';
+import {ValidationService} from '../../core/service/validation.service';
+import {PatternLanguageService} from '../../core/service/pattern-language.service';
+import PatternLanguage from '../../core/model/new/pattern-language.model';
+import PatternSectionSchema from '../../core/model/new/pattern-section-schema.model';
 
 
 @Component({
@@ -24,28 +22,11 @@ export class CreatePatternComponent implements OnInit {
 
 
     patterns: Pattern[];
-    plIri: string;
-    completePatternlanguageInfos: CompletePatternlanguage;
+  encodedUri: string;
     plName: string;
-    sections: string[];
-    plRestrictions: Map<string, PatternLanguageSectionRestriction[]>;
-    sectionRestrictions = new Map<string, SectionRestrictionsResult>();
-    xsdPrefix = new PatternPedia().defaultPrefixes.get('xsd').replace('<', '').replace('>', '');
     wasSaveButtonClicked = false;
     patternValuesFormGroup: FormGroup;
 
-    defaultTextForType: Map<string, string> =
-        new Map([
-            ['https://purl.org/dc/dcmitype/Image', '![](http://)'],
-            [this.xsdPrefix + 'anyURI', '[](http://)'],
-            [this.xsdPrefix + 'integer', 'Replace this line by an Integer.'],
-            [this.xsdPrefix + 'string', ' Enter your input for this section here.'],
-            [this.xsdPrefix + 'positiveInteger', 'Replace this line by a positive Integer.'],
-            [this.xsdPrefix + 'nonNegativeInteger', 'Replace this line by a positive Integer.'],
-            [this.xsdPrefix + 'nonPositiveInteger', 'Replace this line by a negative Integer.'],
-            [this.xsdPrefix + 'negativeInteger', 'Replace this line by a negative Integer.'],
-            [this.xsdPrefix + 'date', 'dd/MM/yyyy'],
-        ]);
 
     @ViewChild('textEditor') private _textEditor: TdTextEditorComponent;
     previousTextEditorValue = `# Pattern name`;
@@ -54,28 +35,23 @@ export class CreatePatternComponent implements OnInit {
         // todo: hide the preview button because it forces fullscreen mode (and destroys our page layout)
     };
     private errormessages: string[];
+  private patternlanguage: PatternLanguage;
+  private sections: string[];
 
     constructor(private activatedRoute: ActivatedRoute,
                 private cdr: ChangeDetectorRef,
-                private toastService: ToasterService,
-                private router: Router) {
+                private toastService: ToasterService, private patternLanguageService: PatternLanguageService) {
     }
 
 
     ngOnInit() {
-        this.plIri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('plid'));
+      this.encodedUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('plEncodedUri'));
 
-        // this.completePatternLanguageLoadingService.loadCompletePatternLanguage(this.plIri).then(
-        //     (completePL) => {
-        //         this.completePatternlanguageInfos = completePL;
-        //         this.plName = completePL.patternlanguage.name;
-        //         this.patterns = completePL.patterns;
-        //         this.sections = completePL.patternlanguage.sections;
-        //
-        //         this.initRestrictions();
-        //         this.initTextEditor();
-        //
-        //     });
+      this.patternLanguageService.getPatternLanguageByEncodedUri(this.encodedUri).subscribe((pl: PatternLanguage) => {
+        this.patternlanguage = pl;
+        this.sections = this.patternlanguage.patternSchema ? this.patternlanguage.patternSchema.patternSectionSchemas.map((schema: PatternSectionSchema) => schema.label) : [];
+        this.initTextEditor();
+      });
 
     }
 
@@ -83,7 +59,6 @@ export class CreatePatternComponent implements OnInit {
         const pattern = this.parsePatternInput();
 
         this.patterns.push(pattern);
-        const patternIris = !this.patterns ? [] : this.patterns.map(p => p.uri);
         this.wasSaveButtonClicked = true;
         if (!this.patternValuesFormGroup.valid) {
             console.log('patterns entries not valid');
@@ -91,39 +66,14 @@ export class CreatePatternComponent implements OnInit {
             return;
         }
 
-        const patternLanguage = this.completePatternlanguageInfos.patternlanguage;
-        patternLanguage.patternIRIs = patternIris;
 
-        // patternLanguage.restrictions = restrictions;
-        // this.uploadService.updatePL(patternLanguage).pipe(
-        //     switchMap(() => {
-        //         return this.uploadService.updatePLPatterns(new PatternLanguagePatterns(UriConverter.getPatternListIriForPLIri(patternLanguage.iri),
-        //             patternLanguage.iri, this.patterns));
-        //     }), // load updated patternlanguage file into store:
-        //     switchMap(() => {
-        //         return this.pos.loadUrisToStore([{value: this.plIri, token: null}]);
-        //     })
-        // ).subscribe(() => {
-        //     this.toastService.pop('success', 'Pattern created');
-        //     this.router.navigate(['..'], {relativeTo: this.activatedRoute});
-        // }, (error) => {
-        //     this.toastService.pop('error', 'Something went wrong while creating the patterns: ' + error.message);
-        //     console.log(error);
-        // });
 
     }
 
-    getPatternUri(patternName: string, plIri: string): string {
-        return UriConverter.getFileName(plIri) + '/' + UriConverter.removeWhitespace(patternName) + '#' + UriConverter.removeWhitespace(patternName);
-    }
-
-    parseMarkdownText(): TokensList {
+  parseMarkdownText(): TokensList {
         return marked.lexer(this._textEditor.value);
     }
 
-    getSectionTitle(section: string): string {
-        return section.split('#has')[1];
-    }
 
     onChangeMarkdownText(): void {
         let currentText = this.parseMarkdownText();
@@ -146,7 +96,7 @@ export class CreatePatternComponent implements OnInit {
             const indexOfCorrespondingLine = currentText.findIndex(line =>
                 (line.type === 'heading' && line.depth === 2) &&
                 this.ignoreCaseAndWhitespace(line.text) ===
-                this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(this.getSectionTitle(section)))
+              this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(section))
             );
             if (indexOfCorrespondingLine === -1) {
                 return true;
@@ -166,7 +116,7 @@ export class CreatePatternComponent implements OnInit {
         const sectionMap = new Map<string, string[]>();
         this.sections.forEach((section: string) => {
             const sectionIndex = lines.findIndex((sec) => sec.type === 'heading' && sec.depth === 2 &&
-                this.ignoreCaseAndWhitespace(sec.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(this.getSectionTitle(section))));
+              this.ignoreCaseAndWhitespace(sec.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(section)));
             if (sectionIndex !== -1) {
                 const sectioncontent = [];
                 for (let i = sectionIndex + 1; i < lines.length; i++) {
@@ -184,16 +134,6 @@ export class CreatePatternComponent implements OnInit {
                     console.log('missing formcontrol:');
                     console.log(section);
                 }
-                const sectionType = this.sectionRestrictions.get(section).type ? this.sectionRestrictions.get(section).type : '';
-
-
-                for (let i = 0; i < sectioncontent.length; i++) {
-
-
-                    if (sectionType === this.xsdPrefix + 'anyURI') {
-                        sectioncontent[i] = '<' + sectioncontent[i] + '>';
-                    }
-                }
                 sectionMap.set(section, sectioncontent);
 
             }
@@ -202,7 +142,7 @@ export class CreatePatternComponent implements OnInit {
         });
 
 
-        return new Pattern('', this.getPatternUri(patternname, this.plIri), patternname, sectionMap);
+      return new Pattern('', patternname, patternname, sectionMap);
 
     }
 
@@ -217,31 +157,7 @@ export class CreatePatternComponent implements OnInit {
 
 
     getDefaultTextForSection(section: string): string {
-        if (!this.plRestrictions) {
-            return null;
-        }
-        const restrictionWithTypeIndex = this.plRestrictions.get(section).findIndex((rest: PatternLanguageSectionRestriction) => {
-            return !!rest.type;
-        });
-        const sectionType = restrictionWithTypeIndex !== -1 ? this.plRestrictions.get(section)[restrictionWithTypeIndex].type : '';
-
-        let defaultText = this.defaultTextForType.get(sectionType);
-        if (!defaultText) {
-            defaultText = 'Enter your input for this section here.';
-        }
-        const restrictions = this.sectionRestrictions.get(section);
-        if (!restrictions) {
-            return defaultText;
-        }
-
-        if (!restrictions.maxCardinality || restrictions.maxCardinality > 1) {
-            // propose listitems if multiple entries are allowed
-            defaultText = '* ' + defaultText + '\n\n';
-        }
-        if (restrictions.minCardinality > 1) {
-            defaultText = (defaultText + '\n').repeat(restrictions.minCardinality - 1) + defaultText;
-        }
-        return defaultText;
+      return 'Enter your input for this section here.';
     }
 
 
@@ -254,7 +170,7 @@ export class CreatePatternComponent implements OnInit {
             const controlErrors: ValidationErrors = this.patternValuesFormGroup.controls[key].errors;
             if (controlErrors != null) {
                 Object.keys(controlErrors).forEach(keyError => {
-                    this.errormessages.push(ValidationService.getMessageForError(this.getSectionTitle(key), keyError, controlErrors[keyError]));
+                  this.errormessages.push(ValidationService.getMessageForError(key, keyError, controlErrors[keyError]));
                 });
             }
         });
@@ -262,48 +178,13 @@ export class CreatePatternComponent implements OnInit {
 
     // init formgroup based on restrictions
     private initRestrictions() {
-        this.plRestrictions = this.completePatternlanguageInfos.patternlanguage.restrictions;
         this.patternValuesFormGroup = new FormGroup({});
-        this.plRestrictions.forEach((value: PatternLanguageSectionRestriction[], key: string) => {
-                // const allRestrictions = this.PlRestrictionLoader.getRestrictionsForSection(key, this.plRestrictions.get(key));
-                // const validators = [];
-                // if (allRestrictions) {
-                //     this.sectionRestrictions.set(key, allRestrictions);
-                //
-                //     if (allRestrictions.minCardinality && allRestrictions.minCardinality > 0) {
-                //         validators.push(Validators.required);
-                //         validators.push(Validators.minLength(allRestrictions.minCardinality));
-                //     }
-                //     if (allRestrictions.maxCardinality) {
-                //         validators.push(Validators.maxLength(allRestrictions.maxCardinality));
-                //     }
-                //     if (allRestrictions.type === 'https://purl.org/dc/dcmitype/Image') {
-                //
-                //         // validators.push(ValidationService.xsdImage());
-                //
-                //     } else if (allRestrictions.type.startsWith(this.xsdPrefix) &&
-                //         // tslint:disable-next-line:max-line-length
-            // tslint:disable-next-line:max-line-length
-                //         (allRestrictions.type.endsWith('integer') || allRestrictions.type.endsWith('positiveInteger') || allRestrictions.type.endsWith('negativeInteger'))) {
-                //         validators.push(ValidationService.xsdInteger());
-                //     } else if (allRestrictions.type.startsWith(this.xsdPrefix) && allRestrictions.type.endsWith('anyURI')) {
-                //         validators.push(ValidationService.xsdAnyURI());
-                //     }
-                // }
-                // this.patternValuesFormGroup.addControl(key,
-                //     new FormControl(
-                //         '', validators
-                //     ));
-            }
-        );
-
-
     }
 
     private initTextEditor(): void {
-        for (const section of this.completePatternlanguageInfos.patternlanguage.sections) {
+      for (const section of this.sections) {
             this.previousTextEditorValue = this.previousTextEditorValue.concat(
-                '\n ## ' + this.addSpaceForCamelCase(this.getSectionTitle(section)) + '\n' + this.getDefaultTextForSection(section));
+              '\n ## ' + section + '\n' + this.getDefaultTextForSection(section));
         }
         this._textEditor.value = this.previousTextEditorValue;
         this.onChangeMarkdownText();

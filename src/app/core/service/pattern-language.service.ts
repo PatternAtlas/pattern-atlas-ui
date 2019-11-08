@@ -12,11 +12,13 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import PatternLanguage from '../model/new/pattern-language.model';
-import { HttpClient } from '@angular/common/http';
-import { PatternService } from './pattern.service';
-import { globals } from '../../globals';
+import {HttpClient} from '@angular/common/http';
+import {PatternService} from './pattern.service';
+import {globals} from '../../globals';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Injectable()
 export class PatternLanguageService {
@@ -52,20 +54,16 @@ export class PatternLanguageService {
             });
     }
 
-    public async getPatternLanguageByUrl(url: string): Promise<PatternLanguage> {
-        return this.http.get<PatternLanguage>(url).toPromise();
-    }
+  public getPatternLanguageByUrl(url: string): Observable<PatternLanguage> {
+    return this.http.get(url).pipe(
+      map(res => <PatternLanguage>res)
+    );
+  }
 
-    public async getPatternLanguageByEncodedUri(encodedUri: string): Promise<PatternLanguage> {
-        const url = this.repoEndpoint + '/patternLanguages/search/findByUri?uri=' + encodedUri;
-        return this.http.get<PatternLanguage>(url)
-            .toPromise()
-            .then(async result => {
-                const patternLanguage = PatternLanguageService.getPatternLanguageFromResponse(result);
-                patternLanguage.patterns = await this.patternService.getPatternsByUrl(result['_links']['patterns']['href']);
-                return patternLanguage;
-            });
-    }
+  public getPatternLanguageByEncodedUri(encodedUri: string): Observable<PatternLanguage> {
+    const url = this.repoEndpoint + '/patternLanguages/search/findByUri?uri=' + encodedUri;
+    return this.http.get<PatternLanguage>(url);
+  }
 
     public savePatternLanguage(patternLanguage: PatternLanguage): Promise<any> {
         return this.http.post<any>(this.repoEndpoint + '/patternLanguages', patternLanguage, {observe: 'response'}).toPromise();

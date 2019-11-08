@@ -12,12 +12,11 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
 import CloudComputingPattern from '../../model/cloud-computing-pattern';
-import { ActivatedRoute, Router } from '@angular/router';
-import { PatternLanguageService } from '../../../../../core/service/pattern-language.service';
-import { UriConverter } from '../../../../../core/util/uri-converter';
-import CloudComputingPatternHelper from '../../util/CloudComputingPatternHelper';
+import {ActivatedRoute, Router} from '@angular/router';
+import {PatternLanguageService} from '../../../../../core/service/pattern-language.service';
+import {UriConverter} from '../../../../../core/util/uri-converter';
 
 @Component({
     selector: 'pp-cloud-computing-patterns',
@@ -36,11 +35,11 @@ export class CloudComputingPatternsComponent implements OnInit {
     }
 
     async ngOnInit() {
-        const encodedUri = UriConverter.decodeUri(this.activatedRoute.snapshot.paramMap.get('plEncodedUri'));
-        console.log(encodedUri);
-        const pl = await this.patternLanguageService.getPatternLanguageByEncodedUri(encodedUri);
-        console.log(JSON.stringify(pl));
-        this.patterns = pl.patterns.map(CloudComputingPatternHelper.convertToCloudComputingPattern);
+      // const encodedUri = UriConverter.decodeUri(this.activatedRoute.snapshot.paramMap.get('plEncodedUri'));
+      // console.log(encodedUri);
+      // const pl = await this.patternLanguageService.getPatternLanguageByEncodedUri(encodedUri);
+      // console.log(JSON.stringify(pl));
+      // this.patterns = pl.patterns.map(CloudComputingPatternHelper.convertToCloudComputingPattern);
     }
 
     navigate(uri: string): void {

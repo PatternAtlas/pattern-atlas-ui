@@ -92,9 +92,7 @@ export class PatternLanguageManagementComponent implements OnInit {
             const patternLanguage = result.patternLanguage;
             this.patternLanguageService.savePatternLanguage(patternLanguage)
                 .then(postResult => {
-                    const url = postResult.headers.get('location');
-                    this.patternLanguageService.getPatternLanguageByUrl(url)
-                        .then(newPatternLanguage => this.patternLanguages.push(newPatternLanguage));
+                  this.patternLanguages.push(<PatternLanguage> postResult.body);
                     this._toasterService.pop('success', 'Pattern Language created');
                 })
                 .catch(err => {
