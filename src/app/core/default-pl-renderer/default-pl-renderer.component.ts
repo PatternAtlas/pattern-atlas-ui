@@ -15,8 +15,6 @@ export class DefaultPlRendererComponent implements OnInit {
 
     patterns: Pattern[] = [];
     patternLanguage: PatternLanguage;
-    plIri: string;
-    plName: string;
   isLoading = true;
   patternLanguageURI: string;
 
@@ -30,10 +28,6 @@ export class DefaultPlRendererComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this.loader.supportedIRI = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('plid'));
-        this.plIri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('plid'));
-        this.plName = UriConverter.extractIndividualNameFromIri(this.plIri);
-
         this.loadData();
     }
 
@@ -56,7 +50,7 @@ export class DefaultPlRendererComponent implements OnInit {
     }
 
     loadData() {
-      this.patternLanguageURI = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('plEncodedUri'));
+      this.patternLanguageURI = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
       if (this.patternLanguageURI) {
         this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageURI).subscribe(
           (patternlanguage) => {

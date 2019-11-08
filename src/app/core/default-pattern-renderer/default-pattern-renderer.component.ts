@@ -1,16 +1,16 @@
-import { ChangeDetectorRef, Component, ComponentFactoryResolver, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ToasterService } from 'angular2-toaster';
-import { PatternpropertyDirective } from '../component/markdown-content-container/patternproperty.directive';
-import { UriConverter } from '../util/uri-converter';
-import { MatDialog } from '@angular/material';
-import { DialogDataResult } from '../component/create-pattern-relation/create-pattern-relation.component';
-import { DirectedPatternRelationDescriptorIndividual } from '../model/directed-pattern-relation-descriptor-individual';
-import { UndirectedPatternRelationDescriptorIndividual } from '../model/undirected-pattern-relation-descriptor-individual';
-import { PatternRelations } from '../model/pattern-relations';
+import {ChangeDetectorRef, Component, ComponentFactoryResolver, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {ToasterService} from 'angular2-toaster';
+import {PatternpropertyDirective} from '../component/markdown-content-container/patternproperty.directive';
+import {UriConverter} from '../util/uri-converter';
+import {MatDialog} from '@angular/material';
+import {DialogDataResult} from '../component/create-pattern-relation/create-pattern-relation.component';
+import {DirectedPatternRelationDescriptorIndividual} from '../model/directed-pattern-relation-descriptor-individual';
+import {UndirectedPatternRelationDescriptorIndividual} from '../model/undirected-pattern-relation-descriptor-individual';
+import {PatternRelations} from '../model/pattern-relations';
 // tslint:disable-next-line:max-line-length
 import Pattern from '../model/new/pattern.model';
-import { PatternLanguageService } from '../service/pattern-language.service';
+import {PatternLanguageService} from '../service/pattern-language.service';
 import PatternLanguage from '../model/new/pattern-language.model';
 
 @Component({
@@ -40,8 +40,9 @@ export class DefaultPatternRendererComponent implements OnInit {
     ngOnInit(): void {
         const patternLanguageUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
         const patternUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternUri'));
+      console.log(patternLanguageUri);
         this.patternLanguageService.getPatternLanguageByEncodedUri(patternLanguageUri)
-            .then(patternLanguage => this.patternLanguage = patternLanguage);
+          .subscribe(patternLanguage => this.patternLanguage = patternLanguage);
 
     }
 

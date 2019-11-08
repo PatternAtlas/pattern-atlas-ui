@@ -45,7 +45,7 @@ export class CreatePatternComponent implements OnInit {
 
 
     ngOnInit() {
-      this.encodedUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('plEncodedUri'));
+      this.encodedUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
 
       this.patternLanguageService.getPatternLanguageByEncodedUri(this.encodedUri).subscribe((pl: PatternLanguage) => {
         this.patternlanguage = pl;
