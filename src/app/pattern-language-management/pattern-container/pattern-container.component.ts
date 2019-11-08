@@ -20,7 +20,7 @@ export class PatternContainerComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.plEncodedUri = this.activatedRoute.snapshot.paramMap.get('plEncodedUri');
+        this.plEncodedUri = this.activatedRoute.snapshot.paramMap.get('patternUri');
         this.renderer = this.compRegistry.getRenderingComponents(this.plEncodedUri);
     }
 

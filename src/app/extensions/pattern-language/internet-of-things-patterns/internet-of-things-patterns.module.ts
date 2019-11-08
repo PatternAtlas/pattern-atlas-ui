@@ -19,7 +19,6 @@ import { ComponentRegistryService } from '../../../core/service/component-regist
 import { MatButtonModule, MatCardModule, MatDialogModule, MatFormFieldModule, MatTooltipModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 import { InternetOfThingsPatternComponent } from './component/internet-of-things-pattern/internet-of-things-pattern.component';
-import { UriConverter } from '../../../core/util/uri-converter';
 import { NgxMdModule } from 'ngx-md';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { CoreModule } from '../../../core/core.module';
@@ -56,7 +55,7 @@ import { GraphModule } from 'src/app/graph/graph.module';
 export class InternetOfThingsPatternsModule {
     constructor(private cr: ComponentRegistryService) {
         // tslint:disable-next-line:max-line-length
-        this.cr.registerComponent(UriConverter.doubleEncodeUri('https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#InternetofThingsPatterns'), {
+        this.cr.registerComponent('https://patternpedia.org/patternlanguages/internetofthingspatterns', {
             plcomponent: InternetOfThingsPatternsGraphComponent,
             pcomponent: InternetOfThingsPatternsGraphComponent,
             label: 'Network Graph'

@@ -23,7 +23,7 @@ import { DefaultPatternlanguageGraphComponent } from '../../graph/component/defa
 })
 export class PatternLanguageContainerDirective implements OnInit {
 
-    @Input() plId: string;
+    @Input() patternLanguageUri: string;
     @Input() index?: number;
     @Input() graphView: boolean;
 
@@ -35,31 +35,25 @@ export class PatternLanguageContainerDirective implements OnInit {
     }
 
     ngOnInit(): void {
-
         const componentFactory = this.getRenderingComponent();
-
-
         this.viewContainerRef.clear();
         const componentRef = this.viewContainerRef.createComponent(componentFactory);
         if (this.selectedGraphView) {
             const instance = (<PatternGraphTemplateComponent<any>>componentRef.instance);
-            instance.languageUri = UriConverter.doubleDecodeUri(this.plId);
+            instance.languageUri = UriConverter.doubleDecodeUri(this.patternLanguageUri);
         }
     }
 
-
     private getRenderingComponent() {
-        const renderingComponent = this.compRegistry.getPLRenderingComponents(this.plId, this.index);
+        const renderingComponent = this.compRegistry.getPLRenderingComponents(UriConverter.doubleDecodeUri(this.patternLanguageUri.toLowerCase()), this.index);
         if (renderingComponent) {
             return this.componentFactoryResolver.resolveComponentFactory(renderingComponent.plcomponent);
         }
         // no special renderer, use default renderer (graph or cards):
         if (this.graphView) {
-
             this.selectedGraphView = true;
             return this.componentFactoryResolver.resolveComponentFactory(DefaultPatternlanguageGraphComponent);
         }
         return this.componentFactoryResolver.resolveComponentFactory(this.compRegistry.getPLRenderingComponents('default').plcomponent);
     }
-
 }

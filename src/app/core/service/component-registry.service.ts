@@ -23,7 +23,7 @@ export class ComponentRegistryService {
      * @returns the rendering component at the given index or null, if there is no registered component
      */
     getPLRenderingComponents(id: string, index: number = 0): RenderingComponent {
-        const componentList = this.dictionary.get(id);
+        const componentList = this.dictionary.get(id.toLowerCase());
         return componentList ? componentList[index] : null;
     }
 
@@ -34,7 +34,7 @@ export class ComponentRegistryService {
      * @returns a list containing all rendering components or null, if there are no registered renderer
      */
     getRenderingComponents(id: string): Array<RenderingComponent> {
-        return this.dictionary.get(id);
+        return this.dictionary.get(id.toLowerCase());
     }
 
     /**
@@ -44,10 +44,9 @@ export class ComponentRegistryService {
      * @param component the components to be registered (higher priority first!)
      */
     registerComponent(id: string, component: RenderingComponent): void {
-
         const componentList = this.dictionary.get(id);
         if (!componentList) {
-            this.dictionary.set(id, [component]);
+            this.dictionary.set(id.toLowerCase(), [component]);
         } else {
             componentList.push(component);
             // sort list DESCENDING according to priority (higher prio first)

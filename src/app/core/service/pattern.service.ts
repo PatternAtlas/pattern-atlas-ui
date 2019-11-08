@@ -16,7 +16,6 @@ import { Injectable } from '@angular/core';
 import Pattern from '../model/new/pattern.model';
 import { HttpClient } from '@angular/common/http';
 import { globals } from '../../globals';
-import { UriConverter } from '../util/uri-converter';
 
 @Injectable()
 export class PatternService {
@@ -37,19 +36,21 @@ export class PatternService {
             .then(result => {
                 const resultAry = new Array<Pattern>();
                 const embedded = result['_embedded'];
-                const patterns = embedded['patterns'];
-                for (const entry of patterns) {
-                    const pattern = new Pattern();
-                    pattern.uri = entry['uri'];
-                    pattern.name = entry['name'];
-                    pattern.id = entry['id'];
-                    resultAry.push(pattern);
+                if (embedded) {
+                    const patterns = embedded['patterns'];
+                    for (const entry of patterns) {
+                        const pattern = new Pattern();
+                        pattern.uri = entry['uri'];
+                        pattern.name = entry['name'];
+                        pattern.id = entry['id'];
+                        resultAry.push(pattern);
+                    }
                 }
                 return resultAry;
             });
     }
 
-    async getPatternContentByPattern(pattern: Pattern): Promise<{content: any}> {
-        return this.http.get<{content: any}>(pattern._links.content.href).toPromise();
+    async getPatternContentByPattern(pattern: Pattern): Promise<{ content: any }> {
+        return this.http.get<{ content: any }>(pattern._links.content.href).toPromise();
     }
 }
