@@ -15,7 +15,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { PatternLanguageService } from '../../core/service/pattern-language.service';
-import PatternLanguage from '../../core/model/new/pattern-language.model';
+import PatternLanguage from '../../core/model/hal/pattern-language.model';
 import { PatternService } from '../../core/service/pattern.service';
 
 @Injectable({
