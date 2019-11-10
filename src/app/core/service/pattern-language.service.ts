@@ -12,58 +12,44 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import {Injectable} from '@angular/core';
-import PatternLanguage from '../model/new/pattern-language.model';
-import {HttpClient} from '@angular/common/http';
-import {PatternService} from './pattern.service';
-import {globals} from '../../globals';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import PatternLanguage from '../model/hal/pattern-language.model';
+import { HttpClient } from '@angular/common/http';
+import { globals } from '../../globals';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import PatternLanguages from '../model/hal/pattern-languages.model';
 
 @Injectable()
 export class PatternLanguageService {
 
     private repoEndpoint = globals.repoEndpoint;
 
-    constructor(private http: HttpClient,
-                private patternService: PatternService) {
-    }
-
-    private static getPatternLanguageFromResponse(response: any): PatternLanguage {
-        const patternLanguage = new PatternLanguage();
-        patternLanguage.uri = response['uri'];
-        patternLanguage.name = response['name'];
-        patternLanguage.logo = response['logo'];
-        patternLanguage.id = response['id'];
-        patternLanguage.patterns = response['patterns'];
-        patternLanguage._links = response['_links'];
-        return patternLanguage;
+    constructor(private http: HttpClient) {
     }
 
     public async getPatternLanguages(): Promise<Array<PatternLanguage>> {
         return this.http.get<Array<PatternLanguage>>(this.repoEndpoint + '/patternLanguages').toPromise()
-            .then(async result => {
-                const resultAry = new Array<PatternLanguage>();
-                if (result['_embedded'] && result['_embedded']['patternLanguages']) {
-                    for (const entry of result['_embedded']['patternLanguages']) {
-                        const patternLanguage = PatternLanguageService.getPatternLanguageFromResponse(entry);
-                        resultAry.push(patternLanguage);
-                    }
+            .then(async (result: any) => {
+                const patternLanguages = result as PatternLanguages;
+                let resultAry = new Array<PatternLanguage>();
+                if (patternLanguages._embedded && Array.isArray(patternLanguages._embedded.patternLanguages)) {
+                    resultAry = patternLanguages._embedded.patternLanguages;
                 }
                 return resultAry;
             });
     }
 
-  public getPatternLanguageByUrl(url: string): Observable<PatternLanguage> {
-    return this.http.get(url).pipe(
-      map(res => <PatternLanguage>res)
-    );
-  }
+    public getPatternLanguageByUrl(url: string): Observable<PatternLanguage> {
+        return this.http.get(url).pipe(
+            map(res => <PatternLanguage>res)
+        );
+    }
 
-  public getPatternLanguageByEncodedUri(encodedUri: string): Observable<PatternLanguage> {
-    const url = this.repoEndpoint + '/patternLanguages/findByUri?encodedUri=' + encodedUri;
-    return this.http.get<PatternLanguage>(url);
-  }
+    public getPatternLanguageByEncodedUri(encodedUri: string): Observable<PatternLanguage> {
+        const url = this.repoEndpoint + '/patternLanguages/findByUri?encodedUri=' + encodedUri;
+        return this.http.get<PatternLanguage>(url);
+    }
 
     public savePatternLanguage(patternLanguage: PatternLanguage): Promise<any> {
         return this.http.post<any>(this.repoEndpoint + '/patternLanguages', patternLanguage, {observe: 'response'}).toPromise();
