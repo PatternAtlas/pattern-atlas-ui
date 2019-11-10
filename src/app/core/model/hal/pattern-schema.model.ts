@@ -13,10 +13,12 @@
  */
 
 import PatternSectionSchema from './pattern-section-schema.model';
+import { PatternSchemaResource } from './hal-resources.interface';
 
 class PatternSchema {
     id: string;
     patternSectionSchemas: Array<PatternSectionSchema> = [];
+    _links: PatternSchemaResource;
 }
 
 export default PatternSchema;

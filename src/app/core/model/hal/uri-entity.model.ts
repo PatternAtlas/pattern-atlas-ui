@@ -12,15 +12,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import UriEntity from './uri-entity.model';
-
-class Pattern extends UriEntity {
-    content: any;
-    _links: {
-        self: { href: string },
-        content: { href: string },
-        patternLanguage: { href: string },
-    };
+class UriEntity {
+    id: string;
+    uri: string;
+    name: string;
 }
 
-export default Pattern;
+export default UriEntity;
