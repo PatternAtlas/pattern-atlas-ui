@@ -1,19 +1,19 @@
-import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
-import {TdTextEditorComponent} from '@covalent/text-editor';
-import {ActivatedRoute} from '@angular/router';
-import {UriConverter} from '../../core/util/uri-converter';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { TdTextEditorComponent } from '@covalent/text-editor';
+import { ActivatedRoute } from '@angular/router';
+import { UriConverter } from '../../core/util/uri-converter';
 import * as marked from 'marked';
-import {TokensList} from 'marked';
+import { TokensList } from 'marked';
 import Pattern from '../../core/model/pattern.model';
-import {ToasterService} from 'angular2-toaster';
-import {FormGroup, ValidationErrors} from '@angular/forms';
-import {ValidationService} from '../../core/service/validation.service';
-import {PatternLanguageService} from '../../core/service/pattern-language.service';
-import PatternLanguage from '../../core/model/new/pattern-language.model';
-import PatternSectionSchema from '../../core/model/new/pattern-section-schema.model';
+import { ToasterService } from 'angular2-toaster';
+import { FormGroup, ValidationErrors } from '@angular/forms';
+import { ValidationService } from '../../core/service/validation.service';
+import { PatternLanguageService } from '../../core/service/pattern-language.service';
+import PatternLanguage from '../../core/model/hal/pattern-language.model';
+import PatternSectionSchema from '../../core/model/hal/pattern-section-schema.model';
 import * as MarkdownIt from 'markdown-it';
 import * as markdownitKatex from 'markdown-it-katex';
-import {PatternService} from '../../core/service/pattern.service';
+import { PatternService } from '../../core/service/pattern.service';
 
 
 @Component({
@@ -25,7 +25,7 @@ export class CreatePatternComponent implements OnInit {
 
 
     patterns: Pattern[];
-  encodedUri: string;
+    encodedUri: string;
     plName: string;
     wasSaveButtonClicked = false;
     patternValuesFormGroup: FormGroup;
@@ -38,9 +38,9 @@ export class CreatePatternComponent implements OnInit {
         // todo: hide the preview button because it forces fullscreen mode (and destroys our page layout)
     };
     private errormessages: string[];
-  private patternlanguage: PatternLanguage;
-  private sections: string[];
-  private markdown;
+    private patternlanguage: PatternLanguage;
+    private sections: string[];
+    private markdown;
 
     constructor(private activatedRoute: ActivatedRoute,
                 private cdr: ChangeDetectorRef,
@@ -51,16 +51,18 @@ export class CreatePatternComponent implements OnInit {
 
 
     ngOnInit() {
-      this.encodedUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
+        this.encodedUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
 
-      this.markdown = new MarkdownIt();
-      this.markdown.use(markdownitKatex);
+        this.markdown = new MarkdownIt();
+        this.markdown.use(markdownitKatex);
 
-      this.patternLanguageService.getPatternLanguageByEncodedUri(this.encodedUri).subscribe((pl: PatternLanguage) => {
-        this.patternlanguage = pl;
-        this.sections = this.patternlanguage.patternSchema ? this.patternlanguage.patternSchema.patternSectionSchemas.map((schema: PatternSectionSchema) => schema.label) : [];
-        this.initTextEditor();
-      });
+        this.patternLanguageService.getPatternLanguageByEncodedUri(this.encodedUri).subscribe((pl: PatternLanguage) => {
+            this.patternlanguage = pl;
+            // tslint:disable-next-line:max-line-length
+            this.sections = this.patternlanguage.patternSchema ?
+                this.patternlanguage.patternSchema.patternSectionSchemas.map((schema: PatternSectionSchema) => schema.label) : [];
+            this.initTextEditor();
+        });
 
     }
 
@@ -68,36 +70,36 @@ export class CreatePatternComponent implements OnInit {
         const pattern = this.parsePatternInput();
 
         this.wasSaveButtonClicked = true;
-      if (this.patternValuesFormGroup && !this.patternValuesFormGroup.valid) {
+        if (this.patternValuesFormGroup && !this.patternValuesFormGroup.valid) {
             console.log('patterns entries not valid');
             this.updateFormValidationErrors();
             return;
         }
 
-      this.patternService.savePattern(this.patternlanguage._links.patterns.href, JSON.stringify({
-          content: {
-            name: 'patternA',
-            sec1: 'test',
-            sec2: 'test2'
-          }
-        })
-      ).subscribe(res => console.log(res));
+        this.patternService.savePattern(this.patternlanguage._links.patterns.href, JSON.stringify({
+                content: {
+                    name: 'patternA',
+                    sec1: 'test',
+                    sec2: 'test2'
+                }
+            })
+        ).subscribe(res => console.log(res));
 
     }
 
-  parseMarkdownText(): TokensList {
+    parseMarkdownText(): TokensList {
         return marked.lexer(this._textEditor.value);
     }
 
 
     onChangeMarkdownText(): void {
-        let currentText = this.parseMarkdownText();
+        const currentText = this.parseMarkdownText();
         if (this.invalidTextEdit(currentText)) {
-          // TODO
+            // TODO
         }
-      if (this.markdown) {
-        document.getElementById('preview').innerHTML = this.markdown.render(this._textEditor.value);
-      }
+        if (this.markdown) {
+            document.getElementById('preview').innerHTML = this.markdown.render(this._textEditor.value);
+        }
     }
 
     // returns if a user changed the value of the sections headers (which he is not allowed to do)
@@ -110,7 +112,7 @@ export class CreatePatternComponent implements OnInit {
             const indexOfCorrespondingLine = currentText.findIndex(line =>
                 (line.type === 'heading' && line.depth === 2) &&
                 this.ignoreCaseAndWhitespace(line.text) ===
-              this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(section))
+                this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(section))
             );
             if (indexOfCorrespondingLine === -1) {
                 return true;
@@ -130,7 +132,7 @@ export class CreatePatternComponent implements OnInit {
         const sectionMap = new Map<string, string[]>();
         this.sections.forEach((section: string) => {
             const sectionIndex = lines.findIndex((sec) => sec.type === 'heading' && sec.depth === 2 &&
-              this.ignoreCaseAndWhitespace(sec.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(section)));
+                this.ignoreCaseAndWhitespace(sec.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(section)));
             if (sectionIndex !== -1) {
                 const sectioncontent = [];
                 for (let i = sectionIndex + 1; i < lines.length; i++) {
@@ -142,11 +144,15 @@ export class CreatePatternComponent implements OnInit {
                         sectioncontent.push(i > 0 && this.isListItem(i, sectionIndex, lines) ? '* ' + lines[i]['text'] : lines[i]['text']);
                     }
                 }
-                if (this.patternValuesFormGroup.controls[section]) {
-                    this.patternValuesFormGroup.controls[section].setValue(sectioncontent);
+                if (this.patternValuesFormGroup) {
+                    if (this.patternValuesFormGroup.controls[section]) {
+                        this.patternValuesFormGroup.controls[section].setValue(sectioncontent);
+                    } else {
+                        console.log('missing formcontrol:');
+                        console.log(section);
+                    }
                 } else {
-                    console.log('missing formcontrol:');
-                    console.log(section);
+                    console.error('patternValuesFormGroup is undefined');
                 }
                 sectionMap.set(section, sectioncontent);
 
@@ -156,7 +162,7 @@ export class CreatePatternComponent implements OnInit {
         });
 
 
-      return new Pattern('', patternname, patternname, sectionMap);
+        return new Pattern('', patternname, patternname, sectionMap);
 
     }
 
@@ -171,7 +177,7 @@ export class CreatePatternComponent implements OnInit {
 
 
     getDefaultTextForSection(section: string): string {
-      return 'Enter your input for this section here.';
+        return 'Enter your input for this section here.';
     }
 
 
@@ -184,7 +190,7 @@ export class CreatePatternComponent implements OnInit {
             const controlErrors: ValidationErrors = this.patternValuesFormGroup.controls[key].errors;
             if (controlErrors != null) {
                 Object.keys(controlErrors).forEach(keyError => {
-                  this.errormessages.push(ValidationService.getMessageForError(key, keyError, controlErrors[keyError]));
+                    this.errormessages.push(ValidationService.getMessageForError(key, keyError, controlErrors[keyError]));
                 });
             }
         });
@@ -196,9 +202,9 @@ export class CreatePatternComponent implements OnInit {
     }
 
     private initTextEditor(): void {
-      for (const section of this.sections) {
+        for (const section of this.sections) {
             this.previousTextEditorValue = this.previousTextEditorValue.concat(
-              '\n ## ' + section + '\n' + this.getDefaultTextForSection(section));
+                '\n ## ' + section + '\n' + this.getDefaultTextForSection(section));
         }
         this._textEditor.value = this.previousTextEditorValue;
         this.onChangeMarkdownText();

@@ -1,10 +1,10 @@
-import {ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {UriConverter} from '../util/uri-converter';
-import {MatDialog} from '@angular/material';
+import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UriConverter } from '../util/uri-converter';
+import { MatDialog } from '@angular/material';
 import Pattern from '../model/pattern.model';
-import {PatternLanguageService} from '../service/pattern-language.service';
-import PatternLanguage from '../model/new/pattern-language.model';
+import { PatternLanguageService } from '../service/pattern-language.service';
+import PatternLanguage from '../model/hal/pattern-language.model';
 
 @Component({
     selector: 'pp-default-pl-renderer',
@@ -15,9 +15,8 @@ export class DefaultPlRendererComponent implements OnInit {
 
     patterns: Pattern[] = [];
     patternLanguage: PatternLanguage;
-  isLoading = true;
-  patternLanguageURI: string;
-
+    isLoading = true;
+    patternLanguageURI: string;
 
     constructor(private activatedRoute: ActivatedRoute,
                 private cdr: ChangeDetectorRef,
@@ -31,7 +30,6 @@ export class DefaultPlRendererComponent implements OnInit {
         this.loadData();
     }
 
-
     navigate(pattern: Pattern): void {
         this.zone.run(() => {
             this.router.navigate([UriConverter.doubleEncodeUri(pattern.uri)], {relativeTo: this.activatedRoute});
@@ -44,20 +42,18 @@ export class DefaultPlRendererComponent implements OnInit {
         });
     }
 
-
     getSectionName(patternSection: string) {
         return UriConverter.getSectionName(patternSection);
     }
 
     loadData() {
-      this.patternLanguageURI = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
-      if (this.patternLanguageURI) {
-        this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageURI).subscribe(
-          (patternlanguage) => {
-            this.patternLanguage = patternlanguage;
-            this.isLoading = false;
-          });
-      }
+        this.patternLanguageURI = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
+        if (this.patternLanguageURI) {
+            this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageURI).subscribe(
+                (patternlanguage) => {
+                    this.patternLanguage = patternlanguage;
+                    this.isLoading = false;
+                });
+        }
     }
-
 }

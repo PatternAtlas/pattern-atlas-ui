@@ -12,11 +12,11 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import {Injectable} from '@angular/core';
-import Pattern from '../model/new/pattern.model';
-import {HttpClient} from '@angular/common/http';
-import {globals} from '../../globals';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import Pattern from '../model/hal/pattern.model';
+import { HttpClient } from '@angular/common/http';
+import { globals } from '../../globals';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class PatternService {
@@ -55,7 +55,7 @@ export class PatternService {
         return this.http.get<{ content: any }>(pattern._links.content.href).toPromise();
     }
 
-  savePattern(url: string, pattern: any): Observable<Pattern> {
-    return this.http.post<Pattern>(url, pattern);
-  }
+    savePattern(url: string, pattern: any): Observable<Pattern> {
+        return this.http.post<Pattern>(url, pattern);
+    }
 }
