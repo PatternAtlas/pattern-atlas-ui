@@ -45,10 +45,6 @@ export class DefaultPlRendererComponent implements OnInit {
     }
 
 
-    getSectionName(patternSection: string) {
-        return UriConverter.getSectionName(patternSection);
-    }
-
     loadData() {
       this.patternLanguageURI = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
       if (this.patternLanguageURI) {

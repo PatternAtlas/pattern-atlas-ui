@@ -74,13 +74,12 @@ export class CreatePatternComponent implements OnInit {
             return;
         }
 
-      this.patternService.savePattern(this.patternlanguage._links.patterns.href, JSON.stringify({
-          content: {
-            name: 'patternA',
-            sec1: 'test',
-            sec2: 'test2'
-          }
-        })
+      this.patternService.savePattern(this.patternlanguage._links.patterns.href, {
+          'name': 'patternB',
+          'sec1': 'test',
+          'sec2': 'test2',
+          'uri': this.patternlanguage.uri + '/patternB'
+        }
       ).subscribe(res => console.log(res));
 
     }

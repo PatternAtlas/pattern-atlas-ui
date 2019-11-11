@@ -55,7 +55,8 @@ export class PatternService {
         return this.http.get<{ content: any }>(pattern._links.content.href).toPromise();
     }
 
-  savePattern(url: string, pattern: any): Observable<Pattern> {
-    return this.http.post<Pattern>(url, pattern);
+  savePattern(url: string, pattern: any): Observable<any> {
+    return this.http.post<Pattern>(url, pattern, {observe: 'response'});
   }
+
 }

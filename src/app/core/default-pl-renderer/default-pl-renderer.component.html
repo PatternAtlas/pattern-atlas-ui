@@ -8,7 +8,7 @@ font-size: smaller;  ">add</i></button>
 </h2>
 <div class="container">
   <mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>
-  <mat-card class="landing-card " *ngFor="let pattern of patterns">
+  <mat-card class="landing-card " *ngFor="let pattern of patternLanguage?.patterns">
     <mat-card-header>
       <mat-card-title>
         <b>{{pattern.name}}</b>
@@ -16,9 +16,9 @@ font-size: smaller;  ">add</i></button>
       </mat-card-title>
     </mat-card-header>
     <mat-card-content class="fixed-height-card-content">
-      <div *ngFor="let patternSection of patternLanguage?.sections">
-        <p><b>{{getSectionName(patternSection)}}</b>:
-          {{pattern?.sectionsProperties.get(patternSection)}}
+      <div *ngFor="let patternSection of patternLanguage?.patternSchema.patternSectionSchemas">
+        <p><b>{{patternSection.name}}</b>:
+          <!--                {{pattern?.sectionsProperties.get(patternSection)}}-->
         </p>
       </div>
     </mat-card-content>
