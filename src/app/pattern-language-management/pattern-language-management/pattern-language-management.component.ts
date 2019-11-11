@@ -13,7 +13,7 @@
  */
 
 import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
-import PatternLanguage from '../../core/model/new/pattern-language.model';
+import PatternLanguage from '../../core/model/hal/pattern-language.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { CookieService } from 'ngx-cookie-service';

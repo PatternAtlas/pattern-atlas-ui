@@ -12,11 +12,12 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-class UriEntity {
-    id: string;
-    uri: string;
+class PatternSectionSchema {
+    id: number;
+    label: string;
     name: string;
-    _links: {self: {href: string}};
+    type: string;
+    position: number;
 }
 
-export default UriEntity;
+export default PatternSectionSchema;

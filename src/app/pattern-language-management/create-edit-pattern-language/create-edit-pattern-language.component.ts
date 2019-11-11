@@ -4,9 +4,9 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from
 import { debounceTime, distinctUntilChanged } from 'rxjs/internal/operators';
 import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import PatternLanguage from '../../core/model/new/pattern-language.model';
-import PatternSchema from '../../core/model/new/pattern-schema.model';
-import PatternSectionSchema from '../../core/model/new/pattern-section-schema.model';
+import PatternLanguage from '../../core/model/hal/pattern-language.model';
+import PatternSchema from '../../core/model/hal/pattern-schema.model';
+import PatternSectionSchema from '../../core/model/hal/pattern-section-schema.model';
 
 @Component({
     selector: 'pp-create-edit-pattern-language',
