@@ -30,14 +30,6 @@ export class DefaultPlRendererComponent implements OnInit {
 
     ngOnInit() {
         this.loadData();
-
-      this.graph.nativeElement.addNode({
-        id: 4,
-        title: 'Hello',
-        type: 'red',
-        x: 0,
-        y: 0,
-      }, true);
     }
 
     navigate(pattern: Pattern): void {
@@ -53,15 +45,29 @@ export class DefaultPlRendererComponent implements OnInit {
     }
 
 
-    loadData() {
+  private loadData(): void {
         this.patternLanguageURI = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
         if (this.patternLanguageURI) {
             this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageURI).subscribe(
                 (patternlanguage) => {
                     this.patternLanguage = patternlanguage;
                     this.isLoading = false;
-                  console.log(this.patternLanguage);
+                  this.initGraph();
                 });
+
+
         }
     }
+
+  private initGraph(): void {
+
+    this.patternLanguage.patterns.forEach((pat: Pattern, index) => this.graph.nativeElement.addNode({
+        id: index,
+        title: pat.name,
+        type: 'red',
+        x: (index % 5) * 110,
+        y: (Math.floor(index / 5) * 50)
+      },
+      true));
+  }
 }

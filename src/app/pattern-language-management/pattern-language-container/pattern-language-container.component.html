@@ -27,21 +27,7 @@
     <!--If there is only one renderer registered for this pl, use it: -->
     <ng-template *ngIf="renderer" ppPatternLanguageContainer [patternLanguageUri]="plEncodedUri"></ng-template>
 
-    <!--If there is no renderer registered for this pl, offer two default renderers (card or graph view) -->
-    <mat-tab-group class="view-toggle" *ngIf="!renderer" [selectedIndex]="0">
-        <mat-tab>
-            <ng-template mat-tab-label>
-                <mat-icon>view_module</mat-icon>
-                Card View
-            </ng-template>
-            <ng-template #cardsView ppPatternLanguageContainer [patternLanguageUri]="plEncodedUri"></ng-template>
-        </mat-tab>
-        <mat-tab>
-            <ng-template mat-tab-label>
-                <mat-icon>device_hub</mat-icon>
-                Graph View
-            </ng-template>
-            <ng-template #graphView ppPatternLanguageContainer [patternLanguageUri]="plEncodedUri" [graphView]="true"></ng-template>
-        </mat-tab>
-    </mat-tab-group>
+  <!--If there is no renderer registered for this pl, take the default one -->
+  <ng-template *ngIf="!renderer" #cardsView ppPatternLanguageContainer [patternLanguageUri]="plEncodedUri">
+</ng-template>
 </ng-template>

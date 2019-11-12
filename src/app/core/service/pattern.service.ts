@@ -13,10 +13,10 @@
  */
 
 import {Injectable} from '@angular/core';
-import Pattern from '../model/new/pattern.model';
 import {HttpClient} from '@angular/common/http';
 import {globals} from '../../globals';
 import {Observable} from 'rxjs';
+import Pattern from '../model/hal/pattern.model';
 
 @Injectable()
 export class PatternService {

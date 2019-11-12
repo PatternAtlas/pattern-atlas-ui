@@ -28,7 +28,6 @@ font-size: smaller;  ">add</i></button>
 
 </div>
 <network-graph #graphWrapper classes="red blue" mode="layout" zoom="both"
-               nodes="[{'id': 1, 'title': 'hello world', 'type': 'simple-node', 'x': 0, 'y': 0}, {'id': 2, 'title': 'HI2', 'type': 'small-node', 'x': 150, 'y': 100}]"
                edges="[{'source': 1, 'target': 2}]">
   <style slot="style">
     svg {
@@ -40,7 +39,6 @@ font-size: smaller;  ">add</i></button>
     <style>
       .node {
         fill: lightgray;
-
       }
 
       .link-handle {
@@ -68,10 +66,10 @@ font-size: smaller;  ">add</i></button>
     </style>
     <defs>
       <g id="default" data-template-type="node">
-        <rect x="-20" y="-8" width="40" height="16">
+        <rect x="-20" y="-8" width="100" height="40">
 
         </rect>
-        <text class="text" data-content="title" x="-18" y="5" width="40" data-wrapped="true" height="8"></text>
+        <text class="text" data-content="title" x="-18" y="5" width="100" data-wrapped="true" height="40"></text>
 
       </g>
     </defs>

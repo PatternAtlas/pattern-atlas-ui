@@ -1,6 +1,5 @@
-import { Component, NgZone, OnInit } from '@angular/core';
-import { Link, Node } from 'src/app/graph/model';
-import { Router } from '@angular/router';
+import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'pp-pattern-language-graph',
@@ -9,11 +8,7 @@ import { Router } from '@angular/router';
 })
 export class PatternLanguageGraphComponent implements OnInit {
 
-    data: { nodes: Node[], links: Link[] };
-
-    private nodes: Node[];
-    private links: Link[];
-
+  @ViewChild('graphWrapper') graph: ElementRef;
     constructor(
         private zone: NgZone,
         private router: Router) {
@@ -76,32 +71,40 @@ export class PatternLanguageGraphComponent implements OnInit {
 
     ngOnInit() {
         // load all neccessairy data first: patternpedia, all language-base-files, and all view-base-files
-        this.loadData()
-        // get data
-            .then(() => {
-                return Promise.all([
-                    // this.nodeLoader.loadContentFromStore(),
-                    // this.linkLoader.loadContentFromStore()
-                ]);
-            })
-            // set data
-            .then(values => {
-                this.nodes = Array.from(values[0].values());
-                this.links = Array.from(values[1].values());
 
-                this.data = {
-                    nodes: this.nodes,
-                    links: this.links
-                };
-            });
+      this.graph.nativeElement.addNode({
+        id: 4,
+        title: 'Hello',
+        type: 'red',
+        x: 0,
+        y: 0,
+      }, true);
+
+      // // get data
+      //     .then(() => {
+      //         return Promise.all([
+      //             // this.nodeLoader.loadContentFromStore(),
+      //             // this.linkLoader.loadContentFromStore()
+      //         ]);
+      //     })
+      //     // set data
+      //     .then(values => {
+      //         this.nodes = Array.from(values[0].values());
+      //         this.links = Array.from(values[1].values());
+      //
+      //         this.data = {
+      //             nodes: this.nodes,
+      //             links: this.links
+      //         };
+      //     });
     }
 
-    selectNode(languageId: string) {
-        console.log(`Selected: ${languageId}`);
-        // navigate to the language
-        this.zone.run(() => {
-            this.router.navigate(['/patternlanguages', languageId]);
-        });
-    }
+  // selectNode(languageId: string) {
+  //     console.log(`Selected: ${languageId}`);
+  //     // navigate to the language
+  //     this.zone.run(() => {
+  //         this.router.navigate(['/patternlanguages', languageId]);
+  //     });
+  // }
 
 }
