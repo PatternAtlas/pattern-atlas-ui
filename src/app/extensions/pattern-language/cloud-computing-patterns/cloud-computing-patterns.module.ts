@@ -12,18 +12,18 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { CloudComputingPatternsComponent } from './component/cloud-computing-patterns/cloud-computing-patterns.component';
-import { ComponentRegistryService } from '../../../core/service/component-registry.service';
-import { MatButtonModule, MatCardModule, MatDialogModule, MatIconModule, MatTooltipModule } from '@angular/material';
-import { RouterModule } from '@angular/router';
-import { CloudComputingPatternComponent } from './component/cloud-computing-pattern/cloud-computing-pattern.component';
-import { NgxMdModule } from 'ngx-md';
-import { CoreModule } from '../../../core/core.module';
-import { CloudComputingPatternsGraphComponent } from './component/cloud-computing-patterns-graph/cloud-computing-patterns-graph.component';
-import { GraphModule } from 'src/app/graph/graph.module';
-import { FilterModule } from 'src/app/filter/filter.module';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {CloudComputingPatternsComponent} from './component/cloud-computing-patterns/cloud-computing-patterns.component';
+import {ComponentRegistryService} from '../../../core/service/component-registry.service';
+import {MatButtonModule, MatCardModule, MatDialogModule, MatIconModule, MatTooltipModule} from '@angular/material';
+import {RouterModule} from '@angular/router';
+import {CloudComputingPatternComponent} from './component/cloud-computing-pattern/cloud-computing-pattern.component';
+import {NgxMdModule} from 'ngx-md';
+import {CoreModule} from '../../../core/core.module';
+import {CloudComputingPatternsGraphComponent} from './component/cloud-computing-patterns-graph/cloud-computing-patterns-graph.component';
+import {GraphModule} from 'src/app/graph/graph.module';
+import {FilterModule} from 'src/app/filter/filter.module';
 
 @NgModule({
     imports: [
@@ -54,16 +54,16 @@ import { FilterModule } from 'src/app/filter/filter.module';
 })
 export class CloudComputingPatternsModule {
     constructor(private cr: ComponentRegistryService) {
-        this.cr.registerComponent('https://patternpedia.org/patternlanguages/cloudcomputingpatterns', {
-            plcomponent: CloudComputingPatternsComponent,
-            pcomponent: CloudComputingPatternComponent,
-            label: 'Cards'
-        });
-
-        this.cr.registerComponent('https://patternpedia.org/patternlanguages/cloudcomputingpatterns', {
-            plcomponent: CloudComputingPatternsGraphComponent,
-            pcomponent: CloudComputingPatternsGraphComponent,
-            label: 'Network Graph'
-        });
+      // this.cr.registerComponent('https://patternpedia.org/patternlanguages/cloudcomputingpatterns', {
+      //     plcomponent: CloudComputingPatternsComponent,
+      //     pcomponent: CloudComputingPatternComponent,
+      //     label: 'Cards'
+      // });
+      //
+      // this.cr.registerComponent('https://patternpedia.org/patternlanguages/cloudcomputingpatterns', {
+      //     plcomponent: CloudComputingPatternsGraphComponent,
+      //     pcomponent: CloudComputingPatternsGraphComponent,
+      //     label: 'Network Graph'
+      // });
     }
 }

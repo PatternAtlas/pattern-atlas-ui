@@ -15,13 +15,6 @@ font-size: smaller;  ">add</i></button>
 
       </mat-card-title>
     </mat-card-header>
-    <mat-card-content class="fixed-height-card-content">
-      <div *ngFor="let patternSection of patternLanguage?.patternSchema.patternSectionSchemas">
-        <p><b>{{patternSection.name}}</b>:
-          <!--                {{pattern?.sectionsProperties.get(patternSection)}}-->
-        </p>
-      </div>
-    </mat-card-content>
     <mat-card-actions>
       <div style="text-align: center">
         <button mat-stroked-button color="primary" (click)="navigate(pattern)"><i class="material-icons">pageview</i>View
@@ -32,5 +25,56 @@ font-size: smaller;  ">add</i></button>
 <mat-card class="landing-card center-content add-card" (click)="goToPatternCreation()">
   <i class="material-icons">add_box</i>
 </mat-card>
+
 </div>
+<network-graph #graphWrapper classes="red blue" mode="layout" zoom="both"
+               nodes="[{'id': 1, 'title': 'hello world', 'type': 'simple-node', 'x': 0, 'y': 0}, {'id': 2, 'title': 'HI2', 'type': 'small-node', 'x': 150, 'y': 100}]"
+               edges="[{'source': 1, 'target': 2}]">
+  <style slot="style">
+    svg {
+      width: 100%;
+      height: 100%
+    }
+  </style>
+  <svg slot="graph">
+    <style>
+      .node {
+        fill: lightgray;
+
+      }
+
+      .link-handle {
+        display: none;
+        fill: black;
+        opacity: 0.1;
+        transition: opacity 0.25s ease-out;
+      }
+
+      .edge-group .link-handle {
+        display: initial
+      }
+
+      .link-handle:hover {
+        opacity: 0.7;
+      }
+
+      .hovered .link-handle {
+        display: initial;
+      }
+
+      .text {
+        fill: black;
+      }
+    </style>
+    <defs>
+      <g id="default" data-template-type="node">
+        <rect x="-20" y="-8" width="40" height="16">
+
+        </rect>
+        <text class="text" data-content="title" x="-18" y="5" width="40" data-wrapped="true" height="8"></text>
+
+      </g>
+    </defs>
+  </svg>
+</network-graph>
 

@@ -30,6 +30,7 @@
               "src/styles.scss"
             ],
             "scripts": [
+              //              "https://cdn.jsdelivr.net/npm/@ustutt/grapheditor-webcomponent@latest/_bundles/grapheditor-webcomponent.js"
             ]
           },
           "configurations": {
