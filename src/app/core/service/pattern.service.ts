@@ -26,10 +26,9 @@ export class PatternService {
     constructor(private http: HttpClient) {
     }
 
-    public async getPatternByEncodedUri(encodedUri: string): Promise<Pattern> {
+  public getPatternByEncodedUri(encodedUri: string): Observable<Pattern> {
         const url = this.repoEndpoint + '/patterns/search/findByUri?uri=' + encodedUri;
-        return this.http.get<Pattern>(url)
-            .toPromise();
+    return this.http.get<Pattern>(url);
     }
 
     async getPatternsByUrl(patternsUrl: string): Promise<Array<Pattern>> {

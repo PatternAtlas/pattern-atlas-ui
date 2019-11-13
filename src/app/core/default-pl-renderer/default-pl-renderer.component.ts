@@ -5,6 +5,7 @@ import {MatDialog} from '@angular/material';
 import Pattern from '../model/pattern.model';
 import {PatternLanguageService} from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
+import {D3Service} from '../../graph/service/d3.service';
 
 @Component({
     selector: 'pp-default-pl-renderer',
@@ -21,11 +22,12 @@ export class DefaultPlRendererComponent implements OnInit {
 
 
   constructor(private activatedRoute: ActivatedRoute,
-                private cdr: ChangeDetectorRef,
-                private zone: NgZone,
-                private router: Router,
-                private dialog: MatDialog,
-                private patternLanguageService: PatternLanguageService) {
+              private cdr: ChangeDetectorRef,
+              private zone: NgZone,
+              private router: Router,
+              private dialog: MatDialog,
+              private patternLanguageService: PatternLanguageService,
+              private d3Service: D3Service) {
     }
 
     ngOnInit() {
@@ -60,14 +62,28 @@ export class DefaultPlRendererComponent implements OnInit {
     }
 
   private initGraph(): void {
+    if (this.patternLanguage.patterns.length === 0) {
+      return;
+    }
+    const nodes = [];
+    for (let i = 0; i < this.patternLanguage.patterns.length; i++) {
 
-    this.patternLanguage.patterns.forEach((pat: Pattern, index) => this.graph.nativeElement.addNode({
-        id: index,
-        title: pat.name,
+      const node = {
+        id: i,
+        title: this.patternLanguage.patterns[i].name,
         type: 'red',
-        x: (index % 5) * 110,
-        y: (Math.floor(index / 5) * 50)
-      },
-      true));
+        x: 0,
+        y: 0
+      };
+      nodes.push(node);
+
+
+    }
+    const networkGraph = this.d3Service.getNetworkGraph(nodes, [], {width: 1450, height: 600});
+    networkGraph.ticker.subscribe((d: any) => {
+      this.graph.nativeElement.setNodes(networkGraph.nodes, true);
+      this.cdr.markForCheck();
+    });
+
   }
 }

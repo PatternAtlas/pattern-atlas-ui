@@ -27,12 +27,11 @@ font-size: smaller;  ">add</i></button>
 </mat-card>
 
 </div>
-<network-graph #graphWrapper classes="red blue" mode="layout" zoom="both"
-               edges="[{'source': 1, 'target': 2}]">
+<network-graph #graphWrapper classes="red blue" mode="display" zoom="both" style="width: 100%; height: 100%">
   <style slot="style">
     svg {
-      width: 100%;
-      height: 100%
+      width: 1450px;
+      height: 600px;
     }
   </style>
   <svg slot="graph">

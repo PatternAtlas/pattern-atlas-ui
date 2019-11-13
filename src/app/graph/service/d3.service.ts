@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Node, Link, NetworkGraph } from '../model';
+import {Injectable} from '@angular/core';
+import {NetworkGraph, Node} from '../model';
 import * as d3 from 'd3';
 
 @Injectable({
@@ -9,7 +9,7 @@ export class D3Service {
 
   constructor() { }
 
-  getNetworkGraph(nodes: Node[], links: Link[], options: {width: number, height: number}): NetworkGraph {
+  getNetworkGraph(nodes: any, links: any, options: { width: number, height: number }): NetworkGraph {
     const ng = new NetworkGraph(nodes, links, options);
     return ng;
   }

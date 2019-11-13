@@ -1,6 +1,6 @@
-import { EventEmitter } from '@angular/core';
-import { Link } from './link';
-import { Node } from './node';
+import {EventEmitter} from '@angular/core';
+import {Link} from './link';
+import {Node} from './node';
 import * as d3 from 'd3';
 import GraphConfig from './graph-config';
 
@@ -76,13 +76,13 @@ export class NetworkGraph {
       const ticker = this.ticker;
 
       this.simulation = d3.forceSimulation()
-        .force('charge',d3.forceManyBody().strength(this.config.charge))
+        .force('charge', d3.forceManyBody().strength(this.config.charge))
         .force('center', d3.forceCenter(options.width / 2, options.height / 2))
         .force('x', d3.forceX(options.width / 2).strength(this.config.xStrength))
         .force('y', d3.forceY(options.height / 2).strength(this.config.yStrength));
 
       // Connecting the d3 ticker to an angular event emitter
-      this.simulation.on('tick', function () {
+      this.simulation.on('end', function () {
         ticker.emit(this);
       });
 

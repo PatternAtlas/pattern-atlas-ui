@@ -1,13 +1,12 @@
-import { ChangeDetectorRef, Component, NgZone, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { PatternRenderingComponentInterface } from '../../../../../core/model/pattern-rendering-component.interface';
-import { ActivatedRoute, Router } from '@angular/router';
-import CloudComputingPattern from '../../model/cloud-computing-pattern';
-import { TdTextEditorComponent } from '@covalent/text-editor';
-import { MatDialog } from '@angular/material';
-import { DialogData, MdEditorComponent } from '../../../../../core/component/md-editor/md-editor.component';
-import { PatternService } from '../../../../../core/service/pattern.service';
+import {ChangeDetectorRef, Component, NgZone, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {PatternRenderingComponentInterface} from '../../../../../core/model/pattern-rendering-component.interface';
+import {ActivatedRoute, Router} from '@angular/router';
+import {TdTextEditorComponent} from '@covalent/text-editor';
+import {MatDialog} from '@angular/material';
+import {DialogData, MdEditorComponent} from '../../../../../core/component/md-editor/md-editor.component';
+import {PatternService} from '../../../../../core/service/pattern.service';
 import CloudComputingPatternHelper from '../../util/CloudComputingPatternHelper';
-import { UriConverter } from '../../../../../core/util/uri-converter';
+import {UriConverter} from '../../../../../core/util/uri-converter';
 
 @Component({
     selector: 'pp-cloud-computing-pattern',
@@ -20,7 +19,7 @@ export class CloudComputingPatternComponent implements PatternRenderingComponent
 
     pId: string;
 
-    pattern: CloudComputingPattern;
+  pattern: any;
     mdEditorOptions = {};
     editMode = {
         intent: {showActionButtons: false},
@@ -42,7 +41,7 @@ export class CloudComputingPatternComponent implements PatternRenderingComponent
     async ngOnInit() {
         const encodedUri = UriConverter.decodeUri(this.activatedRoute.snapshot.paramMap.get('pEncodedUri'));
         this.pattern = await this.patternService.getPatternByEncodedUri(encodedUri)
-            .then(result => CloudComputingPatternHelper.convertToCloudComputingPattern(result));
+          .subscribe(result => CloudComputingPatternHelper.convertToCloudComputingPattern(result));
     }
 
     ngOnChanges(changes: SimpleChanges) {
