@@ -1,13 +1,20 @@
-import { EventEmitter } from '@angular/core';
+import {EventEmitter} from '@angular/core';
 
 export class DataRenderingComponent {
   data: string;
 
   title: string;
 
-  changeContent: EventEmitter<string>;
+  changeContent: EventEmitter<DataChange>;
   isEditingEnabled = false;
 
   constructor() {
   }
+
+
+}
+
+export class DataChange {
+  previousValue: string;
+  currentValue: string;
 }

@@ -4,7 +4,7 @@ import {ToasterService} from 'angular2-toaster';
 import {PatternpropertyDirective} from '../component/markdown-content-container/patternproperty.directive';
 import {UriConverter} from '../util/uri-converter';
 import {MatDialog} from '@angular/material';
-import {CreatePatternRelationComponent, DialogDataResult} from '../component/create-pattern-relation/create-pattern-relation.component';
+import {DialogDataResult} from '../component/create-pattern-relation/create-pattern-relation.component';
 import {DirectedPatternRelationDescriptorIndividual} from '../model/directed-pattern-relation-descriptor-individual';
 import {UndirectedPatternRelationDescriptorIndividual} from '../model/undirected-pattern-relation-descriptor-individual';
 import {PatternRelations} from '../model/pattern-relations';
@@ -13,10 +13,9 @@ import {PatternLanguageService} from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
 import {PatternService} from '../service/pattern.service';
 import {MarkdownPatternSectioncontentComponent} from '../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component';
-import {DataRenderingComponent} from '../component/markdown-content-container/interfaces/DataRenderingComponent.interface';
+import {DataChange} from '../component/markdown-content-container/interfaces/DataRenderingComponent.interface';
 import PatternSectionSchema from '../model/hal/pattern-section-schema.model';
-import {switchMap, tap} from 'rxjs/operators';
-import {EMPTY} from 'rxjs';
+import {switchMap} from 'rxjs/operators';
 
 @Component({
     selector: 'pp-default-pattern-renderer',
@@ -76,38 +75,38 @@ export class DefaultPatternRendererComponent implements OnInit {
 
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MarkdownPatternSectioncontentComponent);
     const componentRef = this.viewContainerRef.createComponent(componentFactory);
-    const instance = (<DataRenderingComponent>componentRef.instance);
+    const instance = (<MarkdownPatternSectioncontentComponent>componentRef.instance);
     instance.data = properties;
     instance.title = section;
     instance.isEditingEnabled = this.isEditingEnabled;
-    instance.changeContent.subscribe((data) => {
-      this.pattern.content[section] = data;
+    instance.changeContent.subscribe((dataChange: DataChange) => {
+      this.pattern.content[section] = dataChange.currentValue;
       this.cdr.detectChanges();
-      instance.data = data;
-      //this.savePatterns();
+      this.savePattern(section, dataChange.previousValue, instance);
+
     });
   }
 
   addLink() {
-    const dialogRef = this.dialog.open(CreatePatternRelationComponent, {
-        data: {patternName: this.pattern.name, patterns: this.patternLanguage.patterns}
-      }
-    );
-    let relationAdded = false;
-    let patternRelations;
-    dialogRef.afterClosed().pipe(
-      tap((result: DialogDataResult) => {
-        relationAdded = this.addRelationCreatedByDialog(result);
-      }),
-      switchMap((result) =>
-        result ? this.patternService.savePattern(this.patternLanguage._links.patterns.href, result) :
-          EMPTY)).subscribe(
-      () => {
-        if (relationAdded) {
-          this.toasterService.pop('success', 'Created new Relation');
-        }
-      },
-      (error) => this.toasterService.pop('error', 'Could not create new relation: ', error));
+    // const dialogRef = this.dialog.open(CreatePatternRelationComponent, {
+    //     data: {patternName: this.pattern.name, patterns: this.patternLanguage.patterns}
+    //   }
+    // );
+    // let relationAdded = false;
+    // let patternRelations;
+    // dialogRef.afterClosed().pipe(
+    //   tap((result: DialogDataResult) => {
+    //     relationAdded = this.addRelationCreatedByDialog(result);
+    //   }),
+    //   switchMap((result) =>
+    //     result ? this.patternService.savePattern(this.patternLanguage._links.patterns.href, result) :
+    //       EMPTY)).subscribe(
+    //   () => {
+    //     if (relationAdded) {
+    //       this.toasterService.pop('success', 'Created new Relation');
+    //     }
+    //   },
+    //   (error) => this.toasterService.pop('error', 'Could not create new relation: ', error));
   }
 
   // adds a relation created by the dialog to the local data and returns whether this was successful (or not, e.g. when simply closing the dialog)
@@ -144,4 +143,14 @@ export class DefaultPatternRendererComponent implements OnInit {
         // this.cdr.detectChanges();
     }
 
+  private savePattern(section: string, previousContent: any, instance: MarkdownPatternSectioncontentComponent) {
+    this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe(() => this.toasterService.pop('success', 'Saved pattern'),
+      (error) => {
+        this.toasterService.pop('error', 'Could not save pattern, resetting content', error.message);
+        // reset text of the section:
+        this.pattern.content[section] = previousContent;
+        instance.changeText(previousContent);
+        this.cdr.detectChanges();
+      });
+  }
 }

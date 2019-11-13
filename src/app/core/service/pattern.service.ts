@@ -49,4 +49,8 @@ export class PatternService {
     return this.http.post<Pattern>(url, pattern, {observe: 'response'});
   }
 
+  updatePattern(url: string, pattern: any): Observable<any> {
+    return this.http.put<Pattern>(url, pattern, {observe: 'response'});
+  }
+
 }
