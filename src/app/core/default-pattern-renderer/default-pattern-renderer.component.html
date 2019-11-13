@@ -1,6 +1,21 @@
 <pp-navigate-back></pp-navigate-back>
 <mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>
 <h2>{{pattern?.name}}</h2>
+<!--<mat-button-toggle-group #group="matButtonToggleGroup">-->
+<!--  <mat-button-toggle value="left" aria-label="Text align left">-->
+<!--    <mat-icon>format_align_left</mat-icon>-->
+<!--  </mat-button-toggle>-->
+<!--  <mat-button-toggle value="center" aria-label="Text align center">-->
+<!--    <mat-icon>format_align_center</mat-icon>-->
+<!--  </mat-button-toggle>-->
+<!--  <mat-button-toggle value="right" aria-label="Text align right">-->
+<!--    <mat-icon>format_align_right</mat-icon>-->
+<!--  </mat-button-toggle>-->
+<!--  <mat-button-toggle value="justify" disabled aria-label="Text align justify">-->
+<!--    <mat-icon>format_align_justify</mat-icon>-->
+<!--  </mat-button-toggle>-->
+<!--</mat-button-toggle-group>-->
+<!--<div class="example-selected-value">Selected value: {{group.value}}</div>-->
 <div>
   <ng-template ppPatternproperty></ng-template>
 </div>
@@ -37,7 +52,6 @@
     links found for this pattern.</p></div>
   <mat-card-actions>
     <div style="display: flex; align-items: center;">
-      <ngx-md [data]="data"></ngx-md>
       <button *ngIf="isEditingEnabled" mat-stroked-button
               style="margin-left: 5px" color="primary"
               (click)="addLink()" matTooltip="Add Link"><i class="material-icons">trending_flat</i>

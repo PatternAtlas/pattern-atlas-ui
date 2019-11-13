@@ -17,6 +17,8 @@ import {HttpClient} from '@angular/common/http';
 import {globals} from '../../globals';
 import {Observable} from 'rxjs';
 import Pattern from '../model/hal/pattern.model';
+import {map} from 'rxjs/operators';
+import {PatternResponse} from '../model/hal/patternResponse.interface';
 
 @Injectable()
 export class PatternService {
@@ -27,31 +29,20 @@ export class PatternService {
     }
 
   public getPatternByEncodedUri(encodedUri: string): Observable<Pattern> {
-        const url = this.repoEndpoint + '/patterns/search/findByUri?uri=' + encodedUri;
+    const url = this.repoEndpoint + '/patterns/search/findByUri?uri=' + encodedUri;
     return this.http.get<Pattern>(url);
     }
 
-    async getPatternsByUrl(patternsUrl: string): Promise<Array<Pattern>> {
-        return this.http.get(patternsUrl).toPromise()
-            .then(result => {
-                const resultAry = new Array<Pattern>();
-                const embedded = result['_embedded'];
-                if (embedded) {
-                    const patterns = embedded['patterns'];
-                    for (const entry of patterns) {
-                        const pattern = new Pattern();
-                        pattern.uri = entry['uri'];
-                        pattern.name = entry['name'];
-                        pattern.id = entry['id'];
-                        resultAry.push(pattern);
-                    }
-                }
-                return resultAry;
-            });
+  getPatternsByUrl(patternsUrl: string): Observable<Pattern[]> {
+    return this.http.get<PatternResponse>(patternsUrl).pipe(
+      map(result => {
+        return <Pattern[]>(result._embedded ? result._embedded.patterns : result);
+      })
+    );
     }
 
-    async getPatternContentByPattern(pattern: Pattern): Promise<{ content: any }> {
-        return this.http.get<{ content: any }>(pattern._links.content.href).toPromise();
+  getPatternContentByPattern(pattern: Pattern): Observable<{ content: any }> {
+    return this.http.get<{ content: any }>(pattern._links.content.href);
     }
 
   savePattern(url: string, pattern: any): Observable<any> {

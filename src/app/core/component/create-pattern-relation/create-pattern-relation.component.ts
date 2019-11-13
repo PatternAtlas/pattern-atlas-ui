@@ -1,9 +1,9 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { PatternInstance } from '../../model/PatternInstance.interface';
-import Pattern from '../../model/pattern.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PatternRelationDescriptorDirection } from '../../model/pattern-relation-descriptor-direction.enum';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {PatternInstance} from '../../model/PatternInstance.interface';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {PatternRelationDescriptorDirection} from '../../model/pattern-relation-descriptor-direction.enum';
+import Pattern from '../../model/hal/pattern.model';
 
 @Component({
   selector: 'pp-create-pattern-relation',

@@ -13,11 +13,15 @@
  */
 
 import UriEntity from './uri-entity.model';
-import { PatternResource } from './hal-resources.interface';
+import {HalLink} from './hal-link.interface';
 
 class Pattern extends UriEntity {
     content: any;
-    _links: PatternResource;
+  _links: {
+    self: HalLink;
+    content: HalLink;
+    patternLanguage: HalLink;
+  };
 }
 
 export default Pattern;
