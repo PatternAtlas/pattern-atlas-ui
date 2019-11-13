@@ -21,6 +21,7 @@ import {PrettyJsonModule} from 'angular2-prettyjson';
 import {
   MatAutocompleteModule,
   MatButtonModule,
+  MatButtonToggleModule,
   MatCardModule,
   MatDatepickerModule,
   MatDialogModule,
@@ -66,6 +67,7 @@ import {PatternService} from './service/pattern.service';
         MatDialogModule,
         MatAutocompleteModule,
         MatIconModule,
+      MatButtonToggleModule,
         NgxMdModule.forRoot(), MatNativeDateModule
     ],
     exports: [CovalentTextEditorModule, EmitEventOnKeyupDirective, MatProgressSpinnerModule, NavigateBackComponent],

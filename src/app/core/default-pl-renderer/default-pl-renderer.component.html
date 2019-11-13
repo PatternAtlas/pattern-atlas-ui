@@ -1,11 +1,25 @@
 <pp-navigate-back></pp-navigate-back>
+<mat-button-toggle-group #group="matButtonToggleGroup">
+  <mat-button-toggle value="false" aria-label="Text align center">
+    Cards
+  </mat-button-toggle>
+  <mat-button-toggle value="true" aria-label="Text align left">
+    Graph
+  </mat-button-toggle>
+
+
+</mat-button-toggle-group>
+<div class="example-selected-value">Selected value: {{group.value}}</div>
 <h2>Pattern Language: {{patternLanguage?.name}}
+
   <button mat-stroked-button
           style="margin-left: 5px" color="primary"
           (click)="addRelationType()" matTooltip="Add new Relationtype"><i class="material-icons -rotate-90deg">swap_vertical_circle</i>
     <i class="material-icons" style="height: 2em;
 font-size: smaller;  ">add</i></button>
 </h2>
+
+
 <div class="container">
   <mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>
   <mat-card class="landing-card " *ngFor="let pattern of patternLanguage?.patterns">
@@ -27,7 +41,10 @@ font-size: smaller;  ">add</i></button>
 </mat-card>
 
 </div>
-<network-graph #graphWrapper classes="red blue" mode="display" zoom="both" style="width: 100%; height: 100%">
+
+<network-graph #graphWrapper classes="red blue" mode="layout" zoom="both"
+               style="width: 100%; height: 100%"
+>
   <style slot="style">
     svg {
       width: 1450px;
@@ -74,4 +91,3 @@ font-size: smaller;  ">add</i></button>
     </defs>
   </svg>
 </network-graph>
-
