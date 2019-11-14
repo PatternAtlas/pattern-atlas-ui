@@ -1,9 +1,9 @@
 import {PatternView} from './pattern-view.model';
 
 export class Edge {
-  private description: any;
+  description: any;
 
-  private type: string;
+  type: string;
   patternView?: PatternView;
 
   constructor(description: any, type: string, patternView: PatternView = null) {

@@ -12,7 +12,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { HalLink } from './hal-link.interface';
+import {HalLink} from './hal-link.interface';
 
 export interface PatternResource {
     self: HalLink;
@@ -24,6 +24,8 @@ export interface PatternLanguageResource {
     self: HalLink;
     patterns: HalLink;
     patternLanguages: HalLink;
+  directedEdges: HalLink;
+  undirectedEdges: HalLink;
 }
 
 export interface PatternLanguagesResource {

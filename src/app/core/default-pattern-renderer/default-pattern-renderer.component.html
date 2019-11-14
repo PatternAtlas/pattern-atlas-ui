@@ -12,23 +12,24 @@
   <div *ngIf="directedPatternRelations?.length > 0">
     <ng-container *ngFor="let relation of directedPatternRelations">
       <p class="horiz-centered">
-        {{ relation.source.name}}
-        <span class="horiz-centered" *ngIf="relation.relationType"><i class="material-icons">
+        {{ relation?.source?.name}}
+        <span class="horiz-centered" *ngIf="relation?.type"><i class="material-icons">
           remove
-        </i>{{relation.relationType}}</span>
+        </i>{{relation?.type}}</span>
         <i class="material-icons">trending_flat</i>
-        {{ relation.target.name}} <i>{{relation.description? ': ' + relation.description : ''}}</i>
+        {{ relation?.target?.name}} <i>{{relation?.description ? ': ' + relation?.description : ''}}</i>
       </p>
       <br/>
     </ng-container>
   </div>
   <div *ngIf="undirectedPatternRelations?.length > 0">
     <ng-container *ngFor="let relation of undirectedPatternRelations">
-      <p class="horiz-centered">{{ relation.hasPattern[0].name}}
-        <span *ngIf="!relation.relationType"><i class="material-icons">compare_arrows</i></span>
-        <span class="horiz-centered" *ngIf="relation.relationType"><i class="material-icons flip">trending_flat</i>{{relation.relationType}}
+      <p class="horiz-centered">{{ relation?.p1?.name}}
+        <span *ngIf="!relation?.type"><i class="material-icons">compare_arrows</i></span>
+        <span class="horiz-centered" *ngIf="relation?.type"><i
+          class="material-icons flip">trending_flat</i>{{relation?.type}}
           <i class="material-icons">trending_flat</i></span>
-        {{ relation.hasPattern[1].name}} <i>{{relation.description? ': ' + relation.description : ''}}</i>
+        {{ relation?.p2?.name}} <i>{{relation?.description ? ': ' + relation?.description : ''}}</i>
       </p>
       <br/>
     </ng-container>

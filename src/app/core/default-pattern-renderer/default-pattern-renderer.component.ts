@@ -5,8 +5,6 @@ import {PatternpropertyDirective} from '../component/markdown-content-container/
 import {UriConverter} from '../util/uri-converter';
 import {MatDialog} from '@angular/material';
 import {CreatePatternRelationComponent, DialogDataResult} from '../component/create-pattern-relation/create-pattern-relation.component';
-import {DirectedPatternRelationDescriptorIndividual} from '../model/directed-pattern-relation-descriptor-individual';
-import {UndirectedPatternRelationDescriptorIndividual} from '../model/undirected-pattern-relation-descriptor-individual';
 import {PatternRelations} from '../model/pattern-relations';
 import Pattern from '../model/hal/pattern.model';
 import {PatternLanguageService} from '../service/pattern-language.service';
@@ -15,12 +13,15 @@ import {PatternService} from '../service/pattern.service';
 import {MarkdownPatternSectioncontentComponent} from '../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component';
 import {DataChange} from '../component/markdown-content-container/interfaces/DataRenderingComponent.interface';
 import PatternSectionSchema from '../model/hal/pattern-section-schema.model';
-import {switchMap, tap} from 'rxjs/operators';
-import {EMPTY} from 'rxjs';
+import {map, switchMap, tap} from 'rxjs/operators';
+import {EMPTY, forkJoin, Observable} from 'rxjs';
 import {PatternRelationDescriptorService} from '../service/pattern-relation-descriptor.service';
-import {Edge} from '../model/hal/edge.model';
 import {PatternRelationDescriptorDirection} from '../model/pattern-relation-descriptor-direction.enum';
 import {DirectedEdge} from '../model/hal/directed-edge.model';
+import {Embedded} from '../model/hal/embedded';
+import {DirectedEdesResponse} from '../model/hal/directed-edes-response.interface';
+import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
+import {UndirectedEdge} from '../model/hal/undirected-edge.model';
 
 @Component({
     selector: 'pp-default-pattern-renderer',
@@ -28,8 +29,8 @@ import {DirectedEdge} from '../model/hal/directed-edge.model';
     styleUrls: ['./default-pattern-renderer.component.scss']
 })
 export class DefaultPatternRendererComponent implements OnInit {
-    private directedPatternRelations: DirectedPatternRelationDescriptorIndividual[];
-    private undirectedPatternRelations: UndirectedPatternRelationDescriptorIndividual[];
+  private directedPatternRelations: DirectedEdge[];
+  private undirectedPatternRelations: UndirectedEdge[];
     private allRelations: PatternRelations = new PatternRelations();
     private patternList: Array<Pattern>;
     @ViewChild(PatternpropertyDirective) ppPatternproperty: PatternpropertyDirective;
@@ -38,6 +39,9 @@ export class DefaultPatternRendererComponent implements OnInit {
   isEditingEnabled = true;
   patternLanguage: PatternLanguage;
   pattern: Pattern;
+  patterns: Pattern[];
+  private patternLanguageUri: string;
+  private patternUri: string;
 
     constructor(private activatedRoute: ActivatedRoute,
                 private toasterService: ToasterService,
@@ -51,26 +55,10 @@ export class DefaultPatternRendererComponent implements OnInit {
 
     ngOnInit(): void {
       this.viewContainerRef = this.ppPatternproperty.viewContainerRef;
-        const patternLanguageUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
-        const patternUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternUri'));
-      this.patternLanguageService.getPatternLanguageByEncodedUri(patternLanguageUri).pipe(
-        switchMap((patternLanguage: PatternLanguage) => {
-            this.patternLanguage = patternLanguage;
-          return this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href);
-        }),
-        switchMap((patterns: any) => {
-          this.pattern = patterns.find(pat => pat.uri === patternUri);
-          return this.patternService.getPatternContentByPattern(this.pattern);
-        })).subscribe((patternContent: any) => {
-        this.pattern.content = patternContent.content;
-        this.viewContainerRef.clear();
+      this.patternLanguageUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
+      this.patternUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternUri'));
+      this.getData();
 
-        this.patternLanguage.patternSchema.patternSectionSchemas.forEach((sec: PatternSectionSchema) => {
-          this.createSectionComponent(sec.name);
-        });
-
-        this.isLoading = false;
-      });
     }
 
   private createSectionComponent(section: string,) {
@@ -95,64 +83,92 @@ export class DefaultPatternRendererComponent implements OnInit {
 
   addLink() {
     const dialogRef = this.dialog.open(CreatePatternRelationComponent, {
-        data: {patternName: this.pattern.name, patterns: this.patternLanguage.patterns}
+      data: {patternName: this.pattern.name, patterns: this.patterns}
       }
     );
-    let relation;
     dialogRef.afterClosed().pipe(
-      tap((result: DialogDataResult) => {
-        relation = this.mapDialogDataToEdge(result);
-        console.log(relation);
+      switchMap(result => {
+        return this.addContentInfoToPattern(result);
       }),
-      switchMap((result) =>
-        result ? this.patternRelationDescriptorService.savePatternRelation(this.patternLanguage._links.patterns.href, relation) :
-          EMPTY)).subscribe(
-      () => {
-        if (relation) {
-          this.toasterService.pop('success', 'Created new Relation');
+      switchMap((dialogDataResult: DialogDataResult) => {
+        const edge = this.mapDialogDataToEdge(dialogDataResult);
+        const url = edge instanceof DirectedEdge ? this.patternLanguage._links.directedEdges.href : this.patternLanguage._links.undirectedEdges.href;
+        return dialogDataResult ? this.patternRelationDescriptorService.savePatternRelation(url, edge) : EMPTY;
+      }),
+      switchMap((success) => {
+        if (success) {
+          return EMPTY;
         }
+        return this.retrievePatternLanguageData();
+      }),
+    ).subscribe(
+      (edge) => {
+        this.toasterService.pop('success', 'Created new Relation');
+
       },
-      (error) => this.toasterService.pop('error', 'Could not create new relation: ', error));
+      (error) => {
+        this.toasterService.pop('error', 'Could not create new relation: ', error);
+        console.log(error);
+      });
   }
 
   // adds a relation created by the dialog to the local data and returns whether this was successful (or not, e.g. when simply closing the dialog)
-  mapDialogDataToEdge(dialogResult: DialogDataResult): Edge {
+  mapDialogDataToEdge(dialogResult: DialogDataResult): DirectedEdge | UndirectedEdge {
     if (!dialogResult || !dialogResult.toPattern || !dialogResult.direction) {
       return null;
     }
-
-    const toPattern = dialogResult.toPattern;
-    this.patternService.getPatternContentByPattern(toPattern).subscribe(content => {
-      toPattern.content = content;
       switch (dialogResult.direction.name) {
         case PatternRelationDescriptorDirection.DirectedRight:
-          // ource: Pattern, target: Pattern, patternlanguage: PatternLanguage, description: any, type: string, patternView: PatternView = null
-          return new DirectedEdge(this.pattern, toPattern, this.patternLanguage,
-            dialogResult.description ? dialogResult.description : null, '', null);
+          return new DirectedEdge(this.pattern, dialogResult.toPattern, this.patternLanguage,
+            dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null,
+            null);
           break;
         case PatternRelationDescriptorDirection.DirectedLeft:
-          return new DirectedEdge(toPattern, this.pattern, this.patternLanguage, dialogResult.description ? dialogResult.description : null, '', null);
+          return new DirectedEdge(dialogResult.toPattern, this.pattern, this.patternLanguage,
+            dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null,
+            null);
           break;
         case PatternRelationDescriptorDirection.UnDirected:
-          // this.allRelations.undirected.push(new UndirectedPatternRelationDescriptorIndividual(this.pattern, dialogResult.toPattern,
-          //   dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null));
+          return new UndirectedEdge(dialogResult.toPattern, this.pattern, this.patternLanguage,
+            dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null,
+            null);
           break;
         default:
           break;
       }
       return null;
-    });
 
   }
 
+  addContentInfoToPattern(dialogResult: DialogDataResult): Observable<DialogDataResult> {
+    return this.patternService.getPatternContentByPattern(dialogResult.toPattern).pipe(
+      map((content) => {
+        const result = dialogResult;
+        result.toPattern.content = content.content;
+        return result;
+      }));
+  }
 
-    private updateUIForPatternRelations() {
-        // this.directedPatternRelations = this.allRelations.directed.filter((rel: DirectedPatternRelationDescriptorIndividual) =>
-        //     rel.source.uri === this.patternIri || rel.target.uri === this.patternIri);
-        // this.undirectedPatternRelations = this.allRelations.undirected.filter((rel: UndirectedPatternRelationDescriptorIndividual) =>
-        //     rel.hasPattern.some((pat) => pat.uri === this.patternIri));
-        // this.cdr.detectChanges();
+
+  private getDirectededges(): Observable<Embedded<DirectedEdesResponse>> {
+    if (!this.patternLanguage) {
+      return EMPTY;
     }
+    return this.patternLanguageService.getDirectedEdges(this.patternLanguage).pipe(
+      tap((edges) => {
+        this.directedPatternRelations = edges._embedded ? edges._embedded.directedEdges : [];
+      }));
+    }
+
+  private getUndirectededges(): Observable<Embedded<UndirectedEdesResponse>> {
+    if (!this.patternLanguage) {
+      return EMPTY;
+    }
+    return this.patternLanguageService.getUndirectedEdges(this.patternLanguage).pipe(
+      tap((edges) => {
+        this.undirectedPatternRelations = edges._embedded ? edges._embedded.undirectedEdges : [];
+      }));
+  }
 
   private savePattern(section: string, previousContent: any, instance: MarkdownPatternSectioncontentComponent) {
     this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe(() => this.toasterService.pop('success', 'Saved pattern'),
@@ -164,4 +180,45 @@ export class DefaultPatternRendererComponent implements OnInit {
         this.cdr.detectChanges();
       });
   }
+
+  getPatternInfos(): Observable<Pattern> {
+    if (!this.patternLanguage) {
+      return EMPTY;
+    }
+    return this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href).pipe(
+      tap((patterns) => {
+        this.patterns = patterns;
+        this.pattern = patterns.find(pat => pat.uri === this.patternUri);
+      }),
+      switchMap((patterns: any) => {
+        this.pattern = patterns.find(pat => pat.uri === this.patternUri);
+        return this.patternService.getPatternContentByPattern(this.pattern);
+      }),
+      map((patternContent) => this.pattern.content = patternContent.content));
+  }
+
+
+  private getData(): void {
+
+    this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageUri).pipe(
+      tap((patternLanguage) => this.patternLanguage = patternLanguage),
+      switchMap(() => this.retrievePatternLanguageData())
+    ).subscribe((patternLanguage: any) => {
+      this.patternLanguage.patternSchema.patternSectionSchemas.forEach((sec: PatternSectionSchema) => {
+        this.createSectionComponent(sec.name);
+      });
+      this.cdr.detectChanges();
+      this.isLoading = false;
+    });
+  }
+
+
+  retrievePatternLanguageData(): Observable<any> {
+    const $getPatternInfos = this.getPatternInfos();
+    const $getDirectedEdges = this.getDirectededges();
+    const $getUndirectedEdges = this.getUndirectededges();
+    return forkJoin($getPatternInfos, $getDirectedEdges, $getUndirectedEdges);
+  }
+
+
 }
