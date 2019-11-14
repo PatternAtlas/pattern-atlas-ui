@@ -48,6 +48,7 @@ import {CreatePatternRelationComponent} from './component/create-pattern-relatio
 import {MarkdownPatternSectioncontentComponent} from './component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component';
 import {PatternLanguageService} from './service/pattern-language.service';
 import {PatternService} from './service/pattern.service';
+import {GraphDisplayComponent} from './component/graph-display/graph-display.component';
 
 @NgModule({
     imports: [
@@ -84,7 +85,8 @@ import {PatternService} from './service/pattern.service';
         PatternpropertyDirective,
         DividerComponent,
         CreatePatternRelationComponent,
-        MarkdownPatternSectioncontentComponent
+      MarkdownPatternSectioncontentComponent,
+      GraphDisplayComponent
     ],
     entryComponents: [
         DefaultPlRendererComponent,

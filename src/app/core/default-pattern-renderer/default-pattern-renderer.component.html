@@ -1,8 +1,7 @@
 <pp-navigate-back></pp-navigate-back>
 <mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>
 <h2>{{pattern?.name}}</h2>
-<div class="example-selected-value">Selected value: {{group.value}}</div>
-<div [style.display]="group.value ? 'auto' : 'none'">
+<div>
   <ng-template ppPatternproperty></ng-template>
 </div>
 <mat-card *ngIf="!isLoading">

@@ -1,5 +1,6 @@
 <pp-navigate-back></pp-navigate-back>
-<mat-button-toggle-group #group="matButtonToggleGroup">
+<mat-button-toggle-group [value]="graphVisible" (change)="onToggle(group.value)" #group="matButtonToggleGroup"
+                         (change)="detectChanges()">
   <mat-button-toggle value="false" aria-label="Text align center">
     Cards
   </mat-button-toggle>
@@ -20,8 +21,8 @@ font-size: smaller;  ">add</i></button>
 </h2>
 
 
-<div class="container">
-  <mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>
+<div class="container" #cardsView *ngIf="!graphVisible">
+  <!--  <mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>-->
   <mat-card class="landing-card " *ngFor="let pattern of patternLanguage?.patterns">
     <mat-card-header>
       <mat-card-title>
@@ -39,55 +40,6 @@ font-size: smaller;  ">add</i></button>
 <mat-card class="landing-card center-content add-card" (click)="goToPatternCreation()">
   <i class="material-icons">add_box</i>
 </mat-card>
-
 </div>
+<pp-graph-display [nodes]="nodes" *ngIf="graphVisible"></pp-graph-display>
 
-<network-graph #graphWrapper classes="red blue" mode="layout" zoom="both"
-               style="width: 100%; height: 100%"
->
-  <style slot="style">
-    svg {
-      width: 1450px;
-      height: 600px;
-    }
-  </style>
-  <svg slot="graph">
-    <style>
-      .node {
-        fill: lightgray;
-      }
-
-      .link-handle {
-        display: none;
-        fill: black;
-        opacity: 0.1;
-        transition: opacity 0.25s ease-out;
-      }
-
-      .edge-group .link-handle {
-        display: initial
-      }
-
-      .link-handle:hover {
-        opacity: 0.7;
-      }
-
-      .hovered .link-handle {
-        display: initial;
-      }
-
-      .text {
-        fill: black;
-      }
-    </style>
-    <defs>
-      <g id="default" data-template-type="node">
-        <rect x="-20" y="-8" width="100" height="40">
-
-        </rect>
-        <text class="text" data-content="title" x="-18" y="5" width="100" data-wrapped="true" height="40"></text>
-
-      </g>
-    </defs>
-  </svg>
-</network-graph>

@@ -4,7 +4,7 @@ import {ToasterService} from 'angular2-toaster';
 import {PatternpropertyDirective} from '../component/markdown-content-container/patternproperty.directive';
 import {UriConverter} from '../util/uri-converter';
 import {MatDialog} from '@angular/material';
-import {DialogDataResult} from '../component/create-pattern-relation/create-pattern-relation.component';
+import {CreatePatternRelationComponent, DialogDataResult} from '../component/create-pattern-relation/create-pattern-relation.component';
 import {DirectedPatternRelationDescriptorIndividual} from '../model/directed-pattern-relation-descriptor-individual';
 import {UndirectedPatternRelationDescriptorIndividual} from '../model/undirected-pattern-relation-descriptor-individual';
 import {PatternRelations} from '../model/pattern-relations';
@@ -15,7 +15,12 @@ import {PatternService} from '../service/pattern.service';
 import {MarkdownPatternSectioncontentComponent} from '../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component';
 import {DataChange} from '../component/markdown-content-container/interfaces/DataRenderingComponent.interface';
 import PatternSectionSchema from '../model/hal/pattern-section-schema.model';
-import {switchMap} from 'rxjs/operators';
+import {switchMap, tap} from 'rxjs/operators';
+import {EMPTY} from 'rxjs';
+import {PatternRelationDescriptorService} from '../service/pattern-relation-descriptor.service';
+import {Edge} from '../model/hal/edge.model';
+import {PatternRelationDescriptorDirection} from '../model/pattern-relation-descriptor-direction.enum';
+import {DirectedEdge} from '../model/hal/directed-edge.model';
 
 @Component({
     selector: 'pp-default-pattern-renderer',
@@ -40,6 +45,7 @@ export class DefaultPatternRendererComponent implements OnInit {
                 private componentFactoryResolver: ComponentFactoryResolver,
                 private patternLanguageService: PatternLanguageService,
                 private patternService: PatternService,
+                private patternRelationDescriptorService: PatternRelationDescriptorService,
                 public dialog: MatDialog) {
     }
 
@@ -88,50 +94,55 @@ export class DefaultPatternRendererComponent implements OnInit {
   }
 
   addLink() {
-    // const dialogRef = this.dialog.open(CreatePatternRelationComponent, {
-    //     data: {patternName: this.pattern.name, patterns: this.patternLanguage.patterns}
-    //   }
-    // );
-    // let relationAdded = false;
-    // let patternRelations;
-    // dialogRef.afterClosed().pipe(
-    //   tap((result: DialogDataResult) => {
-    //     relationAdded = this.addRelationCreatedByDialog(result);
-    //   }),
-    //   switchMap((result) =>
-    //     result ? this.patternService.savePattern(this.patternLanguage._links.patterns.href, result) :
-    //       EMPTY)).subscribe(
-    //   () => {
-    //     if (relationAdded) {
-    //       this.toasterService.pop('success', 'Created new Relation');
-    //     }
-    //   },
-    //   (error) => this.toasterService.pop('error', 'Could not create new relation: ', error));
+    const dialogRef = this.dialog.open(CreatePatternRelationComponent, {
+        data: {patternName: this.pattern.name, patterns: this.patternLanguage.patterns}
+      }
+    );
+    let relation;
+    dialogRef.afterClosed().pipe(
+      tap((result: DialogDataResult) => {
+        relation = this.mapDialogDataToEdge(result);
+        console.log(relation);
+      }),
+      switchMap((result) =>
+        result ? this.patternRelationDescriptorService.savePatternRelation(this.patternLanguage._links.patterns.href, relation) :
+          EMPTY)).subscribe(
+      () => {
+        if (relation) {
+          this.toasterService.pop('success', 'Created new Relation');
+        }
+      },
+      (error) => this.toasterService.pop('error', 'Could not create new relation: ', error));
   }
 
   // adds a relation created by the dialog to the local data and returns whether this was successful (or not, e.g. when simply closing the dialog)
-  addRelationCreatedByDialog(dialogResult: DialogDataResult): boolean {
+  mapDialogDataToEdge(dialogResult: DialogDataResult): Edge {
     if (!dialogResult || !dialogResult.toPattern || !dialogResult.direction) {
-      return false;
+      return null;
     }
-        // switch (dialogResult.direction.name) {
-        //     case PatternRelationDescriptorDirection.DirectedRight:
-        //         this.allRelations.directed.push(new DirectedPatternRelationDescriptorIndividual(this.pattern, dialogResult.toPattern,
-        //             dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null));
-        //         break;
-        //     case PatternRelationDescriptorDirection.DirectedLeft:
-        //         this.allRelations.directed.push(new DirectedPatternRelationDescriptorIndividual(dialogResult.toPattern, this.pattern,
-        //             dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null));
-        //         break;
-        //     case PatternRelationDescriptorDirection.UnDirected:
-        //         this.allRelations.undirected.push(new UndirectedPatternRelationDescriptorIndividual(this.pattern, dialogResult.toPattern,
-        //             dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null));
-        //         break;
-        //     default:
-        //         return false;
-        // }
-        // this.updateUIForPatternRelations();
-        return true;
+
+    const toPattern = dialogResult.toPattern;
+    this.patternService.getPatternContentByPattern(toPattern).subscribe(content => {
+      toPattern.content = content;
+      switch (dialogResult.direction.name) {
+        case PatternRelationDescriptorDirection.DirectedRight:
+          // ource: Pattern, target: Pattern, patternlanguage: PatternLanguage, description: any, type: string, patternView: PatternView = null
+          return new DirectedEdge(this.pattern, toPattern, this.patternLanguage,
+            dialogResult.description ? dialogResult.description : null, '', null);
+          break;
+        case PatternRelationDescriptorDirection.DirectedLeft:
+          return new DirectedEdge(toPattern, this.pattern, this.patternLanguage, dialogResult.description ? dialogResult.description : null, '', null);
+          break;
+        case PatternRelationDescriptorDirection.UnDirected:
+          // this.allRelations.undirected.push(new UndirectedPatternRelationDescriptorIndividual(this.pattern, dialogResult.toPattern,
+          //   dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null));
+          break;
+        default:
+          break;
+      }
+      return null;
+    });
+
   }
 
 

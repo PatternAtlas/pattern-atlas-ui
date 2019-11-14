@@ -19,6 +19,9 @@ export class DefaultPlRendererComponent implements OnInit {
     isLoading = true;
     patternLanguageURI: string;
   @ViewChild('graphWrapper') graph: ElementRef;
+  @ViewChild('cardsView') cardsView: ElementRef;
+  private nodes: any[];
+  graphVisible: boolean;
 
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -81,9 +84,21 @@ export class DefaultPlRendererComponent implements OnInit {
     }
     const networkGraph = this.d3Service.getNetworkGraph(nodes, [], {width: 1450, height: 600});
     networkGraph.ticker.subscribe((d: any) => {
-      this.graph.nativeElement.setNodes(networkGraph.nodes, true);
+      this.nodes = networkGraph.nodes;
       this.cdr.markForCheck();
     });
 
+  }
+
+  detectChanges() {
+    this.cdr.detectChanges();
+  }
+
+
+  onToggle(value: boolean) {
+    this.graphVisible = value;
+    console.log('toggle: ' + this.graphVisible);
+    // this.cardsView.nativeElement.style.display = this.graphVisible ? 'none' : 'flex';
+    this.cdr.detectChanges();
   }
 }

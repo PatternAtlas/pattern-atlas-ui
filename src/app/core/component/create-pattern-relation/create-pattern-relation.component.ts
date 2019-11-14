@@ -57,6 +57,7 @@ export interface PatternRelationDirection {
 }
 
 export interface DialogDataResult {
+  pattern: Pattern;
   direction: PatternRelationDirection;
   toPattern: Pattern;
   description?: string;
