@@ -39,7 +39,7 @@
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="close()">Close</button>
+  <button mat-button [mat-dialog-close]="null">Close</button>
   <button mat-button [mat-dialog-close]="relationForm.value" [disabled]="!relationForm?.valid">Save
   </button>
 </div>

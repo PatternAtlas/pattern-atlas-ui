@@ -88,18 +88,15 @@ export class DefaultPatternRendererComponent implements OnInit {
     );
     dialogRef.afterClosed().pipe(
       switchMap(result => {
-        return this.addContentInfoToPattern(result);
+        return result ? this.addContentInfoToPattern(result) : EMPTY;
       }),
       switchMap((dialogDataResult: DialogDataResult) => {
         const edge = this.mapDialogDataToEdge(dialogDataResult);
         const url = edge instanceof DirectedEdge ? this.patternLanguage._links.directedEdges.href : this.patternLanguage._links.undirectedEdges.href;
-        return dialogDataResult ? this.patternRelationDescriptorService.savePatternRelation(url, edge) : EMPTY;
+        return edge ? this.patternRelationDescriptorService.savePatternRelation(url, edge) : EMPTY;
       }),
-      switchMap((success) => {
-        if (success) {
-          return EMPTY;
-        }
-        return this.retrievePatternLanguageData();
+      switchMap((edgeCreated) => {
+        return edgeCreated ? this.retrievePatternLanguageData() : EMPTY;
       }),
     ).subscribe(
       (edge) => {

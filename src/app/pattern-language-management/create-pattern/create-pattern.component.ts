@@ -60,7 +60,6 @@ export class CreatePatternComponent implements OnInit {
 
         this.patternLanguageService.getPatternLanguageByEncodedUri(this.encodedUri).subscribe((pl: PatternLanguage) => {
             this.patternlanguage = pl;
-            // tslint:disable-next-line:max-line-length
             this.sections = this.patternlanguage.patternSchema ?
                 this.patternlanguage.patternSchema.patternSectionSchemas.map((schema: PatternSectionSchema) => schema.label) : [];
             this.initTextEditor();
