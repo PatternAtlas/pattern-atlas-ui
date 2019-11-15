@@ -20,26 +20,9 @@
 font-size: smaller;  ">add</i></button>
 </h2>
 
+<mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>
 
-<div class="container" #cardsView *ngIf="!graphVisible">
-  <!--  <mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>-->
-  <mat-card class="landing-card " *ngFor="let pattern of patternLanguage?.patterns">
-    <mat-card-header>
-      <mat-card-title>
-        <b>{{pattern.name}}</b>
+<pp-cardrenderer [patternLanguage]="patternLanguage"></pp-cardrenderer>
 
-      </mat-card-title>
-    </mat-card-header>
-    <mat-card-actions>
-      <div style="text-align: center">
-        <button mat-stroked-button color="primary" (click)="navigate(pattern)"><i class="material-icons">pageview</i>View
-        </button>
-      </div>
-    </mat-card-actions>
-  </mat-card>
-<mat-card class="landing-card center-content add-card" (click)="goToPatternCreation()">
-  <i class="material-icons">add_box</i>
-</mat-card>
-</div>
 <pp-graph-display [nodes]="nodes" *ngIf="graphVisible"></pp-graph-display>
 

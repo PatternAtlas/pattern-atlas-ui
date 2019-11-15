@@ -49,6 +49,7 @@ import {MarkdownPatternSectioncontentComponent} from './component/markdown-conte
 import {PatternLanguageService} from './service/pattern-language.service';
 import {PatternService} from './service/pattern.service';
 import {GraphDisplayComponent} from './component/graph-display/graph-display.component';
+import { CardrendererComponent } from './component/cardrenderer/cardrenderer.component';
 
 @NgModule({
     imports: [
@@ -86,7 +87,8 @@ import {GraphDisplayComponent} from './component/graph-display/graph-display.com
         DividerComponent,
         CreatePatternRelationComponent,
       MarkdownPatternSectioncontentComponent,
-      GraphDisplayComponent
+      GraphDisplayComponent,
+      CardrendererComponent
     ],
     entryComponents: [
         DefaultPlRendererComponent,

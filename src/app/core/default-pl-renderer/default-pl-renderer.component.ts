@@ -26,8 +26,6 @@ export class DefaultPlRendererComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute,
               private cdr: ChangeDetectorRef,
-              private zone: NgZone,
-              private router: Router,
               private dialog: MatDialog,
               private patternLanguageService: PatternLanguageService,
               private d3Service: D3Service) {
@@ -37,17 +35,7 @@ export class DefaultPlRendererComponent implements OnInit {
         this.loadData();
     }
 
-    navigate(pattern: Pattern): void {
-        this.zone.run(() => {
-            this.router.navigate([UriConverter.doubleEncodeUri(pattern.uri)], {relativeTo: this.activatedRoute});
-        });
-    }
 
-    goToPatternCreation() {
-        this.zone.run(() => {
-            this.router.navigate(['create-patterns'], {relativeTo: this.activatedRoute});
-        });
-    }
 
 
   private loadData(): void {
