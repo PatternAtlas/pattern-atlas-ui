@@ -1,6 +1,6 @@
-import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, NgZone, OnInit, ViewChild} from '@angular/core';
 import {TdTextEditorComponent} from '@covalent/text-editor';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {UriConverter} from '../../core/util/uri-converter';
 import * as marked from 'marked';
 import {TokensList} from 'marked';
@@ -46,7 +46,9 @@ export class CreatePatternComponent implements OnInit {
                 private cdr: ChangeDetectorRef,
                 private toastService: ToasterService,
                 private patternLanguageService: PatternLanguageService,
-                private patternService: PatternService) {
+                private patternService: PatternService,
+                private router: Router,
+                private zone: NgZone) {
     }
 
 
@@ -84,7 +86,14 @@ export class CreatePatternComponent implements OnInit {
           name: this.patternname,
           content: this.patternValuesFormGroup.value
         }
-        ).subscribe(res => console.log(res));
+        ).subscribe(() => {
+          this.toastService.pop('success', 'Created pattern');
+        this.zone.run(() => {
+          this.router.navigate(['..'], {relativeTo: this.activatedRoute});
+        });
+        },
+        (error) => this.toastService.pop('error', 'Could not create pattern', error.message)
+      );
 
     }
 
