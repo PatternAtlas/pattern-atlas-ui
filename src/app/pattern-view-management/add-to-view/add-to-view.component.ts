@@ -1,39 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {FlatTreeControl} from '@angular/cdk/tree';
-import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material';
+import {MAT_DIALOG_DATA, MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material';
+import PatternLanguage from '../../core/model/hal/pattern-language.model';
 
-interface FoodNode {
+interface AddItemNode {
   name: string;
-  children?: FoodNode[];
+  patterns?: AddItemNode[];
 }
-
-const TREE_DATA: FoodNode[] = [
-  {
-    name: 'Fruit',
-    children: [
-      {name: 'Apple'},
-      {name: 'Banana'},
-      {name: 'Fruit loops'},
-    ]
-  }, {
-    name: 'Vegetables',
-    children: [
-      {
-        name: 'Green',
-        children: [
-          {name: 'Broccoli'},
-          {name: 'Brussel sprouts'},
-        ]
-      }, {
-        name: 'Orange',
-        children: [
-          {name: 'Pumpkins'},
-          {name: 'Carrots'},
-        ]
-      },
-    ]
-  },
-];
 
 /** Flat node with expandable and level information */
 interface ExampleFlatNode {
@@ -49,9 +22,9 @@ interface ExampleFlatNode {
 })
 export class AddToViewComponent implements OnInit {
 
-  private _transformer = (node: FoodNode, level: number) => {
+  private _transformer = (node: AddItemNode, level: number) => {
     return {
-      expandable: !!node.children && node.children.length > 0,
+      expandable: !!node.patterns && node.patterns.length > 0,
       name: node.name,
       level: level,
     };
@@ -61,12 +34,12 @@ export class AddToViewComponent implements OnInit {
     node => node.level, node => node.expandable);
 
   treeFlattener = new MatTreeFlattener(
-    this._transformer, node => node.level, node => node.expandable, node => node.children);
+    this._transformer, node => node.level, node => node.expandable, node => node.patterns);
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-  constructor() {
-    this.dataSource.data = TREE_DATA;
+  constructor(@Inject(MAT_DIALOG_DATA) public data: PatternLanguage[]) {
+    this.dataSource.data = data;
   }
 
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
