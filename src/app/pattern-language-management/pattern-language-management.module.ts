@@ -26,7 +26,6 @@ import {
   MatTabsModule,
   MatToolbarModule
 } from '@angular/material';
-import {CreateEditPatternLanguageComponent} from './create-edit-pattern-language/create-edit-pattern-language.component';
 import {CreatePatternComponent} from './create-pattern/create-pattern.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {FlexLayoutModule} from '@angular/flex-layout';
@@ -85,13 +84,11 @@ import {MatRippleModule} from '@angular/material/core';
         PatternLanguageContainerDirective,
         PatternContainerComponent,
         PatternContainerDirective,
-        CreateEditPatternLanguageComponent,
         CreatePatternComponent,
         ProcessOauthCallbackComponent,
         PatternLanguageGraphComponent
     ],
     entryComponents: [
-        CreateEditPatternLanguageComponent
     ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

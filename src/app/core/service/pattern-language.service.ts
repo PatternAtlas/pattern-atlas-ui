@@ -31,16 +31,9 @@ export class PatternLanguageService {
     constructor(private http: HttpClient) {
     }
 
-    public async getPatternLanguages(): Promise<Array<PatternLanguage>> {
-        return this.http.get<Array<PatternLanguage>>(this.repoEndpoint + '/patternLanguages').toPromise()
-            .then(async (result: any) => {
-                const patternLanguages = result as PatternLanguages;
-                let resultAry = new Array<PatternLanguage>();
-                if (patternLanguages._embedded && Array.isArray(patternLanguages._embedded.patternLanguages)) {
-                    resultAry = patternLanguages._embedded.patternLanguages;
-                }
-                return resultAry;
-            });
+    public getPatternLanguages(): Observable<PatternLanguage[]> {
+        return this.http.get<PatternLanguages>(this.repoEndpoint + '/patternLanguages').pipe(
+          map((result: PatternLanguages) => result._embedded.patternLanguages));
     }
 
     public getPatternLanguageByUrl(url: string): Observable<PatternLanguage> {

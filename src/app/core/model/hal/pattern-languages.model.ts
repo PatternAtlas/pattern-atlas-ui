@@ -15,7 +15,7 @@
 import PatternLanguage from './pattern-language.model';
 
 class PatternLanguages {
-    _embedded: { patternLanguages: Array<PatternLanguage> };
+    _embedded: { patternLanguages: PatternLanguage[] };
     _links: PatternLanguages;
 }
 

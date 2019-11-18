@@ -19,38 +19,25 @@ import {Observable} from 'rxjs';
 import Pattern from '../model/hal/pattern.model';
 import {map} from 'rxjs/operators';
 import {PatternResponse} from '../model/hal/pattern-response.interface';
+import {PatternView} from '../model/hal/pattern-view.model';
+import {Embedded} from '../model/hal/embedded';
+import {PatternViewResponse} from '../model/hal/pattern-view-response.interface';
 
 @Injectable()
-export class PatternService {
+export class PatternViewService {
 
     private repoEndpoint = globals.repoEndpoint;
 
     constructor(private http: HttpClient) {
     }
 
-  public getPatternByEncodedUri(encodedUri: string): Observable<Pattern> {
-    const url = this.repoEndpoint + '/patterns/search/findByUri?uri=' + encodedUri;
-    return this.http.get<Pattern>(url);
+
+  getPatternViews(): Observable<PatternViewResponse> {
+    return this.http.get<PatternViewResponse>(this.repoEndpoint + '/patternViews');
     }
 
-  getPatternsByUrl(patternsUrl: string): Observable<Pattern[]> {
-    return this.http.get<PatternResponse>(patternsUrl).pipe(
-      map(result => {
-        return <Pattern[]>(result._embedded ? result._embedded.patterns : result);
-      })
-    );
-    }
 
-  getPatternContentByPattern(pattern: Pattern): Observable<{ content: any }> {
-    return this.http.get<{ content: any }>(pattern._links.content.href);
-    }
-
-  savePattern(url: string, pattern: any): Observable<any> {
-    return this.http.post<Pattern>(url, pattern, {observe: 'response'});
+  savePatternView(url: string, view: PatternView) {
+    return this.http.post<PatternViewResponse>(url, view, {observe: 'response'});
   }
-
-  updatePattern(url: string, pattern: any): Observable<any> {
-    return this.http.put<Pattern>(url, pattern, {observe: 'response'});
-  }
-
 }

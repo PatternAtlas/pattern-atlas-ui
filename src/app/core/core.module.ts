@@ -50,6 +50,8 @@ import {PatternLanguageService} from './service/pattern-language.service';
 import {PatternService} from './service/pattern.service';
 import {GraphDisplayComponent} from './component/graph-display/graph-display.component';
 import { CardrendererComponent } from './component/cardrenderer/cardrenderer.component';
+import {PatternViewService} from './service/pattern-view.service';
+import {CreateEditPatternLanguageComponent} from './component/create-edit-pattern-language/create-edit-pattern-language.component';
 
 @NgModule({
     imports: [
@@ -72,10 +74,11 @@ import { CardrendererComponent } from './component/cardrenderer/cardrenderer.com
       MatButtonToggleModule,
         NgxMdModule.forRoot(), MatNativeDateModule
     ],
-    exports: [CovalentTextEditorModule, EmitEventOnKeyupDirective, MatProgressSpinnerModule, NavigateBackComponent],
+  exports: [CovalentTextEditorModule, EmitEventOnKeyupDirective, MatProgressSpinnerModule, NavigateBackComponent, CardrendererComponent],
     providers: [
         PatternLanguageService,
-        PatternService
+        PatternService,
+      PatternViewService
     ],
     declarations: [
         DefaultPlRendererComponent,
@@ -88,7 +91,8 @@ import { CardrendererComponent } from './component/cardrenderer/cardrenderer.com
         CreatePatternRelationComponent,
       MarkdownPatternSectioncontentComponent,
       GraphDisplayComponent,
-      CardrendererComponent
+      CardrendererComponent,
+      CreateEditPatternLanguageComponent
     ],
     entryComponents: [
         DefaultPlRendererComponent,
@@ -98,7 +102,8 @@ import { CardrendererComponent } from './component/cardrenderer/cardrenderer.com
         CreatePatternRelationComponent,
         MarkdownPatternSectioncontentComponent,
       CardrendererComponent,
-      GraphDisplayComponent
+      GraphDisplayComponent,
+      CreateEditPatternLanguageComponent
     ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

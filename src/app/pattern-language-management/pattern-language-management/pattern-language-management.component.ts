@@ -20,8 +20,9 @@ import { CookieService } from 'ngx-cookie-service';
 import { ToasterService } from 'angular2-toaster';
 import { PatternLanguageService } from '../../core/service/pattern-language.service';
 import { UriConverter } from '../../core/util/uri-converter';
-import { CreateEditPatternLanguageComponent } from '../create-edit-pattern-language/create-edit-pattern-language.component';
+import { CreateEditPatternLanguageComponent } from '../../core/component/create-edit-pattern-language/create-edit-pattern-language.component';
 import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
+import {map, switchMap} from 'rxjs/operators';
 
 @Component({
     selector: 'pp-pattern-language-management',
@@ -63,11 +64,13 @@ export class PatternLanguageManagementComponent implements OnInit {
 
     // reload the current data from https://purl.org/patternpedia that contains all patternlangauges
     async reloadPatternRepo() {
-        this.patternLanguages = await this.patternLanguageService.getPatternLanguages()
-            .then(result => {
+        this.patternLanguageService.getPatternLanguages()
+            .pipe(
+              map(result => {
                 return result.sort(PatternLanguageManagementComponent.sortPatternlanguages);
-            })
-            .then(result => {
+            }))
+            .subscribe(result => {
+              this.patternLanguages = result;
                 this._toasterService.pop('success', 'Reloaded Pattern Languages');
                 this.cdr.detectChanges();
                 return result;
@@ -89,7 +92,7 @@ export class PatternLanguageManagementComponent implements OnInit {
         // Save PatternLanguage when user presses save
         (<CreateEditPatternLanguageComponent>dialogRef.componentInstance)
             .saveClicked.subscribe((result: DialogPatternLanguageResult) => {
-            const patternLanguage = result.patternLanguage;
+            const patternLanguage = <PatternLanguage> result.dialogResult;
             this.patternLanguageService.savePatternLanguage(patternLanguage)
                 .then(postResult => {
                   this.patternLanguages.push(<PatternLanguage> postResult.body);

@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {UriConverter} from '../util/uri-converter';
 import {MatDialog} from '@angular/material';
 import Pattern from '../model/pattern.model';
@@ -8,6 +8,7 @@ import PatternLanguage from '../model/hal/pattern-language.model';
 import {D3Service} from '../../graph/service/d3.service';
 import {CardrendererComponent} from '../component/cardrenderer/cardrenderer.component';
 import {GraphDisplayComponent} from '../component/graph-display/graph-display.component';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'pp-default-pl-renderer',
@@ -28,6 +29,8 @@ export class DefaultPlRendererComponent implements OnInit {
   graphVisible: boolean;
   isLoadingDataForRenderer: boolean;
   private componentRef: ComponentRef<any>;
+  private cardcomponentSubscription: Subscription;
+
 
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -35,6 +38,7 @@ export class DefaultPlRendererComponent implements OnInit {
               private dialog: MatDialog,
               private patternLanguageService: PatternLanguageService,
               private d3Service: D3Service,
+              private router: Router,
               private componentFactoryResolver: ComponentFactoryResolver) {
   }
 
@@ -95,6 +99,9 @@ export class DefaultPlRendererComponent implements OnInit {
 
   onToggle(value: boolean) {
     this.graphVisible = value;
+    if(this.cardcomponentSubscription){
+      this.cardcomponentSubscription.unsubscribe();
+    }
     if(this.rendererComponentInstance instanceof GraphDisplayComponent){
         (<GraphDisplayComponent> this.rendererComponentInstance).clear();
     }
@@ -114,7 +121,9 @@ export class DefaultPlRendererComponent implements OnInit {
     const componentInstance = this.componentRef.instance;
     this.rendererComponentInstance = componentInstance;
     if (componentInstance instanceof CardrendererComponent) {
-      (<CardrendererComponent>componentInstance).patternlanguage = this.patternLanguage;
+      (<CardrendererComponent>componentInstance).uriEntities = this.patternLanguage.patterns;
+      this.cardcomponentSubscription = (<CardrendererComponent>componentInstance).createEntityClicked.subscribe(() => this.router.navigate(['create-patterns'],
+        {relativeTo: this.activatedRoute}));
       this.isLoadingDataForRenderer = false;
       if(!this.nodes){
         this.initGraph();

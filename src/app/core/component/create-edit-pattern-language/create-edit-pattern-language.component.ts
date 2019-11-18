@@ -2,11 +2,13 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/internal/operators';
-import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
+import { DialogPatternLanguageResult } from '../../../pattern-language-management/data/DialogPatternLanguageResult.interface';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import PatternLanguage from '../../core/model/hal/pattern-language.model';
-import PatternSchema from '../../core/model/hal/pattern-schema.model';
-import PatternSectionSchema from '../../core/model/hal/pattern-section-schema.model';
+import PatternLanguage from '../../model/hal/pattern-language.model';
+import PatternSchema from '../../model/hal/pattern-schema.model';
+import PatternSectionSchema from '../../model/hal/pattern-section-schema.model';
+import {ActivatedRoute} from '@angular/router';
+import UriEntity from '../../model/hal/uri-entity.model';
 
 @Component({
     selector: 'pp-create-edit-pattern-language',
@@ -19,6 +21,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     patternLanguageForm: FormGroup;
     iconPreviewVisible = false;
     saveRequested = false;
+    isPatternLanguageDialog = true;
 
     @Output() saveClicked = new EventEmitter<DialogPatternLanguageResult>();
 
@@ -35,10 +38,11 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     }
 
     constructor(public dialogRef: MatDialogRef<CreateEditPatternLanguageComponent>,
-                private _fb: FormBuilder) {
+                private _fb: FormBuilder, private activatedRoute: ActivatedRoute) {
     }
 
     ngOnInit(): void {
+        this.isPatternLanguageDialog = (this.activatedRoute.snapshot['_routerState']['url'] !== '/patternviews');
         // tslint:disable-next-line:max-line-length
         const urlRegex = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
         this.patternLanguageForm = this._fb.group({
@@ -79,12 +83,25 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     save(): void {
         this.saveRequested = true;
         if (this.patternLanguageForm.valid) {
-            const patternLanguage = new PatternLanguage();
+
+          if(!this.isPatternLanguageDialog){
+            console.log('test')
+            this.saveClicked.emit({
+              dialogResult: <UriEntity> {uri: this.uri.value, name: this.name.value}
+            });
+            return;
+          }
+
+
+          const patternLanguage = new PatternLanguage();
             patternLanguage.uri = this.uri.value;
             patternLanguage.name = this.name.value;
             patternLanguage.logo = this.iconUrl.value;
             const patternSchema = new PatternSchema();
             patternSchema.patternSectionSchemas = [];
+
+
+
             for (let i = 0; i < this.sections.length; i++) {
                 const patternSectionSchema = new PatternSectionSchema();
                 patternSectionSchema.name = this.sections[i];
@@ -95,7 +112,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
             }
             patternLanguage.patternSchema = patternSchema;
             this.saveClicked.emit({
-                patternLanguage: patternLanguage
+                dialogResult: patternLanguage
             });
             this.dialogRef.close();
         }

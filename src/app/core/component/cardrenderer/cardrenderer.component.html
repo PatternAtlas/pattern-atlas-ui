@@ -1,15 +1,15 @@
 <div class="container" #cardsView >
   <!--  <mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>-->
-  <mat-card class="landing-card " *ngFor="let pattern of patternlanguage?.patterns">
+  <mat-card class="landing-card " *ngFor="let entity of uriEntities">
     <mat-card-header>
       <mat-card-title>
-        <b>{{pattern.name}}</b>
+        <b>{{entity.name}}</b>
 
       </mat-card-title>
     </mat-card-header>
     <mat-card-actions>
       <div style="text-align: center">
-        <button mat-stroked-button color="primary" (click)="navigate(pattern)"><i class="material-icons">pageview</i>View
+        <button mat-stroked-button color="primary" (click)="navigate(entity)"><i class="material-icons">pageview</i>View
         </button>
       </div>
     </mat-card-actions>

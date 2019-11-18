@@ -17,6 +17,7 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/r
 import { PatternLanguageService } from '../../core/service/pattern-language.service';
 import PatternLanguage from '../../core/model/hal/pattern-language.model';
 import { PatternService } from '../../core/service/pattern.service';
+import {Observable} from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -27,7 +28,7 @@ export class PatternLanguageManagementResolverService implements Resolve<Array<P
                 private patternService: PatternService) {
     }
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<Array<PatternLanguage>> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Array<PatternLanguage>> {
         return this.patternLanguageService.getPatternLanguages();
     }
 

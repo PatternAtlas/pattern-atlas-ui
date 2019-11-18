@@ -27,7 +27,7 @@ import { ExtensionsModule } from './extensions/extensions.module';
 import { AdministrationComponent } from './administration.component';
 import { MatButtonModule, MatCardModule, MatIconModule, MatTabsModule, MatToolbarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SolutionLanguageManagementModule } from './solution-language-management/solution-language-management.module';
+import { PatternViewManagementModule } from './pattern-view-management/pattern-view-management.module';
 import { NgxMdModule } from 'ngx-md';
 import { CovalentTextEditorModule } from '@covalent/text-editor';
 import { TestComponent } from './test/test.component';
@@ -50,7 +50,7 @@ import { FormsModule } from '@angular/forms';
         // NOTE: BrowserAnimationsModule issue https://github.com/angular/angular/issues/20290
         BrowserAnimationsModule,
         PatternLanguageManagementModule,
-        SolutionLanguageManagementModule,
+        PatternViewManagementModule,
         MatToolbarModule,
         MatIconModule,
         MatCardModule,

@@ -44,6 +44,7 @@
                 </mat-form-field>
             </div>
 
+          <div *ngIf="isPatternLanguageDialog">
             <h3>Sections</h3>
             <mat-form-field appearance="outline" style="width: 24em" [floatLabel]="'always'">
                 <mat-label>New Section</mat-label>
@@ -59,6 +60,7 @@
                     <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
                 </mat-list-item>
             </mat-list>
+          </div>
         </mat-card>
 
     </div>
