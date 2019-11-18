@@ -1,7 +1,7 @@
 <pp-navigate-back></pp-navigate-back>
 <mat-button-toggle-group [value]="graphVisible" (change)="onToggle(group.value)" #group="matButtonToggleGroup"
                          (change)="detectChanges()">
-  <mat-button-toggle value="false" aria-label="Text align center">
+  <mat-button-toggle value="false" aria-label="Text align center" [checked]="true">
     Cards
   </mat-button-toggle>
   <mat-button-toggle value="true" aria-label="Text align left">
@@ -10,7 +10,6 @@
 
 
 </mat-button-toggle-group>
-<div class="example-selected-value">Selected value: {{group.value}}</div>
 <h2>Pattern Language: {{patternLanguage?.name}}
 
   <button mat-stroked-button
@@ -20,9 +19,8 @@
 font-size: smaller;  ">add</i></button>
 </h2>
 
-<mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>
-
-<pp-cardrenderer [patternLanguage]="patternLanguage"></pp-cardrenderer>
-
-<pp-graph-display [nodes]="nodes" *ngIf="graphVisible"></pp-graph-display>
+<mat-progress-spinner mode="indeterminate" *ngIf="isLoadingDataForRenderer"></mat-progress-spinner>
+<div>
+  <ng-template #displayPLContainer></ng-template>
+</div>
 

@@ -15,7 +15,7 @@ export class CardrendererComponent implements OnInit {
                  private router: Router,
                  private activatedRoute: ActivatedRoute) { }
 
-  @Input() patternLanguage: PatternLanguage;
+  patternlanguage: PatternLanguage;
   ngOnInit() {
   }
 

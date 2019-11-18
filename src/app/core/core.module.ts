@@ -96,7 +96,9 @@ import { CardrendererComponent } from './component/cardrenderer/cardrenderer.com
         MdEditorComponent,
         DividerComponent,
         CreatePatternRelationComponent,
-        MarkdownPatternSectioncontentComponent
+        MarkdownPatternSectioncontentComponent,
+      CardrendererComponent,
+      GraphDisplayComponent
     ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
