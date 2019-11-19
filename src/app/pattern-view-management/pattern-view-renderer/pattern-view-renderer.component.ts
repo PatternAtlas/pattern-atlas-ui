@@ -24,5 +24,6 @@ export class PatternViewRendererComponent implements OnInit {
 
   addToView() {
     const dialogRef = this.matDialog.open(AddToViewComponent, {data: this.patternLanguages});
+    dialogRef.afterClosed().subscribe(result => console.log(result));
   }
 }
