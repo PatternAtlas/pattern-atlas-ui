@@ -40,4 +40,12 @@ export class PatternViewService {
   savePatternView(url: string, view: PatternView) {
     return this.http.post<PatternViewResponse>(url, view, {observe: 'response'});
   }
+
+  addPatterns(url: string, patterns: Pattern[]) {
+    return this.http.post<PatternViewResponse>(url, patterns, {observe: 'response'});;
+  }
+
+  getPatternViewByUri(encodedUri: string):  Observable<PatternView> {
+    return this.http.get<PatternView>(this.repoEndpoint + `/patternViews/findByUri?encodedUri=${encodedUri}`);
+  }
 }

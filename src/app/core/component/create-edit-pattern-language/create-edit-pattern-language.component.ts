@@ -85,10 +85,10 @@ export class CreateEditPatternLanguageComponent implements OnInit {
         if (this.patternLanguageForm.valid) {
 
           if(!this.isPatternLanguageDialog){
-            console.log('test')
             this.saveClicked.emit({
               dialogResult: <UriEntity> {uri: this.uri.value, name: this.name.value}
             });
+            this.dialogRef.close();
             return;
           }
 

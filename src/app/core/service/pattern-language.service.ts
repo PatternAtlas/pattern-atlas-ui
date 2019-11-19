@@ -32,8 +32,12 @@ export class PatternLanguageService {
     }
 
     public getPatternLanguages(): Observable<PatternLanguage[]> {
-        return this.http.get<PatternLanguages>(this.repoEndpoint + '/patternLanguages').pipe(
+        return this.getPatternLanguageResult().pipe(
           map((result: PatternLanguages) => result._embedded.patternLanguages));
+    }
+
+    public getPatternLanguageResult(): Observable<PatternLanguages>{
+      return this.http.get<PatternLanguages>(this.repoEndpoint + '/patternLanguages')
     }
 
     public getPatternLanguageByUrl(url: string): Observable<PatternLanguage> {

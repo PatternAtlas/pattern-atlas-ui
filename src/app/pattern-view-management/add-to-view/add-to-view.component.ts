@@ -4,17 +4,13 @@ import {MAT_DIALOG_DATA, MatTreeFlatDataSource, MatTreeFlattener} from '@angular
 import PatternLanguage from '../../core/model/hal/pattern-language.model';
 import {SelectionModel} from '@angular/cdk/collections';
 import UriEntity from '../../core/model/hal/uri-entity.model';
+import {PatternLanguageFlatNode} from '../../core/model/pattern-language-flat-node.interface';
 
 interface AddItemNode extends UriEntity{
   patterns?: AddItemNode[];
 }
 
-/** Flat node with expandable and level information */
-interface PatternLanguageFlatNode {
-  expandable: boolean;
-  name: string;
-  level: number;
-}
+
 
 @Component({
   selector: 'pp-add-to-view',
