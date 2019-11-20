@@ -12,7 +12,6 @@ export class GraphDisplayComponent implements OnInit, OnDestroy {
   @ViewChild('svg') svg: ElementRef;
   patternlanguageData;
   private isLoading = false;
-  private copyData: any;
 
   @Input('data') set data(data) {
     this.patternlanguageData = data;
@@ -44,6 +43,7 @@ export class GraphDisplayComponent implements OnInit, OnDestroy {
       width: 1450,
       height: 600
     });
+    // subscribe to the end of the network graph force-layout simulation:
     networkGraph.ticker.subscribe((d: any) => {
       this.graph.nativeElement.setNodes(networkGraph.nodes, true);
       // we need to use a hard-copy of the links, because get changed (by d3?) and the webcomponent can't handle them anymore

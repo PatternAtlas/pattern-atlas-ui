@@ -1,10 +1,9 @@
 <pp-navigate-back></pp-navigate-back>
-<mat-button-toggle-group [value]="graphVisible" (change)="onToggle(group.value)" #group="matButtonToggleGroup"
-                         (change)="detectChanges()">
-  <mat-button-toggle value="false" aria-label="Text align center" [checked]="true">
+<mat-button-toggle-group [value]="graphVisible" (change)="onToggle(group.value)" #group="matButtonToggleGroup">
+  <mat-button-toggle [value]="false" aria-label="Text align center" [checked]="true">
     Cards
   </mat-button-toggle>
-  <mat-button-toggle value="true" aria-label="Text align left">
+  <mat-button-toggle [value]="true" aria-label="Text align left">
     Graph
   </mat-button-toggle>
 
