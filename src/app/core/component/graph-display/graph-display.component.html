@@ -11,7 +11,7 @@
   <svg slot="graph" #svg>
     <style>
       .node {
-        fill: lightgray;
+        fill: aliceblue;
       }
 
       .link-handle {
@@ -19,6 +19,12 @@
         fill: black;
         opacity: 0.1;
         transition: opacity 0.25s ease-out;
+      }
+
+      .node.hovered {
+        fill: rgb(63, 81, 181);
+        opacity: 0.9;
+        color: white;
       }
 
       .edge-group .link-handle {
@@ -35,15 +41,22 @@
 
       .text {
         fill: black;
+        font-size: 6pt;
+        text-overflow: ellipsis;
+        word-break: break-word
       }
+
     </style>
     <defs>
       <g id="default" data-template-type="node">
-        <rect x="-20" y="-8" width="100" height="40">
-
+        <rect x="0" y="0" width="100" height="40" rx="5" ry="5" style="stroke:black;stroke-width:1;opacity:0.5">
         </rect>
-        <text class="text" data-content="title" x="-18" y="5" width="100" height="40"></text>
-
+        <a data-href="link">
+          <!--                  TODO: link für nodes setzen-->
+          <text class="text" x="50" y="20" width="100" height="40" data-content="title" dominant-baseline="middle"
+                text-anchor="middle"></text>
+        </a>
+        <!--        <text class="text" data-content="title" x="0" y="0" width="100" height="40">Test</text>-->
       </g>
       <g id="arrow" data-template-type="marker" data-line-attachement-point="-9 0">
         <path d="M -9 -4 L 0 0 L -9 4 z"/>

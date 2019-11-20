@@ -35,7 +35,7 @@ export class PatternViewRendererComponent implements OnInit {
     this.getData().subscribe(() => console.log(this.patternViewResponse.patterns));
   }
 
-  addToView() {
+  addPatternToView() {
     const dialogRef = this.matDialog.open(AddToViewComponent, {data: this.patternLanguages});
     dialogRef.afterClosed().pipe(
       switchMap((res: PatternLanguageFlatNode[]) => res ?
