@@ -8,7 +8,15 @@ import PatternLanguage from '../model/hal/pattern-language.model';
 import {D3Service} from '../../graph/service/d3.service';
 import {CardrendererComponent} from '../component/cardrenderer/cardrenderer.component';
 import {GraphDisplayComponent} from '../component/graph-display/graph-display.component';
-import {Subscription} from 'rxjs';
+import {EMPTY, forkJoin, Observable, Subscription} from 'rxjs';
+import {Embedded} from '../model/hal/embedded';
+import {DirectedEdesResponse} from '../model/hal/directed-edes-response.interface';
+import {switchMap, tap} from 'rxjs/operators';
+import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
+import {DirectedEdge} from '../model/hal/directed-edge.model';
+import {UndirectedEdge} from '../model/hal/undirected-edge.model';
+import {NetworkLink} from '../model/network-link.interface';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'pp-default-pl-renderer',
@@ -25,12 +33,16 @@ export class DefaultPlRendererComponent implements OnInit {
   @ViewChild('cardsView') cardsView: ElementRef;
   @ViewChild('displayPLContainer', {read: ViewContainerRef}) loadRenderer;
   rendererComponentInstance: GraphDisplayComponent | CardrendererComponent;
-  private nodes: any[];
+  private simulationResult: any;
   graphVisible: boolean;
   isLoadingDataForRenderer: boolean;
   private componentRef: ComponentRef<any>;
   private cardcomponentSubscription: Subscription;
-
+  private directedPatternRelations: DirectedEdge[] = [];
+  private undirectedPatternRelations: UndirectedEdge[] = [];
+  private edgesForSimulation = [];
+  private copyEdgesForSimulation = [];
+  private nodesForSimulation = [];
 
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -51,9 +63,10 @@ export class DefaultPlRendererComponent implements OnInit {
     this.isLoadingDataForRenderer = true;
     this.patternLanguageURI = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
     if (this.patternLanguageURI) {
-      this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageURI).subscribe(
-        (patternlanguage) => {
-          this.patternLanguage = patternlanguage;
+      this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageURI).pipe(
+        tap(patternlanguage => this.patternLanguage = patternlanguage),
+        switchMap(() => this.retrievePatterRelationDescriptorData())).subscribe(
+        () => {
           this.isLoading = false;
           this.loadRendererForData();
         });
@@ -70,40 +83,67 @@ export class DefaultPlRendererComponent implements OnInit {
     for (let i = 0; i < this.patternLanguage.patterns.length; i++) {
 
       const node = {
-        id: i,
+        id: this.patternLanguage.patterns[i].id,
         title: this.patternLanguage.patterns[i].name,
         type: 'red',
         x: 0,
         y: 0
       };
       nodes.push(node);
-
-
     }
-    const networkGraph = this.d3Service.getNetworkGraph(nodes, [], {width: 1450, height: 600});
-    networkGraph.ticker.subscribe((d: any) => {
-      this.nodes = networkGraph.nodes;
-      if (graphRenderComponent) {
-        graphRenderComponent.nodes = this.nodes;
-        this.isLoadingDataForRenderer = false;
-      }
-      this.cdr.markForCheck();
-    });
+    let links = [];
+    links = links.concat(this.undirectedPatternRelations);
+    links = links.concat(this.directedPatternRelations);
+    this.nodesForSimulation = links;
+    this.edgesForSimulation = this.mapPatternLinksToEdges(links);
+    this.copyEdgesForSimulation = _.clone(this.mapPatternLinksToEdges(links));
+    if (graphRenderComponent) {
+      graphRenderComponent.data = {nodes: nodes, links: this.edgesForSimulation, copyOfLinks: this.copyEdgesForSimulation};
+      this.isLoadingDataForRenderer = false;
+    }
+
 
   }
+
+  private getDirectededges(): Observable<Embedded<DirectedEdesResponse>> {
+    if (!this.patternLanguage) {
+      return EMPTY;
+    }
+    return this.patternLanguageService.getDirectedEdges(this.patternLanguage).pipe(
+      tap((edges) => {
+        this.directedPatternRelations = edges._embedded ? edges._embedded.directedEdges : [];
+      }));
+  }
+
+  private getUndirectededges(): Observable<Embedded<UndirectedEdesResponse>> {
+    if (!this.patternLanguage) {
+      return EMPTY;
+    }
+    return this.patternLanguageService.getUndirectedEdges(this.patternLanguage).pipe(
+      tap((edges) => {
+        this.undirectedPatternRelations = edges._embedded ? edges._embedded.undirectedEdges : [];
+      }));
+  }
+
 
   detectChanges() {
     this.cdr.detectChanges();
   }
 
+  retrievePatterRelationDescriptorData(): Observable<any> {
+    const $getDirectedEdges = this.getDirectededges();
+    const $getUndirectedEdges = this.getUndirectededges();
+    return forkJoin($getDirectedEdges, $getUndirectedEdges);
+  }
+
 
   onToggle(value: boolean) {
     this.graphVisible = value;
-    if(this.cardcomponentSubscription){
+    if (this.cardcomponentSubscription) {
       this.cardcomponentSubscription.unsubscribe();
     }
-    if(this.rendererComponentInstance instanceof GraphDisplayComponent){
-        (<GraphDisplayComponent> this.rendererComponentInstance).clear();
+    if (this.rendererComponentInstance instanceof GraphDisplayComponent) {
+      (<GraphDisplayComponent>this.rendererComponentInstance).clear();
     }
 
     this.loadRendererForData();
@@ -120,24 +160,32 @@ export class DefaultPlRendererComponent implements OnInit {
     this.componentRef = viewContainerRef.createComponent(componentFactory);
     const componentInstance = this.componentRef.instance;
     this.rendererComponentInstance = componentInstance;
+
     if (componentInstance instanceof CardrendererComponent) {
       (<CardrendererComponent>componentInstance).uriEntities = this.patternLanguage.patterns;
       this.cardcomponentSubscription = (<CardrendererComponent>componentInstance).createEntityClicked.subscribe(() => this.router.navigate(['create-patterns'],
         {relativeTo: this.activatedRoute}));
       this.isLoadingDataForRenderer = false;
-      if(!this.nodes){
-        this.initGraph();
-      }
     }
 
     if (componentInstance instanceof GraphDisplayComponent) {
-      if (this.nodes) {
-        (<GraphDisplayComponent>componentInstance).nodes = this.nodes;
-        this.isLoadingDataForRenderer = false;
-      } else {
-        this.initGraph(<GraphDisplayComponent>componentInstance);
-      }
-
+      this.initGraph(<GraphDisplayComponent>componentInstance);
     }
   }
+
+  private mapPatternLinksToEdges(links: any[]): NetworkLink[] {
+    const edges = [];
+    for (let i = 0; i < links.length; i++) {
+      const currentlink = links[i];
+      if (currentlink.source) {
+
+        edges.push({'source': currentlink.source.id, 'target': currentlink.target.id});
+      } else { // undirected link
+        edges.push(<NetworkLink>{'source': currentlink.p1.id, 'target': currentlink.p2.id});
+        edges.push(<NetworkLink>{'source': currentlink.p2.id, 'target': currentlink.p1.id});
+      }
+    }
+    return edges;
+  }
 }
+
