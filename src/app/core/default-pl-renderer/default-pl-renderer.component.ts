@@ -178,7 +178,8 @@ export class DefaultPlRendererComponent implements OnInit {
     for (let i = 0; i < links.length; i++) {
       const currentlink = links[i];
       if (currentlink.source) {
-
+// markers: [
+//                     {template: 'arrow', positionOnLine: 1, scale: 0.5, relativeRotation: 0, clickEventKey: 'HelloWorld'},
         edges.push({'source': currentlink.source.id, 'target': currentlink.target.id});
       } else { // undirected link
         edges.push(<NetworkLink>{'source': currentlink.p1.id, 'target': currentlink.p2.id});

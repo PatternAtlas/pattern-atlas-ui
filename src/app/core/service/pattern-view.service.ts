@@ -15,26 +15,23 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {globals} from '../../globals';
-import {Observable} from 'rxjs';
+import {forkJoin, Observable} from 'rxjs';
 import Pattern from '../model/hal/pattern.model';
-import {map} from 'rxjs/operators';
-import {PatternResponse} from '../model/hal/pattern-response.interface';
 import {PatternView} from '../model/hal/pattern-view.model';
-import {Embedded} from '../model/hal/embedded';
 import {PatternViewResponse} from '../model/hal/pattern-view-response.interface';
 
 @Injectable()
 export class PatternViewService {
 
-    private repoEndpoint = globals.repoEndpoint;
+  private repoEndpoint = globals.repoEndpoint;
 
-    constructor(private http: HttpClient) {
-    }
+  constructor(private http: HttpClient) {
+  }
 
 
   getPatternViews(): Observable<PatternViewResponse> {
     return this.http.get<PatternViewResponse>(this.repoEndpoint + '/patternViews');
-    }
+  }
 
 
   savePatternView(url: string, view: PatternView) {
@@ -42,10 +39,11 @@ export class PatternViewService {
   }
 
   addPatterns(url: string, patterns: Pattern[]) {
-    return this.http.post<PatternViewResponse>(url, patterns, {observe: 'response'});;
+    const observables = patterns.map(pat => this.http.post<PatternViewResponse>(url, pat, {observe: 'response'}));
+    return forkJoin(observables);
   }
 
-  getPatternViewByUri(encodedUri: string):  Observable<PatternView> {
+  getPatternViewByUri(encodedUri: string): Observable<PatternView> {
     return this.http.get<PatternView>(this.repoEndpoint + `/patternViews/findByUri?encodedUri=${encodedUri}`);
   }
 }

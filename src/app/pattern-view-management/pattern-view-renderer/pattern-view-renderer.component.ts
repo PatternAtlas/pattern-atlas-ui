@@ -32,7 +32,7 @@ export class PatternViewRendererComponent implements OnInit {
 
     this.patternViewUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternViewUri'));
 
-    this.getData().subscribe();
+    this.getData().subscribe(() => console.log(this.patternViewResponse.patterns));
   }
 
   addToView() {
