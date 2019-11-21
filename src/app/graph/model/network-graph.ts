@@ -45,27 +45,21 @@ export class NetworkGraph {
         .force('center', d3.forceCenter(options.width / 2, options.height / 2))
         .force('x', d3.forceX(options.width / 2).strength(this.config.xStrength))
         .force('y', d3.forceY(options.height / 2).strength(this.config.yStrength))
-        .force('link', d3.forceLink().id((d) => d['id']));
+        .force('link', d3.forceLink().id((d) => d['id'])).force('collision', d3.forceCollide().radius(() => 75));
       this.simulation.stop();
 
+      // set data
       this.simulation.nodes(this.nodes);
       this.simulation.force('link')['links'](this.links ? this.links : []);
 
       // Connecting the d3 ticker to an angular event emitter
       this.simulation.on('end', function () {
-        console.log(this);
         ticker.emit();
       });
 
       this.simulation.alpha(1).restart();
-      // this.initNodes();
-      // this.initLinks();
     }
 
-    // /** Updating the central force of the simulation */
-    // this.simulation.force('centers', d3.forceCenter(options.width / 2, options.height / 2));
-    //
-    // /** Restarting the simulation internal timer */
-    // this.simulation.restart();
   }
+
 }

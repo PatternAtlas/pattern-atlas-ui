@@ -1,12 +1,12 @@
-import { ActivatedRoute, Router } from '@angular/router';
-import { FilterFactoryService } from 'src/app/filter/service/filter-factory.service';
-import { UriConverter } from 'src/app/core/util/uri-converter';
-import { ChangeDetectorRef, Component, NgZone, OnInit, ViewChild } from '@angular/core';
-import { PatternRenderingComponentInterface } from 'src/app/core/model/pattern-rendering-component.interface';
-import { Link, Node, NodeInfo, Pattern } from '../../model';
-import { FilterViewComponent } from 'src/app/filter/component/filter-view/filter-view.component';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FilterFactoryService} from 'src/app/filter/service/filter-factory.service';
+import {UriConverter} from 'src/app/core/util/uri-converter';
+import {ChangeDetectorRef, Component, NgZone, OnInit, ViewChild} from '@angular/core';
+import {PatternRenderingComponentInterface} from 'src/app/core/model/pattern-rendering-component.interface';
+import {Link, Node, NodeInfo, Pattern} from '../../model';
+import {FilterViewComponent} from 'src/app/filter/component/filter-view/filter-view.component';
 import * as d3 from 'd3';
-import { MatDialog } from '@angular/material';
+import {MatDialog} from '@angular/material';
 import LinkData from '../../model/link-data';
 
 @Component({
@@ -325,6 +325,7 @@ export class PatternGraphTemplateComponent<T extends Pattern> implements Pattern
     getNodeInfo = async (id: string): Promise<NodeInfo> => {
         const uri = UriConverter.doubleDecodeUri(id);
 
+
         // let pattern;
         // let outgoing;
         // let incoming;
@@ -376,7 +377,7 @@ export class PatternGraphTemplateComponent<T extends Pattern> implements Pattern
         // clrs.forEach(lr => info.languageRelations.push(lr));
 
         return Promise.resolve(info);
-    }
+    };
 
     /**
      * Returns loaded Link data for the given link Id.
@@ -387,5 +388,5 @@ export class PatternGraphTemplateComponent<T extends Pattern> implements Pattern
 
         // const data = links.get(uri);
         return null;
-    }
+    };
 }

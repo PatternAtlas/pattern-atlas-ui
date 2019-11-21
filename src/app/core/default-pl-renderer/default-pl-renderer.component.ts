@@ -34,7 +34,7 @@ export class DefaultPlRendererComponent implements OnInit {
   @ViewChild('displayPLContainer', {read: ViewContainerRef}) loadRenderer;
   rendererComponentInstance: GraphDisplayComponent | CardrendererComponent;
   private simulationResult: any;
-  graphVisible: boolean;
+  graphVisible = true;
   isLoadingDataForRenderer: boolean;
   private componentRef: ComponentRef<any>;
   private cardcomponentSubscription: Subscription;
@@ -180,7 +180,12 @@ export class DefaultPlRendererComponent implements OnInit {
       if (currentlink.source) {
 // markers: [
 //                     {template: 'arrow', positionOnLine: 1, scale: 0.5, relativeRotation: 0, clickEventKey: 'HelloWorld'},
-        edges.push({'source': currentlink.source.id, 'target': currentlink.target.id});
+        edges.push({
+          'source': currentlink.source.id, 'target': currentlink.target.id,
+          'markers': [
+            {template: 'arrow', positionOnLine: 1, scale: 0.5, relativeRotation: 0, clickEventKey: 'HelloWorld'}
+          ]
+        });
       } else { // undirected link
         edges.push(<NetworkLink>{'source': currentlink.p1.id, 'target': currentlink.p2.id});
         edges.push(<NetworkLink>{'source': currentlink.p2.id, 'target': currentlink.p1.id});

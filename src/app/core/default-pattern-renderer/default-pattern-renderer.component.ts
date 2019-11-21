@@ -5,7 +5,6 @@ import {PatternpropertyDirective} from '../component/markdown-content-container/
 import {UriConverter} from '../util/uri-converter';
 import {MatDialog} from '@angular/material';
 import {CreatePatternRelationComponent, DialogDataResult} from '../component/create-pattern-relation/create-pattern-relation.component';
-import {PatternRelations} from '../model/pattern-relations';
 import Pattern from '../model/hal/pattern.model';
 import {PatternLanguageService} from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
@@ -24,18 +23,17 @@ import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.inte
 import {UndirectedEdge} from '../model/hal/undirected-edge.model';
 
 @Component({
-    selector: 'pp-default-pattern-renderer',
-    templateUrl: './default-pattern-renderer.component.html',
-    styleUrls: ['./default-pattern-renderer.component.scss']
+  selector: 'pp-default-pattern-renderer',
+  templateUrl: './default-pattern-renderer.component.html',
+  styleUrls: ['./default-pattern-renderer.component.scss']
 })
 export class DefaultPatternRendererComponent implements OnInit {
   private directedPatternRelations: DirectedEdge[];
   private undirectedPatternRelations: UndirectedEdge[];
-    private allRelations: PatternRelations = new PatternRelations();
-    private patternList: Array<Pattern>;
-    @ViewChild(PatternpropertyDirective) ppPatternproperty: PatternpropertyDirective;
+  private patternList: Array<Pattern>;
+  @ViewChild(PatternpropertyDirective) ppPatternproperty: PatternpropertyDirective;
   private viewContainerRef;
-    isLoading = true;
+  isLoading = true;
   isEditingEnabled = true;
   patternLanguage: PatternLanguage;
   pattern: Pattern;
@@ -43,23 +41,23 @@ export class DefaultPatternRendererComponent implements OnInit {
   private patternLanguageUri: string;
   private patternUri: string;
 
-    constructor(private activatedRoute: ActivatedRoute,
-                private toasterService: ToasterService,
-                private cdr: ChangeDetectorRef,
-                private componentFactoryResolver: ComponentFactoryResolver,
-                private patternLanguageService: PatternLanguageService,
-                private patternService: PatternService,
-                private patternRelationDescriptorService: PatternRelationDescriptorService,
-                public dialog: MatDialog) {
-    }
+  constructor(private activatedRoute: ActivatedRoute,
+              private toasterService: ToasterService,
+              private cdr: ChangeDetectorRef,
+              private componentFactoryResolver: ComponentFactoryResolver,
+              private patternLanguageService: PatternLanguageService,
+              private patternService: PatternService,
+              private patternRelationDescriptorService: PatternRelationDescriptorService,
+              public dialog: MatDialog) {
+  }
 
-    ngOnInit(): void {
-      this.viewContainerRef = this.ppPatternproperty.viewContainerRef;
-      this.patternLanguageUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
-      this.patternUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternUri'));
-      this.getData();
+  ngOnInit(): void {
+    this.viewContainerRef = this.ppPatternproperty.viewContainerRef;
+    this.patternLanguageUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
+    this.patternUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternUri'));
+    this.getData();
 
-    }
+  }
 
   private createSectionComponent(section: string,) {
     if (!this.pattern.content) {
@@ -83,7 +81,7 @@ export class DefaultPatternRendererComponent implements OnInit {
 
   addLink() {
     const dialogRef = this.dialog.open(CreatePatternRelationComponent, {
-      data: {patternName: this.pattern.name, patterns: this.patterns}
+        data: {patternName: this.pattern.name, patterns: this.patterns}
       }
     );
     dialogRef.afterClosed().pipe(
@@ -114,26 +112,26 @@ export class DefaultPatternRendererComponent implements OnInit {
     if (!dialogResult || !dialogResult.toPattern || !dialogResult.direction) {
       return null;
     }
-      switch (dialogResult.direction.name) {
-        case PatternRelationDescriptorDirection.DirectedRight:
-          return new DirectedEdge(this.pattern, dialogResult.toPattern, this.patternLanguage,
-            dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null,
-            null);
-          break;
-        case PatternRelationDescriptorDirection.DirectedLeft:
-          return new DirectedEdge(dialogResult.toPattern, this.pattern, this.patternLanguage,
-            dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null,
-            null);
-          break;
-        case PatternRelationDescriptorDirection.UnDirected:
-          return new UndirectedEdge(dialogResult.toPattern, this.pattern, this.patternLanguage,
-            dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null,
-            null);
-          break;
-        default:
-          break;
-      }
-      return null;
+    switch (dialogResult.direction.name) {
+      case PatternRelationDescriptorDirection.DirectedRight:
+        return new DirectedEdge(this.pattern, dialogResult.toPattern, this.patternLanguage,
+          dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null,
+          null);
+        break;
+      case PatternRelationDescriptorDirection.DirectedLeft:
+        return new DirectedEdge(dialogResult.toPattern, this.pattern, this.patternLanguage,
+          dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null,
+          null);
+        break;
+      case PatternRelationDescriptorDirection.UnDirected:
+        return new UndirectedEdge(dialogResult.toPattern, this.pattern, this.patternLanguage,
+          dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null,
+          null);
+        break;
+      default:
+        break;
+    }
+    return null;
 
   }
 
@@ -153,9 +151,9 @@ export class DefaultPatternRendererComponent implements OnInit {
     }
     return this.patternLanguageService.getDirectedEdges(this.patternLanguage).pipe(
       tap((edges) => {
-        this.directedPatternRelations = edges._embedded ? edges._embedded.directedEdges : [];
+        this.directedPatternRelations = edges._embedded ? edges._embedded.directedEdges.filter(edge => edge.source.uri === this.patternUri || edge.target.uri === this.patternUri) : [];
       }));
-    }
+  }
 
   private getUndirectededges(): Observable<Embedded<UndirectedEdesResponse>> {
     if (!this.patternLanguage) {
@@ -163,7 +161,7 @@ export class DefaultPatternRendererComponent implements OnInit {
     }
     return this.patternLanguageService.getUndirectedEdges(this.patternLanguage).pipe(
       tap((edges) => {
-        this.undirectedPatternRelations = edges._embedded ? edges._embedded.undirectedEdges : [];
+        this.undirectedPatternRelations = edges._embedded ? edges._embedded.undirectedEdges.filter(edge => edge.p1.uri === this.patternUri || edge.p2.uri === this.patternUri) : [];
       }));
   }
 
