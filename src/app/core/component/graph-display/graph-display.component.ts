@@ -3,11 +3,22 @@ import {D3Service} from '../../../graph/service/d3.service';
 import {NetworkLink} from '../../model/network-link.interface';
 import {Pattern} from '../../../graph/model';
 import {Edge} from '../../model/hal/edge.model';
+import {MatDialog} from '@angular/material';
+import {CreatePatternRelationComponent} from '../create-pattern-relation/create-pattern-relation.component';
+import {PatternView} from '../../model/hal/pattern-view.model';
+import PatternLanguage from '../../model/hal/pattern-language.model';
+import {PatternRelationDescriptorService} from '../../service/pattern-relation-descriptor.service';
+import {DirectedEdge} from '../../model/hal/directed-edge.model';
+import {switchMap} from 'rxjs/operators';
+import {EMPTY} from 'rxjs';
+import {ToasterService} from 'angular2-toaster';
 
 interface GraphInputData {
     patterns: Pattern[];
     edges: Edge[];
     copyOfLinks: Edge[];
+    patternLanguage: PatternLanguage;
+    patternView: PatternView;
 }
 
 class GraphNode {
@@ -32,18 +43,26 @@ export class GraphDisplayComponent implements OnInit {
     private edges: NetworkLink[];
     private nodes: GraphNode[];
     private copyOfLinks: NetworkLink[];
+    private patterns: Pattern[];
+    private patternLanguage: PatternLanguage;
+    private patternView: PatternView;
+    private currentEdge: any;
 
     @Input('data') set data(data: GraphInputData) {
         this.patternlanguageData = data;
         this.edges = this.mapPatternLinksToEdges(this.patternlanguageData.edges);
         this.copyOfLinks = this.mapPatternLinksToEdges(this.patternlanguageData.copyOfLinks);
-        this.nodes = this.mapPatternsToNodes(this.patternlanguageData.patterns);
+        this.patterns = this.patternlanguageData.patterns;
+        this.patternLanguage = this.patternlanguageData.patternLanguage;
+        this.patternView = this.patternlanguageData.patternView;
+        this.nodes = this.mapPatternsToNodes(this.patterns);
         this.isLoading = true;
         this.startSimulation();
     }
 
 
-    constructor(private cdr: ChangeDetectorRef, private d3Service: D3Service) {
+    constructor(private cdr: ChangeDetectorRef, private d3Service: D3Service, private matDialog: MatDialog,
+                private patternRelationDescriptionService: PatternRelationDescriptorService, private toastService: ToasterService) {
     }
 
     ngOnInit() {
@@ -52,10 +71,9 @@ export class GraphDisplayComponent implements OnInit {
 
 
     private startSimulation() {
-
         const networkGraph = this.d3Service.getNetworkGraph(this.nodes, this.edges, {
             width: 300, //1450,
-            height: 300// 1000
+            height: 1313// 1000
         });
         // subscribe to the end of the network graph force-layout simulation:
         networkGraph.ticker.subscribe((d: any) => {
@@ -68,16 +86,8 @@ export class GraphDisplayComponent implements OnInit {
             this.isLoading = false;
         });
 
-        this.graph.nativeElement.addEventListener('nodeenter', function test(event) {
-            console.log(event.type, event.detail.node.name + ' entered');
-        });
-        this.graph.nativeElement.addEventListener('data-click', function test(event) {
-            console.log(event.type, event.detail);
-        });
-        this.graph.nativeElement.addEventListener('nodeclick', function test(event) {
-            handleNodeClick(event.detail.node);
-        });
     }
+
 
     private mapPatternLinksToEdges(links: any[]): NetworkLink[] {
         const edges = [];
@@ -110,7 +120,7 @@ export class GraphDisplayComponent implements OnInit {
             const node = {
                 id: patterns[i].id,
                 title: patterns[i].name,
-                type: 'red',
+                type: 'small-node',
                 x: 0,
                 y: 0
             };
@@ -118,9 +128,49 @@ export class GraphDisplayComponent implements OnInit {
         }
         return nodes;
     }
+
+    edgeAdded(event) {
+        this.currentEdge = event.detail.edge;
+        console.log(this.currentEdge);
+        const dialogRef = this.matDialog.open(CreatePatternRelationComponent, {
+            data: {
+                firstPattern: this.patterns.find((pat) => event.detail.edge.source === pat.id),
+                secondPattern: this.patterns.find((pat) => event.detail.edge.target === pat.id),
+                patterns: this.patterns,
+                patternLanguage: this.patternLanguage,
+                patternView: this.patternView
+            }
+        });
+
+        dialogRef.afterClosed().pipe(
+            switchMap((edge) => {
+                const parentOfEdge = this.patternLanguage ? this.patternLanguage : this.patternView;
+
+                const url = (edge && edge instanceof DirectedEdge) ? parentOfEdge._links.directedEdges.href : parentOfEdge._links.undirectedEdges.href;
+                return edge ? this.patternRelationDescriptionService.savePatternRelation(url, edge) : EMPTY;
+            })).subscribe(res => {
+            if (res) {
+                this.toastService.pop('success', 'Created new Link');
+            } else {
+                console.log(this.graph.nativeElement.getEdgesBySource(this.currentEdge.source));
+            }
+        });
+    }
+
+    nodeClicked($event) {
+        const node = event.detail.node;
+        const outgoingLinks = this.graph.nativeElement.getEdgesBySource(node.id);
+        const ingoingLinks = this.graph.nativeElement.getEdgesBySource(node.id);
+        const outgoingNodeIds = Array.from(outgoingLinks).map(it => it.target);
+        const ingoingNodeIds = Array.from(ingoingLinks).map(it => it.source);
+        console.log(outgoingNodeIds);
+        console.log(ingoingNodeIds);
+        // TODO: Highlight nodes.
+    }
 }
 
 function handleNodeClick(node: any): void {
     console.log(node);
 }
+
 

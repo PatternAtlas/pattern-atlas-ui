@@ -1,11 +1,12 @@
 <mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>
 <network-graph #graphWrapper classes="red blue" mode="layout" zoom="both"
-               style="width: 100%; height: 100%"
+               style="width: 100%; height: 100%" ppEmitOnAddEdge (onAddedEdge)="edgeAdded($event)"
+               (onClickedNode)="nodeClicked($event)"
 >
     <style slot="style">
         svg {
             width: -webkit-fill-available;
-            height: 1000px;
+            height: -webkit-fill-available;
         }
     </style>
     <svg slot="graph" #svg>
@@ -48,10 +49,27 @@
                 word-break: break-word
             }
 
+            .small-node {
+                fill: blueviolet;
+            }
+
+
         </style>
         <defs>
 
             <g id="default" data-template-type="node">
+
+                <rect x="0" y="0" width="100" height="40" rx="5" ry="5" style="stroke:black;stroke-width:1"
+                      data-link-handles="edges" data-click="nodeclick">
+                </rect>
+                <a data-href="link">
+                    <!--                  TODO: link für nodes setzen-->
+                    <text class="text" x="50" y="20" width="100" height="40" data-content="title" data-click="title"
+                          dominant-baseline="middle"
+                          text-anchor="middle"></text>
+                </a>
+            </g>
+            <g id="small-node" data-template-type="node">
 
                 <rect x="0" y="0" width="100" height="40" rx="5" ry="5" style="stroke:black;stroke-width:1"
                       data-link-handles="edges" data-click="nodeclick">

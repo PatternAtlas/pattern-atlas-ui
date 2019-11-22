@@ -37,7 +37,9 @@ export class PatternViewRendererComponent implements OnInit {
 
         this.patternViewUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternViewUri'));
 
-        this.getData().subscribe(() => console.log(this.patternViewResponse.patterns));
+        this.getData().subscribe(() => {
+            },
+            (error => this.toasterService.pop('error', 'Could not load data')));
     }
 
     addPatternToView() {

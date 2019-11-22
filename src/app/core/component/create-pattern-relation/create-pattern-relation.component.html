@@ -38,15 +38,20 @@
         <mat-option *ngFor="let type of relationTypes" [value]="type">{{type}}</mat-option>
     </mat-autocomplete>
 
-    <mat-form-field>
-        <mat-label>Select a pattern</mat-label>
-        <mat-select formControlName="secondPattern">
-            <mat-option *ngFor="let pattern of data.patterns"
-                        [value]="pattern">
-                {{pattern.name}}
-            </mat-option>
-        </mat-select>
+    <mat-form-field *ngIf="data.secondPattern; else chooseSecondPattern">
+        <input type="text" formControlName="secondPattern"
+               matInput [value]="data.secondPattern.name" readonly>
     </mat-form-field>
+    <ng-template #chooseSecondPattern>
+        <mat-form-field>
+            <mat-select formControlName="secondPattern">
+                <mat-option *ngFor="let pattern of data.patterns"
+                            [value]="pattern">
+                    {{pattern.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </ng-template>
     <mat-form-field style="display: block">
         <textarea matInput formControlName="description" placeholder="Provide a description"></textarea>
     </mat-form-field>

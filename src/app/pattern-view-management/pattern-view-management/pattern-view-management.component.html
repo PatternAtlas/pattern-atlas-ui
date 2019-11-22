@@ -1,1 +1,3 @@
-<pp-cardrenderer [uriEntities]="patternViewResponse?._embedded?.patternViews" (createEntityClicked)="createView()"></pp-cardrenderer>
+<pp-action-button-bar [goBackButton]="false" [addButtonText]="'Add View'"
+                      (addClicked)="createView()"></pp-action-button-bar>
+<pp-cardrenderer [uriEntities]="patternViewResponse?._embedded?.patternViews"></pp-cardrenderer>

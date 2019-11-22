@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, OnDestroy, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UriConverter} from '../util/uri-converter';
 import {MatDialog} from '@angular/material';
@@ -8,7 +8,7 @@ import PatternLanguage from '../model/hal/pattern-language.model';
 import {D3Service} from '../../graph/service/d3.service';
 import {CardrendererComponent} from '../component/cardrenderer/cardrenderer.component';
 import {GraphDisplayComponent} from '../component/graph-display/graph-display.component';
-import {EMPTY, forkJoin, Observable, Subscription} from 'rxjs';
+import {EMPTY, forkJoin, Observable} from 'rxjs';
 import {Embedded} from '../model/hal/embedded';
 import {DirectedEdesResponse} from '../model/hal/directed-edes-response.interface';
 import {switchMap, tap} from 'rxjs/operators';
@@ -25,7 +25,7 @@ import {ToasterService} from 'angular2-toaster';
     templateUrl: './default-pl-renderer.component.html',
     styleUrls: ['./default-pl-renderer.component.scss']
 })
-export class DefaultPlRendererComponent implements OnInit, OnDestroy {
+export class DefaultPlRendererComponent implements OnInit {
 
 
     patterns: Pattern[] = [];
@@ -39,7 +39,6 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
     graphVisible = true;
     isLoadingDataForRenderer: boolean;
     private componentRef: ComponentRef<any>;
-    private cardcomponentSubscription: Subscription;
     private directedPatternRelations: DirectedEdge[] = [];
     private undirectedPatternRelations: UndirectedEdge[] = [];
     private copyEdgesForSimulation = [];
@@ -87,7 +86,10 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
         links = links.concat(this.directedPatternRelations);
         this.copyEdgesForSimulation = _.clone(links);
         if (graphRenderComponent) {
-            graphRenderComponent.data = {patterns: this.patternLanguage.patterns, edges: links, copyOfLinks: this.copyEdgesForSimulation};
+            graphRenderComponent.data = {
+                patterns: this.patternLanguage.patterns, edges: links, copyOfLinks: this.copyEdgesForSimulation,
+                patternLanguage: this.patternLanguage, patternView: null
+            };
             this.isLoadingDataForRenderer = false;
         }
 
@@ -128,9 +130,6 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
 
     toggleRendereringComponent(value: boolean) {
         this.graphVisible = value;
-        if (this.cardcomponentSubscription) {
-            this.cardcomponentSubscription.unsubscribe();
-        }
         this.loadRendererForData();
     }
 
@@ -152,8 +151,6 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
 
         if (componentInstance instanceof CardrendererComponent) {
             (<CardrendererComponent>componentInstance).uriEntities = this.patternLanguage.patterns;
-            this.cardcomponentSubscription = (<CardrendererComponent>componentInstance).createEntityClicked.subscribe(() => this.router.navigate(['create-patterns'],
-                {relativeTo: this.activatedRoute}));
             this.isLoadingDataForRenderer = false;
         }
 
@@ -162,8 +159,12 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
         }
     }
 
+    public addPattern(): void {
+        this.router.navigate(['create-patterns'], {relativeTo: this.activatedRoute});
+    }
 
-    createLink() {
+
+    public addLink() {
         const dialogRef = this.dialog.open(CreatePatternRelationComponent, {
             data: {
                 patterns: this.patternLanguage.patterns,
@@ -187,11 +188,6 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
             });
     }
 
-    ngOnDestroy(): void {
-        if (this.cardcomponentSubscription) {
-            this.cardcomponentSubscription.unsubscribe();
-        }
-    }
 }
 
 

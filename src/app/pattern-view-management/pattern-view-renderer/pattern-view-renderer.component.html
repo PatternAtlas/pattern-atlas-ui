@@ -1,13 +1,6 @@
-<mat-toolbar style="margin-bottom: 10px">
-    <button class="action-button" mat-raised-button color="accent"
-            (click)="addPatternToView()">
-        <i class="material-icons">add</i> Add Patterns
-    </button>
-    <button class="action-button" mat-raised-button color="accent"
-            (click)="createLink()">
-        <i class="material-icons">add</i> Create new Link
-    </button>
-</mat-toolbar>
+<pp-action-button-bar [addButtonText]="'Add patterns'" [secondAddButton]="true"
+                      [secondAddButtonText]="'Create new Link'"
+                      (addClicked)="addPatternToView()" (add2Clicked)="createLink()"></pp-action-button-bar>
 <h3>{{patternViewResponse?.name}}</h3>
 <div style="display: flex">
     <mat-card class="example-card" *ngFor="let pattern of patterns">

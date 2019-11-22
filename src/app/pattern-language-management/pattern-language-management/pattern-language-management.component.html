@@ -11,17 +11,9 @@
   ~
   ~ SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
   -->
-
-<mat-toolbar style="margin-top: 10px; margin-bottom: 10px">
-    <button style="margin-left: 10px; margin-right: 10px" mat-raised-button color="accent"
-            (click)="reloadPatternRepo()">
-        <i class="material-icons">autorenew</i> Reload
-    </button>
-    <button style="margin-left: 10px; margin-right: 10px" mat-raised-button color="accent"
-            (click)="goToPatternLanguageCreation()">
-        <i class="material-icons">add</i> Add
-    </button>
-</mat-toolbar>
+<pp-action-button-bar [addButtonText]="'Add'" [goBackButton]="false" [reloadButton]="true"
+                      (addClicked)="goToPatternLanguageCreation()"
+                      (reloadClicked)="reloadPatternRepo()"></pp-action-button-bar>
 <div class="container">
     <mat-card class="landing-card" *ngFor="let patternLanguage of patternLanguages">
         <mat-card-header>
@@ -39,7 +31,8 @@
                 </mat-card-title>
             </ng-template>
         </mat-card-header>
-        <img mat-card-image *ngIf="patternLanguage?.logo && patternLanguage?.logo !== ''; else noImage" [src]="patternLanguage.logo">
+        <img mat-card-image *ngIf="patternLanguage?.logo && patternLanguage?.logo !== ''; else noImage"
+             [src]="patternLanguage.logo">
         <ng-template #noImage><img mat-card-image [src]="'https://placekitten.com/200/300'"></ng-template>
         <mat-card-actions>
             <div style="text-align: center">

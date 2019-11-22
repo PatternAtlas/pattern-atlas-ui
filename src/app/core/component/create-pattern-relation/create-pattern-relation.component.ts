@@ -44,6 +44,9 @@ export class CreatePatternRelationComponent implements OnInit {
         if (this.data.firstPattern) {
             this.relationForm.get('firstPattern').setValue(this.data.firstPattern);
         }
+        if (this.data.secondPattern) {
+            this.relationForm.get('secondPattern').setValue(this.data.secondPattern);
+        }
     }
 
     close(): void {
@@ -75,7 +78,8 @@ export class CreatePatternRelationComponent implements OnInit {
 }
 
 export interface DialogData {
-    firstPattern: Pattern;
+    firstPattern?: Pattern;
+    secondPattern?: Pattern;
     patterns: Pattern[];
     patternLanguage: PatternLanguage;
     patternView: PatternView;

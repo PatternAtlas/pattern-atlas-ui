@@ -19,19 +19,20 @@ import {DefaultPatternRendererComponent} from './default-pattern-renderer/defaul
 import {ComponentRegistryService} from './service/component-registry.service';
 import {PrettyJsonModule} from 'angular2-prettyjson';
 import {
-  MatAutocompleteModule,
-  MatButtonModule,
-  MatButtonToggleModule,
-  MatCardModule,
-  MatDatepickerModule,
-  MatDialogModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatNativeDateModule,
-  MatProgressSpinnerModule,
-  MatSelectModule,
-  MatTooltipModule
+    MatAutocompleteModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatCardModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatNativeDateModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatToolbarModule,
+    MatTooltipModule
 } from '@angular/material';
 import {TextFieldModule} from '@angular/cdk/text-field';
 import {MdEditorComponent} from './component/md-editor/md-editor.component';
@@ -49,9 +50,11 @@ import {MarkdownPatternSectioncontentComponent} from './component/markdown-conte
 import {PatternLanguageService} from './service/pattern-language.service';
 import {PatternService} from './service/pattern.service';
 import {GraphDisplayComponent} from './component/graph-display/graph-display.component';
-import { CardrendererComponent } from './component/cardrenderer/cardrenderer.component';
+import {CardrendererComponent} from './component/cardrenderer/cardrenderer.component';
 import {PatternViewService} from './service/pattern-view.service';
 import {CreateEditPatternLanguageComponent} from './component/create-edit-pattern-language/create-edit-pattern-language.component';
+import {ActionButtonBarComponent} from './component/action-button-bar/action-button-bar.component';
+import {EmitEventOnAddedEdgeDirective} from './directives/emit-event-on-added-edge.directive';
 
 @NgModule({
     imports: [
@@ -70,29 +73,31 @@ import {CreateEditPatternLanguageComponent} from './component/create-edit-patter
         MatSelectModule,
         MatDialogModule,
         MatAutocompleteModule,
-        MatIconModule,
-      MatButtonToggleModule,
+        MatIconModule, MatToolbarModule,
+        MatButtonToggleModule,
         NgxMdModule.forRoot(), MatNativeDateModule
     ],
-  exports: [CovalentTextEditorModule, EmitEventOnKeyupDirective, MatProgressSpinnerModule, NavigateBackComponent, CardrendererComponent],
+    exports: [CovalentTextEditorModule, EmitEventOnKeyupDirective, EmitEventOnAddedEdgeDirective, MatProgressSpinnerModule, NavigateBackComponent, CardrendererComponent, ActionButtonBarComponent],
     providers: [
         PatternLanguageService,
         PatternService,
-      PatternViewService
+        PatternViewService
     ],
     declarations: [
         DefaultPlRendererComponent,
         DefaultPatternRendererComponent,
         MdEditorComponent,
         EmitEventOnKeyupDirective,
+        EmitEventOnAddedEdgeDirective,
         NavigateBackComponent,
         PatternpropertyDirective,
         DividerComponent,
         CreatePatternRelationComponent,
-      MarkdownPatternSectioncontentComponent,
-      GraphDisplayComponent,
-      CardrendererComponent,
-      CreateEditPatternLanguageComponent
+        MarkdownPatternSectioncontentComponent,
+        GraphDisplayComponent,
+        CardrendererComponent,
+        CreateEditPatternLanguageComponent,
+        ActionButtonBarComponent
     ],
     entryComponents: [
         DefaultPlRendererComponent,
@@ -101,11 +106,11 @@ import {CreateEditPatternLanguageComponent} from './component/create-edit-patter
         DividerComponent,
         CreatePatternRelationComponent,
         MarkdownPatternSectioncontentComponent,
-      CardrendererComponent,
-      GraphDisplayComponent,
-      CreateEditPatternLanguageComponent
+        CardrendererComponent,
+        GraphDisplayComponent,
+        CreateEditPatternLanguageComponent
     ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class CoreModule {
     constructor(private cr: ComponentRegistryService) {
