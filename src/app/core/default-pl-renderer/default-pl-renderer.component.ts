@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, OnDestroy, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UriConverter} from '../util/uri-converter';
 import {MatDialog} from '@angular/material';
@@ -25,7 +25,8 @@ import {ToasterService} from 'angular2-toaster';
     templateUrl: './default-pl-renderer.component.html',
     styleUrls: ['./default-pl-renderer.component.scss']
 })
-export class DefaultPlRendererComponent implements OnInit {
+export class DefaultPlRendererComponent implements OnInit, OnDestroy {
+
 
     patterns: Pattern[] = [];
     patternLanguage: PatternLanguage;
@@ -35,16 +36,13 @@ export class DefaultPlRendererComponent implements OnInit {
     @ViewChild('cardsView') cardsView: ElementRef;
     @ViewChild('displayPLContainer', {read: ViewContainerRef}) loadRenderer;
     rendererComponentInstance: GraphDisplayComponent | CardrendererComponent;
-    private simulationResult: any;
     graphVisible = true;
     isLoadingDataForRenderer: boolean;
     private componentRef: ComponentRef<any>;
     private cardcomponentSubscription: Subscription;
     private directedPatternRelations: DirectedEdge[] = [];
     private undirectedPatternRelations: UndirectedEdge[] = [];
-    private edgesForSimulation = [];
     private copyEdgesForSimulation = [];
-    private nodesForSimulation = [];
 
 
     constructor(private activatedRoute: ActivatedRoute,
@@ -133,10 +131,6 @@ export class DefaultPlRendererComponent implements OnInit {
         if (this.cardcomponentSubscription) {
             this.cardcomponentSubscription.unsubscribe();
         }
-        if (this.rendererComponentInstance instanceof GraphDisplayComponent) {
-            (<GraphDisplayComponent>this.rendererComponentInstance).clear();
-        }
-
         this.loadRendererForData();
     }
 
@@ -192,5 +186,13 @@ export class DefaultPlRendererComponent implements OnInit {
                 }
             });
     }
+
+    ngOnDestroy(): void {
+        if (this.cardcomponentSubscription) {
+            this.cardcomponentSubscription.unsubscribe();
+        }
+    }
 }
+
+
 
