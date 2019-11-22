@@ -1,14 +1,17 @@
 import {PatternView} from './pattern-view.model';
+import PatternLanguage from './pattern-language.model';
 
 export class Edge {
-  description: any;
+    description: any;
 
-  type: string;
-  patternView?: PatternView;
+    type: string;
+    patternView?: PatternView;
+    patternlanguage?: PatternLanguage;
 
-  constructor(description: any, type: string, patternView: PatternView = null) {
-    this.description = description;
-    this.type = type;
-    this.patternView = patternView;
-  }
+    constructor(description: any, type: string, patternView: PatternView = null, patternLanguage: PatternLanguage = null) {
+        this.description = description;
+        this.type = type;
+        this.patternView = patternView;
+        this.patternlanguage = patternLanguage;
+    }
 }

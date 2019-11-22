@@ -1,19 +1,22 @@
-<mat-toolbar style="margin-top: 10px; margin-bottom: 10px">
-  <button style="margin-left: 10px; margin-right: 10px" mat-raised-button color="accent"
-          (click)="addPatternToView()">
-    <i class="material-icons">add</i> Add Pattern
-  </button>
+<mat-toolbar style="margin-bottom: 10px">
+    <button class="action-button" mat-raised-button color="accent"
+            (click)="addPatternToView()">
+        <i class="material-icons">add</i> Add Patterns
+    </button>
+    <button class="action-button" mat-raised-button color="accent"
+            (click)="createLink()">
+        <i class="material-icons">add</i> Create new Link
+    </button>
 </mat-toolbar>
 <h3>{{patternViewResponse?.name}}</h3>
 <div style="display: flex">
-  <mat-card class="example-card" *ngFor="let pattern of patternViewResponse?.patterns">
-    <mat-card-header>
-      <mat-card-title>{{pattern.name}}</mat-card-title>
-      <mat-card-subtitle>Pattern</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-actions>
-      <button mat-button>View</button>
-      <button mat-button>Remove</button>
-    </mat-card-actions>
-  </mat-card>
+    <mat-card class="example-card" *ngFor="let pattern of patterns">
+        <mat-card-header>
+            <mat-card-title>{{pattern?.name}}</mat-card-title>
+            <mat-card-subtitle>Pattern</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-actions>
+            <button mat-button (click)="addLinks(pattern)">Add Links (incl. Pattern)</button>
+        </mat-card-actions>
+    </mat-card>
 </div>

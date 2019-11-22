@@ -17,11 +17,12 @@ import {HalLink} from './hal-link.interface';
 
 class Pattern extends UriEntity {
     content: any;
-  _links: {
-    self: HalLink;
-    content: HalLink;
-    patternLanguage: HalLink;
-  };
+    _links: {
+        self: HalLink;
+        content: HalLink;
+        patternLanguage: HalLink;
+        directedEdges: HalLink;
+    };
 }
 
 export default Pattern;

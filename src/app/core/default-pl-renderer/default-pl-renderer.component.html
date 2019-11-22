@@ -1,25 +1,32 @@
+<mat-toolbar style="margin-bottom: 10px">
+    <button class="action-button" mat-raised-button color="accent"
+            (click)="createLink()">
+        <i class="material-icons">add</i> Create new Link
+    </button>
+</mat-toolbar>
 <pp-navigate-back></pp-navigate-back>
-<mat-button-toggle-group [value]="graphVisible" (change)="onToggle(group.value)" #group="matButtonToggleGroup">
-  <mat-button-toggle [value]="false" aria-label="Text align center" [checked]="true">
-    Cards
-  </mat-button-toggle>
-  <mat-button-toggle [value]="true" aria-label="Text align left">
-    Graph
-  </mat-button-toggle>
+<mat-button-toggle-group [value]="graphVisible" (change)="toggleRendereringComponent(group.value)"
+                         #group="matButtonToggleGroup">
+    <mat-button-toggle [value]="false" aria-label="Text align center" [checked]="true">
+        Cards
+    </mat-button-toggle>
+    <mat-button-toggle [value]="true" aria-label="Text align left">
+        Graph
+    </mat-button-toggle>
 
 
 </mat-button-toggle-group>
 <h2>Pattern Language: {{patternLanguage?.name}}
 
-  <button mat-stroked-button
-          style="margin-left: 5px" color="primary"
-          (click)="addRelationType()" matTooltip="Add new Relationtype"><i class="material-icons -rotate-90deg">swap_vertical_circle</i>
-    <i class="material-icons" style="height: 2em;
+    <button mat-stroked-button
+            style="margin-left: 5px" color="primary"
+            (click)="addRelationType()" matTooltip="Add new Relationtype"><i class="material-icons -rotate-90deg">swap_vertical_circle</i>
+        <i class="material-icons" style="height: 2em;
 font-size: smaller;  ">add</i></button>
 </h2>
 
 <mat-progress-spinner mode="indeterminate" *ngIf="isLoadingDataForRenderer"></mat-progress-spinner>
 <div>
-  <ng-template #displayPLContainer></ng-template>
+    <ng-template #displayPLContainer></ng-template>
 </div>
 

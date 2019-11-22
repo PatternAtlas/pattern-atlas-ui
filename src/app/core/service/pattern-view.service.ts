@@ -13,37 +13,43 @@
  */
 
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpResponse} from '@angular/common/http';
 import {globals} from '../../globals';
 import {forkJoin, Observable} from 'rxjs';
 import Pattern from '../model/hal/pattern.model';
 import {PatternView} from '../model/hal/pattern-view.model';
 import {PatternViewResponse} from '../model/hal/pattern-view-response.interface';
+import {DirectedEdge} from '../model/hal/directed-edge.model';
+import {UndirectedEdge} from '../model/hal/undirected-edge.model';
 
 @Injectable()
 export class PatternViewService {
 
-  private repoEndpoint = globals.repoEndpoint;
+    private repoEndpoint = globals.repoEndpoint;
 
-  constructor(private http: HttpClient) {
-  }
-
-
-  getPatternViews(): Observable<PatternViewResponse> {
-    return this.http.get<PatternViewResponse>(this.repoEndpoint + '/patternViews');
-  }
+    constructor(private http: HttpClient) {
+    }
 
 
-  savePatternView(url: string, view: PatternView) {
-    return this.http.post<PatternViewResponse>(url, view, {observe: 'response'});
-  }
+    getPatternViews(): Observable<PatternViewResponse> {
+        return this.http.get<PatternViewResponse>(this.repoEndpoint + '/patternViews');
+    }
 
-  addPatterns(url: string, patterns: Pattern[]) {
-    const observables = patterns.map(pat => this.http.post<PatternViewResponse>(url, pat, {observe: 'response'}));
-    return forkJoin(observables);
-  }
 
-  getPatternViewByUri(encodedUri: string): Observable<PatternView> {
-    return this.http.get<PatternView>(this.repoEndpoint + `/patternViews/findByUri?encodedUri=${encodedUri}`);
-  }
+    savePatternView(url: string, view: PatternView) {
+        return this.http.post<PatternViewResponse>(url, view, {observe: 'response'});
+    }
+
+    addPatterns(url: string, patterns: Pattern[]) {
+        const observables = patterns.map(pat => this.http.post<PatternViewResponse>(url, pat, {observe: 'response'}));
+        return forkJoin(observables);
+    }
+
+    getPatternViewByUri(encodedUri: string): Observable<PatternView> {
+        return this.http.get<PatternView>(this.repoEndpoint + `/patternViews/findByUri?encodedUri=${encodedUri}`);
+    }
+
+    createLink(url, edge: DirectedEdge | UndirectedEdge): Observable<HttpResponse<Object>> {
+        return this.http.post(url, edge, {observe: 'response'});
+    }
 }
