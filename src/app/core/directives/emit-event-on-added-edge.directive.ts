@@ -10,11 +10,11 @@ export class EmitEventOnAddedEdgeDirective implements OnInit, OnDestroy {
     constructor() {
     }
 
-    @HostListener('edgeadd', ['$event']) onMouseEnter($event) {
+    @HostListener('edgeadd', ['$event']) onEdgeAdd($event) {
         this.edgeAddedEventEmitter.emit($event);
     }
 
-    @HostListener('nodeclick', ['$event']) onMouseEnter($event) {
+    @HostListener('nodeclick', ['$event']) onNodeClick($event) {
         this.nodeClickedEventEmitter.emit($event);
     }
 

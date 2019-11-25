@@ -37,7 +37,7 @@ export class PatternService {
     getPatternsByUrl(patternsUrl: string): Observable<Pattern[]> {
         return this.http.get<PatternResponse>(patternsUrl).pipe(
             map(result => {
-                return <Pattern[]>(result._embedded ? result._embedded.patterns : result);
+                return <Pattern[]>(result._embedded ? result._embedded.patterns : []);
             })
         );
     }

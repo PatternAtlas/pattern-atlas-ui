@@ -24,9 +24,10 @@ import {DirectedEdge} from '../../core/model/hal/directed-edge.model';
 })
 export class PatternViewRendererComponent implements OnInit {
     private patternLanguages: PatternLanguage[];
-    private patternViewResponse: PatternView;
-    private patterns: Pattern[];
+    patternViewResponse: PatternView;
+    patterns: Pattern[] = [];
     private patternViewUri: string;
+    isLoading = true;
 
 
     constructor(private matDialog: MatDialog, private patternLanguageService: PatternLanguageService, private patternViewService: PatternViewService, private patternService: PatternService,
@@ -38,6 +39,10 @@ export class PatternViewRendererComponent implements OnInit {
         this.patternViewUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternViewUri'));
 
         this.getData().subscribe(() => {
+                this.isLoading = false;
+                this.cdr.detectChanges();
+                console.log(this.patternViewResponse.directedEdges.length);
+                console.log(this.patternViewResponse.name);
             },
             (error => this.toasterService.pop('error', 'Could not load data')));
     }
@@ -62,9 +67,15 @@ export class PatternViewRendererComponent implements OnInit {
 
     private getCurrentPatternViewAndPatterns(): Observable<Pattern[]> {
         return this.patternViewService.getPatternViewByUri(this.patternViewUri).pipe(
-            tap(patternViewResponse => this.patternViewResponse = patternViewResponse),
+            tap(patternViewResponse => {
+                this.patternViewResponse = patternViewResponse;
+                console.log('updated response object');
+                console.log(this.patternViewResponse);
+            }),
             switchMap((patternViewResponse: PatternView) => this.patternService.getPatternsByUrl(patternViewResponse._links.patterns.href)),
-            tap(patterns => this.patterns = patterns));
+            tap(patterns => {
+                this.patterns = patterns;
+            }));
     }
 
     private getData(): Observable<any> {
@@ -110,9 +121,11 @@ export class PatternViewRendererComponent implements OnInit {
         const dialogRef = this.matDialog.open(CreatePatternRelationComponent, {data: {patterns: this.patterns, patternview: this.patternViewResponse}});
         dialogRef.afterClosed().pipe(
             switchMap((dialogResult) => {
-                const url = dialogResult instanceof DirectedEdge ? this.patternViewResponse._links.directedEdges.href : this.patternViewResponse._links.undirectedEdges.href;
+                const url = dialogResult instanceof DirectedEdge ? this.patternViewResponse._links.directedEdges.href :
+                    this.patternViewResponse._links.undirectedEdges.href;
                 return dialogResult ? this.patternViewService.createLink(url, dialogResult) : EMPTY;
-            })).subscribe((res) => {
+            }),
+            switchMap((edge) => edge ? this.getCurrentPatternViewAndPatterns() : EMPTY)).subscribe((res) => {
             if (res) {
                 this.toasterService.pop('success', 'Relation added');
                 this.cdr.detectChanges();

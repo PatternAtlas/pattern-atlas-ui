@@ -1,5 +1,5 @@
 <mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>
-<network-graph #graphWrapper classes="red blue" mode="layout" zoom="both"
+<network-graph #graphWrapper classes="" mode="layout" zoom="both" classes=""
                style="width: 100%; height: 100%" ppEmitOnAddEdge (onAddedEdge)="edgeAdded($event)"
                (onClickedNode)="nodeClicked($event)"
 >
@@ -31,7 +31,15 @@
             }
 
             .edge-group .link-handle {
-                display: initial
+                display: initial;
+            }
+
+            .edge {
+                stroke: black;
+            }
+
+            .low-opacity-edge {
+                stroke: grey;
             }
 
             .link-handle:hover {
@@ -49,8 +57,22 @@
                 word-break: break-word
             }
 
-            .small-node {
-                fill: blueviolet;
+            .highlighted-node {
+                fill: rgb(63, 81, 181);
+                opacity: 0.9;
+                color: white;
+            }
+
+            .low-opacity-node {
+                opacity: 0.1;
+            }
+
+            .low-opacity-node .edge {
+                stroke: blueviolet;
+            }
+
+            .highlighted-node .edge {
+                stroke: red;
             }
 
 
@@ -59,31 +81,51 @@
 
             <g id="default" data-template-type="node">
 
-                <rect x="0" y="0" width="100" height="40" rx="5" ry="5" style="stroke:black;stroke-width:1"
+                <rect x="0" y="0" width="100" height="40" rx="5" ry="5"
+                      style="stroke:black;stroke-width:1;"
                       data-link-handles="edges" data-click="nodeclick">
                 </rect>
                 <a data-href="link">
-                    <!--                  TODO: link für nodes setzen-->
-                    <text class="text" x="50" y="20" width="100" height="40" data-content="title" data-click="title"
-                          dominant-baseline="middle"
-                          text-anchor="middle"></text>
+                    <image x="85" y="5" width="10" data-content="link"
+                           xlink:href="assets/Info_Simple_bw.svg"/>
                 </a>
+                <text class="text" x="50" y="20" width="100" height="40" data-content="title" data-click="title"
+                      dominant-baseline="middle"
+                      text-anchor="middle">
+                </text>
             </g>
-            <g id="small-node" data-template-type="node">
 
-                <rect x="0" y="0" width="100" height="40" rx="5" ry="5" style="stroke:black;stroke-width:1"
+            <g id="highlighted-node" data-template-type="node">
+                <rect class="highlighted-node" x="0" y="0" width="100" height="40" rx="5" ry="5"
+                      style="stroke:black;stroke-width:1;"
                       data-link-handles="edges" data-click="nodeclick">
                 </rect>
                 <a data-href="link">
-                    <!--                  TODO: link für nodes setzen-->
-                    <text class="text" x="50" y="20" width="100" height="40" data-content="title" data-click="title"
-                          dominant-baseline="middle"
-                          text-anchor="middle"></text>
+                    <image x="85" y="5" width="10" data-content="link"
+                           xlink:href="assets/Info_Simple_bw.svg"/>
                 </a>
+                <text class="text" style="fill: white" x="50" y="20" width="100" height="40" data-content="title"
+                      data-click="title"
+                      dominant-baseline="middle"
+                      text-anchor="middle">
+                </text>
             </g>
-            <g id="arrow" data-template-type="marker" data-line-attachement-point="-9 0">
-                <path d="M -9 -4 L 0 0 L -9 4 z"/>
+            <g id="low-opacity-node" data-template-type="node">
+                <rect class="low-opacity-node" x="0" y="0" width="100" height="40" rx="5" ry="5"
+                      style="stroke:black;stroke-width:1;"
+                      data-link-handles="edges" data-click="nodeclick">
+                </rect>
+                <a data-href="link">
+                    <image x="85" y="5" width="10" data-content="link" class="low-opacity-node"
+                           xlink:href="assets/Info_Simple_bw.svg"/>
+                </a>
+                <text class="text low-opacity-node" x="50" y="20" width="100" height="40" data-content="title"
+                      data-click="title"
+                      dominant-baseline="middle"
+                      text-anchor="middle">
+                </text>
             </g>
+
         </defs>
     </svg>
 </network-graph>

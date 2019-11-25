@@ -12,6 +12,7 @@ import {DirectedEdge} from '../../model/hal/directed-edge.model';
 import {switchMap} from 'rxjs/operators';
 import {EMPTY} from 'rxjs';
 import {ToasterService} from 'angular2-toaster';
+import {UriConverter} from '../../util/uri-converter';
 
 interface GraphInputData {
     patterns: Pattern[];
@@ -57,6 +58,7 @@ export class GraphDisplayComponent implements OnInit {
         this.patternView = this.patternlanguageData.patternView;
         this.nodes = this.mapPatternsToNodes(this.patterns);
         this.isLoading = true;
+        
         this.startSimulation();
     }
 
@@ -120,7 +122,8 @@ export class GraphDisplayComponent implements OnInit {
             const node = {
                 id: patterns[i].id,
                 title: patterns[i].name,
-                type: 'small-node',
+                type: 'default',
+                link: 'patternlanguages/' + UriConverter.doubleEncodeUri(this.patternLanguage.uri) + '/' + UriConverter.doubleEncodeUri(patterns[i].uri),
                 x: 0,
                 y: 0
             };
@@ -158,14 +161,24 @@ export class GraphDisplayComponent implements OnInit {
     }
 
     nodeClicked($event) {
-        const node = event.detail.node;
-        const outgoingLinks = this.graph.nativeElement.getEdgesBySource(node.id);
+        const node = event['detail']['node'];
+        const outgoingLinks = this.graph.nativeElement.getEdgesByTarget(node.id);
         const ingoingLinks = this.graph.nativeElement.getEdgesBySource(node.id);
-        const outgoingNodeIds = Array.from(outgoingLinks).map(it => it.target);
-        const ingoingNodeIds = Array.from(ingoingLinks).map(it => it.source);
-        console.log(outgoingNodeIds);
-        console.log(ingoingNodeIds);
-        // TODO: Highlight nodes.
+        console.log(outgoingLinks);
+        const outgoingNodeIds: string[] = Array.from(outgoingLinks).map(it => it['source']);
+        const ingoingNodeIds: string[] = Array.from(ingoingLinks).map(it => it['target']);
+
+        const linkedNodeIds = outgoingNodeIds.concat(ingoingNodeIds);
+        linkedNodeIds.push(node.id);
+
+        this.graph.nativeElement.nodeList.forEach(currentNode => {
+            currentNode.type = linkedNodeIds.includes(currentNode.id) ? 'highlighted-node' : 'low-opacity-node';
+        });
+
+        console.log(this.graph.nativeElement.edgeList);
+
+
+        this.graph.nativeElement.completeRender(true);
     }
 }
 
