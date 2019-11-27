@@ -9,12 +9,12 @@ import {AddToViewComponent} from './add-to-view/add-to-view.component';
 import {MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatIconModule, MatToolbarModule, MatTreeModule} from '@angular/material';
 
 @NgModule({
-  declarations: [PatternViewManagementComponent, PatternViewRendererComponent, AddToViewComponent],
-  imports: [
-    CommonModule, MatCardModule,
-    PatternViewManagementRoutingModule, CoreModule, MatToolbarModule, MatDialogModule, MatButtonModule, MatTreeModule, MatIconModule, MatCheckboxModule
-  ],
-  entryComponents: [AddToViewComponent]
+    declarations: [PatternViewManagementComponent, PatternViewRendererComponent, AddToViewComponent],
+    imports: [
+        CommonModule, MatCardModule,
+        PatternViewManagementRoutingModule, CoreModule, MatToolbarModule, MatDialogModule, MatButtonModule, MatTreeModule, MatIconModule, MatCheckboxModule
+    ],
+    entryComponents: [AddToViewComponent]
 })
 export class PatternViewManagementModule {
 }

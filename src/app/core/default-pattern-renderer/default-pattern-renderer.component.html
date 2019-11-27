@@ -1,48 +1,49 @@
-<pp-navigate-back></pp-navigate-back>
+<pp-action-button-bar [displayText]="pattern?.name" [firstAddButton]="false"></pp-action-button-bar>
 <mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>
-<h2>{{pattern?.name}}</h2>
+<h2></h2>
 <div>
-  <ng-template ppPatternproperty></ng-template>
+    <ng-template ppPatternproperty></ng-template>
 </div>
 <mat-card *ngIf="!isLoading">
-  <mat-card-title style="display: flex;
+    <mat-card-title style="display: flex;
      align-items: flex-start;"><b>Links</b><i class="material-icons" style="margin-left: 0.3em;">
-    compare_arrows
-  </i></mat-card-title>
-  <div *ngIf="directedPatternRelations?.length > 0">
-    <ng-container *ngFor="let relation of directedPatternRelations">
-      <p class="horiz-centered">
-        {{ relation?.source?.name}}
-        <span class="horiz-centered" *ngIf="relation?.type"><i class="material-icons">
+        compare_arrows
+    </i></mat-card-title>
+    <div *ngIf="directedPatternRelations?.length > 0">
+        <ng-container *ngFor="let relation of directedPatternRelations">
+            <p class="horiz-centered">
+                {{ relation?.source?.name}}
+                <span class="horiz-centered" *ngIf="relation?.type"><i class="material-icons">
           remove
         </i>{{relation?.type}}</span>
-        <i class="material-icons">trending_flat</i>
-        {{ relation?.target?.name}} <i>{{relation?.description ? ': ' + relation?.description : ''}}</i>
-      </p>
-      <br/>
-    </ng-container>
-  </div>
-  <div *ngIf="undirectedPatternRelations?.length > 0">
-    <ng-container *ngFor="let relation of undirectedPatternRelations">
-      <p class="horiz-centered">{{ relation?.p1?.name}}
-        <span *ngIf="!relation?.type"><i class="material-icons">compare_arrows</i></span>
-        <span class="horiz-centered" *ngIf="relation?.type"><i
-          class="material-icons flip">trending_flat</i>{{relation?.type}}
-          <i class="material-icons">trending_flat</i></span>
-        {{ relation?.p2?.name}} <i>{{relation?.description ? ': ' + relation?.description : ''}}</i>
-      </p>
-      <br/>
-    </ng-container>
-  </div>
-  <div #noLinksMessage *ngIf="undirectedPatternRelations?.length === 0 && directedPatternRelations?.length === 0"><p> No
-    links found for this pattern.</p></div>
-  <mat-card-actions>
-    <div style="display: flex; align-items: center;">
-      <button *ngIf="isEditingEnabled" mat-stroked-button
-              style="margin-left: 5px" color="primary"
-              (click)="addLink()" matTooltip="Add Link"><i class="material-icons">trending_flat</i>
-        <i class="material-icons" style="height: 2em;
-    font-size: smaller;  ">add</i></button>
+                <i class="material-icons">trending_flat</i>
+                {{ relation?.target?.name}} <i>{{relation?.description ? ': ' + relation?.description : ''}}</i>
+            </p>
+            <br/>
+        </ng-container>
     </div>
-  </mat-card-actions>
+    <div *ngIf="undirectedPatternRelations?.length > 0">
+        <ng-container *ngFor="let relation of undirectedPatternRelations">
+            <p class="horiz-centered">{{ relation?.p1?.name}}
+                <span *ngIf="!relation?.type"><i class="material-icons">compare_arrows</i></span>
+                <span class="horiz-centered" *ngIf="relation?.type"><i
+                        class="material-icons flip">trending_flat</i>{{relation?.type}}
+                    <i class="material-icons">trending_flat</i></span>
+                {{ relation?.p2?.name}} <i>{{relation?.description ? ': ' + relation?.description : ''}}</i>
+            </p>
+            <br/>
+        </ng-container>
+    </div>
+    <div #noLinksMessage *ngIf="undirectedPatternRelations?.length === 0 && directedPatternRelations?.length === 0"><p>
+        No
+        links found for this pattern.</p></div>
+    <mat-card-actions>
+        <div style="display: flex; align-items: center;">
+            <button *ngIf="isEditingEnabled" mat-stroked-button
+                    style="margin-left: 5px" color="primary"
+                    (click)="addLink()" matTooltip="Add Link"><i class="material-icons">trending_flat</i>
+                <i class="material-icons" style="height: 2em;
+    font-size: smaller;  ">add</i></button>
+        </div>
+    </mat-card-actions>
 </mat-card>

@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {AfterViewInit, ApplicationRef, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {AddToViewComponent} from '../add-to-view/add-to-view.component';
 import {PatternLanguageService} from '../../core/service/pattern-language.service';
@@ -22,33 +22,38 @@ import {DirectedEdge} from '../../core/model/hal/directed-edge.model';
     templateUrl: './pattern-view-renderer.component.html',
     styleUrls: ['./pattern-view-renderer.component.scss']
 })
-export class PatternViewRendererComponent implements OnInit {
+export class PatternViewRendererComponent implements OnInit, AfterViewInit {
+
     private patternLanguages: PatternLanguage[];
     patternViewResponse: PatternView;
     patterns: Pattern[] = [];
+    displayText: string;
     private patternViewUri: string;
     isLoading = true;
+    trigger;
 
 
     constructor(private matDialog: MatDialog, private patternLanguageService: PatternLanguageService, private patternViewService: PatternViewService, private patternService: PatternService,
-                private toasterService: ToasterService, private cdr: ChangeDetectorRef, private activatedRoute: ActivatedRoute) {
+                private toasterService: ToasterService, private cdr: ChangeDetectorRef, private activatedRoute: ActivatedRoute, private applicationRef: ApplicationRef) {
     }
 
     ngOnInit() {
 
+
+    }
+
+    ngAfterViewInit(): void {
         this.patternViewUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternViewUri'));
 
         this.getData().subscribe(() => {
                 this.isLoading = false;
-                this.cdr.detectChanges();
-                console.log(this.patternViewResponse.directedEdges.length);
-                console.log(this.patternViewResponse.name);
+                this.displayText = this.patternViewResponse.name;
             },
             (error => this.toasterService.pop('error', 'Could not load data')));
     }
 
     addPatternToView() {
-        const dialogRef = this.matDialog.open(AddToViewComponent, {data: {patternlanguages: this.patternLanguages}});
+        const dialogRef = this.matDialog.open(AddToViewComponent, {data: {patternlanguages: this.patternLanguages, title: 'Add patterns to View'}});
         dialogRef.afterClosed().pipe(
             switchMap((res: PatternLanguageFlatNode[]) => res ?
                 this.patternViewService.addPatterns(this.patternViewResponse._links.patterns.href, this.mapDialogResultToPatterns(res))
@@ -131,5 +136,10 @@ export class PatternViewRendererComponent implements OnInit {
                 this.cdr.detectChanges();
             }
         });
+    }
+
+    detectChanges() {
+        this.cdr.detectChanges();
+        console.log('detected');
     }
 }

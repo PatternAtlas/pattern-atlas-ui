@@ -1,19 +1,21 @@
 <pp-action-button-bar (addClicked)="addLink()" [addButtonText]="'Add Link'" [secondAddButton]="true"
-                      [secondAddButtonText]="'Add Pattern'" (add2Clicked)="addPattern()"></pp-action-button-bar>
+                      [secondAddButtonText]="'Add Pattern'" (add2Clicked)="addPattern()"
+                      [displayText]="'Pattern Language: '+ patternLanguage?.name">
+    <mat-button-toggle-group style="font-size: small; height: 35px; align-items: center;" [value]="graphVisible"
+                             (change)="toggleRendereringComponent(group.value)"
+                             #group="matButtonToggleGroup">
+        <mat-button-toggle mat-raised-button [value]="false" aria-label="Text align center"
+                           [checked]="true">
+            Cards
+        </mat-button-toggle>
+        <mat-button-toggle mat-raised-button [value]="true" aria-label="Text align left">
+            Graph
+        </mat-button-toggle>
 
 
-<h2 style="display: inline">Pattern Language: {{patternLanguage?.name}} </h2>
-<mat-button-toggle-group [value]="graphVisible" (change)="toggleRendereringComponent(group.value)"
-                         #group="matButtonToggleGroup">
-    <mat-button-toggle [value]="false" aria-label="Text align center" [checked]="true">
-        Cards
-    </mat-button-toggle>
-    <mat-button-toggle [value]="true" aria-label="Text align left">
-        Graph
-    </mat-button-toggle>
+    </mat-button-toggle-group>
+</pp-action-button-bar>
 
-
-</mat-button-toggle-group>
 
 <mat-progress-spinner mode="indeterminate" *ngIf="isLoadingDataForRenderer"></mat-progress-spinner>
 <div>
