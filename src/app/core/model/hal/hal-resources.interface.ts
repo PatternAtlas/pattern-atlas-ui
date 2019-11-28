@@ -24,8 +24,8 @@ export interface PatternLanguageResource {
     self: HalLink;
     patterns: HalLink;
     patternLanguages: HalLink;
-  directedEdges: HalLink;
-  undirectedEdges: HalLink;
+    directedEdges: HalLink;
+    undirectedEdges: HalLink;
 }
 
 export interface PatternLanguagesResource {
@@ -39,7 +39,9 @@ export interface PatternSchemaResource {
 }
 
 export interface DirectedEdgeResource {
-    self: HalLink;
+    sourcePattern: HalLink;
+    targetPattern: HalLink;
+    HalLink;
     patternLanguage: HalLink;
 }
 

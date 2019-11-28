@@ -7,7 +7,6 @@ import {EMPTY, forkJoin, Observable} from 'rxjs';
 import {switchMap, tap} from 'rxjs/operators';
 import {ToasterService} from 'angular2-toaster';
 import {PatternViewService} from '../../core/service/pattern-view.service';
-import {PatternLanguageFlatNode} from '../../core/model/pattern-language-flat-node.interface';
 import Pattern from '../../core/model/hal/pattern.model';
 import {PatternView} from '../../core/model/hal/pattern-view.model';
 import {UriConverter} from '../../core/util/uri-converter';
@@ -116,7 +115,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
 
     private subscribeToLinkDialogResult(dialogRef: MatDialogRef<AddToViewComponent, any>) {
         dialogRef.afterClosed().pipe(
-            switchMap((res: PatternLanguageFlatNode[]) => res ?
+            switchMap((res: LoazyLoadedFlatNode[]) => res ?
                 this.patternViewService.addPatterns(this.patternViewResponse._links.directedEdges.href, this.mapDialogResultToPatterns(res))
                 : EMPTY),
             switchMap(result => result ? this.getCurrentPatternViewAndPatterns() : EMPTY)

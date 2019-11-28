@@ -2,7 +2,6 @@ import {ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, El
 import {ActivatedRoute, Router} from '@angular/router';
 import {UriConverter} from '../util/uri-converter';
 import {MatDialog} from '@angular/material';
-import Pattern from '../model/pattern.model';
 import {PatternLanguageService} from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
 import {D3Service} from '../../graph/service/d3.service';
@@ -19,6 +18,8 @@ import * as _ from 'lodash';
 import {CreatePatternRelationComponent} from '../component/create-pattern-relation/create-pattern-relation.component';
 import {PatternRelationDescriptorService} from '../service/pattern-relation-descriptor.service';
 import {ToasterService} from 'angular2-toaster';
+import {PatternService} from '../service/pattern.service';
+import Pattern from '../model/hal/pattern.model';
 
 @Component({
     selector: 'pp-default-pl-renderer',
@@ -48,6 +49,7 @@ export class DefaultPlRendererComponent implements OnInit {
                 private cdr: ChangeDetectorRef,
                 private dialog: MatDialog,
                 private patternLanguageService: PatternLanguageService,
+                private patternService: PatternService,
                 private patternRelationDescriptorService: PatternRelationDescriptorService,
                 private d3Service: D3Service,
                 private router: Router,
@@ -66,6 +68,8 @@ export class DefaultPlRendererComponent implements OnInit {
         if (this.patternLanguageURI) {
             this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageURI).pipe(
                 tap(patternlanguage => this.patternLanguage = patternlanguage),
+                switchMap(() => this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href)),
+                tap(patterns => this.patterns = patterns),
                 switchMap(() => this.retrievePatterRelationDescriptorData())).subscribe(
                 () => {
                     this.isLoading = false;
@@ -77,7 +81,7 @@ export class DefaultPlRendererComponent implements OnInit {
     }
 
     private initGraph(graphRenderComponent: GraphDisplayComponent = null): void {
-        if (this.patternLanguage.patterns.length === 0) {
+        if (!this.patterns || this.patterns.length === 0) {
             return;
         }
 
@@ -87,7 +91,7 @@ export class DefaultPlRendererComponent implements OnInit {
         this.copyEdgesForSimulation = _.clone(links);
         if (graphRenderComponent) {
             graphRenderComponent.data = {
-                patterns: this.patternLanguage.patterns, edges: links, copyOfLinks: this.copyEdgesForSimulation,
+                patterns: this.patterns, edges: links, copyOfLinks: this.copyEdgesForSimulation,
                 patternLanguage: this.patternLanguage, patternView: null
             };
             this.isLoadingDataForRenderer = false;
@@ -150,7 +154,7 @@ export class DefaultPlRendererComponent implements OnInit {
         this.rendererComponentInstance = componentInstance;
 
         if (componentInstance instanceof CardrendererComponent) {
-            (<CardrendererComponent>componentInstance).uriEntities = this.patternLanguage.patterns;
+            (<CardrendererComponent>componentInstance).uriEntities = this.patterns;
             this.isLoadingDataForRenderer = false;
         }
 
@@ -167,7 +171,7 @@ export class DefaultPlRendererComponent implements OnInit {
     public addLink() {
         const dialogRef = this.dialog.open(CreatePatternRelationComponent, {
             data: {
-                patterns: this.patternLanguage.patterns,
+                patterns: this.patterns,
                 patternlanguage: this.patternLanguage
             }
         });

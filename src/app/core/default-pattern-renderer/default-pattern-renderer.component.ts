@@ -13,7 +13,7 @@ import {MarkdownPatternSectioncontentComponent} from '../component/markdown-cont
 import {DataChange} from '../component/markdown-content-container/interfaces/DataRenderingComponent.interface';
 import PatternSectionSchema from '../model/hal/pattern-section-schema.model';
 import {map, switchMap, tap} from 'rxjs/operators';
-import {EMPTY, forkJoin, Observable} from 'rxjs';
+import {EMPTY, Observable} from 'rxjs';
 import {PatternRelationDescriptorService} from '../service/pattern-relation-descriptor.service';
 import {DirectedEdge} from '../model/hal/directed-edge.model';
 import {Embedded} from '../model/hal/embedded';
@@ -186,7 +186,8 @@ export class DefaultPatternRendererComponent implements OnInit {
         const $getPatternInfos = this.getPatternInfos();
         const $getDirectedEdges = this.getDirectededges();
         const $getUndirectedEdges = this.getUndirectededges();
-        return forkJoin($getPatternInfos, $getDirectedEdges, $getUndirectedEdges);
+        // return forkJoin($getPatternInfos, $getDirectedEdges, $getUndirectedEdges);
+        return $getPatternInfos;
     }
 
 
