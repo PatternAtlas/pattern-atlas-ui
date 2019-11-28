@@ -1,6 +1,6 @@
 import {AfterViewInit, ApplicationRef, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material';
-import {AddToViewComponent} from '../add-to-view/add-to-view.component';
+import {AddToViewComponent, LoazyLoadedFlatNode} from '../add-to-view/add-to-view.component';
 import {PatternLanguageService} from '../../core/service/pattern-language.service';
 import PatternLanguage from '../../core/model/hal/pattern-language.model';
 import {EMPTY, forkJoin, Observable} from 'rxjs';
@@ -55,7 +55,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     addPatternToView() {
         const dialogRef = this.matDialog.open(AddToViewComponent, {data: {patternlanguages: this.patternLanguages, title: 'Add patterns to View'}});
         dialogRef.afterClosed().pipe(
-            switchMap((res: PatternLanguageFlatNode[]) => res ?
+            switchMap((res: LoazyLoadedFlatNode[]) => res ?
                 this.patternViewService.addPatterns(this.patternViewResponse._links.patterns.href, this.mapDialogResultToPatterns(res))
                 : EMPTY),
             switchMap(result => result ? this.getCurrentPatternViewAndPatterns() : EMPTY)).subscribe((res) => {
@@ -90,8 +90,14 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     }
 
 
-    private mapDialogResultToPatterns(res: PatternLanguageFlatNode[]): Pattern[] {
-        return res.map((patternNode) => <Pattern>{content: null, id: patternNode.id, name: patternNode.name, uri: patternNode.uri, _links: null});
+    private mapDialogResultToPatterns(res: LoazyLoadedFlatNode[]): Pattern[] {
+        return res.map((patternNode) => <Pattern>{
+            content: null,
+            id: patternNode.item.id,
+            name: patternNode.item.name,
+            uri: patternNode.item.uri,
+            _links: null
+        });
     }
 
 
