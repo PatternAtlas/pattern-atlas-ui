@@ -1,17 +1,9 @@
-<div class="container" #cardsView>
-    <mat-card class="landing-card " *ngFor="let entity of uriEntities">
-        <mat-card-header>
-            <mat-card-title>
-                <b>{{entity.name}}</b>
+<mat-grid-list cols="8" [rowHeight]="'1:1'" gutterSize="10">
+    <mat-grid-tile class="tile"
+                   *ngFor="let entity of uriEntities"
+                   (click)="navigate(entity)"
+    >
+        <span mat-grid-tile-header>{{entity.name}}</span>
+    </mat-grid-tile>
+</mat-grid-list>
 
-            </mat-card-title>
-        </mat-card-header>
-        <mat-card-actions>
-            <div style="text-align: center">
-                <button mat-stroked-button color="primary" (click)="navigate(entity)"><i
-                        class="material-icons">pageview</i>View
-                </button>
-            </div>
-        </mat-card-actions>
-    </mat-card>
-</div>
