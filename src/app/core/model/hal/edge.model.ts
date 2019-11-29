@@ -3,7 +3,7 @@ import PatternLanguage from './pattern-language.model';
 
 export class Edge {
     description: any;
-
+    id: string;
     type: string;
     patternView?: PatternView;
     patternlanguage?: PatternLanguage;

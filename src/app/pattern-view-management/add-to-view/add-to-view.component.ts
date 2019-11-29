@@ -1,11 +1,15 @@
 import {Component, Inject} from '@angular/core';
 import {FlatTreeControl} from '@angular/cdk/tree';
 import {MAT_DIALOG_DATA, MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, forkJoin, Observable} from 'rxjs';
 import PatternLanguage from '../../core/model/hal/pattern-language.model';
 import {PatternService} from '../../core/service/pattern.service';
 import Pattern from '../../core/model/hal/pattern.model';
 import {SelectionModel} from '@angular/cdk/collections';
+import {PatternRelationDescriptorService} from '../../core/service/pattern-relation-descriptor.service';
+import {HalLink} from '../../core/model/hal/hal-link.interface';
+import {DirectedEdgeModel} from '../../core/model/hal/directed-edge.model';
+import {UndirectedEdgeModel} from '../../core/model/hal/undirected-edge.model';
 
 /** Nested node */
 export class LoadmoreNode {
@@ -32,7 +36,9 @@ export class LoazyLoadedFlatNode {
 
 export class LinksToOtherPattern {
     name: string;
-    href: string[] | string;
+    links?: HalLink[];
+    edge?: DirectedEdgeModel | UndirectedEdgeModel;
+    id: string;
 }
 
 
@@ -49,17 +55,22 @@ export class AddToViewComponent {
     dataSource: MatTreeFlatDataSource<LoadmoreNode, LoazyLoadedFlatNode>;
     LOAD_MORE = 'LOAD_MORE';
     nodes: LoadmoreNode[];
+    isLinkModal = false;
+    patternId: string;
 
 
-    constructor(@Inject(MAT_DIALOG_DATA) public data: { patternlanguages?: PatternLanguage[], links?: LinksToOtherPattern[], title: string },
-                private patternService: PatternService) {
+    constructor(@Inject(MAT_DIALOG_DATA) public data: { patternlanguages?: PatternLanguage[], links?: LinksToOtherPattern[], title: string, patternId: string },
+                private patternService: PatternService, private patternRelationDescriptorService: PatternRelationDescriptorService) {
+        this.isLinkModal = !!data.patternlanguages;
         this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel,
             this.isExpandable, this.getChildren);
 
         this.treeControl = new FlatTreeControl<LoazyLoadedFlatNode>(this.getLevel, this.isExpandable);
 
         this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-        this.nodes = data.patternlanguages.map(pl => new LoadmoreNode(pl));
+
+        this.nodes = this.isLinkModal ? data.patternlanguages.map(it => new LoadmoreNode(it)) : data.links.map(it => new LoadmoreNode(it));
+        this.patternId = data.patternId ? data.patternId : null;
         this.dataSource.data = this.nodes;
 
     }
@@ -97,18 +108,12 @@ export class AddToViewComponent {
             treenode.childrenChange.next(treenode.children);
             return;
         }
-        this.patternService.getPatternsByUrl(node.item._links['patterns']['href']).subscribe((patterns) => {
-            const dummy = {id: this.LOAD_MORE, name: '', uri: '', content: null, _links: null};
-            const childnodes = patterns.length > 0 ? patterns.map(it => new LoadmoreNode(it)) : [new LoadmoreNode(
-                dummy)];
+        if (node.item instanceof PatternLanguage) {
+            this.getPatternsAndAddToTree(node.item, treenode, node);
 
-            treenode.childrenChange.next(childnodes);
-            this.dataSource.data = this.nodes;
-            const descendants = this.treeControl.getDescendants(node);
-            if (this.checklistSelection.isSelected(node)) {
-                this.checklistSelection.select(...descendants);
-            }
-        });
+        } else if (node.item instanceof LinksToOtherPattern) {
+            this.getRelatedPatternAndAddToTree(node.item, treenode, node);
+        }
     }
 
     loadChildren(node: LoazyLoadedFlatNode) {
@@ -203,5 +208,57 @@ export class AddToViewComponent {
 
     getPatterns() {
         return this.checklistSelection.selected.filter((node) => node.level === 1);
+    }
+
+    private updateTree(node, treenode, childnodes) {
+        treenode.childrenChange.next(childnodes);
+        this.dataSource.data = this.nodes;
+        const descendants = this.treeControl.getDescendants(node);
+        if (this.checklistSelection.isSelected(node)) {
+            this.checklistSelection.select(...descendants);
+        }
+    }
+
+    private getPatternsAndAddToTree(item: PatternLanguage, treenode, node) {
+        this.patternService.getPatternsByUrl(node.item._links['patterns']['href']).subscribe((patterns) => {
+            const dummy = {id: this.LOAD_MORE, name: '', uri: '', content: null, _links: null};
+            const childnodes = patterns.length > 0 ? patterns.map(it => new LoadmoreNode(it)) : [new LoadmoreNode(
+                dummy)];
+
+            this.updateTree(node, treenode, childnodes);
+
+        });
+    }
+
+    private getRelatedPatternAndAddToTree(item: LinksToOtherPattern, treenode: LoadmoreNode, node: LoazyLoadedFlatNode) {
+        const edgesObservables = node.item['links'].map(link => this.patternRelationDescriptorService.getEdgeByUrl(link.href));
+        forkJoin(edgesObservables).subscribe((edges) => {
+            const childnodes = edges.map((edge: DirectedEdgeModel | UndirectedEdgeModel) => new LoadmoreNode(this.mapEdgeToRelatedPattern(edge)));
+            this.updateTree(node, treenode, childnodes);
+        });
+    }
+
+    private mapEdgeToRelatedPattern(edge: DirectedEdgeModel | UndirectedEdgeModel) {
+        let name;
+        let id;
+        let relatedPatternLink;
+        let relatedPatternIsSource = false;
+        if (edge instanceof DirectedEdgeModel) {
+            relatedPatternIsSource = edge.targetPatternId === this.patternId;
+            name = relatedPatternIsSource ? edge.sourcePatternName : edge.targetPatternName;
+            id = relatedPatternIsSource ? edge.sourcePatternId : edge.targetPatternId;
+            relatedPatternLink = relatedPatternIsSource ? edge._links.sourcePattern : edge._links.targetPattern;
+        } else {
+            relatedPatternIsSource = edge.pattern1Id === this.patternId;
+            name = relatedPatternIsSource ? edge.pattern1Name : edge.pattern2Name;
+            id = relatedPatternIsSource ? edge.pattern1Id : edge.pattern2Id;
+            relatedPatternLink = ''; // relatedPatternIsSource ? edge._links.sourcePattern : edge._links.targetPattern;
+        }
+        return {
+            name: name,
+            id: id,
+            edge: edge,
+            linkedPattern: relatedPatternLink
+        };
     }
 }

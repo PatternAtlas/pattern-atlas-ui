@@ -18,4 +18,8 @@ export class PatternRelationDescriptorService {
     savePatternRelation(url: string, relation: DirectedEdgeModel | UndirectedEdgeModel): Observable<any> {
         return this.http.post(url, relation, {observe: 'response'});
     }
+
+    getEdgeByUrl(url: string): Observable<any> {
+        return this.http.get(url);
+    }
 }

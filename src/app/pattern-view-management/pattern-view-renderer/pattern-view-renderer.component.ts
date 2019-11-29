@@ -94,7 +94,6 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
             content: null,
             id: patternNode.item.id,
             name: patternNode.item.name,
-            uri: patternNode.item.uri,
             _links: null
         });
     }
@@ -102,7 +101,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
 
     addLinks(pattern: Pattern) {
         const dialogRef = this.matDialog.open(AddToViewComponent,
-            {data: {links: this.mapPatternLinksToTreeNode(pattern), title: 'Add linked Patterns'}});
+            {data: {links: this.mapPatternLinksToTreeNode(pattern), title: 'Add linked Patterns', patternId: pattern.id}});
         this.subscribeToLinkDialogResult(dialogRef);
 
     }
@@ -143,16 +142,16 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
         console.log('detected');
     }
 
-    private mapPatternLinksToTreeNode(pattern: Pattern): LinksToOtherPattern {
-        const types = [];
+    private mapPatternLinksToTreeNode(pattern: Pattern): LinksToOtherPattern[] {
+        let types: LinksToOtherPattern[] = [];
         const possibleEdgeTypes = [
             {link: pattern._links.ingoingDirectedEdges, displayName: 'Ingoing directed edges'},
             {link: pattern._links.outgoingDirectedEdges, displayName: 'Outgoing directed edges'},
             {link: pattern._links.undirectedEdges, displayName: 'Undirected edges'}
         ];
-        possibleEdgeTypes.forEach((type: { link: HalLink | HalLink[], displayName: string }) => {
+        possibleEdgeTypes.forEach((type: { link: HalLink | HalLink[], displayName: string }, index) => {
             if (type.link) {
-                types.push({name: type.displayName, href: Array.isArray(type.link) ? type.link : [type.link]});
+                types.push({name: type.displayName, links: Array.isArray(type.link) ? type.link : [type.link], id: index.toString()});
             }
         });
         return types;

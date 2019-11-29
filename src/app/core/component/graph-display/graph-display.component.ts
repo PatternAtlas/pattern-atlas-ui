@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {D3Service} from '../../../graph/service/d3.service';
 import {NetworkLink} from '../../model/network-link.interface';
 import {Pattern} from '../../../graph/model';
@@ -13,6 +13,7 @@ import {switchMap} from 'rxjs/operators';
 import {EMPTY} from 'rxjs';
 import {ToasterService} from 'angular2-toaster';
 import {UriConverter} from '../../util/uri-converter';
+import GraphEditor from '@ustutt/grapheditor-webcomponent/lib/grapheditor';
 
 interface GraphInputData {
     patterns: Pattern[];
@@ -35,7 +36,7 @@ class GraphNode {
     templateUrl: './graph-display.component.html',
     styleUrls: ['./graph-display.component.scss']
 })
-export class GraphDisplayComponent implements OnInit {
+export class GraphDisplayComponent implements OnInit, OnChanges {
 
     @ViewChild('graphWrapper') graph: ElementRef;
     @ViewChild('svg') svg: ElementRef;
@@ -49,18 +50,7 @@ export class GraphDisplayComponent implements OnInit {
     private patternView: PatternView;
     private currentEdge: any;
 
-    @Input('data') set data(data: GraphInputData) {
-        this.patternlanguageData = data;
-        this.edges = this.mapPatternLinksToEdges(this.patternlanguageData.edges);
-        this.copyOfLinks = this.mapPatternLinksToEdges(this.patternlanguageData.copyOfLinks);
-        this.patterns = this.patternlanguageData.patterns;
-        this.patternLanguage = this.patternlanguageData.patternLanguage;
-        this.patternView = this.patternlanguageData.patternView;
-        this.nodes = this.mapPatternsToNodes(this.patterns);
-        this.isLoading = true;
-
-        this.startSimulation();
-    }
+    @Input() data: GraphInputData;
 
 
     constructor(private cdr: ChangeDetectorRef, private d3Service: D3Service, private matDialog: MatDialog,
@@ -68,7 +58,27 @@ export class GraphDisplayComponent implements OnInit {
     }
 
     ngOnInit() {
+        console.log('init', this.data);
+        this.test();
+    }
 
+    ngOnChanges(changes: SimpleChanges): void {
+        console.log(changes);
+        if (changes.data != null) {
+            this.test();
+        }
+    }
+
+    private test() {
+        this.patternlanguageData = this.data;
+        this.edges = this.mapPatternLinksToEdges(this.patternlanguageData.edges);
+        this.copyOfLinks = this.mapPatternLinksToEdges(this.patternlanguageData.copyOfLinks);
+        this.patterns = this.patternlanguageData.patterns;
+        this.patternLanguage = this.patternlanguageData.patternLanguage;
+        this.patternView = this.patternlanguageData.patternView;
+        this.nodes = this.mapPatternsToNodes(this.patterns);
+        this.isLoading = true;
+        this.startSimulation();
     }
 
 
@@ -79,11 +89,15 @@ export class GraphDisplayComponent implements OnInit {
         });
         // subscribe to the end of the network graph force-layout simulation:
         networkGraph.ticker.subscribe((d: any) => {
-            this.graph.nativeElement.setNodes(networkGraph.nodes, true);
+            console.log('tick');
+            const graph: GraphEditor = this.graph.nativeElement;
+            graph.setNodes(networkGraph.nodes, false);
             // we need to use a hard-copy of the links, because get changed (by d3?) and the webcomponent can't handle them anymore
             if (this.copyOfLinks.length > 0) {
-                this.graph.nativeElement.setEdges(this.copyOfLinks, true);
+                graph.setEdges(this.copyOfLinks, false);
             }
+            graph.completeRender();
+            graph.zoomToBoundingBox(true);
 
 
             this.cdr.markForCheck();
@@ -99,18 +113,14 @@ export class GraphDisplayComponent implements OnInit {
             const currentlink = links[i];
             if (currentlink.sourcePatternId && currentlink.targetPatternId) {
                 edges.push({
-                    'source': currentlink.sourcePatternId, 'target': currentlink.targetPatternId,
-                    'markers': [
-                        {template: 'arrow', positionOnLine: 1, scale: 0.5, relativeRotation: 0}
-                    ]
+                    source: currentlink.sourcePatternId, 'target': currentlink.targetPatternId,
+                    markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0},
                 });
             } else { // undirected link
                 edges.push(<NetworkLink>{
                     'source': currentlink.pattern1Id, 'target': currentlink.pattern2Id,
-                    'markers': [
-                        {template: 'arrow', positionOnLine: 0, scale: 0.5, relativeRotation: 0},
-                        {template: 'arrow', positionOnLine: 1, scale: 0.5, relativeRotation: 0}
-                    ]
+                    markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0},
+                    markerStart: {template: 'arrow', scale: 0.5, relativeRotation: 0}
                 });
             }
         }

@@ -81,15 +81,15 @@
 
             <g id="default" data-template-type="node">
 
-                <rect x="0" y="0" width="100" height="40" rx="5" ry="5"
+                <rect x="-50" y="-20" width="100" height="40" rx="5" ry="5"
                       style="stroke:black;stroke-width:1;"
                       data-link-handles="edges" data-click="nodeclick">
                 </rect>
                 <a data-href="link">
-                    <image x="85" y="5" width="10" data-content="link"
+                    <image x="35" y="-15" width="10" data-content="link"
                            xlink:href="assets/Info_Simple_bw.svg"/>
                 </a>
-                <text class="text" x="50" y="20" width="100" height="40" data-content="title" data-click="title"
+                <text class="text" x="0" y="0" width="100" height="40" data-content="title" data-click="title"
                       dominant-baseline="middle"
                       text-anchor="middle">
                 </text>
@@ -126,6 +126,9 @@
                 </text>
             </g>
 
+            <g id="arrow" data-template-type="marker" data-line-attachement-point="-9 0">
+                <path d="M -9 -4 L 0 0 L -9 4 z"/>
+            </g>
         </defs>
     </svg>
 </network-graph>
