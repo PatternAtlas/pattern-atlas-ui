@@ -1,6 +1,6 @@
 import {AfterViewInit, ApplicationRef, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material';
-import {AddToViewComponent, LoazyLoadedFlatNode} from '../add-to-view/add-to-view.component';
+import {AddToViewComponent, LinksToOtherPattern, LoazyLoadedFlatNode} from '../add-to-view/add-to-view.component';
 import {PatternLanguageService} from '../../core/service/pattern-language.service';
 import PatternLanguage from '../../core/model/hal/pattern-language.model';
 import {EMPTY, forkJoin, Observable} from 'rxjs';
@@ -12,9 +12,9 @@ import {PatternView} from '../../core/model/hal/pattern-view.model';
 import {UriConverter} from '../../core/util/uri-converter';
 import {ActivatedRoute} from '@angular/router';
 import {PatternService} from '../../core/service/pattern.service';
-import {Edge} from '../../core/model/hal/edge.model';
 import {CreatePatternRelationComponent} from '../../core/component/create-pattern-relation/create-pattern-relation.component';
-import {DirectedEdge} from '../../core/model/hal/directed-edge.model';
+import {DirectedEdgeModel} from '../../core/model/hal/directed-edge.model';
+import {HalLink} from '../../core/model/hal/hal-link.interface';
 
 @Component({
     selector: 'pp-pattern-view-renderer',
@@ -101,17 +101,12 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
 
 
     addLinks(pattern: Pattern) {
-        this.getLinksForPattern(pattern).subscribe((links) => {
-            const dialogRef = this.matDialog.open(AddToViewComponent, {data: {links: links}});
-            this.subscribeToLinkDialogResult(dialogRef);
-        });
+        const dialogRef = this.matDialog.open(AddToViewComponent,
+            {data: {links: this.mapPatternLinksToTreeNode(pattern), title: 'Add linked Patterns'}});
+        this.subscribeToLinkDialogResult(dialogRef);
 
     }
 
-    private getLinksForPattern(pattern: Pattern): Observable<Edge[]> {
-        // should return arrays of directed and undirected links
-        return this.patternService.getLinksForPattern(pattern._links.directedEdges.href);
-    }
 
     private subscribeToLinkDialogResult(dialogRef: MatDialogRef<AddToViewComponent, any>) {
         dialogRef.afterClosed().pipe(
@@ -131,7 +126,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
         const dialogRef = this.matDialog.open(CreatePatternRelationComponent, {data: {patterns: this.patterns, patternview: this.patternViewResponse}});
         dialogRef.afterClosed().pipe(
             switchMap((dialogResult) => {
-                const url = dialogResult instanceof DirectedEdge ? this.patternViewResponse._links.directedEdges.href :
+                const url = dialogResult instanceof DirectedEdgeModel ? this.patternViewResponse._links.directedEdges.href :
                     this.patternViewResponse._links.undirectedEdges.href;
                 return dialogResult ? this.patternViewService.createLink(url, dialogResult) : EMPTY;
             }),
@@ -146,5 +141,20 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     detectChanges() {
         this.cdr.detectChanges();
         console.log('detected');
+    }
+
+    private mapPatternLinksToTreeNode(pattern: Pattern): LinksToOtherPattern {
+        const types = [];
+        const possibleEdgeTypes = [
+            {link: pattern._links.ingoingDirectedEdges, displayName: 'Ingoing directed edges'},
+            {link: pattern._links.outgoingDirectedEdges, displayName: 'Outgoing directed edges'},
+            {link: pattern._links.undirectedEdges, displayName: 'Undirected edges'}
+        ];
+        possibleEdgeTypes.forEach((type: { link: HalLink | HalLink[], displayName: string }) => {
+            if (type.link) {
+                types.push({name: type.displayName, href: Array.isArray(type.link) ? type.link : [type.link]});
+            }
+        });
+        return types;
     }
 }

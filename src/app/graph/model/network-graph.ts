@@ -5,61 +5,62 @@ import * as d3 from 'd3';
 import GraphConfig from './graph-config';
 
 const DEFAULT_CONFIG = {
-  charge: -4000,
-  xStrength: 1,
-  yStrength: 1,
-  linkDistance: 300,
-  linkStrength: 0.5
+    charge: -4000,
+    xStrength: 1,
+    yStrength: 1,
+    linkDistance: 300,
+    linkStrength: 0.5
 };
 
 export class NetworkGraph {
-  public ticker: EventEmitter<d3.Simulation<Node, Link>> = new EventEmitter();
-  public simulation: d3.Simulation<any, any>;
+    public ticker: EventEmitter<d3.Simulation<Node, Link>> = new EventEmitter();
+    public simulation: d3.Simulation<any, any>;
 
-  public nodes: any[] = [];
-  public links: any[] = [];
+    public nodes: any[] = [];
+    public links: any[] = [];
 
-  config: GraphConfig;
+    config: GraphConfig;
 
-  constructor(nodes, links, options: { width, height }, config?: GraphConfig) {
-    this.nodes = nodes;
-    this.links = links;
+    constructor(nodes, links, options: { width, height }, config?: GraphConfig) {
+        this.nodes = nodes;
+        this.links = links;
 
-    this.config = config || DEFAULT_CONFIG;
+        this.config = config || DEFAULT_CONFIG;
 
-    this.initSimulation(options);
-  }
-
-
-  initSimulation(options) {
-    if (!options || !options.width || !options.height) {
-      throw new Error('missing options when initializing simulation');
+        this.initSimulation(options);
     }
 
-    /** Creating the simulation */
-    if (!this.simulation) {
-      const ticker = this.ticker;
 
-      this.simulation = d3.forceSimulation()
-        .force('charge', d3.forceManyBody().strength(this.config.charge))
-        .force('center', d3.forceCenter(options.width / 2, options.height / 2))
-        .force('x', d3.forceX(options.width / 2).strength(this.config.xStrength))
-        .force('y', d3.forceY(options.height / 2).strength(this.config.yStrength))
-        .force('link', d3.forceLink().id((d) => d['id'])).force('collision', d3.forceCollide().radius(() => 75));
-      this.simulation.stop();
+    initSimulation(options) {
+        if (!options || !options.width || !options.height) {
+            throw new Error('missing options when initializing simulation');
+        }
 
-      // set data
-      this.simulation.nodes(this.nodes);
-      this.simulation.force('link')['links'](this.links ? this.links : []);
+        /** Creating the simulation */
+        if (!this.simulation) {
+            const ticker = this.ticker;
 
-      // Connecting the d3 ticker to an angular event emitter
-      this.simulation.on('end', function () {
-        ticker.emit();
-      });
+            this.simulation = d3.forceSimulation()
+                .force('charge', d3.forceManyBody().strength(this.config.charge))
+                .force('center', d3.forceCenter(options.width / 2, options.height / 2))
+                .force('x', d3.forceX(options.width / 2).strength(this.config.xStrength))
+                .force('y', d3.forceY(options.height / 2).strength(this.config.yStrength))
+                .force('link', d3.forceLink().id((d) => d['id']))
+                .force('collision', d3.forceCollide().radius(() => 75));
+            this.simulation.stop();
 
-      this.simulation.alpha(1).restart();
+            // set data
+            this.simulation.nodes(this.nodes);
+            this.simulation.force('link')['links'](this.links && this.links.length ? this.links : []);
+
+            // Connecting the d3 ticker to an angular event emitter
+            this.simulation.on('end', function () {
+                ticker.emit();
+            });
+
+            this.simulation.alpha(1).restart();
+        }
+
     }
-
-  }
 
 }

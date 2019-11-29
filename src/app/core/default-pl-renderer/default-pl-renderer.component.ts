@@ -12,8 +12,8 @@ import {Embedded} from '../model/hal/embedded';
 import {DirectedEdesResponse} from '../model/hal/directed-edes-response.interface';
 import {switchMap, tap} from 'rxjs/operators';
 import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
-import {DirectedEdge} from '../model/hal/directed-edge.model';
-import {UndirectedEdge} from '../model/hal/undirected-edge.model';
+import {DirectedEdgeModel} from '../model/hal/directed-edge.model';
+import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
 import * as _ from 'lodash';
 import {CreatePatternRelationComponent} from '../component/create-pattern-relation/create-pattern-relation.component';
 import {PatternRelationDescriptorService} from '../service/pattern-relation-descriptor.service';
@@ -40,8 +40,8 @@ export class DefaultPlRendererComponent implements OnInit {
     graphVisible = true;
     isLoadingDataForRenderer: boolean;
     private componentRef: ComponentRef<any>;
-    private directedPatternRelations: DirectedEdge[] = [];
-    private undirectedPatternRelations: UndirectedEdge[] = [];
+    private directedPatternRelations: DirectedEdgeModel[] = [];
+    private undirectedPatternRelations: UndirectedEdgeModel[] = [];
     private copyEdgesForSimulation = [];
 
 
@@ -106,7 +106,7 @@ export class DefaultPlRendererComponent implements OnInit {
         }
         return this.patternLanguageService.getDirectedEdges(this.patternLanguage).pipe(
             tap((edges) => {
-                this.directedPatternRelations = edges._embedded ? edges._embedded.directedEdges : [];
+                this.directedPatternRelations = edges._embedded ? edges._embedded.directedEdgeModels : [];
             }));
     }
 
@@ -116,7 +116,7 @@ export class DefaultPlRendererComponent implements OnInit {
         }
         return this.patternLanguageService.getUndirectedEdges(this.patternLanguage).pipe(
             tap((edges) => {
-                this.undirectedPatternRelations = edges._embedded ? edges._embedded.undirectedEdges : [];
+                this.undirectedPatternRelations = edges._embedded ? edges._embedded.undirectedEdgeModels : [];
             }));
     }
 
@@ -178,7 +178,7 @@ export class DefaultPlRendererComponent implements OnInit {
 
         dialogRef.afterClosed().pipe(
             switchMap((edge) => {
-                const url = edge instanceof DirectedEdge ? this.patternLanguage._links.directedEdges.href : this.patternLanguage._links.undirectedEdges.href;
+                const url = edge instanceof DirectedEdgeModel ? this.patternLanguage._links.directedEdges.href : this.patternLanguage._links.undirectedEdges.href;
                 return edge ? this.patternRelationDescriptorService.savePatternRelation(url, edge) : EMPTY;
             }),
             switchMap((res) => res ? this.retrievePatterRelationDescriptorData() : EMPTY))

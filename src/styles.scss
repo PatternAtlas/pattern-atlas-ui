@@ -195,3 +195,10 @@ body {
   opacity: 0.5;
   border: solid #3f51b5 1px;
 }
+
+.section-card {
+  min-height: unset;
+  margin: 1em 3em;
+  box-shadow: none;
+  border: #7f7f7f 1px solid;
+}

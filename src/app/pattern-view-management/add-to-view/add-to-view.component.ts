@@ -15,7 +15,7 @@ export class LoadmoreNode {
         return this.childrenChange.value;
     }
 
-    constructor(public item: PatternLanguage | Pattern,
+    constructor(public item: PatternLanguage | Pattern | LinksToOtherPattern,
                 public hasChildren = false,
                 public loadMoreParentItem: string | null = null) {
     }
@@ -23,11 +23,16 @@ export class LoadmoreNode {
 
 /** Flat node with expandable and level information */
 export class LoazyLoadedFlatNode {
-    constructor(public item: Pattern | PatternLanguage,
+    constructor(public item: Pattern | PatternLanguage | LinksToOtherPattern,
                 public level = 1,
                 public expandable = false,
                 public loadMoreParentItem: string | null = null) {
     }
+}
+
+export class LinksToOtherPattern {
+    name: string;
+    href: string[] | string;
 }
 
 
@@ -46,7 +51,7 @@ export class AddToViewComponent {
     nodes: LoadmoreNode[];
 
 
-    constructor(@Inject(MAT_DIALOG_DATA) public data: { patternlanguages: PatternLanguage[], patternmode: boolean, title: string },
+    constructor(@Inject(MAT_DIALOG_DATA) public data: { patternlanguages?: PatternLanguage[], links?: LinksToOtherPattern[], title: string },
                 private patternService: PatternService) {
         this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel,
             this.isExpandable, this.getChildren);

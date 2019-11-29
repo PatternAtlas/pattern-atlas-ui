@@ -1,5 +1,5 @@
-import {UndirectedEdge} from './undirected-edge.model';
+import {UndirectedEdgeModel} from './undirected-edge.model';
 
 export interface UndirectedEdesResponse {
-  undirectedEdges: UndirectedEdge[];
+    undirectedEdgeModels: UndirectedEdgeModel[];
 }

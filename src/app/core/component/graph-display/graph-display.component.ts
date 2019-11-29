@@ -8,7 +8,7 @@ import {CreatePatternRelationComponent} from '../create-pattern-relation/create-
 import {PatternView} from '../../model/hal/pattern-view.model';
 import PatternLanguage from '../../model/hal/pattern-language.model';
 import {PatternRelationDescriptorService} from '../../service/pattern-relation-descriptor.service';
-import {DirectedEdge} from '../../model/hal/directed-edge.model';
+import {DirectedEdgeModel} from '../../model/hal/directed-edge.model';
 import {switchMap} from 'rxjs/operators';
 import {EMPTY} from 'rxjs';
 import {ToasterService} from 'angular2-toaster';
@@ -58,7 +58,7 @@ export class GraphDisplayComponent implements OnInit {
         this.patternView = this.patternlanguageData.patternView;
         this.nodes = this.mapPatternsToNodes(this.patterns);
         this.isLoading = true;
-        
+
         this.startSimulation();
     }
 
@@ -81,7 +81,9 @@ export class GraphDisplayComponent implements OnInit {
         networkGraph.ticker.subscribe((d: any) => {
             this.graph.nativeElement.setNodes(networkGraph.nodes, true);
             // we need to use a hard-copy of the links, because get changed (by d3?) and the webcomponent can't handle them anymore
-            this.graph.nativeElement.setEdges(this.copyOfLinks, true);
+            if (this.copyOfLinks.length > 0) {
+                this.graph.nativeElement.setEdges(this.copyOfLinks, true);
+            }
 
 
             this.cdr.markForCheck();
@@ -95,16 +97,16 @@ export class GraphDisplayComponent implements OnInit {
         const edges = [];
         for (let i = 0; i < links.length; i++) {
             const currentlink = links[i];
-            if (currentlink.source && currentlink.target) {
+            if (currentlink.sourcePatternId && currentlink.targetPatternId) {
                 edges.push({
-                    'source': currentlink.source.id, 'target': currentlink.target.id,
+                    'source': currentlink.sourcePatternId, 'target': currentlink.targetPatternId,
                     'markers': [
                         {template: 'arrow', positionOnLine: 1, scale: 0.5, relativeRotation: 0}
                     ]
                 });
             } else { // undirected link
                 edges.push(<NetworkLink>{
-                    'source': currentlink.p1.id, 'target': currentlink.p2.id,
+                    'source': currentlink.pattern1Id, 'target': currentlink.pattern2Id,
                     'markers': [
                         {template: 'arrow', positionOnLine: 0, scale: 0.5, relativeRotation: 0},
                         {template: 'arrow', positionOnLine: 1, scale: 0.5, relativeRotation: 0}
@@ -149,7 +151,7 @@ export class GraphDisplayComponent implements OnInit {
             switchMap((edge) => {
                 const parentOfEdge = this.patternLanguage ? this.patternLanguage : this.patternView;
 
-                const url = (edge && edge instanceof DirectedEdge) ? parentOfEdge._links.directedEdges.href : parentOfEdge._links.undirectedEdges.href;
+                const url = (edge && edge instanceof DirectedEdgeModel) ? parentOfEdge._links.directedEdges.href : parentOfEdge._links.undirectedEdges.href;
                 return edge ? this.patternRelationDescriptionService.savePatternRelation(url, edge) : EMPTY;
             })).subscribe(res => {
             if (res) {
@@ -164,7 +166,6 @@ export class GraphDisplayComponent implements OnInit {
         const node = event['detail']['node'];
         const outgoingLinks = this.graph.nativeElement.getEdgesByTarget(node.id);
         const ingoingLinks = this.graph.nativeElement.getEdgesBySource(node.id);
-        console.log(outgoingLinks);
         const outgoingNodeIds: string[] = Array.from(outgoingLinks).map(it => it['source']);
         const ingoingNodeIds: string[] = Array.from(ingoingLinks).map(it => it['target']);
 

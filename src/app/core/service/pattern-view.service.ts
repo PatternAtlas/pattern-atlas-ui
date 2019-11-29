@@ -19,8 +19,8 @@ import {forkJoin, Observable} from 'rxjs';
 import Pattern from '../model/hal/pattern.model';
 import {PatternView} from '../model/hal/pattern-view.model';
 import {PatternViewResponse} from '../model/hal/pattern-view-response.interface';
-import {DirectedEdge} from '../model/hal/directed-edge.model';
-import {UndirectedEdge} from '../model/hal/undirected-edge.model';
+import {DirectedEdgeModel} from '../model/hal/directed-edge.model';
+import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
 
 @Injectable()
 export class PatternViewService {
@@ -49,7 +49,7 @@ export class PatternViewService {
         return this.http.get<PatternView>(this.repoEndpoint + `/patternViews/findByUri?encodedUri=${encodedUri}`);
     }
 
-    createLink(url, edge: DirectedEdge | UndirectedEdge): Observable<HttpResponse<Object>> {
+    createLink(url, edge: DirectedEdgeModel | UndirectedEdgeModel): Observable<HttpResponse<Object>> {
         return this.http.post(url, edge, {observe: 'response'});
     }
 }

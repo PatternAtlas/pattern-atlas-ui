@@ -9,7 +9,8 @@
             <mat-card-title>{{pattern?.name}}</mat-card-title>
             <mat-card-subtitle>Pattern</mat-card-subtitle>
         </mat-card-header>
-        <mat-card-actions>
+        <mat-card-actions
+                *ngIf="pattern._links.undirectedEdges || pattern._links.outgoingDirectedEdges || pattern._links.ingoingDirectedEdges">
             <button mat-button (click)="addLinks(pattern)">Add Links (incl. Pattern)</button>
         </mat-card-actions>
     </mat-card>
