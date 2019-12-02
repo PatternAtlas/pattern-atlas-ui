@@ -7,18 +7,36 @@
     <mat-card class="pattern-card" *ngFor="let pattern of patterns">
         <mat-card-header>
             <mat-card-title>{{pattern?.name}}</mat-card-title>
-            <mat-card-subtitle>Pattern</mat-card-subtitle>
+            <mat-card-subtitle>Pattern
+
+
+            </mat-card-subtitle>
+
         </mat-card-header>
+
+        <mat-card-content>
+            <span class="badge-span" matBadgeOverlap="false"
+                  [matBadge]="getLinkCount(pattern._links.ingoingDirectedEdges)">
+                <mat-icon> trending_flat
+            </mat-icon>
+        </span>
+            <mat-icon class="flip"> trending_flat
+            </mat-icon>
+            <span class="badge-span" matBadgeOverlap="false"
+                  [matBadge]="getLinkCount(pattern._links.outgoingDirectedEdges)">
+        </span>
+
+
+            <span [matBadge]="getLinkCount(pattern._links.undirectedEdges)" matBadgeOverlap="false">
+                 <mat-icon>compare_arrows</mat-icon>
+                </span>
+
+        </mat-card-content>
         <mat-card-actions
-                *ngIf="pattern._links.undirectedEdges || pattern._links.outgoingDirectedEdges || pattern._links.ingoingDirectedEdges">
-            <button mat-button (click)="addLinks(pattern)">Add Links (incl. Pattern)</button>
+        >
+            <button mat-button *ngIf="pattern._links.undirectedEdges || pattern._links.outgoingDirectedEdges
+            || pattern._links.ingoingDirectedEdges" (click)="addLinks(pattern)">Add Links (incl. Pattern)
+            </button>
         </mat-card-actions>
     </mat-card>
-    <mat-card>
-        Links:  {{patternViewResponse?.directedEdges?.length ? patternViewResponse?.directedEdges?.length : 0}}
-        directed,
-        {{patternViewResponse?.undirectedEdges?.length ? patternViewResponse?.undirectedEdges?.length : 0}}
-        undirected
-    </mat-card>
-
 </div>

@@ -172,6 +172,10 @@ body {
 }
 
 .flip {
+  & .mat-badge {
+    transform: rotate(0deg);
+  }
+
   transform: rotate(180deg);
 }
 

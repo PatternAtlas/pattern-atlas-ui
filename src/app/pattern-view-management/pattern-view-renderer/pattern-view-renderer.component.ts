@@ -32,8 +32,9 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     trigger;
 
 
-    constructor(private matDialog: MatDialog, private patternLanguageService: PatternLanguageService, private patternViewService: PatternViewService, private patternService: PatternService,
-                private toasterService: ToasterService, private cdr: ChangeDetectorRef, private activatedRoute: ActivatedRoute, private applicationRef: ApplicationRef) {
+    constructor(private matDialog: MatDialog, private patternLanguageService: PatternLanguageService, private patternViewService: PatternViewService,
+                private patternService: PatternService, private toasterService: ToasterService, private cdr: ChangeDetectorRef,
+                private activatedRoute: ActivatedRoute, private applicationRef: ApplicationRef) {
     }
 
     ngOnInit() {
@@ -90,12 +91,15 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
 
 
     private mapDialogResultToPatterns(res: LoazyLoadedFlatNode[]): Pattern[] {
-        return res.map((patternNode) => <Pattern>{
+        const patternsToAdd = res.map((patternNode) => <Pattern>{
             content: null,
             id: patternNode.item.id,
             name: patternNode.item.name,
             _links: null
         });
+        const patternIdsOfView = this.patterns.map(it => it.id);
+        // only add patterns that are not already in the view:
+        return patternsToAdd.filter(pattern => !patternIdsOfView.includes(pattern.id));
     }
 
 
@@ -103,15 +107,21 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
         const dialogRef = this.matDialog.open(AddToViewComponent,
             {data: {links: this.mapPatternLinksToTreeNode(pattern), title: 'Add linked Patterns', patternId: pattern.id}});
         this.subscribeToLinkDialogResult(dialogRef);
-
     }
 
 
     private subscribeToLinkDialogResult(dialogRef: MatDialogRef<AddToViewComponent, any>) {
+        let nodesToAdd;
         dialogRef.afterClosed().pipe(
-            switchMap((res: LoazyLoadedFlatNode[]) => res ?
-                this.patternViewService.addPatterns(this.patternViewResponse._links.directedEdges.href, this.mapDialogResultToPatterns(res))
-                : EMPTY),
+            tap(res => {
+                nodesToAdd = res;
+                console.log(res);
+            }),
+            switchMap((res) =>
+                this.patternViewService.addPatterns(this.patternViewResponse._links.patterns.href, this.mapDialogResultToPatterns(res))),
+            switchMap(() =>
+                this.patternViewService.addLinks(this.patternViewResponse._links.directedEdges.href, this.patternViewResponse._links.undirectedEdges.href,
+                    nodesToAdd.map(it => it.item.edge))),
             switchMap(result => result ? this.getCurrentPatternViewAndPatterns() : EMPTY)
         ).subscribe((res) => {
             if (res) {
@@ -155,5 +165,12 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
             }
         });
         return types;
+    }
+
+    getLinkCount(directedEdges: HalLink[] | HalLink) {
+        if (!directedEdges) {
+            return 0;
+        }
+        return Array.isArray(directedEdges) ? directedEdges.length : 1;
     }
 }

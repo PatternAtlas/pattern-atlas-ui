@@ -108,10 +108,10 @@ export class AddToViewComponent {
             treenode.childrenChange.next(treenode.children);
             return;
         }
-        if (node.item instanceof PatternLanguage) {
-            this.getPatternsAndAddToTree(node.item, treenode, node);
+        if (node.item['uri']) {
+            this.getPatternsAndAddToTree(<PatternLanguage>node.item, treenode, node);
 
-        } else if (node.item instanceof LinksToOtherPattern) {
+        } else {
             this.getRelatedPatternAndAddToTree(node.item, treenode, node);
         }
     }
@@ -243,16 +243,18 @@ export class AddToViewComponent {
         let id;
         let relatedPatternLink;
         let relatedPatternIsSource = false;
-        if (edge instanceof DirectedEdgeModel) {
+        if (edge['sourcePatternId']) {
+            edge = <DirectedEdgeModel>edge;
             relatedPatternIsSource = edge.targetPatternId === this.patternId;
             name = relatedPatternIsSource ? edge.sourcePatternName : edge.targetPatternName;
             id = relatedPatternIsSource ? edge.sourcePatternId : edge.targetPatternId;
             relatedPatternLink = relatedPatternIsSource ? edge._links.sourcePattern : edge._links.targetPattern;
         } else {
+            edge = <UndirectedEdgeModel>edge;
             relatedPatternIsSource = edge.pattern1Id === this.patternId;
             name = relatedPatternIsSource ? edge.pattern1Name : edge.pattern2Name;
             id = relatedPatternIsSource ? edge.pattern1Id : edge.pattern2Id;
-            relatedPatternLink = ''; // relatedPatternIsSource ? edge._links.sourcePattern : edge._links.targetPattern;
+            relatedPatternLink = relatedPatternIsSource ? edge._links.pattern[0] : edge._links.pattern[1];
         }
         return {
             name: name,

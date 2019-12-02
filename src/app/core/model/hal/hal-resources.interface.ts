@@ -48,4 +48,5 @@ export interface DirectedEdgeResource {
 export interface UndirectedEdgeResource {
     self: HalLink;
     patternLanguage: HalLink;
+    pattern: HalLink[];
 }

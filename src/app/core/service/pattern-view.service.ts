@@ -15,7 +15,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {globals} from '../../globals';
-import {forkJoin, Observable} from 'rxjs';
+import {EMPTY, forkJoin, Observable} from 'rxjs';
 import Pattern from '../model/hal/pattern.model';
 import {PatternView} from '../model/hal/pattern-view.model';
 import {PatternViewResponse} from '../model/hal/pattern-view-response.interface';
@@ -40,9 +40,9 @@ export class PatternViewService {
         return this.http.post<PatternViewResponse>(url, view, {observe: 'response'});
     }
 
-    addPatterns(url: string, patterns: Pattern[]) {
+    addPatterns(url: string, patterns: Pattern[]): Observable<any> {
         const observables = patterns.map(pat => this.http.post<PatternViewResponse>(url, pat, {observe: 'response'}));
-        return forkJoin(observables);
+        return observables.length > 0 ? forkJoin(observables) : EMPTY;
     }
 
     getPatternViewByUri(encodedUri: string): Observable<PatternView> {
@@ -51,5 +51,11 @@ export class PatternViewService {
 
     createLink(url, edge: DirectedEdgeModel | UndirectedEdgeModel): Observable<HttpResponse<Object>> {
         return this.http.post(url, edge, {observe: 'response'});
+    }
+
+    addLinks(urlDirectedLinks: string, urlUndirectedLinks: string, edges: any[]): Observable<any> {
+        const observables = edges.map(edge => this.http.post(!!edge['sourcePatternId'] ? urlDirectedLinks : urlUndirectedLinks, edge,
+            {observe: 'response'}));
+        return observables.length > 0 ? forkJoin(observables) : EMPTY;
     }
 }
