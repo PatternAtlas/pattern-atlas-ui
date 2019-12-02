@@ -14,7 +14,7 @@ export class DirectedEdgeModel extends Edge {
 
     constructor(source: Pattern, target: Pattern, patternlanguage: PatternLanguage, description: any, type: string, patternView: PatternView = null) {
         super(description, type, patternView, patternlanguage);
-        this.sourcePatternName = source.id;
-        this.targetPatternName = target.id;
+        this.sourcePatternId = source.id;
+        this.targetPatternId = target.id;
     }
 }

@@ -1,8 +1,15 @@
 .pattern-card {
-  min-height: auto;
+  min-height: 13em;
+  height: 13em;
+  min-width: 11em;
+  width: 11em;
   margin: 0.25em;
 }
 
 .badge-span {
   margin-right: 2em;
+}
+
+.container {
+  display: flex;
 }

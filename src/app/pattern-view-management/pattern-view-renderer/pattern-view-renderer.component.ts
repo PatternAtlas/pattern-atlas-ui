@@ -74,8 +74,6 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
         return this.patternViewService.getPatternViewByUri(this.patternViewUri).pipe(
             tap(patternViewResponse => {
                 this.patternViewResponse = patternViewResponse;
-                console.log('updated response object');
-                console.log(this.patternViewResponse);
             }),
             switchMap((patternViewResponse: PatternView) => this.patternService.getPatternsByUrl(patternViewResponse._links.patterns.href)),
             tap(patterns => {
@@ -91,6 +89,9 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
 
 
     private mapDialogResultToPatterns(res: LoazyLoadedFlatNode[]): Pattern[] {
+        if (!res) {
+            return [];
+        }
         const patternsToAdd = res.map((patternNode) => <Pattern>{
             content: null,
             id: patternNode.item.id,
