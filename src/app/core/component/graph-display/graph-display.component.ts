@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {D3Service} from '../../../graph/service/d3.service';
 import {NetworkLink} from '../../model/network-link.interface';
 import {Edge} from '../../model/hal/edge.model';
@@ -14,7 +14,7 @@ import {of} from 'rxjs';
 import {ToasterService} from 'angular2-toaster';
 import {UriConverter} from '../../util/uri-converter';
 import GraphEditor from '@ustutt/grapheditor-webcomponent/lib/grapheditor';
-import {edgeId} from '@ustutt/grapheditor-webcomponent/lib/edge';
+import {DraggedEdge, edgeId} from '@ustutt/grapheditor-webcomponent/lib/edge';
 import Pattern from '../../model/hal/pattern.model';
 import {UndirectedEdgeModel} from '../../model/hal/undirected-edge.model';
 
@@ -39,13 +39,13 @@ class GraphNode {
     templateUrl: './graph-display.component.html',
     styleUrls: ['./graph-display.component.scss']
 })
-export class GraphDisplayComponent implements OnInit, OnChanges {
+export class GraphDisplayComponent implements AfterViewInit, OnChanges {
 
-    @ViewChild('graphWrapper') graph: ElementRef;
+    @ViewChild('graphWrapper', {static: true}) graph: ElementRef;
     @ViewChild('svg') svg: ElementRef;
     @ViewChild(MatSidenavContainer) sidenavContainer: MatSidenavContainer;
     patternlanguageData;
-    isLoading = false;
+    isLoading = true;
     private edges: NetworkLink[];
     private nodes: GraphNode[];
     private copyOfLinks: NetworkLink[];
@@ -68,12 +68,14 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
                 private patternRelationDescriptionService: PatternRelationDescriptorService, private toastService: ToasterService) {
     }
 
-    ngOnInit() {
+    ngAfterViewInit() {
+
         this.initData();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.data != null) {
+            this.isLoading = true;
             this.initData();
         }
     }
@@ -86,7 +88,6 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
         this.patternLanguage = this.patternlanguageData.patternLanguage;
         this.patternView = this.patternlanguageData.patternView;
         this.nodes = this.mapPatternsToNodes(this.patterns);
-        this.isLoading = true;
         this.startSimulation();
     }
 
@@ -97,6 +98,9 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
             height: 1313// 1000
         });
         const graph: GraphEditor = this.graph.nativeElement;
+        if (graph == null) {
+            return;
+        }
         graph.setNodeClass = (className, node) => {
             if (this.highlightedNodeIds.length > 0) {
                 if (className === 'highlighted-node') {
@@ -120,6 +124,12 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
             return false;
         };
 
+        // allow to create edges to any other node in the graph (this enables multiple edges between nodes)
+        graph.onCreateDraggedEdge = (edge: DraggedEdge) => {
+            graph.nodeList.forEach((node) => edge.validTargets.add(<string>node.id));
+            return edge;
+        };
+
         // subscribe to the end of the network graph force-layout simulation:
         networkGraph.ticker.subscribe((d: any) => {
             console.log('started force simulation');
@@ -132,8 +142,8 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
             graph.zoomToBoundingBox(true);
 
 
-            this.cdr.markForCheck();
             this.isLoading = false;
+            this.cdr.markForCheck();
         });
 
     }
