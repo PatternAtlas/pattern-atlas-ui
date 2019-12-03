@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { PatternGraphTemplateComponent } from '../pattern-graph-template/pattern-graph-template.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FilterFactoryService } from '../../../filter/service/filter-factory.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { UriConverter } from '../../../core/util/uri-converter';
 
 @Component({

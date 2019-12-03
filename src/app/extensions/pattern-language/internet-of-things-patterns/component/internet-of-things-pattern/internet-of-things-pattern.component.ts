@@ -17,7 +17,7 @@ import { PatternRenderingComponentInterface } from '../../../../../core/model/pa
 import { ActivatedRoute, Router } from '@angular/router';
 import InternetOfThingsPattern from '../../model/internet-of-things-pattern';
 import { TdTextEditorComponent } from '@covalent/text-editor';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { DialogData, MdEditorComponent } from '../../../../../core/component/md-editor/md-editor.component';
 
 @Component({

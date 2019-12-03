@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Inject, ViewChild } from '@angular/core';
 import { FilterFactoryService } from '../../service/filter-factory.service';
-import { MatDialogRef, MAT_DIALOG_DATA, MatCheckbox } from "@angular/material";
+import { MatCheckbox } from "@angular/material/checkbox";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 
 @Component({
   selector: 'pp-filter-view',

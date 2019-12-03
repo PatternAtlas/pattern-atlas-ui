@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, ViewChild} from '@angular/core';
 import {DataChange, DataRenderingComponent} from '../interfaces/DataRenderingComponent.interface';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {DialogData, MdEditorComponent} from '../../md-editor/md-editor.component';
 import * as MarkdownIt from 'markdown-it';
 import * as markdownitKatex from 'markdown-it-katex';

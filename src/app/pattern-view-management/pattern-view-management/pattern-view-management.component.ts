@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {PatternViewService} from '../../core/service/pattern-view.service';
 import {PatternView} from '../../core/model/hal/pattern-view.model';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {CreateEditPatternLanguageComponent} from '../../core/component/create-edit-pattern-language/create-edit-pattern-language.component';
 import {DialogPatternLanguageResult} from '../../pattern-language-management/data/DialogPatternLanguageResult.interface';
 import {PatternLanguageService} from '../../core/service/pattern-language.service';

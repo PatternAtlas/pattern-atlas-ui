@@ -15,7 +15,7 @@
 import {ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
 import PatternLanguage from '../../core/model/hal/pattern-language.model';
 import {ActivatedRoute, Router} from '@angular/router';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {CookieService} from 'ngx-cookie-service';
 import {ToasterService} from 'angular2-toaster';
 import {PatternLanguageService} from '../../core/service/pattern-language.service';

@@ -1,5 +1,5 @@
 import {AfterViewInit, ApplicationRef, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {MatDialog, MatDialogRef} from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import {AddToViewComponent, LinksToOtherPattern, LoazyLoadedFlatNode} from '../add-to-view/add-to-view.component';
 import {PatternLanguageService} from '../../core/service/pattern-language.service';
 import PatternLanguage from '../../core/model/hal/pattern-language.model';

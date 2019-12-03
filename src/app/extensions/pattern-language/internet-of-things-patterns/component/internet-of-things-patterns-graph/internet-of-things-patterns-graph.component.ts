@@ -3,7 +3,7 @@ import { InternetOfThingsPatternData } from '../../model/internet-of-things-patt
 import { PatternGraphTemplateComponent } from 'src/app/graph/component/pattern-graph-template/pattern-graph-template.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FilterFactoryService } from 'src/app/filter/service/filter-factory.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { UriConverter } from 'src/app/core/util/uri-converter';
 
 @Component({

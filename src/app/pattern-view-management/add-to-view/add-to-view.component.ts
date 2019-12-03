@@ -1,6 +1,7 @@
 import {Component, Inject} from '@angular/core';
 import {FlatTreeControl} from '@angular/cdk/tree';
-import {MAT_DIALOG_DATA, MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import {BehaviorSubject, forkJoin, Observable} from 'rxjs';
 import PatternLanguage from '../../core/model/hal/pattern-language.model';
 import {PatternService} from '../../core/service/pattern.service';

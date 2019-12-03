@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FilterFactoryService } from 'src/app/filter/service/filter-factory.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { EnterpriseIntegrationPatternData } from '../../model/enterprise-integration-pattern-data';
 import { PatternGraphTemplateComponent } from 'src/app/graph/component/pattern-graph-template/pattern-graph-template.component';
 

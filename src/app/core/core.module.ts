@@ -18,24 +18,22 @@ import {DefaultPlRendererComponent} from './default-pl-renderer/default-pl-rende
 import {DefaultPatternRendererComponent} from './default-pattern-renderer/default-pattern-renderer.component';
 import {ComponentRegistryService} from './service/component-registry.service';
 import {PrettyJsonModule} from 'angular2-prettyjson';
-import {
-    MatAutocompleteModule,
-    MatButtonModule,
-    MatButtonToggleModule,
-    MatCardModule,
-    MatDatepickerModule,
-    MatDialogModule,
-    MatGridListModule,
-    MatIconModule,
-    MatInputModule,
-    MatListModule,
-    MatNativeDateModule,
-    MatProgressSpinnerModule,
-    MatSelectModule,
-    MatSidenavModule,
-    MatToolbarModule,
-    MatTooltipModule
-} from '@angular/material';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCardModule } from '@angular/material/card';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import {TextFieldModule} from '@angular/cdk/text-field';
 import {MdEditorComponent} from './component/md-editor/md-editor.component';
 import {CovalentTextEditorModule} from '@covalent/text-editor';

@@ -3,7 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {ToasterService} from 'angular2-toaster';
 import {PatternpropertyDirective} from '../component/markdown-content-container/patternproperty.directive';
 import {UriConverter} from '../util/uri-converter';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {CreatePatternRelationComponent} from '../component/create-pattern-relation/create-pattern-relation.component';
 import Pattern from '../model/hal/pattern.model';
 import {PatternLanguageService} from '../service/pattern-language.service';

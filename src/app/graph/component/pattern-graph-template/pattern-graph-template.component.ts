@@ -6,7 +6,7 @@ import {PatternRenderingComponentInterface} from 'src/app/core/model/pattern-ren
 import {Link, Node, NodeInfo, Pattern} from '../../model';
 import {FilterViewComponent} from 'src/app/filter/component/filter-view/filter-view.component';
 import * as d3 from 'd3';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import LinkData from '../../model/link-data';
 
 @Component({

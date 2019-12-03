@@ -2,7 +2,7 @@ import {ChangeDetectorRef, Component, NgZone, OnChanges, OnInit, SimpleChanges, 
 import {PatternRenderingComponentInterface} from '../../../../../core/model/pattern-rendering-component.interface';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TdTextEditorComponent} from '@covalent/text-editor';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {DialogData, MdEditorComponent} from '../../../../../core/component/md-editor/md-editor.component';
 import {PatternService} from '../../../../../core/service/pattern.service';
 import CloudComputingPatternHelper from '../../util/CloudComputingPatternHelper';

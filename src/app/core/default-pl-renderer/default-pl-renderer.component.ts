@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UriConverter} from '../util/uri-converter';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {PatternLanguageService} from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
 import {D3Service} from '../../graph/service/d3.service';

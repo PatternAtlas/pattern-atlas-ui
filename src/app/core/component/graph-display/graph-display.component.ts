@@ -2,7 +2,8 @@ import {ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnInit, Simp
 import {D3Service} from '../../../graph/service/d3.service';
 import {NetworkLink} from '../../model/network-link.interface';
 import {Edge} from '../../model/hal/edge.model';
-import {MatDialog, MatSidenavContainer} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSidenavContainer } from '@angular/material/sidenav';
 import {CreatePatternRelationComponent} from '../create-pattern-relation/create-pattern-relation.component';
 import {PatternView} from '../../model/hal/pattern-view.model';
 import PatternLanguage from '../../model/hal/pattern-language.model';

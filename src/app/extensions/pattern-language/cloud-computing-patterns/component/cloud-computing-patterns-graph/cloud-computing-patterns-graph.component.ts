@@ -1,7 +1,7 @@
 import { FilterFactoryService } from 'src/app/filter/service/filter-factory.service';
 import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { PatternGraphTemplateComponent } from 'src/app/graph/component/pattern-graph-template/pattern-graph-template.component';
 import { CloudComputingPatternData } from '../../model/pattern-data';
 
