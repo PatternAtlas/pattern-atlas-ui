@@ -19,7 +19,7 @@ import {PatternService} from '../../core/service/pattern.service';
 @Component({
     selector: 'pp-create-pattern',
     templateUrl: './create-pattern.component.html',
-  styleUrls: ['./create-pattern.component.scss']
+    styleUrls: ['./create-pattern.component.scss']
 })
 export class CreatePatternComponent implements OnInit {
 
@@ -36,11 +36,11 @@ export class CreatePatternComponent implements OnInit {
     options: any = {
         // todo: hide the preview button because it forces fullscreen mode (and destroys our page layout)
     };
-    private errormessages: string[];
-    private patternlanguage: PatternLanguage;
+    errormessages: string[];
+    patternlanguage: PatternLanguage;
     private sections: string[];
     private markdown;
-  private patternname: string;
+    private patternname: string;
 
     constructor(private activatedRoute: ActivatedRoute,
                 private cdr: ChangeDetectorRef,
@@ -63,13 +63,13 @@ export class CreatePatternComponent implements OnInit {
             this.sections = this.patternlanguage.patternSchema ?
                 this.patternlanguage.patternSchema.patternSectionSchemas.map((schema: PatternSectionSchema) => schema.label) : [];
             this.initTextEditor();
-          this.initFormGroup();
+            this.initFormGroup();
         });
 
     }
 
     save(): void {
-      this.parsePatternInput();
+        this.parsePatternInput();
 
         this.wasSaveButtonClicked = true;
         if (this.patternValuesFormGroup && !this.patternValuesFormGroup.valid) {
@@ -77,22 +77,22 @@ export class CreatePatternComponent implements OnInit {
             this.updateFormValidationErrors();
             return;
         }
-      const patternUri = this.patternlanguage.uri + UriConverter.encodeUri(this.patternname);
-      console.log(this.patternValuesFormGroup.value);
-      this.patternService.savePattern(this.patternlanguage._links.patterns.href,
-        {
-          uri: patternUri,
-          name: this.patternname,
-          content: this.patternValuesFormGroup.value
-        }
+        const patternUri = this.patternlanguage.uri + UriConverter.encodeUri(this.patternname);
+        console.log(this.patternValuesFormGroup.value);
+        this.patternService.savePattern(this.patternlanguage._links.patterns.href,
+            {
+                uri: patternUri,
+                name: this.patternname,
+                content: this.patternValuesFormGroup.value
+            }
         ).subscribe(() => {
-          this.toastService.pop('success', 'Created pattern');
-        this.zone.run(() => {
-          this.router.navigate(['..'], {relativeTo: this.activatedRoute});
-        });
-        },
-        (error) => this.toastService.pop('error', 'Could not create pattern', error.message)
-      );
+                this.toastService.pop('success', 'Created pattern');
+                this.zone.run(() => {
+                    this.router.navigate(['..'], {relativeTo: this.activatedRoute});
+                });
+            },
+            (error) => this.toastService.pop('error', 'Could not create pattern', error.message)
+        );
 
     }
 
@@ -134,14 +134,14 @@ export class CreatePatternComponent implements OnInit {
 
     }
 
-  private parsePatternInput(): void {
+    private parsePatternInput(): void {
         const lines = this.parseMarkdownText();
         const patternNameIndex = lines.findIndex((it) => it.type === 'heading' && it.depth === 1);
-    this.patternname = patternNameIndex !== -1 ? lines[patternNameIndex]['text'] : '';
-    this.patternlanguage.patternSchema.patternSectionSchemas.forEach((schema: PatternSectionSchema) => {
-      const sectionName = schema.name;
+        this.patternname = patternNameIndex !== -1 ? lines[patternNameIndex]['text'] : '';
+        this.patternlanguage.patternSchema.patternSectionSchemas.forEach((schema: PatternSectionSchema) => {
+            const sectionName = schema.name;
             const sectionIndex = lines.findIndex((sec) => sec.type === 'heading' && sec.depth === 2 &&
-              this.ignoreCaseAndWhitespace(sec.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(sectionName)));
+                this.ignoreCaseAndWhitespace(sec.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(sectionName)));
             if (sectionIndex !== -1) {
                 const sectioncontent = [];
                 for (let i = sectionIndex + 1; i < lines.length; i++) {
@@ -154,11 +154,11 @@ export class CreatePatternComponent implements OnInit {
                     }
                 }
                 if (this.patternValuesFormGroup) {
-                  if (this.patternValuesFormGroup.controls[sectionName]) {
-                    this.patternValuesFormGroup.controls[sectionName].setValue(sectioncontent.join('\n'));
+                    if (this.patternValuesFormGroup.controls[sectionName]) {
+                        this.patternValuesFormGroup.controls[sectionName].setValue(sectioncontent.join('\n'));
                     } else {
                         console.log('missing formcontrol:');
-                    console.log(sectionName);
+                        console.log(sectionName);
                     }
                 } else {
                     console.error('patternValuesFormGroup is undefined');
@@ -170,7 +170,7 @@ export class CreatePatternComponent implements OnInit {
         });
 
 
-  }
+    }
 
 
     ignoreCaseAndWhitespace(text: string): string {
@@ -202,15 +202,15 @@ export class CreatePatternComponent implements OnInit {
         });
     }
 
-  // init formgroup based on patternschema
-  private initFormGroup() {
-    this.patternValuesFormGroup = new FormGroup({});
-    if (this.patternlanguage && this.patternlanguage.patternSchema && this.patternlanguage.patternSchema.patternSectionSchemas) {
-      this.patternlanguage.patternSchema.patternSectionSchemas.forEach((schema: PatternSectionSchema) => {
-        this.patternValuesFormGroup.addControl(schema.name, new FormControl(''));
-      });
+    // init formgroup based on patternschema
+    private initFormGroup() {
+        this.patternValuesFormGroup = new FormGroup({});
+        if (this.patternlanguage && this.patternlanguage.patternSchema && this.patternlanguage.patternSchema.patternSectionSchemas) {
+            this.patternlanguage.patternSchema.patternSectionSchemas.forEach((schema: PatternSectionSchema) => {
+                this.patternValuesFormGroup.addControl(schema.name, new FormControl(''));
+            });
+        }
     }
-  }
 
     private initTextEditor(): void {
         for (const section of this.sections) {

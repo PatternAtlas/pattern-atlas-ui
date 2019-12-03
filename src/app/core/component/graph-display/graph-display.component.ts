@@ -2,8 +2,8 @@ import {ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnInit, Simp
 import {D3Service} from '../../../graph/service/d3.service';
 import {NetworkLink} from '../../model/network-link.interface';
 import {Edge} from '../../model/hal/edge.model';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSidenavContainer } from '@angular/material/sidenav';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSidenavContainer} from '@angular/material/sidenav';
 import {CreatePatternRelationComponent} from '../create-pattern-relation/create-pattern-relation.component';
 import {PatternView} from '../../model/hal/pattern-view.model';
 import PatternLanguage from '../../model/hal/pattern-language.model';
@@ -45,7 +45,7 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
     @ViewChild('svg') svg: ElementRef;
     @ViewChild(MatSidenavContainer) sidenavContainer: MatSidenavContainer;
     patternlanguageData;
-    private isLoading = false;
+    isLoading = false;
     private edges: NetworkLink[];
     private nodes: GraphNode[];
     private copyOfLinks: NetworkLink[];
@@ -57,7 +57,7 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
     @Input() data: GraphInputData;
     private highlightedNodeIds: string[] = [];
     private highlightedEdgeIds: string[] = [];
-    private currentPattern: Pattern;
+    currentPattern: Pattern;
     private outGoingDirectedEdges: Edge[];
     private inGoingDirectedEdges: Edge[];
     private inGoingUndirectedEdges: Edge[];

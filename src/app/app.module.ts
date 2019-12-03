@@ -12,42 +12,40 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { PatternLanguageManagementModule } from './pattern-language-management/pattern-language-management.module';
-import { CoreModule } from './core/core.module';
-import { PageNotFoundComponent } from './page-not-found.component';
-import { LandingPageComponent } from './landing-page.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {PatternLanguageManagementModule} from './pattern-language-management/pattern-language-management.module';
+import {CoreModule} from './core/core.module';
+import {PageNotFoundComponent} from './page-not-found.component';
+import {LandingPageComponent} from './landing-page.component';
 
-import { HttpClientModule } from '@angular/common/http';
-import { ExtensionsModule } from './extensions/extensions.module';
-import { AdministrationComponent } from './administration.component';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { PatternViewManagementModule } from './pattern-view-management/pattern-view-management.module';
-import { NgxMdModule } from 'ngx-md';
-import { CovalentTextEditorModule } from '@covalent/text-editor';
-import { TestComponent } from './test/test.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { CookieService } from 'ngx-cookie-service';
-import { ToasterModule } from 'angular2-toaster';
-import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
+import {ExtensionsModule} from './extensions/extensions.module';
+import {AdministrationComponent} from './administration.component';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCardModule} from '@angular/material/card';
+import {MatIconModule} from '@angular/material/icon';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {PatternViewManagementModule} from './pattern-view-management/pattern-view-management.module';
+import {NgxMdModule} from 'ngx-md';
+import {CovalentTextEditorModule} from '@covalent/text-editor';
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {CookieService} from 'ngx-cookie-service';
+import {ToasterModule} from 'angular2-toaster';
+import {MatInputModule} from '@angular/material/input';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
     declarations: [
-      AppComponent,
-      PageNotFoundComponent,
-      LandingPageComponent,
-      AdministrationComponent,
-      TestComponent
+        AppComponent,
+        PageNotFoundComponent,
+        LandingPageComponent,
+        AdministrationComponent
     ],
     imports: [
         BrowserModule,
@@ -72,7 +70,7 @@ import { FormsModule } from '@angular/forms';
         MatInputModule,
         FormsModule
     ],
-  providers: [CookieService],
+    providers: [CookieService],
     bootstrap: [AppComponent]
 })
 export class AppModule {
