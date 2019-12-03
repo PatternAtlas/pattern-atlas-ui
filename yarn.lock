@@ -659,14 +659,14 @@
     "@types/source-list-map" "*"
     source-map "^0.6.1"
 
-"@ustutt/grapheditor-webcomponent@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@ustutt/grapheditor-webcomponent/-/grapheditor-webcomponent-0.3.0.tgz#139510309b305bf5a0bb65b009dbaa412ca420d2"
-  integrity sha512-sbc/ugobgB+NYkHqOh6D6SPPrY0DibPEe/pQeo+mF3rFpcVoXUNxGua/hTuUjB0dbqoSIj69K14MA0utyhebsA==
+"@ustutt/grapheditor-webcomponent@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@ustutt/grapheditor-webcomponent/-/grapheditor-webcomponent-0.2.0.tgz#2155774d683b76583f7100191720cc8835ed6414"
+  integrity sha512-ooEK+sRd/31OV89wE662Lv6yf8K4kWbJFZCRoul9LxBowRSuhKnUP9GUf9D1K3/hqVfrz5ottcfB4e1G//s7/g==
   dependencies:
-    d3-drag "^1.2.5"
-    d3-selection "^1.4.1"
-    d3-shape "^1.3.7"
+    d3-drag "^1.2.4"
+    d3-selection "^1.4.0"
+    d3-shape "^1.3.5"
     d3-zoom "^1.8.3"
 
 "@webassemblyjs/ast@1.7.11":
@@ -2360,7 +2360,7 @@ d3-drag@1:
     d3-dispatch "1"
     d3-selection "1"
 
-d3-drag@^1.2.5:
+d3-drag@^1.2.4:
   version "1.2.5"
   resolved "https://registry.yarnpkg.com/d3-drag/-/d3-drag-1.2.5.tgz#2537f451acd39d31406677b7dc77c82f7d988f70"
   integrity sha512-rD1ohlkKQwMZYkQlYVCrSFxsWPzI97+W+PaEIBNTMxRuxz9RF0Hi5nJWHGVJ3Om9d2fRTe1yOBINJyy/ahV95w==
@@ -2468,7 +2468,7 @@ d3-selection@1, d3-selection@^1.1.0:
   resolved "https://registry.yarnpkg.com/d3-selection/-/d3-selection-1.4.0.tgz#ab9ac1e664cf967ebf1b479cc07e28ce9908c474"
   integrity sha512-EYVwBxQGEjLCKF2pJ4+yrErskDnz5v403qvAid96cNdCMr8rmCYfY5RGzWz24mdIbxmDf6/4EAH+K9xperD5jg==
 
-d3-selection@^1.4.1:
+d3-selection@^1.4.0:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/d3-selection/-/d3-selection-1.4.1.tgz#98eedbbe085fbda5bafa2f9e3f3a2f4d7d622a98"
   integrity sha512-BTIbRjv/m5rcVTfBs4AMBLKs4x8XaaLkwm28KWu9S2vKNqXkXt2AH2Qf0sdPZHjFxcWg/YL53zcqAz+3g4/7PA==
@@ -2480,7 +2480,7 @@ d3-shape@1:
   dependencies:
     d3-path "1"
 
-d3-shape@^1.3.7:
+d3-shape@^1.3.5:
   version "1.3.7"
   resolved "https://registry.yarnpkg.com/d3-shape/-/d3-shape-1.3.7.tgz#df63801be07bc986bc54f63789b4fe502992b5d7"
   integrity sha512-EUkvKjqPFUAZyOlhY5gzCxCeI0Aep04LwIRpsZ/mLFelJiUfnK56jo5JMDSE7yyP2kLSb6LtF+S5chMk7uqPqw==

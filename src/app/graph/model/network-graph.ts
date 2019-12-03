@@ -61,7 +61,6 @@ export class NetworkGraph {
 
             console.log('start');
             this.simulation.alpha(1).alphaMin(0.3).restart();
-            //this.simulation.tick(400);
         }
 
     }

@@ -132,8 +132,8 @@ export class DefaultPlRendererComponent implements OnInit {
     }
 
 
-    toggleRendereringComponent(value: boolean) {
-        this.graphVisible = value;
+    toggleRendereringComponent(graphVisibleValue: boolean) {
+        this.graphVisible = graphVisibleValue;
         this.loadRendererForData();
     }
 
@@ -192,6 +192,9 @@ export class DefaultPlRendererComponent implements OnInit {
             });
     }
 
+    reloadGraph() {
+        (<GraphDisplayComponent>this.rendererComponentInstance).reformatGraph();
+    }
 }
 
 

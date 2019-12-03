@@ -11,9 +11,10 @@
         <mat-button-toggle mat-raised-button [value]="true" aria-label="Text align left">
             Graph
         </mat-button-toggle>
-
-
     </mat-button-toggle-group>
+    <button *ngIf="graphVisible" mat-raised-button color="accent" (click)="reloadGraph()">
+        <i class="material-icons">autorenew</i> Reformat
+    </button>
 </pp-action-button-bar>
 
 

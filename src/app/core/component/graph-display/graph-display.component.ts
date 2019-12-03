@@ -1,19 +1,21 @@
 import {ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {D3Service} from '../../../graph/service/d3.service';
 import {NetworkLink} from '../../model/network-link.interface';
-import {Pattern} from '../../../graph/model';
 import {Edge} from '../../model/hal/edge.model';
-import {MatDialog} from '@angular/material';
+import {MatDialog, MatSidenavContainer} from '@angular/material';
 import {CreatePatternRelationComponent} from '../create-pattern-relation/create-pattern-relation.component';
 import {PatternView} from '../../model/hal/pattern-view.model';
 import PatternLanguage from '../../model/hal/pattern-language.model';
 import {PatternRelationDescriptorService} from '../../service/pattern-relation-descriptor.service';
 import {DirectedEdgeModel} from '../../model/hal/directed-edge.model';
 import {switchMap} from 'rxjs/operators';
-import {EMPTY} from 'rxjs';
+import {of} from 'rxjs';
 import {ToasterService} from 'angular2-toaster';
 import {UriConverter} from '../../util/uri-converter';
 import GraphEditor from '@ustutt/grapheditor-webcomponent/lib/grapheditor';
+import {edgeId} from '@ustutt/grapheditor-webcomponent/lib/edge';
+import Pattern from '../../model/hal/pattern.model';
+import {UndirectedEdgeModel} from '../../model/hal/undirected-edge.model';
 
 interface GraphInputData {
     patterns: Pattern[];
@@ -40,6 +42,7 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
 
     @ViewChild('graphWrapper') graph: ElementRef;
     @ViewChild('svg') svg: ElementRef;
+    @ViewChild(MatSidenavContainer) sidenavContainer: MatSidenavContainer;
     patternlanguageData;
     private isLoading = false;
     private edges: NetworkLink[];
@@ -51,6 +54,13 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
     private currentEdge: any;
 
     @Input() data: GraphInputData;
+    private highlightedNodeIds: string[] = [];
+    private highlightedEdgeIds: string[] = [];
+    private currentPattern: Pattern;
+    private outGoingDirectedEdges: Edge[];
+    private inGoingDirectedEdges: Edge[];
+    private inGoingUndirectedEdges: Edge[];
+    currentEdges: (DirectedEdgeModel | UndirectedEdgeModel)[];
 
 
     constructor(private cdr: ChangeDetectorRef, private d3Service: D3Service, private matDialog: MatDialog,
@@ -58,18 +68,16 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
-        console.log('init', this.data);
-        this.test();
+        this.initData();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        console.log(changes);
         if (changes.data != null) {
-            this.test();
+            this.initData();
         }
     }
 
-    private test() {
+    private initData() {
         this.patternlanguageData = this.data;
         this.edges = this.mapPatternLinksToEdges(this.patternlanguageData.edges);
         this.copyOfLinks = this.mapPatternLinksToEdges(this.patternlanguageData.copyOfLinks);
@@ -87,10 +95,33 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
             width: 300, //1450,
             height: 1313// 1000
         });
+        const graph: GraphEditor = this.graph.nativeElement;
+        graph.setNodeClass = (className, node) => {
+            if (this.highlightedNodeIds.length > 0) {
+                if (className === 'highlighted-node') {
+                    return this.highlightedNodeIds.includes(<string>node.id);
+                }
+                if (className === 'low-opacity-node') {
+                    return !this.highlightedNodeIds.includes(<string>node.id);
+                }
+            }
+            return false;
+        };
+
+        graph.setEdgeClass = (className, edge, sourceNode, targetNode) => {
+            if (targetNode == null) {
+                return false;
+            }
+            if (className === 'low-opacity-edge' && this.highlightedNodeIds.length > 0) {
+                const id = edge.id ? edge.id : edgeId(edge);
+                return !this.highlightedEdgeIds.includes(<string>id);
+            }
+            return false;
+        };
+
         // subscribe to the end of the network graph force-layout simulation:
         networkGraph.ticker.subscribe((d: any) => {
-            console.log('tick');
-            const graph: GraphEditor = this.graph.nativeElement;
+            console.log('started force simulation');
             graph.setNodes(networkGraph.nodes, false);
             // we need to use a hard-copy of the links, because get changed (by d3?) and the webcomponent can't handle them anymore
             if (this.copyOfLinks.length > 0) {
@@ -113,12 +144,14 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
             const currentlink = links[i];
             if (currentlink.sourcePatternId && currentlink.targetPatternId) {
                 edges.push({
-                    source: currentlink.sourcePatternId, 'target': currentlink.targetPatternId,
+                    source: currentlink.sourcePatternId, target: currentlink.targetPatternId,
+                    id: currentlink.id,
                     markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0},
                 });
             } else { // undirected link
                 edges.push(<NetworkLink>{
-                    'source': currentlink.pattern1Id, 'target': currentlink.pattern2Id,
+                    source: currentlink.pattern1Id, target: currentlink.pattern2Id,
+                    id: currentlink.id,
                     markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0},
                     markerStart: {template: 'arrow', scale: 0.5, relativeRotation: 0}
                 });
@@ -162,34 +195,49 @@ export class GraphDisplayComponent implements OnInit, OnChanges {
                 const parentOfEdge = this.patternLanguage ? this.patternLanguage : this.patternView;
 
                 const url = (edge && edge instanceof DirectedEdgeModel) ? parentOfEdge._links.directedEdges.href : parentOfEdge._links.undirectedEdges.href;
-                return edge ? this.patternRelationDescriptionService.savePatternRelation(url, edge) : EMPTY;
+                return edge ? this.patternRelationDescriptionService.savePatternRelation(url, edge) : of(null);
             })).subscribe(res => {
             if (res) {
                 this.toastService.pop('success', 'Created new Link');
             } else {
+                const graph: GraphEditor = this.graph.nativeElement;
+                graph.removeEdge(this.currentEdge);
+                graph.completeRender();
                 console.log(this.graph.nativeElement.getEdgesBySource(this.currentEdge.source));
             }
         });
     }
 
-    nodeClicked($event) {
+    nodeClicked(event) {
         const node = event['detail']['node'];
-        const outgoingLinks = this.graph.nativeElement.getEdgesByTarget(node.id);
-        const ingoingLinks = this.graph.nativeElement.getEdgesBySource(node.id);
-        const outgoingNodeIds: string[] = Array.from(outgoingLinks).map(it => it['source']);
-        const ingoingNodeIds: string[] = Array.from(ingoingLinks).map(it => it['target']);
+        console.log('node clicked');
+        const outgoingLinks = Array.from(this.graph.nativeElement.getEdgesByTarget(node.id));
+        const ingoingLinks = Array.from(this.graph.nativeElement.getEdgesBySource(node.id));
 
-        const linkedNodeIds = outgoingNodeIds.concat(ingoingNodeIds);
-        linkedNodeIds.push(node.id);
+        this.highlightedEdgeIds = [].concat(outgoingLinks).concat(ingoingLinks).map((edge) => edge.id ? edge.id : edgeId(edge));
+        const outgoingNodeIds: string[] = outgoingLinks.map(it => it['source']);
+        const ingoingNodeIds: string[] = ingoingLinks.map(it => it['target']);
 
-        this.graph.nativeElement.nodeList.forEach(currentNode => {
-            currentNode.type = linkedNodeIds.includes(currentNode.id) ? 'highlighted-node' : 'low-opacity-node';
+        this.highlightedNodeIds = outgoingNodeIds.concat(ingoingNodeIds);
+        this.highlightedNodeIds.push(node.id);
+        const graph: GraphEditor = this.graph.nativeElement;
+        this.currentPattern = this.patterns.find(pat => pat.id === node.id);
+        this.getEdgesForPattern();
+        this.sidenavContainer.open();
+        graph.completeRender();
+
+    }
+
+    private getEdgesForPattern(): void {
+        this.patternRelationDescriptionService.getEdgesForPattern(this.currentPattern).subscribe(edges => {
+            console.log(edges);
+            this.currentEdges = edges;
         });
+    }
 
-        console.log(this.graph.nativeElement.edgeList);
 
-
-        this.graph.nativeElement.completeRender(true);
+    reformatGraph() {
+        this.startSimulation();
     }
 }
 

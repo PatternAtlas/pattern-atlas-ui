@@ -1,7 +1,10 @@
 <mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>
 <mat-card class="pattern-card mat-elevation-z5">
     <mat-card-header>
-        <pp-action-button-bar [displayText]="pattern?.name" [firstAddButton]="false"></pp-action-button-bar>
+        <pp-action-button-bar [displayText]="pattern?.name" [firstAddButton]="false">
+
+
+        </pp-action-button-bar>
     </mat-card-header>
     <div>
         <ng-template ppPatternproperty></ng-template>

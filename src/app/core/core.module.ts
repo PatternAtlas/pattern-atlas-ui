@@ -32,6 +32,7 @@ import {
     MatNativeDateModule,
     MatProgressSpinnerModule,
     MatSelectModule,
+    MatSidenavModule,
     MatToolbarModule,
     MatTooltipModule
 } from '@angular/material';
@@ -72,7 +73,7 @@ import {EmitEventOnAddedEdgeDirective} from './directives/emit-event-on-added-ed
         ReactiveFormsModule,
         MatTooltipModule,
         MatSelectModule,
-        MatDialogModule, MatGridListModule,
+        MatDialogModule, MatGridListModule, MatSidenavModule,
         MatAutocompleteModule,
         MatIconModule, MatToolbarModule,
         MatButtonToggleModule,

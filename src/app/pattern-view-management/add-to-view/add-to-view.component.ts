@@ -251,9 +251,9 @@ export class AddToViewComponent {
             relatedPatternLink = relatedPatternIsSource ? edge._links.sourcePattern : edge._links.targetPattern;
         } else {
             edge = <UndirectedEdgeModel>edge;
-            relatedPatternIsSource = edge.pattern1Id === this.patternId;
+            relatedPatternIsSource = edge.p1Id === this.patternId;
             name = relatedPatternIsSource ? edge.pattern1Name : edge.pattern2Name;
-            id = relatedPatternIsSource ? edge.pattern1Id : edge.pattern2Id;
+            id = relatedPatternIsSource ? edge.p1Id : edge.p2Id;
             relatedPatternLink = relatedPatternIsSource ? edge._links.pattern[0] : edge._links.pattern[1];
         }
         return {

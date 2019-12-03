@@ -21,9 +21,9 @@ class Pattern extends UriEntity {
         self: HalLink;
         content: HalLink;
         patternLanguage: HalLink;
-        undirectedEdges?: HalLink;
-        outgoingDirectedEdges?: HalLink;
-        ingoingDirectedEdges?: HalLink;
+        undirectedEdges?: HalLink | HalLink[];
+        outgoingDirectedEdges?: HalLink | HalLink[];
+        ingoingDirectedEdges?: HalLink | HalLink[];
     };
 }
 
