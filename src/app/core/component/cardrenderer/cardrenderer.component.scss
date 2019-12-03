@@ -1,15 +1,10 @@
-.mat-grid-tile {
-  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 1px 3px 0 rgba(0, 0, 0, .12);
-  background-color: aliceblue;
+.card {
+  width: 10em;
+  height: 10em;
 
-  span {
-    margin: 0.5em;
-    text-align: center;
-
-  }
 
   &:hover {
-    background-color: #3f51b5;
+    background-color: grey;
     color: white;
     cursor: pointer;
   }
@@ -17,3 +12,20 @@
 
 }
 
+.mat-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.mat-card-header {
+  flex-shrink: 0;
+}
+
+.mat-card-content {
+  flex-grow: 1;
+  overflow: auto;
+}
+
+.mat-card-footer {
+  padding: 16px;
+}

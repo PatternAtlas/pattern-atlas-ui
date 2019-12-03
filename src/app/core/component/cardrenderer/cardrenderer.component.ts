@@ -2,6 +2,8 @@ import {Component, EventEmitter, Input, NgZone, OnInit, Output} from '@angular/c
 import {UriConverter} from '../../util/uri-converter';
 import {ActivatedRoute, Router} from '@angular/router';
 import UriEntity from '../../model/hal/uri-entity.model';
+import Pattern from '../../model/hal/pattern.model';
+import {HalLink} from '../../model/hal/hal-link.interface';
 
 @Component({
     selector: 'pp-cardrenderer',
@@ -15,7 +17,7 @@ export class CardrendererComponent implements OnInit {
                 private activatedRoute: ActivatedRoute) {
     }
 
-    @Input() uriEntities: UriEntity[];
+    @Input() uriEntities: Pattern[];
 
     @Output() createEntityClicked: EventEmitter<void> = new EventEmitter<void>();
 
@@ -26,6 +28,14 @@ export class CardrendererComponent implements OnInit {
         this.zone.run(() => {
             this.router.navigate([UriConverter.doubleEncodeUri(pattern.uri)], {relativeTo: this.activatedRoute});
         });
+    }
+
+
+    getLinkCount(directedEdges: HalLink[] | HalLink) {
+        if (!directedEdges) {
+            return 0;
+        }
+        return Array.isArray(directedEdges) ? directedEdges.length : 1;
     }
 
 

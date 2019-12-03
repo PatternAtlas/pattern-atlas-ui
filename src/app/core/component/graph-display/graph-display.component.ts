@@ -42,6 +42,7 @@ class GraphNode {
 export class GraphDisplayComponent implements AfterViewInit, OnChanges {
 
     @ViewChild('graphWrapper', {static: true}) graph: ElementRef;
+    graphNativeElement: GraphEditor;
     @ViewChild('svg') svg: ElementRef;
     @ViewChild(MatSidenavContainer) sidenavContainer: MatSidenavContainer;
     patternlanguageData;
@@ -97,11 +98,11 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             width: 300, //1450,
             height: 1313// 1000
         });
-        const graph: GraphEditor = this.graph.nativeElement;
-        if (graph == null) {
+        this.graphNativeElement = this.graph.nativeElement;
+        if (this.graphNativeElement == null) {
             return;
         }
-        graph.setNodeClass = (className, node) => {
+        this.graphNativeElement.setNodeClass = (className, node) => {
             if (this.highlightedNodeIds.length > 0) {
                 if (className === 'highlighted-node') {
                     return this.highlightedNodeIds.includes(<string>node.id);
@@ -113,7 +114,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             return false;
         };
 
-        graph.setEdgeClass = (className, edge, sourceNode, targetNode) => {
+        this.graphNativeElement.setEdgeClass = (className, edge, sourceNode, targetNode) => {
             if (targetNode == null) {
                 return false;
             }
@@ -125,21 +126,21 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         };
 
         // allow to create edges to any other node in the graph (this enables multiple edges between nodes)
-        graph.onCreateDraggedEdge = (edge: DraggedEdge) => {
-            graph.nodeList.forEach((node) => edge.validTargets.add(<string>node.id));
+        this.graphNativeElement.onCreateDraggedEdge = (edge: DraggedEdge) => {
+            this.graphNativeElement.nodeList.forEach((node) => edge.validTargets.add(<string>node.id));
             return edge;
         };
 
         // subscribe to the end of the network graph force-layout simulation:
         networkGraph.ticker.subscribe((d: any) => {
             console.log('started force simulation');
-            graph.setNodes(networkGraph.nodes, false);
+            this.graphNativeElement.setNodes(networkGraph.nodes, false);
             // we need to use a hard-copy of the links, because get changed (by d3?) and the webcomponent can't handle them anymore
             if (this.copyOfLinks.length > 0) {
-                graph.setEdges(this.copyOfLinks, false);
+                this.graphNativeElement.setEdges(this.copyOfLinks, false);
             }
-            graph.completeRender();
-            graph.zoomToBoundingBox(true);
+            this.graphNativeElement.completeRender();
+            this.graphNativeElement.zoomToBoundingBox(true);
 
 
             this.isLoading = false;
@@ -190,7 +191,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
 
     edgeAdded(event) {
         this.currentEdge = event.detail.edge;
-        console.log(this.currentEdge);
         const dialogRef = this.matDialog.open(CreatePatternRelationComponent, {
             data: {
                 firstPattern: this.patterns.find((pat) => event.detail.edge.source === pat.id),
@@ -211,17 +211,14 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             if (res) {
                 this.toastService.pop('success', 'Created new Link');
             } else {
-                const graph: GraphEditor = this.graph.nativeElement;
-                graph.removeEdge(this.currentEdge);
-                graph.completeRender();
-                console.log(this.graph.nativeElement.getEdgesBySource(this.currentEdge.source));
+                this.graphNativeElement.removeEdge(this.currentEdge);
+                this.graphNativeElement.completeRender();
             }
         });
     }
 
     nodeClicked(event) {
         const node = event['detail']['node'];
-        console.log('node clicked');
         const outgoingLinks = Array.from(this.graph.nativeElement.getEdgesByTarget(node.id));
         const ingoingLinks = Array.from(this.graph.nativeElement.getEdgesBySource(node.id));
 
@@ -231,17 +228,15 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
 
         this.highlightedNodeIds = outgoingNodeIds.concat(ingoingNodeIds);
         this.highlightedNodeIds.push(node.id);
-        const graph: GraphEditor = this.graph.nativeElement;
         this.currentPattern = this.patterns.find(pat => pat.id === node.id);
         this.getEdgesForPattern();
         this.sidenavContainer.open();
-        graph.completeRender();
+        this.graphNativeElement.completeRender();
 
     }
 
     private getEdgesForPattern(): void {
         this.patternRelationDescriptionService.getEdgesForPattern(this.currentPattern).subscribe(edges => {
-            console.log(edges);
             this.currentEdges = edges;
         });
     }
@@ -249,6 +244,17 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
 
     reformatGraph() {
         this.startSimulation();
+    }
+
+    backgroundClicked($event) {
+        this.highlightedNodeIds = [];
+        this.highlightedEdgeIds = [];
+        this.graphNativeElement.completeRender();
+    }
+
+    closeSideMenu() {
+        this.sidenavContainer.close();
+        this.backgroundClicked(null);
     }
 }
 

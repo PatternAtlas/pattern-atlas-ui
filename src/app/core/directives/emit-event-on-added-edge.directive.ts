@@ -1,11 +1,12 @@
-import {Directive, EventEmitter, HostListener, OnDestroy, OnInit, Output} from '@angular/core';
+import {Directive, EventEmitter, HostListener, Output} from '@angular/core';
 
 @Directive({
-    selector: '[ppEmitOnAddEdge]'
+    selector: '[ppGraphEventEmmiter]'
 })
-export class EmitEventOnAddedEdgeDirective implements OnInit, OnDestroy {
+export class EmitEventOnAddedEdgeDirective {
     @Output('onAddedEdge') edgeAddedEventEmitter = new EventEmitter<any>();
     @Output('onClickedNode') nodeClickedEventEmitter = new EventEmitter<any>();
+    @Output('onClickedBackground') backgroundClickedEventEmitter = new EventEmitter<any>();
 
     constructor() {
     }
@@ -18,12 +19,9 @@ export class EmitEventOnAddedEdgeDirective implements OnInit, OnDestroy {
         this.nodeClickedEventEmitter.emit($event);
     }
 
-
-    ngOnInit(): void {
+    @HostListener('backgroundclick', ['$event']) onBackgroundClick($event) {
+        this.backgroundClickedEventEmitter.emit($event);
     }
 
-
-    ngOnDestroy(): void {
-    }
 
 }

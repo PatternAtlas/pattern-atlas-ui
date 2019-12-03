@@ -1,5 +1,5 @@
 <mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>
-<mat-sidenav-container>
+<mat-sidenav-container (backdropClick)="closeSideMenu()">
     <mat-sidenav>
         <p>{{currentPattern?.name}}</p>
         <p *ngFor="let edge of currentEdges">
@@ -8,7 +8,8 @@
     <mat-sidenav-content>
         <network-graph #graphWrapper classes="" mode="layout" zoom="both"
                        classes="highlighted-node highlighted-edge low-opacity-node low-opacity-edge"
-                       style="width: 100%; height: 100%" ppEmitOnAddEdge (onAddedEdge)="edgeAdded($event)"
+                       style="width: 100%; height: 100%" ppGraphEventEmmiter (onAddedEdge)="edgeAdded($event)"
+                       (onClickedBackground)="backgroundClicked($event)"
                        (onClickedNode)="nodeClicked($event)"
         >
             <style slot="style">

@@ -1,9 +1,9 @@
-import {ChangeDetectorRef, Component, ComponentFactoryResolver, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ToasterService} from 'angular2-toaster';
 import {PatternpropertyDirective} from '../component/markdown-content-container/patternproperty.directive';
 import {UriConverter} from '../util/uri-converter';
-import { MatDialog } from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {CreatePatternRelationComponent} from '../component/create-pattern-relation/create-pattern-relation.component';
 import Pattern from '../model/hal/pattern.model';
 import {PatternLanguageService} from '../service/pattern-language.service';
@@ -26,7 +26,7 @@ import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
     templateUrl: './default-pattern-renderer.component.html',
     styleUrls: ['./default-pattern-renderer.component.scss']
 })
-export class DefaultPatternRendererComponent implements OnInit {
+export class DefaultPatternRendererComponent implements AfterViewInit {
     private directedPatternRelations: DirectedEdgeModel[];
     private undirectedPatternRelations: UndirectedEdgeModel[];
     private patternList: Array<Pattern>;
@@ -50,7 +50,7 @@ export class DefaultPatternRendererComponent implements OnInit {
                 public dialog: MatDialog) {
     }
 
-    ngOnInit(): void {
+    ngAfterViewInit(): void {
         this.viewContainerRef = this.ppPatternproperty.viewContainerRef;
         this.patternLanguageUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
         this.patternUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternUri'));

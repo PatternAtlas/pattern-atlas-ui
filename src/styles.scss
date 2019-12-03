@@ -206,3 +206,15 @@ body {
   box-shadow: none;
   border: #7f7f7f 1px solid;
 }
+
+.box {
+  min-height: 10rem;
+  min-width: 10rem;
+  height: 10rem;
+  width: 10rem;
+  margin: 0.25em;
+}
+
+.badge-span {
+  margin-right: 2em;
+}

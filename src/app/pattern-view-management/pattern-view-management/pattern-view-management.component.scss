@@ -1,0 +1,18 @@
+.card {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  text-align: center;
+  background-color: #3f51b5;
+  color: white;
+
+  &:hover {
+    background-color: white;
+    color: black;
+    cursor: pointer;
+  }
+
+  span {
+    margin: auto;
+  }
+}

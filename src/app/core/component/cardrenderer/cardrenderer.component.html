@@ -1,9 +1,29 @@
-<mat-grid-list cols="8" [rowHeight]="'1:1'" gutterSize="10">
-    <mat-grid-tile class="tile"
-                   *ngFor="let entity of uriEntities"
-                   (click)="navigate(entity)"
+<div style="display: flex; flex-wrap: wrap; padding: 0.25em;">
+    <mat-card class="card box"
+              *ngFor="let entity of uriEntities"
+              (click)="navigate(entity)"
     >
-        <span mat-grid-tile-header>{{entity.name}}</span>
-    </mat-grid-tile>
-</mat-grid-list>
+        <mat-card-title>{{entity.name}}</mat-card-title>
+        <mat-card-content>
+            <img mat-card-image src="//via.placeholder.com/350x150"></mat-card-content>
+        <mat-card-footer>
+
+            <span class="badge-span" matBadgeOverlap="false"
+                  [matBadge]="getLinkCount(entity._links.ingoingDirectedEdges)">
+                <mat-icon> trending_flat
+            </mat-icon>
+        </span>
+            <mat-icon class="flip"> trending_flat
+            </mat-icon>
+            <span class="badge-span" matBadgeOverlap="false"
+                  [matBadge]="getLinkCount(entity._links.outgoingDirectedEdges)">
+        </span>
+
+
+            <span [matBadge]="getLinkCount(entity._links.undirectedEdges)" matBadgeOverlap="false">
+                 <mat-icon>compare_arrows</mat-icon>
+                </span>
+        </mat-card-footer>
+    </mat-card>
+</div>
 
