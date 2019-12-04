@@ -22,8 +22,12 @@ export class PatternRelationDescriptorService {
         return this.http.post(url, relation, {observe: 'response'});
     }
 
-    getEdgeByUrl(url: string): Observable<any> {
-        return this.http.get(url);
+    getDirectedEdgeByUrl(url: string): Observable<DirectedEdgeModel> {
+        return this.http.get<DirectedEdgeModel>(url);
+    }
+
+    getUndirectedEdgeByUrl(url: string): Observable<UndirectedEdgeModel> {
+        return this.http.get<UndirectedEdgeModel>(url);
     }
 
     getEdgesForPattern(pattern: Pattern): Observable<EdgeWithType[]> {
@@ -37,7 +41,7 @@ export class PatternRelationDescriptorService {
             if (edgeLink) {
                 const halLinks = Array.isArray(edgeLink) ? <HalLink[]>edgeLink : [edgeLink];
                 observables.push(...halLinks.map(link =>
-                    this.getEdgeByUrl(link.href).pipe(map(res => {
+                    this.getUndirectedEdgeByUrl(link.href).pipe(map(res => {
                         return <EdgeWithType>{type: edgeType, edge: res};
                     }))
                 ));

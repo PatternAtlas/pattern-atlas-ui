@@ -39,7 +39,6 @@ export class PatternLanguageService {
                     return result._embedded ? result._embedded.patternLanguages : [];
                 }
             )
-            // catchError(val => of(new PatternLanguage()))
         );
     }
 

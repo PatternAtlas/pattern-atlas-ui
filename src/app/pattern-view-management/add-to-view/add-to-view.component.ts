@@ -1,7 +1,7 @@
 import {Component, Inject} from '@angular/core';
 import {FlatTreeControl} from '@angular/cdk/tree';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import {BehaviorSubject, forkJoin, Observable} from 'rxjs';
 import PatternLanguage from '../../core/model/hal/pattern-language.model';
 import {PatternService} from '../../core/service/pattern.service';
@@ -33,13 +33,38 @@ export class LoazyLoadedFlatNode {
                 public expandable = false,
                 public loadMoreParentItem: string | null = null) {
     }
+
+
 }
 
 export class LinksToOtherPattern {
     name: string;
     links?: HalLink[];
+    type: string;
     edge?: DirectedEdgeModel | UndirectedEdgeModel;
     id: string;
+    linkedPattern?: HalLink;
+
+    constructor(edge, isDirectedLink: boolean, patternId: string) {
+        let relatedPatternIsSource;
+        if (isDirectedLink) {
+            relatedPatternIsSource = edge.targetPatternId === patternId;
+            this.name = relatedPatternIsSource ? edge.sourcePatternName : edge.targetPatternName;
+            this.id = relatedPatternIsSource ? edge.sourcePatternId : edge.targetPatternId;
+            this.linkedPattern = relatedPatternIsSource ? edge._links.sourcePattern : edge._links.targetPattern;
+            this.type = 'directed';
+        } else {
+            edge = <UndirectedEdgeModel>edge;
+            relatedPatternIsSource = edge.p1Id === patternId;
+            this.name = relatedPatternIsSource ? edge.pattern1Name : edge.pattern2Name;
+            this.id = relatedPatternIsSource ? edge.p1Id : edge.p2Id;
+            this.linkedPattern = relatedPatternIsSource ? edge._links.pattern[0] : edge._links.pattern[1];
+            this.type = 'undirected';
+        }
+
+    }
+
+
 }
 
 
@@ -113,7 +138,7 @@ export class AddToViewComponent {
             this.getPatternsAndAddToTree(<PatternLanguage>node.item, treenode, node);
 
         } else {
-            this.getRelatedPatternAndAddToTree(node.item, treenode, node);
+            this.getRelatedPatternAndAddToTree(<LinksToOtherPattern>node.item, treenode, node);
         }
     }
 
@@ -232,36 +257,15 @@ export class AddToViewComponent {
     }
 
     private getRelatedPatternAndAddToTree(item: LinksToOtherPattern, treenode: LoadmoreNode, node: LoazyLoadedFlatNode) {
-        const edgesObservables = node.item['links'].map(link => this.patternRelationDescriptorService.getEdgeByUrl(link.href));
-        forkJoin(edgesObservables).subscribe((edges) => {
-            const childnodes = edges.map((edge: DirectedEdgeModel | UndirectedEdgeModel) => new LoadmoreNode(this.mapEdgeToRelatedPattern(edge)));
+        const edgesObservables = node.item['links'].map(link => item.type === 'directed' ?
+            this.patternRelationDescriptorService.getDirectedEdgeByUrl(link.href) :
+            this.patternRelationDescriptorService.getUndirectedEdgeByUrl(link.href));
+        // @ts-ignore
+        forkJoin(...edgesObservables).subscribe((edges) => {
+            const childnodes = edges.map((edge: DirectedEdgeModel | UndirectedEdgeModel) =>
+                new LoadmoreNode(new LinksToOtherPattern(edge, item.type === 'directed', this.patternId)));
             this.updateTree(node, treenode, childnodes);
         });
     }
 
-    private mapEdgeToRelatedPattern(edge: DirectedEdgeModel | UndirectedEdgeModel) {
-        let name;
-        let id;
-        let relatedPatternLink;
-        let relatedPatternIsSource = false;
-        if (edge['sourcePatternId']) {
-            edge = <DirectedEdgeModel>edge;
-            relatedPatternIsSource = edge.targetPatternId === this.patternId;
-            name = relatedPatternIsSource ? edge.sourcePatternName : edge.targetPatternName;
-            id = relatedPatternIsSource ? edge.sourcePatternId : edge.targetPatternId;
-            relatedPatternLink = relatedPatternIsSource ? edge._links.sourcePattern : edge._links.targetPattern;
-        } else {
-            edge = <UndirectedEdgeModel>edge;
-            relatedPatternIsSource = edge.p1Id === this.patternId;
-            name = relatedPatternIsSource ? edge.pattern1Name : edge.pattern2Name;
-            id = relatedPatternIsSource ? edge.p1Id : edge.p2Id;
-            relatedPatternLink = relatedPatternIsSource ? edge._links.pattern[0] : edge._links.pattern[1];
-        }
-        return {
-            name: name,
-            id: id,
-            edge: edge,
-            linkedPattern: relatedPatternLink
-        };
-    }
 }

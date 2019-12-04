@@ -10,6 +10,10 @@ html, body, svg {
   min-height: calc(80% - 10px);
   width: 100%;
   min-width: 100%;
+
+  h4 {
+    margin-left: 1em;
+  }
 }
 
 .mat-sidenav-content {

@@ -156,13 +156,16 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     private mapPatternLinksToTreeNode(pattern: Pattern): LinksToOtherPattern[] {
         const types: LinksToOtherPattern[] = [];
         const possibleEdgeTypes = [
-            {link: pattern._links.ingoingDirectedEdgesFromPatternLanguage, displayName: 'Ingoing directed edges'},
-            {link: pattern._links.outgoingDirectedEdgesFromPatternLanguage, displayName: 'Outgoing directed edges'},
-            {link: pattern._links.undirectedEdgesFromPatternLanguage, displayName: 'Undirected edges'}
+            {link: pattern._links.ingoingDirectedEdgesFromPatternLanguage, type: 'directed', displayName: 'Ingoing directed edges'},
+            {link: pattern._links.outgoingDirectedEdgesFromPatternLanguage, type: 'directed', displayName: 'Outgoing directed edges'},
+            {link: pattern._links.undirectedEdgesFromPatternLanguage, type: 'directed', displayName: 'Undirected edges'}
         ];
-        possibleEdgeTypes.forEach((type: { link: HalLink | HalLink[], displayName: string }, index) => {
-            if (type.link) {
-                types.push({name: type.displayName, links: Array.isArray(type.link) ? type.link : [type.link], id: index.toString()});
+        possibleEdgeTypes.forEach((edgeType: { link: HalLink | HalLink[], displayName: string, type: string }, index) => {
+            if (edgeType.link) {
+                types.push({
+                    name: edgeType.displayName, links: Array.isArray(edgeType.link) ? edgeType.link : [edgeType.link], id: index.toString(),
+                    type: edgeType.type
+                });
             }
         });
         return types;

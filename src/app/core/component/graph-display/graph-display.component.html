@@ -1,7 +1,7 @@
 <mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>
 <mat-sidenav-container class="container" [hasBackdrop]="false">
     <mat-sidenav #start mode="over" fixedInViewport="true">
-        <p>{{currentPattern?.name}}</p>
+        <h4>{{currentPattern?.name}}</h4>
         <mat-accordion>
             <mat-expansion-panel *ngFor="let relation of currentEdges">
                 <mat-expansion-panel-header>
