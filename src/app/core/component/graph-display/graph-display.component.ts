@@ -226,6 +226,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
 
     saveGraph() {
         if (this.nodes && this.patternLanguage) {
+            console.log('saving graph');
             this.patternLanguageService.saveGraph(this.patternLanguage, this.graphNativeElement.nodeList).subscribe(res => console.log('saved graph layout'));
         }
     }
@@ -250,13 +251,13 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     }
 
     private getGraph() {
-        this.patternLanguageService.getGraph(this.patternLanguage).subscribe((res: { graph: { graph: GraphNode[] } }) => {
-            if (!res.graph || res.graph.graph === null || res.graph.graph.length === 0) {
+        this.patternLanguageService.getGraph(this.patternLanguage).subscribe((res: { graph: Array<any> }) => {
+            if (!res.graph || !Array.isArray(res.graph) || res.graph.length === 0) {
                 this.startSimulation();
                 return;
             }
-            this.graphNativeElement.setNodes(res.graph.graph);
-            if (this.patterns.length > res.graph.graph.length) { // add newly added patterns that are not in the pattern graph yet
+            this.graphNativeElement.setNodes(res.graph);
+            if (this.patterns.length > res.graph.length) { // add newly added patterns that are not in the pattern graph yet
                 const newPatterns = this.patterns.filter(pat => !this.graphNativeElement.nodeList.map(node => <string>node.id).includes(pat.id));
                 newPatterns.forEach((pat, index) => this.addNewPatternNodeToGraph(pat, index));
             }

@@ -70,10 +70,10 @@ export class PatternLanguageService {
     }
 
     saveGraph(patternLanguage: PatternLanguage, nodes: Array<any>) {
-        return this.http.post<any>(patternLanguage._links.graph.href, {graph: nodes}, {observe: 'response'});
+        return this.http.post<any>(patternLanguage._links.graph.href, nodes, {observe: 'response'});
     }
 
     getGraph(patternLanguage: PatternLanguage) {
-        return this.http.get<{ graph: { graph: Array<GraphNode> } }>(patternLanguage._links.graph.href);
+        return this.http.get<{ graph: Array<GraphNode> }>(patternLanguage._links.graph.href);
     }
 }
