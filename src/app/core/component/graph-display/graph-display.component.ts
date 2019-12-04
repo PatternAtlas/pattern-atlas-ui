@@ -226,7 +226,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
 
     saveGraph() {
         if (this.nodes && this.patternLanguage) {
-            this.patternLanguageService.saveGraph(this.patternLanguage, this.nodes).subscribe(res => console.log('saved graph layout'));
+            this.patternLanguageService.saveGraph(this.patternLanguage, this.graphNativeElement.nodeList).subscribe(res => console.log('saved graph layout'));
         }
     }
 
@@ -241,7 +241,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         );
     }
 
-    backgroundClicked($event) {
+    backgroundClicked() {
         this.highlightedNodeIds = [];
         this.highlightedEdgeIds = [];
         this.clickedNodeId = null;

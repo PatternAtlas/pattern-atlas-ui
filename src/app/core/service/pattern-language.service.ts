@@ -69,7 +69,7 @@ export class PatternLanguageService {
         return this.http.get<Embedded<UndirectedEdesResponse>>(patternLanguage._links.undirectedEdges.href);
     }
 
-    saveGraph(patternLanguage: PatternLanguage, nodes: Array<GraphNode>) {
+    saveGraph(patternLanguage: PatternLanguage, nodes: Array<any>) {
         return this.http.post<any>(patternLanguage._links.graph.href, {graph: nodes}, {observe: 'response'});
     }
 

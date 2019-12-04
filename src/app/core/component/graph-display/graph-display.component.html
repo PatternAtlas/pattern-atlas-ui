@@ -36,7 +36,7 @@
         <network-graph #graphWrapper classes="" mode="layout" zoom="both"
                        classes="highlighted-node highlighted-edge low-opacity-node low-opacity-edge"
                        style="width: 100%; height: 100%" [ppGraphEventEmmiter] (onAddedEdge)="edgeAdded($event)"
-                       (onClickedBackground)="backgroundClicked($event)"
+                       (onClickedBackground)="backgroundClicked()"
                        (onNodePositionChange)="saveGraph()"
                        (onClickedNode)="nodeClicked($event)"
         >
