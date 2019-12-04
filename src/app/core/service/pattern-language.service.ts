@@ -74,6 +74,6 @@ export class PatternLanguageService {
     }
 
     getGraph(patternLanguage: PatternLanguage) {
-        return this.http.get<{ graph: { graph: Array<GraphNode> } }>(patternLanguage._links.graph.href);
+        return this.http.get<{ graph: Array<GraphNode> }>(patternLanguage._links.graph.href);
     }
 }
