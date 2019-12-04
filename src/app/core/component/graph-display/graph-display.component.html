@@ -2,29 +2,35 @@
 <mat-sidenav-container class="container" [hasBackdrop]="false">
     <mat-sidenav #start mode="over" fixedInViewport="true">
         <p>{{currentPattern?.name}}</p>
-        <div *ngFor="let relation of currentEdges">
-            <div [ngSwitch]="relation.type">
-                <div *ngSwitchCase="'outgoingDirectedEdges'" class="horiz-centered">
-                    <span class="horiz-centered" *ngIf="relation.edge.type"> : {{relation?.edge.type}}</span>
-                    <i class="material-icons">trending_flat</i>
-                    {{ relation?.edge.targetPatternName}}
-                    <i>{{relation?.edge.description ? ': ' + relation?.edge.description : ''}}</i>
-                </div>
-                <div *ngSwitchCase="'ingoingDirectedEdges'" class="horiz-centered">
-                    <span class="horiz-centered" *ngIf="relation.edge.type"> : {{relation?.edge.type}}</span>
-                    <i class="material-icons flip">trending_flat</i>
-                    {{ relation?.edge.sourcePatternName}}
-                    <i>{{relation?.edge.description ? ': ' + relation?.edge.description : ''}}</i>
-                </div>
-                <div *ngSwitchCase="'undirectedEdges'" class="horiz-centered">
-                    {{ relation?.edge.sourcePatternName}}
-                    <span class="horiz-centered" *ngIf="relation.edge.type"> : {{relation?.edge.type}}</span>
-                    <i class="material-icons flip">compare_arrows</i>
-                    {{ relation?.edge.p1Id === this.currentPattern.id ? relation.edge.pattern1Name : relation.edge.pattern2Name}}
-                    <i>{{relation?.edge.description ? ': ' + relation?.edge.description : ''}}</i>
-                </div>
-            </div>
-        </div>
+        <mat-accordion>
+            <mat-expansion-panel *ngFor="let relation of currentEdges">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        {{relation?.edge.type}}
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        <div [ngSwitch]="relation.type">
+                            <div *ngSwitchCase="'outgoingDirectedEdges'" class="horiz-centered">
+                                <i class="material-icons">trending_flat</i>
+                                {{ relation?.edge.targetPatternName}}
+
+                            </div>
+                            <div *ngSwitchCase="'ingoingDirectedEdges'" class="horiz-centered">
+                                <i class="material-icons flip">trending_flat</i>
+                                {{ relation?.edge.sourcePatternName}}
+                            </div>
+                            <div *ngSwitchCase="'undirectedEdges'" class="horiz-centered">
+                                {{ relation?.edge.sourcePatternName}}
+                                <i class="material-icons flip">compare_arrows</i>
+                                {{ relation?.edge.p1Id === this.currentPattern.id ? relation.edge.pattern1Name : relation.edge.pattern2Name}}
+                            </div>
+                        </div>
+                        <i>{{relation?.edge.description ? ': ' + relation?.edge.description : ''}}</i>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+            </mat-expansion-panel>
+        </mat-accordion>
+
     </mat-sidenav>
     <mat-sidenav-content>
         <network-graph #graphWrapper classes="" mode="layout" zoom="both"

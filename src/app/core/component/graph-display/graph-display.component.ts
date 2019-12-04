@@ -114,8 +114,8 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
 
     private startSimulation() {
         const networkGraph = this.d3Service.getNetworkGraph(this.nodes, this.edges, {
-            width: 300, //1450,
-            height: 1313// 1000
+            width: 1000,
+            height: 500
         });
 
 

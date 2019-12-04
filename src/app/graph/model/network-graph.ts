@@ -5,7 +5,7 @@ import * as d3 from 'd3';
 import GraphConfig from './graph-config';
 
 const DEFAULT_CONFIG = {
-    charge: -40,
+    charge: -20,
     xStrength: 1,
     yStrength: 1,
     linkDistance: 300,
@@ -57,8 +57,8 @@ export class NetworkGraph {
                 ticker.emit();
             });
 
-            console.log('start');
-            this.simulation.alpha(1).alphaMin(0.35).restart();
+            console.log('start graph force simulation');
+            this.simulation.alpha(1).alphaMin(0.25).restart();
         }
 
     }
