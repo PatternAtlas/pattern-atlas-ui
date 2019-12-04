@@ -182,6 +182,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
     retrievePatternLanguageData(): Observable<any> {
         const $getDirectedEdges = this.getDirectedEdges();
         const $getUndirectedEdges = this.getUndirectedEdges();
-        return forkJoin($getDirectedEdges, $getUndirectedEdges);
+        return forkJoin([$getDirectedEdges, $getUndirectedEdges]);
     }
 }
