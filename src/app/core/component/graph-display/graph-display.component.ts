@@ -18,6 +18,7 @@ import Pattern from '../../model/hal/pattern.model';
 import {PatternLanguageService} from '../../service/pattern-language.service';
 import {GraphInputData} from '../../model/graph-input-data.interface';
 import {PatternService} from '../../service/pattern.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 
 export class GraphNode {
@@ -59,7 +60,8 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
 
     constructor(private cdr: ChangeDetectorRef, private d3Service: D3Service, private matDialog: MatDialog,
                 private patternRelationDescriptionService: PatternRelationDescriptorService, private toastService: ToasterService,
-                private patternLanguageService: PatternLanguageService, private patternService: PatternService) {
+                private patternLanguageService: PatternLanguageService, private patternService: PatternService, private router: Router,
+                private activatedRoute: ActivatedRoute) {
     }
 
     ngAfterViewInit() {
@@ -166,7 +168,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                 id: patterns[i].id,
                 title: patterns[i].name,
                 type: 'default',
-                link: 'patternlanguages/' + UriConverter.doubleEncodeUri(this.patternLanguage.uri) + '/' + UriConverter.doubleEncodeUri(patterns[i].uri),
+                uri: patterns[i].uri,
                 x: 5 * offsetIndex,
                 y: 5 * offsetIndex
             };
@@ -213,6 +215,11 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
 
     nodeClicked(event) {
         const node = event['detail']['node'];
+        console.log(event);
+        console.log(node);
+        if (event['detail']['key'] === 'info') {
+            this.router.navigate([UriConverter.doubleEncodeUri(node.uri)], {relativeTo: this.activatedRoute});
+        }
         this.showInfoForClickedNode(node);
 
     }

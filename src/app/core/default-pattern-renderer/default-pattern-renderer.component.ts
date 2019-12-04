@@ -156,7 +156,10 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
         return this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href).pipe(
             tap((patterns) => {
                 this.patterns = patterns;
-                this.pattern = patterns.find(pat => pat.uri === this.patternUri);
+                console.log('patternUri');
+                console.log(this.patternUri);
+                this.pattern = patterns.find(pat => pat.uri === this.patternUri || pat.uri === UriConverter.encodeUri(this.patternUri));
+                console.log(this.pattern);
             }),
             switchMap((patterns: any) => {
                 this.pattern = patterns.find(pat => pat.uri === this.patternUri);
