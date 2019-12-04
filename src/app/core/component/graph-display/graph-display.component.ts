@@ -1,22 +1,22 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
-import { D3Service } from '../../../graph/service/d3.service';
-import { NetworkLink } from '../../model/network-link.interface';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSidenavContainer } from '@angular/material/sidenav';
-import { CreatePatternRelationComponent } from '../create-pattern-relation/create-pattern-relation.component';
-import { PatternView } from '../../model/hal/pattern-view.model';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
+import {D3Service} from '../../../graph/service/d3.service';
+import {NetworkLink} from '../../model/network-link.interface';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSidenavContainer} from '@angular/material/sidenav';
+import {CreatePatternRelationComponent} from '../create-pattern-relation/create-pattern-relation.component';
+import {PatternView} from '../../model/hal/pattern-view.model';
 import PatternLanguage from '../../model/hal/pattern-language.model';
-import { EdgeWithType, PatternRelationDescriptorService } from '../../service/pattern-relation-descriptor.service';
-import { DirectedEdgeModel } from '../../model/hal/directed-edge.model';
-import { switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
-import { ToasterService } from 'angular2-toaster';
-import { UriConverter } from '../../util/uri-converter';
+import {EdgeWithType, PatternRelationDescriptorService} from '../../service/pattern-relation-descriptor.service';
+import {DirectedEdgeModel} from '../../model/hal/directed-edge.model';
+import {switchMap} from 'rxjs/operators';
+import {of} from 'rxjs';
+import {ToasterService} from 'angular2-toaster';
+import {UriConverter} from '../../util/uri-converter';
 import GraphEditor from '@ustutt/grapheditor-webcomponent/lib/grapheditor';
-import { DraggedEdge, edgeId } from '@ustutt/grapheditor-webcomponent/lib/edge';
+import {DraggedEdge, edgeId} from '@ustutt/grapheditor-webcomponent/lib/edge';
 import Pattern from '../../model/hal/pattern.model';
-import { PatternLanguageService } from '../../service/pattern-language.service';
-import { GraphInputData } from '../../model/graph-input-data.interface';
+import {PatternLanguageService} from '../../service/pattern-language.service';
+import {GraphInputData} from '../../model/graph-input-data.interface';
 
 
 export class GraphNode {
@@ -189,7 +189,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                 const parentOfEdge = this.patternLanguage ? this.patternLanguage : this.patternView;
 
                 const url = (edge && edge instanceof DirectedEdgeModel) ? parentOfEdge._links.directedEdges.href : parentOfEdge._links.undirectedEdges.href;
-                return edge ? this.patternRelationDescriptionService.savePatternRelation(url, edge) : of(null);
+                return edge ? this.patternRelationDescriptionService.addRelationToPL(url, edge) : of(null);
             })).subscribe(res => {
             if (res) {
                 this.toastService.pop('success', 'Created new Link');
@@ -243,12 +243,12 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     }
 
     private getGraph() {
-        this.patternLanguageService.getGraph(this.patternLanguage).subscribe((res: { content: { graph: GraphNode[] } }) => {
-            if (!res.content || res.content.graph === null || res.content.graph.length === 0) {
+        this.patternLanguageService.getGraph(this.patternLanguage).subscribe((res: { graph: { graph: GraphNode[] } }) => {
+            if (!res.graph || res.graph.graph === null || res.graph.graph.length === 0) {
                 this.startSimulation();
                 return;
             }
-            this.graphNativeElement.setNodes(res.content.graph);
+            this.graphNativeElement.setNodes(res.graph.graph);
             this.initGraphEdges();
             this.isLoading = false;
         });

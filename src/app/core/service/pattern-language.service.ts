@@ -12,17 +12,17 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import PatternLanguage from '../model/hal/pattern-language.model';
-import { HttpClient } from '@angular/common/http';
-import { globals } from '../../globals';
-import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
+import {globals} from '../../globals';
+import {Observable} from 'rxjs';
+import {map, tap} from 'rxjs/operators';
 import PatternLanguages from '../model/hal/pattern-languages.model';
-import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
-import { Embedded } from '../model/hal/embedded';
-import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
-import { GraphNode } from '../component/graph-display/graph-display.component';
+import {DirectedEdesResponse} from '../model/hal/directed-edes-response.interface';
+import {Embedded} from '../model/hal/embedded';
+import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
+import {GraphNode} from '../component/graph-display/graph-display.component';
 
 @Injectable()
 export class PatternLanguageService {
@@ -74,6 +74,6 @@ export class PatternLanguageService {
     }
 
     getGraph(patternLanguage: PatternLanguage) {
-        return this.http.get<{ content: { graph: Array<GraphNode> } }>(patternLanguage._links.graph.href);
+        return this.http.get<{ graph: { graph: Array<GraphNode> } }>(patternLanguage._links.graph.href);
     }
 }

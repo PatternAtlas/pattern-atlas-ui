@@ -8,24 +8,14 @@
     <div fxLayout="column" fxLayoutAlign="space-around start">
         <mat-card fxLayout="column" fxLayoutAlign="space-around" style="margin: 10px;">
             <mat-form-field appearance="outline" style="width: 24em;" [floatLabel]="'always'">
-                <mat-label>Pattern Language name</mat-label>
-                <input matInput formControlName="name" placeholder="Enter the name of new Pattern Language">
+                <mat-label>{{isPatternLanguageDialog ? 'Pattern Language' : 'Pattern View'}} name</mat-label>
+                <input matInput formControlName="name"
+                       [placeholder]="'Enter the name of the' + isPatternLanguageDialog ?  'Pattern Language' : 'Pattern View'">
                 <mat-error *ngIf="saveRequested && name?.hasError('required')">This field is mandatory.</mat-error>
                 <mat-error *ngIf="saveRequested && name?.hasError('pattern')">
                     Please use only alphanumeric characters, _ and spaces.
                 </mat-error>
             </mat-form-field>
-
-            <div fxLayout="row" fxLayoutAlign="space-around center">
-                <mat-form-field class="full-width" appearance="outline" style="width: 24em" [floatLabel]="'always'">
-                    <mat-label>Pattern Language URI</mat-label>
-                    <input matInput formControlName="uri" placeholder="Enter URI of new Pattern Language" type="url">
-                    <mat-error *ngIf="saveRequested && uri?.hasError('required')">This field is mandatory.
-                    </mat-error>
-                    <mat-error *ngIf="saveRequested && uri?.hasError('pattern')">Please insert a valid URI.
-                    </mat-error>
-                </mat-form-field>
-            </div>
 
             <div fxLayout="row" fxLayoutAlign="space-around center">
                 <mat-form-field class="full-width" appearance="outline" style="width: 24em" [floatLabel]="'always'">
@@ -44,23 +34,24 @@
                 </mat-form-field>
             </div>
 
-          <div *ngIf="isPatternLanguageDialog">
-            <h3>Sections</h3>
-            <mat-form-field appearance="outline" style="width: 24em" [floatLabel]="'always'">
-                <mat-label>New Section</mat-label>
-                <input #sectionInput (keyup.enter)="addSection(sectionInput.value)" matInput placeholder="Key in new Section an hit enter..." [formControl]="sectionCtrl">
-            </mat-form-field>
-            <mat-list matRipple cdkDropList [cdkDropListData]="sections"
-                      [cdkDropListOrientation]="'vertical'"
-                      (cdkDropListDropped)="dropSection($event)">
-                <mat-list-item matRipple *ngFor="let section of sections; last as last; let i = index" cdkDrag>
-                    {{i + 1}}&nbsp;{{section}}
-                    <button mat-button color="warn" (click)="removeSection(section)"><i
-                            class="material-icons">delete</i></button>
-                    <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
-                </mat-list-item>
-            </mat-list>
-          </div>
+            <div *ngIf="isPatternLanguageDialog">
+                <h3>Sections</h3>
+                <mat-form-field appearance="outline" style="width: 24em" [floatLabel]="'always'">
+                    <mat-label>New Section</mat-label>
+                    <input #sectionInput (keyup.enter)="addSection(sectionInput.value)" matInput
+                           placeholder="Key in new Section an hit enter..." [formControl]="sectionCtrl">
+                </mat-form-field>
+                <mat-list matRipple cdkDropList [cdkDropListData]="sections"
+                          [cdkDropListOrientation]="'vertical'"
+                          (cdkDropListDropped)="dropSection($event)">
+                    <mat-list-item matRipple *ngFor="let section of sections; last as last; let i = index" cdkDrag>
+                        {{i + 1}}&nbsp;{{section}}
+                        <button mat-button color="warn" (click)="removeSection(section)"><i
+                                class="material-icons">delete</i></button>
+                        <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+                    </mat-list-item>
+                </mat-list>
+            </div>
         </mat-card>
 
     </div>
@@ -71,6 +62,6 @@
             class="material-icons">close</i> Close
     </button>
     <button mat-raised-button color="primary" (click)="save()"><i
-            class="material-icons">save</i> Save Pattern Language
+            class="material-icons">save</i> Save {{isPatternLanguageDialog ? 'Pattern Language' : 'View'}}
     </button>
 </div>

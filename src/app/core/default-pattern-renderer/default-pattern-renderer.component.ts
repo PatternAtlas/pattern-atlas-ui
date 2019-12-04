@@ -1,25 +1,25 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ToasterService } from 'angular2-toaster';
-import { PatternPropertyDirective } from '../component/markdown-content-container/pattern-property.directive';
-import { UriConverter } from '../util/uri-converter';
-import { MatDialog } from '@angular/material/dialog';
-import { CreatePatternRelationComponent } from '../component/create-pattern-relation/create-pattern-relation.component';
+import {AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, ViewChild} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {ToasterService} from 'angular2-toaster';
+import {PatternPropertyDirective} from '../component/markdown-content-container/pattern-property.directive';
+import {UriConverter} from '../util/uri-converter';
+import {MatDialog} from '@angular/material/dialog';
+import {CreatePatternRelationComponent} from '../component/create-pattern-relation/create-pattern-relation.component';
 import Pattern from '../model/hal/pattern.model';
-import { PatternLanguageService } from '../service/pattern-language.service';
+import {PatternLanguageService} from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
-import { PatternService } from '../service/pattern.service';
-import { MarkdownPatternSectioncontentComponent } from '../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component';
-import { DataChange } from '../component/markdown-content-container/interfaces/DataRenderingComponent.interface';
+import {PatternService} from '../service/pattern.service';
+import {MarkdownPatternSectioncontentComponent} from '../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component';
+import {DataChange} from '../component/markdown-content-container/interfaces/DataRenderingComponent.interface';
 import PatternSectionSchema from '../model/hal/pattern-section-schema.model';
-import { map, switchMap, tap } from 'rxjs/operators';
-import { EMPTY, forkJoin, Observable } from 'rxjs';
-import { PatternRelationDescriptorService } from '../service/pattern-relation-descriptor.service';
-import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
-import { Embedded } from '../model/hal/embedded';
-import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
-import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
-import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
+import {map, switchMap, tap} from 'rxjs/operators';
+import {EMPTY, forkJoin, Observable} from 'rxjs';
+import {PatternRelationDescriptorService} from '../service/pattern-relation-descriptor.service';
+import {DirectedEdgeModel} from '../model/hal/directed-edge.model';
+import {Embedded} from '../model/hal/embedded';
+import {DirectedEdesResponse} from '../model/hal/directed-edes-response.interface';
+import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
+import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
 
 @Component({
     selector: 'pp-default-pattern-renderer',
@@ -89,7 +89,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
             switchMap((edge) => {
                 const url = edge instanceof DirectedEdgeModel ?
                     this.patternLanguage._links.directedEdges.href : this.patternLanguage._links.undirectedEdges.href;
-                return edge ? this.patternRelationDescriptorService.savePatternRelation(url, edge) : EMPTY;
+                return edge ? this.patternRelationDescriptorService.addRelationToPL(url, edge) : EMPTY;
             }),
             switchMap((edgeCreated) => {
                 return edgeCreated ? this.retrievePatternLanguageData() : EMPTY;

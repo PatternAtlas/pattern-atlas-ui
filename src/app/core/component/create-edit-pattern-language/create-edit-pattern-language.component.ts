@@ -1,14 +1,13 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs/internal/operators';
-import { DialogPatternLanguageResult } from '../../../pattern-language-management/data/DialogPatternLanguageResult.interface';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {MatDialogRef} from '@angular/material/dialog';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {debounceTime, distinctUntilChanged} from 'rxjs/internal/operators';
+import {DialogPatternLanguageResult} from '../../../pattern-language-management/data/DialogPatternLanguageResult.interface';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import PatternLanguage from '../../model/hal/pattern-language.model';
 import PatternSchema from '../../model/hal/pattern-schema.model';
 import PatternSectionSchema from '../../model/hal/pattern-section-schema.model';
 import {ActivatedRoute} from '@angular/router';
-import UriEntity from '../../model/hal/uri-entity.model';
 
 @Component({
     selector: 'pp-create-edit-pattern-language',
@@ -29,10 +28,6 @@ export class CreateEditPatternLanguageComponent implements OnInit {
         return this.patternLanguageForm.get('name');
     }
 
-    get uri(): AbstractControl {
-        return this.patternLanguageForm.get('uri');
-    }
-
     get iconUrl(): AbstractControl {
         return this.patternLanguageForm.get('iconUrl');
     }
@@ -47,7 +42,6 @@ export class CreateEditPatternLanguageComponent implements OnInit {
         const urlRegex = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
         this.patternLanguageForm = this._fb.group({
             name: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9 _-]+')]],
-            uri: ['', [Validators.required, Validators.pattern(urlRegex)]],
             iconUrl: ['', [Validators.pattern(urlRegex)]]
         });
 
@@ -84,22 +78,20 @@ export class CreateEditPatternLanguageComponent implements OnInit {
         this.saveRequested = true;
         if (this.patternLanguageForm.valid) {
 
-          if(!this.isPatternLanguageDialog){
-            this.saveClicked.emit({
-              dialogResult: <UriEntity> {uri: this.uri.value, name: this.name.value}
-            });
-            this.dialogRef.close();
-            return;
-          }
+            if (!this.isPatternLanguageDialog) {
+                this.saveClicked.emit({
+                    dialogResult: {name: this.name.value}
+                });
+                this.dialogRef.close();
+                return;
+            }
 
 
-          const patternLanguage = new PatternLanguage();
-            patternLanguage.uri = this.uri.value;
+            const patternLanguage = new PatternLanguage();
             patternLanguage.name = this.name.value;
             patternLanguage.logo = this.iconUrl.value;
             const patternSchema = new PatternSchema();
             patternSchema.patternSectionSchemas = [];
-
 
 
             for (let i = 0; i < this.sections.length; i++) {

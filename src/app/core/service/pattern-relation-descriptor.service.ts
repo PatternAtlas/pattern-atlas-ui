@@ -7,6 +7,9 @@ import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
 import Pattern from '../model/hal/pattern.model';
 import {HalLink} from '../model/hal/hal-link.interface';
 import {map} from 'rxjs/operators';
+import PatternLanguage from '../model/hal/pattern-language.model';
+import {CreateUndirectedEdgeRequest} from '../model/hal/create-undirected-edge-request';
+import {CreateDirectedEdgeRequest} from '../model/hal/create-directed-edge-request';
 
 @Injectable({
     providedIn: 'root'
@@ -18,8 +21,10 @@ export class PatternRelationDescriptorService {
     constructor(private http: HttpClient) {
     }
 
-    savePatternRelation(url: string, relation: DirectedEdgeModel | UndirectedEdgeModel): Observable<any> {
-        return this.http.post(url, relation, {observe: 'response'});
+    addRelationToPL(patternLanguage: PatternLanguage, relation: DirectedEdgeModel | UndirectedEdgeModel): Observable<any> {
+        return relation instanceof DirectedEdgeModel ?
+            this.http.post(patternLanguage._links.directedEdges.href, new CreateDirectedEdgeRequest(relation), {observe: 'response'}) :
+            this.http.post(patternLanguage._links.undirectedEdges.href, new CreateUndirectedEdgeRequest(relation), {observe: 'response'});
     }
 
     getDirectedEdgeByUrl(url: string): Observable<DirectedEdgeModel> {
