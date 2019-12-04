@@ -1,21 +1,43 @@
 <mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>
-<mat-sidenav-container (backdropClick)="closeSideMenu()">
-    <mat-sidenav>
+<mat-sidenav-container class="container" [hasBackdrop]="false">
+    <mat-sidenav #start mode="over" fixedInViewport="true">
         <p>{{currentPattern?.name}}</p>
-        <p *ngFor="let edge of currentEdges">
-            {{edge?.targetPatternName ? edge?.targetPatternName : edge.pattern1Name }}</p>
+        <div *ngFor="let relation of currentEdges">
+            <div [ngSwitch]="relation.type">
+                <div *ngSwitchCase="'outgoingDirectedEdges'" class="horiz-centered">
+                    <span class="horiz-centered" *ngIf="relation.edge.type"> : {{relation?.edge.type}}</span>
+                    <i class="material-icons">trending_flat</i>
+                    {{ relation?.edge.targetPatternName}}
+                    <i>{{relation?.edge.description ? ': ' + relation?.edge.description : ''}}</i>
+                </div>
+                <div *ngSwitchCase="'ingoingDirectedEdges'" class="horiz-centered">
+                    <span class="horiz-centered" *ngIf="relation.edge.type"> : {{relation?.edge.type}}</span>
+                    <i class="material-icons flip">trending_flat</i>
+                    {{ relation?.edge.sourcePatternName}}
+                    <i>{{relation?.edge.description ? ': ' + relation?.edge.description : ''}}</i>
+                </div>
+                <div *ngSwitchCase="'undirectedEdges'" class="horiz-centered">
+                    {{ relation?.edge.sourcePatternName}}
+                    <span class="horiz-centered" *ngIf="relation.edge.type"> : {{relation?.edge.type}}</span>
+                    <i class="material-icons flip">compare_arrows</i>
+                    {{ relation?.edge.p1Id === this.currentPattern.id ? relation.edge.pattern1Name : relation.edge.pattern2Name}}
+                    <i>{{relation?.edge.description ? ': ' + relation?.edge.description : ''}}</i>
+                </div>
+            </div>
+        </div>
     </mat-sidenav>
     <mat-sidenav-content>
         <network-graph #graphWrapper classes="" mode="layout" zoom="both"
                        classes="highlighted-node highlighted-edge low-opacity-node low-opacity-edge"
-                       style="width: 100%; height: 100%" ppGraphEventEmmiter (onAddedEdge)="edgeAdded($event)"
+                       style="width: 100%; height: 100%" [ppGraphEventEmmiter] (onAddedEdge)="edgeAdded($event)"
                        (onClickedBackground)="backgroundClicked($event)"
+                       (onNodePositionChange)="saveGraph()"
                        (onClickedNode)="nodeClicked($event)"
         >
             <style slot="style">
                 svg {
-                    width: -webkit-fill-available;
-                    height: -webkit-fill-available;
+                    width: 1000px;
+                    height: 700px;
                 }
             </style>
             <svg slot="graph" #svg>
@@ -23,6 +45,10 @@
                     .node {
                         fill: aliceblue;
                         opacity: 0.95;
+                    }
+
+                    svg {
+                        background-color: white;
                     }
 
                     .link-handle {
@@ -95,7 +121,8 @@
                             <image x="35" y="-15" width="10" data-content="link"
                                    xlink:href="assets/Info_Simple_bw.svg"/>
                         </a>
-                        <text class="text" x="0" y="0" width="100" height="40" data-content="title" data-click="title"
+                        <text class="text" x="0" y="0" width="100" height="40" data-content="title"
+                              data-click="title"
                               dominant-baseline="middle"
                               text-anchor="middle">
                         </text>

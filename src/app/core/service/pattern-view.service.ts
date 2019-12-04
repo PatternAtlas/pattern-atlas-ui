@@ -53,9 +53,11 @@ export class PatternViewService {
         return this.http.post(url, edge, {observe: 'response'});
     }
 
-    addLinks(urlDirectedLinks: string, urlUndirectedLinks: string, edges: any[]): Observable<any> {
-        const observables = edges.map(edge => this.http.post(!!edge['sourcePatternId'] ? urlDirectedLinks : urlUndirectedLinks, edge,
-            {observe: 'response'}));
+    addLinks(urlDirectedLinks: string, urlUndirectedLinks: string, edges: (DirectedEdgeModel | UndirectedEdgeModel)[]): Observable<any> {
+
+        const observables = edges
+            .map(edge => this.http.post(!!edge['sourcePatternId'] ? urlDirectedLinks : urlUndirectedLinks, edge,
+                {observe: 'response'}));
         return observables.length > 0 ? forkJoin(observables) : EMPTY;
     }
 }

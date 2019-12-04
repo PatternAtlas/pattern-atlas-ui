@@ -26,6 +26,7 @@ export interface PatternLanguageResource {
     patternLanguages: HalLink;
     directedEdges: HalLink;
     undirectedEdges: HalLink;
+    graph: HalLink;
 }
 
 export interface PatternLanguagesResource {

@@ -3,3 +3,15 @@ html, body, svg {
   height: 100%;
   margin: 0;
 }
+
+.container {
+  position: fixed;
+  height: calc(80% - 10px);
+  min-height: calc(80% - 10px);
+  width: 100%;
+  min-width: 100%;
+}
+
+.mat-sidenav-content {
+  overflow: hidden;
+}

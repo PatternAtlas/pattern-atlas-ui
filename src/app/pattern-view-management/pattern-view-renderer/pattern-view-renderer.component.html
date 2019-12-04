@@ -34,8 +34,7 @@
         </mat-card-content>
         <mat-card-actions
         >
-            <button mat-button *ngIf="pattern._links.undirectedEdges || pattern._links.outgoingDirectedEdges
-            || pattern._links.ingoingDirectedEdges" (click)="addLinks(pattern)">Add Links (incl. Pattern)
+            <button mat-button (click)="addLinks(pattern)">Add Links (incl. Pattern)
             </button>
         </mat-card-actions>
     </mat-card>

@@ -44,8 +44,6 @@ export class NetworkGraph {
                 .force('charge', d3.forceManyBody().strength(this.config.charge).distanceMax(100))
                 .force('charge', d3.forceManyBody().strength(15))
                 .force('center', d3.forceCenter(options.width / 2, options.height / 2))
-                //.force('x', d3.forceX(options.width / 2).strength(this.config.xStrength))
-                //.force('y', d3.forceY(options.height / 2).strength(this.config.yStrength))
                 .force('link', d3.forceLink().id((d) => d['id']))
                 .force('collision', d3.forceCollide().radius(() => 75));
             this.simulation.stop();
@@ -60,7 +58,7 @@ export class NetworkGraph {
             });
 
             console.log('start');
-            this.simulation.alpha(1).alphaMin(0.3).restart();
+            this.simulation.alpha(1).alphaMin(0.35).restart();
         }
 
     }

@@ -84,7 +84,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     private getData(): Observable<any> {
         const $getPatternLanguages = this.getPatternLanguages();
         const $getCurrentPatternView = this.getCurrentPatternViewAndPatterns();
-        return forkJoin($getPatternLanguages, $getCurrentPatternView);
+        return forkJoin([$getPatternLanguages, $getCurrentPatternView]);
     }
 
 
@@ -154,11 +154,11 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     }
 
     private mapPatternLinksToTreeNode(pattern: Pattern): LinksToOtherPattern[] {
-        let types: LinksToOtherPattern[] = [];
+        const types: LinksToOtherPattern[] = [];
         const possibleEdgeTypes = [
-            {link: pattern._links.ingoingDirectedEdges, displayName: 'Ingoing directed edges'},
-            {link: pattern._links.outgoingDirectedEdges, displayName: 'Outgoing directed edges'},
-            {link: pattern._links.undirectedEdges, displayName: 'Undirected edges'}
+            {link: pattern._links.ingoingDirectedEdgesFromPatternLanguage, displayName: 'Ingoing directed edges'},
+            {link: pattern._links.outgoingDirectedEdgesFromPatternLanguage, displayName: 'Outgoing directed edges'},
+            {link: pattern._links.undirectedEdgesFromPatternLanguage, displayName: 'Undirected edges'}
         ];
         possibleEdgeTypes.forEach((type: { link: HalLink | HalLink[], displayName: string }, index) => {
             if (type.link) {
@@ -174,6 +174,6 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
         }
         return Array.isArray(directedEdges) ? directedEdges.length : 1;
     }
-    
+
 
 }

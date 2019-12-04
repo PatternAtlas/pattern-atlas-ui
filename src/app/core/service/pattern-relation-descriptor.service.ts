@@ -6,6 +6,7 @@ import {DirectedEdgeModel} from '../model/hal/directed-edge.model';
 import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
 import Pattern from '../model/hal/pattern.model';
 import {HalLink} from '../model/hal/hal-link.interface';
+import {map} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -25,19 +26,29 @@ export class PatternRelationDescriptorService {
         return this.http.get(url);
     }
 
-    getEdgesForPattern(pattern: Pattern): Observable<(DirectedEdgeModel | UndirectedEdgeModel)[]> {
+    getEdgesForPattern(pattern: Pattern): Observable<EdgeWithType[]> {
         if (!pattern || (!pattern._links.undirectedEdges && pattern._links.ingoingDirectedEdges && pattern._links.outgoingDirectedEdges)) {
             return of(null);
         }
         const observables = [];
-        const edgeLinks = [pattern._links.undirectedEdges, pattern._links.outgoingDirectedEdges, pattern._links.ingoingDirectedEdges];
-        edgeLinks.forEach((edgeLink: HalLink | HalLink[]) => {
+        const edgeLinks = ['undirectedEdges', 'outgoingDirectedEdges', 'ingoingDirectedEdges'];
+        edgeLinks.forEach((edgeType: string) => {
+            const edgeLink = pattern._links[edgeType];
             if (edgeLink) {
                 const halLinks = Array.isArray(edgeLink) ? <HalLink[]>edgeLink : [edgeLink];
-                observables.push(...halLinks.map(link => this.getEdgeByUrl(link.href)));
+                observables.push(...halLinks.map(link =>
+                    this.getEdgeByUrl(link.href).pipe(map(res => {
+                        return <EdgeWithType>{type: edgeType, edge: res};
+                    }))
+                ));
             }
         });
 
-        return observables.length > 0 ? forkJoin(observables) : of([]);
+        return observables.length > 0 ? forkJoin(observables) : of(null);
     }
+}
+
+export class EdgeWithType {
+    type: string;
+    edge: (DirectedEdgeModel | UndirectedEdgeModel);
 }

@@ -17,11 +17,12 @@ import PatternLanguage from '../model/hal/pattern-language.model';
 import {HttpClient} from '@angular/common/http';
 import {globals} from '../../globals';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 import PatternLanguages from '../model/hal/pattern-languages.model';
 import {DirectedEdesResponse} from '../model/hal/directed-edes-response.interface';
 import {Embedded} from '../model/hal/embedded';
 import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
+import {GraphNode} from '../component/graph-display/graph-display.component';
 
 @Injectable()
 export class PatternLanguageService {
@@ -33,11 +34,17 @@ export class PatternLanguageService {
 
     public getPatternLanguages(): Observable<PatternLanguage[]> {
         return this.getPatternLanguageResult().pipe(
-          map((result: PatternLanguages) => result._embedded.patternLanguages));
+            tap(res => console.log(res)),
+            map((result: PatternLanguages) => {
+                    return result._embedded ? result._embedded.patternLanguages : [];
+                }
+            )
+            // catchError(val => of(new PatternLanguage()))
+        );
     }
 
-    public getPatternLanguageResult(): Observable<PatternLanguages>{
-      return this.http.get<PatternLanguages>(this.repoEndpoint + '/patternLanguages')
+    public getPatternLanguageResult(): Observable<PatternLanguages> {
+        return this.http.get<PatternLanguages>(this.repoEndpoint + '/patternLanguages');
     }
 
     public getPatternLanguageByUrl(url: string): Observable<PatternLanguage> {
@@ -55,11 +62,19 @@ export class PatternLanguageService {
         return this.http.post<any>(this.repoEndpoint + '/patternLanguages', patternLanguage, {observe: 'response'}).toPromise();
     }
 
-  public getDirectedEdges(patternLanguage: PatternLanguage): Observable<Embedded<DirectedEdesResponse>> {
-    return this.http.get<Embedded<DirectedEdesResponse>>(patternLanguage._links.directedEdges.href);
-  }
+    public getDirectedEdges(patternLanguage: PatternLanguage): Observable<Embedded<DirectedEdesResponse>> {
+        return this.http.get<Embedded<DirectedEdesResponse>>(patternLanguage._links.directedEdges.href);
+    }
 
-  public getUndirectedEdges(patternLanguage: PatternLanguage): Observable<Embedded<UndirectedEdesResponse>> {
-    return this.http.get<Embedded<UndirectedEdesResponse>>(patternLanguage._links.undirectedEdges.href);
-  }
+    public getUndirectedEdges(patternLanguage: PatternLanguage): Observable<Embedded<UndirectedEdesResponse>> {
+        return this.http.get<Embedded<UndirectedEdesResponse>>(patternLanguage._links.undirectedEdges.href);
+    }
+
+    saveGraph(patternLanguage: PatternLanguage, nodes: GraphNode[]) {
+        return this.http.post<any>(patternLanguage._links.graph.href, {graph: nodes}, {observe: 'response'});
+    }
+
+    getGraph(patternLanguage: PatternLanguage) {
+        return this.http.get<{ content: { graph: GraphNode[] } }>(patternLanguage._links.graph.href);
+    }
 }
