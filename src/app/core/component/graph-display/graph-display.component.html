@@ -22,7 +22,7 @@
                             <div *ngSwitchCase="'undirectedEdges'" class="horiz-centered">
                                 {{ relation?.edge.sourcePatternName}}
                                 <i class="material-icons flip">compare_arrows</i>
-                                {{ relation?.edge.p1Id === this.currentPattern.id ? relation.edge.pattern1Name : relation.edge.pattern2Name}}
+                                {{ relation?.edge.pattern1Id === this.currentPattern.id ? relation.edge.pattern1Name : relation.edge.pattern2Name}}
                             </div>
                         </div>
                     </mat-panel-description>

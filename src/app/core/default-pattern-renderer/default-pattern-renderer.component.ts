@@ -107,7 +107,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
 
 
     addContentInfoToPattern(edge: DirectedEdgeModel | UndirectedEdgeModel): Observable<DirectedEdgeModel | UndirectedEdgeModel> {
-        const toPattern = edge instanceof DirectedEdgeModel ? edge.targetPatternId : edge.p2Id;
+        const toPattern = edge instanceof DirectedEdgeModel ? edge.targetPatternId : edge.pattern2Id;
         return this.patternService.getPatternContentByPattern(this.patterns.find(it => it.id === toPattern)).pipe(
             map((patterncontent) => {
                 const targetPatternContent = patterncontent.content;
@@ -135,7 +135,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
         return this.patternLanguageService.getUndirectedEdges(this.patternLanguage).pipe(
             tap((edges) => {
                 this.undirectedPatternRelations = edges._embedded ?
-                    edges._embedded.undirectedEdgeModels.filter(edge => edge.p1Id === this.pattern.id || edge.p2Id === this.pattern.id) : [];
+                    edges._embedded.undirectedEdgeModels.filter(edge => edge.pattern1Id === this.pattern.id || edge.pattern2Id === this.pattern.id) : [];
             }));
     }
 

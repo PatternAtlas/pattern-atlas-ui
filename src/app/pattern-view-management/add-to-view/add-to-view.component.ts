@@ -47,19 +47,22 @@ export class LinksToOtherPattern {
 
     constructor(edge, isDirectedLink: boolean, patternId: string) {
         let relatedPatternIsSource;
+
         if (isDirectedLink) {
             relatedPatternIsSource = edge.targetPatternId === patternId;
             this.name = relatedPatternIsSource ? edge.sourcePatternName : edge.targetPatternName;
             this.id = relatedPatternIsSource ? edge.sourcePatternId : edge.targetPatternId;
             this.linkedPattern = relatedPatternIsSource ? edge._links.sourcePattern : edge._links.targetPattern;
             this.type = 'directed';
+            this.edge = edge;
         } else {
             edge = <UndirectedEdgeModel>edge;
-            relatedPatternIsSource = edge.p1Id === patternId;
+            relatedPatternIsSource = edge.pattern2Id === patternId;
             this.name = relatedPatternIsSource ? edge.pattern1Name : edge.pattern2Name;
-            this.id = relatedPatternIsSource ? edge.p1Id : edge.p2Id;
+            this.id = relatedPatternIsSource ? edge.pattern1Id : edge.pattern2Id;
             this.linkedPattern = relatedPatternIsSource ? edge._links.pattern[0] : edge._links.pattern[1];
             this.type = 'undirected';
+            this.edge = edge;
         }
 
     }
@@ -246,7 +249,7 @@ export class AddToViewComponent {
     }
 
     private getPatternsAndAddToTree(item: PatternLanguage, treenode, node) {
-        this.patternService.getPatternsByUrl(node.item._links['patterns']['href']).subscribe((patterns) => {
+        this.patternService.getPatternsByUrl(item._links.patterns.href).subscribe((patterns) => {
             const dummy = {id: this.LOAD_MORE, name: '', uri: '', content: null, _links: null};
             const childnodes = patterns.length > 0 ? patterns.map(it => new LoadmoreNode(it)) : [new LoadmoreNode(
                 dummy)];

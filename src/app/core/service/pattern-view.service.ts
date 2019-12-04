@@ -15,12 +15,15 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {globals} from '../../globals';
-import {EMPTY, forkJoin, Observable} from 'rxjs';
+import {EMPTY, forkJoin, Observable, of} from 'rxjs';
 import Pattern from '../model/hal/pattern.model';
 import {PatternView} from '../model/hal/pattern-view.model';
 import {PatternViewResponse} from '../model/hal/pattern-view-response.interface';
 import {DirectedEdgeModel} from '../model/hal/directed-edge.model';
 import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
+import {LinksToOtherPattern} from '../../pattern-view-management/add-to-view/add-to-view.component';
+import {AddDirectedEdgeToViewRequest} from '../model/hal/add-directed-edge-to-view-request';
+import {AddUndirectedEdgeToViewRequest} from '../model/hal/add-undirected-edge-to-view-request';
 
 @Injectable()
 export class PatternViewService {
@@ -42,7 +45,7 @@ export class PatternViewService {
 
     addPatterns(url: string, patterns: Pattern[]): Observable<any> {
         const observables = patterns.map(pat => this.http.post<PatternViewResponse>(url, pat, {observe: 'response'}));
-        return observables.length > 0 ? forkJoin(observables) : EMPTY;
+        return observables.length > 0 ? forkJoin(observables) : of(null);
     }
 
     getPatternViewByUri(encodedUri: string): Observable<PatternView> {
@@ -53,11 +56,12 @@ export class PatternViewService {
         return this.http.post(url, edge, {observe: 'response'});
     }
 
-    addLinks(urlDirectedLinks: string, urlUndirectedLinks: string, edges: (DirectedEdgeModel | UndirectedEdgeModel)[]): Observable<any> {
+    addLinks(patternView: PatternView, items: LinksToOtherPattern[]): Observable<any> {
 
-        const observables = edges
-            .map(edge => this.http.post(!!edge['sourcePatternId'] ? urlDirectedLinks : urlUndirectedLinks, edge,
-                {observe: 'response'}));
+        const observables = items
+            .map(item => item.type === 'directed' ?
+                this.http.post(patternView._links.directedEdges.href, new AddDirectedEdgeToViewRequest(<DirectedEdgeModel>item.edge), {observe: 'response'}) :
+                this.http.post(patternView._links.undirectedEdges.href, new AddUndirectedEdgeToViewRequest(<UndirectedEdgeModel>item.edge), {observe: 'response'}));
         return observables.length > 0 ? forkJoin(observables) : EMPTY;
     }
 }

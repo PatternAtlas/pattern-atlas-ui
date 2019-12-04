@@ -118,11 +118,10 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
                 nodesToAdd = res;
                 console.log(res);
             }),
-            switchMap((res) =>
-                this.patternViewService.addPatterns(this.patternViewResponse._links.patterns.href, this.mapDialogResultToPatterns(res))),
-            switchMap(() =>
-                this.patternViewService.addLinks(this.patternViewResponse._links.directedEdges.href, this.patternViewResponse._links.undirectedEdges.href,
-                    nodesToAdd.map(it => it.item.edge))),
+            switchMap((res) => {
+                return forkJoin([this.patternViewService.addPatterns(this.patternViewResponse._links.patterns.href, this.mapDialogResultToPatterns(res)),
+                    this.patternViewService.addLinks(this.patternViewResponse, res && Array.isArray(res) ? res.map(it => it.item) : [])]);
+            }),
             switchMap(result => result ? this.getCurrentPatternViewAndPatterns() : EMPTY)
         ).subscribe((res) => {
             if (res) {
@@ -158,7 +157,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
         const possibleEdgeTypes = [
             {link: pattern._links.ingoingDirectedEdgesFromPatternLanguage, type: 'directed', displayName: 'Ingoing directed edges'},
             {link: pattern._links.outgoingDirectedEdgesFromPatternLanguage, type: 'directed', displayName: 'Outgoing directed edges'},
-            {link: pattern._links.undirectedEdgesFromPatternLanguage, type: 'directed', displayName: 'Undirected edges'}
+            {link: pattern._links.undirectedEdgesFromPatternLanguage, type: 'undirected', displayName: 'Undirected edges'}
         ];
         possibleEdgeTypes.forEach((edgeType: { link: HalLink | HalLink[], displayName: string, type: string }, index) => {
             if (edgeType.link) {
