@@ -89,7 +89,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
             switchMap((edge) => {
                 const url = edge instanceof DirectedEdgeModel ?
                     this.patternLanguage._links.directedEdges.href : this.patternLanguage._links.undirectedEdges.href;
-                return edge ? this.patternRelationDescriptorService.addRelationToPL(url, edge) : EMPTY;
+                return edge ? this.patternRelationDescriptorService.addRelationToPL(this.patternLanguage, edge) : EMPTY;
             }),
             switchMap((edgeCreated) => {
                 return edgeCreated ? this.retrievePatternLanguageData() : EMPTY;

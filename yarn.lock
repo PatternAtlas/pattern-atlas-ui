@@ -979,10 +979,10 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@covalent/text-editor@2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@covalent/text-editor/-/text-editor-2.1.0.tgz#1e2cf5780f9534d7923a3b7b0ba257c924cd2be0"
-  integrity sha512-14nvfdc/9QhAqZ1LJB9N8RIrQrLj2jCSpzhJJGoR3tXC0St+DJmesX+PtGPP/7KKKsA4pLQWA9GHZ+Z9RybvRg==
+"@covalent/text-editor@3.0.0-beta.1-2":
+  version "3.0.0-beta.1-2"
+  resolved "https://registry.yarnpkg.com/@covalent/text-editor/-/text-editor-3.0.0-beta.1-2.tgz#ec62ed78165e29e6071f0bcd3682deb881b932f3"
+  integrity sha512-eAKyf2pcQlPaFNDiv8kRd0gAmKgDxWBD714TlJIe1mZgnce5B68oaYrAi1b6p8h3dfjTIqH5ixcARY+9GPrW0g==
   dependencies:
     simplemde "^1.11.2"
     tslib "^1.9.0"

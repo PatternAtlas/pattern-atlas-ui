@@ -189,7 +189,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                 const parentOfEdge = this.patternLanguage ? this.patternLanguage : this.patternView;
 
                 const url = (edge && edge instanceof DirectedEdgeModel) ? parentOfEdge._links.directedEdges.href : parentOfEdge._links.undirectedEdges.href;
-                return edge ? this.patternRelationDescriptionService.addRelationToPL(url, edge) : of(null);
+                return edge ? this.patternRelationDescriptionService.addRelationToPL(this.patternLanguage, edge) : of(null);
             })).subscribe(res => {
             if (res) {
                 this.toastService.pop('success', 'Created new Link');
