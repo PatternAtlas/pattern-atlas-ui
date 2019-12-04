@@ -52,7 +52,7 @@ export class PatternViewService {
         return this.http.get<PatternView>(this.repoEndpoint + `/patternViews/findByUri?encodedUri=${encodedUri}`);
     }
 
-    createLink(url, edge: DirectedEdgeModel | UndirectedEdgeModel): Observable<HttpResponse<Object>> {
+    createLink(url, edge: DirectedEdgeModel | UndirectedEdgeModel | AddDirectedEdgeToViewRequest | AddUndirectedEdgeToViewRequest): Observable<HttpResponse<Object>> {
         return this.http.post(url, edge, {observe: 'response'});
     }
 

@@ -15,6 +15,9 @@ import {PatternService} from '../../core/service/pattern.service';
 import {CreatePatternRelationComponent} from '../../core/component/create-pattern-relation/create-pattern-relation.component';
 import {DirectedEdgeModel} from '../../core/model/hal/directed-edge.model';
 import {HalLink} from '../../core/model/hal/hal-link.interface';
+import {AddDirectedEdgeToViewRequest} from '../../core/model/hal/add-directed-edge-to-view-request';
+import {AddUndirectedEdgeToViewRequest} from '../../core/model/hal/add-undirected-edge-to-view-request';
+import {UndirectedEdgeModel} from '../../core/model/hal/undirected-edge.model';
 
 @Component({
     selector: 'pp-pattern-view-renderer',
@@ -137,7 +140,9 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
             switchMap((dialogResult) => {
                 const url = dialogResult instanceof DirectedEdgeModel ? this.patternViewResponse._links.directedEdges.href :
                     this.patternViewResponse._links.undirectedEdges.href;
-                return dialogResult ? this.patternViewService.createLink(url, dialogResult) : EMPTY;
+                return dialogResult ? this.patternViewService.createLink(url, dialogResult instanceof DirectedEdgeModel ?
+                    new AddDirectedEdgeToViewRequest(<DirectedEdgeModel>dialogResult) :
+                    new AddUndirectedEdgeToViewRequest(<UndirectedEdgeModel>dialogResult)) : EMPTY;
             }),
             switchMap((edge) => edge ? this.getCurrentPatternViewAndPatterns() : EMPTY)).subscribe((res) => {
             if (res) {
