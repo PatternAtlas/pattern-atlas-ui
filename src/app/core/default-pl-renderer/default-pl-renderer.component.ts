@@ -1,24 +1,24 @@
-import {ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {UriConverter} from '../util/uri-converter';
+import { ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UriConverter } from '../util/uri-converter';
 import { MatDialog } from '@angular/material/dialog';
-import {PatternLanguageService} from '../service/pattern-language.service';
+import { PatternLanguageService } from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
-import {D3Service} from '../../graph/service/d3.service';
-import {CardrendererComponent} from '../component/cardrenderer/cardrenderer.component';
-import {GraphDisplayComponent} from '../component/graph-display/graph-display.component';
-import {EMPTY, forkJoin, Observable} from 'rxjs';
-import {Embedded} from '../model/hal/embedded';
-import {DirectedEdesResponse} from '../model/hal/directed-edes-response.interface';
-import {switchMap, tap} from 'rxjs/operators';
-import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
-import {DirectedEdgeModel} from '../model/hal/directed-edge.model';
-import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
+import { D3Service } from '../../graph/service/d3.service';
+import { CardrendererComponent } from '../component/cardrenderer/cardrenderer.component';
+import { GraphDisplayComponent } from '../component/graph-display/graph-display.component';
+import { EMPTY, forkJoin, Observable } from 'rxjs';
+import { Embedded } from '../model/hal/embedded';
+import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
+import { switchMap, tap } from 'rxjs/operators';
+import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
+import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
+import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
 import * as _ from 'lodash';
-import {CreatePatternRelationComponent} from '../component/create-pattern-relation/create-pattern-relation.component';
-import {PatternRelationDescriptorService} from '../service/pattern-relation-descriptor.service';
-import {ToasterService} from 'angular2-toaster';
-import {PatternService} from '../service/pattern.service';
+import { CreatePatternRelationComponent } from '../component/create-pattern-relation/create-pattern-relation.component';
+import { PatternRelationDescriptorService } from '../service/pattern-relation-descriptor.service';
+import { ToasterService } from 'angular2-toaster';
+import { PatternService } from '../service/pattern.service';
 import Pattern from '../model/hal/pattern.model';
 
 @Component({
@@ -28,8 +28,7 @@ import Pattern from '../model/hal/pattern.model';
 })
 export class DefaultPlRendererComponent implements OnInit {
 
-
-    patterns: Pattern[] = [];
+    patterns: Array<Pattern> = [];
     patternLanguage: PatternLanguage;
     isLoading = true;
     patternLanguageURI: string;
@@ -40,10 +39,9 @@ export class DefaultPlRendererComponent implements OnInit {
     graphVisible = true;
     isLoadingDataForRenderer: boolean;
     private componentRef: ComponentRef<any>;
-    private directedPatternRelations: DirectedEdgeModel[] = [];
-    private undirectedPatternRelations: UndirectedEdgeModel[] = [];
-    private copyEdgesForSimulation = [];
-
+    private directedPatternRelations: Array<DirectedEdgeModel> = [];
+    private undirectedPatternRelations: Array<UndirectedEdgeModel> = [];
+    private copyEdgesForSimulation: Array<any> = [];
 
     constructor(private activatedRoute: ActivatedRoute,
                 private cdr: ChangeDetectorRef,
@@ -61,84 +59,23 @@ export class DefaultPlRendererComponent implements OnInit {
         this.loadData();
     }
 
-
-    private loadData(): void {
-        this.isLoadingDataForRenderer = true;
-        this.patternLanguageURI = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
-        if (this.patternLanguageURI) {
-            this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageURI).pipe(
-                tap(patternlanguage => this.patternLanguage = patternlanguage),
-                switchMap(() => this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href)),
-                tap(patterns => this.patterns = patterns),
-                switchMap(() => this.retrievePatterRelationDescriptorData())).subscribe(
-                () => {
-                    this.isLoading = false;
-                    this.loadRendererForData();
-                });
-
-
-        }
-    }
-
-    private initGraph(graphRenderComponent: GraphDisplayComponent = null): void {
-        if (!this.patterns || this.patterns.length === 0) {
-            return;
-        }
-
-        let links = [];
-        links = links.concat(this.undirectedPatternRelations);
-        links = links.concat(this.directedPatternRelations);
-        this.copyEdgesForSimulation = _.clone(links);
-        if (graphRenderComponent) {
-            graphRenderComponent.data = {
-                patterns: this.patterns, edges: links, copyOfLinks: this.copyEdgesForSimulation,
-                patternLanguage: this.patternLanguage, patternView: null
-            };
-            this.isLoadingDataForRenderer = false;
-        }
-
-
-    }
-
-    private getDirectededges(): Observable<Embedded<DirectedEdesResponse>> {
-        if (!this.patternLanguage) {
-            return EMPTY;
-        }
-        return this.patternLanguageService.getDirectedEdges(this.patternLanguage).pipe(
-            tap((edges) => {
-                this.directedPatternRelations = edges._embedded ? edges._embedded.directedEdgeModels : [];
-            }));
-    }
-
-    private getUndirectededges(): Observable<Embedded<UndirectedEdesResponse>> {
-        if (!this.patternLanguage) {
-            return EMPTY;
-        }
-        return this.patternLanguageService.getUndirectedEdges(this.patternLanguage).pipe(
-            tap((edges) => {
-                this.undirectedPatternRelations = edges._embedded ? edges._embedded.undirectedEdgeModels : [];
-            }));
-    }
-
-
     detectChanges() {
         this.cdr.detectChanges();
     }
 
     retrievePatterRelationDescriptorData(): Observable<any> {
-        const $getDirectedEdges = this.getDirectededges();
-        const $getUndirectedEdges = this.getUndirectededges();
-        return forkJoin($getDirectedEdges, $getUndirectedEdges);
+        const $getDirectedEdges = this.getDirectedEdges();
+        const $getUndirectedEdges = this.getUndirectedEdges();
+        return forkJoin([$getDirectedEdges, $getUndirectedEdges]);
     }
 
-
-    toggleRendereringComponent(graphVisibleValue: boolean) {
+    toggleRenderingComponent(graphVisibleValue: boolean) {
         this.graphVisible = graphVisibleValue;
         this.loadRendererForData();
     }
 
     reloadCurrentRenderingComponent() {
-        this.toggleRendereringComponent(this.graphVisible);
+        this.toggleRenderingComponent(this.graphVisible);
     }
 
     loadRendererForData() {
@@ -167,8 +104,8 @@ export class DefaultPlRendererComponent implements OnInit {
         this.router.navigate(['create-patterns'], {relativeTo: this.activatedRoute});
     }
 
-
     public addLink() {
+        // Todo: Make patternlanguage camelcase
         const dialogRef = this.dialog.open(CreatePatternRelationComponent, {
             data: {
                 patterns: this.patterns,
@@ -178,13 +115,14 @@ export class DefaultPlRendererComponent implements OnInit {
 
         dialogRef.afterClosed().pipe(
             switchMap((edge) => {
-                const url = edge instanceof DirectedEdgeModel ? this.patternLanguage._links.directedEdges.href : this.patternLanguage._links.undirectedEdges.href;
+                const url = edge instanceof DirectedEdgeModel ?
+                    this.patternLanguage._links.directedEdges.href : this.patternLanguage._links.undirectedEdges.href;
                 return edge ? this.patternRelationDescriptorService.savePatternRelation(url, edge) : EMPTY;
             }),
             switchMap((res) => res ? this.retrievePatterRelationDescriptorData() : EMPTY))
             .subscribe(res => {
                 if (res) {
-                    this.toasterService.pop('success', 'Added relation');
+                    this.toasterService.pop('success', 'Added Relation');
                     if (this.graphVisible) {
                         this.reloadCurrentRenderingComponent();
                     }
@@ -194,6 +132,60 @@ export class DefaultPlRendererComponent implements OnInit {
 
     reloadGraph() {
         (<GraphDisplayComponent>this.rendererComponentInstance).reformatGraph();
+    }
+
+    private loadData(): void {
+        this.isLoadingDataForRenderer = true;
+        this.patternLanguageURI = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
+        if (this.patternLanguageURI) {
+            this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageURI).pipe(
+                tap(patternlanguage => this.patternLanguage = patternlanguage),
+                switchMap(() => this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href)),
+                tap(patterns => this.patterns = patterns),
+                switchMap(() => this.retrievePatterRelationDescriptorData())).subscribe(
+                () => {
+                    this.isLoading = false;
+                    this.loadRendererForData();
+                });
+        }
+    }
+
+    private initGraph(graphRenderComponent: GraphDisplayComponent = null): void {
+        if (!this.patterns || this.patterns.length === 0) {
+            return;
+        }
+
+        let links = [];
+        links = links.concat(this.undirectedPatternRelations);
+        links = links.concat(this.directedPatternRelations);
+        this.copyEdgesForSimulation = _.clone(links);
+        if (graphRenderComponent) {
+            graphRenderComponent.data = {
+                patterns: this.patterns, edges: links, copyOfLinks: this.copyEdgesForSimulation,
+                patternLanguage: this.patternLanguage, patternView: null
+            };
+            this.isLoadingDataForRenderer = false;
+        }
+    }
+
+    private getDirectedEdges(): Observable<Embedded<DirectedEdesResponse>> {
+        if (!this.patternLanguage) {
+            return EMPTY;
+        }
+        return this.patternLanguageService.getDirectedEdges(this.patternLanguage).pipe(
+            tap((edges) => {
+                this.directedPatternRelations = edges._embedded ? edges._embedded.directedEdgeModels : [];
+            }));
+    }
+
+    private getUndirectedEdges(): Observable<Embedded<UndirectedEdesResponse>> {
+        if (!this.patternLanguage) {
+            return EMPTY;
+        }
+        return this.patternLanguageService.getUndirectedEdges(this.patternLanguage).pipe(
+            tap((edges) => {
+                this.undirectedPatternRelations = edges._embedded ? edges._embedded.undirectedEdgeModels : [];
+            }));
     }
 }
 

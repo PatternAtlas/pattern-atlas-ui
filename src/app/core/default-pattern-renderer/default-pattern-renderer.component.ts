@@ -1,25 +1,25 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, ViewChild} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {ToasterService} from 'angular2-toaster';
-import {PatternpropertyDirective} from '../component/markdown-content-container/patternproperty.directive';
-import {UriConverter} from '../util/uri-converter';
-import {MatDialog} from '@angular/material/dialog';
-import {CreatePatternRelationComponent} from '../component/create-pattern-relation/create-pattern-relation.component';
+import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ToasterService } from 'angular2-toaster';
+import { PatternPropertyDirective } from '../component/markdown-content-container/pattern-property.directive';
+import { UriConverter } from '../util/uri-converter';
+import { MatDialog } from '@angular/material/dialog';
+import { CreatePatternRelationComponent } from '../component/create-pattern-relation/create-pattern-relation.component';
 import Pattern from '../model/hal/pattern.model';
-import {PatternLanguageService} from '../service/pattern-language.service';
+import { PatternLanguageService } from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
-import {PatternService} from '../service/pattern.service';
-import {MarkdownPatternSectioncontentComponent} from '../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component';
-import {DataChange} from '../component/markdown-content-container/interfaces/DataRenderingComponent.interface';
+import { PatternService } from '../service/pattern.service';
+import { MarkdownPatternSectioncontentComponent } from '../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component';
+import { DataChange } from '../component/markdown-content-container/interfaces/DataRenderingComponent.interface';
 import PatternSectionSchema from '../model/hal/pattern-section-schema.model';
-import {map, switchMap, tap} from 'rxjs/operators';
-import {EMPTY, forkJoin, Observable} from 'rxjs';
-import {PatternRelationDescriptorService} from '../service/pattern-relation-descriptor.service';
-import {DirectedEdgeModel} from '../model/hal/directed-edge.model';
-import {Embedded} from '../model/hal/embedded';
-import {DirectedEdesResponse} from '../model/hal/directed-edes-response.interface';
-import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
-import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { EMPTY, forkJoin, Observable } from 'rxjs';
+import { PatternRelationDescriptorService } from '../service/pattern-relation-descriptor.service';
+import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
+import { Embedded } from '../model/hal/embedded';
+import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
+import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
+import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
 
 @Component({
     selector: 'pp-default-pattern-renderer',
@@ -27,16 +27,16 @@ import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
     styleUrls: ['./default-pattern-renderer.component.scss']
 })
 export class DefaultPatternRendererComponent implements AfterViewInit {
-    private directedPatternRelations: DirectedEdgeModel[];
-    private undirectedPatternRelations: UndirectedEdgeModel[];
+    private directedPatternRelations: Array<DirectedEdgeModel>;
+    private undirectedPatternRelations: Array<UndirectedEdgeModel>;
     private patternList: Array<Pattern>;
-    @ViewChild(PatternpropertyDirective) ppPatternproperty: PatternpropertyDirective;
+    @ViewChild(PatternPropertyDirective) ppPatternProperty: PatternPropertyDirective;
     private viewContainerRef;
     isLoading = true;
     isEditingEnabled = true;
     patternLanguage: PatternLanguage;
     pattern: Pattern;
-    patterns: Pattern[];
+    patterns: Array<Pattern>;
     private patternLanguageUri: string;
     private patternUri: string;
 
@@ -51,11 +51,10 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.viewContainerRef = this.ppPatternproperty.viewContainerRef;
+        this.viewContainerRef = this.ppPatternProperty.viewContainerRef;
         this.patternLanguageUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
         this.patternUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternUri'));
         this.getData();
-
     }
 
     private createSectionComponent(section: string,) {
@@ -88,14 +87,15 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
                 return result ? this.addContentInfoToPattern(result) : EMPTY;
             }),
             switchMap((edge) => {
-                const url = edge instanceof DirectedEdgeModel ? this.patternLanguage._links.directedEdges.href : this.patternLanguage._links.undirectedEdges.href;
+                const url = edge instanceof DirectedEdgeModel ?
+                    this.patternLanguage._links.directedEdges.href : this.patternLanguage._links.undirectedEdges.href;
                 return edge ? this.patternRelationDescriptorService.savePatternRelation(url, edge) : EMPTY;
             }),
             switchMap((edgeCreated) => {
                 return edgeCreated ? this.retrievePatternLanguageData() : EMPTY;
             }),
         ).subscribe(
-            (edge) => {
+            () => {
                 this.toasterService.pop('success', 'Created new Relation');
 
             },
@@ -104,7 +104,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
                 console.log(error);
             });
     }
-
 
     addContentInfoToPattern(edge: DirectedEdgeModel | UndirectedEdgeModel): Observable<DirectedEdgeModel | UndirectedEdgeModel> {
         const toPattern = edge instanceof DirectedEdgeModel ? edge.targetPatternId : edge.p2Id;
@@ -116,19 +115,19 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
             }));
     }
 
-
-    private getDirectededges(): Observable<Embedded<DirectedEdesResponse>> {
+    private getDirectedEdges(): Observable<Embedded<DirectedEdesResponse>> {
         if (!this.patternLanguage) {
             return EMPTY;
         }
         return this.patternLanguageService.getDirectedEdges(this.patternLanguage).pipe(
             tap((edges) => {
                 this.directedPatternRelations = edges._embedded ?
-                    edges._embedded.directedEdgeModels.filter(edge => edge.sourcePatternId === this.pattern.id || edge.targetPatternId === this.pattern.id) : [];
+                    edges._embedded.directedEdgeModels.filter(edge => edge.sourcePatternId === this.pattern.id ||
+                        edge.targetPatternId === this.pattern.id) : [];
             }));
     }
 
-    private getUndirectededges(): Observable<Embedded<UndirectedEdesResponse>> {
+    private getUndirectedEdges(): Observable<Embedded<UndirectedEdesResponse>> {
         if (!this.patternLanguage) {
             return EMPTY;
         }
@@ -166,9 +165,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
             map((patternContent) => this.pattern.content = patternContent.content));
     }
 
-
     private getData(): void {
-
         this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageUri).pipe(
             tap((patternLanguage) => this.patternLanguage = patternLanguage),
             switchMap(() => this.getPatternInfos()),
@@ -182,13 +179,9 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
         });
     }
 
-
     retrievePatternLanguageData(): Observable<any> {
-
-        const $getDirectedEdges = this.getDirectededges();
-        const $getUndirectedEdges = this.getUndirectededges();
+        const $getDirectedEdges = this.getDirectedEdges();
+        const $getUndirectedEdges = this.getUndirectedEdges();
         return forkJoin($getDirectedEdges, $getUndirectedEdges);
     }
-
-
 }

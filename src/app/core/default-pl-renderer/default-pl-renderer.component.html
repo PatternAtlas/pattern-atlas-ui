@@ -2,7 +2,7 @@
                       [secondAddButtonText]="'Add Pattern'" (add2Clicked)="addPattern()"
                       [displayText]="'Pattern Language: '+ patternLanguage?.name">
     <mat-button-toggle-group style="font-size: small; height: 35px; align-items: center;" [value]="graphVisible"
-                             (change)="toggleRendereringComponent(group.value)"
+                             (change)="toggleRenderingComponent(group.value)"
                              #group="matButtonToggleGroup">
         <mat-button-toggle mat-raised-button [value]="false" aria-label="Text align center"
                            [checked]="true">
