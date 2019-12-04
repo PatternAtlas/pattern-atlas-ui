@@ -12,14 +12,14 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {globals} from '../../globals';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { globals } from '../../globals';
+import { Observable } from 'rxjs';
 import Pattern from '../model/hal/pattern.model';
-import {map} from 'rxjs/operators';
-import {PatternResponse} from '../model/hal/pattern-response.interface';
-import {Edge} from '../model/hal/edge.model';
+import { map } from 'rxjs/operators';
+import { PatternResponse } from '../model/hal/pattern-response.interface';
+import { Edge } from '../model/hal/edge.model';
 
 @Injectable()
 export class PatternService {
@@ -34,10 +34,10 @@ export class PatternService {
         return this.http.get<Pattern>(url);
     }
 
-    getPatternsByUrl(patternsUrl: string): Observable<Pattern[]> {
+    getPatternsByUrl(patternsUrl: string): Observable<Array<Pattern>> {
         return this.http.get<PatternResponse>(patternsUrl).pipe(
             map(result => {
-                return <Pattern[]>(result._embedded ? result._embedded.patternModels : []);
+                return <Array<Pattern>>(result._embedded ? result._embedded.patternModels : []);
             })
         );
     }
@@ -55,6 +55,6 @@ export class PatternService {
     }
 
     getLinksForPattern(url: string) {
-        return this.http.get<Edge[]>(url);
+        return this.http.get<Array<Edge>>(url);
     }
 }

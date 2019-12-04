@@ -1,9 +1,9 @@
 import { Directive, ViewContainerRef } from '@angular/core';
 
 @Directive({
-  selector: '[ppPatternproperty]'
+  selector: '[ppPatternProperty]'
 })
-export class PatternpropertyDirective {
+export class PatternPropertyDirective {
 
   constructor(public viewContainerRef: ViewContainerRef) { }
 

@@ -40,7 +40,7 @@ import {CovalentTextEditorModule} from '@covalent/text-editor';
 import {EmitEventOnKeyupDirective} from './directives/emit-event-on-keyup.directive';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {NavigateBackComponent} from './component/navigate-back/navigate-back.component';
-import {PatternpropertyDirective} from './component/markdown-content-container/patternproperty.directive';
+import {PatternPropertyDirective} from './component/markdown-content-container/pattern-property.directive';
 import {DividerComponent} from './component/divider/divider.component';
 import {NgxMdModule} from 'ngx-md';
 import {ReactiveFormsModule} from '@angular/forms';
@@ -91,7 +91,7 @@ import {MatBadgeModule, MatExpansionModule} from '@angular/material';
         EmitEventOnKeyupDirective,
         EmitEventOnAddedEdgeDirective,
         NavigateBackComponent,
-        PatternpropertyDirective,
+        PatternPropertyDirective,
         DividerComponent,
         CreatePatternRelationComponent,
         MarkdownPatternSectioncontentComponent,

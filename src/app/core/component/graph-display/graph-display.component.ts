@@ -1,22 +1,22 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
-import {D3Service} from '../../../graph/service/d3.service';
-import {NetworkLink} from '../../model/network-link.interface';
-import {MatDialog} from '@angular/material/dialog';
-import {MatSidenavContainer} from '@angular/material/sidenav';
-import {CreatePatternRelationComponent} from '../create-pattern-relation/create-pattern-relation.component';
-import {PatternView} from '../../model/hal/pattern-view.model';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { D3Service } from '../../../graph/service/d3.service';
+import { NetworkLink } from '../../model/network-link.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSidenavContainer } from '@angular/material/sidenav';
+import { CreatePatternRelationComponent } from '../create-pattern-relation/create-pattern-relation.component';
+import { PatternView } from '../../model/hal/pattern-view.model';
 import PatternLanguage from '../../model/hal/pattern-language.model';
-import {EdgeWithType, PatternRelationDescriptorService} from '../../service/pattern-relation-descriptor.service';
-import {DirectedEdgeModel} from '../../model/hal/directed-edge.model';
-import {switchMap} from 'rxjs/operators';
-import {of} from 'rxjs';
-import {ToasterService} from 'angular2-toaster';
-import {UriConverter} from '../../util/uri-converter';
+import { EdgeWithType, PatternRelationDescriptorService } from '../../service/pattern-relation-descriptor.service';
+import { DirectedEdgeModel } from '../../model/hal/directed-edge.model';
+import { switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { ToasterService } from 'angular2-toaster';
+import { UriConverter } from '../../util/uri-converter';
 import GraphEditor from '@ustutt/grapheditor-webcomponent/lib/grapheditor';
-import {DraggedEdge, edgeId} from '@ustutt/grapheditor-webcomponent/lib/edge';
+import { DraggedEdge, edgeId } from '@ustutt/grapheditor-webcomponent/lib/edge';
 import Pattern from '../../model/hal/pattern.model';
-import {PatternLanguageService} from '../../service/pattern-language.service';
-import {GraphInputData} from '../../model/graph-input-data.interface';
+import { PatternLanguageService } from '../../service/pattern-language.service';
+import { GraphInputData } from '../../model/graph-input-data.interface';
 
 
 export class GraphNode {
@@ -38,21 +38,21 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     graphNativeElement: GraphEditor;
     @ViewChild('svg') svg: ElementRef;
     @ViewChild(MatSidenavContainer) sidenavContainer: MatSidenavContainer;
-    patternlanguageData;
+    patternLanguageData: any;
     isLoading = true;
-    private edges: NetworkLink[];
-    private nodes: GraphNode[];
-    private copyOfLinks: NetworkLink[];
-    private patterns: Pattern[];
+    private edges: Array<NetworkLink>;
+    private nodes: Array<GraphNode>;
+    private copyOfLinks: Array<NetworkLink>;
+    private patterns: Array<Pattern>;
     private patternLanguage: PatternLanguage;
     private patternView: PatternView;
     private currentEdge: any;
 
     @Input() data: GraphInputData;
-    private highlightedNodeIds: string[] = [];
-    private highlightedEdgeIds: string[] = [];
+    private highlightedNodeIds: Array<string> = [];
+    private highlightedEdgeIds: Array<string> = [];
     currentPattern: Pattern;
-    currentEdges: EdgeWithType[];
+    currentEdges: Array<EdgeWithType>;
 
 
     constructor(private cdr: ChangeDetectorRef, private d3Service: D3Service, private matDialog: MatDialog,
@@ -89,7 +89,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         };
         this.initData();
         this.getGraph();
-
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -101,23 +100,21 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     }
 
     private initData() {
-        this.patternlanguageData = this.data;
-        this.edges = this.mapPatternLinksToEdges(this.patternlanguageData.edges);
-        this.copyOfLinks = this.mapPatternLinksToEdges(this.patternlanguageData.copyOfLinks);
-        this.patterns = this.patternlanguageData.patterns;
-        this.patternLanguage = this.patternlanguageData.patternLanguage;
-        this.patternView = this.patternlanguageData.patternView;
+        this.patternLanguageData = this.data;
+        this.edges = this.mapPatternLinksToEdges(this.patternLanguageData.edges);
+        this.copyOfLinks = this.mapPatternLinksToEdges(this.patternLanguageData.copyOfLinks);
+        this.patterns = this.patternLanguageData.patterns;
+        this.patternLanguage = this.patternLanguageData.patternLanguage;
+        this.patternView = this.patternLanguageData.patternView;
         this.nodes = this.mapPatternsToNodes(this.patterns);
 
     }
-
 
     private startSimulation() {
         const networkGraph = this.d3Service.getNetworkGraph(this.nodes, this.edges, {
             width: 1000,
             height: 500
         });
-
 
         // allow to create edges to any other node in the graph (this enables multiple edges between nodes)
         this.graphNativeElement.onCreateDraggedEdge = (edge: DraggedEdge) => {
@@ -135,24 +132,22 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             this.cdr.markForCheck();
             this.saveGraph();
         });
-
     }
 
-
     private mapPatternLinksToEdges(links: any[]): NetworkLink[] {
-        const edges = [];
+        const edges: any = [];
         for (let i = 0; i < links.length; i++) {
-            const currentlink = links[i];
-            if (currentlink.sourcePatternId && currentlink.targetPatternId) {
+            const currentLink = links[i];
+            if (currentLink.sourcePatternId && currentLink.targetPatternId) {
                 edges.push({
-                    source: currentlink.sourcePatternId, target: currentlink.targetPatternId,
-                    id: currentlink.id,
+                    source: currentLink.sourcePatternId, target: currentLink.targetPatternId,
+                    id: currentLink.id,
                     markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0},
                 });
             } else { // undirected link
                 edges.push(<NetworkLink>{
-                    source: currentlink.pattern1Id, target: currentlink.pattern2Id,
-                    id: currentlink.id,
+                    source: currentLink.pattern1Id, target: currentLink.pattern2Id,
+                    id: currentLink.id,
                     markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0},
                     markerStart: {template: 'arrow', scale: 0.5, relativeRotation: 0}
                 });
@@ -161,9 +156,8 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         return edges;
     }
 
-
-    private mapPatternsToNodes(patterns: Pattern[]): GraphNode[] {
-        const nodes = [];
+    private mapPatternsToNodes(patterns: Array<Pattern>): GraphNode[] {
+        const nodes: any = [];
         for (let i = 0; i < patterns.length; i++) {
             const node = {
                 id: patterns[i].id,
@@ -221,7 +215,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         this.getEdgesForPattern();
         this.sidenavContainer.open();
         this.graphNativeElement.completeRender();
-
     }
 
     private getEdgesForPattern(): void {
@@ -236,7 +229,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             this.patternLanguageService.saveGraph(this.patternLanguage, this.nodes).subscribe(res => console.log('saved graph layout'));
         }
     }
-
 
     reformatGraph() {
         this.nodes = this.mapPatternsToNodes(this.patterns);
@@ -260,7 +252,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             this.initGraphEdges();
             this.isLoading = false;
         });
-
     }
 
     private initGraphEdges() {
@@ -272,5 +263,3 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         this.graphNativeElement.zoomToBoundingBox(true);
     }
 }
-
-
