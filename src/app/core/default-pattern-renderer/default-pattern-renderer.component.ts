@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, NgZone, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToasterService } from 'angular2-toaster';
 import { PatternPropertyDirective } from '../component/markdown-content-container/pattern-property.directive';
@@ -47,7 +47,8 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
                 private patternService: PatternService,
                 private patternRelationDescriptorService: PatternRelationDescriptorService,
                 private dialog: MatDialog,
-                private router: Router) {
+                private router: Router,
+                private zone: NgZone) {
     }
 
     ngAfterViewInit(): void {
@@ -91,7 +92,9 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
         if (targetPattern) {
             const targetId = UriConverter.doubleEncodeUri(targetPattern.uri);
             const uri = UriConverter.doubleDecodeUri(targetId);
-            this.router.navigate(['..', targetId], {relativeTo: this.activatedRoute});
+            this.zone.run(() => {
+                this.router.navigate(['..', targetId], {relativeTo: this.activatedRoute});
+            });
         }
     }
 

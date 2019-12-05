@@ -1,23 +1,23 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
-import {D3Service} from '../../../graph/service/d3.service';
-import {NetworkLink} from '../../model/network-link.interface';
-import {MatDialog} from '@angular/material/dialog';
-import {MatSidenavContainer} from '@angular/material/sidenav';
-import {CreatePatternRelationComponent} from '../create-pattern-relation/create-pattern-relation.component';
-import {PatternView} from '../../model/hal/pattern-view.model';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { D3Service } from '../../../graph/service/d3.service';
+import { NetworkLink } from '../../model/network-link.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSidenavContainer } from '@angular/material/sidenav';
+import { CreatePatternRelationComponent } from '../create-pattern-relation/create-pattern-relation.component';
+import { PatternView } from '../../model/hal/pattern-view.model';
 import PatternLanguage from '../../model/hal/pattern-language.model';
-import {EdgeWithType, PatternRelationDescriptorService} from '../../service/pattern-relation-descriptor.service';
-import {switchMap, tap} from 'rxjs/operators';
-import {Observable, of} from 'rxjs';
-import {ToasterService} from 'angular2-toaster';
-import {UriConverter} from '../../util/uri-converter';
+import { EdgeWithType, PatternRelationDescriptorService } from '../../service/pattern-relation-descriptor.service';
+import { switchMap, tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { ToasterService } from 'angular2-toaster';
+import { UriConverter } from '../../util/uri-converter';
 import GraphEditor from '@ustutt/grapheditor-webcomponent/lib/grapheditor';
-import {DraggedEdge, edgeId} from '@ustutt/grapheditor-webcomponent/lib/edge';
+import { DraggedEdge, edgeId } from '@ustutt/grapheditor-webcomponent/lib/edge';
 import Pattern from '../../model/hal/pattern.model';
-import {PatternLanguageService} from '../../service/pattern-language.service';
-import {GraphInputData} from '../../model/graph-input-data.interface';
-import {PatternService} from '../../service/pattern.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import { PatternLanguageService } from '../../service/pattern-language.service';
+import { GraphInputData } from '../../model/graph-input-data.interface';
+import { PatternService } from '../../service/pattern.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 export class GraphNode {
     id: string;
@@ -85,6 +85,22 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             }
         }
         return edges;
+    }
+
+    static mapPatternsToNodes(patterns: Array<Pattern>, offsetIndex: number = 0): Array<GraphNode> {
+        const nodes: Array<any> = [];
+        for (let i = 0; i < patterns.length; i++) {
+            const node = {
+                id: patterns[i].id,
+                title: patterns[i].name,
+                type: 'default',
+                uri: patterns[i].uri,
+                x: 5 * offsetIndex,
+                y: 5 * offsetIndex
+            };
+            nodes.push(node);
+        }
+        return nodes;
     }
 
     ngAfterViewInit() {
@@ -176,7 +192,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     }
 
     reformatGraph() {
-        this.nodes = this.mapPatternsToNodes(this.patterns);
+        this.nodes = GraphDisplayComponent.mapPatternsToNodes(this.patterns);
         this.startSimulation();
     }
 
@@ -202,7 +218,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         this.patterns = this.patternLanguageData.patterns;
         this.patternLanguage = this.patternLanguageData.patternLanguage;
         this.patternView = this.patternLanguageData.patternView;
-        this.nodes = this.mapPatternsToNodes(this.patterns);
+        this.nodes = GraphDisplayComponent.mapPatternsToNodes(this.patterns);
     }
 
     private startSimulation() {
@@ -228,22 +244,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             this.cdr.detectChanges();
             this.saveGraph();
         });
-    }
-
-    private mapPatternsToNodes(patterns: Array<Pattern>, offsetIndex: number = 0): Array<GraphNode> {
-        const nodes: Array<any> = [];
-        for (let i = 0; i < patterns.length; i++) {
-            const node = {
-                id: patterns[i].id,
-                title: patterns[i].name,
-                type: 'default',
-                uri: patterns[i].uri,
-                x: 5 * offsetIndex,
-                y: 5 * offsetIndex
-            };
-            nodes.push(node);
-        }
-        return nodes;
     }
 
     private getEdgesForPattern(): void {
@@ -281,7 +281,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     }
 
     private addNewPatternNodeToGraph(pat: Pattern, index: number) {
-        this.graphNativeElement.addNode(this.mapPatternsToNodes([pat], index)[0]);
+        this.graphNativeElement.addNode(GraphDisplayComponent.mapPatternsToNodes([pat], index)[0]);
     }
 
     private showInfoForClickedNode(node): void {
