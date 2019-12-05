@@ -36,7 +36,7 @@ export class PatternRelationDescriptorService {
     }
 
     getEdgesForPattern(pattern: Pattern): Observable<EdgeWithType[]> {
-        if (!pattern || (!pattern._links.undirectedEdges && pattern._links.ingoingDirectedEdges && pattern._links.outgoingDirectedEdges)) {
+        if (!pattern) {
             return of(null);
         }
         const observables = [];
