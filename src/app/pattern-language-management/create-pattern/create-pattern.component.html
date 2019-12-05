@@ -1,6 +1,6 @@
 <pp-navigate-back></pp-navigate-back>
 <h2>
-  Add a new pattern to {{patternlanguage?.name}}
+  Add a new pattern to {{patternLanguage?.name}}
 </h2>
 
 <div class="parent ">
@@ -16,8 +16,8 @@
 
     <div id="preview"></div>
 
-    <mat-error *ngIf="wasSaveButtonClicked && errormessages">Found errors in the following sections:
-      <div *ngFor="let message of errormessages">
+    <mat-error *ngIf="wasSaveButtonClicked && errorMessages">Found errors in the following sections:
+      <div *ngFor="let message of errorMessages">
         <span>{{message}}<br></span>
       </div>
     </mat-error>
