@@ -16,7 +16,7 @@ import UriEntity from './uri-entity.model';
 import {HalLink} from './hal-link.interface';
 
 class Pattern extends UriEntity {
-    iconUrl: string;
+    iconUrl?: string;
     content: any;
     _links: {
         self: HalLink;
