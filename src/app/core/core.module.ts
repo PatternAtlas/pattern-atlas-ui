@@ -46,7 +46,7 @@ import { NgxMdModule } from 'ngx-md';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CreatePatternRelationComponent } from './component/create-pattern-relation/create-pattern-relation.component';
 // tslint:disable-next-line:max-line-length
-import { MarkdownPatternSectioncontentComponent } from './component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component';
+import { MarkdownPatternSectionContentComponent } from './component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-section-content.component';
 import { PatternLanguageService } from './service/pattern-language.service';
 import { PatternService } from './service/pattern.service';
 import { GraphDisplayComponent } from './component/graph-display/graph-display.component';
@@ -103,7 +103,7 @@ import { RouterModule } from '@angular/router';
         PatternPropertyDirective,
         DividerComponent,
         CreatePatternRelationComponent,
-        MarkdownPatternSectioncontentComponent,
+        MarkdownPatternSectionContentComponent,
         GraphDisplayComponent,
         CardrendererComponent,
         CreateEditPatternLanguageComponent,
@@ -115,7 +115,7 @@ import { RouterModule } from '@angular/router';
         MdEditorComponent,
         DividerComponent,
         CreatePatternRelationComponent,
-        MarkdownPatternSectioncontentComponent,
+        MarkdownPatternSectionContentComponent,
         CardrendererComponent,
         GraphDisplayComponent,
         CreateEditPatternLanguageComponent

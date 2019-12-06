@@ -6,7 +6,7 @@
         <div style="display: flex; align-items: center;" (mouseenter)="showActionButtons = true"
              (mouseleave)="showActionButtons = false">
 
-            <div #markdownContent></div>
+            <div style="word-break: break-word" #markdownContent></div>
 
             <button *ngIf="showActionButtons && isEditingEnabled" mat-stroked-button
                     style="margin-left: 5px" color="primary"

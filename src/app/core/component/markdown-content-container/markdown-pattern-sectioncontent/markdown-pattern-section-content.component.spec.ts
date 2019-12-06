@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MarkdownPatternSectioncontentComponent } from './markdown-pattern-sectioncontent.component';
+import { MarkdownPatternSectionContentComponent } from './markdown-pattern-section-content.component';
 
 describe('MarkdownPatternSectioncontentComponent', () => {
-  let component: MarkdownPatternSectioncontentComponent;
-  let fixture: ComponentFixture<MarkdownPatternSectioncontentComponent>;
+  let component: MarkdownPatternSectionContentComponent;
+  let fixture: ComponentFixture<MarkdownPatternSectionContentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MarkdownPatternSectioncontentComponent ]
+      declarations: [ MarkdownPatternSectionContentComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MarkdownPatternSectioncontentComponent);
+    fixture = TestBed.createComponent(MarkdownPatternSectionContentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

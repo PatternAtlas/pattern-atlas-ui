@@ -16,12 +16,12 @@
             <div *ngIf="directedPatternRelations?.length > 0">
                 <ng-container *ngFor="let relation of directedPatternRelations">
                     <p class="horiz-centered">
-                        {{ relation?.sourcePatternName}}
+                        <a [routerLink]="['..', doubleEncodeUri(relation.sourcePatternUri)]">{{ relation?.sourcePatternName}}</a>
                         <span *ngIf="relation?.type" class="horiz-centered">
                             <i class="material-icons">remove</i>{{relation?.type}}
                         </span>
                         <i class="material-icons">trending_flat</i>
-                        <a [routerLink]="" (click)="navigateToPattern(relation.targetPatternId)">{{ relation?.targetPatternName}}</a>
+                        <a [routerLink]="['..', doubleEncodeUri(relation.targetPatternUri)]">{{ relation?.targetPatternName}}</a>
                         <i>{{relation?.description ? ': ' + relation?.description : ''}}</i>
                     </p>
                     <br/>

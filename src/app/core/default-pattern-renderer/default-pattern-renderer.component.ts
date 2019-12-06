@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, NgZone, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToasterService } from 'angular2-toaster';
 import { PatternPropertyDirective } from '../component/markdown-content-container/pattern-property.directive';
@@ -9,7 +9,8 @@ import Pattern from '../model/hal/pattern.model';
 import { PatternLanguageService } from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
 import { PatternService } from '../service/pattern.service';
-import { MarkdownPatternSectioncontentComponent } from '../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component';
+// tslint:disable-next-line:max-line-length
+import { MarkdownPatternSectionContentComponent } from '../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-section-content.component';
 import { DataChange } from '../component/markdown-content-container/interfaces/DataRenderingComponent.interface';
 import PatternSectionSchema from '../model/hal/pattern-section-schema.model';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -47,15 +48,21 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
                 private patternService: PatternService,
                 private patternRelationDescriptorService: PatternRelationDescriptorService,
                 private dialog: MatDialog,
-                private router: Router,
-                private zone: NgZone) {
+                private router: Router) {
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     }
 
     ngAfterViewInit(): void {
         this.viewContainerRef = this.ppPatternProperty.viewContainerRef;
         this.patternLanguageUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
+        console.log(this.patternLanguageUri);
         this.patternUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternUri'));
+        console.log(this.patternUri);
         this.getData();
+    }
+
+    doubleEncodeUri(uri: string): string {
+        return UriConverter.doubleEncodeUri(uri);
     }
 
     addLink() {
@@ -86,15 +93,10 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
             });
     }
 
-    // Todo Manuela
-    navigateToPattern(patternId: string): void {
-        const targetPattern = this.patterns.find(pattern => pattern.id === patternId);
-        if (targetPattern) {
-            const targetId = UriConverter.doubleEncodeUri(targetPattern.uri);
-            const uri = UriConverter.doubleDecodeUri(targetId);
-            this.zone.run(() => {
-                this.router.navigate(['..', targetId], {relativeTo: this.activatedRoute});
-            });
+    // Todo Manuela: make it work!
+    navigateToPattern(uri: string): void {
+        if (uri) {
+            this.router.navigate(['..', UriConverter.doubleEncodeUri(uri)], {relativeTo: this.activatedRoute});
         }
     }
 
@@ -136,9 +138,9 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
         }
         const properties = this.pattern.content[section];
 
-        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MarkdownPatternSectioncontentComponent);
+        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MarkdownPatternSectionContentComponent);
         const componentRef = this.viewContainerRef.createComponent(componentFactory);
-        const instance = (<MarkdownPatternSectioncontentComponent>componentRef.instance);
+        const instance = (<MarkdownPatternSectionContentComponent>componentRef.instance);
         instance.data = properties;
         instance.title = section;
         instance.isEditingEnabled = this.isEditingEnabled;
@@ -173,7 +175,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
             }));
     }
 
-    private savePattern(section: string, previousContent: any, instance: MarkdownPatternSectioncontentComponent) {
+    private savePattern(section: string, previousContent: any, instance: MarkdownPatternSectionContentComponent) {
         this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe(() => this.toasterService.pop('success', 'Saved pattern'),
             (error) => {
                 this.toasterService.pop('error', 'Could not save pattern, resetting content', error.message);
