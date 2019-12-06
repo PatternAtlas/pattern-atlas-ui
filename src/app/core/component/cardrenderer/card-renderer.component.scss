@@ -1,6 +1,6 @@
 .card {
   width: 10em;
-  height: 10em;
+  height: 16em;
 
 
   &:hover {
@@ -17,13 +17,9 @@
   flex-direction: column;
 }
 
-.mat-card-header {
-  flex-shrink: 0;
-}
 
-.mat-card-content {
-  flex-grow: 1;
-  overflow: auto;
+.mat-card-image {
+  object-fit: scale-down;
 }
 
 .mat-card-footer {
