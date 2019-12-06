@@ -14,7 +14,7 @@
 
 import { Injectable } from '@angular/core';
 import PatternLanguage from '../model/hal/pattern-language.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { globals } from '../../globals';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -58,8 +58,8 @@ export class PatternLanguageService {
         return this.http.get<PatternLanguage>(url);
     }
 
-    public savePatternLanguage(patternLanguage: PatternLanguage): Promise<any> {
-        return this.http.post<any>(this.repoEndpoint + '/patternLanguages', patternLanguage, {observe: 'response'}).toPromise();
+    public savePatternLanguage(patternLanguage: PatternLanguage): Observable<HttpResponse<any>> {
+        return this.http.post<HttpResponse<any>>(this.repoEndpoint + '/patternLanguages', patternLanguage, {observe: 'response'});
     }
 
     public getDirectedEdges(patternLanguage: PatternLanguage): Observable<Embedded<DirectedEdesResponse>> {
