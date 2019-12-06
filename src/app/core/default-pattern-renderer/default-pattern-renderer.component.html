@@ -29,12 +29,14 @@
             </div>
             <div *ngIf="undirectedPatternRelations?.length > 0">
                 <ng-container *ngFor="let relation of undirectedPatternRelations">
-                    <p class="horiz-centered">{{ relation?.pattern2Name}}
+                    <p class="horiz-centered">
+                        <a [routerLink]="['..', doubleEncodeUri(relation.pattern1Uri)]">{{ relation?.pattern1Name}}</a>
                         <span *ngIf="!relation?.type"><i class="material-icons">compare_arrows</i></span>
                         <span *ngIf="relation?.type" class="horiz-centered"><i
                                 class="material-icons flip">trending_flat</i>{{relation?.type}}
                             <i class="material-icons">trending_flat</i></span>
-                        {{ relation?.pattern2Name}} <i>{{relation?.description ? ': ' + relation?.description : ''}}</i>
+                        <a [routerLink]="['..', doubleEncodeUri(relation.pattern2Uri)]">{{ relation?.pattern2Name}}</a>
+                        <i>{{relation?.description ? ': ' + relation?.description : ''}}</i>
                     </p>
                     <br/>
                 </ng-container>
