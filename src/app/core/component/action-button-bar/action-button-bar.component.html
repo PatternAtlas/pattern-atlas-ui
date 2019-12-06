@@ -4,17 +4,19 @@
     <span class="action-button"><b>{{this.displayText}}</b></span>
 
     <ng-content></ng-content>
-    <button *ngIf="reloadButton" mat-raised-button color="accent" (click)="reloadButtonClicked()">
+
+    <button (click)="reloadButtonClicked()" *ngIf="reloadButton" class="action-button" color="accent"
+            mat-raised-button>
         <i class="material-icons">autorenew</i> Reload
     </button>
 
-    <button class="action-button" mat-raised-button color="accent" *ngIf="firstAddButton"
-            (click)="addButtonClicked()">
+    <button (click)="addButtonClicked()" *ngIf="firstAddButton" class="action-button" color="accent"
+            mat-raised-button>
         <i class="material-icons">add</i> {{addButtonText}}
     </button>
 
-    <button *ngIf="secondAddButton" class="action-button" mat-raised-button color="accent"
-            (click)="secondAddButtonClicked()">
+    <button style="margin-left: 0;" (click)="secondAddButtonClicked()" *ngIf="secondAddButton" class="action-button" color="accent"
+            mat-raised-button>
         <i class="material-icons">add</i> {{secondAddButtonText}}
     </button>
 </mat-toolbar>

@@ -1,4 +1,4 @@
-import {ApplicationRef, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { ApplicationRef, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
     selector: 'pp-action-button-bar',
@@ -20,8 +20,8 @@ export class ActionButtonBarComponent implements OnInit {
 
     @Input() displayText: string;
 
-
-    constructor(private cdr: ChangeDetectorRef, private applicationRef: ApplicationRef) {
+    constructor(private cdr: ChangeDetectorRef,
+                private applicationRef: ApplicationRef) {
     }
 
     ngOnInit() {
@@ -35,9 +35,7 @@ export class ActionButtonBarComponent implements OnInit {
         this.reloadClicked.emit();
     }
 
-
     secondAddButtonClicked() {
         this.add2Clicked.emit();
     }
-
 }

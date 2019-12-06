@@ -3,6 +3,7 @@
                       [secondAddButton]="true">
     <mat-button-toggle-group #group="matButtonToggleGroup" (change)="toggleRenderingComponent(group.value)"
                              [value]="graphVisible"
+                             appearance="legacy"
                              style="font-size: small; height: 35px; align-items: center;">
         <mat-button-toggle [checked]="true" [value]="false" aria-label="Text align center" mat-raised-button>
             Cards
@@ -11,7 +12,7 @@
             Graph
         </mat-button-toggle>
     </mat-button-toggle-group>
-    <button (click)="reloadGraph()" *ngIf="graphVisible" color="accent" mat-raised-button>
+    <button style="margin-left: 10px;" (click)="reloadGraph()" *ngIf="graphVisible" color="accent" mat-raised-button>
         <i class="material-icons">autorenew</i> Reformat
     </button>
 </pp-action-button-bar>
