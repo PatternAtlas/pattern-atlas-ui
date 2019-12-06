@@ -257,7 +257,8 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     private getGraph() {
         this.patternLanguageService.getGraph(this.patternLanguage)
             .subscribe((res: { graph: Array<GraphNode> }) => {
-                if (!Array.isArray(this.patternLanguage.patterns) || (res.graph.length === 0)) {
+                if ((!res.graph && Array.isArray(this.patternLanguage.patterns)) ||
+                    Array.isArray(this.patternLanguage.patterns) && (this.patternLanguage.patterns.length > res.graph.length)) {
                     this.startSimulation();
                 } else {
                     this.graphNativeElement.setNodes(res.graph);
