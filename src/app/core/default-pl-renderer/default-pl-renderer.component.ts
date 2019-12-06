@@ -1,24 +1,24 @@
-import {ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {UriConverter} from '../util/uri-converter';
-import {MatDialog} from '@angular/material/dialog';
-import {PatternLanguageService} from '../service/pattern-language.service';
+import { ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UriConverter } from '../util/uri-converter';
+import { MatDialog } from '@angular/material/dialog';
+import { PatternLanguageService } from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
-import {D3Service} from '../../graph/service/d3.service';
-import {CardrendererComponent} from '../component/cardrenderer/cardrenderer.component';
-import {GraphDisplayComponent} from '../component/graph-display/graph-display.component';
-import {EMPTY, forkJoin, Observable} from 'rxjs';
-import {Embedded} from '../model/hal/embedded';
-import {DirectedEdesResponse} from '../model/hal/directed-edes-response.interface';
-import {switchMap, tap} from 'rxjs/operators';
-import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
-import {DirectedEdgeModel} from '../model/hal/directed-edge.model';
-import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
+import { D3Service } from '../../graph/service/d3.service';
+import { CardrendererComponent } from '../component/cardrenderer/cardrenderer.component';
+import { GraphDisplayComponent } from '../component/graph-display/graph-display.component';
+import { EMPTY, forkJoin, Observable } from 'rxjs';
+import { Embedded } from '../model/hal/embedded';
+import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
+import { switchMap, tap } from 'rxjs/operators';
+import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
+import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
+import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
 import * as _ from 'lodash';
-import {CreatePatternRelationComponent} from '../component/create-pattern-relation/create-pattern-relation.component';
-import {PatternRelationDescriptorService} from '../service/pattern-relation-descriptor.service';
-import {ToasterService} from 'angular2-toaster';
-import {PatternService} from '../service/pattern.service';
+import { CreatePatternRelationComponent } from '../component/create-pattern-relation/create-pattern-relation.component';
+import { PatternRelationDescriptorService } from '../service/pattern-relation-descriptor.service';
+import { ToasterService } from 'angular2-toaster';
+import { PatternService } from '../service/pattern.service';
 import Pattern from '../model/hal/pattern.model';
 
 @Component({
@@ -36,7 +36,7 @@ export class DefaultPlRendererComponent implements OnInit {
     @ViewChild('cardsView') cardsView: ElementRef;
     @ViewChild('displayPLContainer', {read: ViewContainerRef}) loadRenderer;
     rendererComponentInstance: GraphDisplayComponent | CardrendererComponent;
-    graphVisible = true;
+    graphVisible = false;
     isLoadingDataForRenderer: boolean;
     private componentRef: ComponentRef<any>;
     private directedPatternRelations: Array<DirectedEdgeModel> = [];
@@ -115,7 +115,6 @@ export class DefaultPlRendererComponent implements OnInit {
 
         dialogRef.afterClosed().pipe(
             switchMap((edge) => {
-
                 return edge ? this.patternRelationDescriptorService.addRelationToPL(this.patternLanguage, edge) : EMPTY;
             }),
             switchMap((res) => res ? this.retrievePatterRelationDescriptorData() : EMPTY))
@@ -136,13 +135,15 @@ export class DefaultPlRendererComponent implements OnInit {
     private loadData(): void {
         this.isLoadingDataForRenderer = true;
         this.patternLanguageURI = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
+
         if (this.patternLanguageURI) {
-            this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageURI).pipe(
-                tap(patternlanguage => this.patternLanguage = patternlanguage),
-                switchMap(() => this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href)),
-                tap(patterns => this.patterns = patterns),
-                switchMap(() => this.retrievePatterRelationDescriptorData())).subscribe(
-                () => {
+            this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageURI)
+                .pipe(
+                    tap(patternlanguage => this.patternLanguage = patternlanguage),
+                    switchMap(() => this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href)),
+                    tap(patterns => this.patterns = patterns),
+                    switchMap(() => this.retrievePatterRelationDescriptorData()))
+                .subscribe(() => {
                     this.isLoading = false;
                     this.loadRendererForData();
                 });
@@ -187,6 +188,3 @@ export class DefaultPlRendererComponent implements OnInit {
             }));
     }
 }
-
-
-

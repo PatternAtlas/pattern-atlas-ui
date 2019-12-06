@@ -1,24 +1,22 @@
-<pp-action-button-bar (addClicked)="addLink()" [addButtonText]="'Add Link'" [secondAddButton]="true"
-                      [secondAddButtonText]="'Add Pattern'" (add2Clicked)="addPattern()"
-                      [displayText]="'Pattern Language: '+ patternLanguage?.name">
-    <mat-button-toggle-group style="font-size: small; height: 35px; align-items: center;" [value]="graphVisible"
-                             (change)="toggleRenderingComponent(group.value)"
-                             #group="matButtonToggleGroup">
-        <mat-button-toggle mat-raised-button [value]="false" aria-label="Text align center"
-                           [checked]="true">
+<pp-action-button-bar (add2Clicked)="addPattern()" (addClicked)="addLink()" [addButtonText]="'Add Link'"
+                      [displayText]="'Pattern Language: '+ patternLanguage?.name" [secondAddButtonText]="'Add Pattern'"
+                      [secondAddButton]="true">
+    <mat-button-toggle-group #group="matButtonToggleGroup" (change)="toggleRenderingComponent(group.value)"
+                             [value]="graphVisible"
+                             style="font-size: small; height: 35px; align-items: center;">
+        <mat-button-toggle [checked]="true" [value]="false" aria-label="Text align center" mat-raised-button>
             Cards
         </mat-button-toggle>
-        <mat-button-toggle mat-raised-button [value]="true" aria-label="Text align left">
+        <mat-button-toggle [value]="true" aria-label="Text align left" mat-raised-button>
             Graph
         </mat-button-toggle>
     </mat-button-toggle-group>
-    <button *ngIf="graphVisible" mat-raised-button color="accent" (click)="reloadGraph()">
+    <button (click)="reloadGraph()" *ngIf="graphVisible" color="accent" mat-raised-button>
         <i class="material-icons">autorenew</i> Reformat
     </button>
 </pp-action-button-bar>
 
-
-<mat-progress-spinner mode="indeterminate" *ngIf="isLoadingDataForRenderer"></mat-progress-spinner>
+<mat-progress-spinner *ngIf="isLoadingDataForRenderer" mode="indeterminate"></mat-progress-spinner>
 <div>
     <ng-template #displayPLContainer></ng-template>
 </div>
