@@ -67,9 +67,7 @@ export class PatternLanguageManagementComponent implements OnInit {
     async reloadPatternRepo() {
         this.patternLanguageService.getPatternLanguages()
             .pipe(
-                map(result => {
-                    return result.sort(PatternLanguageManagementComponent.sortPatternLanguages);
-                }))
+                map(result => result.sort(PatternLanguageManagementComponent.sortPatternLanguages)))
             .subscribe(result => {
                 this.patternLanguages = result;
                 this._toasterService.pop('success', 'Reloaded Pattern Languages');
@@ -94,11 +92,15 @@ export class PatternLanguageManagementComponent implements OnInit {
             .subscribe((result: DialogPatternLanguageResult) => {
                 const patternLanguage = <PatternLanguage>result.dialogResult;
                 this.patternLanguageService.savePatternLanguage(patternLanguage)
-                    .then(postResult => {
-                        this.patternLanguages.push(<PatternLanguageModel>postResult.body);
+                    .subscribe(() => {
+                        this.patternLanguageService.getPatternLanguages()
+                            .pipe(
+                                map(patternLanguageModels => patternLanguageModels.sort(PatternLanguageManagementComponent.sortPatternLanguages)))
+                            .subscribe(patternLanguageModels => {
+                                this.patternLanguages = patternLanguageModels;
+                            });
                         this._toasterService.pop('success', 'Pattern Language created');
-                    })
-                    .catch(err => {
+                    }, err => {
                         console.error(err);
                         this._toasterService.pop('error', 'Error occurred', JSON.stringify(err));
                     });
