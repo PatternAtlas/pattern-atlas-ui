@@ -377,7 +377,7 @@ export class PatternGraphTemplateComponent<T extends Pattern> implements Pattern
         // clrs.forEach(lr => info.languageRelations.push(lr));
 
         return Promise.resolve(info);
-    };
+    }
 
     /**
      * Returns loaded Link data for the given link Id.
@@ -388,5 +388,5 @@ export class PatternGraphTemplateComponent<T extends Pattern> implements Pattern
 
         // const data = links.get(uri);
         return null;
-    };
+    }
 }

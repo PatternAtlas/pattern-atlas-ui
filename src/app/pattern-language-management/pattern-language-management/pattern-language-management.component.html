@@ -36,7 +36,7 @@
         <ng-template #noImage><img mat-card-image [src]="'https://placekitten.com/200/300'"></ng-template>
         <mat-card-actions>
             <div style="text-align: center">
-                <button matBadge="{{patternLanguage?.patterns?.length}}" mat-stroked-button color="primary"
+                <button matBadge="{{patternLanguage?.patternCount}}" mat-stroked-button color="primary"
                         (click)="navigateToPL(patternLanguage.id)"><i class="material-icons">pageview</i>View
                 </button>
             </div>
