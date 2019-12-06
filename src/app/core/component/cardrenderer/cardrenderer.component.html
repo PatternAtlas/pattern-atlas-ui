@@ -5,8 +5,9 @@
     >
         <mat-card-title>{{entity.name}}</mat-card-title>
         <mat-card-content>
-            <img mat-card-image src="//via.placeholder.com/350x150"></mat-card-content>
+            <img mat-card-image [src]="entity?.iconUrl"></mat-card-content>
         <mat-card-footer>
+
 
             <span class="badge-span" matBadgeOverlap="false"
                   [matBadge]="getLinkCount(entity._links.ingoingDirectedEdges)">
