@@ -1,24 +1,24 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, ViewChild} from '@angular/core';
-import {DataChange, DataRenderingComponent} from '../interfaces/DataRenderingComponent.interface';
-import {MatDialog} from '@angular/material/dialog';
-import {DialogData, MdEditorComponent} from '../../md-editor/md-editor.component';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, ViewChild } from '@angular/core';
+import { DataChange, DataRenderingComponent } from '../interfaces/DataRenderingComponent.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogData, MdEditorComponent } from '../../md-editor/md-editor.component';
 import * as MarkdownIt from 'markdown-it';
 import * as markdownitKatex from 'markdown-it-katex';
 
 @Component({
-    selector: 'pp-markdown-pattern-sectioncontent',
-    templateUrl: './markdown-pattern-sectioncontent.component.html',
-    styleUrls: ['./markdown-pattern-sectioncontent.component.scss']
+    selector: 'pp-markdown-pattern-section-content',
+    templateUrl: './markdown-pattern-section-content.component.html',
+    styleUrls: ['./markdown-pattern-section-content.component.scss']
 })
-export class MarkdownPatternSectioncontentComponent extends DataRenderingComponent implements AfterViewInit {
-    data: string;
+export class MarkdownPatternSectionContentComponent extends DataRenderingComponent implements AfterViewInit {
 
+    data: string;
     title = '';
 
     showActionButtons = false;
-    private markdown: MarkdownIt;
     @ViewChild('markdownContent') markdownDiv: ElementRef;
     @Input() content: string;
+    private markdown: MarkdownIt;
 
     constructor(private dialog: MatDialog, private cdr: ChangeDetectorRef) {
         super();
@@ -49,5 +49,4 @@ export class MarkdownPatternSectioncontentComponent extends DataRenderingCompone
             this.changeContent.emit({previousValue: previousValue, currentValue: result.content});
         });
     }
-
 }
