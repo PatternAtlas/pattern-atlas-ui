@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PatternLanguageService } from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
 import { D3Service } from '../../graph/service/d3.service';
-import { CardrendererComponent } from '../component/cardrenderer/cardrenderer.component';
+import { CardRendererComponent } from '../component/cardrenderer/card-renderer.component';
 import { GraphDisplayComponent } from '../component/graph-display/graph-display.component';
 import { EMPTY, forkJoin, Observable } from 'rxjs';
 import { Embedded } from '../model/hal/embedded';
@@ -35,7 +35,7 @@ export class DefaultPlRendererComponent implements OnInit {
     @ViewChild('graphWrapper') graph: ElementRef;
     @ViewChild('cardsView') cardsView: ElementRef;
     @ViewChild('displayPLContainer', {read: ViewContainerRef}) loadRenderer;
-    rendererComponentInstance: GraphDisplayComponent | CardrendererComponent;
+    rendererComponentInstance: GraphDisplayComponent | CardRendererComponent;
     graphVisible = false;
     isLoadingDataForRenderer: boolean;
     private componentRef: ComponentRef<any>;
@@ -81,7 +81,7 @@ export class DefaultPlRendererComponent implements OnInit {
     loadRendererForData() {
         this.isLoadingDataForRenderer = true;
         const componentFactory = this.graphVisible ? this.componentFactoryResolver.resolveComponentFactory(GraphDisplayComponent) :
-            this.componentFactoryResolver.resolveComponentFactory(CardrendererComponent);
+            this.componentFactoryResolver.resolveComponentFactory(CardRendererComponent);
 
         const viewContainerRef = this.loadRenderer;
         viewContainerRef.clear();
@@ -90,8 +90,8 @@ export class DefaultPlRendererComponent implements OnInit {
         const componentInstance = this.componentRef.instance;
         this.rendererComponentInstance = componentInstance;
 
-        if (componentInstance instanceof CardrendererComponent) {
-            (<CardrendererComponent>componentInstance).uriEntities = this.patterns;
+        if (componentInstance instanceof CardRendererComponent) {
+            (<CardRendererComponent>componentInstance).uriEntities = this.patterns;
             this.isLoadingDataForRenderer = false;
         }
 
@@ -155,10 +155,11 @@ export class DefaultPlRendererComponent implements OnInit {
             return;
         }
 
-        let links = [];
-        links = links.concat(this.undirectedPatternRelations);
-        links = links.concat(this.directedPatternRelations);
+        const links = [];
+        links.concat(this.undirectedPatternRelations);
+        links.concat(this.directedPatternRelations);
         this.copyEdgesForSimulation = _.clone(links);
+
         if (graphRenderComponent) {
             graphRenderComponent.data = {
                 patterns: this.patterns, edges: links, copyOfLinks: this.copyEdgesForSimulation,

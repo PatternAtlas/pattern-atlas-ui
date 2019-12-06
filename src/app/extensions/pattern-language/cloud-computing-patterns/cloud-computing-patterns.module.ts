@@ -58,10 +58,10 @@ import { FilterModule } from 'src/app/filter/filter.module';
 })
 export class CloudComputingPatternsModule {
     constructor(private cr: ComponentRegistryService) {
-        this.cr.registerComponent('https://patternpedia.org/patternlanguages/cloudcomputingpatterns', {
-            plcomponent: CloudComputingPatternsComponent,
-            pcomponent: CloudComputingPatternComponent,
-            label: 'Cards'
-        });
+        // this.cr.registerComponent('https://patternpedia.org/patternlanguages/cloudcomputingpatterns', {
+        //     plcomponent: CloudComputingPatternsComponent,
+        //     pcomponent: CloudComputingPatternComponent,
+        //     label: 'Cards'
+        // });
     }
 }

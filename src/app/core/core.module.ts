@@ -50,7 +50,7 @@ import { MarkdownPatternSectionContentComponent } from './component/markdown-con
 import { PatternLanguageService } from './service/pattern-language.service';
 import { PatternService } from './service/pattern.service';
 import { GraphDisplayComponent } from './component/graph-display/graph-display.component';
-import { CardrendererComponent } from './component/cardrenderer/cardrenderer.component';
+import { CardRendererComponent } from './component/cardrenderer/card-renderer.component';
 import { PatternViewService } from './service/pattern-view.service';
 import { CreateEditPatternLanguageComponent } from './component/create-edit-pattern-language/create-edit-pattern-language.component';
 import { ActionButtonBarComponent } from './component/action-button-bar/action-button-bar.component';
@@ -85,7 +85,7 @@ import { RouterModule } from '@angular/router';
         EmitEventOnAddedEdgeDirective,
         MatProgressSpinnerModule,
         NavigateBackComponent,
-        CardrendererComponent,
+        CardRendererComponent,
         ActionButtonBarComponent]
     ,
     providers: [
@@ -105,7 +105,7 @@ import { RouterModule } from '@angular/router';
         CreatePatternRelationComponent,
         MarkdownPatternSectionContentComponent,
         GraphDisplayComponent,
-        CardrendererComponent,
+        CardRendererComponent,
         CreateEditPatternLanguageComponent,
         ActionButtonBarComponent
     ],
@@ -116,7 +116,7 @@ import { RouterModule } from '@angular/router';
         DividerComponent,
         CreatePatternRelationComponent,
         MarkdownPatternSectionContentComponent,
-        CardrendererComponent,
+        CardRendererComponent,
         GraphDisplayComponent,
         CreateEditPatternLanguageComponent
     ],

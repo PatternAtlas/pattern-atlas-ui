@@ -1,0 +1,25 @@
+<div style="display: flex; flex-wrap: wrap; padding: 0.25em;">
+    <mat-card (click)="navigate(entity)"
+              *ngFor="let entity of uriEntities"
+              class="card box">
+        <mat-card-title>{{entity.name}}</mat-card-title>
+        <mat-card-content>
+            <img mat-card-image src="//via.placeholder.com/350x150">
+        </mat-card-content>
+        <mat-card-footer>
+            <span [matBadge]="getLinkCount(entity._links.ingoingDirectedEdges)"
+                  class="badge-span"
+                  matBadgeOverlap="false">
+                <mat-icon>trending_flat</mat-icon>
+            </span>
+            <mat-icon class="flip">trending_flat</mat-icon>
+            <span [matBadge]="getLinkCount(entity._links.outgoingDirectedEdges)"
+                  class="badge-span"
+                  matBadgeOverlap="false">
+            </span>
+            <span [matBadge]="getLinkCount(entity._links.undirectedEdges)" matBadgeOverlap="false">
+                <mat-icon>compare_arrows</mat-icon>
+            </span>
+        </mat-card-footer>
+    </mat-card>
+</div>
