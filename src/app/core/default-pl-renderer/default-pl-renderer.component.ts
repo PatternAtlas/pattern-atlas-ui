@@ -167,9 +167,9 @@ export class DefaultPlRendererComponent implements OnInit {
             return;
         }
 
-        const links = [];
-        links.concat(this.undirectedPatternRelations);
-        links.concat(this.directedPatternRelations);
+        const links: (UndirectedEdgeModel | DirectedEdgeModel)[] = [];
+        links.push(...this.undirectedPatternRelations);
+        links.push(...this.directedPatternRelations);
         this.copyEdgesForSimulation = _.clone(links);
 
         if (graphRenderComponent) {
