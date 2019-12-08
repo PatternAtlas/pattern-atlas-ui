@@ -1,6 +1,6 @@
 <h1 mat-dialog-title>{{data.title}}</h1>
-<mat-checkbox>Include Links between the selected Patterns</mat-checkbox>
-<hr>
+
+<p *ngIf="data.links?.length === 0 && !data.patternlanguages">No links found.</p>
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
     <!-- Leaf node -->
     <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>

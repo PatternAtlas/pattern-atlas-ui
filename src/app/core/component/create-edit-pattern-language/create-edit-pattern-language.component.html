@@ -10,7 +10,7 @@
             <mat-form-field appearance="outline" style="width: 24em;" [floatLabel]="'always'">
                 <mat-label>{{isPatternLanguageDialog ? 'Pattern Language' : 'Pattern View'}} name</mat-label>
                 <input matInput formControlName="name"
-                       [placeholder]="'Enter the name of the' + isPatternLanguageDialog ?  'Pattern Language' : 'Pattern View'">
+                       placeholder="Enter the name of the {{ isPatternLanguageDialog ? 'Pattern Language' : 'Pattern View' }}">
                 <mat-error *ngIf="saveRequested && name?.hasError('required')">This field is mandatory.</mat-error>
                 <mat-error *ngIf="saveRequested && name?.hasError('pattern')">
                     Please use only alphanumeric characters, _ and spaces.

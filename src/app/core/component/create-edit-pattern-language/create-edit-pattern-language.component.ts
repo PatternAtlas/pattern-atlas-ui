@@ -20,7 +20,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     patternLanguageForm: FormGroup;
     iconPreviewVisible = false;
     saveRequested = false;
-    isPatternLanguageDialog = true;
+    isPatternLanguageDialog = false;
 
     @Output() saveClicked = new EventEmitter<DialogPatternLanguageResult>();
 
