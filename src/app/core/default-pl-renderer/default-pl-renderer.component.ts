@@ -129,15 +129,15 @@ export class DefaultPlRendererComponent implements OnInit {
             switchMap((edge) => {
                 return edge ? this.patternRelationDescriptorService.addRelationToPL(this.patternLanguage, edge) : EMPTY;
             }),
-            switchMap((res) => res ? this.retrievePatterRelationDescriptorData() : EMPTY))
-            .subscribe(res => {
-                if (res) {
-                    this.toasterService.pop('success', 'Added Relation');
-                    if (this.graphVisible) {
-                        this.reloadCurrentRenderingComponent();
-                    }
-                }
-            });
+            switchMap((res) => res ? this.retrievePatterRelationDescriptorData() : EMPTY),
+            switchMap(() => this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href)),
+            tap((patterns: Array<Pattern>) => this.patterns = patterns)).subscribe(res => {
+            if (res) {
+                this.toasterService.pop('success', 'Added Relation');
+                this.reloadCurrentRenderingComponent();
+                this.cdr.detectChanges();
+            }
+        });
     }
 
     reloadGraph() {
