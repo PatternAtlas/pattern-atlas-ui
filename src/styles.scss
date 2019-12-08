@@ -145,6 +145,7 @@ body {
 .mat-card-title {
   font-size: 18px;
   min-height: 3rem;
+  word-break: break-word;
 }
 
 .add-card {
@@ -218,3 +219,9 @@ body {
 .badge-span {
   margin-right: 2em;
 }
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  background-color: white;
+}
+
+

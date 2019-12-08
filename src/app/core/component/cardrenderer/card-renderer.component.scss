@@ -12,6 +12,12 @@
 
 }
 
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0.25em;
+}
+
 .mat-card {
   display: flex;
   flex-direction: column;

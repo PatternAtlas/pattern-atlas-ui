@@ -1,25 +1,26 @@
-import { ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { UriConverter } from '../util/uri-converter';
-import { MatDialog } from '@angular/material/dialog';
-import { PatternLanguageService } from '../service/pattern-language.service';
+import {ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {UriConverter} from '../util/uri-converter';
+import {MatDialog} from '@angular/material/dialog';
+import {PatternLanguageService} from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
-import { D3Service } from '../../graph/service/d3.service';
-import { CardRendererComponent } from '../component/cardrenderer/card-renderer.component';
-import { GraphDisplayComponent } from '../component/graph-display/graph-display.component';
-import { EMPTY, forkJoin, Observable } from 'rxjs';
-import { Embedded } from '../model/hal/embedded';
-import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
-import { switchMap, tap } from 'rxjs/operators';
-import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
-import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
-import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
+import {D3Service} from '../../graph/service/d3.service';
+import {CardRendererComponent} from '../component/cardrenderer/card-renderer.component';
+import {GraphDisplayComponent} from '../component/graph-display/graph-display.component';
+import {EMPTY, forkJoin, Observable} from 'rxjs';
+import {Embedded} from '../model/hal/embedded';
+import {DirectedEdesResponse} from '../model/hal/directed-edes-response.interface';
+import {switchMap, tap} from 'rxjs/operators';
+import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
+import {DirectedEdgeModel} from '../model/hal/directed-edge.model';
+import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
 import * as _ from 'lodash';
-import { CreatePatternRelationComponent } from '../component/create-pattern-relation/create-pattern-relation.component';
-import { PatternRelationDescriptorService } from '../service/pattern-relation-descriptor.service';
-import { ToasterService } from 'angular2-toaster';
-import { PatternService } from '../service/pattern.service';
+import {CreatePatternRelationComponent} from '../component/create-pattern-relation/create-pattern-relation.component';
+import {PatternRelationDescriptorService} from '../service/pattern-relation-descriptor.service';
+import {ToasterService} from 'angular2-toaster';
+import {PatternService} from '../service/pattern.service';
 import Pattern from '../model/hal/pattern.model';
+import {FormControl} from '@angular/forms';
 
 @Component({
     selector: 'pp-default-pl-renderer',
@@ -34,10 +35,12 @@ export class DefaultPlRendererComponent implements OnInit {
     patternLanguageURI: string;
     @ViewChild('graphWrapper') graph: ElementRef;
     @ViewChild('cardsView') cardsView: ElementRef;
+    @ViewChild('searchField') searchField: ElementRef;
     @ViewChild('displayPLContainer', {read: ViewContainerRef}) loadRenderer;
     rendererComponentInstance: GraphDisplayComponent | CardRendererComponent;
     graphVisible = false;
     isLoadingDataForRenderer: boolean;
+    filter: FormControl;
     private componentRef: ComponentRef<any>;
     private directedPatternRelations: Array<DirectedEdgeModel> = [];
     private undirectedPatternRelations: Array<UndirectedEdgeModel> = [];
@@ -57,6 +60,14 @@ export class DefaultPlRendererComponent implements OnInit {
 
     ngOnInit() {
         this.loadData();
+        this.filter = new FormControl('');
+        this.filter.valueChanges.subscribe((filterText: string) => {
+            if (this.graphVisible || !this.patterns || this.patterns.length === 0) {
+                return;
+            }
+            const filteredPatterns = this.patterns.filter(pattern => pattern.name.toLowerCase().includes(filterText.toLowerCase()));
+            this.componentRef.instance.uriEntities = filteredPatterns;
+        });
     }
 
     detectChanges() {
@@ -92,6 +103,7 @@ export class DefaultPlRendererComponent implements OnInit {
 
         if (componentInstance instanceof CardRendererComponent) {
             (<CardRendererComponent>componentInstance).uriEntities = this.patterns;
+            this.filter.setValue('');
             this.isLoadingDataForRenderer = false;
         }
 

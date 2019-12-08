@@ -19,7 +19,7 @@
         <mat-card-header>
             <img *ngIf="patternLanguage?.logo && patternLanguage?.logo !== ''; else noImageAvatar" mat-card-avatar
                  [src]="patternLanguage.logo">
-            <ng-template #noImageAvatar><img mat-card-avatar [src]="'https://placekitten.com/200/300'"></ng-template>
+            <ng-template #noImageAvatar><img mat-card-avatar [src]="'//via.placeholder.com/50x50'"></ng-template>
 
             <mat-card-title *ngIf="patternLanguage?.name && '' !== patternLanguage.name; else noPLName"
                             style="width: 10rem; word-break: break-word">
@@ -33,7 +33,7 @@
         </mat-card-header>
         <img mat-card-image *ngIf="patternLanguage?.logo && patternLanguage?.logo !== ''; else noImage"
              [src]="patternLanguage.logo">
-        <ng-template #noImage><img mat-card-image [src]="'https://placekitten.com/200/300'"></ng-template>
+        <ng-template #noImage><img mat-card-image [src]="'//via.placeholder.com/200x300'"></ng-template>
         <mat-card-actions>
             <div style="text-align: center">
                 <button matBadge="{{patternLanguage?.patternCount}}" mat-stroked-button color="primary"
