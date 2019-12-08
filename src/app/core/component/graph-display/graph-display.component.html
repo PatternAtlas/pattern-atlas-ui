@@ -5,10 +5,10 @@
         <mat-accordion>
             <mat-expansion-panel *ngFor="let relation of currentEdges">
                 <mat-expansion-panel-header>
-                    <mat-panel-title>
+                    <mat-panel-title style="align-self: center">
                         {{relation?.edge.type}}
                     </mat-panel-title>
-                    <mat-panel-description>
+                    <mat-panel-description class="horiz-centered">
                         <div [ngSwitch]="relation.type">
                             <div *ngSwitchCase="'outgoingDirectedEdges'" class="horiz-centered">
                                 <i class="material-icons">trending_flat</i>
@@ -102,9 +102,6 @@
                         fill: rgb(63, 81, 181);
                         opacity: 0.9;
 
-                    .text {
-                        color: white;
-                    }
 
                     }
 

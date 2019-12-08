@@ -2,7 +2,6 @@ import {PatternLanguageGraphComponent} from './pattern-language-management/patte
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {PageNotFoundComponent} from './page-not-found.component';
-import {AdministrationComponent} from './administration.component';
 import {ProcessOauthCallbackComponent} from './core/component/process-oauth-callback/process-oauth-callback.component';
 import {ToasterModule} from 'angular2-toaster';
 /*
@@ -27,10 +26,6 @@ const routes: Routes = [
         path: '',
         redirectTo: 'patternlanguages',
         pathMatch: 'full'
-    },
-    {
-        path: 'administration',
-        component: AdministrationComponent
     },
     {
         path: 'graph',

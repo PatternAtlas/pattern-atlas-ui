@@ -24,7 +24,6 @@ import {LandingPageComponent} from './landing-page.component';
 
 import {HttpClientModule} from '@angular/common/http';
 import {ExtensionsModule} from './extensions/extensions.module';
-import {AdministrationComponent} from './administration.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
@@ -44,8 +43,7 @@ import {FormsModule} from '@angular/forms';
     declarations: [
         AppComponent,
         PageNotFoundComponent,
-        LandingPageComponent,
-        AdministrationComponent
+        LandingPageComponent
     ],
     imports: [
         BrowserModule,
