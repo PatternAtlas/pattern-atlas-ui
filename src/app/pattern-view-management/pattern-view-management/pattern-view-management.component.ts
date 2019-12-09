@@ -48,7 +48,7 @@ export class PatternViewManagementComponent implements OnInit {
     }
 
     createView() {
-        const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent);
+        const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent, {data: {isPatternLanguageCreation: false}});
         let view;
         // Save PatternLanguage when user presses save
         (<CreateEditPatternLanguageComponent>dialogRef.componentInstance)

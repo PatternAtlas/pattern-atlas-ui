@@ -1,5 +1,5 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {MatDialogRef} from '@angular/material/dialog';
+import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {debounceTime, distinctUntilChanged} from 'rxjs/internal/operators';
 import {DialogPatternLanguageResult} from '../../../pattern-language-management/data/DialogPatternLanguageResult.interface';
@@ -32,12 +32,12 @@ export class CreateEditPatternLanguageComponent implements OnInit {
         return this.patternLanguageForm.get('iconUrl');
     }
 
-    constructor(public dialogRef: MatDialogRef<CreateEditPatternLanguageComponent>,
+    constructor(@Inject(MAT_DIALOG_DATA) public data: { isPatternLanguageCreation: boolean }, public dialogRef: MatDialogRef<CreateEditPatternLanguageComponent>,
                 private _fb: FormBuilder, private activatedRoute: ActivatedRoute) {
     }
 
     ngOnInit(): void {
-        this.isPatternLanguageDialog = (this.activatedRoute.snapshot['_routerState']['url'] !== '/patternviews');
+        this.isPatternLanguageDialog = this.data.isPatternLanguageCreation;
         // tslint:disable-next-line:max-line-length
         const urlRegex = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
         this.patternLanguageForm = this._fb.group({
