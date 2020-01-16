@@ -56,7 +56,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     }
 
     addPatternToView() {
-        const dialogRef = this.matDialog.open(AddToViewComponent, {data: {patternlanguages: this.patternLanguages, title: 'Add patterns to View'}});
+        const dialogRef = this.matDialog.open(AddToViewComponent, {data: {patternlanguages: this.patternLanguages, title: 'Add patterns to View'}, height: 'auto', maxHeight: '500px'});
         dialogRef.afterClosed().pipe(
             switchMap((res: LoazyLoadedFlatNode[]) => res ?
                 this.patternViewService.addPatterns(this.patternViewResponse._links.patterns.href, this.mapDialogResultToPatterns(res))
