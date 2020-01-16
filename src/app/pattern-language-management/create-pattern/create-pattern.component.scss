@@ -17,6 +17,36 @@
   background-color: white;
 }
 
+icon-form {
+  min-width: 350px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.label-preview {
+  color: grey;
+}
+
+.icon-full-width {
+  width: 100%;
+}
+
+.iconPreviewer {
+  height: 100%;
+  width: 100%;
+}
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+
+}
+
+
+.icon-wrapper {
+  margin-top: -1.34375em !important;
+}
+
 @media screen and (max-width: 600px) {
 
   .parent {

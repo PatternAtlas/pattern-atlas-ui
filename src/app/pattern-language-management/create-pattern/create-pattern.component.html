@@ -2,6 +2,26 @@
 <h2>
   Add a new pattern to {{patternLanguage?.name}}
 </h2>
+<div mat-dialog-content [formGroup]="iconForm">
+  <div fxLayout="column" fxLayoutAlign="space-around start">
+    <mat-card fxLayout="column" fxLayoutAlign="space-around" style="margin: 10px; width: 100%; height: 10px">
+      <div fxLayout="row" fxLayoutAlign="space-around center">
+        <mat-form-field class="full-width" appearance="outline" style="width: 24em" [floatLabel]="'always'">
+          <mat-label>Icon URL</mat-label>
+          <input matInput formControlName="iconUrl" placeholder="Enter URL of Icon" type="url">
+          <div fxLayout="row" fxLayoutAlign="space-around center" *ngIf="iconPreviewVisible">
+            <span class="label-preview">Icon-Preview: </span>
+            <div mat-card-avatar #iconPreview
+                 [ngStyle]="{ 'background-image': 'url(' + iconUrl?.value + ')'}"
+                 class="example-header-image"></div>
+          </div>
+          <mat-error *ngIf="wasSaveButtonClicked && iconUrl?.hasError('pattern')">Please insert a valid URL.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </mat-card>
+  </div>
+</div>
 
 <div class="parent ">
 
