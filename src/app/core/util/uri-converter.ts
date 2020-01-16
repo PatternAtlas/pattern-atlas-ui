@@ -87,8 +87,8 @@ export class UriConverter {
             relativePath = relativePath.indexOf('/') !== -1 ? relativePath : `${relativePath}/${relativePath}`;
             return `${globals.urlGithubAPI}/${foldername}/${relativePath}.ttl`;
         }
-        if (iri.indexOf('patternpedia') !== -1) {
-            return `${globals.urlGithubAPI}/patternpedia.ttl`;
+        if (iri.indexOf('patternatlas') !== -1) {
+            return `${globals.urlGithubAPI}/patternatlas.ttl`;
         }
         return iri;
     }

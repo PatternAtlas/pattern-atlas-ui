@@ -14,7 +14,7 @@
 
 import { UriConverter } from '../util/uri-converter';
 import { PatternLanguageSectionRestriction } from './PatternLanguageSectionRestriction.model';
-import PatternPedia from './pattern-pedia.model';
+import PatternAtlas from './pattern-atlas.model';
 import { CustomPrefix } from '../../pattern-language-management/data/CustomPrefix.interface';
 import { TurtleFileModelInterface } from './TurtleFileModel.interface';
 
@@ -52,7 +52,7 @@ class PatternLanguage implements TurtleFileModelInterface {
 
     getPrefixes(): Array<string> {
         const ary: Array<string> = [];
-        const standardPrefixes = new PatternPedia().defaultPrefixes;
+        const standardPrefixes = new PatternAtlas().defaultPrefixes;
         ary.push(
             `@prefix : <${this.patternpediaBaseURI + '/patternlanguages/' + UriConverter.removeWhitespace(this.name).toLowerCase()}#> .`,
             `@base <${this.patternpediaBaseURI + '/patternlanguages/' + UriConverter.removeWhitespace(this.name).toLowerCase()}> .`

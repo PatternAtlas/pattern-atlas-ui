@@ -39,7 +39,7 @@
                 <mat-form-field appearance="outline" style="width: 24em" [floatLabel]="'always'">
                     <mat-label>New Section</mat-label>
                     <input #sectionInput (keyup.enter)="addSection(sectionInput.value)" matInput
-                           placeholder="Key in new Section an hit enter..." [formControl]="sectionCtrl">
+                           placeholder="Key in new Section and hit enter..." [formControl]="sectionCtrl">
                 </mat-form-field>
                 <mat-list matRipple cdkDropList [cdkDropListData]="sections"
                           [cdkDropListOrientation]="'vertical'"

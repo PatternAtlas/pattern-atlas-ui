@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "pattern-pedia": {
+    "pattern-atlas": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -18,7 +18,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "aot": true,
-            "outputPath": "dist/pattern-pedia",
+            "outputPath": "dist/pattern-atlas",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -63,18 +63,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "pattern-pedia:build"
+            "browserTarget": "pattern-atlas:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "pattern-pedia:build:production"
+              "browserTarget": "pattern-atlas:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "pattern-pedia:build"
+            "browserTarget": "pattern-atlas:build"
           }
         },
         "test": {
@@ -109,7 +109,7 @@
         }
       }
     },
-    "pattern-pedia-e2e": {
+    "pattern-atlas-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -117,11 +117,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "pattern-pedia:serve"
+            "devServerTarget": "pattern-atlas:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "pattern-pedia:serve:production"
+              "devServerTarget": "pattern-atlas:serve:production"
             }
           }
         },
@@ -137,5 +137,5 @@
       }
     }
   },
-  "defaultProject": "pattern-pedia"
+  "defaultProject": "pattern-atlas"
 }

@@ -15,7 +15,7 @@
 import { UriConverter } from '../util/uri-converter';
 import { globals } from '../../globals';
 
-export class PatternPedia {
+export class PatternAtlas {
   private _id: string;
   iri: string;
   name: string;
@@ -64,4 +64,4 @@ export class PatternPedia {
 
   }
 }
-export default PatternPedia;
+export default PatternAtlas;

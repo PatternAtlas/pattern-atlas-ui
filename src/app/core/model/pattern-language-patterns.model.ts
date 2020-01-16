@@ -1,5 +1,5 @@
 import Pattern from './pattern.model';
-import { PatternPedia } from './pattern-pedia.model';
+import { PatternAtlas } from './pattern-atlas.model';
 import { globals } from '../../globals';
 
 

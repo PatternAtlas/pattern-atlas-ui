@@ -1,4 +1,4 @@
-import { PatternPedia } from './pattern-pedia.model';
+import { PatternAtlas } from './pattern-atlas.model';
 import { globals } from '../../globals';
 import { DirectedPatternRelationDescriptorIndividual } from './directed-pattern-relation-descriptor-individual';
 import { UndirectedPatternRelationDescriptorIndividual } from './undirected-pattern-relation-descriptor-individual';
@@ -19,7 +19,7 @@ export class PatternLanguageRelations {
   }
 
   toTurtle(): string {
-    const ary = new PatternPedia().getPrefixesToTurtle(this.iri, this.plIri);
+    const ary = new PatternAtlas().getPrefixesToTurtle(this.iri, this.plIri);
 
 
     ary.push('\n');
