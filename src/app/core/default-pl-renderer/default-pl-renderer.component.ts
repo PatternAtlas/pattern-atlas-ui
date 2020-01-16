@@ -1,12 +1,26 @@
-import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
-import { DefaultPlLoaderService } from '../service/loader/default-pl-loader.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { IriConverter } from '../util/iri-converter';
-import { MatDialog } from '@angular/material';
-import { LoadCompletePatternlanguageService } from '../service/loader/complete-patternlanguage-loader.service';
-import { CompletePatternlanguage } from '../model/complete-patternlanguage.interface';
-import Pattern from '../model/pattern.model';
-import PatternLanguage from '../model/pattern-language.model';
+import {ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {UriConverter} from '../util/uri-converter';
+import {MatDialog} from '@angular/material/dialog';
+import {PatternLanguageService} from '../service/pattern-language.service';
+import PatternLanguage from '../model/hal/pattern-language.model';
+import {D3Service} from '../../graph/service/d3.service';
+import {CardRendererComponent} from '../component/cardrenderer/card-renderer.component';
+import {GraphDisplayComponent} from '../component/graph-display/graph-display.component';
+import {EMPTY, forkJoin, Observable} from 'rxjs';
+import {Embedded} from '../model/hal/embedded';
+import {DirectedEdesResponse} from '../model/hal/directed-edes-response.interface';
+import {switchMap, tap} from 'rxjs/operators';
+import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
+import {DirectedEdgeModel} from '../model/hal/directed-edge.model';
+import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
+import * as _ from 'lodash';
+import {CreatePatternRelationComponent} from '../component/create-pattern-relation/create-pattern-relation.component';
+import {PatternRelationDescriptorService} from '../service/pattern-relation-descriptor.service';
+import {ToasterService} from 'angular2-toaster';
+import {PatternService} from '../service/pattern.service';
+import Pattern from '../model/hal/pattern.model';
+import {FormControl} from '@angular/forms';
 
 @Component({
     selector: 'pp-default-pl-renderer',
@@ -15,56 +29,175 @@ import PatternLanguage from '../model/pattern-language.model';
 })
 export class DefaultPlRendererComponent implements OnInit {
 
-  patterns: Pattern[] = [];
-  patternLanguage: PatternLanguage;
-  plIri: string;
-  plName: string;
-  isLoading = true;
+    patterns: Array<Pattern> = [];
+    patternLanguage: PatternLanguage;
+    isLoading = true;
+    patternLanguageURI: string;
+    @ViewChild('graphWrapper') graph: ElementRef;
+    @ViewChild('cardsView') cardsView: ElementRef;
+    @ViewChild('searchField') searchField: ElementRef;
+    @ViewChild('displayPLContainer', {read: ViewContainerRef}) loadRenderer;
+    rendererComponentInstance: GraphDisplayComponent | CardRendererComponent;
+    graphVisible = false;
+    isLoadingDataForRenderer: boolean;
+    filter: FormControl;
+    private componentRef: ComponentRef<any>;
+    private directedPatternRelations: Array<DirectedEdgeModel> = [];
+    private undirectedPatternRelations: Array<UndirectedEdgeModel> = [];
+    private copyEdgesForSimulation: Array<any> = [];
 
-
-  constructor(private loader: DefaultPlLoaderService,
-              private activatedRoute: ActivatedRoute,
-              private cdr: ChangeDetectorRef,
-              private zone: NgZone,
-              private router: Router,
-              private completePatternLanguageLoadingService: LoadCompletePatternlanguageService,
-              private dialog: MatDialog) {
+    constructor(private activatedRoute: ActivatedRoute,
+                private cdr: ChangeDetectorRef,
+                private dialog: MatDialog,
+                private patternLanguageService: PatternLanguageService,
+                private patternService: PatternService,
+                private patternRelationDescriptorService: PatternRelationDescriptorService,
+                private d3Service: D3Service,
+                private router: Router,
+                private componentFactoryResolver: ComponentFactoryResolver,
+                private toasterService: ToasterService) {
     }
 
     ngOnInit() {
-      this.loader.supportedIRI = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
-      this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
-      this.plName = IriConverter.extractIndividualNameFromIri(this.plIri);
-
-      this.loadData();
+        this.loadData();
+        this.filter = new FormControl('');
+        this.filter.valueChanges.subscribe((filterText: string) => {
+            if (this.graphVisible || !this.patterns || this.patterns.length === 0) {
+                return;
+            }
+            const filteredPatterns = this.patterns.filter(pattern => pattern.name.toLowerCase().includes(filterText.toLowerCase()));
+            this.componentRef.instance.uriEntities = filteredPatterns;
+        });
     }
 
-
-  navigate(pattern: Pattern): void {
-    this.zone.run(() => {
-      this.router.navigate([IriConverter.convertIriToId(pattern.iri)], {relativeTo: this.activatedRoute});
-    });
-  }
-
-  goToPatternCreation() {
-    this.zone.run(() => {
-      this.router.navigate(['create-pattern'], {relativeTo: this.activatedRoute});
-    });
-  }
-
-
-  getSectionName(patternSection: string) {
-    return IriConverter.getSectionName(patternSection);
-  }
-
-  loadData() {
-    this.completePatternLanguageLoadingService.loadCompletePatternLanguage(this.plIri).then(
-      (completePL: CompletePatternlanguage) => {
-        this.patterns = completePL.patterns;
-        this.patternLanguage = completePL.patternlanguage;
-        this.isLoading = false;
+    detectChanges() {
         this.cdr.detectChanges();
-      });
-  }
+    }
 
+    retrievePatterRelationDescriptorData(): Observable<any> {
+        const $getDirectedEdges = this.getDirectedEdges();
+        const $getUndirectedEdges = this.getUndirectedEdges();
+        return forkJoin([$getDirectedEdges, $getUndirectedEdges]);
+    }
+
+    toggleRenderingComponent(graphVisibleValue: boolean) {
+        this.graphVisible = graphVisibleValue;
+        this.loadRendererForData();
+    }
+
+    reloadCurrentRenderingComponent() {
+        this.toggleRenderingComponent(this.graphVisible);
+    }
+
+    loadRendererForData() {
+        this.isLoadingDataForRenderer = true;
+        const componentFactory = this.graphVisible ? this.componentFactoryResolver.resolveComponentFactory(GraphDisplayComponent) :
+            this.componentFactoryResolver.resolveComponentFactory(CardRendererComponent);
+
+        const viewContainerRef = this.loadRenderer;
+        viewContainerRef.clear();
+
+        this.componentRef = viewContainerRef.createComponent(componentFactory);
+        const componentInstance = this.componentRef.instance;
+        this.rendererComponentInstance = componentInstance;
+
+        if (componentInstance instanceof CardRendererComponent) {
+            (<CardRendererComponent>componentInstance).uriEntities = this.patterns;
+            this.filter.setValue('');
+            this.isLoadingDataForRenderer = false;
+        }
+
+        if (componentInstance instanceof GraphDisplayComponent) {
+            this.initGraph(<GraphDisplayComponent>componentInstance);
+        }
+    }
+
+    public addPattern(): void {
+        this.router.navigate(['create-patterns'], {relativeTo: this.activatedRoute});
+    }
+
+    public addLink() {
+        // Todo: Make patternlanguage camelcase
+        const dialogRef = this.dialog.open(CreatePatternRelationComponent, {
+            data: {
+                patterns: this.patterns,
+                patternlanguage: this.patternLanguage
+            }
+        });
+
+        dialogRef.afterClosed().pipe(
+            switchMap((edge) => {
+                return edge ? this.patternRelationDescriptorService.addRelationToPL(this.patternLanguage, edge) : EMPTY;
+            }),
+            switchMap((res) => res ? this.retrievePatterRelationDescriptorData() : EMPTY),
+            switchMap(() => this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href)),
+            tap((patterns: Array<Pattern>) => this.patterns = patterns)).subscribe(res => {
+            if (res) {
+                this.toasterService.pop('success', 'Added Relation');
+                this.reloadCurrentRenderingComponent();
+                this.cdr.detectChanges();
+            }
+        });
+    }
+
+    reloadGraph() {
+        (<GraphDisplayComponent>this.rendererComponentInstance).reformatGraph();
+    }
+
+    private loadData(): void {
+        this.isLoadingDataForRenderer = true;
+        this.patternLanguageURI = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
+
+        if (this.patternLanguageURI) {
+            this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageURI)
+                .pipe(
+                    tap(patternlanguage => this.patternLanguage = patternlanguage),
+                    switchMap(() => this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href)),
+                    tap(patterns => this.patterns = patterns),
+                    switchMap(() => this.retrievePatterRelationDescriptorData()))
+                .subscribe(() => {
+                    this.isLoading = false;
+                    this.loadRendererForData();
+                });
+        }
+    }
+
+    private initGraph(graphRenderComponent: GraphDisplayComponent = null): void {
+        if (!this.patterns || this.patterns.length === 0) {
+            return;
+        }
+
+        const links: (UndirectedEdgeModel | DirectedEdgeModel)[] = [];
+        links.push(...this.undirectedPatternRelations);
+        links.push(...this.directedPatternRelations);
+        this.copyEdgesForSimulation = _.clone(links);
+
+        if (graphRenderComponent) {
+            graphRenderComponent.data = {
+                patterns: this.patterns, edges: links, copyOfLinks: this.copyEdgesForSimulation,
+                patternLanguage: this.patternLanguage, patternView: null
+            };
+            this.isLoadingDataForRenderer = false;
+        }
+    }
+
+    private getDirectedEdges(): Observable<Embedded<DirectedEdesResponse>> {
+        if (!this.patternLanguage) {
+            return EMPTY;
+        }
+        return this.patternLanguageService.getDirectedEdges(this.patternLanguage).pipe(
+            tap((edges) => {
+                this.directedPatternRelations = edges._embedded ? edges._embedded.directedEdgeModels : [];
+            }));
+    }
+
+    private getUndirectedEdges(): Observable<Embedded<UndirectedEdesResponse>> {
+        if (!this.patternLanguage) {
+            return EMPTY;
+        }
+        return this.patternLanguageService.getUndirectedEdges(this.patternLanguage).pipe(
+            tap((edges) => {
+                this.undirectedPatternRelations = edges._embedded ? edges._embedded.undirectedEdgeModels : [];
+            }));
+    }
 }

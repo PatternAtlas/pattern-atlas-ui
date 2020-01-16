@@ -1,29 +1,30 @@
 <pp-navigate-back></pp-navigate-back>
-<div fxLayout="row" fxLayoutAlign="space-around center"><h2>
-  Add a new pattern to {{plName}}
-</h2></div>
-<div fxLayout="row" fxLayoutAlign="center center" class="editor-preview-container">
+<h2>
+  Add a new pattern to {{patternLanguage?.name}}
+</h2>
 
-  <td-text-editor ppEmitOnChange (onKeyup)="onChangeMarkdownText()" class="markdownEditor"
-                  [(value)]="previousTextEditorValue" [options]="options"
-                  #textEditor
-                  id="textEditor"></td-text-editor>
-  <div class="preview-tile">
+<div class="parent ">
 
-    <div fxLayout="column" fxLayoutAlign="flex-start">
-
-      <mat-card>
-        <div id="preview"></div>
-      </mat-card>
-
-      <mat-error *ngIf="wasSaveButtonClicked && errormessages">Found errors in the following sections:
-        <div *ngFor="let message of errormessages">
-          <span>{{message}}<br></span>
-        </div>
-      </mat-error>
-      <button (click)="save()" class="save-button" mat-raised-button color="primary" style="float: right"><i
-        class="material-icons">save</i>Save
-      </button>
-    </div>
+  <div class="item editor-preview-container">
+    <td-text-editor ppEmitOnChange (onKeyup)="onChangeMarkdownText()" class="markdownEditor"
+                    [(value)]="previousTextEditorValue" [options]="options"
+                    #textEditor
+                    id="textEditor"></td-text-editor>
   </div>
+
+  <div class="item last">
+
+    <div id="preview"></div>
+
+    <mat-error *ngIf="wasSaveButtonClicked && errorMessages">Found errors in the following sections:
+      <div *ngFor="let message of errorMessages">
+        <span>{{message}}<br></span>
+      </div>
+    </mat-error>
+
+  </div>
+
 </div>
+<button (click)="save()" class="save-button" mat-raised-button color="primary" style="float: right"><i
+  class="material-icons">save</i>Save
+</button>

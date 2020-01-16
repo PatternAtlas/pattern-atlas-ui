@@ -17,6 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "outputPath": "dist/pattern-pedia",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -30,12 +31,17 @@
               "src/styles.scss"
             ],
             "scripts": [
-              "node_modules/rdfstore/dist/rdfstore.js",
-              "src/libs/jquery-1.3.2.js"
+              "node_modules/@ustutt/grapheditor-webcomponent/_bundles/grapheditor-webcomponent.js"
             ]
           },
           "configurations": {
             "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -82,7 +88,6 @@
               "src/styles.scss"
             ],
             "scripts": [
-              "node_modules/rdfstore/dist/rdfstore.js"
             ],
             "assets": [
               "src/favicon.ico",

@@ -1,195 +1,202 @@
-import { ChangeDetectorRef, Component, ComponentFactoryResolver, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { DefaultPatternLoaderService } from '../service/loader/default-pattern-loader.service';
-import { DefaultPlLoaderService } from '../service/loader/default-pl-loader.service';
-import { PatternOntologyService } from '../service/pattern-ontology.service';
+import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToasterService } from 'angular2-toaster';
-import { PlRestrictionLoaderService } from '../service/loader/pattern-language-loader/pl-restriction-loader.service';
-import { PatternpropertyDirective } from '../component/markdown-content-container/patternproperty.directive';
-import { IriConverter } from '../util/iri-converter';
-import { DividerComponent } from '../component/divider/divider.component';
-import { DataRenderingComponent } from '../component/markdown-content-container/interfaces/DataRenderingComponent.interface';
-import { PatternLanguagePatterns } from '../model/pattern-language-patterns.model';
-import { GithubPersistenceService } from '../service/github-persistence.service';
-import { CookieService } from 'ngx-cookie-service';
-import { MatDialog } from '@angular/material';
-import { CreatePatternRelationComponent, DialogDataResult } from '../component/create-pattern-relation/create-pattern-relation.component';
-import Pattern from '../model/pattern.model';
-import { DirectedPatternRelationDescriptorIndividual } from '../model/directed-pattern-relation-descriptor-individual';
-import { PatternRelationDescriptorDirection } from '../model/pattern-relation-descriptor-direction.enum';
-import { UndirectedPatternRelationDescriptorIndividual } from '../model/undirected-pattern-relation-descriptor-individual';
-import { DefaultPatternDirectedRelationsLoaderService } from '../service/loader/pattern-language-loader/default-pattern-directed-relations-loader.service';
-import { PatternRelations } from '../model/pattern-relations';
-import { DefaultPatternUndirectedRelationsLoaderService } from '../service/loader/pattern-language-loader/default-pattern-undirected-relations-loader.service';
-import { MarkdownPatternSectioncontentComponent } from '../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-sectioncontent.component';
-import { LoadCompletePatternlanguageService } from '../service/loader/complete-patternlanguage-loader.service';
-import { PatternLanguageRelations } from '../model/pattern-language-relations.model';
-import { EMPTY } from 'rxjs';
-import { switchMap, tap } from 'rxjs/internal/operators';
+import { PatternPropertyDirective } from '../component/markdown-content-container/pattern-property.directive';
+import { UriConverter } from '../util/uri-converter';
+import { MatDialog } from '@angular/material/dialog';
+import { CreatePatternRelationComponent } from '../component/create-pattern-relation/create-pattern-relation.component';
+import Pattern from '../model/hal/pattern.model';
+import { PatternLanguageService } from '../service/pattern-language.service';
+import PatternLanguage from '../model/hal/pattern-language.model';
+import { PatternService } from '../service/pattern.service';
+// tslint:disable-next-line:max-line-length
+import { MarkdownPatternSectionContentComponent } from '../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-section-content.component';
+import { DataChange } from '../component/markdown-content-container/interfaces/DataRenderingComponent.interface';
+import PatternSectionSchema from '../model/hal/pattern-section-schema.model';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { EMPTY, forkJoin, Observable } from 'rxjs';
+import { PatternRelationDescriptorService } from '../service/pattern-relation-descriptor.service';
+import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
+import { Embedded } from '../model/hal/embedded';
+import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
+import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
+import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
 
 @Component({
-  selector: 'pp-default-pattern-renderer',
-  templateUrl: './default-pattern-renderer.component.html',
-  styleUrls: ['./default-pattern-renderer.component.scss']
+    selector: 'pp-default-pattern-renderer',
+    templateUrl: './default-pattern-renderer.component.html',
+    styleUrls: ['./default-pattern-renderer.component.scss']
 })
-export class DefaultPatternRendererComponent implements OnInit {
-  private pattern: Pattern;
-  private directedPatternRelations: DirectedPatternRelationDescriptorIndividual[];
-  private undirectedPatternRelations: UndirectedPatternRelationDescriptorIndividual[];
-  private allRelations: PatternRelations = new PatternRelations();
-  private patternList: Pattern[];
-  @ViewChild(PatternpropertyDirective) ppPatternproperty: PatternpropertyDirective;
-  plIri: string;
-  patternIri: string;
-  sections: string[];
-  isLoading = true;
-  isEditingEnabled = false;
+export class DefaultPatternRendererComponent implements AfterViewInit {
+    @ViewChild(PatternPropertyDirective) ppPatternProperty: PatternPropertyDirective;
+    isLoading = true;
+    isEditingEnabled = true;
+    patternLanguage: PatternLanguage;
+    pattern: Pattern;
+    patterns: Array<Pattern>;
+    private directedPatternRelations: Array<DirectedEdgeModel>;
+    private undirectedPatternRelations: Array<UndirectedEdgeModel>;
+    private viewContainerRef;
+    private patternLanguageUri: string;
+    private patternUri: string;
 
-  constructor(private patternLoaderService: DefaultPatternLoaderService,
-              private sectionLoader: PlRestrictionLoaderService, private plLoader: DefaultPlLoaderService, private activatedRoute: ActivatedRoute,
-              private pos: PatternOntologyService, private toasterService: ToasterService, private cdr: ChangeDetectorRef,
-              private componentFactoryResolver: ComponentFactoryResolver,
-              private githubPersistenceService: GithubPersistenceService,
-              private cookieService: CookieService,
-              private directedRelationsLoaderService: DefaultPatternDirectedRelationsLoaderService,
-              private undirectedRelationsLoaderService: DefaultPatternUndirectedRelationsLoaderService,
-              private completePatternLanguageLoadingService: LoadCompletePatternlanguageService,
-              public dialog: MatDialog) {
-  }
-
-
-  ngOnInit(): void {
-
-    this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
-    this.patternIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('pid'));
-    this.isEditingEnabled = !!this.cookieService.get('patternpedia_github_token');
-
-    this.loadInfosAndInitPage();
-
-
-  }
-
-
-  loadInfosAndInitPage(): void {
-    this.completePatternLanguageLoadingService.loadCompletePatternLanguage(this.plIri).then(completePL => {
-      this.plLoader.supportedIRI = this.plIri;
-      this.patternList = completePL.patterns;
-      this.pattern = this.patternList.find(pat => pat.iri === this.patternIri);
-      this.isLoading = false;
-
-      this.allRelations = completePL.patternRelations;
-      console.log(this.allRelations);
-
-      this.updateUIForPatternRelations();
-      this.sections = completePL.patternlanguage.sections;
-
-      const viewContainerRef = this.ppPatternproperty.viewContainerRef;
-      viewContainerRef.clear();
-
-      const componentDividerFactory = this.componentFactoryResolver.resolveComponentFactory(DividerComponent);
-      this.sections.forEach((sec: string) => {
-        this.createSectionComponent(sec, viewContainerRef, componentDividerFactory);
-      });
-
-      this.isLoading = false;
-    });
-
-
-  }
-
-  private createSectionComponent(section: string, viewContainerRef: any, componentDividerFactory) {
-    const properties = this.pattern.sectionsProperties.get(section);
-    if (section.indexOf('#has') !== -1 && properties) {
-      const sectionTitle = section.split('#has')[1].replace(/([A-Z])/g, ' $1').trim();
-
-      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MarkdownPatternSectioncontentComponent);
-      const componentRef = viewContainerRef.createComponent(componentFactory);
-      const instance = (<DataRenderingComponent>componentRef.instance);
-      instance.data = properties.join('\n');
-      instance.title = sectionTitle;
-      instance.isEditingEnabled = this.isEditingEnabled;
-      instance.changeContent.subscribe((data) => {
-        this.pattern.sectionsProperties.set(section, [data]);
-        const patternIndex = this.patternList.findIndex(pat => pat.iri === this.patternIri);
-        this.patternList[patternIndex] = this.pattern;
-        instance.data = data;
-        this.savePatterns();
-      });
-
-      viewContainerRef.createComponent(componentDividerFactory); // create divider
+    constructor(private activatedRoute: ActivatedRoute,
+                private toasterService: ToasterService,
+                private cdr: ChangeDetectorRef,
+                private componentFactoryResolver: ComponentFactoryResolver,
+                private patternLanguageService: PatternLanguageService,
+                private patternService: PatternService,
+                private patternRelationDescriptorService: PatternRelationDescriptorService,
+                private dialog: MatDialog,
+                private router: Router) {
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     }
-  }
 
-  private savePatterns() {
+    ngAfterViewInit(): void {
+        this.viewContainerRef = this.ppPatternProperty.viewContainerRef;
+        this.patternLanguageUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
+        console.log(this.patternLanguageUri);
+        this.patternUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternUri'));
+        console.log(this.patternUri);
+        this.getData();
+    }
 
-    this.githubPersistenceService.updatePLPatterns(new PatternLanguagePatterns(IriConverter.getPatternListIriForPLIri(this.plIri),
-      this.plIri, this.patternList)).subscribe(() => {
-        this.reloadInfoAfterPatternUpdate();
-        this.toasterService.pop('success', 'Updated patterns');
-      },
-      (error) => this.toasterService.pop('error', 'could not update patterns' + error.message));
-  }
+    doubleEncodeUri(uri: string): string {
+        return UriConverter.doubleEncodeUri(uri);
+    }
 
-  addLink() {
-    const dialogRef = this.dialog.open(CreatePatternRelationComponent, {
-        data: {patternName: this.pattern.name, patterns: this.patternList}
-      }
-    );
-    let relationAdded = false;
-    let patternRelations;
-    dialogRef.afterClosed().pipe(
-      tap((result: DialogDataResult) => {
-        relationAdded = this.addRelationCreatedByDialog(result);
-        patternRelations = new PatternLanguageRelations(IriConverter.getRelationListIriForPLIri(this.plIri), this.plIri, this.allRelations);
-      }),
-      switchMap(() =>
-        relationAdded ? this.githubPersistenceService.updatePLRelations(patternRelations) : EMPTY)).subscribe(
-      () => {
-        if (relationAdded) {
-          this.toasterService.pop('success', 'Created new Relation');
+    addLink() {
+        const dialogRef = this.dialog.open(CreatePatternRelationComponent, {
+                data: {firstPattern: this.pattern, patterns: this.patterns}
+            }
+        );
+        dialogRef.afterClosed().pipe(
+            switchMap(result => {
+                return result ? this.addContentInfoToPattern(result) : EMPTY;
+            }),
+            switchMap((edge) => {
+                const url = edge instanceof DirectedEdgeModel ?
+                    this.patternLanguage._links.directedEdges.href : this.patternLanguage._links.undirectedEdges.href;
+                return edge ? this.patternRelationDescriptorService.addRelationToPL(this.patternLanguage, edge) : EMPTY;
+            }),
+            switchMap((edgeCreated) => {
+                return edgeCreated ? this.retrievePatternLanguageData() : EMPTY;
+            }),
+        ).subscribe(
+            () => {
+                this.toasterService.pop('success', 'Created new Relation');
+
+            },
+            (error) => {
+                this.toasterService.pop('error', 'Could not create new relation: ', error);
+                console.log(error);
+            });
+    }
+
+    // Todo Manuela: make it work!
+    navigateToPattern(uri: string): void {
+        if (uri) {
+            this.router.navigate(['..', UriConverter.doubleEncodeUri(uri)], {relativeTo: this.activatedRoute});
         }
-      },
-      (error) => this.toasterService.pop('error', 'Could not create new relation: ', error));
-  }
-
-  // adds a relation created by the dialog to the local data and returns whether this was successful (or not, e.g. when simply closing the dialog)
-  addRelationCreatedByDialog(dialogResult: DialogDataResult): boolean {
-    if (!dialogResult || !dialogResult.toPattern || !dialogResult.direction) {
-      return false;
     }
-    switch (dialogResult.direction.name) {
-      case PatternRelationDescriptorDirection.DirectedRight:
-        this.allRelations.directed.push(new DirectedPatternRelationDescriptorIndividual(this.pattern, dialogResult.toPattern,
-          dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null));
-        break;
-      case PatternRelationDescriptorDirection.DirectedLeft:
-        this.allRelations.directed.push(new DirectedPatternRelationDescriptorIndividual(dialogResult.toPattern, this.pattern,
-          dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null));
-        break;
-      case PatternRelationDescriptorDirection.UnDirected:
-        this.allRelations.undirected.push(new UndirectedPatternRelationDescriptorIndividual(this.pattern, dialogResult.toPattern,
-          dialogResult.description ? dialogResult.description : null, dialogResult.relationType ? dialogResult.relationType : null));
-        break;
-      default:
-        return false;
+
+    addContentInfoToPattern(edge: DirectedEdgeModel | UndirectedEdgeModel): Observable<DirectedEdgeModel | UndirectedEdgeModel> {
+        const toPattern = edge instanceof DirectedEdgeModel ? edge.targetPatternId : edge.pattern2Id;
+        return this.patternService.getPatternContentByPattern(this.patterns.find(it => it.id === toPattern)).pipe(
+            map((patterncontent) => {
+                const targetPatternContent = patterncontent.content;
+                // edge instanceof DirectedEdgeModel ? edge.content = targetPatternContent : edge.p2.content = targetPatternContent;
+                return edge;
+            }));
     }
-    this.updateUIForPatternRelations();
-    return true;
-  }
 
+    getPatternInfos(): Observable<Pattern> {
+        if (!this.patternLanguage) {
+            return EMPTY;
+        }
+        return this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href).pipe(
+            tap((patterns) => {
+                this.patterns = patterns;
+                this.pattern = patterns.find(pat => pat.uri === this.patternUri);
+            }),
+            switchMap((patterns: any) => {
+                this.pattern = patterns.find(pat => pat.uri === this.patternUri);
+                return this.patternService.getPatternContentByPattern(this.pattern);
+            }),
+            map((patternContent) => this.pattern.content = patternContent.content));
+    }
 
-  private updateUIForPatternRelations() {
-    this.directedPatternRelations = this.allRelations.directed.filter((rel: DirectedPatternRelationDescriptorIndividual) =>
-      rel.source.iri === this.patternIri || rel.target.iri === this.patternIri);
-    this.undirectedPatternRelations = this.allRelations.undirected.filter((rel: UndirectedPatternRelationDescriptorIndividual) =>
-      rel.hasPattern.some((pat) => pat.iri === this.patternIri));
-    this.cdr.detectChanges();
-  }
+    retrievePatternLanguageData(): Observable<any> {
+        const $getDirectedEdges = this.getDirectedEdges();
+        const $getUndirectedEdges = this.getUndirectedEdges();
+        return forkJoin([$getDirectedEdges, $getUndirectedEdges]);
+    }
 
-  private reloadInfoAfterPatternUpdate() {
-    // remove the old data for patterns from our local storage, because we just updated it
-    this.pos.clearGraph(IriConverter.getPatternListIriForPLIri(this.plIri)).then(
-      () =>  // reload the data to get the new values
-        this.loadInfosAndInitPage());
-  }
+    private createSectionComponent(section: string) {
+        if (!this.pattern.content) {
+            return;
+        }
+        const properties = this.pattern.content[section];
+
+        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MarkdownPatternSectionContentComponent);
+        const componentRef = this.viewContainerRef.createComponent(componentFactory);
+        const instance = (<MarkdownPatternSectionContentComponent>componentRef.instance);
+        instance.data = properties;
+        instance.title = section;
+        instance.isEditingEnabled = this.isEditingEnabled;
+        instance.changeContent.subscribe((dataChange: DataChange) => {
+            this.pattern.content[section] = dataChange.currentValue;
+            this.cdr.detectChanges();
+            this.savePattern(section, dataChange.previousValue, instance);
+
+        });
+    }
+
+    private getDirectedEdges(): Observable<Embedded<DirectedEdesResponse>> {
+        if (!this.patternLanguage) {
+            return EMPTY;
+        }
+        return this.patternLanguageService.getDirectedEdges(this.patternLanguage).pipe(
+            tap((edges) => {
+                this.directedPatternRelations = edges._embedded ?
+                    edges._embedded.directedEdgeModels.filter(edge => edge.sourcePatternId === this.pattern.id ||
+                        edge.targetPatternId === this.pattern.id) : [];
+            }));
+    }
+
+    private getUndirectedEdges(): Observable<Embedded<UndirectedEdesResponse>> {
+        if (!this.patternLanguage) {
+            return EMPTY;
+        }
+        return this.patternLanguageService.getUndirectedEdges(this.patternLanguage).pipe(
+            tap((edges) => {
+                this.undirectedPatternRelations = edges._embedded ?
+                    edges._embedded.undirectedEdgeModels.filter(edge => edge.pattern1Id === this.pattern.id || edge.pattern2Id === this.pattern.id) : [];
+            }));
+    }
+
+    private savePattern(section: string, previousContent: any, instance: MarkdownPatternSectionContentComponent) {
+        this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe(() => this.toasterService.pop('success', 'Saved pattern'),
+            (error) => {
+                this.toasterService.pop('error', 'Could not save pattern, resetting content', error.message);
+                // reset text of the section:
+                this.pattern.content[section] = previousContent;
+                instance.changeText(previousContent);
+                this.cdr.detectChanges();
+            });
+    }
+
+    private getData(): void {
+        this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageUri).pipe(
+            tap((patternLanguage) => this.patternLanguage = patternLanguage),
+            switchMap(() => this.getPatternInfos()),
+            switchMap(() => this.retrievePatternLanguageData())
+        ).subscribe((patternLanguage: any) => {
+            this.patternLanguage.patternSchema.patternSectionSchemas.forEach((sec: PatternSectionSchema) => {
+                this.createSectionComponent(sec.name);
+            });
+            this.cdr.detectChanges();
+            this.isLoading = false;
+        });
+    }
 }

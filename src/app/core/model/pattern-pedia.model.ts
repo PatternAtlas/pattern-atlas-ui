@@ -12,7 +12,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { IriConverter } from '../util/iri-converter';
+import { UriConverter } from '../util/uri-converter';
 import { globals } from '../../globals';
 
 export class PatternPedia {
@@ -26,7 +26,7 @@ export class PatternPedia {
 
 
   set id(iri: string) {
-    this._id = IriConverter.convertIriToId(iri);
+    this._id = UriConverter.doubleEncodeUri(iri);
   }
 
   get id(): string {
@@ -36,14 +36,14 @@ export class PatternPedia {
   getPrefixesToTurtle(iri: string, defaultPrefixBegin?: string): string[] {
     const ary: Array<string> = [];
     ary.push(
-      `@prefix : <${IriConverter.getFileName(defaultPrefixBegin ? defaultPrefixBegin : iri)}#> .`,
+      `@prefix : <${UriConverter.getFileName(defaultPrefixBegin ? defaultPrefixBegin : iri)}#> .`,
       `@prefix pp: <${globals.urlPatternRepoOntology}#> .`,
       `@prefix owl: <http://www.w3.org/2002/07/owl#> .`,
       `@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .`,
       `@prefix xml: <http://www.w3.org/XML/1998/namespace> .`,
       `@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .`,
       `@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .`,
-      `@base <${IriConverter.getFileName(iri)}> .`
+      `@base <${UriConverter.getFileName(iri)}> .`
     );
     return ary;
   }

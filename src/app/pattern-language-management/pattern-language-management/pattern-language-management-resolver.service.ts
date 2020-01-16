@@ -14,31 +14,20 @@
 
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import PatternLanguage from '../../core/model/pattern-language.model';
-import { EMPTY, from, Observable } from 'rxjs';
-import { PatternOntologyService } from '../../core/service/pattern-ontology.service';
-import { LinkedOpenPatternsLoader } from '../../core/service/loader/pattern-language-loader/linked-open-patterns-loader.service';
+import { PatternLanguageService } from '../../core/service/pattern-language.service';
+import { Observable } from 'rxjs';
+import PatternLanguageModel from '../../core/model/hal/pattern-language-model.model';
 
 @Injectable({
     providedIn: 'root'
 })
-export class PatternLanguageManagementResolverService implements Resolve<Map<string, PatternLanguage>> {
+export class PatternLanguageManagementResolverService implements Resolve<Array<PatternLanguageModel>> {
 
-    constructor(private pos: PatternOntologyService,
-                private loader: LinkedOpenPatternsLoader) {
+    constructor(private patternLanguageService: PatternLanguageService) {
     }
 
-
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Map<string, PatternLanguage>> {
-    if (!route.firstChild.params.plid) { // if we're on root page (/patternpedia), reload the content to see new patternlanguages, skipped for child routes
-      return from(this.loadLocallyHostedOntos());
-    }
-    return EMPTY;
-    }
-
-    async loadLocallyHostedOntos(): Promise<Map<string, PatternLanguage>> {
-      await this.pos.loadLinkedOpenPatternGraphs();
-      return await this.loader.loadContentFromStore();
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Array<PatternLanguageModel>> {
+        return this.patternLanguageService.getPatternLanguages();
     }
 
 }

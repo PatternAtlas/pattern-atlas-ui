@@ -14,7 +14,6 @@
 
 import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import InternetOfThingsPattern from '../../model/internet-of-things-pattern';
-import { InternetOfThingsPatternsLoaderService } from '../../loader/internet-of-things-patterns-loader.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -27,20 +26,20 @@ export class InternetOfThingsPatternsComponent implements OnInit {
     patterns: Array<InternetOfThingsPattern>;
     patternMap: Map<string, InternetOfThingsPattern>;
 
-    constructor(private loader: InternetOfThingsPatternsLoaderService,
-                private cdr: ChangeDetectorRef,
-                private router: Router,
-                private activatedRoute: ActivatedRoute,
-                private zone: NgZone) {
+    constructor(
+        private cdr: ChangeDetectorRef,
+        private router: Router,
+        private activatedRoute: ActivatedRoute,
+        private zone: NgZone) {
     }
 
     ngOnInit() {
-        this.loader.loadContentFromStore()
-            .then(patternMap => {
-                this.patternMap = patternMap;
-                this.patterns = Array.from(patternMap.values());
-                this.cdr.detectChanges();
-            });
+        // this.loader.loadContentFromStore()
+        //     .then(patternMap => {
+        //         this.patternMap = patternMap;
+        //         this.patterns = Array.from(patternMap.values());
+        //         this.cdr.detectChanges();
+        //     });
     }
 
     navigate(id: string): void {

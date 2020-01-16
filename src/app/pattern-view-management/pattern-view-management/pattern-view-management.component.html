@@ -1,0 +1,11 @@
+<pp-action-button-bar [goBackButton]="false" [addButtonText]="'Add View'"
+                      (addClicked)="createView()"></pp-action-button-bar>
+<div style="display: flex; flex-wrap: wrap; padding: 0.25em;">
+    <mat-card class="card box"
+              *ngFor="let entity of patternViewResponse?._embedded?.patternViews"
+              (click)="navigate(entity)"
+    >
+        <span>{{entity.name}}</span>
+    </mat-card>
+
+</div>

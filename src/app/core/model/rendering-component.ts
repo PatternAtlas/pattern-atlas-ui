@@ -1,5 +1,5 @@
 /**
- * Holds all the information for a rendering component that will be used to render specific pattern languages and patterns.
+ * Holds all the information for a rendering component that will be used to render specific patterns languages and patterns.
  */
 export default interface RenderingComponent {
     /**
@@ -11,11 +11,11 @@ export default interface RenderingComponent {
      */
     label?: string;
     /**
-     * The component for the pattern language.
+     * The component for the patterns language.
      */
     plcomponent: any;
     /**
-     * The component for the pattern.
+     * The component for the patterns.
      */
     pcomponent: any;
 }

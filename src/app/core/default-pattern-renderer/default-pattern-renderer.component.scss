@@ -2,7 +2,9 @@
   min-height: unset;
 }
 
-.horiz-centered {
-  display: inline-flex;
-  align-items: center;
+.pattern-card {
+  min-width: min-content;
+  margin: 0 7em;
+  background-color: whitesmoke;
 }
+

@@ -24,24 +24,24 @@ const routes: Routes = [
     {
         path: 'patternlanguages',
         pathMatch: 'prefix',
-      runGuardsAndResolvers: 'always',
-      resolve: {
-        patternlanguages: PatternLanguageManagementResolverService,
+        runGuardsAndResolvers: 'always',
+        resolve: {
+            patternlanguages: PatternLanguageManagementResolverService,
 
-      },
+        },
         children: [
             {
                 path: '',
                 component: PatternLanguageManagementComponent
             }, {
-            path: ':plid',
-            component: PatternLanguageContainerComponent,
-          }, {
-            path: ':plid/create-pattern',
-            component: CreatePatternComponent,
-          },
+                path: ':patternLanguageUri',
+                component: PatternLanguageContainerComponent,
+            }, {
+                path: ':patternLanguageUri/create-patterns',
+                component: CreatePatternComponent,
+            },
             {
-                path: ':plid/:pid',
+                path: ':patternLanguageUri/:patternUri',
                 component: PatternContainerComponent
             }
 

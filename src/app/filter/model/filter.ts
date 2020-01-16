@@ -22,20 +22,20 @@ export default class Filter {
     /**
      * Filters a given list of patterns based on the config.
      *
-     * The Filter method checks, if the given config value is contained in the pattern fields.
+     * The Filter method checks, if the given config value is contained in the patterns fields.
      * Example:
      * Pattern Name - Message Filter
      * Config Name  - message
-     * Filtering will include this pattern, as the test will be successful.
+     * Filtering will include this patterns, as the test will be successful.
      *
-     * @param patterns the list of pattern objects that will be filtered based on the config
+     * @param patterns the list of patterns objects that will be filtered based on the config
      */
     filterPatterns(patterns: Array<any>): Array<any> {
-        // filter based on pattern properties
+        // filter based on patterns properties
         let filtered = patterns.filter(p => {
             let result = true;
             Object.keys(this.config).forEach(k => {
-                // pattern should contain same fields as the config
+                // patterns should contain same fields as the config
                 if (p[k]) {
                     // and the value of that fields should match somehow
                     const test = this.matches(p[k], this.config[k]);

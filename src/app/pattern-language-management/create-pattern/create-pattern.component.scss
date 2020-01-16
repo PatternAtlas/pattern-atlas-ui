@@ -1,4 +1,41 @@
-.editor-preview-container > * {
-  margin: 0.5em;
-  min-width: 33%;
+
+.parent {
+  display: flex;
+  font-family: arial, sans-serif;
+}
+
+.item {
+  flex: 1;
+
+  min-height: 500px;
+  background: #eeeeee;
+  border: #7f7f7f 1pt solid;
+
+}
+
+.last {
+  background-color: white;
+}
+
+@media screen and (max-width: 600px) {
+
+  .parent {
+    flex-direction: column-reverse;
+  }
+
+  .item {
+    flex: 1;
+    min-height: 200px;
+    background: #eeeeee;
+
+  }
+
+  .last {
+    background-color: white;
+  }
+
+}
+
+#preview {
+  padding: 1em;
 }

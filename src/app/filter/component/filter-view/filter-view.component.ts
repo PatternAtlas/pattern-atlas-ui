@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Inject, ViewChild } from '@angular/core';
 import { FilterFactoryService } from '../../service/filter-factory.service';
-import { MatDialogRef, MAT_DIALOG_DATA, MatCheckbox } from "@angular/material";
+import { MatCheckbox } from "@angular/material/checkbox";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 
 @Component({
   selector: 'pp-filter-view',
@@ -8,7 +9,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatCheckbox } from "@angular/material";
   styleUrls: ['./filter-view.component.scss']
 })
 /**
- * Displays the string-fields of a pattern that can be filtered.
+ * Displays the string-fields of a patterns that can be filtered.
  * Users can set the filter criteria via input fields provided in this view.
  */
 export class FilterViewComponent implements OnInit {

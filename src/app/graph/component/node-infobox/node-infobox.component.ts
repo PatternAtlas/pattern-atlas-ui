@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { NodeInfo, Relation } from '../../model';
-import { IriConverter } from 'src/app/core/util/iri-converter';
+import { UriConverter } from 'src/app/core/util/uri-converter';
 
 @Component({
   selector: 'pp-node-infobox',
