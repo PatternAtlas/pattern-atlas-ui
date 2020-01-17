@@ -2,10 +2,10 @@
 <h2>
   Add a new pattern to {{patternLanguage?.name}}
 </h2>
-<div mat-dialog-content [formGroup]="iconForm">
-  <div fxLayout="column" fxLayoutAlign="space-around start">
-    <mat-card fxLayout="column" fxLayoutAlign="space-around" style="margin: 10px; width: 100%; height: 10px">
-      <div fxLayout="row" fxLayoutAlign="space-around center">
+<div mat-dialog-content [formGroup]="iconForm" style="width: 100%">
+  <div fxLayout="column">
+    <mat-card fxLayout="column" fxLayoutAlign="space-around">
+      <div fxLayout="row">
         <mat-form-field class="full-width" appearance="outline" style="width: 24em" [floatLabel]="'always'">
           <mat-label>Icon URL</mat-label>
           <input matInput formControlName="iconUrl" placeholder="Enter URL of Icon" type="url">
@@ -19,31 +19,30 @@
           </mat-error>
         </mat-form-field>
       </div>
+
+      <div class="parent ">
+
+        <div class="item editor-preview-container">
+          <td-text-editor ppEmitOnChange (onKeyup)="onChangeMarkdownText()" class="markdownEditor"
+                          [(value)]="previousTextEditorValue" [options]="options"
+                          #textEditor
+                          id="textEditor"></td-text-editor>
+        </div>
+
+        <div class="item last">
+
+          <div id="preview"></div>
+
+          <mat-error *ngIf="wasSaveButtonClicked && errorMessages">Found errors in the following sections:
+            <div *ngFor="let message of errorMessages">
+              <span>{{message}}<br></span>
+            </div>
+          </mat-error>
+
+        </div>
+      </div>
     </mat-card>
   </div>
-</div>
-
-<div class="parent ">
-
-  <div class="item editor-preview-container">
-    <td-text-editor ppEmitOnChange (onKeyup)="onChangeMarkdownText()" class="markdownEditor"
-                    [(value)]="previousTextEditorValue" [options]="options"
-                    #textEditor
-                    id="textEditor"></td-text-editor>
-  </div>
-
-  <div class="item last">
-
-    <div id="preview"></div>
-
-    <mat-error *ngIf="wasSaveButtonClicked && errorMessages">Found errors in the following sections:
-      <div *ngFor="let message of errorMessages">
-        <span>{{message}}<br></span>
-      </div>
-    </mat-error>
-
-  </div>
-
 </div>
 <button (click)="save()" class="save-button" mat-raised-button color="primary" style="float: right"><i
   class="material-icons">save</i>Save
