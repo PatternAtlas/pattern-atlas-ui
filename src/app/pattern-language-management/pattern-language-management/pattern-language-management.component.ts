@@ -85,7 +85,7 @@ export class PatternLanguageManagementComponent implements OnInit {
     }
 
     goToPatternLanguageCreation(): void {
-        const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent);
+        const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent, {data: {isPatternLanguageCreation: true}});
 
         // Save PatternLanguage when user presses save
         (<CreateEditPatternLanguageComponent>dialogRef.componentInstance).saveClicked
