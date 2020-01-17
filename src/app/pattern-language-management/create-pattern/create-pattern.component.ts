@@ -84,7 +84,6 @@ export class CreatePatternComponent implements OnInit {
     });
 
     this.iconUrl.valueChanges.pipe(debounceTime(1000), distinctUntilChanged()).subscribe((urlValue) => {
-      console.log(urlValue);
       this.iconPreviewVisible = urlValue && (urlValue.startsWith('https://') || urlValue.startsWith('http://'));
     });
   }
@@ -98,7 +97,6 @@ export class CreatePatternComponent implements OnInit {
       this.updateFormValidationErrors();
       return;
     }
-    console.log(this.iconForm.value.iconUrl);
     // We send null as uri and let the backend create proper uris, which include camel cased names of patterns
     this.patternService.savePattern(this.patternLanguage._links.patterns.href,
       {
