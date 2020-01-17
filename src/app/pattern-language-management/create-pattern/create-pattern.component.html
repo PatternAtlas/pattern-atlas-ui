@@ -44,6 +44,6 @@
     </mat-card>
   </div>
 </div>
-<button (click)="save()" class="save-button" mat-raised-button color="primary" style="float: right"><i
+<button [disabled]="iconUrl?.hasError('pattern')" (click)="save()" class="save-button" mat-raised-button color="primary" style="float: right"><i
   class="material-icons">save</i>Save
 </button>
