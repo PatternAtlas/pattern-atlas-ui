@@ -55,7 +55,8 @@ import { PatternViewService } from './service/pattern-view.service';
 import { CreateEditPatternLanguageComponent } from './component/create-edit-pattern-language/create-edit-pattern-language.component';
 import { ActionButtonBarComponent } from './component/action-button-bar/action-button-bar.component';
 import { EmitEventOnAddedEdgeDirective } from './directives/emit-event-on-added-edge.directive';
-import { MatBadgeModule, MatExpansionModule } from '@angular/material';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
@@ -75,7 +76,9 @@ import { RouterModule } from '@angular/router';
         MatSelectModule,
         MatDialogModule, MatGridListModule, MatSidenavModule,
         MatAutocompleteModule,
-        MatIconModule, MatToolbarModule, MatBadgeModule, MatExpansionModule,
+        MatIconModule, MatToolbarModule, 
+        MatBadgeModule, 
+        MatExpansionModule,
         MatButtonToggleModule,
         NgxMdModule.forRoot(), MatNativeDateModule, RouterModule
     ],
