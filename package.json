@@ -39,7 +39,7 @@
     "markdown-it-katex": "^2.0.3",
     "material-design-icons": "3.0.1",
     "ngx-cookie-service": "2.1.0",
-    "ngx-md": "7.0.0",
+    "ngx-md": "^8.1.6",
     "parse-uri": "1.0.0",
     "rdfstore": "https://github.com/fakepk/rdfstore-js.git",
     "rxjs": "6.5.3",
@@ -48,7 +48,7 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.900.0-rc.4",
+    "@angular-devkit/build-angular": "^0.900.2",
     "@angular/cli": "~9.0.0-rc.4",
     "@angular/compiler-cli": "9.0.0-rc.4",
     "@angular/language-service": "9.0.0-rc.4",
