@@ -43,7 +43,7 @@ import { NavigateBackComponent } from './component/navigate-back/navigate-back.c
 import { PatternPropertyDirective } from './component/markdown-content-container/pattern-property.directive';
 import { DividerComponent } from './component/divider/divider.component';
 import { NgxMdModule } from 'ngx-md';
-import { ReactiveFormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CreatePatternRelationComponent } from './component/create-pattern-relation/create-pattern-relation.component';
 // tslint:disable-next-line:max-line-length
 import { MarkdownPatternSectionContentComponent } from './component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-section-content.component';
@@ -57,28 +57,29 @@ import { ActionButtonBarComponent } from './component/action-button-bar/action-b
 import { EmitEventOnAddedEdgeDirective } from './directives/emit-event-on-added-edge.directive';
 import { MatBadgeModule, MatExpansionModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
+import { MathjaxComponent } from './component/mathjax-component/mathjax.component';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        PrettyJsonModule,
-        MatButtonModule,
-        TextFieldModule,
-        CovalentTextEditorModule,
-        MatCardModule,
-        FlexLayoutModule,
-        MatProgressSpinnerModule,
-        MatListModule,
-        MatDatepickerModule, MatInputModule,
-        ReactiveFormsModule,
-        MatTooltipModule,
-        MatSelectModule,
-        MatDialogModule, MatGridListModule, MatSidenavModule,
-        MatAutocompleteModule,
-        MatIconModule, MatToolbarModule, MatBadgeModule, MatExpansionModule,
-        MatButtonToggleModule,
-        NgxMdModule.forRoot(), MatNativeDateModule, RouterModule
-    ],
+  imports: [
+    CommonModule,
+    PrettyJsonModule,
+    MatButtonModule,
+    TextFieldModule,
+    CovalentTextEditorModule,
+    MatCardModule,
+    FlexLayoutModule,
+    MatProgressSpinnerModule,
+    MatListModule,
+    MatDatepickerModule, MatInputModule,
+    ReactiveFormsModule,
+    MatTooltipModule,
+    MatSelectModule,
+    MatDialogModule, MatGridListModule, MatSidenavModule,
+    MatAutocompleteModule,
+    MatIconModule, MatToolbarModule, MatBadgeModule, MatExpansionModule,
+    MatButtonToggleModule,
+    NgxMdModule.forRoot(), MatNativeDateModule, RouterModule, FormsModule
+  ],
     exports: [
         CovalentTextEditorModule,
         EmitEventOnKeyupDirective,
@@ -107,7 +108,8 @@ import { RouterModule } from '@angular/router';
         GraphDisplayComponent,
         CardRendererComponent,
         CreateEditPatternLanguageComponent,
-        ActionButtonBarComponent
+        ActionButtonBarComponent,
+        MathjaxComponent
     ],
     entryComponents: [
         DefaultPlRendererComponent,
