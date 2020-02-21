@@ -57,7 +57,6 @@ import { ActionButtonBarComponent } from './component/action-button-bar/action-b
 import { EmitEventOnAddedEdgeDirective } from './directives/emit-event-on-added-edge.directive';
 import { MatBadgeModule, MatExpansionModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
-import { MathjaxComponent } from './component/mathjax-component/mathjax.component';
 
 @NgModule({
   imports: [
@@ -108,8 +107,7 @@ import { MathjaxComponent } from './component/mathjax-component/mathjax.componen
         GraphDisplayComponent,
         CardRendererComponent,
         CreateEditPatternLanguageComponent,
-        ActionButtonBarComponent,
-        MathjaxComponent
+        ActionButtonBarComponent
     ],
     entryComponents: [
         DefaultPlRendererComponent,
