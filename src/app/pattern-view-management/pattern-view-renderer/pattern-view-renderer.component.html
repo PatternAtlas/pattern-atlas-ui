@@ -1,9 +1,19 @@
 <pp-action-button-bar [addButtonText]="'Add patterns'" [secondAddButton]="true"
                       [secondAddButtonText]="'Create new Link'" [displayText]="displayText"
-                      (addClicked)="addPatternToView()" (add2Clicked)="createLink()"></pp-action-button-bar>
-
-<div class="container" *ngIf="!isLoading">
-
+                      (addClicked)="addPatternToView()" (add2Clicked)="createLink()">
+  <mat-button-toggle-group #group="matButtonToggleGroup" (change)="toggleButton(group.value)"
+                           [value]="graphVisible"
+                           appearance="legacy"
+                           style="font-size: small; height: 35px; align-items: center;">
+    <mat-button-toggle [checked]="true" [value]="false" aria-label="Text align center" mat-raised-button>
+      Cards
+    </mat-button-toggle>
+    <mat-button-toggle [value]="true" aria-label="Text align left" mat-raised-button>
+      Graph
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+</pp-action-button-bar>
+<div class="container" *ngIf="!isLoading && !graphToggled">
     <mat-card class="pattern-card" *ngFor="let pattern of patterns">
         <mat-card-header>
             <mat-card-title>{{pattern?.name}}</mat-card-title>
@@ -38,4 +48,7 @@
             </button>
         </mat-card-actions>
     </mat-card>
+</div>
+<div class="container" *ngIf="!isLoading && graphToggled">
+  DISPLAY GRAPH HERE
 </div>

@@ -14,11 +14,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTreeModule } from '@angular/material/tree';
+import {MatButtonToggleModule} from '@angular/material';
 
 @NgModule({
     declarations: [PatternViewManagementComponent, PatternViewRendererComponent, AddToViewComponent],
     imports: [
-        CommonModule, MatCardModule, MatBadgeModule,
+        CommonModule, MatCardModule, MatBadgeModule, MatButtonToggleModule,
         PatternViewManagementRoutingModule, CoreModule, MatToolbarModule, MatDialogModule, MatButtonModule, MatTreeModule, MatIconModule, MatCheckboxModule
     ],
     entryComponents: [AddToViewComponent]
