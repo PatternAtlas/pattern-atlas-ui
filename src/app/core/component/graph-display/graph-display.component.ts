@@ -1,23 +1,23 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
-import { D3Service } from '../../../graph/service/d3.service';
-import { NetworkLink } from '../../model/network-link.interface';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSidenavContainer } from '@angular/material/sidenav';
-import { CreatePatternRelationComponent } from '../create-pattern-relation/create-pattern-relation.component';
-import { PatternView } from '../../model/hal/pattern-view.model';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {D3Service} from '../../../graph/service/d3.service';
+import {NetworkLink} from '../../model/network-link.interface';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSidenavContainer} from '@angular/material/sidenav';
+import {CreatePatternRelationComponent} from '../create-pattern-relation/create-pattern-relation.component';
+import {PatternView} from '../../model/hal/pattern-view.model';
 import PatternLanguage from '../../model/hal/pattern-language.model';
-import { EdgeWithType, PatternRelationDescriptorService } from '../../service/pattern-relation-descriptor.service';
-import { switchMap, tap } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
-import { ToasterService } from 'angular2-toaster';
-import { UriConverter } from '../../util/uri-converter';
+import {EdgeWithType, PatternRelationDescriptorService} from '../../service/pattern-relation-descriptor.service';
+import {tap} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {ToasterService} from 'angular2-toaster';
+import {UriConverter} from '../../util/uri-converter';
 import GraphEditor from '@ustutt/grapheditor-webcomponent/lib/grapheditor';
-import { DraggedEdge, edgeId } from '@ustutt/grapheditor-webcomponent/lib/edge';
+import {DraggedEdge, edgeId} from '@ustutt/grapheditor-webcomponent/lib/edge';
 import Pattern from '../../model/hal/pattern.model';
-import { PatternLanguageService } from '../../service/pattern-language.service';
-import { GraphInputData } from '../../model/graph-input-data.interface';
-import { PatternService } from '../../service/pattern.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import {PatternLanguageService} from '../../service/pattern-language.service';
+import {GraphInputData} from '../../model/graph-input-data.interface';
+import {PatternService} from '../../service/pattern.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 export class GraphNode {
     id: string;
@@ -41,6 +41,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     patternLanguageData: any;
     isLoading = true;
     @Input() data: GraphInputData;
+    @Output() addedEdge = new EventEmitter<any>();
     currentPattern: Pattern;
     currentEdges: Array<EdgeWithType>;
     private edges: Array<NetworkLink>;
@@ -155,23 +156,12 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             }
         });
 
-        dialogRef.afterClosed().pipe(
-            switchMap((edge) => {
-                return edge ? this.patternRelationDescriptionService.addRelationToPL(this.patternLanguage, edge) : of(null);
-            }), // reload patterns because they must contain new links
-            switchMap(() => this.getPatterns())).subscribe(res => {
-            if (res) {
-                this.toastService.pop('success', 'Created new Link');
-                // update sidemenu, if we display details for a specific node:
-                if (this.clickedNodeId) {
-                    this.showInfoForClickedNode(this.graphNativeElement.getNode(this.clickedNodeId));
-                }
-                this.graphNativeElement.completeRender();
-
-                this.cdr.detectChanges();
+        dialogRef.afterClosed().subscribe((edge) => {
+            if (edge) { // inform parent component that new edge was added
+                this.addedEdge.emit(edge);
             } else {
                 this.graphNativeElement.removeEdge(this.currentEdge);
-                this.graphNativeElement.completeRender();
+                this.triggerRerendering();
             }
         });
     }
@@ -214,7 +204,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     private initData() {
         this.patternLanguageData = this.data;
         this.edges = GraphDisplayComponent.mapPatternLinksToEdges(this.patternLanguageData.edges);
-        this.copyOfLinks = GraphDisplayComponent.mapPatternLinksToEdges(this.patternLanguageData.copyOfLinks);
+        this.copyOfLinks = GraphDisplayComponent.mapPatternLinksToEdges(this.patternLanguageData.edges);
         this.patterns = this.patternLanguageData.patterns;
         this.patternLanguage = this.patternLanguageData.patternLanguage;
         this.patternView = this.patternLanguageData.patternView;
@@ -299,6 +289,17 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         this.currentPattern = this.patterns.find(pat => pat.id === node.id);
         this.getEdgesForPattern();
         this.sidenavContainer.open();
+        console.log('rerender');
+        this.graphNativeElement.completeRender();
+    }
+
+    public updateSideMenu() {
+        if (this.clickedNodeId) {
+            this.showInfoForClickedNode(this.graphNativeElement.getNode(this.clickedNodeId));
+        }
+    }
+
+    triggerRerendering() {
         this.graphNativeElement.completeRender();
     }
 }

@@ -1,7 +1,7 @@
 <pp-action-button-bar (add2Clicked)="addPattern()" (addClicked)="addLink()" [addButtonText]="'Add Link'"
                       [displayText]="patternLanguage?.name" [secondAddButtonText]="'Add Pattern'"
                       [secondAddButton]="true">
-    <mat-button-toggle-group #group="matButtonToggleGroup" (change)="toggleRenderingComponent(group.value)"
+    <mat-button-toggle-group #group="matButtonToggleGroup" (change)="setGraphVisible(group.value)"
                              [value]="graphVisible"
                              appearance="legacy"
                              style="font-size: small; height: 35px; align-items: center;">
@@ -23,8 +23,14 @@
     </button>
 </pp-action-button-bar>
 
-<mat-progress-spinner *ngIf="isLoadingDataForRenderer" mode="indeterminate"></mat-progress-spinner>
+<mat-progress-spinner *ngIf="isLoadingData" mode="indeterminate"></mat-progress-spinner>
 <div>
-    <ng-template #displayPLContainer></ng-template>
+    <pp-card-renderer *ngIf="!graphVisible && patterns" [uriEntities]="this.patterns"></pp-card-renderer>
+    <pp-graph-display *ngIf="graphVisible && patterns" [data]="{
+                patterns: this.patterns, edges: this.patternLinks, copyOfLinks: this.patternLinks,
+                patternLanguage: this.patternLanguage, patternView: null
+            }" (addedEdge)="linkAddedInGraphEditor($event)">
+    </pp-graph-display>
+
 </div>
 
