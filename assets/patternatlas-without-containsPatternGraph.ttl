@@ -1,0 +1,211 @@
+@prefix : <https://purl.org/patternpedia#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <https://purl.org/patternpedia> .
+
+<https://purl.org/patternpedia> rdf:type owl:Ontology ;
+                               owl:imports <https://purl.org/patternpedia/cloudcomputingpatterns> ,
+                                           <https://purl.org/patternpedia/internetofthingspatterns> .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  https://purl.org/patternpedia#containsPattern
+:containsPattern rdf:type owl:ObjectProperty ;
+                 rdfs:domain :PatternGraph ;
+                 rdfs:range :Pattern .
+
+ ###  https://purl.org/patternpedia#containsPattern
+ :containsPatternRelationDescriptor rdf:type owl:ObjectProperty ;
+                  rdfs:domain :PatternGraph ;
+                  rdfs:range :PatternRelationDescriptor .
+
+###  https://purl.org/patternpedia#containsPatternGraph
+:containsPatternGraph rdf:type owl:ObjectProperty ;
+                         rdfs:domain :PatternPedia ;
+                         rdfs:range :PatternGraph .
+
+
+###  https://purl.org/patternpedia#hasPatternRelation
+:hasPattern rdf:type owl:ObjectProperty ;
+                    rdfs:domain :Pattern ;
+                    rdfs:range :PatternRelationDescriptor .
+
+###  https://purl.org/patternpedia#referredByView
+:referredByView rdf:type owl:ObjectProperty ;
+                    rdfs:domain :PatternView ;
+                    rdfs:range :PatternLanguage .
+
+
+###  https://purl.org/patternpedia#hasSource
+:hasSource rdf:type owl:ObjectProperty ;
+           rdfs:domain :PatternRelationDescriptor ;
+           rdfs:range :Pattern .
+
+
+###  https://purl.org/patternpedia#hasTarget
+:hasTarget rdf:type owl:ObjectProperty ;
+           rdfs:domain :PatternRelationDescriptor ;
+           rdfs:range :Pattern .
+
+
+#################################################################
+#    Datatype properties
+#################################################################
+
+###  https://purl.org/patternpedia#hasLogo
+:hasLogo rdf:type owl:DatatypeProperty .
+
+
+###  https://purl.org/patternpedia#hasName
+:hasName rdf:type owl:DatatypeProperty .
+
+
+# description of of a relation
+###  http://purl.org/patternpedia#hasDescription
+:hasDescription rdf:type owl:DatatypeProperty .
+
+# type of a relation
+###  https://purl.org/patternpedia#hasRelationType
+:hasRelationType rdf:type owl:DatatypeProperty .
+
+###  http://purl.org/patternpedia#hasLabel
+:hasLabel rdf:type owl:DatatypeProperty .
+
+###  https://purl.org/patternpedia#hasListIndex
+:hasListIndex rdf:type owl:DatatypeProperty .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  https://purl.org/patternpedia#DatatypePropertyListItem
+###  Datatype for which an index must be specified, e.g. for ordered section (=datatypes) of a patternlanguage
+:DatatypePropertyListItem rdf:type owl:Class ;
+                 rdfs:subClassOf owl:DatatypeProperty;
+                 rdfs:subClassOf [ rdf:type owl:Restriction ;
+                           owl:onProperty :hasListIndex ;
+                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                           owl:onDataRange xsd:integer
+                         ] .
+
+###  https://purl.org/patternpedia#Pattern
+:Pattern rdf:type owl:Class ;
+         rdfs:subClassOf [ rdf:type owl:Restriction ;
+                           owl:onProperty :hasName ;
+                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                           owl:onDataRange xsd:string
+                         ] .
+
+###  https://purl.org/patternpedia#PatternGraph
+:PatternGraph rdf:type owl:Class ;
+                 rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                   owl:onProperty :hasLogo ;
+                                   owl:allValuesFrom xsd:anyURI
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty :hasName ;
+                                   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                   owl:onDataRange xsd:string
+                                 ] .
+
+###  https://purl.org/patternpedia#PatternLanguage
+:PatternLanguage rdf:type owl:Class ;
+                 rdfs:subClassOf :PatternGraph .
+
+###  https://purl.org/patternpedia#PatternView
+:PatternView rdf:type owl:Class ;
+                 rdfs:subClassOf :PatternGraph .
+
+###  https://purl.org/patternpedia#PatternPedia
+:PatternPedia rdf:type owl:Class ;
+              rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                owl:onProperty :containsPatternGraph ;
+                                owl:allValuesFrom :PatternGraph
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty :hasName ;
+                                owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                owl:onDataRange xsd:string
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty :hasLogo ;
+                                owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                owl:onDataRange xsd:anyURI
+                              ] .
+
+
+###  https://purl.org/patternpedia#PatternRelationDescriptor
+###  A Description is optional
+:PatternRelationDescriptor rdf:type owl:Class ;
+                           rdfs:subClassOf
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty :hasDescription ;
+                                  owl:allValuesFrom xsd:string
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                  owl:onProperty :hasRelationType ;
+                                  owl:allValuesFrom xsd:string
+                                 ] .
+
+
+# Describes the relation between two patterns in a directed manner, with a source and a target pattern
+# The meaning of the direction depends on the specific use case
+###  http://purl.org/patternpedia#DirectedPatternRelationDescriptor
+:DirectedPatternRelationDescriptor
+    rdf:type owl:Class ;
+    rdfs:subClassOf :PatternRelationDescriptor ,
+        [ rdf:type owl:Restriction ;
+          owl:onProperty :hasSource ;
+          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+          owl:onClass :Pattern
+         ] ,
+         [ rdf:type owl:Restriction ;
+           owl:onProperty :hasTarget ;
+           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+           owl:onClass :Pattern
+         ] .
+
+
+# Describes the relation between exactly two patterns without any direction.
+###  http://purl.org/patternpedia#UndirectedPatternRelationDescriptor
+:UndirectedPatternRelationDescriptor
+    rdf:type owl:Class ;
+    rdfs:subClassOf :PatternRelationDescriptor ,
+                    [ rdf:type owl:Restriction ;
+                      owl:onProperty :hasPattern ;
+                      owl:qualifiedCardinality "2"^^xsd:nonNegativeInteger ;
+                      owl:onClass :Pattern
+                     ] .
+
+
+# Hyperedges describe the relation of a set of patterns
+# It has any number of patterns, any number of descriptions, and a single label for displaying purposes
+###  http://purl.org/patternpedia#PatternSetRelationDescriptor
+:PatternSetRelationDescriptor
+    rdf:type owl:Class ;
+    rdfs:subClassOf :PatternRelationDescriptor ,
+                    [ rdf:type owl:Restriction ;
+                      owl:onProperty :hasPattern ;
+                      owl:allValuesFrom :Pattern
+                    ] ,
+                    [ rdf:type owl:Restriction ;
+                      owl:onProperty :hasLabel ;
+                      owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                      owl:onDataRange xsd:string
+                    ] .
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  https://purl.org/patternpedia#LinkedOpenPatterns
+:LinkedOpenPatterns rdf:type owl:NamedIndividual ,
+                             :PatternPedia ;
+                    :hasName "PatternPedia - Linked Open Patterns"^^xsd:string ;
+                    :hasLogo "https://avatars2.githubusercontent.com/u/26855294?s=400&u=79a17f6856ac0b53e4658f1206362634904eb8b3&v=4"^^xsd:anyURI .
