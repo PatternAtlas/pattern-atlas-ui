@@ -24,6 +24,9 @@ import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
 import {LinksToOtherPattern} from '../../pattern-view-management/add-to-view/add-to-view.component';
 import {AddDirectedEdgeToViewRequest} from '../model/hal/add-directed-edge-to-view-request';
 import {AddUndirectedEdgeToViewRequest} from '../model/hal/add-undirected-edge-to-view-request';
+import {Embedded} from '../model/hal/embedded';
+import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
+import {DirectedEdesResponse} from '../model/hal/directed-edes-response.interface';
 
 @Injectable()
 export class PatternViewService {
@@ -63,5 +66,13 @@ export class PatternViewService {
                 this.http.post(patternView._links.directedEdges.href, new AddDirectedEdgeToViewRequest(<DirectedEdgeModel>item.edge), {observe: 'response'}) :
                 this.http.post(patternView._links.undirectedEdges.href, new AddUndirectedEdgeToViewRequest(<UndirectedEdgeModel>item.edge), {observe: 'response'}));
         return observables.length > 0 ? forkJoin(observables) : EMPTY;
+    }
+
+    getDirectedEdges(patternView: PatternView): Observable<Embedded<DirectedEdesResponse>> {
+        return this.http.get<Embedded<DirectedEdesResponse>>(patternView._links.directedEdges.href);
+    }
+
+    getUndirectedEdges(patternView: PatternView): Observable<Embedded<UndirectedEdesResponse>> {
+        return this.http.get<Embedded<UndirectedEdesResponse>>(patternView._links.undirectedEdges.href);
     }
 }

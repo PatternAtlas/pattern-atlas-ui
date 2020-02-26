@@ -7,8 +7,6 @@ import {CreatePatternRelationComponent} from '../create-pattern-relation/create-
 import {PatternView} from '../../model/hal/pattern-view.model';
 import PatternLanguage from '../../model/hal/pattern-language.model';
 import {EdgeWithType, PatternRelationDescriptorService} from '../../service/pattern-relation-descriptor.service';
-import {tap} from 'rxjs/operators';
-import {Observable} from 'rxjs';
 import {ToasterService} from 'angular2-toaster';
 import {UriConverter} from '../../util/uri-converter';
 import GraphEditor from '@ustutt/grapheditor-webcomponent/lib/grapheditor';
@@ -186,12 +184,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         this.startSimulation();
     }
 
-    getPatterns(): Observable<Array<Pattern>> {
-        return this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href)
-            .pipe(
-                tap(patterns => this.patterns = patterns)
-            );
-    }
 
     backgroundClicked() {
         this.highlightedNodeIds = [];
@@ -204,6 +196,9 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     private initData() {
         this.patternLanguageData = this.data;
         this.edges = GraphDisplayComponent.mapPatternLinksToEdges(this.patternLanguageData.edges);
+        console.log(this.edges);
+        console.log(this.patternLanguageData.edges);
+
         this.copyOfLinks = GraphDisplayComponent.mapPatternLinksToEdges(this.patternLanguageData.edges);
         this.patterns = this.patternLanguageData.patterns;
         this.patternLanguage = this.patternLanguageData.patternLanguage;
@@ -216,6 +211,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             width: 1000,
             height: 500
         });
+        console.log(this.edges);
 
         // allow to create edges to any other node in the graph (this enables multiple edges between nodes)
         this.graphNativeElement.onCreateDraggedEdge = (edge: DraggedEdge) => {
@@ -245,6 +241,10 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     }
 
     private getGraph() {
+        if (!this.patternLanguage) {
+            this.startSimulation();
+            return;
+        }
         this.patternLanguageService.getGraph(this.patternLanguage)
             .subscribe((res: { graph: Array<GraphNode> }) => {
                 if ((!res.graph && Array.isArray(this.patternLanguage.patterns)) ||

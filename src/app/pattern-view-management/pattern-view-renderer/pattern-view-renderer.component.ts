@@ -1,24 +1,26 @@
-import { AfterViewInit, ApplicationRef, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AddToViewComponent, LinksToOtherPattern, LoazyLoadedFlatNode } from '../add-to-view/add-to-view.component';
-import { PatternLanguageService } from '../../core/service/pattern-language.service';
-import PatternLanguage from '../../core/model/hal/pattern-language.model';
-import { EMPTY, forkJoin, Observable } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
-import { ToasterService } from 'angular2-toaster';
-import { PatternViewService } from '../../core/service/pattern-view.service';
+import {AfterViewInit, ApplicationRef, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {AddToViewComponent, LinksToOtherPattern, LoazyLoadedFlatNode} from '../add-to-view/add-to-view.component';
+import {PatternLanguageService} from '../../core/service/pattern-language.service';
+import {EMPTY, forkJoin, Observable} from 'rxjs';
+import {switchMap, tap} from 'rxjs/operators';
+import {ToasterService} from 'angular2-toaster';
+import {PatternViewService} from '../../core/service/pattern-view.service';
 import Pattern from '../../core/model/hal/pattern.model';
-import { PatternView } from '../../core/model/hal/pattern-view.model';
-import { UriConverter } from '../../core/util/uri-converter';
-import { ActivatedRoute } from '@angular/router';
-import { PatternService } from '../../core/service/pattern.service';
-import { CreatePatternRelationComponent } from '../../core/component/create-pattern-relation/create-pattern-relation.component';
-import { DirectedEdgeModel } from '../../core/model/hal/directed-edge.model';
-import { HalLink } from '../../core/model/hal/hal-link.interface';
-import { AddDirectedEdgeToViewRequest } from '../../core/model/hal/add-directed-edge-to-view-request';
-import { AddUndirectedEdgeToViewRequest } from '../../core/model/hal/add-undirected-edge-to-view-request';
-import { UndirectedEdgeModel } from '../../core/model/hal/undirected-edge.model';
+import {PatternView} from '../../core/model/hal/pattern-view.model';
+import {UriConverter} from '../../core/util/uri-converter';
+import {ActivatedRoute} from '@angular/router';
+import {PatternService} from '../../core/service/pattern.service';
+import {CreatePatternRelationComponent} from '../../core/component/create-pattern-relation/create-pattern-relation.component';
+import {DirectedEdgeModel} from '../../core/model/hal/directed-edge.model';
+import {HalLink} from '../../core/model/hal/hal-link.interface';
+import {AddDirectedEdgeToViewRequest} from '../../core/model/hal/add-directed-edge-to-view-request';
+import {AddUndirectedEdgeToViewRequest} from '../../core/model/hal/add-undirected-edge-to-view-request';
+import {UndirectedEdgeModel} from '../../core/model/hal/undirected-edge.model';
 import PatternLanguageModel from '../../core/model/hal/pattern-language-model.model';
+import {Embedded} from '../../core/model/hal/embedded';
+import {UndirectedEdesResponse} from '../../core/model/hal/undirected-edes-response.interface';
+import {DirectedEdesResponse} from '../../core/model/hal/directed-edes-response.interface';
 
 @Component({
     selector: 'pp-pattern-view-renderer',
@@ -34,6 +36,10 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     trigger;
     private patternLanguages: Array<PatternLanguageModel>;
     private patternViewUri: string;
+    graphVisible = false;
+    private directedPatternRelations: DirectedEdgeModel[];
+    private undirectedPatternRelations: UndirectedEdgeModel[];
+    patternLinks: Array<DirectedEdgeModel | UndirectedEdgeModel> = [];
 
     constructor(private matDialog: MatDialog, private patternLanguageService: PatternLanguageService, private patternViewService: PatternViewService,
                 private patternService: PatternService, private toasterService: ToasterService, private cdr: ChangeDetectorRef,
@@ -48,7 +54,11 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     ngAfterViewInit(): void {
         this.patternViewUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternViewUri'));
 
-        this.getData().subscribe(() => {
+        this.getData().pipe(
+            switchMap(() => {
+                return this.getLinks();
+            })
+        ).subscribe(() => {
                 this.isLoading = false;
                 this.displayText = this.patternViewResponse.name;
             },
@@ -56,7 +66,11 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     }
 
     addPatternToView() {
-        const dialogRef = this.matDialog.open(AddToViewComponent, {data: {patternlanguages: this.patternLanguages, title: 'Add patterns to View'}, height: 'auto', maxHeight: 'calc(100vh - 200px)'});
+        const dialogRef = this.matDialog.open(AddToViewComponent, {
+            data: {patternlanguages: this.patternLanguages, title: 'Add patterns to View'},
+            height: 'auto',
+            maxHeight: 'calc(100vh - 200px)'
+        });
         dialogRef.afterClosed().pipe(
             switchMap((res: LoazyLoadedFlatNode[]) => res ?
                 this.patternViewService.addPatterns(this.patternViewResponse._links.patterns.href, this.mapDialogResultToPatterns(res))
@@ -75,23 +89,53 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
         this.subscribeToLinkDialogResult(dialogRef);
     }
 
-    createLink() {
+    private getDirectedEdges(): Observable<Embedded<DirectedEdesResponse>> {
+        if (!this.patternViewResponse) {
+            return EMPTY;
+        }
+        return this.patternViewService.getDirectedEdges(this.patternViewResponse).pipe(
+            tap((edges) => {
+                this.directedPatternRelations = edges._embedded ? edges._embedded.directedEdgeModels : [];
+            }));
+    }
+
+    private getUndirectedEdges(): Observable<Embedded<UndirectedEdesResponse>> {
+        if (!this.patternViewResponse) {
+            return EMPTY;
+        }
+        return this.patternViewService.getUndirectedEdges(this.patternViewResponse).pipe(
+            tap((edges) => {
+                this.undirectedPatternRelations = edges._embedded ? edges._embedded.undirectedEdgeModels : [];
+            }));
+    }
+
+    addLink() {
         const dialogRef = this.matDialog.open(CreatePatternRelationComponent, {data: {patterns: this.patterns, patternview: this.patternViewResponse}});
         dialogRef.afterClosed().pipe(
-            switchMap((dialogResult) => {
-                const url = dialogResult instanceof DirectedEdgeModel ? this.patternViewResponse._links.directedEdges.href :
-                    this.patternViewResponse._links.undirectedEdges.href;
-                return dialogResult ? this.patternViewService.createLink(url, dialogResult instanceof DirectedEdgeModel ?
-                    new AddDirectedEdgeToViewRequest(<DirectedEdgeModel>dialogResult) :
-                    new AddUndirectedEdgeToViewRequest(<UndirectedEdgeModel>dialogResult)) : EMPTY;
-            }),
-            switchMap((edge) => edge ? this.getCurrentPatternViewAndPatterns() : EMPTY)).subscribe((res) => {
+            switchMap((edge) => {
+                    return this.createLink(edge);
+                }
+            )).subscribe((res) => {
             if (res) {
                 this.toasterService.pop('success', 'Relation added');
                 this.cdr.detectChanges();
             }
         });
     }
+
+    private createLink(edge): Observable<any> {
+        const url = edge instanceof DirectedEdgeModel ? this.patternViewResponse._links.directedEdges.href :
+            this.patternViewResponse._links.undirectedEdges.href;
+        if (!edge || !url) {
+            return EMPTY;
+        }
+        return this.patternViewService.createLink(url, edge instanceof DirectedEdgeModel ?
+            new AddDirectedEdgeToViewRequest(<DirectedEdgeModel>edge) :
+            new AddUndirectedEdgeToViewRequest(<UndirectedEdgeModel>edge)).pipe(
+            switchMap(() => this.getLinks())
+        );
+    }
+
 
     detectChanges() {
         this.cdr.detectChanges();
@@ -126,7 +170,18 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     private getData(): Observable<any> {
         const $getPatternLanguages = this.getPatternLanguages();
         const $getCurrentPatternView = this.getCurrentPatternViewAndPatterns();
-        return forkJoin([$getPatternLanguages, $getCurrentPatternView]);
+        return forkJoin([$getPatternLanguages, $getCurrentPatternView]); // , $getDirectedEdges]);
+    }
+
+    private getLinks(): Observable<any> {
+        const $getUndirectedEdges = this.getUndirectedEdges();
+        const $getDirectedEdges = this.getDirectedEdges();
+        return forkJoin([$getUndirectedEdges, $getDirectedEdges]).pipe(tap(() => {
+            this.patternLinks = [];
+            this.patternLinks.push(...this.directedPatternRelations);
+            this.patternLinks.push(...this.undirectedPatternRelations);
+            console.log(this.patternLinks);
+        }));
     }
 
     private mapDialogResultToPatterns(res: LoazyLoadedFlatNode[]): Pattern[] {
@@ -183,4 +238,16 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     }
 
 
+    changeRenderer(isGraphVisible: any) {
+        this.graphVisible = isGraphVisible;
+    }
+
+    addedEdgeInGraphView(edge: any) {
+        if (edge) {
+            this.createLink(edge).subscribe(() => {
+                this.toasterService.pop('success', 'Link added');
+                this.cdr.detectChanges();
+            });
+        }
+    }
 }

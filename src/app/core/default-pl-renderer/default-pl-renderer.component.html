@@ -1,17 +1,7 @@
 <pp-action-button-bar (add2Clicked)="addPattern()" (addClicked)="addLink()" [addButtonText]="'Add Link'"
                       [displayText]="patternLanguage?.name" [secondAddButtonText]="'Add Pattern'"
                       [secondAddButton]="true">
-    <mat-button-toggle-group #group="matButtonToggleGroup" (change)="setGraphVisible(group.value)"
-                             [value]="graphVisible"
-                             appearance="legacy"
-                             style="font-size: small; height: 35px; align-items: center;">
-        <mat-button-toggle [checked]="true" [value]="false" aria-label="Text align center" mat-raised-button>
-            Cards
-        </mat-button-toggle>
-        <mat-button-toggle [value]="true" aria-label="Text align left" mat-raised-button>
-            Graph
-        </mat-button-toggle>
-    </mat-button-toggle-group>
+    <pp-toggle-renderer [graphVisible]="graphVisible" (toggledRenderer)="setGraphVisible($event)"></pp-toggle-renderer>
     <mat-form-field id="search-field" #searchField appearance="outline"
                     *ngIf="!graphVisible" [floatLabel]="'always'">
         <mat-label>Filter</mat-label>
@@ -27,7 +17,7 @@
 <div>
     <pp-card-renderer *ngIf="!graphVisible && patterns" [uriEntities]="this.patterns"></pp-card-renderer>
     <pp-graph-display *ngIf="graphVisible && patterns" [data]="{
-                patterns: this.patterns, edges: this.patternLinks, copyOfLinks: this.patternLinks,
+                patterns: this.patterns, edges: this.patternLinks,
                 patternLanguage: this.patternLanguage, patternView: null
             }" (addedEdge)="linkAddedInGraphEditor($event)">
     </pp-graph-display>

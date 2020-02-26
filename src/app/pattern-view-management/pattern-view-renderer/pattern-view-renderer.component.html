@@ -1,8 +1,10 @@
 <pp-action-button-bar [addButtonText]="'Add patterns'" [secondAddButton]="true"
                       [secondAddButtonText]="'Create new Link'" [displayText]="displayText"
-                      (addClicked)="addPatternToView()" (add2Clicked)="createLink()"></pp-action-button-bar>
+                      (addClicked)="addPatternToView()" (add2Clicked)="addLink()">
+    <pp-toggle-renderer [graphVisible]="graphVisible" (toggledRenderer)="changeRenderer($event)"></pp-toggle-renderer>
+</pp-action-button-bar>
 
-<div class="container" *ngIf="!isLoading">
+<div class="container" *ngIf="!isLoading && !graphVisible">
 
     <mat-card class="pattern-card" *ngFor="let pattern of patterns">
         <mat-card-header>
@@ -39,3 +41,12 @@
         </mat-card-actions>
     </mat-card>
 </div>
+
+<pp-graph-display *ngIf="!isLoading && graphVisible"
+                  [data]="{
+                patterns: this.patterns, edges: this.patternLinks,
+                patternLanguage: null, patternView: this.patternViewResponse
+            }"
+                  (addedEdge)="addedEdgeInGraphView($event)"></pp-graph-display>
+
+
