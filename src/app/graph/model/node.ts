@@ -9,10 +9,10 @@ export class Node implements d3.SimulationNodeDatum {
   fx?: number | null;
   fy?: number | null;
 
-  // the id of the pattern
+  // the id of the patterns
   id: string;
 
-  // the name of the pattern which will be displayed
+  // the name of the patterns which will be displayed
   name: string;
   // color of the node
   color?: string;

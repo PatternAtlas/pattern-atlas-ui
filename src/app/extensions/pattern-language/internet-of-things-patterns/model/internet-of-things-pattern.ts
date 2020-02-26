@@ -18,7 +18,7 @@ class InternetOfThingsPattern extends Pattern {
     /*
         From Pattern:
             private _id: string;
-            iri: string;
+            uri: string;
             name: string;
      */
     intent: { label: 'Intent', value: string } = {label: 'Intent', value: ''};

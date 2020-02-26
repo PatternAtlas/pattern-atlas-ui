@@ -14,13 +14,15 @@
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { InternetOfThingsPatternsLoaderService } from './loader/internet-of-things-patterns-loader.service';
 import { InternetOfThingsPatternsComponent } from './component/internet-of-things-patterns/internet-of-things-patterns.component';
 import { ComponentRegistryService } from '../../../core/service/component-registry.service';
-import { MatButtonModule, MatCardModule, MatDialogModule, MatFormFieldModule, MatTooltipModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { InternetOfThingsPatternComponent } from './component/internet-of-things-pattern/internet-of-things-pattern.component';
-import { IriConverter } from '../../../core/util/iri-converter';
 import { NgxMdModule } from 'ngx-md';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { CoreModule } from '../../../core/core.module';
@@ -46,9 +48,7 @@ import { GraphModule } from 'src/app/graph/graph.module';
         InternetOfThingsPatternsComponent,
         InternetOfThingsPatternsGraphComponent
     ],
-    providers: [
-        InternetOfThingsPatternsLoaderService
-    ],
+    providers: [],
     exports: [],
     entryComponents: [
         InternetOfThingsPatternComponent,
@@ -58,7 +58,8 @@ import { GraphModule } from 'src/app/graph/graph.module';
 })
 export class InternetOfThingsPatternsModule {
     constructor(private cr: ComponentRegistryService) {
-      this.cr.registerComponent(IriConverter.convertIriToId('https://purl.org/patternpedia/patternlanguages/internetofthingspatterns#InternetofThingsPatterns'), {
+        // tslint:disable-next-line:max-line-length
+        this.cr.registerComponent('https://patternpedia.org/patternlanguages/internetofthingspatterns', {
             plcomponent: InternetOfThingsPatternsGraphComponent,
             pcomponent: InternetOfThingsPatternsGraphComponent,
             label: 'Network Graph'

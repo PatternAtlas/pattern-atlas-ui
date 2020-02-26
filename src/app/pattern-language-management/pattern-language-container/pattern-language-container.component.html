@@ -12,41 +12,22 @@
   ~ SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
   -->
 
-<!-- tab view if there are multiple renderer for the language available -->
+<!-- tab view if there are multiple renderers for the language available -->
 <mat-tab-group *ngIf="renderer && renderer.length > 1; else oneOrNoRenderer">
-  <!-- create a new tab for each available renderer -->
-  <mat-tab label="{{r.label || 'Tab ' + (i+1)}}" *ngFor="let r of renderer; let i = index">
-    <mat-card>
-      <ng-template ppPatternLanguageContainer [plId]="plId" [index]="i"></ng-template>
-    </mat-card>
-  </mat-tab>
+    <!-- create a new tab for each available renderer -->
+    <mat-tab label="{{r.label || 'Tab ' + (i+1)}}" *ngFor="let r of renderer; let i = index">
+        <mat-card>
+            <ng-template ppPatternLanguageContainer [patternLanguageUri]="plEncodedUri" [index]="i"></ng-template>
+        </mat-card>
+    </mat-tab>
 </mat-tab-group>
 
 <!-- else, use default renderers -->
 <ng-template #oneOrNoRenderer>
+    <!--If there is only one renderer registered for this pl, use it: -->
+    <ng-template *ngIf="renderer" ppPatternLanguageContainer [patternLanguageUri]="plEncodedUri"></ng-template>
 
-  <!--If there is only one renderer registered for this pl, use it: -->
-  <mat-card *ngIf="renderer">
-    <ng-template ppPatternLanguageContainer [plId]="plId"></ng-template>
-  </mat-card>
-
-  <!--If there is no renderer registered for this pl, offer two default renderers (card or graph view) -->
-  <mat-tab-group class="view-toggle" *ngIf="!renderer" [selectedIndex]="0">
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon>view_module</mat-icon>
-        Card View
-      </ng-template>
-      <ng-template #cardsView ppPatternLanguageContainer [plId]="plId"></ng-template>
-    </mat-tab>
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon>device_hub</mat-icon>
-        Graph View
-      </ng-template>
-      <ng-template #graphView ppPatternLanguageContainer [plId]="plId" [graphView]="true"></ng-template>
-    </mat-tab>
-  </mat-tab-group>
-
-
+  <!--If there is no renderer registered for this pl, take the default one -->
+  <ng-template *ngIf="!renderer" #cardsView ppPatternLanguageContainer [patternLanguageUri]="plEncodedUri">
+</ng-template>
 </ng-template>

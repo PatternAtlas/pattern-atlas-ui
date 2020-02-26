@@ -1,0 +1,67 @@
+<div style="display: flex; justify-content: space-between; align-items: baseline">
+    <h1 mat-dialog-title>Create {{isPatternLanguageDialog ? 'Pattern Language' : 'Pattern View'}}</h1>
+    <button mat-flat-button (click)="close()" tabindex="-1">
+        <i class="material-icons">close</i>
+    </button>
+</div>
+<div mat-dialog-content [formGroup]="patternLanguageForm">
+    <div fxLayout="column" fxLayoutAlign="space-around start">
+        <mat-card fxLayout="column" fxLayoutAlign="space-around" style="margin: 10px;">
+            <mat-form-field appearance="outline" style="width: 24em;" [floatLabel]="'always'">
+                <mat-label>{{isPatternLanguageDialog ? 'Pattern Language' : 'Pattern View'}} name</mat-label>
+                <input matInput formControlName="name"
+                       placeholder="Enter the name of the {{ isPatternLanguageDialog ? 'Pattern Language' : 'Pattern View' }}">
+                <mat-error *ngIf="saveRequested && name?.hasError('required')">This field is mandatory.</mat-error>
+                <mat-error *ngIf="saveRequested && name?.hasError('pattern')">
+                    Please use only alphanumeric characters, _ and spaces.
+                </mat-error>
+            </mat-form-field>
+
+            <div fxLayout="row" fxLayoutAlign="space-around center">
+                <mat-form-field class="full-width" appearance="outline" style="width: 24em" [floatLabel]="'always'">
+                    <mat-label>Icon URL</mat-label>
+                    <input matInput formControlName="iconUrl" placeholder="Enter URL of Icon" type="url">
+                    <div fxLayout="row" fxLayoutAlign="space-around center" *ngIf="iconPreviewVisible">
+                        <span class="label-preview">Icon-Preview: </span>
+                        <div mat-card-avatar #iconPreview
+                             [ngStyle]="{ 'background-image': 'url(' + iconUrl?.value + ')'}"
+                             class="example-header-image"></div>
+                    </div>
+                    <mat-error *ngIf="saveRequested && iconUrl?.hasError('required')">This field is mandatory.
+                    </mat-error>
+                    <mat-error *ngIf="saveRequested && iconUrl?.hasError('pattern')">Please insert a valid URL.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div *ngIf="isPatternLanguageDialog">
+                <h3>Sections</h3>
+                <mat-form-field appearance="outline" style="width: 24em" [floatLabel]="'always'">
+                    <mat-label>New Section</mat-label>
+                    <input #sectionInput (keyup.enter)="addSection(sectionInput.value)" matInput
+                           placeholder="Key in new Section and hit enter..." [formControl]="sectionCtrl">
+                </mat-form-field>
+                <mat-list matRipple cdkDropList [cdkDropListData]="sections"
+                          [cdkDropListOrientation]="'vertical'"
+                          (cdkDropListDropped)="dropSection($event)">
+                    <mat-list-item matRipple *ngFor="let section of sections; last as last; let i = index" cdkDrag>
+                        {{i + 1}}&nbsp;{{section}}
+                        <button mat-button color="warn" (click)="removeSection(section)"><i
+                                class="material-icons">delete</i></button>
+                        <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+                    </mat-list-item>
+                </mat-list>
+            </div>
+        </mat-card>
+
+    </div>
+</div>
+
+<div mat-dialog-actions>
+    <button mat-raised-button (click)="close()"><i
+            class="material-icons">close</i> Close
+    </button>
+    <button mat-raised-button color="primary" (click)="save()"><i
+            class="material-icons">save</i> Save {{isPatternLanguageDialog ? 'Pattern Language' : 'View'}}
+    </button>
+</div>

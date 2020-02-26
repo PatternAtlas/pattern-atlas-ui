@@ -16,10 +16,10 @@
 <div class="container">
     <mat-card class="landing-card" *ngFor="let pattern of patterns">
         <mat-card-header>
-            <!--<img *ngIf="pattern.icon.value; else noImageAvatar" mat-card-avatar [src]="pattern.icon.value">-->
+            <!--<img *ngIf="patterns.icon.value; else noImageAvatar" mat-card-avatar [src]="patterns.icon.value">-->
             <!--<ng-template #noImageAvatar><img mat-card-avatar [src]="'https://placekitten.com/200/300'"></ng-template>-->
 
-            <mat-card-title *ngIf="pattern.name && '' !== pattern.name; else noPatternName" style="width: 10rem">
+            <mat-card-title *ngIf="pattern.name && '' !== pattern.name; else noPatternName" style="width: 10rem; word-break: break-word">
                 {{pattern.name}}
             </mat-card-title>
           <ng-template #noPatternName>
@@ -35,7 +35,7 @@
         </mat-card-content>
         <mat-card-actions>
             <div style="text-align: center">
-                <button mat-stroked-button color="primary" (click)="navigate(pattern.id)"><i class="material-icons">pageview</i>View
+                <button mat-stroked-button color="primary" (click)="navigate(pattern.uri)"><i class="material-icons">pageview</i>View
                 </button>
             </div>
         </mat-card-actions>

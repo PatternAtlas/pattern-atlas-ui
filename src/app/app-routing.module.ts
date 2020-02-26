@@ -1,4 +1,9 @@
-import { PatternLanguageGraphComponent } from './pattern-language-management/pattern-language-graph/pattern-language-graph.component';
+import {PatternLanguageGraphComponent} from './pattern-language-management/pattern-language-graph/pattern-language-graph.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {PageNotFoundComponent} from './page-not-found.component';
+import {ProcessOauthCallbackComponent} from './core/component/process-oauth-callback/process-oauth-callback.component';
+import {ToasterModule} from 'angular2-toaster';
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -13,30 +18,14 @@ import { PatternLanguageGraphComponent } from './pattern-language-management/pat
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { PageNotFoundComponent } from './page-not-found.component';
-import { AdministrationComponent } from './administration.component';
-import { TestComponent } from './test/test.component';
-import { ProcessOauthCallbackComponent } from './core/component/process-oauth-callback/process-oauth-callback.component';
-import { ToasterModule } from 'angular2-toaster';
-
 const routes: Routes = [
-  {
-    path: 'oauth-callback',
-    component: ProcessOauthCallbackComponent
-  }, {
+    {
+        path: 'oauth-callback',
+        component: ProcessOauthCallbackComponent
+    }, {
         path: '',
         redirectTo: 'patternlanguages',
         pathMatch: 'full'
-    },
-    {
-        path: 'administration',
-        component: AdministrationComponent
-    },
-    {
-        path: 'test',
-        component: TestComponent
     },
     {
         path: 'graph',
@@ -49,7 +38,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {useHash: false, onSameUrlNavigation: 'reload'}), ToasterModule.forRoot()],
+    imports: [RouterModule.forRoot(routes, {useHash: false, onSameUrlNavigation: 'reload'}), ToasterModule.forRoot()],
     exports: [RouterModule]
 })
 export class AppRoutingModule {

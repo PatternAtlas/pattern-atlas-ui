@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { IriConverter } from 'src/app/core/util/iri-converter';
+import { UriConverter } from 'src/app/core/util/uri-converter';
 import LinkInfo from '../../model/link-info';
 import LinkData from '../../model/link-data';
 
@@ -12,10 +12,10 @@ export class LinkInfoboxComponent implements OnInit {
 
   // the link data to be displayed
   @Input() linkData: LinkData;
-  // the id of the currently inspected pattern. Can be null
+  // the id of the currently inspected patterns. Can be null
   @Input() currentPatternId?: string;
 
-  // gets called if a pattern within the infobox has been clicked, parameter is the corresponding id of the pattern
+  // gets called if a patterns within the infobox has been clicked, parameter is the corresponding id of the patterns
   @Output() onPatternClicked = new EventEmitter<string>();
 
   // given data will be transformed into a different model
@@ -59,7 +59,7 @@ export class LinkInfoboxComponent implements OnInit {
         };
       }
     } else {
-      // default case is, source pattern is the current pattern
+      // default case is, source patterns is the current patterns
       this.linkInfo = {
         currPattern: {
           id: data.sourcePattern.id,

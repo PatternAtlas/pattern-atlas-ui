@@ -14,7 +14,7 @@
 
 <mat-toolbar color="primary">
     <mat-icon>library_books</mat-icon>
-    <span style="margin-left: 1rem">PatternPedia</span>
+    <span style="margin-left: 1rem">PatternAtlas</span>
 </mat-toolbar>
 <nav mat-tab-nav-bar>
     <a mat-tab-link
@@ -24,16 +24,10 @@
         Pattern Languages
     </a>
     <a mat-tab-link
-       [routerLink]="'/solutionlanguages'"
+       [routerLink]="'/patternviews'"
        routerLinkActive #rla2="routerLinkActive"
        [active]="rla2.isActive">
-        Solution Languages
-    </a>
-    <a mat-tab-link
-       [routerLink]="'/administration'"
-       routerLinkActive #rla3="routerLinkActive"
-       [active]="rla3.isActive">
-        Administration
+        Pattern Views
     </a>
 </nav>
 

@@ -11,31 +11,18 @@
   ~
   ~ SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
   -->
-
-<mat-toolbar style="margin-top: 10px; margin-bottom: 10px">
-  <button style="margin-left: 10px; margin-right: 10px" mat-raised-button color="accent" (click)="reloadPatternRepo()">
-    <i
-            class="material-icons">autorenew</i> Reload
-    </button>
-  <button style="margin-left: 10px" mat-raised-button color="accent" (click)="getOAuthToken()"
-          *ngIf="showAuthentificationButton"><i
-    class="material-icons">info</i> Autorize Github
-  </button>
-  <span *ngIf="!showAuthentificationButton" style="display: flex; align-items: center;
-}"> <i
-    class="material-icons">info</i> You authorized PatternPedia to use your github account </span>
-
-</mat-toolbar>
+<pp-action-button-bar [addButtonText]="'Add'" [goBackButton]="false" [reloadButton]="true"
+                      (addClicked)="goToPatternLanguageCreation()"
+                      (reloadClicked)="reloadPatternRepo()"></pp-action-button-bar>
 <div class="container">
-  <mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>
-  <mat-card class="landing-card" *ngFor="let patternLanguage of patternLanguages">
+    <mat-card class="landing-card" *ngFor="let patternLanguage of patternLanguages">
         <mat-card-header>
-          <img *ngIf="patternLanguage?.logos && patternLanguage.logos[0]; else noImageAvatar" mat-card-avatar
-               [src]="patternLanguage.logos[0]">
-            <ng-template #noImageAvatar><img mat-card-avatar [src]="'https://placekitten.com/200/300'"></ng-template>
+            <img *ngIf="patternLanguage?.logo && patternLanguage?.logo !== ''; else noImageAvatar" mat-card-avatar
+                 [src]="patternLanguage.logo">
+            <ng-template #noImageAvatar><img mat-card-avatar [src]="'//via.placeholder.com/50x50'"></ng-template>
 
-          <mat-card-title *ngIf="patternLanguage?.name && '' !== patternLanguage.name; else noPLName"
-                          style="width: 10rem">
+            <mat-card-title *ngIf="patternLanguage?.name && '' !== patternLanguage.name; else noPLName"
+                            style="width: 10rem; word-break: break-word">
                 {{patternLanguage.name}}
             </mat-card-title>
             <ng-template #noPLName>
@@ -44,21 +31,16 @@
                 </mat-card-title>
             </ng-template>
         </mat-card-header>
-    <img mat-card-image *ngIf="patternLanguage?.logos[0]; else noImage" [src]="patternLanguage.logos[0]">
-        <ng-template #noImage><img mat-card-image [src]="'https://placekitten.com/200/300'"></ng-template>
+        <img mat-card-image *ngIf="patternLanguage?.logo && patternLanguage?.logo !== ''; else noImage"
+             [src]="patternLanguage.logo">
+        <ng-template #noImage><img mat-card-image [src]="'//via.placeholder.com/200x300'"></ng-template>
         <mat-card-actions>
             <div style="text-align: center">
-              <button matBadge="{{patternLanguage?.patternIRIs?.length}}" mat-stroked-button color="primary"
-                      (click)="navigateToPL(patternLanguage.id)"><i class="material-icons">pageview</i>View
+                <button matBadge="{{patternLanguage?.patternCount}}" mat-stroked-button color="primary"
+                        (click)="navigateToPL(patternLanguage.id)"><i class="material-icons">pageview</i>View
                 </button>
             </div>
         </mat-card-actions>
     </mat-card>
-  <mat-card class="landing-card center-content add-card" id="add-card"
-            (click)="showAuthentificationButton ? '' : goToPatternLanguageCreation()" *ngIf="!isLoading">
-    <div fxLayout="column" fxLayoutAlign="space-around center"><i class="material-icons">add_box</i>
-      <span id="hideIfNotHovered" *ngIf="showAuthentificationButton"><br>Please authorize Github </span>
-    </div>
-  </mat-card>
 </div>
 

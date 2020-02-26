@@ -9,7 +9,7 @@ import { DraggableDirective } from './component/directives/draggable.directive';
 import { ZoomableDirective } from './component/directives/zoomable.directive';
 import { PatternGraphTemplateComponent } from './component/pattern-graph-template/pattern-graph-template.component';
 import { DefaultPatternlanguageGraphComponent } from './component/default-patternlanguage-graph/default-patternlanguage-graph.component';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [

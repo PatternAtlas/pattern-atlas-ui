@@ -1,36 +1,30 @@
-<pp-navigate-back></pp-navigate-back>
-<h2>Pattern Language: {{plName}}
-  <button mat-stroked-button
-          style="margin-left: 5px" color="primary"
-          (click)="addRelationType()" matTooltip="Add new Relationtype"><i class="material-icons -rotate-90deg">swap_vertical_circle</i>
-    <i class="material-icons" style="height: 2em;
-font-size: smaller;  ">add</i></button>
-</h2>
-<div class="container">
-  <mat-progress-spinner mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>
-  <mat-card class="landing-card " *ngFor="let pattern of patterns">
-    <mat-card-header>
-      <mat-card-title>
-        <b>{{pattern.name}}</b>
+<pp-action-button-bar (add2Clicked)="addPattern()" (addClicked)="addLink()" [addButtonText]="'Add Link'"
+                      [displayText]="patternLanguage?.name" [secondAddButtonText]="'Add Pattern'"
+                      [secondAddButton]="true">
+    <mat-button-toggle-group #group="matButtonToggleGroup" (change)="toggleRenderingComponent(group.value)"
+                             [value]="graphVisible"
+                             appearance="legacy"
+                             style="font-size: small; height: 35px; align-items: center;">
+        <mat-button-toggle [checked]="true" [value]="false" aria-label="Text align center" mat-raised-button>
+            Cards
+        </mat-button-toggle>
+        <mat-button-toggle [value]="true" aria-label="Text align left" mat-raised-button>
+            Graph
+        </mat-button-toggle>
+    </mat-button-toggle-group>
+    <mat-form-field id="search-field" #searchField appearance="outline"
+                    *ngIf="!graphVisible" [floatLabel]="'always'">
+        <mat-label>Filter</mat-label>
+        <input matInput placeholder="Type to filter" [formControl]="filter">
+        <mat-icon matSuffix>filter_list</mat-icon>
+    </mat-form-field>
+    <button style="margin-left: 10px;" (click)="reloadGraph()" *ngIf="graphVisible" color="accent" mat-raised-button>
+        <i class="material-icons">autorenew</i> Reformat
+    </button>
+</pp-action-button-bar>
 
-      </mat-card-title>
-    </mat-card-header>
-    <mat-card-content class="fixed-height-card-content">
-      <div *ngFor="let patternSection of patternLanguage?.sections">
-        <p><b>{{getSectionName(patternSection)}}</b>:
-          {{pattern?.sectionsProperties.get(patternSection)}}
-        </p>
-      </div>
-    </mat-card-content>
-    <mat-card-actions>
-      <div style="text-align: center">
-        <button mat-stroked-button color="primary" (click)="navigate(pattern)"><i class="material-icons">pageview</i>View
-        </button>
-      </div>
-    </mat-card-actions>
-  </mat-card>
-<mat-card class="landing-card center-content add-card" (click)="goToPatternCreation()">
-  <i class="material-icons">add_box</i>
-</mat-card>
+<mat-progress-spinner *ngIf="isLoadingDataForRenderer" mode="indeterminate"></mat-progress-spinner>
+<div>
+    <ng-template #displayPLContainer></ng-template>
 </div>
 

@@ -1,0 +1,21 @@
+html, body, svg {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.container {
+  position: fixed;
+  height: calc(80% - 10px);
+  min-height: calc(80% - 10px);
+  width: 100%;
+  min-width: 100%;
+
+  h4 {
+    margin-left: 1em;
+  }
+}
+
+.mat-sidenav-content {
+  overflow: hidden;
+}

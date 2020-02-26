@@ -1,0 +1,41 @@
+<pp-action-button-bar [addButtonText]="'Add patterns'" [secondAddButton]="true"
+                      [secondAddButtonText]="'Create new Link'" [displayText]="displayText"
+                      (addClicked)="addPatternToView()" (add2Clicked)="createLink()"></pp-action-button-bar>
+
+<div class="container" *ngIf="!isLoading">
+
+    <mat-card class="pattern-card" *ngFor="let pattern of patterns">
+        <mat-card-header>
+            <mat-card-title>{{pattern?.name}}</mat-card-title>
+            <mat-card-subtitle>Pattern
+
+
+            </mat-card-subtitle>
+
+        </mat-card-header>
+
+        <mat-card-content>
+            <span class="badge-span" matBadgeOverlap="false"
+                  [matBadge]="getLinkCount(pattern._links.ingoingDirectedEdges)">
+                <mat-icon> trending_flat
+            </mat-icon>
+        </span>
+            <mat-icon class="flip"> trending_flat
+            </mat-icon>
+            <span class="badge-span" matBadgeOverlap="false"
+                  [matBadge]="getLinkCount(pattern._links.outgoingDirectedEdges)">
+        </span>
+
+
+            <span [matBadge]="getLinkCount(pattern._links.undirectedEdges)" matBadgeOverlap="false">
+                 <mat-icon>compare_arrows</mat-icon>
+                </span>
+
+        </mat-card-content>
+        <mat-card-actions
+        >
+            <button mat-button (click)="addLinks(pattern)">Add Links (incl. Pattern)
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</div>

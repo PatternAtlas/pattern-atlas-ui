@@ -9,30 +9,19 @@ import { ComponentRegistryService } from 'src/app/core/service/component-registr
 })
 export class PatternContainerComponent implements OnInit {
 
-    plId: string;
-    pId: string;
+    plEncodedUri: string;
+    pEncodedUri: string;
 
     // the list of registered renderer components for the language
     renderer: Array<any>;
 
-    constructor(private route: ActivatedRoute,
-      private compRegistry: ComponentRegistryService) {
+    constructor(private activatedRoute: ActivatedRoute,
+                private compRegistry: ComponentRegistryService) {
     }
 
     ngOnInit() {
-        // this.plId = this.route.snapshot.params['plid'];
-        // this.pId = this.route.snapshot.params['pid'];
-        // this.renderer = this.compRegistry.getRenderingComponents(this.plId);
-
-        this.route.params.subscribe(params => {
-          this.setUpRenderer(params['plid'], params['pid']);
-        });
-    }
-
-    private setUpRenderer(plid: string, pid: string) {
-      this.plId = plid;
-      this.pId = pid;
-      this.renderer = this.compRegistry.getRenderingComponents(this.plId);
+        this.plEncodedUri = this.activatedRoute.snapshot.paramMap.get('patternUri');
+        this.renderer = this.compRegistry.getRenderingComponents(this.plEncodedUri);
     }
 
 }

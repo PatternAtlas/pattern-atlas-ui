@@ -1,22 +1,20 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { TdTextEditorComponent } from '@covalent/text-editor';
-import { ActivatedRoute, Router } from '@angular/router';
-import { IriConverter } from '../../core/util/iri-converter';
-import { GithubPersistenceService } from '../../core/service/github-persistence.service';
+import {ChangeDetectorRef, Component, NgZone, OnInit, ViewChild} from '@angular/core';
+import {TdTextEditorComponent} from '@covalent/text-editor';
+import {ActivatedRoute, Router} from '@angular/router';
+import {UriConverter} from '../../core/util/uri-converter';
 import * as marked from 'marked';
-import { TokensList } from 'marked';
+import {TokensList} from 'marked';
 import Pattern from '../../core/model/pattern.model';
-import { PatternOntologyService } from '../../core/service/pattern-ontology.service';
-import { ToasterService } from 'angular2-toaster';
-import { PatternLanguageSectionRestriction, SectionRestrictionsResult } from '../../core/model/PatternLanguageSectionRestriction.model';
-import PatternPedia from '../../core/model/pattern-pedia.model';
-import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { ValidationService } from '../../core/service/validation.service';
-import { switchMap } from 'rxjs/internal/operators';
-import { PatternLanguagePatterns } from '../../core/model/pattern-language-patterns.model';
-import { LoadCompletePatternlanguageService } from '../../core/service/loader/complete-patternlanguage-loader.service';
-import { CompletePatternlanguage } from '../../core/model/complete-patternlanguage.interface';
-import { PlRestrictionLoaderService } from '../../core/service/loader/pattern-language-loader/pl-restriction-loader.service';
+import {ToasterService} from 'angular2-toaster';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {ValidationService} from '../../core/service/validation.service';
+import {PatternLanguageService} from '../../core/service/pattern-language.service';
+import PatternLanguage from '../../core/model/hal/pattern-language.model';
+import PatternSectionSchema from '../../core/model/hal/pattern-section-schema.model';
+import * as MarkdownIt from 'markdown-it';
+import * as markdownitKatex from 'markdown-it-katex';
+import {PatternService} from '../../core/service/pattern.service';
+import {debounceTime, distinctUntilChanged} from "rxjs/internal/operators";
 
 
 @Component({
@@ -26,122 +24,137 @@ import { PlRestrictionLoaderService } from '../../core/service/loader/pattern-la
 })
 export class CreatePatternComponent implements OnInit {
 
-
-  patterns: Pattern[];
-  plIri: string;
-  completePatternlanguageInfos: CompletePatternlanguage;
-  plName: string;
-  sections: string[];
-  plRestrictions: Map<string, PatternLanguageSectionRestriction[]>;
-  sectionRestrictions = new Map<string, SectionRestrictionsResult>();
-  xsdPrefix = new PatternPedia().defaultPrefixes.get('xsd').replace('<', '').replace('>', '');
+  iconForm: FormGroup;
+  patterns: Array<Pattern>;
+  patternLanguageUri: string;
+  iconPreviewVisible = false;
   wasSaveButtonClicked = false;
   patternValuesFormGroup: FormGroup;
-
-  defaultTextForType: Map<string, string> =
-    new Map([
-      ['https://purl.org/dc/dcmitype/Image', '![](http://)'],
-      [this.xsdPrefix + 'anyURI', '[](http://)'],
-      [this.xsdPrefix + 'integer', 'Replace this line by an Integer.'],
-      [this.xsdPrefix + 'string', ' Enter your input for this section here.'],
-      [this.xsdPrefix + 'positiveInteger', 'Replace this line by a positive Integer.'],
-      [this.xsdPrefix + 'nonNegativeInteger', 'Replace this line by a positive Integer.'],
-      [this.xsdPrefix + 'nonPositiveInteger', 'Replace this line by a negative Integer.'],
-      [this.xsdPrefix + 'negativeInteger', 'Replace this line by a negative Integer.'],
-      [this.xsdPrefix + 'date', 'dd/MM/yyyy'],
-    ]);
-
-  @ViewChild('textEditor') private _textEditor: TdTextEditorComponent;
   previousTextEditorValue = `# Pattern name`;
-
   options: any = {
     // todo: hide the preview button because it forces fullscreen mode (and destroys our page layout)
   };
-  private errormessages: string[];
+  errorMessages: Array<string>;
+  patternLanguage: PatternLanguage;
+  @ViewChild('textEditor') private _textEditor: TdTextEditorComponent;
+  private sections: Array<string>;
+  private markdown;
+  private patternName: string;
 
   constructor(private activatedRoute: ActivatedRoute,
               private cdr: ChangeDetectorRef,
-              private uploadService: GithubPersistenceService,
-              private pos: PatternOntologyService,
-              private PlRestrictionLoader: PlRestrictionLoaderService,
               private toastService: ToasterService,
+              private patternLanguageService: PatternLanguageService,
+              private patternService: PatternService,
               private router: Router,
-              private completePatternLanguageLoadingService: LoadCompletePatternlanguageService) {
+              private zone: NgZone,
+              private _fb: FormBuilder) {
   }
 
+  get iconUrl(): AbstractControl {
+    return this.iconForm.get('iconUrl');
+  }
 
+  static isListItem(i: number, sectionIndex: number, lines: marked.TokensList): boolean {
+    for (let index = sectionIndex + 1; index < i; index++) {
+      if (lines[index].type === 'list_item_start') {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // noinspection TsLint
   ngOnInit() {
-    this.plIri = IriConverter.convertIdToIri(this.activatedRoute.snapshot.paramMap.get('plid'));
+    this.patternLanguageUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
+    this.markdown = new MarkdownIt();
+    this.markdown.use(markdownitKatex);
 
-    this.completePatternLanguageLoadingService.loadCompletePatternLanguage(this.plIri).then(
-      (completePL) => {
-        this.completePatternlanguageInfos = completePL;
-        this.plName = completePL.patternlanguage.name;
-        this.patterns = completePL.patterns;
-        this.sections = completePL.patternlanguage.sections;
+    this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageUri).subscribe((pl: PatternLanguage) => {
+      this.patternLanguage = pl;
+      this.sections = this.patternLanguage.patternSchema ?
+        this.patternLanguage.patternSchema.patternSectionSchemas.map((schema: PatternSectionSchema) => schema.label) : [];
+      this.initTextEditor();
+      this.initFormGroup();
+    });
 
-        this.initRestrictions();
-        this.initTextEditor();
+    const urlRegex = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
+    this.iconForm = this._fb.group({
+      iconUrl: ['', [Validators.pattern(urlRegex)]]
+    });
 
-      });
-
+    this.iconUrl.valueChanges.pipe(debounceTime(1000), distinctUntilChanged()).subscribe((urlValue) => {
+      this.iconPreviewVisible = urlValue && (urlValue.startsWith('https://') || urlValue.startsWith('http://'));
+    });
   }
 
   save(): void {
-    const pattern = this.parsePatternInput();
+    this.parsePatternInput();
 
-    this.patterns.push(pattern);
-    const patternIris = !this.patterns ? [] : this.patterns.map(p => p.iri);
     this.wasSaveButtonClicked = true;
-    if (!this.patternValuesFormGroup.valid) {
+    if (this.patternValuesFormGroup && !this.patternValuesFormGroup.valid) {
       console.log('pattern entries not valid');
       this.updateFormValidationErrors();
       return;
     }
-
-    const patternLanguage = this.completePatternlanguageInfos.patternlanguage;
-    patternLanguage.patternIRIs = patternIris;
-
-    // patternLanguage.restrictions = restrictions;
-    this.uploadService.updatePL(patternLanguage).pipe(
-      switchMap(() => {
-        return this.uploadService.updatePLPatterns(new PatternLanguagePatterns(IriConverter.getPatternListIriForPLIri(patternLanguage.iri),
-          patternLanguage.iri, this.patterns));
-      }), // load updated patternlanguage file into store:
-      switchMap(() => {
-        return this.pos.loadUrisToStore([{value: this.plIri, token: null}]);
-      })
+    // We send null as uri and let the backend create proper uris, which include camel cased names of patterns
+    this.patternService.savePattern(this.patternLanguage._links.patterns.href,
+      {
+        uri: null,
+        name: this.patternName,
+        content: this.patternValuesFormGroup.value,
+        iconUrl: this.iconForm.value.iconUrl
+      }
     ).subscribe(() => {
-      this.toastService.pop('success', 'Pattern created');
-      this.router.navigate(['..'], {relativeTo: this.activatedRoute});
-    }, (error) => {
-      this.toastService.pop('error', 'Something went wrong while creating the pattern: ' + error.message);
-      console.log(error);
-    });
+        this.toastService.pop('success', 'Pattern successfully created');
+        this.zone.run(() => {
+          this.router.navigate(['..'], {relativeTo: this.activatedRoute});
+        });
+      },
+      (error) => this.toastService.pop('error', 'Could not create Pattern', error.message)
+    );
 
-  }
-
-  getPatternUri(patternName: string, plIri: string): string {
-    return IriConverter.getFileName(plIri) + '/' + IriConverter.removeWhitespace(patternName) + '#' + IriConverter.removeWhitespace(patternName);
   }
 
   parseMarkdownText(): TokensList {
     return marked.lexer(this._textEditor.value);
   }
 
-  getSectionTitle(section: string): string {
-    return section.split('#has')[1];
+  onChangeMarkdownText(): void {
+    const currentText = this.parseMarkdownText();
+    if (this.invalidTextEdit(currentText)) {
+      // TODO
+    }
+    if (this.markdown) {
+      document.getElementById('preview').innerHTML = this.markdown.render(this._textEditor.value);
+    }
   }
 
-  onChangeMarkdownText(): void {
-    let currentText = this.parseMarkdownText();
-    if (this.invalidTextEdit(currentText)) {
-      console.log('invalid markdowntext detected, undoing last editing');
-      this._textEditor.value = this.previousTextEditorValue;
-      currentText = this.parseMarkdownText();
-      this.toastService.pop('warning', 'Reset text', `Title of Sections changed, this is not allowed`);
+  ignoreCaseAndWhitespace(text: string): string {
+    return text.trim().replace(new RegExp('/s', 'g'), '').toLowerCase();
+  }
+
+  addSpaceForCamelCase(text: string): string {
+    return text.replace(/([a-z])([A-Z])/g, '$1 $2');
+  }
+
+  getDefaultTextForSection(section: string): string {
+    return 'Enter your input for this section here.';
+  }
+
+  updateFormValidationErrors(): string {
+    if (this.patternValuesFormGroup.valid) {
+      return '';
     }
-    document.getElementById('preview').innerHTML = marked.parser(currentText);
+    this.errorMessages = [];
+    Object.keys(this.patternValuesFormGroup.controls).forEach(key => {
+      const controlErrors: ValidationErrors = this.patternValuesFormGroup.controls[key].errors;
+      if (controlErrors != null) {
+        Object.keys(controlErrors).forEach(keyError => {
+          this.errorMessages.push(ValidationService.getMessageForError(key, keyError, controlErrors[keyError]));
+        });
+      }
+    });
   }
 
   // returns if a user changed the value of the sections headers (which he is not allowed to do)
@@ -154,174 +167,67 @@ export class CreatePatternComponent implements OnInit {
       const indexOfCorrespondingLine = currentText.findIndex(line =>
         (line.type === 'heading' && line.depth === 2) &&
         this.ignoreCaseAndWhitespace(line.text) ===
-        this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(this.getSectionTitle(section)))
+        this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(section))
       );
       if (indexOfCorrespondingLine === -1) {
         return true;
       }
     }
     // there should be only one name (= line that starts with # )
-    return !(currentText.filter(it => it.type === 'heading' && it.depth === 1).length === 1)
-      || // there should be as many second headings as sections (= line that starts with # )
+    return !(currentText.filter(it => it.type === 'heading' && it.depth === 1).length === 1) ||
+      // there should be as many second headings as sections (= line that starts with # )
       !(currentText.filter(it => it.type === 'heading' && it.depth === 2).length === this.sections.length);
-
   }
 
-  private parsePatternInput(): Pattern {
+  private parsePatternInput(): void {
     const lines = this.parseMarkdownText();
     const patternNameIndex = lines.findIndex((it) => it.type === 'heading' && it.depth === 1);
-    const patternname = patternNameIndex !== -1 ? lines[patternNameIndex]['text'] : '';
-    const sectionMap = new Map<string, string[]>();
-    this.sections.forEach((section: string) => {
+    this.patternName = patternNameIndex !== -1 ? lines[patternNameIndex]['text'] : '';
+    this.patternLanguage.patternSchema.patternSectionSchemas.forEach((schema: PatternSectionSchema) => {
+      const sectionName = schema.name;
       const sectionIndex = lines.findIndex((sec) => sec.type === 'heading' && sec.depth === 2 &&
-        this.ignoreCaseAndWhitespace(sec.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(this.getSectionTitle(section))));
+        this.ignoreCaseAndWhitespace(sec.text) === this.ignoreCaseAndWhitespace(this.addSpaceForCamelCase(sectionName)));
       if (sectionIndex !== -1) {
-        const sectioncontent = [];
+        const sectionContent = [];
         for (let i = sectionIndex + 1; i < lines.length; i++) {
           if (lines[i].type === 'heading') {
             break;
           }
           if (lines[i]['text']) {
             // if a list item was parsed before, add it to the text
-            sectioncontent.push(i > 0 && this.isListItem(i, sectionIndex, lines) ? '* ' + lines[i]['text'] : lines[i]['text']);
+            sectionContent.push(i > 0 && CreatePatternComponent.isListItem(i, sectionIndex, lines) ? '* ' + lines[i]['text'] : lines[i]['text']);
           }
         }
-        if (this.patternValuesFormGroup.controls[section]) {
-          this.patternValuesFormGroup.controls[section].setValue(sectioncontent);
+        if (this.patternValuesFormGroup) {
+          if (this.patternValuesFormGroup.controls[sectionName]) {
+            this.patternValuesFormGroup.controls[sectionName].setValue(sectionContent.join('\n'));
+          } else {
+            console.log('missing formcontrol:');
+            console.log(sectionName);
+          }
         } else {
-          console.log('missing formcontrol:');
-          console.log(section);
+          console.error('patternValuesFormGroup is undefined');
         }
-        const sectionType = this.sectionRestrictions.get(section).type ? this.sectionRestrictions.get(section).type : '';
-
-
-        for (let i = 0; i < sectioncontent.length; i++) {
-
-
-            if (sectionType === this.xsdPrefix + 'anyURI') {
-              sectioncontent[i] = '<' + sectioncontent[i] + '>';
-            }
-        }
-        sectionMap.set(section, sectioncontent);
-
-      }
-
-
-    });
-
-
-    return new Pattern(this.getPatternUri(patternname, this.plIri), patternname, sectionMap, this.plIri);
-
-  }
-
-
-  ignoreCaseAndWhitespace(text: string): string {
-    return text.trim().replace(new RegExp('/s', 'g'), '').toLowerCase();
-  }
-
-  addSpaceForCamelCase(text: string): string {
-    return text.replace(/([a-z])([A-Z])/g, '$1 $2');
-  }
-
-
-  getDefaultTextForSection(section: string): string {
-    if (!this.plRestrictions) {
-      return null;
-    }
-    const restrictionWithTypeIndex = this.plRestrictions.get(section).findIndex((rest: PatternLanguageSectionRestriction) => {
-      return !!rest.type;
-    });
-    const sectionType = restrictionWithTypeIndex !== -1 ? this.plRestrictions.get(section)[restrictionWithTypeIndex].type : '';
-
-    let defaultText = this.defaultTextForType.get(sectionType);
-    if (!defaultText) {
-      defaultText = 'Enter your input for this section here.';
-    }
-    const restrictions = this.sectionRestrictions.get(section);
-    if (!restrictions) {
-      return defaultText;
-    }
-
-    if (!restrictions.maxCardinality || restrictions.maxCardinality > 1) {
-      // propose listitems if multiple entries are allowed
-      defaultText = '* ' + defaultText + '\n\n';
-    }
-    if (restrictions.minCardinality > 1) {
-      defaultText = (defaultText + '\n').repeat(restrictions.minCardinality - 1) + defaultText;
-    }
-    return defaultText;
-  }
-
-
-  updateFormValidationErrors(): string {
-    if (this.patternValuesFormGroup.valid) {
-      return '';
-    }
-    this.errormessages = [];
-    Object.keys(this.patternValuesFormGroup.controls).forEach(key => {
-      const controlErrors: ValidationErrors = this.patternValuesFormGroup.controls[key].errors;
-      if (controlErrors != null) {
-        Object.keys(controlErrors).forEach(keyError => {
-          this.errormessages.push(ValidationService.getMessageForError(this.getSectionTitle(key), keyError, controlErrors[keyError]));
-        });
       }
     });
   }
 
-  // init formgroup based on restrictions
-  private initRestrictions() {
-    this.plRestrictions = this.completePatternlanguageInfos.patternlanguage.restrictions;
-        this.patternValuesFormGroup = new FormGroup({});
-        this.plRestrictions.forEach((value: PatternLanguageSectionRestriction[], key: string) => {
-          const allRestrictions = this.PlRestrictionLoader.getRestrictionsForSection(key, this.plRestrictions.get(key));
-          const validators = [];
-          if (allRestrictions) {
-            this.sectionRestrictions.set(key, allRestrictions);
-
-            if (allRestrictions.minCardinality && allRestrictions.minCardinality > 0) {
-              validators.push(Validators.required);
-              validators.push(Validators.minLength(allRestrictions.minCardinality));
-            }
-            if (allRestrictions.maxCardinality) {
-              validators.push(Validators.maxLength(allRestrictions.maxCardinality));
-            }
-            if (allRestrictions.type === 'https://purl.org/dc/dcmitype/Image') {
-
-              // validators.push(ValidationService.xsdImage());
-            
-            } else if (allRestrictions.type.startsWith(this.xsdPrefix) &&
-              (allRestrictions.type.endsWith('integer') || allRestrictions.type.endsWith('positiveInteger') || allRestrictions.type.endsWith('negativeInteger'))) {
-              validators.push(ValidationService.xsdInteger());
-            } else if (allRestrictions.type.startsWith(this.xsdPrefix) && allRestrictions.type.endsWith('anyURI')) {
-              validators.push(ValidationService.xsdAnyURI());
-            }
-          }
-          this.patternValuesFormGroup.addControl(key,
-            new FormControl(
-              '', validators
-            ));
-          }
-        );
-
-
+  // init formgroup based on patternschema
+  private initFormGroup() {
+    this.patternValuesFormGroup = new FormGroup({});
+    if (this.patternLanguage && this.patternLanguage.patternSchema && this.patternLanguage.patternSchema.patternSectionSchemas) {
+      this.patternLanguage.patternSchema.patternSectionSchemas.forEach((schema: PatternSectionSchema) => {
+        this.patternValuesFormGroup.addControl(schema.name, new FormControl(''));
+      });
+    }
   }
 
   private initTextEditor(): void {
-    for (const section of this.completePatternlanguageInfos.patternlanguage.sections) {
+    for (const section of this.sections) {
       this.previousTextEditorValue = this.previousTextEditorValue.concat(
-        '\n ## ' + this.addSpaceForCamelCase(this.getSectionTitle(section)) + '\n' + this.getDefaultTextForSection(section));
+        '\n ## ' + section + '\n' + this.getDefaultTextForSection(section));
     }
     this._textEditor.value = this.previousTextEditorValue;
     this.onChangeMarkdownText();
-  }
-
-
-  private isListItem(i: number, sectionIndex: number, lines: marked.TokensList): boolean {
-    for (let index = sectionIndex + 1; index < i; index++) {
-      if (lines[index].type === 'list_item_start') {
-        return true;
-      }
-    }
-    return false;
   }
 }

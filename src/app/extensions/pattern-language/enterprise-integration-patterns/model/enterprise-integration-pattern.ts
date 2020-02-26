@@ -1,7 +1,7 @@
 import Pattern from 'src/app/core/model/pattern.model';
 
 /**
- * Container class holding all information of an enterprise integration pattern.
+ * Container class holding all information of an enterprise integration patterns.
  * Used to convert the Turtle data into a Typescript equivalent representation.
  */
 export default class EnterpriseIntegrationPattern extends Pattern {
