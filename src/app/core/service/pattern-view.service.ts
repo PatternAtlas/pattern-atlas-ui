@@ -27,6 +27,7 @@ import {AddUndirectedEdgeToViewRequest} from '../model/hal/add-undirected-edge-t
 import {Embedded} from '../model/hal/embedded';
 import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
 import {DirectedEdesResponse} from '../model/hal/directed-edes-response.interface';
+import {GraphNode} from '../component/graph-display/graph-display.component';
 
 @Injectable()
 export class PatternViewService {
@@ -75,4 +76,13 @@ export class PatternViewService {
     getUndirectedEdges(patternView: PatternView): Observable<Embedded<UndirectedEdesResponse>> {
         return this.http.get<Embedded<UndirectedEdesResponse>>(patternView._links.undirectedEdges.href);
     }
+
+    saveGraph(patternView: PatternView, nodeList: any[]) {
+        return this.http.post<any>(patternView._links.graph.href, nodeList, {observe: 'response'});
+    }
+
+    getGraph(patternView: PatternView) {
+        return this.http.get<{ graph: Array<GraphNode> }>(patternView._links.graph.href);
+    }
+
 }
