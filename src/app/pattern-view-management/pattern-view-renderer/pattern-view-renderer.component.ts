@@ -1,4 +1,4 @@
-import {AfterViewInit, ApplicationRef, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {AfterViewInit, ApplicationRef, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {AddToViewComponent, LinksToOtherPattern, LoazyLoadedFlatNode} from '../add-to-view/add-to-view.component';
 import {PatternLanguageService} from '../../core/service/pattern-language.service';
@@ -21,6 +21,7 @@ import PatternLanguageModel from '../../core/model/hal/pattern-language-model.mo
 import {Embedded} from '../../core/model/hal/embedded';
 import {UndirectedEdesResponse} from '../../core/model/hal/undirected-edes-response.interface';
 import {DirectedEdesResponse} from '../../core/model/hal/directed-edes-response.interface';
+import {GraphDisplayComponent} from '../../core/component/graph-display/graph-display.component';
 
 @Component({
     selector: 'pp-pattern-view-renderer',
@@ -40,6 +41,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     private directedPatternRelations: DirectedEdgeModel[];
     private undirectedPatternRelations: UndirectedEdgeModel[];
     patternLinks: Array<DirectedEdgeModel | UndirectedEdgeModel> = [];
+    @ViewChild(GraphDisplayComponent, {static: false}) graphDisplayComponent: GraphDisplayComponent;
 
     constructor(private matDialog: MatDialog, private patternLanguageService: PatternLanguageService, private patternViewService: PatternViewService,
                 private patternService: PatternService, private toasterService: ToasterService, private cdr: ChangeDetectorRef,
@@ -249,5 +251,9 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
                 this.cdr.detectChanges();
             });
         }
+    }
+
+    reloadGraph() {
+        this.graphDisplayComponent.reformatGraph();
     }
 }
