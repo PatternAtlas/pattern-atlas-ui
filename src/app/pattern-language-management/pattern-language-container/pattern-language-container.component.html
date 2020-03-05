@@ -17,7 +17,7 @@
     <!-- create a new tab for each available renderer -->
     <mat-tab label="{{r.label || 'Tab ' + (i+1)}}" *ngFor="let r of renderer; let i = index">
         <mat-card>
-            <ng-template ppPatternLanguageContainer [patternLanguageUri]="plEncodedUri" [index]="i"></ng-template>
+            <ng-template ppPatternLanguageContainer [patternLanguageId]="plId" [index]="i"></ng-template>
         </mat-card>
     </mat-tab>
 </mat-tab-group>
@@ -25,9 +25,9 @@
 <!-- else, use default renderers -->
 <ng-template #oneOrNoRenderer>
     <!--If there is only one renderer registered for this pl, use it: -->
-    <ng-template *ngIf="renderer" ppPatternLanguageContainer [patternLanguageUri]="plEncodedUri"></ng-template>
+    <ng-template *ngIf="renderer" ppPatternLanguageContainer [patternLanguageId]="plId"></ng-template>
 
   <!--If there is no renderer registered for this pl, take the default one -->
-  <ng-template *ngIf="!renderer" #cardsView ppPatternLanguageContainer [patternLanguageUri]="plEncodedUri">
+  <ng-template *ngIf="!renderer" #cardsView ppPatternLanguageContainer [patternLanguageId]="plId">
 </ng-template>
 </ng-template>

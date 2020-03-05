@@ -35,9 +35,9 @@ export class CloudComputingPatternsComponent implements OnInit {
     }
 
     async ngOnInit() {
-      // const encodedUri = UriConverter.decodeUri(this.activatedRoute.snapshot.paramMap.get('plEncodedUri'));
+      // const id = this.activatedRoute.snapshot.paramMap.get('id'));
       // console.log(encodedUri);
-      // const pl = await this.patternLanguageService.getPatternLanguageByEncodedUri(encodedUri);
+      // const pl = await this.patternLanguageService.getPatternLanguageById(id);
       // console.log(JSON.stringify(pl));
       // this.patterns = pl.patterns.map(CloudComputingPatternHelper.convertToCloudComputingPattern);
     }

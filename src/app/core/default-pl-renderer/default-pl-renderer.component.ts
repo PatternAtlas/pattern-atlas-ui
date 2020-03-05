@@ -1,6 +1,5 @@
 import {ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {UriConverter} from '../util/uri-converter';
 import {MatDialog} from '@angular/material/dialog';
 import {PatternLanguageService} from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
@@ -32,7 +31,7 @@ export class DefaultPlRendererComponent implements OnInit {
     patterns: Array<Pattern> = [];
     patternLanguage: PatternLanguage;
     isLoading = true;
-    patternLanguageURI: string;
+    patternLanguageId: string;
     @ViewChild('graphWrapper') graph: ElementRef;
     @ViewChild('cardsView') cardsView: ElementRef;
     @ViewChild('searchField') searchField: ElementRef;
@@ -146,12 +145,11 @@ export class DefaultPlRendererComponent implements OnInit {
 
     private loadData(): void {
         this.isLoadingDataForRenderer = true;
-        this.patternLanguageURI = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
-
-        if (this.patternLanguageURI) {
-            this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageURI)
+        this.patternLanguageId = this.activatedRoute.snapshot.paramMap.get('id');
+        if (this.patternLanguageId) {
+            this.patternLanguageService.getPatternLanguageById(this.patternLanguageId)
                 .pipe(
-                    tap(patternlanguage => this.patternLanguage = patternlanguage),
+                    tap(patternLanguage => this.patternLanguage = patternLanguage),
                     switchMap(() => this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href)),
                     tap(patterns => this.patterns = patterns),
                     switchMap(() => this.retrievePatterRelationDescriptorData()))

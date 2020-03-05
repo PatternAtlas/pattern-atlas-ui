@@ -15,7 +15,6 @@
 import { ComponentFactoryResolver, Directive, Input, OnInit, ViewContainerRef } from '@angular/core';
 import { ComponentRegistryService } from '../../core/service/component-registry.service';
 import { PatternGraphTemplateComponent } from '../../graph/component/pattern-graph-template/pattern-graph-template.component';
-import { UriConverter } from '../../core/util/uri-converter';
 import { DefaultPatternlanguageGraphComponent } from '../../graph/component/default-patternlanguage-graph/default-patternlanguage-graph.component';
 
 @Directive({
@@ -23,7 +22,7 @@ import { DefaultPatternlanguageGraphComponent } from '../../graph/component/defa
 })
 export class PatternLanguageContainerDirective implements OnInit {
 
-    @Input() patternLanguageUri: string;
+    @Input() patternLanguageId: string;
     @Input() index?: number;
     @Input() graphView: boolean;
 
@@ -40,12 +39,12 @@ export class PatternLanguageContainerDirective implements OnInit {
         const componentRef = this.viewContainerRef.createComponent(componentFactory);
         if (this.selectedGraphView) {
             const instance = (<PatternGraphTemplateComponent<any>>componentRef.instance);
-            instance.languageUri = UriConverter.doubleDecodeUri(this.patternLanguageUri);
+            instance.pId = this.patternLanguageId;
         }
     }
 
     private getRenderingComponent() {
-        const renderingComponent = this.compRegistry.getPLRenderingComponents(UriConverter.doubleDecodeUri(this.patternLanguageUri.toLowerCase()), this.index);
+        const renderingComponent = this.compRegistry.getPLRenderingComponents(this.patternLanguageId, this.index);
         if (renderingComponent) {
             return this.componentFactoryResolver.resolveComponentFactory(renderingComponent.plcomponent);
         }

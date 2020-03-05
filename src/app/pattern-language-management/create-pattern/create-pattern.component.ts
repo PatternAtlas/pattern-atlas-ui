@@ -1,7 +1,6 @@
 import {ChangeDetectorRef, Component, NgZone, OnInit, ViewChild} from '@angular/core';
 import {TdTextEditorComponent} from '@covalent/text-editor';
 import {ActivatedRoute, Router} from '@angular/router';
-import {UriConverter} from '../../core/util/uri-converter';
 import * as marked from 'marked';
 import {TokensList} from 'marked';
 import Pattern from '../../core/model/pattern.model';
@@ -26,7 +25,7 @@ export class CreatePatternComponent implements OnInit {
 
   iconForm: FormGroup;
   patterns: Array<Pattern>;
-  patternLanguageUri: string;
+  patternLanguageId: string;
   iconPreviewVisible = false;
   wasSaveButtonClicked = false;
   patternValuesFormGroup: FormGroup;
@@ -66,11 +65,11 @@ export class CreatePatternComponent implements OnInit {
 
   // noinspection TsLint
   ngOnInit() {
-    this.patternLanguageUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
+    this.patternLanguageId = this.activatedRoute.snapshot.paramMap.get('id');
     this.markdown = new MarkdownIt();
     this.markdown.use(markdownitKatex);
 
-    this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageUri).subscribe((pl: PatternLanguage) => {
+    this.patternLanguageService.getPatternLanguageById(this.patternLanguageId).subscribe((pl: PatternLanguage) => {
       this.patternLanguage = pl;
       this.sections = this.patternLanguage.patternSchema ?
         this.patternLanguage.patternSchema.patternSectionSchemas.map((schema: PatternSectionSchema) => schema.label) : [];

@@ -53,8 +53,8 @@ export class PatternLanguageService {
         );
     }
 
-    public getPatternLanguageByEncodedUri(encodedUri: string): Observable<PatternLanguage> {
-        const url = this.repoEndpoint + '/patternLanguages/findByUri?encodedUri=' + encodedUri;
+    public getPatternLanguageById(id: string): Observable<PatternLanguage> {
+        const url = this.repoEndpoint + '/patternLanguages/' + id;
         return this.http.get<PatternLanguage>(url);
     }
 

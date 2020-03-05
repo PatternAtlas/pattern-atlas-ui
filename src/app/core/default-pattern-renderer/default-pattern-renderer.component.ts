@@ -37,7 +37,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
     private directedPatternRelations: Array<DirectedEdgeModel>;
     private undirectedPatternRelations: Array<UndirectedEdgeModel>;
     private viewContainerRef;
-    private patternLanguageUri: string;
+    private patternLanguageId: string;
     private patternUri: string;
 
     constructor(private activatedRoute: ActivatedRoute,
@@ -54,10 +54,8 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
 
     ngAfterViewInit(): void {
         this.viewContainerRef = this.ppPatternProperty.viewContainerRef;
-        this.patternLanguageUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
-        console.log(this.patternLanguageUri);
+        this.patternLanguageId = this.activatedRoute.snapshot.paramMap.get('id');
         this.patternUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternUri'));
-        console.log(this.patternUri);
         this.getData();
     }
 
@@ -187,7 +185,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
     }
 
     private getData(): void {
-        this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageUri).pipe(
+        this.patternLanguageService.getPatternLanguageById(this.patternLanguageId).pipe(
             tap((patternLanguage) => this.patternLanguage = patternLanguage),
             switchMap(() => this.getPatternInfos()),
             switchMap(() => this.retrievePatternLanguageData())
