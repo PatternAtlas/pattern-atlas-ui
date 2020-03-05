@@ -1,26 +1,26 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ToasterService } from 'angular2-toaster';
-import { PatternPropertyDirective } from '../component/markdown-content-container/pattern-property.directive';
-import { UriConverter } from '../util/uri-converter';
-import { MatDialog } from '@angular/material/dialog';
-import { CreatePatternRelationComponent } from '../component/create-pattern-relation/create-pattern-relation.component';
+import {AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ToasterService} from 'angular2-toaster';
+import {PatternPropertyDirective} from '../component/markdown-content-container/pattern-property.directive';
+import {UriConverter} from '../util/uri-converter';
+import {MatDialog} from '@angular/material/dialog';
+import {CreatePatternRelationComponent} from '../component/create-pattern-relation/create-pattern-relation.component';
 import Pattern from '../model/hal/pattern.model';
-import { PatternLanguageService } from '../service/pattern-language.service';
+import {PatternLanguageService} from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
-import { PatternService } from '../service/pattern.service';
+import {PatternService} from '../service/pattern.service';
 // tslint:disable-next-line:max-line-length
-import { MarkdownPatternSectionContentComponent } from '../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-section-content.component';
-import { DataChange } from '../component/markdown-content-container/interfaces/DataRenderingComponent.interface';
+import {MarkdownPatternSectionContentComponent} from '../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-section-content.component';
+import {DataChange} from '../component/markdown-content-container/interfaces/DataRenderingComponent.interface';
 import PatternSectionSchema from '../model/hal/pattern-section-schema.model';
-import { map, switchMap, tap } from 'rxjs/operators';
-import { EMPTY, forkJoin, Observable } from 'rxjs';
-import { PatternRelationDescriptorService } from '../service/pattern-relation-descriptor.service';
-import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
-import { Embedded } from '../model/hal/embedded';
-import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
-import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
-import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
+import {map, switchMap, tap} from 'rxjs/operators';
+import {EMPTY, forkJoin, Observable} from 'rxjs';
+import {PatternRelationDescriptorService} from '../service/pattern-relation-descriptor.service';
+import {DirectedEdgeModel} from '../model/hal/directed-edge.model';
+import {Embedded} from '../model/hal/embedded';
+import {DirectedEdesResponse} from '../model/hal/directed-edes-response.interface';
+import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
+import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
 
 @Component({
     selector: 'pp-default-pattern-renderer',
@@ -30,6 +30,7 @@ import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
 export class DefaultPatternRendererComponent implements AfterViewInit {
     @ViewChild(PatternPropertyDirective) ppPatternProperty: PatternPropertyDirective;
     isLoading = true;
+    isLoadingLinks = true;
     isEditingEnabled = true;
     patternLanguage: PatternLanguage;
     pattern: Pattern;
@@ -38,7 +39,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
     private undirectedPatternRelations: Array<UndirectedEdgeModel>;
     private viewContainerRef;
     private patternLanguageUri: string;
-    private patternUri: string;
+    private patternId: string;
 
     constructor(private activatedRoute: ActivatedRoute,
                 private toasterService: ToasterService,
@@ -55,10 +56,11 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
     ngAfterViewInit(): void {
         this.viewContainerRef = this.ppPatternProperty.viewContainerRef;
         this.patternLanguageUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
-        console.log(this.patternLanguageUri);
-        this.patternUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternUri'));
-        console.log(this.patternUri);
+        this.patternId = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternUri'));
+
         this.getData();
+
+
     }
 
     doubleEncodeUri(uri: string): string {
@@ -80,7 +82,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
                 return edge ? this.patternRelationDescriptorService.addRelationToPL(this.patternLanguage, edge) : EMPTY;
             }),
             switchMap((edgeCreated) => {
-                return edgeCreated ? this.retrievePatternLanguageData() : EMPTY;
+                return edgeCreated ? this.getPatternLanguageLinks() : EMPTY;
             }),
         ).subscribe(
             () => {
@@ -91,13 +93,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
                 this.toasterService.pop('error', 'Could not create new relation: ', error);
                 console.log(error);
             });
-    }
-
-    // Todo Manuela: make it work!
-    navigateToPattern(uri: string): void {
-        if (uri) {
-            this.router.navigate(['..', UriConverter.doubleEncodeUri(uri)], {relativeTo: this.activatedRoute});
-        }
     }
 
     addContentInfoToPattern(edge: DirectedEdgeModel | UndirectedEdgeModel): Observable<DirectedEdgeModel | UndirectedEdgeModel> {
@@ -112,24 +107,22 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
 
     getPatternInfos(): Observable<Pattern> {
         if (!this.patternLanguage) {
+            console.log('tried to get patterns before the pattern language object with the url was instanciated');
             return EMPTY;
         }
-        return this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href).pipe(
-            tap((patterns) => {
-                this.patterns = patterns;
-                this.pattern = patterns.find(pat => pat.uri === this.patternUri);
-            }),
-            switchMap((patterns: any) => {
-                this.pattern = patterns.find(pat => pat.uri === this.patternUri);
+
+        console.log(this.patternId);
+        return this.patternService.getPatternById(this.patternLanguage, this.patternId).pipe(
+            tap(pattern => this.pattern = pattern),
+            switchMap((pat) => {
                 return this.patternService.getPatternContentByPattern(this.pattern);
-            }),
-            map((patternContent) => this.pattern.content = patternContent.content));
+            }), map((patternContent) => this.pattern.content = patternContent.content));
     }
 
-    retrievePatternLanguageData(): Observable<any> {
+    getPatternLanguageLinks(): Observable<any> {
         const $getDirectedEdges = this.getDirectedEdges();
         const $getUndirectedEdges = this.getUndirectedEdges();
-        return forkJoin([$getDirectedEdges, $getUndirectedEdges]);
+        return forkJoin([$getDirectedEdges, $getUndirectedEdges]).pipe(tap(() => this.isLoadingLinks = false));
     }
 
     private createSectionComponent(section: string) {
@@ -158,7 +151,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
         }
         return this.patternLanguageService.getDirectedEdges(this.patternLanguage).pipe(
             tap((edges) => {
-                this.directedPatternRelations = edges._embedded ?
+                this.directedPatternRelations = edges && edges._embedded ?
                     edges._embedded.directedEdgeModels.filter(edge => edge.sourcePatternId === this.pattern.id ||
                         edge.targetPatternId === this.pattern.id) : [];
             }));
@@ -170,7 +163,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
         }
         return this.patternLanguageService.getUndirectedEdges(this.patternLanguage).pipe(
             tap((edges) => {
-                this.undirectedPatternRelations = edges._embedded ?
+                this.undirectedPatternRelations = edges && edges._embedded ?
                     edges._embedded.undirectedEdgeModels.filter(edge => edge.pattern1Id === this.pattern.id || edge.pattern2Id === this.pattern.id) : [];
             }));
     }
@@ -187,16 +180,23 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
     }
 
     private getData(): void {
+        // get pattern language object with all the hal links that we need
         this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageUri).pipe(
             tap((patternLanguage) => this.patternLanguage = patternLanguage),
-            switchMap(() => this.getPatternInfos()),
-            switchMap(() => this.retrievePatternLanguageData())
-        ).subscribe((patternLanguage: any) => {
-            this.patternLanguage.patternSchema.patternSectionSchemas.forEach((sec: PatternSectionSchema) => {
-                this.createSectionComponent(sec.name);
-            });
-            this.cdr.detectChanges();
-            this.isLoading = false;
-        });
+            // get our individual pattern
+            switchMap(() => this.fillPatternSectionData()),
+            switchMap(() => this.getPatternLanguageLinks())).subscribe(() =>
+            this.cdr.detectChanges());
+
+    }
+
+    private fillPatternSectionData() {
+        return this.getPatternInfos().pipe(
+            tap(() => {
+                this.patternLanguage.patternSchema.patternSectionSchemas.forEach((sec: PatternSectionSchema) => {
+                    this.createSectionComponent(sec.name);
+                });
+                this.isLoading = false;
+            }));
     }
 }
