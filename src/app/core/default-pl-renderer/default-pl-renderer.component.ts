@@ -109,6 +109,7 @@ export class DefaultPlRendererComponent implements OnInit {
 
         if (componentInstance instanceof GraphDisplayComponent) {
             this.initGraph(<GraphDisplayComponent>componentInstance);
+            this.isLoadingDataForRenderer = false;
         }
     }
 
