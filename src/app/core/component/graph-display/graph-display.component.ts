@@ -213,12 +213,14 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
 
     private initData() {
         this.patternLanguageData = this.data;
-        this.edges = GraphDisplayComponent.mapPatternLinksToEdges(this.patternLanguageData.edges);
-        this.copyOfLinks = GraphDisplayComponent.mapPatternLinksToEdges(this.patternLanguageData.copyOfLinks);
-        this.patterns = this.patternLanguageData.patterns;
-        this.patternLanguage = this.patternLanguageData.patternLanguage;
-        this.patternView = this.patternLanguageData.patternView;
-        this.nodes = GraphDisplayComponent.mapPatternsToNodes(this.patterns);
+        if (this.patternLanguageData) {
+            this.edges = GraphDisplayComponent.mapPatternLinksToEdges(this.patternLanguageData.edges);
+            this.copyOfLinks = GraphDisplayComponent.mapPatternLinksToEdges(this.patternLanguageData.copyOfLinks);
+            this.patterns = this.patternLanguageData.patterns;
+            this.patternLanguage = this.patternLanguageData.patternLanguage;
+            this.patternView = this.patternLanguageData.patternView;
+            this.nodes = GraphDisplayComponent.mapPatternsToNodes(this.patterns);
+        }
     }
 
     private startSimulation() {
@@ -255,21 +257,23 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     }
 
     private getGraph() {
-        this.patternLanguageService.getGraph(this.patternLanguage)
-            .subscribe((res: { graph: Array<GraphNode> }) => {
-                if ((!res.graph && Array.isArray(this.patternLanguage.patterns)) ||
-                    Array.isArray(this.patternLanguage.patterns) && (this.patternLanguage.patterns.length > res.graph.length)) {
-                    this.startSimulation();
-                } else {
-                    this.graphNativeElement.setNodes(res.graph);
-                    if (this.patterns.length > res.graph.length) { // add newly added patterns that are not in the pattern graph yet
-                        const newPatterns = this.patterns.filter(pat => !this.graphNativeElement.nodeList.map(node => <string>node.id).includes(pat.id));
-                        newPatterns.forEach((pat, index) => this.addNewPatternNodeToGraph(pat, index));
+        if (this.patternLanguage) {
+            this.patternLanguageService.getGraph(this.patternLanguage)
+                .subscribe((res: { graph: Array<GraphNode> }) => {
+                    if ((!res.graph && Array.isArray(this.patternLanguage.patterns)) ||
+                        Array.isArray(this.patternLanguage.patterns) && (this.patternLanguage.patterns.length > res.graph.length)) {
+                        this.startSimulation();
+                    } else {
+                        this.graphNativeElement.setNodes(res.graph);
+                        if (this.patterns.length > res.graph.length) { // add newly added patterns that are not in the pattern graph yet
+                            const newPatterns = this.patterns.filter(pat => !this.graphNativeElement.nodeList.map(node => <string>node.id).includes(pat.id));
+                            newPatterns.forEach((pat, index) => this.addNewPatternNodeToGraph(pat, index));
+                        }
+                        this.initGraphEdges();
+                        this.isLoading = false;
                     }
-                    this.initGraphEdges();
-                    this.isLoading = false;
-                }
-            });
+                });
+        }
     }
 
     private initGraphEdges() {
