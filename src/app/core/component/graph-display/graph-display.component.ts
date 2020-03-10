@@ -17,6 +17,8 @@ import {GraphInputData} from '../../model/graph-input-data.interface';
 import {PatternService} from '../../service/pattern.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PatternViewService} from '../../service/pattern-view.service';
+import {switchMap} from 'rxjs/operators';
+import {PatternResponse} from '../../model/hal/pattern-response.interface';
 
 export class GraphNode {
     id: string;
@@ -68,6 +70,9 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
 
     static mapPatternLinksToEdges(links: any[]): NetworkLink[] {
         const edges: any = [];
+        if (!links.length) {
+            return [];
+        }
         for (let i = 0; i < links.length; i++) {
             const currentLink = links[i];
             if (currentLink.sourcePatternId && currentLink.targetPatternId) {
@@ -110,17 +115,16 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             return;
         }
 
+
         this.graphNativeElement.setNodeClass = (className, node) => {
             if (this.highlightedNodeIds.length > 0) {
-                if (className === 'highlighted-node') {
-                    return this.highlightedNodeIds.includes(<string>node.id);
-                }
                 if (className === 'low-opacity-node') {
                     return !this.highlightedNodeIds.includes(<string>node.id);
                 }
             }
             return false;
         };
+
 
         this.graphNativeElement.setEdgeClass = (className, edge, sourceNode, targetNode) => {
             if (targetNode == null) {
@@ -132,7 +136,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             }
             return false;
         };
-        this.initData();
         this.getGraph();
     }
 
@@ -169,7 +172,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     nodeClicked(event) {
         const node = event['detail']['node'];
         if (event['detail']['key'] === 'info' && this.patternLanguage) {
-            this.router.navigate([UriConverter.doubleEncodeUri(node.uri)], {relativeTo: this.activatedRoute});
+            this.router.navigate([UriConverter.doubleEncodeUri(node.id)], {relativeTo: this.activatedRoute});
         }
         this.showInfoForClickedNode(node);
     }
@@ -203,8 +206,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     private initData() {
         this.patternLanguageData = this.data;
         this.edges = GraphDisplayComponent.mapPatternLinksToEdges(this.patternLanguageData.edges);
-        console.log(this.edges);
-        console.log(this.patternLanguageData.edges);
 
         this.copyOfLinks = GraphDisplayComponent.mapPatternLinksToEdges(this.patternLanguageData.edges);
         this.patterns = this.patternLanguageData.patterns;
@@ -218,7 +219,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             width: 1000,
             height: 500
         });
-        console.log(this.edges);
 
         // allow to create edges to any other node in the graph (this enables multiple edges between nodes)
         this.graphNativeElement.onCreateDraggedEdge = (edge: DraggedEdge) => {
@@ -240,14 +240,22 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     }
 
     private getEdgesForPattern(): void {
-        this.patternRelationDescriptionService.getEdgesForPattern(this.currentPattern)
+        this.patternService.getPatternByUrl(this.currentPattern._links.self.href).pipe(
+            switchMap((pattern: PatternResponse) => {
+                return this.patternRelationDescriptionService.getEdgesForPattern(pattern);
+            }))
             .subscribe(edges => {
                 this.currentEdges = edges;
                 this.cdr.detectChanges();
             });
+
     }
 
     private getGraph() {
+        this.initData();
+        if (this.patterns.length === 0) {
+            return;
+        }
         if (!this.patternLanguage) {
             this.patternViewService.getGraph(this.patternView)
                 .subscribe((res: { graph: Array<GraphNode> }) => {
@@ -306,6 +314,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         const outgoingNodeIds: string[] = outgoingLinks.map(it => it['source']);
         const ingoingNodeIds: string[] = ingoingLinks.map(it => it['target']);
 
+        this.highlightedNodeIds = [];
         this.highlightedNodeIds = outgoingNodeIds.concat(ingoingNodeIds);
         this.highlightedNodeIds.push(node.id);
         this.currentPattern = this.patterns.find(pat => pat.id === node.id);

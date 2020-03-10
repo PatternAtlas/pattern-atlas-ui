@@ -1,11 +1,10 @@
-import {ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {ChangeDetectorRef, Component, ComponentFactoryResolver, ElementRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UriConverter} from '../util/uri-converter';
 import {MatDialog} from '@angular/material/dialog';
 import {PatternLanguageService} from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
 import {D3Service} from '../../graph/service/d3.service';
-import {CardRendererComponent} from '../component/cardrenderer/card-renderer.component';
 import {GraphDisplayComponent} from '../component/graph-display/graph-display.component';
 import {EMPTY, forkJoin, Observable} from 'rxjs';
 import {Embedded} from '../model/hal/embedded';
@@ -36,14 +35,13 @@ export class DefaultPlRendererComponent implements OnInit {
     @ViewChild('searchField') searchField: ElementRef;
     @ViewChild(GraphDisplayComponent, {static: false}) graphDisplayComponent: GraphDisplayComponent;
     @ViewChild('displayPLContainer', {read: ViewContainerRef}) loadRenderer;
-    rendererComponentInstance: GraphDisplayComponent | CardRendererComponent;
     graphVisible = false;
-    isLoadingData: boolean;
+    isLoadingPatternData = true;
+    isLoadingLinkData = true;
+    toggleBeforeDataLoaded = false;
     filter: FormControl;
-    private componentRef: ComponentRef<any>;
     private directedPatternRelations: Array<DirectedEdgeModel> = [];
     private undirectedPatternRelations: Array<UndirectedEdgeModel> = [];
-    private copyEdgesForSimulation: Array<any> = [];
     private patternLinks: Array<UndirectedEdgeModel | DirectedEdgeModel>;
 
     constructor(private activatedRoute: ActivatedRoute,
@@ -130,19 +128,19 @@ export class DefaultPlRendererComponent implements OnInit {
     }
 
     private loadData(): void {
-        this.isLoadingData = true;
+        this.isLoadingPatternData = true;
         this.patternLanguageURI = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
 
         if (this.patternLanguageURI) {
             this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageURI)
                 .pipe(
                     tap(patternlanguage => this.patternLanguage = patternlanguage),
-                    switchMap(() => this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href)),
-                    tap(patterns => this.patterns = patterns),
-                    switchMap(() => this.getPatternLinks()))
-                .subscribe(() => {
-                    this.isLoadingData = false;
-                });
+                    switchMap(() => this.loadPatterns()),
+                    switchMap(() => this.getPatternLinks())
+                ).subscribe(() => {
+                this.isLoadingLinkData = false;
+                this.detectChanges();
+            });
         }
     }
 
@@ -171,7 +169,16 @@ export class DefaultPlRendererComponent implements OnInit {
             this.filter.setValue('');
         }
         this.graphVisible = newValueGraphVisible;
+        // if user toggled to early, we will retrigger
+        this.toggleBeforeDataLoaded = this.isLoadingLinkData && this.isLoadingPatternData;
     }
 
 
+    private loadPatterns(): Observable<any[]> {
+        return this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href).pipe(
+            tap(patterns => {
+                this.patterns = patterns;
+                this.isLoadingPatternData = false;
+            }));
+    }
 }

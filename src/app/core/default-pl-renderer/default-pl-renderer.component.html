@@ -1,7 +1,9 @@
 <pp-action-button-bar (add2Clicked)="addPattern()" (addClicked)="addLink()" [addButtonText]="'Add Link'"
                       [displayText]="patternLanguage?.name" [secondAddButtonText]="'Add Pattern'"
                       [secondAddButton]="true">
-    <pp-toggle-renderer [graphVisible]="graphVisible" (toggledRenderer)="setGraphVisible($event)"></pp-toggle-renderer>
+    <pp-toggle-renderer [graphVisible]="graphVisible" *ngIf="!isLoadingPatternData && !isLoadingLinkData"
+                        (toggledRenderer)="setGraphVisible($event)"></pp-toggle-renderer>
+    <span *ngIf="isLoadingLinkData"> Loading Links... </span>
     <mat-form-field id="search-field" #searchField appearance="outline"
                     *ngIf="!graphVisible" [floatLabel]="'always'">
         <mat-label>Filter</mat-label>
@@ -13,10 +15,10 @@
     </button>
 </pp-action-button-bar>
 
-<mat-progress-spinner *ngIf="isLoadingData" mode="indeterminate"></mat-progress-spinner>
+<mat-progress-spinner *ngIf="isLoadingPatternData" mode="indeterminate"></mat-progress-spinner>
 <div>
     <pp-card-renderer *ngIf="!graphVisible && patterns" [uriEntities]="this.patterns"></pp-card-renderer>
-    <pp-graph-display *ngIf="graphVisible && patterns" [data]="{
+    <pp-graph-display *ngIf="graphVisible && patterns && !isLoadingLinkData" [data]="{
                 patterns: this.patterns, edges: this.patternLinks,
                 patternLanguage: this.patternLanguage, patternView: null
             }" (addedEdge)="linkAddedInGraphEditor($event)">

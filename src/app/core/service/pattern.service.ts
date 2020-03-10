@@ -60,4 +60,8 @@ export class PatternService {
         console.log(patternId);
         return this.http.get <Pattern>(this.repoEndpoint + '/patternLanguages/' + patternLanguage.id + '/patterns/' + patternId);
     }
+
+    getPatternByUrl(href: string): Observable<PatternResponse> {
+        return this.http.get<PatternResponse>(href);
+    }
 }

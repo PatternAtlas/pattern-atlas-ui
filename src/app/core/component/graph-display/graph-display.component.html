@@ -9,20 +9,23 @@
                     </mat-panel-title>
                     <mat-panel-description class="horiz-centered">
                         <div [ngSwitch]="relation.type">
-                            <div *ngSwitchCase="'outgoingDirectedEdges'" class="horiz-centered">
-                                <i class="material-icons">trending_flat</i>
-                                {{ relation?.edge.targetPatternName}}
 
-                            </div>
-                            <div *ngSwitchCase="'ingoingDirectedEdges'" class="horiz-centered">
-                                <i class="material-icons flip">trending_flat</i>
-                                {{ relation?.edge.sourcePatternName}}
-                            </div>
                             <div *ngSwitchCase="'undirectedEdges'" class="horiz-centered">
                                 {{ relation?.edge.sourcePatternName}}
                                 <i class="material-icons flip">compare_arrows</i>
                                 {{ relation?.edge.pattern1Id === this.currentPattern.id ? relation.edge.pattern1Name : relation.edge.pattern2Name}}
                             </div>
+
+                            <div *ngSwitchCase="'outgoingDirectedEdges'" class="horiz-centered">
+                                <i class="material-icons">trending_flat</i>
+                                {{ relation?.edge.sourcePatternId === this.currentPattern.id ? relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
+
+                            </div>
+                            <div *ngSwitchCase="'ingoingDirectedEdges'" class="horiz-centered">
+                                <i class="material-icons flip">trending_flat</i>
+                                {{ relation?.edge.sourcePatternId === this.currentPattern.id ? relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
+                            </div>
+
                         </div>
                     </mat-panel-description>
                 </mat-expansion-panel-header>
@@ -31,6 +34,7 @@
         </mat-accordion>
 
     </mat-sidenav>
+    <mat-progress-spinner *ngIf="isLoading"></mat-progress-spinner>
     <mat-sidenav-content>
         <network-graph #graphWrapper
                        (onAddedEdge)="edgeAdded($event)"
@@ -38,7 +42,7 @@
                        (onClickedNode)="nodeClicked($event)"
                        (onNodePositionChange)="saveGraph()"
                        [ppGraphEventEmmiter]
-                       classes="highlighted-node highlighted-edge low-opacity-node low-opacity-edge"
+                       classes=" highlighted-edge low-opacity-node low-opacity-edge"
                        mode="layout"
                        style="width: 100%; height: 100%"
                        zoom="both">
@@ -95,13 +99,6 @@
                         font-size: 6pt;
                         text-overflow: ellipsis;
                         word-break: break-word
-                    }
-
-                    .highlighted-node {
-                        fill: rgb(63, 81, 181);
-                        opacity: 0.9;
-
-
                     }
 
                     .low-opacity-node {
