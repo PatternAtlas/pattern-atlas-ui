@@ -2,7 +2,7 @@
     <mat-card (click)="navigate(entity)"
               *ngFor="let entity of uriEntities"
               class="card box">
-        <mat-card-title>{{entity.name}}</mat-card-title>
+        <mat-card-title style="margin-bottom: 1rem">{{entity.name}}</mat-card-title>
         <mat-card-content>
             <img mat-card-image *ngIf="entity.iconUrl else noimage" [src]="entity.iconUrl">
             <ng-template #noimage><img mat-card-image src="//via.placeholder.com/350x150"></ng-template>
