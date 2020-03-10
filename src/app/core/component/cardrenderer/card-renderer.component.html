@@ -7,7 +7,7 @@
             <img mat-card-image *ngIf="entity.iconUrl else noimage" [src]="entity.iconUrl">
             <ng-template #noimage><img mat-card-image src="//via.placeholder.com/350x150"></ng-template>
         </mat-card-content>
-        <mat-card-footer>
+        <mat-card-footer *ngIf="showLinks">
             <span [matBadge]="getLinkCount(entity._links.ingoingDirectedEdges)"
                   class="badge-span"
                   matBadgeOverlap="false">

@@ -13,6 +13,7 @@ import {HalLink} from '../../model/hal/hal-link.interface';
 export class CardRendererComponent {
 
     @Input() uriEntities: Array<Pattern>;
+    @Input() showLinks = true;
     @Output() createEntityClicked: EventEmitter<void> = new EventEmitter<void>();
 
     constructor(private zone: NgZone,
