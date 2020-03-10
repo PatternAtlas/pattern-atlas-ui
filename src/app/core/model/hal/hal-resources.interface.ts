@@ -17,6 +17,7 @@ import { HalLink } from './hal-link.interface';
 export interface PatternResource {
     self: HalLink;
     content: HalLink;
+    renderedContent: HalLink;
     patternLanguage: HalLink;
 }
 

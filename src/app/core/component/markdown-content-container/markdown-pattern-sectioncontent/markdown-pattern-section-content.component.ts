@@ -1,9 +1,11 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, ViewChild } from '@angular/core';
-import { DataChange, DataRenderingComponent } from '../interfaces/DataRenderingComponent.interface';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogData, MdEditorComponent } from '../../md-editor/md-editor.component';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, ViewChild} from '@angular/core';
+import {DataChange, DataRenderingComponent} from '../interfaces/DataRenderingComponent.interface';
+import {MatDialog} from '@angular/material/dialog';
+import {DialogData, MdEditorComponent} from '../../md-editor/md-editor.component';
 import * as MarkdownIt from 'markdown-it';
 import * as markdownitKatex from 'markdown-it-katex';
+import {AlgorithmDetectionService} from '../../../service/algorithm-detection.service';
+import {AlgorithmType} from '../../../model/algorithm-type.enum';
 
 @Component({
   selector: 'pp-markdown-pattern-section-content',
@@ -20,7 +22,7 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
   @Input() content: string;
   private markdown: MarkdownIt;
 
-  constructor(private dialog: MatDialog, private cdr: ChangeDetectorRef) {
+  constructor(private dialog: MatDialog, private cdr: ChangeDetectorRef, private algoService: AlgorithmDetectionService) {
     super();
     this.changeContent = new EventEmitter<DataChange>();
   }
@@ -43,9 +45,18 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
     dialogRef.afterClosed().subscribe(async (result: DialogData) => {
       const previousValue = this.data;
       if (result) {
+        console.log(this.data);
+        //check if includes gatter
+        if (this.algoService.checkForAlgorithmInput(this.data) === AlgorithmType.QUANTIKZ) {
+          //save Gatter
+          console.log("includes gatter");
+        }
         this.data = result.content;
         this.changeText(this.data);
       }
+
+      const content = this.data
+      console.log(content.slice(content.indexOf('\\begin{quantikz}'), content.indexOf('\\end{quantikz}') + 15));
       this.changeContent.emit({previousValue: previousValue, currentValue: result.content});
     });
   }

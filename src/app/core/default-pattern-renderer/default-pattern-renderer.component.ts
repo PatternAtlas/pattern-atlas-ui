@@ -121,9 +121,9 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
             }),
             switchMap((patterns: any) => {
                 this.pattern = patterns.find(pat => pat.uri === this.patternUri);
-                return this.patternService.getPatternContentByPattern(this.pattern);
+                return this.patternService.getPatternRenderedContentByPattern(this.pattern);
             }),
-            map((patternContent) => this.pattern.content = patternContent.content));
+            map((patternContent) => this.pattern.content = patternContent.renderedContent));
     }
 
     retrievePatternLanguageData(): Observable<any> {
@@ -148,7 +148,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
             this.pattern.content[section] = dataChange.currentValue;
             this.cdr.detectChanges();
             this.savePattern(section, dataChange.previousValue, instance);
-
         });
     }
 

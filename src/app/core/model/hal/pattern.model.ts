@@ -18,9 +18,11 @@ import {HalLink} from './hal-link.interface';
 class Pattern extends UriEntity {
     iconUrl?: string;
     content: any;
+    renderedContent: any;
     _links: {
         self: HalLink;
         content: HalLink;
+        renderedContent: HalLink;
         patternLanguage: HalLink;
         undirectedEdges?: HalLink | HalLink[];
         undirectedEdgesFromPatternLanguage?: HalLink | HalLink[];
