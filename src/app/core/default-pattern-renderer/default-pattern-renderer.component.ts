@@ -68,31 +68,14 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
     }
 
     addLink() {
-        const dialogRef = this.dialog.open(CreatePatternRelationComponent, {
-                data: {firstPattern: this.pattern, patterns: this.patterns}
-            }
-        );
-        dialogRef.afterClosed().pipe(
-            switchMap(result => {
-                return result ? this.addContentInfoToPattern(result) : EMPTY;
-            }),
-            switchMap((edge) => {
-                const url = edge instanceof DirectedEdgeModel ?
-                    this.patternLanguage._links.directedEdges.href : this.patternLanguage._links.undirectedEdges.href;
-                return edge ? this.patternRelationDescriptorService.addRelationToPL(this.patternLanguage, edge) : EMPTY;
-            }),
-            switchMap((edgeCreated) => {
-                return edgeCreated ? this.getPatternLanguageLinks() : EMPTY;
-            }),
-        ).subscribe(
-            () => {
-                this.toasterService.pop('success', 'Created new Relation');
-
-            },
-            (error) => {
-                this.toasterService.pop('error', 'Could not create new relation: ', error);
-                console.log(error);
+        if (!this.patterns || this.patterns.length === 0) {
+            this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href).subscribe((patterns) => {
+                this.patterns = patterns;
+                this.showAndHandleLinkDialog();
             });
+        } else {
+            this.showAndHandleLinkDialog();
+        }
     }
 
     addContentInfoToPattern(edge: DirectedEdgeModel | UndirectedEdgeModel): Observable<DirectedEdgeModel | UndirectedEdgeModel> {
@@ -198,5 +181,33 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
                 });
                 this.isLoading = false;
             }));
+    }
+
+    private showAndHandleLinkDialog() {
+        const dialogRef = this.dialog.open(CreatePatternRelationComponent, {
+                data: {firstPattern: this.pattern, patterns: this.patterns}
+            }
+        );
+        dialogRef.afterClosed().pipe(
+            switchMap(result => {
+                return result ? this.addContentInfoToPattern(result) : EMPTY;
+            }),
+            switchMap((edge) => {
+                const url = edge instanceof DirectedEdgeModel ?
+                    this.patternLanguage._links.directedEdges.href : this.patternLanguage._links.undirectedEdges.href;
+                return edge ? this.patternRelationDescriptorService.addRelationToPL(this.patternLanguage, edge) : EMPTY;
+            }),
+            switchMap((edgeCreated) => {
+                return edgeCreated ? this.getPatternLanguageLinks() : EMPTY;
+            }),
+        ).subscribe(
+            () => {
+                this.toasterService.pop('success', 'Created new Relation');
+
+            },
+            (error) => {
+                this.toasterService.pop('error', 'Could not create new relation: ', error);
+                console.log(error);
+            });
     }
 }
