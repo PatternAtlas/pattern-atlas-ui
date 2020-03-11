@@ -128,17 +128,16 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
 
     removeLink(pattern: Pattern) {
         const dialogRef = this.matDialog.open(DeletePatternRelationComponent, {data: {pattern: pattern}});
-        dialogRef.afterClosed().pipe(
-            switchMap((selectedEdge) => {
-                return this.deleteLink(selectedEdge);
+        dialogRef.afterClosed().subscribe(
+            selectedEdge => {
+                this.deleteLink(selectedEdge).subscribe(
+                    (res) => {
+                        this.toasterService.pop('success', 'Relation removed');
+                        this.cdr.detectChanges();
+                    }
+                );
             }
-        )).subscribe((res) => {
-            if (res) {
-                console.log(res);
-                this.toasterService.pop('success', 'Relation removed');
-                this.cdr.detectChanges();
-            }
-        });
+        );
     }
 
     private deleteLink(edge): Observable<any> {
