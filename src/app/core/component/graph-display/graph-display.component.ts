@@ -39,7 +39,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     graphNativeElement: GraphEditor;
     @ViewChild('svg') svg: ElementRef;
     @ViewChild(MatSidenavContainer) sidenavContainer: MatSidenavContainer;
-    patternLanguageData: any;
+    patternGraphData: any;
     isLoading = true;
     @Input() data: GraphInputData;
     @Output() addedEdge = new EventEmitter<any>();
@@ -202,13 +202,13 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     }
 
     private initData() {
-        this.patternLanguageData = this.data;
-        if (this.patternLanguageData) {
-            this.edges = GraphDisplayComponent.mapPatternLinksToEdges(this.patternLanguageData.edges);
-            this.copyOfLinks = GraphDisplayComponent.mapPatternLinksToEdges(this.patternLanguageData.copyOfLinks);
-            this.patterns = this.patternLanguageData.patterns;
-            this.patternLanguage = this.patternLanguageData.patternLanguage;
-            this.patternView = this.patternLanguageData.patternView;
+        this.patternGraphData = this.data;
+        if (this.patternGraphData) {
+            this.edges = GraphDisplayComponent.mapPatternLinksToEdges(this.patternGraphData.edges);
+            this.copyOfLinks = GraphDisplayComponent.mapPatternLinksToEdges(this.patternGraphData.edges);
+            this.patterns = this.patternGraphData.patterns;
+            this.patternLanguage = this.patternGraphData.patternLanguage;
+            this.patternView = this.patternGraphData.patternView;
             this.nodes = GraphDisplayComponent.mapPatternsToNodes(this.patterns);
         }
     }
@@ -257,36 +257,15 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         if (!this.patternLanguage) {
             this.patternViewService.getGraph(this.patternView)
                 .subscribe((res: { graph: Array<GraphNode> }) => {
-                    if ((!res.graph && Array.isArray(this.patternView.patterns)) ||
-                        Array.isArray(this.patternView.patterns) && (this.patternView.patterns.length > res.graph.length)) {
-                        this.startSimulation();
-                    } else {
-                        this.graphNativeElement.setNodes(res.graph);
-                        if (this.patterns.length > res.graph.length) { // add newly added patterns that are not in the pattern graph yet
-                            const newPatterns = this.patterns.filter(pat => !this.graphNativeElement.nodeList.map(node => <string>node.id).includes(pat.id));
-                            newPatterns.forEach((pat, index) => this.addNewPatternNodeToGraph(pat, index));
-                        }
-                        this.initGraphEdges();
-                        this.isLoading = false;
-                    }
+                    this.prepareGraph(res.graph, this.patternView);
                 });
         } else {
             this.patternLanguageService.getGraph(this.patternLanguage)
                 .subscribe((res: { graph: Array<GraphNode> }) => {
-                    if ((!res.graph && Array.isArray(this.patternLanguage.patterns)) ||
-                        Array.isArray(this.patternLanguage.patterns) && (this.patternLanguage.patterns.length > res.graph.length)) {
-                        this.startSimulation();
-                    } else {
-                        this.graphNativeElement.setNodes(res.graph);
-                        if (this.patterns.length > res.graph.length) { // add newly added patterns that are not in the pattern graph yet
-                            const newPatterns = this.patterns.filter(pat => !this.graphNativeElement.nodeList.map(node => <string>node.id).includes(pat.id));
-                            newPatterns.forEach((pat, index) => this.addNewPatternNodeToGraph(pat, index));
-                        }
-                        this.initGraphEdges();
-                        this.isLoading = false;
-                    }
+                    this.prepareGraph(res.graph, this.patternView);
                 });
         }
+
 
     }
 
@@ -329,5 +308,24 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
 
     triggerRerendering() {
         this.graphNativeElement.completeRender();
+    }
+
+    private initGraphData(graphData: Array<GraphNode>) {
+        this.graphNativeElement.setNodes(graphData);
+        if (this.patterns.length > graphData.length) { // add newly added patterns that are not in the pattern graph yet
+            const newPatterns = this.patterns.filter(pat => !this.graphNativeElement.nodeList.map(node => <string>node.id).includes(pat.id));
+            newPatterns.forEach((pat, index) => this.addNewPatternNodeToGraph(pat, index));
+        }
+        this.initGraphEdges();
+        this.isLoading = false;
+    }
+
+    private prepareGraph(graph: Array<GraphNode>, patternGraphData: PatternView | PatternLanguage) {
+        if ((!graph && Array.isArray(this.patternGraphData.patterns)) ||
+            Array.isArray(this.patternGraphData.patterns) && (this.patternGraphData.patterns.length > graph.length)) {
+            this.startSimulation();
+            return;
+        }
+        this.initGraphData(graph);
     }
 }
