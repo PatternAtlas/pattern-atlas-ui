@@ -71,6 +71,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
         if (!this.patterns || this.patterns.length === 0) {
             this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href).subscribe((patterns) => {
                 this.patterns = patterns;
+                this.patterns.sort((p1, p2) => p1.name.localeCompare(p2.name));
                 this.showAndHandleLinkDialog();
             });
         } else {
@@ -94,7 +95,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
             return EMPTY;
         }
 
-        console.log(this.patternId);
         return this.patternService.getPatternById(this.patternLanguage, this.patternId).pipe(
             tap(pattern => this.pattern = pattern),
             switchMap((pat) => {
