@@ -41,6 +41,8 @@
         >
             <button mat-button (click)="addLinks(pattern)">Add Links (incl. Pattern)
             </button>
+            <button *ngIf="pattern._links.ingoingDirectedEdges || pattern._links.outgoingDirectedEdges" mat-button (click)="removeLink(pattern)">Remove Links
+            </button>
         </mat-card-actions>
     </mat-card>
 </div>

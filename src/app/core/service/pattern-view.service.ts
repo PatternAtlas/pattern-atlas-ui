@@ -77,6 +77,10 @@ export class PatternViewService {
         return this.http.get<Embedded<UndirectedEdesResponse>>(patternView._links.undirectedEdges.href);
     }
 
+    deleteLink(patternLink: any): Observable<any> {
+        return this.http.delete(patternLink);
+    }
+
     saveGraph(patternView: PatternView, nodeList: any[]) {
         return this.http.post<any>(patternView._links.graph.href, nodeList, {observe: 'response'});
     }

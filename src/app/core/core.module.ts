@@ -58,6 +58,7 @@ import {EmitEventOnAddedEdgeDirective} from './directives/emit-event-on-added-ed
 import {MatBadgeModule, MatExpansionModule} from '@angular/material';
 import {RouterModule} from '@angular/router';
 import {ToggleRendererComponent} from './component/toggle-renderer/toggle-renderer.component';
+import { DeletePatternRelationComponent } from './component/delete-pattern-relation/delete-pattern-relation.component';
 
 @NgModule({
     imports: [
@@ -112,7 +113,8 @@ import {ToggleRendererComponent} from './component/toggle-renderer/toggle-render
         CardRendererComponent,
         CreateEditPatternLanguageComponent,
         ActionButtonBarComponent,
-        ToggleRendererComponent
+        ToggleRendererComponent,
+        DeletePatternRelationComponent
     ],
     entryComponents: [
         DefaultPlRendererComponent,
@@ -120,6 +122,7 @@ import {ToggleRendererComponent} from './component/toggle-renderer/toggle-render
         MdEditorComponent,
         DividerComponent,
         CreatePatternRelationComponent,
+        DeletePatternRelationComponent,
         MarkdownPatternSectionContentComponent,
         CardRendererComponent,
         GraphDisplayComponent,

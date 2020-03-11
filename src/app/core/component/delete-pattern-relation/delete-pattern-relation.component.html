@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Delete a relation</h1>
+<div mat-dialog-content [formGroup]="relationForm">
+        <mat-form-field>
+            <mat-select formControlName="selectedEdge">
+                <mat-option *ngFor="let edge of this.currentEdges"
+                            [value]="edge">
+                    {{edge.sourcePatternName}} {{edge.type}} {{edge.targetPatternName}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="null">Close</button>
+    <button mat-button [mat-dialog-close]="mapDialogDataToEdge(relationForm.value)" [disabled]="!relationForm?.valid">
+        Delete
+    </button>
+</div>

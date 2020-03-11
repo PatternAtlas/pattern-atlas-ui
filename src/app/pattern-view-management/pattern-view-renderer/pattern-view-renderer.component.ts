@@ -22,6 +22,7 @@ import {Embedded} from '../../core/model/hal/embedded';
 import {UndirectedEdesResponse} from '../../core/model/hal/undirected-edes-response.interface';
 import {DirectedEdesResponse} from '../../core/model/hal/directed-edes-response.interface';
 import {GraphDisplayComponent} from '../../core/component/graph-display/graph-display.component';
+import {DeletePatternRelationComponent} from '../../core/component/delete-pattern-relation/delete-pattern-relation.component';
 
 @Component({
     selector: 'pp-pattern-view-renderer',
@@ -125,6 +126,24 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
         });
     }
 
+    removeLink(pattern: Pattern) {
+        const dialogRef = this.matDialog.open(DeletePatternRelationComponent, {data: {pattern: pattern}});
+        dialogRef.afterClosed().subscribe(
+            selectedEdge => {
+                this.deleteLink(selectedEdge).subscribe(
+                    (res) => {
+                        this.toasterService.pop('success', 'Relation removed');
+                        this.cdr.detectChanges();
+                    }
+                );
+            }
+        );
+    }
+
+    private deleteLink(edge): Observable<any> {
+        return this.patternViewService.deleteLink(edge._links.self.href);
+    }
+
     private createLink(edge): Observable<any> {
         const url = edge instanceof DirectedEdgeModel ? this.patternViewResponse._links.directedEdges.href :
             this.patternViewResponse._links.undirectedEdges.href;
@@ -182,7 +201,6 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
             this.patternLinks = [];
             this.patternLinks.push(...this.directedPatternRelations);
             this.patternLinks.push(...this.undirectedPatternRelations);
-            console.log(this.patternLinks);
         }));
     }
 
