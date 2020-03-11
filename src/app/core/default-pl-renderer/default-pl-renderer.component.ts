@@ -1,10 +1,11 @@
-import {ChangeDetectorRef, Component, ComponentFactoryResolver, ElementRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UriConverter} from '../util/uri-converter';
 import {MatDialog} from '@angular/material/dialog';
 import {PatternLanguageService} from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
 import {D3Service} from '../../graph/service/d3.service';
+import {CardRendererComponent} from '../component/cardrenderer/card-renderer.component';
 import {GraphDisplayComponent} from '../component/graph-display/graph-display.component';
 import {EMPTY, forkJoin, Observable} from 'rxjs';
 import {Embedded} from '../model/hal/embedded';
@@ -13,6 +14,7 @@ import {switchMap, tap} from 'rxjs/operators';
 import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
 import {DirectedEdgeModel} from '../model/hal/directed-edge.model';
 import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
+import * as _ from 'lodash';
 import {CreatePatternRelationComponent} from '../component/create-pattern-relation/create-pattern-relation.component';
 import {PatternRelationDescriptorService} from '../service/pattern-relation-descriptor.service';
 import {ToasterService} from 'angular2-toaster';
@@ -60,7 +62,7 @@ export class DefaultPlRendererComponent implements OnInit {
         this.loadData();
         this.filter = new FormControl('');
         this.filter.valueChanges.subscribe((filterText: string) => {
-            if (!this.patterns || this.patterns.length === 0) {
+            if (this.graphVisible || !this.patterns || this.patterns.length === 0) {
                 return;
             }
             this.patterns = this.patterns.filter(pattern => pattern.name.toLowerCase().includes(filterText.toLowerCase()));
@@ -88,6 +90,7 @@ export class DefaultPlRendererComponent implements OnInit {
     }
 
     public addLink() {
+        // Todo: Make patternlanguage camelcase
         const dialogRef = this.dialog.open(CreatePatternRelationComponent, {
             data: {
                 patterns: this.patterns,
@@ -120,7 +123,6 @@ export class DefaultPlRendererComponent implements OnInit {
             this.graphDisplayComponent.updateSideMenu();
             this.detectChanges();
         });
-
     }
 
     reloadGraph() {

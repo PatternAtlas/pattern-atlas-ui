@@ -115,7 +115,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             return;
         }
 
-
         this.graphNativeElement.setNodeClass = (className, node) => {
             if (this.highlightedNodeIds.length > 0) {
                 if (className === 'low-opacity-node') {
@@ -124,7 +123,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             }
             return false;
         };
-
 
         this.graphNativeElement.setEdgeClass = (className, edge, sourceNode, targetNode) => {
             if (targetNode == null) {
@@ -205,13 +203,14 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
 
     private initData() {
         this.patternLanguageData = this.data;
-        this.edges = GraphDisplayComponent.mapPatternLinksToEdges(this.patternLanguageData.edges);
-
-        this.copyOfLinks = GraphDisplayComponent.mapPatternLinksToEdges(this.patternLanguageData.edges);
-        this.patterns = this.patternLanguageData.patterns;
-        this.patternLanguage = this.patternLanguageData.patternLanguage;
-        this.patternView = this.patternLanguageData.patternView;
-        this.nodes = GraphDisplayComponent.mapPatternsToNodes(this.patterns);
+        if (this.patternLanguageData) {
+            this.edges = GraphDisplayComponent.mapPatternLinksToEdges(this.patternLanguageData.edges);
+            this.copyOfLinks = GraphDisplayComponent.mapPatternLinksToEdges(this.patternLanguageData.copyOfLinks);
+            this.patterns = this.patternLanguageData.patterns;
+            this.patternLanguage = this.patternLanguageData.patternLanguage;
+            this.patternView = this.patternLanguageData.patternView;
+            this.nodes = GraphDisplayComponent.mapPatternsToNodes(this.patterns);
+        }
     }
 
     private startSimulation() {
@@ -248,7 +247,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                 this.currentEdges = edges;
                 this.cdr.detectChanges();
             });
-
     }
 
     private getGraph() {
@@ -297,7 +295,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         if (this.copyOfLinks.length > 0) {
             this.graphNativeElement.setEdges(this.copyOfLinks, false);
         }
-        this.graphNativeElement.completeRender();
+        this.triggerRerendering();
         this.graphNativeElement.zoomToBoundingBox(true);
     }
 
@@ -320,8 +318,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         this.currentPattern = this.patterns.find(pat => pat.id === node.id);
         this.getEdgesForPattern();
         this.sidenavContainer.open();
-        console.log('rerender');
-        this.graphNativeElement.completeRender();
+        this.triggerRerendering();
     }
 
     public updateSideMenu() {
