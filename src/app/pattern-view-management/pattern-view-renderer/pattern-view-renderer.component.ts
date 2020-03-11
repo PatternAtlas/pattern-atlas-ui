@@ -134,6 +134,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
             }
         )).subscribe((res) => {
             if (res) {
+                console.log(res);
                 this.toasterService.pop('success', 'Relation removed');
                 this.cdr.detectChanges();
             }
@@ -141,9 +142,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     }
 
     private deleteLink(edge): Observable<any> {
-        const url = edge instanceof DirectedEdgeModel ? this.patternViewResponse._links.directedEdges.href :
-            this.patternViewResponse._links.undirectedEdges.href;
-        return this.patternViewService.deleteLink(url);
+        return this.patternViewService.deleteLink(edge._links.self.href);
     }
 
     private createLink(edge): Observable<any> {
