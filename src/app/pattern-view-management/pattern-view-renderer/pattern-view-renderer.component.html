@@ -19,29 +19,33 @@
 
         </mat-card-header>
 
-        <mat-card-content>
+        <mat-card-content class="card-content-style">
+            <div class="badge-container" (click)="showIngoingEdges(pattern._links.ingoingDirectedEdges)">
             <span class="badge-span" matBadgeOverlap="false"
-                  [matBadge]="getLinkCount(pattern._links.ingoingDirectedEdges)">
+                  [matBadge]="getLinkCount(pattern._links.ingoingDirectedEdges)"
+            >
                 <mat-icon> trending_flat
             </mat-icon>
         </span>
-            <mat-icon class="flip"> trending_flat
-            </mat-icon>
-            <span class="badge-span" matBadgeOverlap="false"
-                  [matBadge]="getLinkCount(pattern._links.outgoingDirectedEdges)">
+            </div>
+            <div class="badge-container" (click)="showOutgoingEdges(pattern._links.outgoingDirectedEdges)">
+                <mat-icon class="flip"> trending_flat
+                </mat-icon>
+                <span class="badge-span" matBadgeOverlap="false"
+                      [matBadge]="getLinkCount(pattern._links.outgoingDirectedEdges)"
+                >
         </span>
-
-
-            <span [matBadge]="getLinkCount(pattern._links.undirectedEdges)" matBadgeOverlap="false">
+            </div>
+            <div class="badge-container" (click)="showUndirectedEdges(pattern._links.undirectedEdges)">
+            <span [matBadge]="getLinkCount(pattern._links.undirectedEdges)" matBadgeOverlap="false"
+            >
                  <mat-icon>compare_arrows</mat-icon>
                 </span>
-
+            </div>
         </mat-card-content>
         <mat-card-actions
         >
             <button mat-button (click)="addLinks(pattern)">Add Links (incl. Pattern)
-            </button>
-            <button *ngIf="pattern._links.ingoingDirectedEdges || pattern._links.outgoingDirectedEdges" mat-button (click)="removeLink(pattern)">Remove Links
             </button>
         </mat-card-actions>
     </mat-card>

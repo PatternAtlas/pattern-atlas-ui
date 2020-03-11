@@ -2,10 +2,8 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {CreatePatternRelationComponent, DialogData} from '../create-pattern-relation/create-pattern-relation.component';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import Pattern from '../../model/hal/pattern.model';
 import {DirectedEdgeModel} from '../../model/hal/directed-edge.model';
 import {UndirectedEdgeModel} from '../../model/hal/undirected-edge.model';
-import {map} from 'rxjs/operators';
 import {EdgeWithType, PatternRelationDescriptorService} from '../../service/pattern-relation-descriptor.service';
 import {HalLink} from '../../model/hal/hal-link.interface';
 
@@ -50,27 +48,26 @@ export class DeletePatternRelationComponent implements OnInit {
     }
 
     private getEdgesForPattern(): void {
-        const edgeLinks = ['undirectedEdges', 'outgoingDirectedEdges', 'ingoingDirectedEdges'];
-
-        edgeLinks.forEach((edgeType: string) => {
-            const edgeLink = this.data.pattern._links[edgeType];
-            if (edgeLink) {
-                const halLinks = Array.isArray(edgeLink) ? <HalLink[]>edgeLink : [edgeLink];
-                for (const halLink of halLinks) {
-                    this.patternRelationDescriptorService.getUndirectedEdgeByUrl(halLink.href).subscribe(
-                        data => {
-                            this.currentEdges.push(data);
-                        }
-                    );
+        let links = [];
+        if (!this.data.edges.length) {
+            links[0] = this.data.edges;
+        } else {
+            links = this.data.edges;
+        }
+        for (const link of links) {
+            this.patternRelationDescriptorService.getUndirectedEdgeByUrl(link.href).subscribe(
+                data => {
+                    this.currentEdges.push(data);
                 }
-            }
-        });
+            );
+        }
     }
 
 }
 
 export interface DialogData {
-    pattern: Pattern;
+    edges: any[];
+    type: string;
     selectedEdge: any;
 }
 
