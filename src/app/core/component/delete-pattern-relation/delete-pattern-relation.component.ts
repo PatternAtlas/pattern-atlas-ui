@@ -1,10 +1,12 @@
-import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {CreatePatternRelationComponent, DialogData} from '../create-pattern-relation/create-pattern-relation.component';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {EdgeWithType, PatternRelationDescriptorService} from '../../service/pattern-relation-descriptor.service';
 import {PatternViewService} from '../../service/pattern-view.service';
 import {ToasterService} from 'angular2-toaster';
+import {DirectedEdgeModel} from '../../model/hal/directed-edge.model';
+import {UndirectedEdgeModel} from '../../model/hal/undirected-edge.model';
 
 @Component({
     selector: 'pp-delete-pattern-relation',
@@ -38,7 +40,7 @@ export class DeletePatternRelationComponent implements OnInit {
         this.dialogRef.close();
     }
 
-    deleteEdge(edge: any) {
+    deleteEdge(edge: DirectedEdgeModel | UndirectedEdgeModel): void {
         this.patternViewService.deleteLink(edge._links.self.href).subscribe(
             (res) => {
                 this.currentEdges = this.currentEdges.filter(item => item !== edge);
@@ -61,6 +63,7 @@ export class DeletePatternRelationComponent implements OnInit {
             this.patternRelationDescriptorService.getUndirectedEdgeByUrl(link.href).subscribe(
                 data => {
                     this.currentEdges.push(data);
+                    console.log(typeof this.currentEdges);
                 }
             );
         }
@@ -69,7 +72,7 @@ export class DeletePatternRelationComponent implements OnInit {
 }
 
 export interface DialogData {
-    edges: any[];
+    edges: DirectedEdgeModel[] | UndirectedEdgeModel[];
     type: string;
-    selectedEdge: any;
+    selectedEdge: DirectedEdgeModel | UndirectedEdgeModel;
 }
