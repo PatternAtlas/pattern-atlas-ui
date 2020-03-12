@@ -2,6 +2,19 @@
     transform: rotate(180deg);
 }
 
-.mat-form-field {
-    margin-left: 2.5rem !important;
+.delete-icon {
+  font-size: 30px;
+  float: right;
+  position: relative;
+  right: 5px;
+  top: 10px;
+}
+
+.close-button {
+  position: relative;
+  top: 0px;
+  right: 0px;
+  padding: 5px;
+  line-height: 14px;
+  min-width: auto;
 }

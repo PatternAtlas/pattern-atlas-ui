@@ -157,45 +157,24 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     }
 
     showUndirectedEdges(undirectedEdges: HalLink[]) {
-        const dialogRef = this.matDialog.open(DeletePatternRelationComponent, {data: {edges: undirectedEdges, type: 'undirected'}});
-        dialogRef.afterClosed().subscribe(
-            selectedEdge => {
-                this.deleteLink(selectedEdge).subscribe(
-                    (res) => {
-                        this.toasterService.pop('success', 'Relation removed');
-                        this.cdr.detectChanges();
-                    }
-                );
-            }
-        );
+        const dialogRef = this.matDialog.open(DeletePatternRelationComponent, {data: {edges: undirectedEdges, type: 'undirected'}, width: '600px', panelClass: 'delete-relation-dialog'});
+        dialogRef.afterClosed().subscribe(() => {
+            this.cdr.detectChanges();
+        });
     }
 
     showIngoingEdges(ingoingEdges: HalLink[]) {
-        const dialogRef = this.matDialog.open(DeletePatternRelationComponent, {data: {edges: ingoingEdges, type: 'ingoing'}});
-        dialogRef.afterClosed().subscribe(
-            selectedEdge => {
-                this.deleteLink(selectedEdge).subscribe(
-                    (res) => {
-                        this.toasterService.pop('success', 'Relation removed');
-                        this.cdr.detectChanges();
-                    }
-                );
-            }
-        );
+        const dialogRef = this.matDialog.open(DeletePatternRelationComponent, {data: {edges: ingoingEdges, type: 'ingoing'}, width: '600px', panelClass: 'delete-relation-dialog'});
+        dialogRef.afterClosed().subscribe(() => {
+            this.cdr.detectChanges();
+        });
     }
 
     showOutgoingEdges(outgoingEdges: HalLink[]) {
-        const dialogRef = this.matDialog.open(DeletePatternRelationComponent, {data: {edges: outgoingEdges, type: 'outgoing'}});
-        dialogRef.afterClosed().subscribe(
-            selectedEdge => {
-                this.deleteLink(selectedEdge).subscribe(
-                    (res) => {
-                        this.toasterService.pop('success', 'Relation removed');
-                        this.cdr.detectChanges();
-                    }
-                );
-            }
-        );
+        const dialogRef = this.matDialog.open(DeletePatternRelationComponent, {data: {edges: outgoingEdges, type: 'outgoing'}, width: '600px', panelClass: 'delete-relation-dialog'});
+        dialogRef.afterClosed().subscribe(() => {
+            this.cdr.detectChanges();
+        });
     }
 
     private getPatternLanguages(): Observable<Array<PatternLanguageModel>> {
