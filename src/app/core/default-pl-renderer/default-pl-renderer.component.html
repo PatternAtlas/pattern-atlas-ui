@@ -22,7 +22,7 @@
     <pp-graph-display *ngIf="graphVisible && patterns && !isLoadingLinkData" [data]="{
                 patterns: this.patterns, edges: this.patternLinks,
                 patternLanguage: this.patternLanguage, patternView: null
-            }" (addedEdge)="linkAddedInGraphEditor($event)">
+            }" (addedEdge)="linkAddedInGraphEditor($event)" [showPatternLanguageName]="false">
     </pp-graph-display>
 
 </div>
