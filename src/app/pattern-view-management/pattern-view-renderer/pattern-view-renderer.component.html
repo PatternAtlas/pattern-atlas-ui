@@ -21,11 +21,11 @@
 
         <mat-card-content class="card-content-style">
             <div class="badge-container" (click)="showIngoingEdges(pattern._links.ingoingDirectedEdges)">
+                <mat-icon> trending_flat
+                </mat-icon>
             <span class="badge-span" matBadgeOverlap="false"
                   [matBadge]="getLinkCount(pattern._links.ingoingDirectedEdges)"
             >
-                <mat-icon> trending_flat
-            </mat-icon>
         </span>
             </div>
             <div class="badge-container" (click)="showOutgoingEdges(pattern._links.outgoingDirectedEdges)">
@@ -34,12 +34,12 @@
                 <span class="badge-span" matBadgeOverlap="false"
                       [matBadge]="getLinkCount(pattern._links.outgoingDirectedEdges)"
                 >
-        </span>
+                </span>
             </div>
             <div class="badge-container" (click)="showUndirectedEdges(pattern._links.undirectedEdges)">
-            <span [matBadge]="getLinkCount(pattern._links.undirectedEdges)" matBadgeOverlap="false"
-            >
-                 <mat-icon>compare_arrows</mat-icon>
+                <mat-icon>compare_arrows</mat-icon>
+                <span class="badge-span" [matBadge]="getLinkCount(pattern._links.undirectedEdges)" matBadgeOverlap="false"
+                >
                 </span>
             </div>
         </mat-card-content>

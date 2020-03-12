@@ -15,9 +15,7 @@ import {UndirectedEdgeModel} from '../../model/hal/undirected-edge.model';
 })
 export class DeletePatternRelationComponent implements OnInit {
 
-    relationForm: FormGroup;
     currentEdges: Array<EdgeWithType> = [];
-    selectedEdge: EdgeWithType;
 
     constructor(public dialogRef: MatDialogRef<CreatePatternRelationComponent>,
                 @Inject(MAT_DIALOG_DATA) public data: DialogData, private fb: FormBuilder,
@@ -27,21 +25,14 @@ export class DeletePatternRelationComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.relationForm = this.fb.group({
-            selectedEdge: ['', [Validators.required]]
-        });
-
-        if (this.data.selectedEdge) {
-            this.relationForm.get('selectedEdge').setValue(this.data.selectedEdge);
-        }
     }
 
     close(): void {
         this.dialogRef.close();
     }
 
-    deleteEdge(edge: DirectedEdgeModel | UndirectedEdgeModel): void {
-        this.patternViewService.deleteLink(edge._links.self.href).subscribe(
+    deleteEdge(edge: EdgeWithType): void {
+        this.patternViewService.deleteLink(edge.edge._links.self.href).subscribe(
             (res) => {
                 this.currentEdges = this.currentEdges.filter(item => item !== edge);
                 this.toasterService.pop('success', 'Relation removed');
@@ -62,8 +53,10 @@ export class DeletePatternRelationComponent implements OnInit {
         for (const link of links) {
             this.patternRelationDescriptorService.getUndirectedEdgeByUrl(link.href).subscribe(
                 data => {
-                    this.currentEdges.push(data);
-                    console.log(typeof this.currentEdges);
+                    const edgeWithType: EdgeWithType = new EdgeWithType();
+                    edgeWithType.edge = data;
+                    edgeWithType.type = data.type;
+                    this.currentEdges.push(edgeWithType);
                 }
             );
         }
@@ -72,7 +65,6 @@ export class DeletePatternRelationComponent implements OnInit {
 }
 
 export interface DialogData {
-    edges: DirectedEdgeModel[] | UndirectedEdgeModel[];
+    edges: Array<EdgeWithType>;
     type: string;
-    selectedEdge: DirectedEdgeModel | UndirectedEdgeModel;
 }
