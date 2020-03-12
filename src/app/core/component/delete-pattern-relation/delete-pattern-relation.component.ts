@@ -43,6 +43,9 @@ export class DeletePatternRelationComponent implements OnInit {
             (res) => {
                 this.currentEdges = this.currentEdges.filter(item => item !== edge);
                 this.toasterService.pop('success', 'Relation removed');
+                if (this.currentEdges.length === 0) {
+                    this.dialogRef.close();
+                }
             }
         );
     }
