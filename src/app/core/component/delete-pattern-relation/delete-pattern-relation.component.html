@@ -17,9 +17,9 @@
                     <div *ngIf="edge.description"><b>Description:</b> {{edge.description}}</div>
                     <br/>
                 </div>
-                <div class="delete-icon">
+                <button class="delete-icon" mat-button (click)="deleteEdge(edge)">
                     <mat-icon (click)="deleteEdge(edge)" [inline]="true">delete</mat-icon>
-                </div>
+                </button>
             </mat-expansion-panel>
         </mat-accordion>
     </ng-template>
