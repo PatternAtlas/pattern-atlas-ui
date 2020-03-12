@@ -4,6 +4,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {EdgeWithType, PatternRelationDescriptorService} from '../../service/pattern-relation-descriptor.service';
 import {PatternViewService} from '../../service/pattern-view.service';
 import {ToasterService} from 'angular2-toaster';
+import {HalLink} from '../../model/hal/hal-link.interface';
 
 @Component({
     selector: 'pp-delete-pattern-relation',
@@ -62,6 +63,6 @@ export class DeletePatternRelationComponent implements OnInit {
 }
 
 export interface DialogData {
-    edges: Array<EdgeWithType>;
+    edges: HalLink[];
     type: string;
 }
