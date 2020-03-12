@@ -1,28 +1,12 @@
-FROM node:12.2.0 as builder
+FROM node:alpine AS builder
 
-RUN rm /dev/random && ln -s /dev/urandom /dev/random
+WORKDIR /app
 
-WORKDIR /usr/angular-workdir
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
+COPY . .
 
-# install and cache app dependencies
-COPY ./ /usr/angular-workdir
-RUN npm install
-RUN npm install -g @angular/cli@~9.0.0
+RUN npm install && \
+    npm run build
 
+FROM nginx:alpine
 
-
-RUN ng build
-
-# base image
-FROM nginx:1.16.0-alpine
-
-# copy artifact build from the 'build environment'
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-# expose port 80
-EXPOSE 80
-
-# run nginx
-CMD ["nginx", "-g", "daemon off;"]
+COPY --from=builder /app/dist/* /usr/share/nginx/html/

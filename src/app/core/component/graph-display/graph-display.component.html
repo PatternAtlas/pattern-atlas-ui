@@ -101,6 +101,10 @@
                         word-break: break-word
                     }
 
+                    .cursive {
+                        font-style: italic;
+                    }
+
                     .low-opacity-node {
                         opacity: 0.1;
                     }
@@ -113,19 +117,27 @@
 
                     <g data-template-type="node" id="default">
 
-                        <rect data-click="nodeclick" data-link-handles="edges" height="40" rx="5" ry="5"
+                        <rect data-click="nodeclick" data-link-handles="edges" height="50" rx="5" ry="5"
                               style="stroke:black;stroke-width:1;"
-                              width="100"
-                              x="-50" y="-20">
+                              width="120"
+                              x="-60" y="-25">
                         </rect>
-                        <image data-click="info" data-content="uri" width="10" x="35"
+                        <image data-click="info" data-content="patternLanguageId" width="10" x="45"
                                xlink:href="assets/Info_Simple_bw.svg"
                                y="-15"/>
                         <text class="text" data-click="title" data-content="title" dominant-baseline="middle"
-                              height="40" text-anchor="middle"
-                              width="100"
+                              height="50" text-anchor="middle"
+                              width="120"
                               x="0"
                               y="0">
+                        </text>
+                        <text class="text cursive" data-click="patternLanguageName" *ngIf="showPatternLanguageName"
+                              data-content="patternLanguageName"
+                              dominant-baseline="middle"
+                              height="50" text-anchor="middle"
+                              width="120"
+                              x="0"
+                              y="10">
                         </text>
                     </g>
 

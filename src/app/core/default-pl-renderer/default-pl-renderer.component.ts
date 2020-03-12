@@ -1,11 +1,10 @@
-import {ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {ChangeDetectorRef, Component, ComponentFactoryResolver, ElementRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UriConverter} from '../util/uri-converter';
 import {MatDialog} from '@angular/material/dialog';
 import {PatternLanguageService} from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
 import {D3Service} from '../../graph/service/d3.service';
-import {CardRendererComponent} from '../component/cardrenderer/card-renderer.component';
 import {GraphDisplayComponent} from '../component/graph-display/graph-display.component';
 import {EMPTY, forkJoin, Observable} from 'rxjs';
 import {Embedded} from '../model/hal/embedded';
@@ -14,7 +13,6 @@ import {switchMap, tap} from 'rxjs/operators';
 import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
 import {DirectedEdgeModel} from '../model/hal/directed-edge.model';
 import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
-import * as _ from 'lodash';
 import {CreatePatternRelationComponent} from '../component/create-pattern-relation/create-pattern-relation.component';
 import {PatternRelationDescriptorService} from '../service/pattern-relation-descriptor.service';
 import {ToasterService} from 'angular2-toaster';
@@ -31,7 +29,7 @@ export class DefaultPlRendererComponent implements OnInit {
 
     patterns: Array<Pattern> = [];
     patternLanguage: PatternLanguage;
-    patternLanguageURI: string;
+    patternLanguageId: string;
     @ViewChild('graphWrapper') graph: ElementRef;
     @ViewChild('cardsView') cardsView: ElementRef;
     @ViewChild('searchField') searchField: ElementRef;
@@ -131,10 +129,10 @@ export class DefaultPlRendererComponent implements OnInit {
 
     private loadData(): void {
         this.isLoadingPatternData = true;
-        this.patternLanguageURI = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
+        this.patternLanguageId = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageId'));
 
-        if (this.patternLanguageURI) {
-            this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageURI)
+        if (this.patternLanguageId) {
+            this.patternLanguageService.getPatternLanguageByID(this.patternLanguageId)
                 .pipe(
                     tap(patternlanguage => this.patternLanguage = patternlanguage),
                     switchMap(() => this.loadPatterns()),

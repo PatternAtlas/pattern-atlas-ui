@@ -8,7 +8,6 @@ import {PatternView} from '../../model/hal/pattern-view.model';
 import PatternLanguage from '../../model/hal/pattern-language.model';
 import {EdgeWithType, PatternRelationDescriptorService} from '../../service/pattern-relation-descriptor.service';
 import {ToasterService} from 'angular2-toaster';
-import {UriConverter} from '../../util/uri-converter';
 import GraphEditor from '@ustutt/grapheditor-webcomponent/lib/grapheditor';
 import {DraggedEdge, edgeId} from '@ustutt/grapheditor-webcomponent/lib/edge';
 import Pattern from '../../model/hal/pattern.model';
@@ -26,6 +25,7 @@ export class GraphNode {
     type: string;
     x: number;
     y: number;
+    patternLanguageId: string;
 }
 
 @Component({
@@ -42,6 +42,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     patternGraphData: any;
     isLoading = true;
     @Input() data: GraphInputData;
+    @Input() showPatternLanguageName: boolean;
     @Output() addedEdge = new EventEmitter<any>();
     currentPattern: Pattern;
     currentEdges: Array<EdgeWithType>;
@@ -95,14 +96,16 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
 
     static mapPatternsToNodes(patterns: Array<Pattern>, offsetIndex: number = 0): Array<GraphNode> {
         const nodes: Array<any> = [];
+        console.log(patterns);
         for (let i = 0; i < patterns.length; i++) {
             const node = {
                 id: patterns[i].id,
                 title: patterns[i].name,
                 type: 'default',
-                uri: patterns[i].uri,
                 x: 5 * offsetIndex,
-                y: 5 * offsetIndex
+                y: 5 * offsetIndex,
+                patternLanguageId: patterns[i].patternLanguageId,
+                patternLanguageName: patterns[i].patternLanguageName
             };
             nodes.push(node);
         }
@@ -169,8 +172,9 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
 
     nodeClicked(event) {
         const node = event['detail']['node'];
-        if (event['detail']['key'] === 'info' && this.patternLanguage) {
-            this.router.navigate([UriConverter.doubleEncodeUri(node.id)], {relativeTo: this.activatedRoute});
+        console.log(node);
+        if (event['detail']['key'] === 'info') {
+            this.router.navigate(['..', (<GraphNode>node).patternLanguageId + node.id, {relativeTo: this.activatedRoute}]);
         }
         this.showInfoForClickedNode(node);
     }

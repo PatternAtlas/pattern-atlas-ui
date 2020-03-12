@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ComponentRegistryService } from 'src/app/core/service/component-registry.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {ComponentRegistryService} from 'src/app/core/service/component-registry.service';
 
 @Component({
     selector: 'pp-pattern-container',
@@ -9,8 +9,8 @@ import { ComponentRegistryService } from 'src/app/core/service/component-registr
 })
 export class PatternContainerComponent implements OnInit {
 
-    plEncodedUri: string;
-    pEncodedUri: string;
+    patternLanguageId: string;
+    patternId: string;
 
     // the list of registered renderer components for the language
     renderer: Array<any>;
@@ -20,8 +20,8 @@ export class PatternContainerComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.plEncodedUri = this.activatedRoute.snapshot.paramMap.get('patternUri');
-        this.renderer = this.compRegistry.getRenderingComponents(this.plEncodedUri);
+        this.patternLanguageId = this.activatedRoute.snapshot.paramMap.get('patternLanguageId');
+        this.renderer = this.compRegistry.getRenderingComponents(this.patternLanguageId);
     }
 
 }
