@@ -1,12 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {CreatePatternRelationComponent, DialogData} from '../create-pattern-relation/create-pattern-relation.component';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {EdgeWithType, PatternRelationDescriptorService} from '../../service/pattern-relation-descriptor.service';
 import {PatternViewService} from '../../service/pattern-view.service';
 import {ToasterService} from 'angular2-toaster';
-import {DirectedEdgeModel} from '../../model/hal/directed-edge.model';
-import {UndirectedEdgeModel} from '../../model/hal/undirected-edge.model';
 
 @Component({
     selector: 'pp-delete-pattern-relation',
@@ -18,7 +15,7 @@ export class DeletePatternRelationComponent implements OnInit {
     currentEdges: Array<EdgeWithType> = [];
 
     constructor(public dialogRef: MatDialogRef<CreatePatternRelationComponent>,
-                @Inject(MAT_DIALOG_DATA) public data: DialogData, private fb: FormBuilder,
+                @Inject(MAT_DIALOG_DATA) public data: DialogData,
                 private patternRelationDescriptorService: PatternRelationDescriptorService,
                 private patternViewService: PatternViewService, private toasterService: ToasterService) {
         this.getEdgesForPattern();
