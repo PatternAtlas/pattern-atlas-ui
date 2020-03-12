@@ -16,7 +16,7 @@ export class DeletePatternRelationComponent implements OnInit {
     currentEdges: Array<EdgeWithType> = [];
 
     constructor(public dialogRef: MatDialogRef<CreatePatternRelationComponent>,
-                @Inject(MAT_DIALOG_DATA) public data: DialogData,
+                @Inject(MAT_DIALOG_DATA) public data: DeleteRelationDialogData,
                 private patternRelationDescriptorService: PatternRelationDescriptorService,
                 private patternViewService: PatternViewService, private toasterService: ToasterService) {
         this.getEdgesForPattern();
@@ -62,7 +62,7 @@ export class DeletePatternRelationComponent implements OnInit {
 
 }
 
-export interface DialogData {
+export interface DeleteRelationDialogData {
     edges: HalLink[];
     type: string;
 }
