@@ -1,13 +1,10 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
 import {CreatePatternRelationComponent, DialogData} from '../create-pattern-relation/create-pattern-relation.component';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import Pattern from '../../model/hal/pattern.model';
-import {DirectedEdgeModel} from '../../model/hal/directed-edge.model';
-import {UndirectedEdgeModel} from '../../model/hal/undirected-edge.model';
-import {map} from 'rxjs/operators';
 import {EdgeWithType, PatternRelationDescriptorService} from '../../service/pattern-relation-descriptor.service';
-import {HalLink} from '../../model/hal/hal-link.interface';
+import {PatternViewService} from '../../service/pattern-view.service';
+import {ToasterService} from 'angular2-toaster';
 
 @Component({
     selector: 'pp-delete-pattern-relation',
@@ -22,7 +19,8 @@ export class DeletePatternRelationComponent implements OnInit {
 
     constructor(public dialogRef: MatDialogRef<CreatePatternRelationComponent>,
                 @Inject(MAT_DIALOG_DATA) public data: DialogData, private fb: FormBuilder,
-                private patternRelationDescriptorService: PatternRelationDescriptorService) {
+                private patternRelationDescriptorService: PatternRelationDescriptorService,
+                private patternViewService: PatternViewService, private toasterService: ToasterService) {
         this.getEdgesForPattern();
     }
 
@@ -40,40 +38,38 @@ export class DeletePatternRelationComponent implements OnInit {
         this.dialogRef.close();
     }
 
-    // adds a relation created by the dialog to the local data and returns whether this was successful (or not, e.g. when simply closing the dialog)
-    mapDialogDataToEdge(dialogResult: DialogDataResult): DirectedEdgeModel | UndirectedEdgeModel {
-        if (!dialogResult || !dialogResult.selectedEdge) {
-            return null;
-        }
-        return dialogResult.selectedEdge;
-
+    deleteEdge(edge: any) {
+        this.patternViewService.deleteLink(edge._links.self.href).subscribe(
+            (res) => {
+                this.currentEdges = this.currentEdges.filter(item => item !== edge);
+                this.toasterService.pop('success', 'Relation removed');
+                if (this.currentEdges.length === 0) {
+                    this.dialogRef.close();
+                }
+            }
+        );
     }
 
     private getEdgesForPattern(): void {
-        const edgeLinks = ['undirectedEdges', 'outgoingDirectedEdges', 'ingoingDirectedEdges'];
-
-        edgeLinks.forEach((edgeType: string) => {
-            const edgeLink = this.data.pattern._links[edgeType];
-            if (edgeLink) {
-                const halLinks = Array.isArray(edgeLink) ? <HalLink[]>edgeLink : [edgeLink];
-                for (const halLink of halLinks) {
-                    this.patternRelationDescriptorService.getUndirectedEdgeByUrl(halLink.href).subscribe(
-                        data => {
-                            this.currentEdges.push(data);
-                        }
-                    );
+        let links = [];
+        if (!this.data.edges.length) {
+            links[0] = this.data.edges;
+        } else {
+            links = this.data.edges;
+        }
+        for (const link of links) {
+            this.patternRelationDescriptorService.getUndirectedEdgeByUrl(link.href).subscribe(
+                data => {
+                    this.currentEdges.push(data);
                 }
-            }
-        });
+            );
+        }
     }
 
 }
 
 export interface DialogData {
-    pattern: Pattern;
-    selectedEdge: any;
-}
-
-export interface DialogDataResult {
+    edges: any[];
+    type: string;
     selectedEdge: any;
 }

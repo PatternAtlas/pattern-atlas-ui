@@ -1,17 +1,23 @@
+<button class="close" mat-button (click)="close()">X</button>
 <h1 mat-dialog-title>Delete a relation</h1>
-<div mat-dialog-content [formGroup]="relationForm">
-        <mat-form-field>
-            <mat-select formControlName="selectedEdge">
-                <mat-option *ngFor="let edge of this.currentEdges"
-                            [value]="edge">
+<div mat-dialog-content>
+    <mat-accordion style="padding: 3px">
+        <mat-expansion-panel *ngFor="let edge of this.currentEdges">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
                     {{edge.sourcePatternName}} {{edge.type}} {{edge.targetPatternName}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-</div>
-<div mat-dialog-actions>
-    <button mat-button [mat-dialog-close]="null">Close</button>
-    <button mat-button [mat-dialog-close]="mapDialogDataToEdge(relationForm.value)" [disabled]="!relationForm?.valid">
-        Delete
-    </button>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="badge-container">
+                <b>Source Pattern:</b> {{edge.sourcePatternName}}<br/>
+                <b>Relation Type:</b> {{edge.type}} <br/>
+                <b>Target Pattern:</b> {{edge.targetPatternName}}
+                <div *ngIf="edge.description"><b>Description:</b> {{edge.description}}</div>
+                <br/>
+            </div>
+            <div class="delete-icon">
+                <mat-icon (click)="deleteEdge(edge)" [inline]="true">delete</mat-icon>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
 </div>
