@@ -2,7 +2,6 @@ import {AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, V
 import {ActivatedRoute, Router} from '@angular/router';
 import {ToasterService} from 'angular2-toaster';
 import {PatternPropertyDirective} from '../component/markdown-content-container/pattern-property.directive';
-import {UriConverter} from '../util/uri-converter';
 import {MatDialog} from '@angular/material/dialog';
 import {CreatePatternRelationComponent} from '../component/create-pattern-relation/create-pattern-relation.component';
 import Pattern from '../model/hal/pattern.model';
@@ -38,7 +37,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
     private directedPatternRelations: Array<DirectedEdgeModel>;
     private undirectedPatternRelations: Array<UndirectedEdgeModel>;
     private viewContainerRef;
-    private patternLanguageUri: string;
+    private patternLanguageId: string;
     private patternId: string;
 
     constructor(private activatedRoute: ActivatedRoute,
@@ -55,16 +54,12 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
 
     ngAfterViewInit(): void {
         this.viewContainerRef = this.ppPatternProperty.viewContainerRef;
-        this.patternLanguageUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
-        this.patternId = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternUri'));
+        this.patternLanguageId = this.activatedRoute.snapshot.paramMap.get('patternLanguageId');
+        this.patternId = this.activatedRoute.snapshot.paramMap.get('patternId');
 
         this.getData();
 
 
-    }
-
-    doubleEncodeUri(uri: string): string {
-        return UriConverter.doubleEncodeUri(uri);
     }
 
     addLink() {
@@ -164,7 +159,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
 
     private getData(): void {
         // get pattern language object with all the hal links that we need
-        this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageUri).pipe(
+        this.patternLanguageService.getPatternLanguageByID(this.patternLanguageId).pipe(
             tap((patternLanguage) => this.patternLanguage = patternLanguage),
             // get our individual pattern
             switchMap(() => this.fillPatternSectionData()),

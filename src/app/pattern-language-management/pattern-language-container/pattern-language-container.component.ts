@@ -12,10 +12,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ComponentRegistryService } from 'src/app/core/service/component-registry.service';
-import { UriConverter } from '../../core/util/uri-converter';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {ComponentRegistryService} from 'src/app/core/service/component-registry.service';
 
 @Component({
     selector: 'pp-pattern-language-container',
@@ -24,8 +23,8 @@ import { UriConverter } from '../../core/util/uri-converter';
 })
 export class PatternLanguageContainerComponent implements OnInit {
 
-    // the uri of the patterns language
-    plEncodedUri: string;
+    // the id of the patterns language
+    plEncodedId: string;
     // the list of registered renderer components for the language
     renderer: Array<any>;
 
@@ -35,7 +34,7 @@ export class PatternLanguageContainerComponent implements OnInit {
 
     ngOnInit() {
         // Todo: We use encoded uris just for navigation. Now we can get the Uri from the patternlanguage entity. We have to add redux!
-        this.plEncodedUri = this.activatedRoute.snapshot.params['patternLanguageUri'];
-        this.renderer = this.compRegistry.getRenderingComponents(UriConverter.doubleDecodeUri(this.plEncodedUri));
+        this.plEncodedId = this.activatedRoute.snapshot.params['patternLanguageId'];
+        this.renderer = this.compRegistry.getRenderingComponents(this.plEncodedId);
     }
 }

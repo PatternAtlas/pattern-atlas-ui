@@ -58,7 +58,7 @@ import {EmitEventOnAddedEdgeDirective} from './directives/emit-event-on-added-ed
 import {MatBadgeModule, MatExpansionModule} from '@angular/material';
 import {RouterModule} from '@angular/router';
 import {ToggleRendererComponent} from './component/toggle-renderer/toggle-renderer.component';
-import { DeletePatternRelationComponent } from './component/delete-pattern-relation/delete-pattern-relation.component';
+import {DeletePatternRelationComponent} from './component/delete-pattern-relation/delete-pattern-relation.component';
 
 @NgModule({
     imports: [
