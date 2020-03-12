@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {CreatePatternRelationComponent, DialogData} from '../create-pattern-relation/create-pattern-relation.component';
+import {CreatePatternRelationComponent} from '../create-pattern-relation/create-pattern-relation.component';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {EdgeWithType, PatternRelationDescriptorService} from '../../service/pattern-relation-descriptor.service';
 import {PatternViewService} from '../../service/pattern-view.service';
