@@ -39,6 +39,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
     private viewContainerRef;
     private patternLanguageUri: string;
     private patternUri: string;
+    private rendered: Observable<any>;
 
     constructor(private activatedRoute: ActivatedRoute,
                 private toasterService: ToasterService,
@@ -110,21 +111,26 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
             }));
     }
 
-    getPatternInfos(): Observable<Pattern> {
-        if (!this.patternLanguage) {
-            return EMPTY;
-        }
-        return this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href).pipe(
-            tap((patterns) => {
-                this.patterns = patterns;
-                this.pattern = patterns.find(pat => pat.uri === this.patternUri);
-            }),
-            switchMap((patterns: any) => {
-                this.pattern = patterns.find(pat => pat.uri === this.patternUri);
-                return this.patternService.getPatternRenderedContentByPattern(this.pattern);
-            }),
-            map((patternContent) => this.pattern.content = patternContent.renderedContent));
+  getPatternInfos(): Observable<Pattern> {
+    if (!this.patternLanguage) {
+      return EMPTY;
     }
+    return this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href).pipe(
+      tap((patterns) => {
+        this.patterns = patterns;
+        this.pattern = patterns.find(pat => pat.uri === this.patternUri);
+      }),
+      switchMap((patterns: any) => {
+        this.pattern = patterns.find(pat => pat.uri === this.patternUri);
+        const content = this.patternService.getPatternContentByPattern(this.pattern);
+        const renderedContent = this.patternService.getPatternRenderedContentByPattern(this.pattern);
+        return forkJoin([content, renderedContent]);
+      }),
+      map((patternContent) => {
+        this.pattern.renderedContent = patternContent[1].renderedContent;
+        return this.pattern.content = patternContent[0].content;
+      }));
+  }
 
     retrievePatternLanguageData(): Observable<any> {
         const $getDirectedEdges = this.getDirectedEdges();
@@ -133,21 +139,26 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
     }
 
     private createSectionComponent(section: string) {
-        if (!this.pattern.content) {
+        if (!this.pattern.renderedContent) {
             return;
         }
-        const properties = this.pattern.content[section];
+        const renderedContent = this.pattern.renderedContent[section];
+        const content = this.pattern.content[section];
 
         const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MarkdownPatternSectionContentComponent);
         const componentRef = this.viewContainerRef.createComponent(componentFactory);
         const instance = (<MarkdownPatternSectionContentComponent>componentRef.instance);
-        instance.data = properties;
+        instance.renderedData = renderedContent;
+        instance.data = content;
         instance.title = section;
         instance.isEditingEnabled = this.isEditingEnabled;
         instance.changeContent.subscribe((dataChange: DataChange) => {
+          console.log(dataChange);
             this.pattern.content[section] = dataChange.currentValue;
             this.cdr.detectChanges();
-            this.savePattern(section, dataChange.previousValue, instance);
+            // this.pattern.renderedContent[section] = this.savePatternPipe(section, dataChange.previousValue, instance);
+         this.savePattern(section, dataChange.previousValue, instance);
+          this.cdr.detectChanges();
         });
     }
 
@@ -174,8 +185,37 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
             }));
     }
 
+    // private savePatternPipe(section: string, previousContent: any, instance: MarkdownPatternSectionContentComponent) {
+    //   this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).pipe(map(  data => {
+    //     console.log(section);
+    //     const test = data.body.renderedContent[section];
+    //     console.log(test);
+    //     this.pattern.renderedContent[section] = test;
+    //     instance.changeText(this.pattern.renderedContent[section]);
+    //     return test;
+    //   })).subscribe(() => {
+    //       this.toasterService.pop('success', 'Saved pattern');
+    //       console.log(this.pattern.renderedContent[section] + 'saved');
+    //     },
+    //     (error) => {
+    //       this.toasterService.pop('error', 'Could not save pattern, resetting content', error.message);
+    //       // reset text of the section:
+    //       this.pattern.content[section] = previousContent;
+    //       instance.changeText(previousContent);
+    //       this.cdr.detectChanges();
+    //     });
+    // }
+
     private savePattern(section: string, previousContent: any, instance: MarkdownPatternSectionContentComponent) {
-        this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe(() => this.toasterService.pop('success', 'Saved pattern'),
+        this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe(data => {
+            console.log(section);
+            const test = data.body.renderedContent[section];
+            console.log(data.body.renderedContent);
+            this.pattern.renderedContent[section] = test;
+            instance.changeText(this.pattern.renderedContent[section]);
+            this.toasterService.pop('success', 'Saved pattern');
+            console.log(this.pattern.renderedContent[section] + 'saved');
+          },
             (error) => {
                 this.toasterService.pop('error', 'Could not save pattern, resetting content', error.message);
                 // reset text of the section:

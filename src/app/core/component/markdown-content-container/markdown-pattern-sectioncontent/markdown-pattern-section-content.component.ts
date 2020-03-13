@@ -15,6 +15,7 @@ import {AlgorithmType} from '../../../model/algorithm-type.enum';
 export class MarkdownPatternSectionContentComponent extends DataRenderingComponent implements AfterViewInit {
 
   data: string;
+  renderedData: string;
   title = '';
 
   showActionButtons = false;
@@ -30,33 +31,29 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
   ngAfterViewInit() {
     this.markdown = new MarkdownIt();
     this.markdown.use(markdownitKatex);
-    this.changeText(this.data);
+    console.log("log" + this.data);
+    console.log("logrendered" + this.renderedData);
+    this.changeText(this.renderedData);
   }
 
   changeText(value: string): void {
-    this.data = value;
-    this.markdownDiv.nativeElement.innerHTML = this.markdown.render(this.data);
+    this.renderedData = value;
+    this.markdownDiv.nativeElement.innerHTML = this.markdown.render(this.renderedData);
     this.cdr.detectChanges();
   }
 
   openEditor(): void {
+    console.log('this data' + this.data + 'rendered' + this.renderedData);
     const dialogRef = this.dialog.open(MdEditorComponent,
       {data: {content: this.data, field: this.title}});
     dialogRef.afterClosed().subscribe(async (result: DialogData) => {
       const previousValue = this.data;
+
       if (result) {
         console.log(this.data);
-        //check if includes gatter
-        if (this.algoService.checkForAlgorithmInput(this.data) === AlgorithmType.QUANTIKZ) {
-          //save Gatter
-          console.log("includes gatter");
-        }
         this.data = result.content;
-        this.changeText(this.data);
+        this.changeText(this.renderedData);
       }
-
-      const content = this.data
-      console.log(content.slice(content.indexOf('\\begin{quantikz}'), content.indexOf('\\end{quantikz}') + 15));
       this.changeContent.emit({previousValue: previousValue, currentValue: result.content});
     });
   }
