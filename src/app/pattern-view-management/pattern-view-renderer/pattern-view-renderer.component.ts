@@ -35,7 +35,6 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     patterns: Array<Pattern> = [];
     displayText: string;
     isLoading = true;
-    trigger;
     private patternLanguages: Array<PatternLanguageModel>;
     private patternViewUri: string;
     graphVisible = false;
@@ -121,7 +120,11 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
             )).subscribe((res) => {
             if (res) {
                 this.toasterService.pop('success', 'Relation added');
-                this.cdr.detectChanges();
+                this.getData().subscribe(
+                    () => {
+                        this.getLinks();
+                    }
+                );
             }
         });
     }
@@ -164,7 +167,12 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
                 panelClass: 'delete-relation-dialog'
             });
             dialogRef.afterClosed().subscribe(() => {
-                this.cdr.detectChanges();
+                // reload patterns since ng for pattern loop doesnt get updated else
+                this.getData().subscribe(
+                    () => {
+                        this.getLinks();
+                    }
+                );
             });
         }
     }
@@ -177,7 +185,12 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
                 panelClass: 'delete-relation-dialog'
             });
             dialogRef.afterClosed().subscribe(() => {
-                this.cdr.detectChanges();
+                // reload patterns since ng for pattern loop doesnt get updated else
+                this.getData().subscribe(
+                    () => {
+                        this.getLinks();
+                    }
+                );
             });
         }
     }
@@ -190,7 +203,12 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
                 panelClass: 'delete-relation-dialog'
             });
             dialogRef.afterClosed().subscribe(() => {
-                this.cdr.detectChanges();
+                // reload patterns since ng for pattern loop doesnt get updated else
+                this.getData().subscribe(
+                    () => {
+                        this.getLinks();
+                    }
+                );
             });
         }
     }

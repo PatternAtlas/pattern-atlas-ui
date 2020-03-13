@@ -9,7 +9,7 @@
 
 <div class="container" *ngIf="!isLoading && !graphVisible">
 
-    <mat-card class="pattern-card" *ngFor="let pattern of patterns">
+    <mat-card class="pattern-card" *ngFor="let pattern of this.patterns">
         <mat-card-header>
             <mat-card-title>{{pattern?.name}}</mat-card-title>
             <mat-card-subtitle>Pattern
