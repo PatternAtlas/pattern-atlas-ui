@@ -12,7 +12,7 @@
     <mat-card class="pattern-card" *ngFor="let pattern of this.patterns">
         <mat-card-header>
             <mat-card-title>{{pattern?.name}}</mat-card-title>
-            <mat-card-subtitle>Pattern
+            <mat-card-subtitle>{{pattern.patternLanguageName}}
 
 
             </mat-card-subtitle>
@@ -34,20 +34,20 @@
 
             <div class="badge-container" (click)="showOutgoingEdges(pattern._links.outgoingDirectedEdges)">
                 <button mat-button class="edge-button">
-                <mat-icon class="flip"> trending_flat
-                </mat-icon>
-                <span class="badge-span" matBadgeOverlap="false"
-                      [matBadge]="getLinkCount(pattern._links.outgoingDirectedEdges)"
-                >
+                    <mat-icon class="flip"> trending_flat
+                    </mat-icon>
+                    <span class="badge-span" matBadgeOverlap="false"
+                          [matBadge]="getLinkCount(pattern._links.outgoingDirectedEdges)"
+                    >
                 </span>
                 </button>
             </div>
             <div class="badge-container" (click)="showUndirectedEdges(pattern._links.undirectedEdges)">
                 <button mat-button class="edge-button">
-                <mat-icon>compare_arrows</mat-icon>
-                <span class="badge-span" [matBadge]="getLinkCount(pattern._links.undirectedEdges)"
-                      matBadgeOverlap="false"
-                >
+                    <mat-icon>compare_arrows</mat-icon>
+                    <span class="badge-span" [matBadge]="getLinkCount(pattern._links.undirectedEdges)"
+                          matBadgeOverlap="false"
+                    >
                 </span>
                 </button>
             </div>
