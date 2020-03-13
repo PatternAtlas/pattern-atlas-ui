@@ -1,12 +1,17 @@
 .pattern-card {
   min-height: 13em;
   height: 13em;
-  min-width: 11em;
-  width: 11em;
+  min-width: 12em;
+  width: 12em;
   margin: 0.25em;
 }
 
 
 .container {
   display: flex;
+}
+
+.edge-button {
+  width: 4em!important;
+  min-width: unset!important;
 }

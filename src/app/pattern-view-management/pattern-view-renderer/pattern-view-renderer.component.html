@@ -20,27 +20,36 @@
         </mat-card-header>
 
         <mat-card-content class="card-content-style">
+
             <div class="badge-container" (click)="showIngoingEdges(pattern._links.ingoingDirectedEdges)">
-                <mat-icon> trending_flat
-                </mat-icon>
-            <span class="badge-span" matBadgeOverlap="false"
-                  [matBadge]="getLinkCount(pattern._links.ingoingDirectedEdges)"
-            >
-        </span>
+                <button mat-button class="edge-button">
+                    <mat-icon> trending_flat
+                    </mat-icon>
+                    <span class="badge-span" matBadgeOverlap="false"
+                          [matBadge]="getLinkCount(pattern._links.ingoingDirectedEdges)"
+                    >
+                    </span>
+                </button>
             </div>
+
             <div class="badge-container" (click)="showOutgoingEdges(pattern._links.outgoingDirectedEdges)">
+                <button mat-button class="edge-button">
                 <mat-icon class="flip"> trending_flat
                 </mat-icon>
                 <span class="badge-span" matBadgeOverlap="false"
                       [matBadge]="getLinkCount(pattern._links.outgoingDirectedEdges)"
                 >
                 </span>
+                </button>
             </div>
             <div class="badge-container" (click)="showUndirectedEdges(pattern._links.undirectedEdges)">
+                <button mat-button class="edge-button">
                 <mat-icon>compare_arrows</mat-icon>
-                <span class="badge-span" [matBadge]="getLinkCount(pattern._links.undirectedEdges)" matBadgeOverlap="false"
+                <span class="badge-span" [matBadge]="getLinkCount(pattern._links.undirectedEdges)"
+                      matBadgeOverlap="false"
                 >
                 </span>
+                </button>
             </div>
         </mat-card-content>
         <mat-card-actions
