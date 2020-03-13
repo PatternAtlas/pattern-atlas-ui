@@ -28,6 +28,7 @@ import {FormControl} from '@angular/forms';
 export class DefaultPlRendererComponent implements OnInit {
 
     patterns: Array<Pattern> = [];
+    patternsForCardsView: Array<Pattern> = [];
     patternLanguage: PatternLanguage;
     patternLanguageId: string;
     @ViewChild('graphWrapper') graph: ElementRef;
@@ -63,7 +64,7 @@ export class DefaultPlRendererComponent implements OnInit {
             if (this.graphVisible || !this.patterns || this.patterns.length === 0) {
                 return;
             }
-            this.patterns = this.patterns.filter(pattern => pattern.name.toLowerCase().includes(filterText.toLowerCase()));
+            this.patternsForCardsView = this.patterns.filter(pattern => pattern.name.toLowerCase().includes(filterText.toLowerCase()));
         });
     }
 
@@ -178,6 +179,7 @@ export class DefaultPlRendererComponent implements OnInit {
         return this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href).pipe(
             tap(patterns => {
                 this.patterns = patterns;
+                this.patternsForCardsView = this.patterns;
                 this.isLoadingPatternData = false;
             }));
     }

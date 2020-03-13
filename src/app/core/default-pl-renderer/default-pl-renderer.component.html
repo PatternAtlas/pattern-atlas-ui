@@ -17,7 +17,8 @@
 
 <mat-progress-spinner *ngIf="isLoadingPatternData" mode="indeterminate"></mat-progress-spinner>
 <div>
-    <pp-card-renderer *ngIf="!graphVisible && patterns" [uriEntities]="this.patterns"
+    <pp-card-renderer *ngIf="!graphVisible && patterns && patternsForCardsView"
+                      [uriEntities]="this.patternsForCardsView"
                       [showLinks]="false"></pp-card-renderer>
     <pp-graph-display *ngIf="graphVisible && patterns && !isLoadingLinkData" [data]="{
                 patterns: this.patterns, edges: this.patternLinks,
