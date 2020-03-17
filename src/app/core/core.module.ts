@@ -59,6 +59,7 @@ import {MatBadgeModule, MatExpansionModule} from '@angular/material';
 import {RouterModule} from '@angular/router';
 import {ToggleRendererComponent} from './component/toggle-renderer/toggle-renderer.component';
 import {DeletePatternRelationComponent} from './component/delete-pattern-relation/delete-pattern-relation.component';
+import { CreativeLicenseFooterComponent } from './component/creative-license-footer/creative-license-footer.component';
 
 @NgModule({
     imports: [
@@ -114,7 +115,8 @@ import {DeletePatternRelationComponent} from './component/delete-pattern-relatio
         CreateEditPatternLanguageComponent,
         ActionButtonBarComponent,
         ToggleRendererComponent,
-        DeletePatternRelationComponent
+        DeletePatternRelationComponent,
+        CreativeLicenseFooterComponent
     ],
     entryComponents: [
         DefaultPlRendererComponent,
