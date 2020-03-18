@@ -4,12 +4,12 @@ import {HttpClient} from '@angular/common/http';
 import {forkJoin, Observable, of} from 'rxjs';
 import {DirectedEdgeModel} from '../model/hal/directed-edge.model';
 import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
-import Pattern from '../model/hal/pattern.model';
 import {HalLink} from '../model/hal/hal-link.interface';
 import {map} from 'rxjs/operators';
 import PatternLanguage from '../model/hal/pattern-language.model';
 import {CreateUndirectedEdgeRequest} from '../model/hal/create-undirected-edge-request';
 import {CreateDirectedEdgeRequest} from '../model/hal/create-directed-edge-request';
+import {PatternResponse} from '../model/hal/pattern-response.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -35,7 +35,7 @@ export class PatternRelationDescriptorService {
         return this.http.get<UndirectedEdgeModel>(url);
     }
 
-    getEdgesForPattern(pattern: Pattern): Observable<EdgeWithType[]> {
+    getEdgesForPattern(pattern: PatternResponse): Observable<EdgeWithType[]> {
         if (!pattern) {
             return of(null);
         }

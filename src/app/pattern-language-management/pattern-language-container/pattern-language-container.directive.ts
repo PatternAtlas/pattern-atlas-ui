@@ -12,18 +12,16 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { ComponentFactoryResolver, Directive, Input, OnInit, ViewContainerRef } from '@angular/core';
-import { ComponentRegistryService } from '../../core/service/component-registry.service';
-import { PatternGraphTemplateComponent } from '../../graph/component/pattern-graph-template/pattern-graph-template.component';
-import { UriConverter } from '../../core/util/uri-converter';
-import { DefaultPatternlanguageGraphComponent } from '../../graph/component/default-patternlanguage-graph/default-patternlanguage-graph.component';
+import {ComponentFactoryResolver, Directive, Input, OnInit, ViewContainerRef} from '@angular/core';
+import {ComponentRegistryService} from '../../core/service/component-registry.service';
+import {UriConverter} from '../../core/util/uri-converter';
 
 @Directive({
     selector: '[ppPatternLanguageContainer]'
 })
 export class PatternLanguageContainerDirective implements OnInit {
 
-    @Input() patternLanguageUri: string;
+    @Input() patternLanguageId: string;
     @Input() index?: number;
     @Input() graphView: boolean;
 
@@ -38,22 +36,14 @@ export class PatternLanguageContainerDirective implements OnInit {
         const componentFactory = this.getRenderingComponent();
         this.viewContainerRef.clear();
         const componentRef = this.viewContainerRef.createComponent(componentFactory);
-        if (this.selectedGraphView) {
-            const instance = (<PatternGraphTemplateComponent<any>>componentRef.instance);
-            instance.languageUri = UriConverter.doubleDecodeUri(this.patternLanguageUri);
-        }
     }
 
     private getRenderingComponent() {
-        const renderingComponent = this.compRegistry.getPLRenderingComponents(UriConverter.doubleDecodeUri(this.patternLanguageUri.toLowerCase()), this.index);
+        const renderingComponent = this.compRegistry.getPLRenderingComponents(UriConverter.doubleDecodeUri(this.patternLanguageId.toLowerCase()), this.index);
         if (renderingComponent) {
             return this.componentFactoryResolver.resolveComponentFactory(renderingComponent.plcomponent);
         }
-        // no special renderer, use default renderer (graph or cards):
-        if (this.graphView) {
-            this.selectedGraphView = true;
-            return this.componentFactoryResolver.resolveComponentFactory(DefaultPatternlanguageGraphComponent);
-        }
+        // no special renderer, use default renderer:
         return this.componentFactoryResolver.resolveComponentFactory(this.compRegistry.getPLRenderingComponents('default').plcomponent);
     }
 }

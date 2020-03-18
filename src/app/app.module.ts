@@ -23,7 +23,6 @@ import {PageNotFoundComponent} from './page-not-found.component';
 import {LandingPageComponent} from './landing-page.component';
 
 import {HttpClientModule} from '@angular/common/http';
-import {ExtensionsModule} from './extensions/extensions.module';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
@@ -38,12 +37,14 @@ import {CookieService} from 'ngx-cookie-service';
 import {ToasterModule} from 'angular2-toaster';
 import {MatInputModule} from '@angular/material/input';
 import {FormsModule} from '@angular/forms';
+import {FilterViewComponent} from './filter/component/filter-view/filter-view.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         PageNotFoundComponent,
-        LandingPageComponent
+        LandingPageComponent,
+        FilterViewComponent
     ],
     imports: [
         BrowserModule,
@@ -62,7 +63,6 @@ import {FormsModule} from '@angular/forms';
         CoreModule,
         HttpClientModule,
         AppRoutingModule,
-        ExtensionsModule,
         FlexLayoutModule,
         ToasterModule.forRoot(),
         MatInputModule,
