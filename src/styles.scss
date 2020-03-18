@@ -225,8 +225,9 @@ body {
 }
 
 .cdk-overlay-pane.delete-relation-dialog {
-  position: relative!important;
+  position: relative !important;
 }
+
 .close.mat-button {
   position: absolute;
   top: 0;
@@ -244,5 +245,9 @@ body {
 .horiz-centered {
   display: inline-flex;
   align-items: center;
+}
+
+.action-button-with-margin {
+  margin-right: 10px !important;
 }
 
