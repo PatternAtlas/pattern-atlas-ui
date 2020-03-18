@@ -83,7 +83,6 @@ export class DefaultPlRendererComponent implements OnInit {
             }));
     }
 
-
     public addPattern(): void {
         this.router.navigate(['create-patterns'], {relativeTo: this.activatedRoute});
     }
@@ -110,9 +109,17 @@ export class DefaultPlRendererComponent implements OnInit {
 
     insertEdge(edge): Observable<any> {
         return this.patternRelationDescriptorService.addRelationToPL(this.patternLanguage, edge).pipe(
-            switchMap((res) => res ? this.getPatternLinks() : EMPTY),
-            switchMap(() => this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href)),
-            tap((patterns: Array<Pattern>) => this.patterns = patterns));
+            tap((res) => res ? this.getPatternByLink(edge, res) : EMPTY));
+    }
+
+    getPatternByLink(edge: DirectedEdgeModel | UndirectedEdgeModel, res: any) {
+        const url = res.url + '/' + res.body.id;
+        this.patternRelationDescriptorService.getEdgeByUrl(url, edge)
+            .subscribe(
+                edgeResult => {
+                    this.patternLinks.push(edgeResult);
+                }
+            );
     }
 
 
@@ -126,6 +133,15 @@ export class DefaultPlRendererComponent implements OnInit {
 
     reloadGraph() {
         this.graphDisplayComponent.reformatGraph();
+    }
+
+    setGraphVisible(newValueGraphVisible: boolean) {
+        if (newValueGraphVisible) { // reset the search field so all patterns are shown in the graph
+            this.filter.setValue('');
+        }
+        this.graphVisible = newValueGraphVisible;
+        // if user toggled to early, we will retrigger
+        this.toggleBeforeDataLoaded = this.isLoadingLinkData && this.isLoadingPatternData;
     }
 
     private loadData(): void {
@@ -164,16 +180,6 @@ export class DefaultPlRendererComponent implements OnInit {
                 this.undirectedPatternRelations = edges._embedded ? edges._embedded.undirectedEdgeModels : [];
             }));
     }
-
-    setGraphVisible(newValueGraphVisible: boolean) {
-        if (newValueGraphVisible) { // reset the search field so all patterns are shown in the graph
-            this.filter.setValue('');
-        }
-        this.graphVisible = newValueGraphVisible;
-        // if user toggled to early, we will retrigger
-        this.toggleBeforeDataLoaded = this.isLoadingLinkData && this.isLoadingPatternData;
-    }
-
 
     private loadPatterns(): Observable<any[]> {
         return this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href).pipe(

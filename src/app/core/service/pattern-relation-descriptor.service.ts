@@ -35,6 +35,11 @@ export class PatternRelationDescriptorService {
         return this.http.get<UndirectedEdgeModel>(url);
     }
 
+    getEdgeByUrl(url: string, edge: DirectedEdgeModel | UndirectedEdgeModel): Observable<DirectedEdgeModel | UndirectedEdgeModel> {
+        return edge instanceof DirectedEdgeModel ?
+            this.getDirectedEdgeByUrl(url) : this.getUndirectedEdgeByUrl(url);
+    }
+
     getEdgesForPattern(pattern: PatternResponse): Observable<EdgeWithType[]> {
         if (!pattern) {
             return of(null);
