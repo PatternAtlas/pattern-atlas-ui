@@ -2,7 +2,6 @@ import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, I
 import {D3Service} from '../../../graph/service/d3.service';
 import {NetworkLink} from '../../model/network-link.interface';
 import {MatDialog} from '@angular/material/dialog';
-import {MatSidenavContainer} from '@angular/material/sidenav';
 import {CreatePatternRelationComponent} from '../create-pattern-relation/create-pattern-relation.component';
 import {PatternView} from '../../model/hal/pattern-view.model';
 import PatternLanguage from '../../model/hal/pattern-language.model';
@@ -38,9 +37,9 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     @ViewChild('graphWrapper', {static: true}) graph: ElementRef;
     graphNativeElement: GraphEditor;
     @ViewChild('svg') svg: ElementRef;
-    @ViewChild(MatSidenavContainer) sidenavContainer: MatSidenavContainer;
     patternGraphData: any;
     isLoading = true;
+    patternClicked = false;
     @Input() data: GraphInputData;
     @Input() showPatternLanguageName: boolean;
     @Output() addedEdge = new EventEmitter<any>();
@@ -203,7 +202,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         this.highlightedEdgeIds = [];
         this.clickedNodeId = null;
         this.graphNativeElement.completeRender();
-        this.sidenavContainer.close();
+        this.patternClicked = false;
     }
 
     public updateSideMenu() {
@@ -323,7 +322,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         this.highlightedNodeIds.push(node.id);
         this.currentPattern = this.patterns.find(pat => pat.id === node.id);
         this.getEdgesForPattern();
-        this.sidenavContainer.open();
+        this.patternClicked = true;
         this.triggerRerendering();
     }
 

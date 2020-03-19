@@ -1,5 +1,5 @@
 <mat-sidenav-container [hasBackdrop]="false" class="container">
-    <mat-sidenav [disableClose]="true" [opened]="true" fixedInViewport="false" mode="over">
+    <mat-sidenav [disableClose]="true" [opened]="true" fixedInViewport="false" mode="push">
         <div *ngFor="let patternLanguage of patternLanguages">
             <h4>{{patternLanguage.name}}</h4>
             <div *ngFor="let pattern of patternLanguage.patterns">
@@ -8,7 +8,7 @@
         </div>
     </mat-sidenav>
 
-    <mat-sidenav #start position="end" fixedInViewport="true" mode="over">
+    <mat-sidenav [opened]="patternClicked" position="end" fixedInViewport="true" mode="over">
         <h4>{{currentPattern?.name}}</h4>
         <mat-accordion>
             <mat-expansion-panel *ngFor="let relation of currentEdges">
