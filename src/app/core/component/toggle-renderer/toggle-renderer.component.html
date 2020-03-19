@@ -1,7 +1,7 @@
 <mat-button-toggle-group #group="matButtonToggleGroup" (change)="emitValueChange(group.value)"
                          [value]="graphVisible"
                          appearance="legacy"
-                         style="font-size: small; height: 35px; align-items: center;">
+                         style="font-size: small; height: 35px; align-items: center;" class="action-button-with-margin">
     <mat-button-toggle [checked]="true" [value]="false" aria-label="Text align center" mat-raised-button>
         Cards
     </mat-button-toggle>

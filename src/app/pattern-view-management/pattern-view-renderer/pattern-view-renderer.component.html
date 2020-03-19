@@ -1,8 +1,9 @@
 <pp-action-button-bar [addButtonText]="'Add patterns'" [secondAddButton]="true"
                       [secondAddButtonText]="'Create new Link'" [displayText]="displayText"
-                      (addClicked)="addPatternToView()" (add2Clicked)="addLink()">
+                      (addClicked)="addPatternToView()" (add2Clicked)="addLink()" [firstAddButton]="!graphVisible">
     <pp-toggle-renderer [graphVisible]="graphVisible" (toggledRenderer)="changeRenderer($event)"></pp-toggle-renderer>
-    <button style="margin-left: 10px;" (click)="reloadGraph()" *ngIf="graphVisible" color="accent" mat-raised-button>
+    <button class="action-button-with-margin" (click)="reloadGraph()" *ngIf="graphVisible"
+            color="accent" mat-raised-button>
         <i class="material-icons">autorenew</i> Reformat
     </button>
 </pp-action-button-bar>
