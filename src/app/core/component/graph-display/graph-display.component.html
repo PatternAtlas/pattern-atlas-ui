@@ -1,5 +1,5 @@
 <mat-sidenav-container [hasBackdrop]="false" class="container">
-    <mat-sidenav #start fixedInViewport="true" mode="over">
+    <mat-sidenav #start position="end" fixedInViewport="true" mode="over">
         <h4>{{currentPattern?.name}}</h4>
         <mat-accordion>
             <mat-expansion-panel *ngFor="let relation of currentEdges">
