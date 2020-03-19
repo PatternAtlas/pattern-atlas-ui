@@ -1,4 +1,13 @@
 <mat-sidenav-container [hasBackdrop]="false" class="container">
+    <mat-sidenav [disableClose]="true" [opened]="true" fixedInViewport="false" mode="over">
+        <div *ngFor="let patternLanguage of patternLanguages">
+            <h4>{{patternLanguage.name}}</h4>
+            <div *ngFor="let pattern of patternLanguage.patterns">
+                {{pattern.name}}
+            </div>
+        </div>
+    </mat-sidenav>
+
     <mat-sidenav #start position="end" fixedInViewport="true" mode="over">
         <h4>{{currentPattern?.name}}</h4>
         <mat-accordion>
@@ -13,17 +22,20 @@
                             <div *ngSwitchCase="'undirectedEdges'" class="horiz-centered">
                                 {{ relation?.edge.sourcePatternName}}
                                 <i class="material-icons flip">compare_arrows</i>
-                                {{ relation?.edge.pattern1Id === this.currentPattern.id ? relation.edge.pattern1Name : relation.edge.pattern2Name}}
+                                {{ relation?.edge.pattern1Id === this.currentPattern.id ? relation.edge.pattern1Name :
+                                relation.edge.pattern2Name}}
                             </div>
 
                             <div *ngSwitchCase="'outgoingDirectedEdges'" class="horiz-centered">
                                 <i class="material-icons">trending_flat</i>
-                                {{ relation?.edge.sourcePatternId === this.currentPattern.id ? relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
+                                {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
+                                relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
 
                             </div>
                             <div *ngSwitchCase="'ingoingDirectedEdges'" class="horiz-centered">
                                 <i class="material-icons flip">trending_flat</i>
-                                {{ relation?.edge.sourcePatternId === this.currentPattern.id ? relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
+                                {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
+                                relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
                             </div>
 
                         </div>

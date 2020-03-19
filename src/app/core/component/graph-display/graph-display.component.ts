@@ -46,6 +46,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     @Output() addedEdge = new EventEmitter<any>();
     currentPattern: Pattern;
     currentEdges: Array<EdgeWithType>;
+    patternLanguages: Array<PatternLanguage>;
     private edges: Array<NetworkLink>;
     private nodes: Array<GraphNode>;
     private copyOfLinks: Array<NetworkLink>;
@@ -205,6 +206,16 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         this.sidenavContainer.close();
     }
 
+    public updateSideMenu() {
+        if (this.clickedNodeId) {
+            this.showInfoForClickedNode(this.graphNativeElement.getNode(this.clickedNodeId));
+        }
+    }
+
+    triggerRerendering() {
+        this.graphNativeElement.completeRender();
+    }
+
     private initData() {
         this.patternGraphData = this.data;
         if (this.patternGraphData) {
@@ -214,7 +225,19 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             this.patternLanguage = this.patternGraphData.patternLanguage;
             this.patternView = this.patternGraphData.patternView;
             this.nodes = GraphDisplayComponent.mapPatternsToNodes(this.patterns);
+            this.patternLanguages = this.getPatterns(this.patternGraphData.patternLanguages);
         }
+    }
+
+    private getPatterns(patternLanguages: Array<PatternLanguage>) {
+        for (const patternLang of patternLanguages) {
+            this.patternService.getPatternsByUrl(patternLang._links.patterns.href).subscribe(
+                data => {
+                    patternLang.patterns = data;
+                }
+            );
+        }
+        return patternLanguages;
     }
 
     private startSimulation() {
@@ -302,16 +325,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         this.getEdgesForPattern();
         this.sidenavContainer.open();
         this.triggerRerendering();
-    }
-
-    public updateSideMenu() {
-        if (this.clickedNodeId) {
-            this.showInfoForClickedNode(this.graphNativeElement.getNode(this.clickedNodeId));
-        }
-    }
-
-    triggerRerendering() {
-        this.graphNativeElement.completeRender();
     }
 
     private initGraphData(graphData: Array<GraphNode>) {
