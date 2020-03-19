@@ -1,23 +1,23 @@
 <mat-sidenav-container [hasBackdrop]="false" class="container">
-    <mat-sidenav [disableClose]="true" [opened]="true" fixedInViewport="false" mode="push">
-        <mat-accordion>
-            <mat-expansion-panel *ngFor="let patternLang of patternLanguages">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        {{patternLang.name}}
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <mat-panel-description>
-                    <mat-list>
-                        <mat-list-item *ngFor="let pattern of patternLang.patterns">
-                            <mat-icon mat-list-icon>drag_handle</mat-icon>
-                            <div mat-line>{{pattern.name}}</div>
-                        </mat-list-item>
-                        <mat-divider></mat-divider>
-                    </mat-list>
-                </mat-panel-description>
-            </mat-expansion-panel>
-        </mat-accordion>
+    <mat-sidenav *ngIf="!allPatternsLoading" [disableClose]="true" [opened]="true" fixedInViewport="false" mode="push">
+            <mat-accordion>
+                <mat-expansion-panel *ngFor="let patternLang of patternLanguages">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{patternLang.name}}
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-panel-description>
+                        <mat-list>
+                            <mat-list-item *ngFor="let pattern of patternLang.patterns">
+                                <mat-icon mat-list-icon>drag_handle</mat-icon>
+                                <div mat-line>{{pattern.name}}</div>
+                            </mat-list-item>
+                            <mat-divider></mat-divider>
+                        </mat-list>
+                    </mat-panel-description>
+                </mat-expansion-panel>
+            </mat-accordion>
     </mat-sidenav>
 
     <mat-sidenav [opened]="patternClicked" position="end" fixedInViewport="true" mode="over">

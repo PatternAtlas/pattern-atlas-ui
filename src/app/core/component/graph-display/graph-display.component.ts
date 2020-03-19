@@ -40,6 +40,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     patternGraphData: any;
     isLoading = true;
     patternClicked = false;
+    allPatternsLoading = true;
     @Input() data: GraphInputData;
     @Input() showPatternLanguageName: boolean;
     @Output() addedEdge = new EventEmitter<any>();
@@ -229,10 +230,16 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     }
 
     private getPatterns(patternLanguages: Array<PatternLanguage>) {
+        const amountOfPLs = patternLanguages.length;
+        let index = 0;
         for (const patternLang of patternLanguages) {
             this.patternService.getPatternsByUrl(patternLang._links.patterns.href).subscribe(
                 data => {
                     patternLang.patterns = data;
+                    index += 1;
+                    if (index === amountOfPLs) {
+                        this.allPatternsLoading = false;
+                    }
                 }
             );
         }
