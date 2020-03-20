@@ -1,14 +1,18 @@
 <mat-sidenav-container [hasBackdrop]="false" class="container">
-    <mat-sidenav *ngIf="!allPatternsLoading" [disableClose]="true" [opened]="true" fixedInViewport="false" mode="push">
-        <mat-accordion>
-            <div cdkDropListGroup>
-            <mat-expansion-panel *ngFor="let patternLang of patternLanguages">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        {{patternLang.name}}
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <mat-panel-description>
+    <mat-sidenav style="min-width: 300px" [disableClose]="true" [opened]="true" fixedInViewport="false" mode="push">
+        <div *ngIf="allPatternsLoading; else content" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <mat-spinner></mat-spinner>
+        </div>
+        <ng-template #content>
+            <mat-accordion>
+                <div cdkDropListGroup>
+                    <mat-expansion-panel *ngFor="let patternLang of patternLanguages">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                {{patternLang.name}}
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-panel-description>
                             <div cdkDropList
                                  [cdkDropListData]="patternLang.patterns"
                                  class="pattern-list"
@@ -19,10 +23,11 @@
                                     <mat-icon>drag_handle</mat-icon>
                                 </div>
                             </div>
-                </mat-panel-description>
-            </mat-expansion-panel>
-            </div>
-        </mat-accordion>
+                        </mat-panel-description>
+                    </mat-expansion-panel>
+                </div>
+            </mat-accordion>
+        </ng-template>
     </mat-sidenav>
 
     <mat-sidenav [opened]="patternClicked" position="end" fixedInViewport="true" mode="over">
