@@ -173,8 +173,8 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         });
     }
 
-    dropPattern(event: CdkDragDrop<string[]>) {
-        const patternDropped = event.container.data[event.previousIndex];
+    dropPattern(event: CdkDragDrop<any[]>) {
+        const patternDropped: Pattern = event.container.data[event.previousIndex];
         this.addPatternToGraph(patternDropped);
     }
 
