@@ -1,12 +1,13 @@
 <mat-sidenav-container [hasBackdrop]="false" class="container">
-    <mat-sidenav style="min-width: 300px" [disableClose]="true" [opened]="true" fixedInViewport="false" mode="push">
-        <div *ngIf="allPatternsLoading; else content" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+    <mat-sidenav style="min-width: 300px;" [disableClose]="true" [opened]="true" fixedInViewport="false" mode="push">
+        <div *ngIf="allPatternsLoading; else content"
+             style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
             <mat-spinner></mat-spinner>
         </div>
         <ng-template #content>
             <mat-accordion>
                 <div cdkDropListGroup>
-                    <mat-expansion-panel *ngFor="let patternLang of patternLanguages">
+                    <mat-expansion-panel [expanded]="true" *ngFor="let patternLang of patternLanguages">
                         <mat-expansion-panel-header>
                             <mat-panel-title>
                                 {{patternLang.name}}
