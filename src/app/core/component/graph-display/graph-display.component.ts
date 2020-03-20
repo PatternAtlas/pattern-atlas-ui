@@ -54,7 +54,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     private copyOfLinks: Array<NetworkLink>;
     private patterns: Array<Pattern>;
     private patternLanguage: PatternLanguage;
-    private patternView: PatternView;
+    patternView: PatternView;
     private currentEdge: any;
     private highlightedNodeIds: Array<string> = [];
     private clickedNodeId: string = null;
