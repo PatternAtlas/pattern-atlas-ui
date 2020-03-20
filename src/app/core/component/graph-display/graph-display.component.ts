@@ -99,7 +99,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
 
     static mapPatternsToNodes(patterns: Array<Pattern>, offsetIndex: number = 0): Array<GraphNode> {
         const nodes: Array<any> = [];
-        console.log(patterns);
         for (let i = 0; i < patterns.length; i++) {
             const node = {
                 id: patterns[i].id,
@@ -174,6 +173,10 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     }
 
     dropPattern(event: CdkDragDrop<any[]>) {
+        if (event.isPointerOverContainer) {
+            return;
+        }
+        console.log('OK');
         const patternDropped: Pattern = event.container.data[event.previousIndex];
         this.addPatternToGraph(patternDropped);
     }
@@ -194,7 +197,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
 
     nodeClicked(event) {
         const node = event['detail']['node'];
-        console.log(node);
         if (event['detail']['key'] === 'info') {
             this.router.navigate(['..', (<GraphNode>node).patternLanguageId + node.id, {relativeTo: this.activatedRoute}]);
         }
