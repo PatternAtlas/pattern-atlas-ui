@@ -16,6 +16,7 @@
                                  (cdkDropListDropped)="dropPattern($event)">
                                 <div class="pattern-box" *ngFor="let pattern of patternLang.patterns" cdkDrag>
                                     {{pattern.name}}
+                                    <mat-icon>drag_handle</mat-icon>
                                 </div>
                             </div>
                 </mat-panel-description>
