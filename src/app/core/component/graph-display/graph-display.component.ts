@@ -15,8 +15,10 @@ import {GraphInputData} from '../../model/graph-input-data.interface';
 import {PatternService} from '../../service/pattern.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PatternViewService} from '../../service/pattern-view.service';
-import {switchMap} from 'rxjs/operators';
+import {switchMap, tap} from 'rxjs/operators';
 import {PatternResponse} from '../../model/hal/pattern-response.interface';
+import {EMPTY, Observable} from 'rxjs';
+import {PatternViewResponse} from '../../model/hal/pattern-view-response.interface';
 
 export class GraphNode {
     id: string;
@@ -171,6 +173,32 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         });
     }
 
+    private getCurrentPatternViewAndPatterns(): Observable<Pattern[]> {
+        return this.patternViewService.getPatternViewByUri(this.patternView.uri).pipe(
+            tap(patternViewResponse => {
+                this.patternView = patternViewResponse;
+            }),
+            switchMap((patternViewResponse: PatternView) => this.patternService.getPatternsByUrl(patternViewResponse._links.patterns.href)),
+            tap(patterns => {
+                this.patterns = patterns;
+            }));
+    }
+
+    addPatternToGraph(pattern: Pattern) {
+        const patternList = [];
+        patternList.push(pattern);
+        this.patternViewService.addPatterns(this.patternView._links.patterns.href, patternList).pipe(
+            switchMap(result => result ? this.getCurrentPatternViewAndPatterns() : EMPTY))
+            .subscribe((res) => {
+                    if (res) {
+                        this.toastService.pop('success', 'Pattern added');
+                        this.cdr.detectChanges();
+                        this.reformatGraph();
+                    }
+                }
+            );
+    }
+
     nodeClicked(event) {
         const node = event['detail']['node'];
         console.log(node);
@@ -186,7 +214,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                 .subscribe(() => console.log('saved graph layout'));
         }
         if (this.nodes && this.patternView) {
-            console.log(this.patternView);
             this.patternViewService.saveGraph(this.patternView, this.graphNativeElement.nodeList)
                 .subscribe(() => console.log('saved graph layout'));
         }

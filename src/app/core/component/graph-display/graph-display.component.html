@@ -10,7 +10,7 @@
                     <mat-panel-description>
                         <mat-list>
                             <mat-list-item *ngFor="let pattern of patternLang.patterns">
-                                <mat-icon mat-list-icon>drag_handle</mat-icon>
+                                <mat-icon (click)="addPatternToGraph(pattern)"mat-list-icon>drag_handle</mat-icon>
                                 <div mat-line>{{pattern.name}}</div>
                             </mat-list-item>
                             <mat-divider></mat-divider>
