@@ -15,7 +15,7 @@
                                  class="pattern-list"
                                  cdkDropListSortingDisabled
                                  (cdkDropListDropped)="drop($event)">
-                                <div class="pattern-box" *ngFor="let pattern of patternLang.patterns">
+                                <div class="pattern-box" (click)="addPatternToGraph(pattern)" *ngFor="let pattern of patternLang.patterns">
                                     {{pattern.name}}
                                 </div>
                             </div>

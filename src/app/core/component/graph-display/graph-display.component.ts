@@ -191,9 +191,8 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             switchMap(result => result ? this.getCurrentPatternViewAndPatterns() : EMPTY))
             .subscribe((res) => {
                     if (res) {
-                        this.toastService.pop('success', 'Pattern added');
-                        this.cdr.detectChanges();
                         this.reformatGraph();
+                        this.toastService.pop('success', 'Pattern added');
                     }
                 }
             );
