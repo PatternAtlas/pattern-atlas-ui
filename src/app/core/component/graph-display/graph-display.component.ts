@@ -256,7 +256,9 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             this.patternLanguage = this.patternGraphData.patternLanguage;
             this.patternView = this.patternGraphData.patternView;
             this.nodes = GraphDisplayComponent.mapPatternsToNodes(this.patterns);
-            this.patternLanguages = this.getPatterns(this.patternGraphData.patternLanguages);
+            if (this.patternView) {
+                this.patternLanguages = this.getPatterns(this.patternGraphData.patternLanguages);
+            }
         }
     }
 
