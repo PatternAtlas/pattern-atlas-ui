@@ -18,6 +18,7 @@ import {PatternViewService} from '../../service/pattern-view.service';
 import {switchMap, tap} from 'rxjs/operators';
 import {PatternResponse} from '../../model/hal/pattern-response.interface';
 import {EMPTY, Observable} from 'rxjs';
+import {CdkDragDrop} from '@angular/cdk/drag-drop';
 
 export class GraphNode {
     id: string;
@@ -172,8 +173,9 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         });
     }
 
-    dropPattern($event: any) {
-        console.log($event);
+    dropPattern(event: CdkDragDrop<string[]>) {
+        const patternDropped = event.container.data[event.previousIndex];
+        this.addPatternToGraph(patternDropped);
     }
 
     addPatternToGraph(pattern: Pattern) {
