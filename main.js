@@ -2096,9 +2096,8 @@ var GraphDisplayComponent = /** @class */ (function () {
     };
     GraphDisplayComponent.prototype.nodeClicked = function (event) {
         var node = event['detail']['node'];
-        console.log(node);
         if (event['detail']['key'] === 'info') {
-            this.router.navigate(['..', node.patternLanguageId + node.id, { relativeTo: this.activatedRoute }]);
+            this.router.navigate(['/patternlanguages/' + node.patternLanguageId + '/' + node.id]);
         }
         this.showInfoForClickedNode(node);
     };
