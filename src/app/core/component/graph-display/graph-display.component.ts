@@ -176,7 +176,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         if (event.isPointerOverContainer) {
             return;
         }
-        console.log('OK');
         const patternDropped: Pattern = event.container.data[event.previousIndex];
         this.addPatternToGraph(patternDropped);
     }
