@@ -173,6 +173,8 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     }
 
     dropPattern(event: CdkDragDrop<any[]>) {
+        console.log(event);
+        console.log(this.svg);
         if (event.isPointerOverContainer) {
             return;
         }
