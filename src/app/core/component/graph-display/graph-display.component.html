@@ -1,6 +1,7 @@
 <mat-sidenav-container [hasBackdrop]="false" class="container">
     <mat-sidenav *ngIf="!allPatternsLoading" [disableClose]="true" [opened]="true" fixedInViewport="false" mode="push">
         <mat-accordion>
+            <div cdkDropListGroup>
             <mat-expansion-panel *ngFor="let patternLang of patternLanguages">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
@@ -8,21 +9,18 @@
                     </mat-panel-title>
                 </mat-expansion-panel-header>
                 <mat-panel-description>
-                    <div cdkDropListGroup>
-                        <div class="pattern-container">
                             <div cdkDropList
                                  [cdkDropListData]="patternLang.patterns"
                                  class="pattern-list"
                                  cdkDropListSortingDisabled
-                                 (cdkDropListDropped)="drop($event)">
-                                <div class="pattern-box" (click)="addPatternToGraph(pattern)" *ngFor="let pattern of patternLang.patterns">
+                                 (cdkDropListDropped)="dropPattern($event)">
+                                <div class="pattern-box" *ngFor="let pattern of patternLang.patterns" cdkDrag>
                                     {{pattern.name}}
                                 </div>
                             </div>
-                        </div>
-                    </div>
                 </mat-panel-description>
             </mat-expansion-panel>
+            </div>
         </mat-accordion>
     </mat-sidenav>
 

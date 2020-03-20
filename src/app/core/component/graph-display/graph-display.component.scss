@@ -20,14 +20,6 @@ html, body, svg {
   overflow: hidden;
 }
 
-.pattern-container {
-  overflow: auto;
-  width: 100%;
-  max-width: 100%;
-  display: inline-block;
-  vertical-align: top;
-}
-
 .pattern-list {
   border: solid 1px #ccc;
   min-height: 40px;

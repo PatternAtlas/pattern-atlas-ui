@@ -18,7 +18,6 @@ import {PatternViewService} from '../../service/pattern-view.service';
 import {switchMap, tap} from 'rxjs/operators';
 import {PatternResponse} from '../../model/hal/pattern-response.interface';
 import {EMPTY, Observable} from 'rxjs';
-import {PatternViewResponse} from '../../model/hal/pattern-view-response.interface';
 
 export class GraphNode {
     id: string;
@@ -173,15 +172,8 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         });
     }
 
-    private getCurrentPatternViewAndPatterns(): Observable<Pattern[]> {
-        return this.patternViewService.getPatternViewByUri(this.patternView.uri).pipe(
-            tap(patternViewResponse => {
-                this.patternView = patternViewResponse;
-            }),
-            switchMap((patternViewResponse: PatternView) => this.patternService.getPatternsByUrl(patternViewResponse._links.patterns.href)),
-            tap(patterns => {
-                this.patterns = patterns;
-            }));
+    dropPattern($event: any) {
+        console.log($event);
     }
 
     addPatternToGraph(pattern: Pattern) {
@@ -223,7 +215,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         this.startSimulation();
     }
 
-
     backgroundClicked() {
         this.highlightedNodeIds = [];
         this.highlightedEdgeIds = [];
@@ -240,6 +231,17 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
 
     triggerRerendering() {
         this.graphNativeElement.completeRender();
+    }
+
+    private getCurrentPatternViewAndPatterns(): Observable<Pattern[]> {
+        return this.patternViewService.getPatternViewByUri(this.patternView.uri).pipe(
+            tap(patternViewResponse => {
+                this.patternView = patternViewResponse;
+            }),
+            switchMap((patternViewResponse: PatternView) => this.patternService.getPatternsByUrl(patternViewResponse._links.patterns.href)),
+            tap(patterns => {
+                this.patterns = patterns;
+            }));
     }
 
     private initData() {
