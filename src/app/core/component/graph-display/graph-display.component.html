@@ -1,5 +1,6 @@
 <mat-sidenav-container [hasBackdrop]="false" class="container">
     <mat-sidenav *ngIf="patternView" style="min-width: 300px;" [disableClose]="true" [opened]="true" fixedInViewport="false" mode="push">
+        <h3>Add Patterns</h3>
         <div *ngIf="allPatternsLoading; else content"
              style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
             <mat-spinner></mat-spinner>
@@ -32,7 +33,7 @@
     </mat-sidenav>
 
     <mat-sidenav [opened]="patternClicked" position="end" fixedInViewport="true" mode="over">
-        <h4>{{currentPattern?.name}}</h4>
+        <h4 style="margin: 1em">{{currentPattern?.name}} Relations</h4>
         <mat-accordion>
             <mat-expansion-panel *ngFor="let relation of currentEdges">
                 <mat-expansion-panel-header>
