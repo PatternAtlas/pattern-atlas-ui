@@ -59,10 +59,6 @@ html, body, svg {
   opacity: 0;
 }
 
-.cdk-drag-animating {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
-
 .pattern-box:last-child {
   border: none;
 }
