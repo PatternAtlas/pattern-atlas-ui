@@ -13,7 +13,7 @@
  */
 
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {NgModule, APP_INITIALIZER} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -22,7 +22,7 @@ import {CoreModule} from './core/core.module';
 import {PageNotFoundComponent} from './page-not-found.component';
 import {LandingPageComponent} from './landing-page.component';
 
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {ExtensionsModule} from './extensions/extensions.module';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
@@ -38,16 +38,18 @@ import {CookieService} from 'ngx-cookie-service';
 import {ToasterModule} from 'angular2-toaster';
 import {MatInputModule} from '@angular/material/input';
 import {FormsModule} from '@angular/forms';
+import { ConfigService, configServiceInitializerFactory } from './core/service/config.service';
+import { JwtModule } from '@auth0/angular-jwt';
+import { TokenInterceptor } from './core/service/token.interceptor';
 
 @NgModule({
     declarations: [
         AppComponent,
         PageNotFoundComponent,
-        LandingPageComponent
+        LandingPageComponent,
     ],
     imports: [
         BrowserModule,
-        // NOTE: BrowserAnimationsModule issue https://github.com/angular/angular/issues/20290
         BrowserAnimationsModule,
         PatternLanguageManagementModule,
         PatternViewManagementModule,
@@ -66,9 +68,19 @@ import {FormsModule} from '@angular/forms';
         FlexLayoutModule,
         ToasterModule.forRoot(),
         MatInputModule,
-        FormsModule
+        FormsModule,
+        JwtModule
     ],
-    providers: [CookieService],
+    providers: [
+        CookieService,
+        // ConfigService, {
+        //     provide: APP_INITIALIZER,
+        //     useFactory: configServiceInitializerFactory,
+        //     deps: [ConfigService],
+        //     multi: true
+        //   },
+          { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {

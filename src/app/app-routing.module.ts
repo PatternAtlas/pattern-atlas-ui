@@ -4,6 +4,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {PageNotFoundComponent} from './page-not-found.component';
 import {ProcessOauthCallbackComponent} from './core/component/process-oauth-callback/process-oauth-callback.component';
 import {ToasterModule} from 'angular2-toaster';
+import { LoginComponent } from './core/component/login/login.component';
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -30,6 +31,10 @@ const routes: Routes = [
     {
         path: 'graph',
         component: PatternLanguageGraphComponent
+    },
+    {
+        path: 'login',
+        component: LoginComponent
     },
     {
         path: '**',

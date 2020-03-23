@@ -17,7 +17,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  serverUrl: 'http://localhost:8080/api/',
+  loginUrl: 'http://localhost:8081/oauth/token',
+  signinUrl: 'http://localhost:8080/user/create',
+  clientId: 'pattern-pedia-client',
+  clientSecret: 'iamaghost'
 };
 
 /*

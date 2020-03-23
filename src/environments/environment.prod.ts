@@ -13,5 +13,10 @@
  */
 
 export const environment = {
-  production: true
+  production: true,
+  serverUrl: 'http://localhost:8080/api/',
+  loginUrl: 'http://localhost:8080/oauth/token',
+  signinUrl: 'http://localhost:8080/api/signin',
+  clientId: 'glee-o-meter',
+  clientSecret: 'secret'
 };

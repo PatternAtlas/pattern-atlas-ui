@@ -34,6 +34,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSortModule} from '@angular/material/sort';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { MdEditorComponent } from './component/md-editor/md-editor.component';
 import { CovalentTextEditorModule } from '@covalent/text-editor';
@@ -58,6 +59,8 @@ import { EmitEventOnAddedEdgeDirective } from './directives/emit-event-on-added-
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { RouterModule } from '@angular/router';
+import { LoginComponent } from './component/login/login.component';
+// import { AuthenticationService } from './service/authentication.service';
 
 @NgModule({
     imports: [
@@ -80,7 +83,8 @@ import { RouterModule } from '@angular/router';
         MatBadgeModule, 
         MatExpansionModule,
         MatButtonToggleModule,
-        NgxMdModule.forRoot(), MatNativeDateModule, RouterModule
+        NgxMdModule.forRoot(), MatNativeDateModule, RouterModule,
+        MatSortModule,
     ],
     exports: [
         CovalentTextEditorModule,
@@ -94,7 +98,8 @@ import { RouterModule } from '@angular/router';
     providers: [
         PatternLanguageService,
         PatternService,
-        PatternViewService
+        PatternViewService,
+        // AuthenticationService,
     ],
     declarations: [
         DefaultPlRendererComponent,
@@ -110,7 +115,8 @@ import { RouterModule } from '@angular/router';
         GraphDisplayComponent,
         CardRendererComponent,
         CreateEditPatternLanguageComponent,
-        ActionButtonBarComponent
+        ActionButtonBarComponent,
+        LoginComponent
     ],
     entryComponents: [
         DefaultPlRendererComponent,

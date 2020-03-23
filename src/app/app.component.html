@@ -29,6 +29,12 @@
        [active]="rla2.isActive">
         Pattern Views
     </a>
+    <a mat-tab-link
+       [routerLink]="'/login'"
+       routerLinkActive #rla3="routerLinkActive"
+       [active]="rla3.isActive">
+        Amazing Login
+    </a>
 </nav>
 
 <router-outlet></router-outlet>
