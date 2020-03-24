@@ -199,7 +199,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     nodeClicked(event) {
         const node = event['detail']['node'];
         if (event['detail']['key'] === 'info') {
-            this.router.navigate(['..', (<GraphNode>node).patternLanguageId + node.id, {relativeTo: this.activatedRoute}]);
+            this.router.navigate(['/patternlanguages/' + (<GraphNode>node).patternLanguageId + '/' + node.id]);
         }
         this.showInfoForClickedNode(node);
     }
