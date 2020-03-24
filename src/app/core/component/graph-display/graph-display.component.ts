@@ -368,36 +368,92 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     private getPatternViewEdges() {
         const listOfGraphViewEdges = [];
         if (this.currentPattern._links.undirectedEdges) {
-            for (const link of this.currentPattern._links.undirectedEdges) {
-                this.patternRelationDescriptionService.getUndirectedEdgeByUrl(link.href).subscribe(
-                    edge => {
-                        const edgeWithType: EdgeWithType = {edge: edge, type: 'undirectedEdges'};
-                        listOfGraphViewEdges.push(edgeWithType);
-                    }
-                );
-            }
+            this.currentPattern._links.undirectedEdges instanceof Array ?
+                this.getListOfLinks('undirectedEdges', listOfGraphViewEdges)
+                : this.getLink('undirectedEdges', listOfGraphViewEdges);
         }
         if (this.currentPattern._links.outgoingDirectedEdges) {
-            for (const link of this.currentPattern._links.outgoingDirectedEdges) {
-                this.patternRelationDescriptionService.getDirectedEdgeByUrl(link.href).subscribe(
-                    edge => {
-                        const edgeWithType: EdgeWithType = {edge: edge, type: 'outgoingDirectedEdges'};
-                        listOfGraphViewEdges.push(edgeWithType);
-                    }
-                );
-            }
+            this.currentPattern._links.outgoingDirectedEdges instanceof Array ?
+                this.getListOfLinks('ingoingDirectedEdges', listOfGraphViewEdges)
+                : this.getLink('outgoingDirectedEdges', listOfGraphViewEdges);
         }
         if (this.currentPattern._links.ingoingDirectedEdges) {
-            for (const link of this.currentPattern._links.ingoingDirectedEdges) {
-                this.patternRelationDescriptionService.getDirectedEdgeByUrl(link.href).subscribe(
+            this.currentPattern._links.ingoingDirectedEdges instanceof Array ?
+                this.getListOfLinks('ingoingDirectedEdges', listOfGraphViewEdges)
+                : this.getLink('ingoingDirectedEdges', listOfGraphViewEdges);
+
+        }
+        return listOfGraphViewEdges;
+    }
+
+    private getLink(type: string, listOfGraphViewEdges: Array<EdgeWithType>) {
+        switch (type) {
+            case 'outgoingDirectedEdges': {
+                this.patternRelationDescriptionService.getDirectedEdgeByUrl(this.currentPattern._links.outgoingDirectedEdges.href).subscribe(
                     edge => {
-                        const edgeWithType: EdgeWithType = {edge: edge, type: 'ingoingDirectedEdges'};
+                        const edgeWithType: EdgeWithType = {edge: edge, type: type};
                         listOfGraphViewEdges.push(edgeWithType);
                     }
                 );
+                break;
+            }
+            case 'ingoingDirectedEdges': {
+                this.patternRelationDescriptionService.getDirectedEdgeByUrl(this.currentPattern._links.ingoingDirectedEdges.href).subscribe(
+                    edge => {
+                        const edgeWithType: EdgeWithType = {edge: edge, type: type};
+                        listOfGraphViewEdges.push(edgeWithType);
+                    }
+                );
+                break;
+            }
+            case 'undirectedEdges' : {
+                this.patternRelationDescriptionService.getUndirectedEdgeByUrl(this.currentPattern._links.undirectedEdges.href).subscribe(
+                    edge => {
+                        const edgeWithType: EdgeWithType = {edge: edge, type: type};
+                        listOfGraphViewEdges.push(edgeWithType);
+                    }
+                );
+                break;
             }
         }
-        return listOfGraphViewEdges;
+    }
+
+    private getListOfLinks(type: string, listOfGraphViewEdges: Array<EdgeWithType>) {
+        switch (type) {
+            case 'outgoingDirectedEdges': {
+                for (const link of this.currentPattern._links.outgoingDirectedEdges) {
+                    this.patternRelationDescriptionService.getDirectedEdgeByUrl(link.href).subscribe(
+                        edge => {
+                            const edgeWithType: EdgeWithType = {edge: edge, type: type};
+                            listOfGraphViewEdges.push(edgeWithType);
+                        }
+                    );
+                }
+                break;
+            }
+            case 'ingoingDirectedEdges': {
+                for (const link of this.currentPattern._links.ingoingDirectedEdges) {
+                    this.patternRelationDescriptionService.getDirectedEdgeByUrl(link.href).subscribe(
+                        edge => {
+                            const edgeWithType: EdgeWithType = {edge: edge, type: type};
+                            listOfGraphViewEdges.push(edgeWithType);
+                        }
+                    );
+                }
+                break;
+            }
+            case 'undirectedEdges': {
+                for (const link of this.currentPattern._links.undirectedEdges) {
+                    this.patternRelationDescriptionService.getUndirectedEdgeByUrl(link.href).subscribe(
+                        edge => {
+                            const edgeWithType: EdgeWithType = {edge: edge, type: type};
+                            listOfGraphViewEdges.push(edgeWithType);
+                        }
+                    );
+                }
+                break;
+            }
+        }
     }
 
     private initGraphData(graphData: Array<GraphNode>) {
