@@ -375,7 +375,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         }
         if (this.currentPattern._links.outgoingDirectedEdges) {
             this.currentPattern._links.outgoingDirectedEdges instanceof Array ?
-                this.getListOfLinks('ingoingDirectedEdges', listOfGraphViewEdges)
+                this.getListOfLinks('outgoingDirectedEdges', listOfGraphViewEdges)
                 : this.getLink('outgoingDirectedEdges', listOfGraphViewEdges);
         }
         if (this.currentPattern._links.ingoingDirectedEdges) {
