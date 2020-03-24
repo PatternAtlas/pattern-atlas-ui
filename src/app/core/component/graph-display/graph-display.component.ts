@@ -319,10 +319,11 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                             this.currentEdgesMap.get(edge.edge.type).push(edge);
                         }
                     } else {
-                        if (!this.currentEdgesMap.has(edges.edge.type)) {
-                            this.currentEdgesMap.set(edges.edge.type, []);
+                        const edge: EdgeWithType = edges as any;
+                        if (!this.currentEdgesMap.has(edge.edge.type)) {
+                            this.currentEdgesMap.set(edge.edge.type, []);
                         }
-                        this.currentEdgesMap.get(edges.edge.type).push(edges);
+                        this.currentEdgesMap.get(edge.edge.type).push(edge);
                     }
                     this.currentEdges = edges;
                     this.cdr.detectChanges();
