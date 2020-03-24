@@ -19,6 +19,7 @@ import {switchMap, tap} from 'rxjs/operators';
 import {PatternResponse} from '../../model/hal/pattern-response.interface';
 import {EMPTY, Observable} from 'rxjs';
 import {CdkDragDrop} from '@angular/cdk/drag-drop';
+import {HalLink} from '../../model/hal/hal-link.interface';
 
 export class GraphNode {
     id: string;
@@ -389,7 +390,9 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     private getLink(type: string, listOfGraphViewEdges: Array<EdgeWithType>) {
         switch (type) {
             case 'outgoingDirectedEdges': {
-                this.patternRelationDescriptionService.getDirectedEdgeByUrl(this.currentPattern._links.outgoingDirectedEdges.href).subscribe(
+                const link = this.currentPattern._links.outgoingDirectedEdges as HalLink;
+
+                this.patternRelationDescriptionService.getDirectedEdgeByUrl(link.href).subscribe(
                     edge => {
                         const edgeWithType: EdgeWithType = {edge: edge, type: type};
                         listOfGraphViewEdges.push(edgeWithType);
@@ -398,7 +401,9 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                 break;
             }
             case 'ingoingDirectedEdges': {
-                this.patternRelationDescriptionService.getDirectedEdgeByUrl(this.currentPattern._links.ingoingDirectedEdges.href).subscribe(
+                const link = this.currentPattern._links.ingoingDirectedEdges as HalLink;
+
+                this.patternRelationDescriptionService.getDirectedEdgeByUrl(link.href).subscribe(
                     edge => {
                         const edgeWithType: EdgeWithType = {edge: edge, type: type};
                         listOfGraphViewEdges.push(edgeWithType);
@@ -407,7 +412,8 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                 break;
             }
             case 'undirectedEdges' : {
-                this.patternRelationDescriptionService.getUndirectedEdgeByUrl(this.currentPattern._links.undirectedEdges.href).subscribe(
+                const link = this.currentPattern._links.undirectedEdges as HalLink;
+                this.patternRelationDescriptionService.getUndirectedEdgeByUrl(link.href).subscribe(
                     edge => {
                         const edgeWithType: EdgeWithType = {edge: edge, type: type};
                         listOfGraphViewEdges.push(edgeWithType);
@@ -421,7 +427,8 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     private getListOfLinks(type: string, listOfGraphViewEdges: Array<EdgeWithType>) {
         switch (type) {
             case 'outgoingDirectedEdges': {
-                for (const link of this.currentPattern._links.outgoingDirectedEdges) {
+                const links = this.currentPattern._links.outgoingDirectedEdges as HalLink[];
+                for (const link of links) {
                     this.patternRelationDescriptionService.getDirectedEdgeByUrl(link.href).subscribe(
                         edge => {
                             const edgeWithType: EdgeWithType = {edge: edge, type: type};
@@ -432,7 +439,8 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                 break;
             }
             case 'ingoingDirectedEdges': {
-                for (const link of this.currentPattern._links.ingoingDirectedEdges) {
+                const links = this.currentPattern._links.ingoingDirectedEdges as HalLink[];
+                for (const link of links) {
                     this.patternRelationDescriptionService.getDirectedEdgeByUrl(link.href).subscribe(
                         edge => {
                             const edgeWithType: EdgeWithType = {edge: edge, type: type};
@@ -443,7 +451,8 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                 break;
             }
             case 'undirectedEdges': {
-                for (const link of this.currentPattern._links.undirectedEdges) {
+                const links = this.currentPattern._links.undirectedEdges as HalLink[];
+                for (const link of links) {
                     this.patternRelationDescriptionService.getUndirectedEdgeByUrl(link.href).subscribe(
                         edge => {
                             const edgeWithType: EdgeWithType = {edge: edge, type: type};
