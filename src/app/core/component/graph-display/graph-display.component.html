@@ -1,11 +1,11 @@
 <mat-sidenav-container [hasBackdrop]="false" class="container">
     <mat-sidenav *ngIf="patternView" style="min-width: 300px;" [disableClose]="true" [opened]="true" fixedInViewport="false" mode="push">
         <h3>Add Patterns</h3>
-        <div *ngIf="allPatternsLoading; else content"
+        <div *ngIf="allPatternsLoading; else dragAndDropSidenav"
              style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
             <mat-spinner></mat-spinner>
         </div>
-        <ng-template #content>
+        <ng-template #dragAndDropSidenav>
             <mat-accordion>
                 <div cdkDropListGroup>
                     <mat-expansion-panel *ngFor="let patternLang of patternLanguages; first as isFirst" [expanded]="isFirst">
@@ -19,7 +19,7 @@
                                  [cdkDropListData]="patternLang.patterns"
                                  class="pattern-list"
                                  cdkDropListSortingDisabled
-                                 (cdkDropListDropped)="dropPattern($event)">
+                                 (cdkDropListDropped)="patternDropped($event)">
                                 <div class="pattern-box" *ngFor="let pattern of patternLang.patterns" cdkDrag>
                                     {{pattern.name}}
                                     <mat-icon>drag_handle</mat-icon>
@@ -33,7 +33,7 @@
     </mat-sidenav>
 
     <mat-sidenav [opened]="patternClicked" position="end" fixedInViewport="true" mode="over">
-        <h4 style="margin: 1em">{{currentPattern?.name}} Relations</h4>
+        <h4 style="margin: 1em">Relations of {{currentPattern?.name}}</h4>
         <mat-accordion>
             <mat-expansion-panel *ngFor="let relation of currentEdges">
                 <mat-expansion-panel-header>

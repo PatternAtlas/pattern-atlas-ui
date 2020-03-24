@@ -172,7 +172,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         });
     }
 
-    dropPattern(event: CdkDragDrop<any[]>) {
+    patternDropped(event: CdkDragDrop<any[]>) {
         if (event.isPointerOverContainer) {
             return;
         }
