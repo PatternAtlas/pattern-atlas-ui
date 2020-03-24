@@ -1,19 +1,21 @@
 <mat-sidenav-container [hasBackdrop]="false" class="container">
-    <mat-sidenav *ngIf="patternView" style="min-width: 300px;" [disableClose]="true" [opened]="true" fixedInViewport="false" mode="push">
+    <mat-sidenav *ngIf="patternView" style="min-width: 300px;" [disableClose]="true" [opened]="true"
+                 fixedInViewport="false" mode="push">
         <h3>Add Patterns</h3>
-            <mat-accordion>
-                <div cdkDropListGroup>
-                    <mat-expansion-panel *ngFor="let patternLang of patternLanguages" (afterExpand)="patternListExpanded(patternLang)">
-                        <mat-expansion-panel-header>
-                            <mat-panel-title>
-                                {{patternLang.name}}
-                            </mat-panel-title>
-                        </mat-expansion-panel-header>
-                        <mat-panel-description>
-                            <div *ngIf="allPatternsLoading; else dragAndDropContent">
-                                <mat-spinner class="drag-and-drop-spinner"></mat-spinner>
-                            </div>
-                            <ng-template #dragAndDropContent>
+        <mat-accordion>
+            <div cdkDropListGroup>
+                <mat-expansion-panel *ngFor="let patternLang of patternLanguages"
+                                     (afterExpand)="patternListExpanded(patternLang)">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{patternLang.name}}
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-panel-description>
+                        <div *ngIf="allPatternsLoading; else dragAndDropContent">
+                            <mat-spinner class="drag-and-drop-spinner"></mat-spinner>
+                        </div>
+                        <ng-template #dragAndDropContent>
                             <div cdkDropList
                                  [cdkDropListData]="patternLang.patterns"
                                  class="pattern-list"
@@ -24,44 +26,48 @@
                                     <mat-icon>drag_handle</mat-icon>
                                 </div>
                             </div>
-                            </ng-template>
-                        </mat-panel-description>
-                    </mat-expansion-panel>
-                </div>
-            </mat-accordion>
+                        </ng-template>
+                    </mat-panel-description>
+                </mat-expansion-panel>
+            </div>
+        </mat-accordion>
     </mat-sidenav>
 
     <mat-sidenav [opened]="patternClicked" position="end" fixedInViewport="true" mode="over">
         <h4 style="margin: 1em">PV Relations of {{currentPattern?.name}}</h4>
         <mat-accordion>
-            <mat-expansion-panel *ngFor="let relation of currentPatternEdges">
+            <mat-expansion-panel *ngFor="let relationEntry of currentPatternRelationMap | keyvalue">
                 <mat-expansion-panel-header>
                     <mat-panel-title style="align-self: center">
-                        {{relation?.edge.type}}
+                        {{relationEntry.key}}
                     </mat-panel-title>
-                    <mat-panel-description class="horiz-centered">
-                        <div [ngSwitch]="relation.type">
-                            <div *ngSwitchCase="'undirectedEdges'" class="horiz-centered">
-                                {{ relation?.edge.sourcePatternName}}
-                                <i class="material-icons flip">compare_arrows</i>
-                                {{ relation?.edge.pattern1Id === this.currentPattern.id ? relation.edge.pattern1Name :
-                                relation.edge.pattern2Name}}
-                            </div>
-
-                            <div *ngSwitchCase="'outgoingDirectedEdges'" class="horiz-centered">
-                                <i class="material-icons">trending_flat</i>
-                                {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
-                                relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
-
-                            </div>
-                            <div *ngSwitchCase="'ingoingDirectedEdges'" class="horiz-centered">
-                                <i class="material-icons flip">trending_flat</i>
-                                {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
-                                relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
-                            </div>
-                        </div>
-                    </mat-panel-description>
                 </mat-expansion-panel-header>
+                <div *ngFor="let relation of relationEntry.value; first as isFirst">
+                    <mat-divider *ngIf="!isFirst"></mat-divider>
+                    <div [ngSwitch]="relation.type">
+                        <div *ngSwitchCase="'undirectedEdges'" class="horiz-centered">
+                            {{ relation?.edge.sourcePatternName}}
+                            <i class="material-icons flip">compare_arrows</i>
+                            {{ relation?.edge.pattern1Id === this.currentPattern.id ? relation.edge.pattern1Name :
+                            relation.edge.pattern2Name}}
+                        </div>
+
+                        <div *ngSwitchCase="'outgoingDirectedEdges'" class="horiz-centered">
+                            <i class="material-icons">trending_flat</i>
+                            {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
+                            relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
+
+                        </div>
+                        <div *ngSwitchCase="'ingoingDirectedEdges'" class="horiz-centered">
+                            <i class="material-icons flip">trending_flat</i>
+                            {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
+                            relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
+                        </div>
+                        <div *ngIf="relation.edge.description">
+                       <br/><b>Description:</b><i>{{relation.edge.description}}</i>
+                        </div>
+                    </div>
+                </div>
             </mat-expansion-panel>
         </mat-accordion>
 
@@ -92,7 +98,6 @@
                                 {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
                                 relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
                             </div>
-
                         </div>
                     </mat-panel-description>
                 </mat-expansion-panel-header>

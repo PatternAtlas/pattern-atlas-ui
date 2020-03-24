@@ -13,7 +13,7 @@ import Pattern from '../../model/hal/pattern.model';
 import {PatternLanguageService} from '../../service/pattern-language.service';
 import {GraphInputData} from '../../model/graph-input-data.interface';
 import {PatternService} from '../../service/pattern.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {PatternViewService} from '../../service/pattern-view.service';
 import {switchMap, tap} from 'rxjs/operators';
 import {PatternResponse} from '../../model/hal/pattern-response.interface';
@@ -49,7 +49,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     @Output() addedEdge = new EventEmitter<any>();
     currentPattern: Pattern;
     currentEdges: Array<EdgeWithType>;
-    currentPatternEdges: Array<EdgeWithType>;
+    currentPatternRelationMap: Map<string, EdgeWithType[]>;
     patternLanguages: Array<PatternLanguage>;
     patternView: PatternView;
     private edges: Array<NetworkLink>;
@@ -70,8 +70,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                 private patternLanguageService: PatternLanguageService,
                 private patternViewService: PatternViewService,
                 private patternService: PatternService,
-                private router: Router,
-                private activatedRoute: ActivatedRoute) {
+                private router: Router) {
     }
 
     static mapPatternLinksToEdges(links: any[]): NetworkLink[] {
@@ -360,34 +359,35 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         this.highlightedNodeIds = outgoingNodeIds.concat(ingoingNodeIds);
         this.highlightedNodeIds.push(node.id);
         this.currentPattern = this.patterns.find(pat => pat.id === node.id);
-        this.currentPatternEdges = this.getPatternViewEdges();
+        this.currentPatternRelationMap = this.getPatternRelationMap();
+        console.log(this.currentPatternRelationMap);
         this.getEdgesForPattern();
         this.patternClicked = true;
         this.triggerRerendering();
     }
 
-    private getPatternViewEdges() {
-        const listOfGraphViewEdges = [];
+    private getPatternRelationMap() {
+        const patternRelationMap = new Map<string, EdgeWithType[]>();
         if (this.currentPattern._links.undirectedEdges) {
             this.currentPattern._links.undirectedEdges instanceof Array ?
-                this.getListOfLinks('undirectedEdges', listOfGraphViewEdges)
-                : this.getLink('undirectedEdges', listOfGraphViewEdges);
+                this.getListOfLinks('undirectedEdges', patternRelationMap)
+                : this.getLink('undirectedEdges', patternRelationMap);
         }
         if (this.currentPattern._links.outgoingDirectedEdges) {
             this.currentPattern._links.outgoingDirectedEdges instanceof Array ?
-                this.getListOfLinks('outgoingDirectedEdges', listOfGraphViewEdges)
-                : this.getLink('outgoingDirectedEdges', listOfGraphViewEdges);
+                this.getListOfLinks('outgoingDirectedEdges', patternRelationMap)
+                : this.getLink('outgoingDirectedEdges', patternRelationMap);
         }
         if (this.currentPattern._links.ingoingDirectedEdges) {
             this.currentPattern._links.ingoingDirectedEdges instanceof Array ?
-                this.getListOfLinks('ingoingDirectedEdges', listOfGraphViewEdges)
-                : this.getLink('ingoingDirectedEdges', listOfGraphViewEdges);
+                this.getListOfLinks('ingoingDirectedEdges', patternRelationMap)
+                : this.getLink('ingoingDirectedEdges', patternRelationMap);
 
         }
-        return listOfGraphViewEdges;
+        return patternRelationMap;
     }
 
-    private getLink(type: string, listOfGraphViewEdges: Array<EdgeWithType>) {
+    private getLink(type: string, relationEdgesMap: Map<string, EdgeWithType[]>) {
         switch (type) {
             case 'outgoingDirectedEdges': {
                 const link = this.currentPattern._links.outgoingDirectedEdges as HalLink;
@@ -395,7 +395,11 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                 this.patternRelationDescriptionService.getDirectedEdgeByUrl(link.href).subscribe(
                     edge => {
                         const edgeWithType: EdgeWithType = {edge: edge, type: type};
-                        listOfGraphViewEdges.push(edgeWithType);
+                        if (relationEdgesMap.has(edgeWithType.edge.type)) {
+                        } else {
+                            relationEdgesMap.set(edgeWithType.edge.type, []);
+                        }
+                        relationEdgesMap.get(edgeWithType.edge.type).push(edgeWithType);
                     }
                 );
                 break;
@@ -406,7 +410,11 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                 this.patternRelationDescriptionService.getDirectedEdgeByUrl(link.href).subscribe(
                     edge => {
                         const edgeWithType: EdgeWithType = {edge: edge, type: type};
-                        listOfGraphViewEdges.push(edgeWithType);
+                        if (relationEdgesMap.has(edgeWithType.edge.type)) {
+                        } else {
+                            relationEdgesMap.set(edgeWithType.edge.type, []);
+                        }
+                        relationEdgesMap.get(edgeWithType.edge.type).push(edgeWithType);
                     }
                 );
                 break;
@@ -416,7 +424,11 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                 this.patternRelationDescriptionService.getUndirectedEdgeByUrl(link.href).subscribe(
                     edge => {
                         const edgeWithType: EdgeWithType = {edge: edge, type: type};
-                        listOfGraphViewEdges.push(edgeWithType);
+                        if (relationEdgesMap.has(edgeWithType.edge.type)) {
+                        } else {
+                            relationEdgesMap.set(edgeWithType.edge.type, []);
+                        }
+                        relationEdgesMap.get(edgeWithType.edge.type).push(edgeWithType);
                     }
                 );
                 break;
@@ -424,7 +436,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         }
     }
 
-    private getListOfLinks(type: string, listOfGraphViewEdges: Array<EdgeWithType>) {
+    private getListOfLinks(type: string, relationEdgesMap: Map<string, EdgeWithType[]>) {
         switch (type) {
             case 'outgoingDirectedEdges': {
                 const links = this.currentPattern._links.outgoingDirectedEdges as HalLink[];
@@ -432,7 +444,11 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                     this.patternRelationDescriptionService.getDirectedEdgeByUrl(link.href).subscribe(
                         edge => {
                             const edgeWithType: EdgeWithType = {edge: edge, type: type};
-                            listOfGraphViewEdges.push(edgeWithType);
+                            if (relationEdgesMap.has(edgeWithType.edge.type)) {
+                            } else {
+                                relationEdgesMap.set(edgeWithType.edge.type, []);
+                            }
+                            relationEdgesMap.get(edgeWithType.edge.type).push(edgeWithType);
                         }
                     );
                 }
@@ -444,7 +460,11 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                     this.patternRelationDescriptionService.getDirectedEdgeByUrl(link.href).subscribe(
                         edge => {
                             const edgeWithType: EdgeWithType = {edge: edge, type: type};
-                            listOfGraphViewEdges.push(edgeWithType);
+                            if (relationEdgesMap.has(edgeWithType.edge.type)) {
+                            } else {
+                                relationEdgesMap.set(edgeWithType.edge.type, []);
+                            }
+                            relationEdgesMap.get(edgeWithType.edge.type).push(edgeWithType);
                         }
                     );
                 }
@@ -456,7 +476,11 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                     this.patternRelationDescriptionService.getUndirectedEdgeByUrl(link.href).subscribe(
                         edge => {
                             const edgeWithType: EdgeWithType = {edge: edge, type: type};
-                            listOfGraphViewEdges.push(edgeWithType);
+                            if (relationEdgesMap.has(edgeWithType.edge.type)) {
+                            } else {
+                                relationEdgesMap.set(edgeWithType.edge.type, []);
+                            }
+                            relationEdgesMap.get(edgeWithType.edge.type).push(edgeWithType);
                         }
                     );
                 }
