@@ -20,6 +20,12 @@ html, body, svg {
   overflow: hidden;
 }
 
+.drag-and-drop-spinner {
+  position: relative;
+  left: 50%;
+  margin-top: 2em;
+}
+
 .pattern-list {
   border: solid 1px #ccc;
   min-height: 40px;

@@ -49,12 +49,12 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     currentPattern: Pattern;
     currentEdges: Array<EdgeWithType>;
     patternLanguages: Array<PatternLanguage>;
+    patternView: PatternView;
     private edges: Array<NetworkLink>;
     private nodes: Array<GraphNode>;
     private copyOfLinks: Array<NetworkLink>;
     private patterns: Array<Pattern>;
     private patternLanguage: PatternLanguage;
-    patternView: PatternView;
     private currentEdge: any;
     private highlightedNodeIds: Array<string> = [];
     private clickedNodeId: string = null;
@@ -236,6 +236,19 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         this.graphNativeElement.completeRender();
     }
 
+    patternListExpanded(patternLang: PatternLanguage) {
+        if (patternLang.patterns) {
+            return;
+        }
+        this.allPatternsLoading = true;
+        this.patternService.getPatternsByUrl(patternLang._links.patterns.href).subscribe(
+            data => {
+                patternLang.patterns = data;
+                this.allPatternsLoading = false;
+            }
+        );
+    }
+
     private getCurrentPatternViewAndPatterns(): Observable<Pattern[]> {
         return this.patternViewService.getPatternViewByUri(this.patternView.uri).pipe(
             tap(patternViewResponse => {
@@ -257,26 +270,10 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             this.patternView = this.patternGraphData.patternView;
             this.nodes = GraphDisplayComponent.mapPatternsToNodes(this.patterns);
             if (this.patternView) {
-                this.patternLanguages = this.getPatterns(this.patternGraphData.patternLanguages);
+                this.patternLanguages = this.patternGraphData.patternLanguages;
+                this.allPatternsLoading = false;
             }
         }
-    }
-
-    private getPatterns(patternLanguages: Array<PatternLanguage>) {
-        const amountOfPLs = patternLanguages.length;
-        let index = 0;
-        for (const patternLang of patternLanguages) {
-            this.patternService.getPatternsByUrl(patternLang._links.patterns.href).subscribe(
-                data => {
-                    patternLang.patterns = data;
-                    index += 1;
-                    if (index === amountOfPLs) {
-                        this.allPatternsLoading = false;
-                    }
-                }
-            );
-        }
-        return patternLanguages;
     }
 
     private startSimulation() {
