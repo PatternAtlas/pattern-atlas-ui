@@ -48,6 +48,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     @Output() addedEdge = new EventEmitter<any>();
     currentPattern: Pattern;
     currentEdges: Array<EdgeWithType>;
+    currentPatternEdges: Array<EdgeWithType>;
     patternLanguages: Array<PatternLanguage>;
     patternView: PatternView;
     private edges: Array<NetworkLink>;
@@ -358,9 +359,45 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         this.highlightedNodeIds = outgoingNodeIds.concat(ingoingNodeIds);
         this.highlightedNodeIds.push(node.id);
         this.currentPattern = this.patterns.find(pat => pat.id === node.id);
+        this.currentPatternEdges = this.getPatternViewEdges();
         this.getEdgesForPattern();
         this.patternClicked = true;
         this.triggerRerendering();
+    }
+
+    private getPatternViewEdges() {
+        const listOfGraphViewEdges = [];
+        if (this.currentPattern._links.undirectedEdges) {
+            for (const link of this.currentPattern._links.undirectedEdges) {
+                this.patternRelationDescriptionService.getUndirectedEdgeByUrl(link.href).subscribe(
+                    edge => {
+                        const edgeWithType: EdgeWithType = {edge: edge, type: 'undirectedEdges'};
+                        listOfGraphViewEdges.push(edgeWithType);
+                    }
+                );
+            }
+        }
+        if (this.currentPattern._links.outgoingDirectedEdges) {
+            for (const link of this.currentPattern._links.outgoingDirectedEdges) {
+                this.patternRelationDescriptionService.getDirectedEdgeByUrl(link.href).subscribe(
+                    edge => {
+                        const edgeWithType: EdgeWithType = {edge: edge, type: 'outgoingDirectedEdges'};
+                        listOfGraphViewEdges.push(edgeWithType);
+                    }
+                );
+            }
+        }
+        if (this.currentPattern._links.ingoingDirectedEdges) {
+            for (const link of this.currentPattern._links.ingoingDirectedEdges) {
+                this.patternRelationDescriptionService.getDirectedEdgeByUrl(link.href).subscribe(
+                    edge => {
+                        const edgeWithType: EdgeWithType = {edge: edge, type: 'ingoingDirectedEdges'};
+                        listOfGraphViewEdges.push(edgeWithType);
+                    }
+                );
+            }
+        }
+        return listOfGraphViewEdges;
     }
 
     private initGraphData(graphData: Array<GraphNode>) {
