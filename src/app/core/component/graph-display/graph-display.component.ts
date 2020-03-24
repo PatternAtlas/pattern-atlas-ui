@@ -49,6 +49,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     @Output() addedEdge = new EventEmitter<any>();
     currentPattern: Pattern;
     currentEdges: Array<EdgeWithType>;
+    currentEdgesMap: Map<string, EdgeWithType[]>;
     currentPatternRelationMap: Map<string, EdgeWithType[]>;
     patternLanguages: Array<PatternLanguage>;
     patternView: PatternView;
@@ -303,13 +304,29 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     }
 
     private getEdgesForPattern(): void {
+        this.currentEdgesMap = new Map();
         this.patternService.getPatternByUrl(this.currentPattern._links.self.href).pipe(
             switchMap((pattern: PatternResponse) => {
                 return this.patternRelationDescriptionService.getEdgesForPattern(pattern);
             }))
             .subscribe(edges => {
-                this.currentEdges = edges;
-                this.cdr.detectChanges();
+                if (edges) {
+                    if (edges.length) {
+                        for (const edge of edges) {
+                            if (!this.currentEdgesMap.has(edge.edge.type)) {
+                                this.currentEdgesMap.set(edge.edge.type, []);
+                            }
+                            this.currentEdgesMap.get(edge.edge.type).push(edge);
+                        }
+                    } else {
+                        if (!this.currentEdgesMap.has(edges.edge.type)) {
+                            this.currentEdgesMap.set(edges.edge.type, []);
+                        }
+                        this.currentEdgesMap.get(edges.edge.type).push(edges);
+                    }
+                    this.currentEdges = edges;
+                    this.cdr.detectChanges();
+                }
             });
     }
 
@@ -360,7 +377,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         this.highlightedNodeIds.push(node.id);
         this.currentPattern = this.patterns.find(pat => pat.id === node.id);
         this.currentPatternRelationMap = this.getPatternRelationMap();
-        console.log(this.currentPatternRelationMap);
         this.getEdgesForPattern();
         this.patternClicked = true;
         this.triggerRerendering();
@@ -395,8 +411,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                 this.patternRelationDescriptionService.getDirectedEdgeByUrl(link.href).subscribe(
                     edge => {
                         const edgeWithType: EdgeWithType = {edge: edge, type: type};
-                        if (relationEdgesMap.has(edgeWithType.edge.type)) {
-                        } else {
+                        if (!relationEdgesMap.has(edgeWithType.edge.type)) {
                             relationEdgesMap.set(edgeWithType.edge.type, []);
                         }
                         relationEdgesMap.get(edgeWithType.edge.type).push(edgeWithType);
@@ -410,8 +425,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                 this.patternRelationDescriptionService.getDirectedEdgeByUrl(link.href).subscribe(
                     edge => {
                         const edgeWithType: EdgeWithType = {edge: edge, type: type};
-                        if (relationEdgesMap.has(edgeWithType.edge.type)) {
-                        } else {
+                        if (!relationEdgesMap.has(edgeWithType.edge.type)) {
                             relationEdgesMap.set(edgeWithType.edge.type, []);
                         }
                         relationEdgesMap.get(edgeWithType.edge.type).push(edgeWithType);
@@ -424,8 +438,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                 this.patternRelationDescriptionService.getUndirectedEdgeByUrl(link.href).subscribe(
                     edge => {
                         const edgeWithType: EdgeWithType = {edge: edge, type: type};
-                        if (relationEdgesMap.has(edgeWithType.edge.type)) {
-                        } else {
+                        if (!relationEdgesMap.has(edgeWithType.edge.type)) {
                             relationEdgesMap.set(edgeWithType.edge.type, []);
                         }
                         relationEdgesMap.get(edgeWithType.edge.type).push(edgeWithType);
@@ -444,8 +457,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                     this.patternRelationDescriptionService.getDirectedEdgeByUrl(link.href).subscribe(
                         edge => {
                             const edgeWithType: EdgeWithType = {edge: edge, type: type};
-                            if (relationEdgesMap.has(edgeWithType.edge.type)) {
-                            } else {
+                            if (!relationEdgesMap.has(edgeWithType.edge.type)) {
                                 relationEdgesMap.set(edgeWithType.edge.type, []);
                             }
                             relationEdgesMap.get(edgeWithType.edge.type).push(edgeWithType);
@@ -460,8 +472,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                     this.patternRelationDescriptionService.getDirectedEdgeByUrl(link.href).subscribe(
                         edge => {
                             const edgeWithType: EdgeWithType = {edge: edge, type: type};
-                            if (relationEdgesMap.has(edgeWithType.edge.type)) {
-                            } else {
+                            if (!relationEdgesMap.has(edgeWithType.edge.type)) {
                                 relationEdgesMap.set(edgeWithType.edge.type, []);
                             }
                             relationEdgesMap.get(edgeWithType.edge.type).push(edgeWithType);
@@ -476,8 +487,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                     this.patternRelationDescriptionService.getUndirectedEdgeByUrl(link.href).subscribe(
                         edge => {
                             const edgeWithType: EdgeWithType = {edge: edge, type: type};
-                            if (relationEdgesMap.has(edgeWithType.edge.type)) {
-                            } else {
+                            if (!relationEdgesMap.has(edgeWithType.edge.type)) {
                                 relationEdgesMap.set(edgeWithType.edge.type, []);
                             }
                             relationEdgesMap.get(edgeWithType.edge.type).push(edgeWithType);
