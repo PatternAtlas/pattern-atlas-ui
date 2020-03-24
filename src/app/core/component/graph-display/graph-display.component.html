@@ -63,10 +63,8 @@
                             {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
                             relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
                         </div>
-                        <div *ngIf="relation.edge.description">
-                       <br/><b>Description:</b><i>{{relation.edge.description}}</i>
-                        </div>
                     </div>
+                    <i>{{relation?.edge.description}}</i>
                 </div>
             </mat-expansion-panel>
         </mat-accordion>
@@ -100,10 +98,8 @@
                             {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
                             relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
                         </div>
-                        <div *ngIf="relation.edge.description">
-                            <br/><b>Description:</b><i>{{relation.edge.description}}</i>
-                        </div>
                     </div>
+                    <i>{{relation?.edge.description}}</i>
                 </div>
             </mat-expansion-panel>
         </mat-accordion>
