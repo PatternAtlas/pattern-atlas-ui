@@ -96,10 +96,10 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
 
     static mapPatternsToNodes(patterns: Array<Pattern>, offsetIndex: number = 0): Array<GraphNode> {
         const nodes: Array<any> = [];
-        console.log(patterns);
         for (let i = 0; i < patterns.length; i++) {
             const node = {
                 id: patterns[i].id,
+                iconUrl: patterns[i].iconUrl,
                 title: patterns[i].name,
                 type: 'default',
                 x: 5 * offsetIndex,
@@ -204,6 +204,16 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         this.sidenavContainer.close();
     }
 
+    public updateSideMenu() {
+        if (this.clickedNodeId) {
+            this.showInfoForClickedNode(this.graphNativeElement.getNode(this.clickedNodeId));
+        }
+    }
+
+    triggerRerendering() {
+        this.graphNativeElement.completeRender();
+    }
+
     private initData() {
         this.patternGraphData = this.data;
         if (this.patternGraphData) {
@@ -301,16 +311,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         this.getEdgesForPattern();
         this.sidenavContainer.open();
         this.triggerRerendering();
-    }
-
-    public updateSideMenu() {
-        if (this.clickedNodeId) {
-            this.showInfoForClickedNode(this.graphNativeElement.getNode(this.clickedNodeId));
-        }
-    }
-
-    triggerRerendering() {
-        this.graphNativeElement.completeRender();
     }
 
     private initGraphData(graphData: Array<GraphNode>) {
