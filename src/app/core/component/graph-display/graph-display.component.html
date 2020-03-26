@@ -1,6 +1,38 @@
 <mat-sidenav-container [hasBackdrop]="false" class="container">
-    <mat-sidenav #start fixedInViewport="true" mode="over">
-        <h4>{{currentPattern?.name}}</h4>
+    <mat-sidenav *ngIf="patternView" style="min-width: 300px;" [disableClose]="true" [opened]="true" fixedInViewport="false" mode="push">
+        <h3>Add Patterns</h3>
+            <mat-accordion>
+                <div cdkDropListGroup>
+                    <mat-expansion-panel *ngFor="let patternLang of patternLanguages" (afterExpand)="patternListExpanded(patternLang)">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                {{patternLang.name}}
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-panel-description>
+                            <div *ngIf="allPatternsLoading; else dragAndDropContent">
+                                <mat-spinner class="drag-and-drop-spinner"></mat-spinner>
+                            </div>
+                            <ng-template #dragAndDropContent>
+                            <div cdkDropList
+                                 [cdkDropListData]="patternLang.patterns"
+                                 class="pattern-list"
+                                 cdkDropListSortingDisabled
+                                 (cdkDropListDropped)="patternDropped($event)">
+                                <div class="pattern-box" *ngFor="let pattern of patternLang.patterns" cdkDrag>
+                                    {{pattern.name}}
+                                    <mat-icon>drag_handle</mat-icon>
+                                </div>
+                            </div>
+                            </ng-template>
+                        </mat-panel-description>
+                    </mat-expansion-panel>
+                </div>
+            </mat-accordion>
+    </mat-sidenav>
+
+    <mat-sidenav [opened]="patternClicked" position="end" fixedInViewport="true" mode="over">
+        <h4 style="margin: 1em">Relations of {{currentPattern?.name}}</h4>
         <mat-accordion>
             <mat-expansion-panel *ngFor="let relation of currentEdges">
                 <mat-expansion-panel-header>
@@ -13,17 +45,20 @@
                             <div *ngSwitchCase="'undirectedEdges'" class="horiz-centered">
                                 {{ relation?.edge.sourcePatternName}}
                                 <i class="material-icons flip">compare_arrows</i>
-                                {{ relation?.edge.pattern1Id === this.currentPattern.id ? relation.edge.pattern1Name : relation.edge.pattern2Name}}
+                                {{ relation?.edge.pattern1Id === this.currentPattern.id ? relation.edge.pattern1Name :
+                                relation.edge.pattern2Name}}
                             </div>
 
                             <div *ngSwitchCase="'outgoingDirectedEdges'" class="horiz-centered">
                                 <i class="material-icons">trending_flat</i>
-                                {{ relation?.edge.sourcePatternId === this.currentPattern.id ? relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
+                                {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
+                                relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
 
                             </div>
                             <div *ngSwitchCase="'ingoingDirectedEdges'" class="horiz-centered">
                                 <i class="material-icons flip">trending_flat</i>
-                                {{ relation?.edge.sourcePatternId === this.currentPattern.id ? relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
+                                {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
+                                relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
                             </div>
 
                         </div>

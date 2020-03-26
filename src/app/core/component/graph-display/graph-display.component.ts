@@ -2,7 +2,6 @@ import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, I
 import {D3Service} from '../../../graph/service/d3.service';
 import {NetworkLink} from '../../model/network-link.interface';
 import {MatDialog} from '@angular/material/dialog';
-import {MatSidenavContainer} from '@angular/material/sidenav';
 import {CreatePatternRelationComponent} from '../create-pattern-relation/create-pattern-relation.component';
 import {PatternView} from '../../model/hal/pattern-view.model';
 import PatternLanguage from '../../model/hal/pattern-language.model';
@@ -16,8 +15,10 @@ import {GraphInputData} from '../../model/graph-input-data.interface';
 import {PatternService} from '../../service/pattern.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PatternViewService} from '../../service/pattern-view.service';
-import {switchMap} from 'rxjs/operators';
+import {switchMap, tap} from 'rxjs/operators';
 import {PatternResponse} from '../../model/hal/pattern-response.interface';
+import {EMPTY, Observable} from 'rxjs';
+import {CdkDragDrop} from '@angular/cdk/drag-drop';
 
 export class GraphNode {
     id: string;
@@ -38,20 +39,22 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     @ViewChild('graphWrapper', {static: true}) graph: ElementRef;
     graphNativeElement: GraphEditor;
     @ViewChild('svg') svg: ElementRef;
-    @ViewChild(MatSidenavContainer) sidenavContainer: MatSidenavContainer;
     patternGraphData: any;
     isLoading = true;
+    patternClicked = false;
+    allPatternsLoading = true;
     @Input() data: GraphInputData;
     @Input() showPatternLanguageName: boolean;
     @Output() addedEdge = new EventEmitter<any>();
     currentPattern: Pattern;
     currentEdges: Array<EdgeWithType>;
+    patternLanguages: Array<PatternLanguage>;
+    patternView: PatternView;
     private edges: Array<NetworkLink>;
     private nodes: Array<GraphNode>;
     private copyOfLinks: Array<NetworkLink>;
     private patterns: Array<Pattern>;
     private patternLanguage: PatternLanguage;
-    private patternView: PatternView;
     private currentEdge: any;
     private highlightedNodeIds: Array<string> = [];
     private clickedNodeId: string = null;
@@ -170,6 +173,28 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         });
     }
 
+    patternDropped(event: CdkDragDrop<any[]>) {
+        if (event.isPointerOverContainer) {
+            return;
+        }
+        const patternDropped: Pattern = event.container.data[event.previousIndex];
+        this.addPatternToGraph(patternDropped);
+    }
+
+    addPatternToGraph(pattern: Pattern) {
+        const patternList = [];
+        patternList.push(pattern);
+        this.patternViewService.addPatterns(this.patternView._links.patterns.href, patternList).pipe(
+            switchMap(result => result ? this.getCurrentPatternViewAndPatterns() : EMPTY))
+            .subscribe((res) => {
+                    if (res) {
+                        this.reformatGraph();
+                        this.toastService.pop('success', 'Pattern added');
+                    }
+                }
+            );
+    }
+
     nodeClicked(event) {
         const node = event['detail']['node'];
         if (event['detail']['key'] === 'info') {
@@ -184,7 +209,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                 .subscribe(() => console.log('saved graph layout'));
         }
         if (this.nodes && this.patternView) {
-            console.log(this.patternView);
             this.patternViewService.saveGraph(this.patternView, this.graphNativeElement.nodeList)
                 .subscribe(() => console.log('saved graph layout'));
         }
@@ -195,13 +219,46 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         this.startSimulation();
     }
 
-
     backgroundClicked() {
         this.highlightedNodeIds = [];
         this.highlightedEdgeIds = [];
         this.clickedNodeId = null;
         this.graphNativeElement.completeRender();
-        this.sidenavContainer.close();
+        this.patternClicked = false;
+    }
+
+    public updateSideMenu() {
+        if (this.clickedNodeId) {
+            this.showInfoForClickedNode(this.graphNativeElement.getNode(this.clickedNodeId));
+        }
+    }
+
+    triggerRerendering() {
+        this.graphNativeElement.completeRender();
+    }
+
+    patternListExpanded(patternLang: PatternLanguage) {
+        if (patternLang.patterns) {
+            return;
+        }
+        this.allPatternsLoading = true;
+        this.patternService.getPatternsByUrl(patternLang._links.patterns.href).subscribe(
+            data => {
+                patternLang.patterns = data;
+                this.allPatternsLoading = false;
+            }
+        );
+    }
+
+    private getCurrentPatternViewAndPatterns(): Observable<Pattern[]> {
+        return this.patternViewService.getPatternViewByUri(this.patternView.uri).pipe(
+            tap(patternViewResponse => {
+                this.patternView = patternViewResponse;
+            }),
+            switchMap((patternViewResponse: PatternView) => this.patternService.getPatternsByUrl(patternViewResponse._links.patterns.href)),
+            tap(patterns => {
+                this.patterns = patterns;
+            }));
     }
 
     public updateSideMenu() {
@@ -223,6 +280,10 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             this.patternLanguage = this.patternGraphData.patternLanguage;
             this.patternView = this.patternGraphData.patternView;
             this.nodes = GraphDisplayComponent.mapPatternsToNodes(this.patterns);
+            if (this.patternView) {
+                this.patternLanguages = this.patternGraphData.patternLanguages;
+                this.allPatternsLoading = false;
+            }
         }
     }
 
@@ -309,7 +370,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         this.highlightedNodeIds.push(node.id);
         this.currentPattern = this.patterns.find(pat => pat.id === node.id);
         this.getEdgesForPattern();
-        this.sidenavContainer.open();
+        this.patternClicked = true;
         this.triggerRerendering();
     }
 
