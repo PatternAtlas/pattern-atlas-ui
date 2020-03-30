@@ -4,8 +4,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { BehaviorSubject, Observable } from 'rxjs';
-// import { AuthenticationService } from '../../service/authentication.service';
-import { UserService } from '../../service/user.service';
+import { AuthenticationService } from '../../service/authentication.service';
+// import { UserService } from '../../service/user.service';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 
@@ -19,12 +19,18 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   authenticated = false;
   token: string;
+  tokenRefresh: string;
   private windowHandle: Window;
   public href: string = "";
 
+  private regexCode: RegExp;
+  private regexState: RegExp;
 
-  constructor(private http: HttpClient, private router: Router) {
+
+  constructor(private http: HttpClient, private router: Router, private auth: AuthenticationService) {
     // http.get('resource').subscribe(data => console.log(data));
+    this.regexCode = /code=(\w*)/;
+    this.regexState = /state=(\w*)/;
   }
 
   ngOnInit() {
@@ -37,37 +43,61 @@ export class LoginComponent implements OnInit {
     console.log(this.router.url);
   }
 
+  // http://localhost:8081/oauth/authorize?response_type=code&client_id=public&redirect_uri=http://localhost:4200/login
+  // code_challenge=4cc9b165-1230-4607-873b-3a78afcf60c5
+
+
   reroute() {
-    this.windowHandle = window.open('http://localhost:8081/oauth/authorize?grant_type=authorization_code&response_type=code&client_id=redirect&state=1234', "_self");
+    const params = new HttpParams()
+      .set('response_type', 'code')
+      .set('client_id', 'pattern-pedia-private')
+      .set('redirect_uri', 'http://localhost:4200/login')
+      // .set('code_challenge', '4cc9b165-1230-4607-873b-3a78afcf60c5');
+      .set('scope', 'read+write')
+      .set('state', '1234')
+
+      this.windowHandle = window.open('http://localhost:8081/oauth/authorize?' + params, '_self');
+      
+
+    // this.windowHandle = window.open('http://localhost:8081/oauth/authorize' + params.toString(), '_self');
+    // this.windowHandle = window.open('http://localhost:8081/oauth/authorize?response_type=code&client_id=pattern-pedia-public&redirect_uri=http://localhost:4200/login&code_challenge=4cc9b165-1230-4607-873b-3a78afcf60c5', '_self');
   }
+
+  //curl localhost:8081/oauth/token -d client_id=public -d grant_type=authorization_code -d redirect_uri=http://localhost:4200/login  -d code=1ALnC8 -d code_verifier=4cc9b165-1230-4607-873b-3a78afcf60c5
 
   getTokenCode() {
-    this.href = this.href.slice(12, 18);
+    const code = this.regexCode.exec(this.href)[1];
     console.log("get Token via Code", this.href);
     const params = new HttpParams()
-      .set('code', this.href)
-      // .set('password', 'pass')
-      .set('grant_type', 'authorization_code');
-    console.log(params);
-    this.http.post<any>('http://localhost:8081/oauth/token', params, { headers: { authorization: 'Basic ' + btoa('redirect:iamaghost') } }).subscribe(val => {
+      .set('code', code)
+      // .set('client_id', 'pattern-pedia-private')
+      // .set('client_secret', 'pattern-pedia-secret')
+      .set('redirect_uri', 'http://localhost:4200/login')
+      .set('grant_type', 'authorization_code')
+      // .set('code_verifier', '4cc9b165-1230-4607-873b-3a78afcf60c5')
+    // console.log(params);
+    this.http.post<any>('http://localhost:8081/oauth/token', params, { headers: { authorization: 'Basic ' + btoa('pattern-pedia-private:pattern-pedia-secret')} }).subscribe(val => {
+    // this.http.post<any>('http://localhost:8081/oauth/token', params ).subscribe(val => {
       console.log(val);
       // this.token == null ? this.token = val['access_token'] : null ;
       this.token = (val['access_token']);
+      this.tokenRefresh = (val['refresh_token']);
     });
   }
 
-  getToken() {
-    console.log("get Token");
-    const params = new HttpParams()
-      .set('username', 'a@a')
-      .set('password', 'pass')
-      .set('grant_type', 'password');
-    console.log(params);
-    this.http.post<any>('http://localhost:8081/oauth/token', params, { headers: { authorization: 'Basic ' + btoa('pattern-pedia-client:iamaghost') } }).subscribe(val => {
-      console.log(val);
-      // this.token == null ? this.token = val['access_token'] : null ;
-      this.token = (val['access_token']);
-    });
+  getTokenRefresh() {
+    this.auth.login();
+    // console.log("get Token");
+    // const params = new HttpParams()
+    // .set('client_id', 'pattern-pedia-public')
+    // .set('grant_type', 'refresh_token')
+    // .set('refresh_token', this.tokenRefresh)
+    // console.log(params);
+    // this.http.post<any>('http://localhost:8081/oauth/token', params, { headers: { authorization: 'Bearer ' + this.token } }).subscribe(val => {
+    //   console.log(val);
+    //   // this.token == null ? this.token = val['access_token'] : null ;
+    //   this.token = (val['access_token']);
+    // });
   }
 
   getAll() {
@@ -85,6 +115,20 @@ export class LoginComponent implements OnInit {
 
     this.http.get<any>('http://localhost:8080/user/getAll', { headers: { authorization: 'Bearer ' + this.token } }).subscribe(val => {
       console.log(val);
+    });
+  }
+
+  logout() {
+    console.log("lLog Out");
+    const params = new HttpParams()
+    .set('client_id', 'pattern-pedia-public')
+    .set('grant_type', 'refresh_token')
+    .set('refresh_token', this.tokenRefresh)
+    console.log(params);
+    this.http.get<any>('http://localhost:8081/oauth/revoke_token', { headers: { authorization: 'Bearer ' + this.token } }).subscribe(val => {
+      console.log(val);
+      this.token = null;
+      this.tokenRefresh = null;
     });
   }
 

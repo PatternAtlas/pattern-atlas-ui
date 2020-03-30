@@ -13,6 +13,7 @@
  */
 
 import { Component } from '@angular/core';
+import { AuthenticationService } from './core/service/authentication.service';
 
 @Component({
     selector: 'pp-root',
@@ -21,7 +22,19 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-    constructor() {
+    loginButton = "Login";
+    private loggedIn: boolean;
+
+    constructor(private auth: AuthenticationService) {
+        this.auth.userLoggedIn$.subscribe(loggedIn => {
+            console.log(loggedIn)
+            this.loggedIn = loggedIn;
+            loggedIn ? this.loginButton = 'Logout' : this.loginButton = 'Login'
+        })
+    }
+
+    loginOAuth() {
+        this.loggedIn ? this.auth.logout() : this.auth.login()
     }
 
 

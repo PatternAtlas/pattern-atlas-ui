@@ -2,10 +2,26 @@ import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 import { Injectable } from '@angular/core';
 import { Observable, of, pipe, throwError } from 'rxjs';
 import { filter, retryWhen, switchMap, take, delay } from 'rxjs/operators';
+import { AuthenticationService } from './authentication.service';
 // import { AuthenticationService } from './authentication.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
+
+    private static authService: AuthenticationService = null;
+    static init(authService: AuthenticationService) {
+        console.log(`interceptor initialized`);
+        this.authService = authService;
+    }
+
+    constructor() { }
+
+    intercept(req: HttpRequest<any>, next: HttpHandler) {
+        // const xhr = req.clone({
+        //     headers: req.headers.set('X-Requested-With', 'XMLHttpRequest',  )
+        // });
+        return next.handle(req);
+    }
 
     // intercept(req: HttpRequest<any>, next: HttpHandler) {
     //     if (true && req.url.indexOf('basicauth') === -1) {
@@ -21,22 +37,7 @@ export class TokenInterceptor implements HttpInterceptor {
     //     }
     // }
 
-    intercept(req: HttpRequest<any>, next: HttpHandler) {
-        // const xhr = req.clone({
-        //     headers: req.headers.set('X-Requested-With', 'XMLHttpRequest',  )
-        // });
-        return next.handle(req);
-    }
 
-
-
-    //   private static authService: AuthenticationService = null;
-    //   static init(authService: AuthenticationService) {
-    //     console.log(`interceptor initialized`);
-    //     this.authService = authService;
-    //   }
-
-    //   constructor() { }
 
     //   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     //     if (TokenInterceptor.authService === null || !TokenInterceptor.authService.interceptUrl(req)) {

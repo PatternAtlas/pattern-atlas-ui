@@ -73,12 +73,12 @@ import { TokenInterceptor } from './core/service/token.interceptor';
     ],
     providers: [
         CookieService,
-        // ConfigService, {
-        //     provide: APP_INITIALIZER,
-        //     useFactory: configServiceInitializerFactory,
-        //     deps: [ConfigService],
-        //     multi: true
-        //   },
+        ConfigService, {
+            provide: APP_INITIALIZER,
+            useFactory: configServiceInitializerFactory,
+            deps: [ConfigService],
+            multi: true
+          },
           { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
     ],
     bootstrap: [AppComponent]

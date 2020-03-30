@@ -4,11 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 
 interface Config {
-  serverUrl: string;
-  loginUrl: string;
-  signinUrl: string;
-  clientId: string;
-  clientSecret: string;
+
 }
 
 export function configServiceInitializerFactory(config: ConfigService): Function {
@@ -18,19 +14,28 @@ export function configServiceInitializerFactory(config: ConfigService): Function
 @Injectable()
 export class ConfigService {
 
-  config: Config;
+  repositoryUrl: string;
+  authorizeUrl: string;
+  tokenUrl: string;
+  tokenRevokeUrl: string;
+  signinUrl: string;
+  clientIdPrivate: string;
+  clientIdPublic: string;
+  clientSecret: string;
 
-  constructor(private http: HttpClient) {}
+  constructor() { }
 
   load(): Promise<any> {
-    console.log('load resources');
-    this.config = {
-      serverUrl: environment.serverUrl,
-      loginUrl: environment.loginUrl,
-      signinUrl: environment.signinUrl,
-      clientId: environment.clientId,
-      clientSecret: environment.clientSecret
-    };
+    console.log('Load Config');
+    this.repositoryUrl = environment.repositoryUrl;
+    this.authorizeUrl = environment.authorizeUrl;
+    this.tokenUrl = environment.tokenUrl;
+    this.tokenRevokeUrl = environment.tokenRevokeUrl;
+    this.signinUrl = environment.signinUrl;
+    this.clientIdPrivate = environment.clientIdPrivate;
+    this.clientIdPublic = environment.clientIdPublic;
+    this.clientSecret = environment.clientSecret;
+
     return of().toPromise();
   }
 

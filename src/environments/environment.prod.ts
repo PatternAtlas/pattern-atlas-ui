@@ -15,8 +15,9 @@
 export const environment = {
   production: true,
   serverUrl: 'http://localhost:8080/api/',
-  loginUrl: 'http://localhost:8080/oauth/token',
-  signinUrl: 'http://localhost:8080/api/signin',
-  clientId: 'glee-o-meter',
-  clientSecret: 'secret'
+  loginUrl: 'http://localhost:8081/oauth/token',
+  signinUrl: 'http://localhost:8080/user/create',
+  clientIdPrivate: 'pattern-pedia-private',
+  clientIdPublic: 'pattern-pedia-public',
+  clientSecret: 'pattern-pedia-secret'
 };

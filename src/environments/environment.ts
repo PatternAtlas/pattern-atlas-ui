@@ -18,11 +18,14 @@
 
 export const environment = {
   production: false,
-  serverUrl: 'http://localhost:8080/api/',
-  loginUrl: 'http://localhost:8081/oauth/token',
-  signinUrl: 'http://localhost:8080/user/create',
-  clientId: 'pattern-pedia-client',
-  clientSecret: 'iamaghost'
+  repositoryUrl: 'http://localhost:8080/',
+  authorizeUrl: 'http://localhost:8081/oauth/authorize?',
+  tokenUrl: 'http://localhost:8081/oauth/token',
+  tokenRevokeUrl: 'http://localhost:8081/oauth/revoke_token',
+  signinUrl: 'http://localhost:8081/user/create',
+  clientIdPrivate: 'pattern-pedia-private',
+  clientIdPublic: 'pattern-pedia-public',
+  clientSecret: 'pattern-pedia-secret'
 };
 
 /*
