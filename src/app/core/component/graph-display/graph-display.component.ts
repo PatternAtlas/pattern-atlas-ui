@@ -106,6 +106,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         for (let i = 0; i < patterns.length; i++) {
             const node = {
                 id: patterns[i].id,
+                iconUrl: patterns[i].iconUrl,
                 title: patterns[i].name,
                 type: 'default',
                 x: 5 * offsetIndex,

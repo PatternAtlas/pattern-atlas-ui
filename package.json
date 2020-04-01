@@ -1,5 +1,5 @@
 {
-  "name": "pattern-atlas",
+  "name": "pattern-pedia",
   "version": "0.0.1",
   "scripts": {
     "ng": "ng",
@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "travis": "ng build --base-href '/pattern-atlas/'"
+    "travis": "ng build --base-href '/pattern-pedia/'"
   },
   "private": true,
   "dependencies": {
