@@ -261,16 +261,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             }));
     }
 
-    public updateSideMenu() {
-        if (this.clickedNodeId) {
-            this.showInfoForClickedNode(this.graphNativeElement.getNode(this.clickedNodeId));
-        }
-    }
-
-    triggerRerendering() {
-        this.graphNativeElement.completeRender();
-    }
-
     private initData() {
         this.patternGraphData = this.data;
         if (this.patternGraphData) {
