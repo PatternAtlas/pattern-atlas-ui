@@ -20,6 +20,7 @@ import {PatternResponse} from '../../model/hal/pattern-response.interface';
 import {EMPTY, Observable} from 'rxjs';
 import {CdkDragDrop} from '@angular/cdk/drag-drop';
 import {HalLink} from '../../model/hal/hal-link.interface';
+import {UriConverter} from '../../util/uri-converter';
 
 export class GraphNode {
     id: string;
@@ -48,6 +49,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     @Input() showPatternLanguageName: boolean;
     @Output() addedEdge = new EventEmitter<any>();
     currentPattern: Pattern;
+    currentMentions: Array<PatternView>;
     currentEdges: Array<EdgeWithType>;
     currentEdgesMap: Map<string, EdgeWithType[]>;
     currentPatternRelationMap: Map<string, EdgeWithType[]>;
@@ -174,6 +176,31 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         });
     }
 
+    public getMentionsInOtherPatternViews(): Array<PatternView> {
+        const mentionList = [];
+        this.patternViewService.getPatternViews().subscribe(
+            patternViews => {
+                for (const patternView of patternViews._embedded.patternViews) {
+                    const patterns = patternView._links.patterns;
+                    if (patterns instanceof Array) {
+                        for (const pattern of patterns) {
+                            this.checkIfPatternInPatternView(pattern.href, mentionList, patternView);
+                        }
+                    } else {
+                        this.checkIfPatternInPatternView(patterns, mentionList, patternView);
+                    }
+                }
+            }
+        );
+        return mentionList;
+    }
+
+    goToPatternView(link: any) {
+        this.router.navigate([]).then(result => {
+            window.open('/patternviews/' + UriConverter.doubleEncodeUri(link), '_blank');
+        });
+    }
+
     patternDropped(event: CdkDragDrop<any[]>) {
         if (event.isPointerOverContainer) {
             return;
@@ -247,6 +274,18 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             data => {
                 patternLang.patterns = data;
                 this.allPatternsLoading = false;
+            }
+        );
+    }
+
+    private checkIfPatternInPatternView(patternHref: HalLink, mentionList: Array<PatternView>, patternView: PatternView) {
+        this.patternService.getPatternByUrl(patternHref.href).subscribe(
+            patternRes => {
+                for (const patternModel of patternRes._embedded.patternModels) {
+                    if (patternModel.id === this.currentPattern.id && patternView.id !== this.patternView.id) {
+                        mentionList.push(patternView);
+                    }
+                }
             }
         );
     }
@@ -378,6 +417,8 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         this.highlightedNodeIds.push(node.id);
         this.currentPattern = this.patterns.find(pat => pat.id === node.id);
         this.currentPatternRelationMap = this.getPatternRelationMap();
+        this.currentMentions = this.getMentionsInOtherPatternViews();
+        console.log(this.currentMentions);
         this.getEdgesForPattern();
         this.patternClicked = true;
         this.triggerRerendering();

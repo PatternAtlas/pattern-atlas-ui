@@ -103,6 +103,15 @@
                 </div>
             </mat-expansion-panel>
         </mat-accordion>
+        <h4 style="margin: 1em">Mentions in other Pattern Views of {{currentPattern?.name}}</h4>
+        <mat-list role="list">
+            <mat-list-item role="listitem" *ngFor="let mention of currentMentions">
+                <button mat-button (click)="goToPatternView(mention.uri)">
+                    <mat-icon>link</mat-icon>
+                    Pattern View: {{mention.name}}
+                </button>
+            </mat-list-item>
+        </mat-list>
     </mat-sidenav>
     <mat-progress-spinner *ngIf="isLoading"></mat-progress-spinner>
     <mat-sidenav-content>
