@@ -97,10 +97,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
                 return edge ? this.createLink(edge) : EMPTY;
             })).subscribe((res) => {
             if (res) {
-                console.log(res);
                 this.toasterService.pop('success', 'Relation added');
-                this.patterns = this.patterns.slice();
-                this.detectChanges();
             }
         });
     }
@@ -226,9 +223,51 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
         this.patternRLDescriptorService.getEdgeByUrl(getURL, edge)
             .subscribe(
                 edgeResult => {
+                    edge instanceof DirectedEdgeModel ? this.addDirectedEdgeToPattern(edgeResult as DirectedEdgeModel)
+                        : this.addUndirectedEdgeToPattern(edgeResult as UndirectedEdgeModel);
                     this.patternLinks.push(edgeResult);
                 }
             );
+    }
+
+    private addUndirectedEdgeToPattern(edge: UndirectedEdgeModel): void {
+        const pattern1 = this.patterns.find(x => x.id === edge.pattern1Id);
+        // check if undirected edges object exists for pattern, if not: create
+        if (!pattern1._links.undirectedEdges) {
+            pattern1._links.undirectedEdges = [];
+            // check if undirected edges is of type object, if yes: convert to array
+        } else if (pattern1._links.undirectedEdges.href) {
+            pattern1._links.undirectedEdges = [pattern1._links.undirectedEdges];
+        }
+        pattern1._links.undirectedEdges.push(edge._links.self);
+
+        const pattern2 = this.patterns.find(x => x.id === edge.pattern2Id);
+        if (!pattern2._links.undirectedEdges) {
+            pattern2._links.undirectedEdges = [];
+        } else if (pattern2._links.undirectedEdges.href) {
+            pattern2._links.undirectedEdges = [pattern2._links.undirectedEdges];
+        }
+        pattern2._links.undirectedEdges.push(edge._links.self);
+    }
+
+    private addDirectedEdgeToPattern(edge: DirectedEdgeModel): void {
+        const srcPattern = this.patterns.find(x => x.id === edge.sourcePatternId);
+        // check if outgoing edges object exists for pattern, if not: create
+        if (!srcPattern._links.outgoingDirectedEdges) {
+            srcPattern._links.outgoingDirectedEdges = [];
+            // check if outgoing edges is of type object, if yes: convert to array
+        } else if (srcPattern._links.outgoingDirectedEdges.href) {
+            srcPattern._links.outgoingDirectedEdges = [srcPattern._links.outgoingDirectedEdges];
+        }
+        srcPattern._links.outgoingDirectedEdges.push(edge._links.self);
+
+        const targetPattern = this.patterns.find(x => x.id === edge.targetPatternId);
+        if (!targetPattern._links.ingoingDirectedEdges) {
+            targetPattern._links.ingoingDirectedEdges = [];
+        } else if (targetPattern._links.ingoingDirectedEdges.href) {
+            targetPattern._links.ingoingDirectedEdges = [targetPattern._links.ingoingDirectedEdges];
+        }
+        targetPattern._links.ingoingDirectedEdges.push(edge._links.self);
     }
 
     private getPatternLanguages(): Observable<Array<PatternLanguageModel>> {
