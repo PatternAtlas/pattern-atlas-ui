@@ -35,6 +35,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {TextFieldModule} from '@angular/cdk/text-field';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import {MdEditorComponent} from './component/md-editor/md-editor.component';
 import {CovalentTextEditorModule} from '@covalent/text-editor';
 import {EmitEventOnKeyupDirective} from './directives/emit-event-on-keyup.directive';
@@ -64,6 +65,7 @@ import { CreativeLicenseFooterComponent } from './component/creative-license-foo
 @NgModule({
     imports: [
         CommonModule,
+        DragDropModule,
         PrettyJsonModule,
         MatButtonModule,
         TextFieldModule,
