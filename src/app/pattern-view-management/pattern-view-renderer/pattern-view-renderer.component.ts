@@ -234,7 +234,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
         const pattern1 = this.patterns.find(x => x.id === edge.pattern1Id);
         if (!pattern1._links.undirectedEdges) {
             pattern1._links.undirectedEdges = edge._links.self;
-        } else if (!pattern1._links.undirectedEdges.length) {
+        } else if (!Array.isArray(pattern1._links.undirectedEdges)) {
             pattern1._links.undirectedEdges = [pattern1._links.undirectedEdges, edge._links.self];
         } else {
             pattern1._links.undirectedEdges.push(edge._links.self);
@@ -244,8 +244,8 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
         if (!pattern2._links.undirectedEdges) {
             pattern2._links.undirectedEdges = edge._links.self;
             return;
-        } else if (!pattern2._links.undirectedEdges.length) {
-            pattern2._links.undirectedEdges = [pattern2._links.undirectedEdges, edge._links.self];
+        } else if (!Array.isArray(pattern2._links.undirectedEdges)) {
+            pattern2._links.undirectedEdges = <HalLink[]>[pattern2._links.undirectedEdges, edge._links.self];
         } else {
             pattern2._links.undirectedEdges.push(edge._links.self);
         }
@@ -255,7 +255,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
         const srcPattern = this.patterns.find(x => x.id === edge.sourcePatternId);
         if (!srcPattern._links.outgoingDirectedEdges) {
             srcPattern._links.outgoingDirectedEdges = edge._links.self;
-        } else if (!srcPattern._links.outgoingDirectedEdges.length) {
+        } else if (!Array.isArray(srcPattern._links.outgoingDirectedEdges)) {
             srcPattern._links.outgoingDirectedEdges = [srcPattern._links.outgoingDirectedEdges, edge._links.self];
         } else {
             srcPattern._links.outgoingDirectedEdges.push(edge._links.self);
@@ -265,7 +265,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
         if (!targetPattern._links.ingoingDirectedEdges) {
             targetPattern._links.ingoingDirectedEdges = edge._links.self;
             return;
-        } else if (!targetPattern._links.ingoingDirectedEdges.length) {
+        } else if (!Array.isArray(targetPattern._links.ingoingDirectedEdges)) {
             targetPattern._links.ingoingDirectedEdges = [targetPattern._links.ingoingDirectedEdges, edge._links.self];
         } else {
             targetPattern._links.ingoingDirectedEdges.push(edge._links.self);
