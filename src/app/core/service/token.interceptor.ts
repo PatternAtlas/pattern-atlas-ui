@@ -3,25 +3,38 @@ import { Injectable } from '@angular/core';
 import { Observable, of, pipe, throwError } from 'rxjs';
 import { filter, retryWhen, switchMap, take, delay } from 'rxjs/operators';
 import { AuthenticationService } from './authentication.service';
+import { ConfigService } from './config.service';
 // import { AuthenticationService } from './authentication.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
     private static authService: AuthenticationService = null;
+
     static init(authService: AuthenticationService) {
         console.log(`interceptor initialized`);
         this.authService = authService;
     }
 
-    constructor() { }
+    // constructor(private authService: AuthenticationService, private config: ConfigService) { }
+    constructor( private config: ConfigService) { }
 
-    intercept(req: HttpRequest<any>, next: HttpHandler) {
-        // const xhr = req.clone({
-        //     headers: req.headers.set('X-Requested-With', 'XMLHttpRequest',  )
-        // });
-        return next.handle(req);
+    intercept(request: HttpRequest<any>, next: HttpHandler) {
+        // if (request.url.includes(this.config.repositoryUrl) || request.url.includes('http://localhost:8081/oauth/check_token') ) {
+        //     return next.handle(this.addToken(request));
+        // } else {
+        //     return next.handle(request);
+        // }
+        return next.handle(request);
     }
+
+    private addToken(request: HttpRequest<any>): HttpRequest<any> {
+        const token = TokenInterceptor.authService.getAccesToken()
+        console.log(token);
+        return request.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
+    }
+
+
 
     // intercept(req: HttpRequest<any>, next: HttpHandler) {
     //     if (true && req.url.indexOf('basicauth') === -1) {

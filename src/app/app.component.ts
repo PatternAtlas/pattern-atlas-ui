@@ -26,7 +26,7 @@ export class AppComponent {
     private loggedIn: boolean;
 
     constructor(private auth: AuthenticationService) {
-        this.auth.userLoggedIn$.subscribe(loggedIn => {
+        this.auth.userLoggedInSubject$.subscribe(loggedIn => {
             console.log(loggedIn)
             this.loggedIn = loggedIn;
             loggedIn ? this.loginButton = 'Logout' : this.loginButton = 'Login'

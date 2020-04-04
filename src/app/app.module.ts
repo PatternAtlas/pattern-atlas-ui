@@ -19,8 +19,6 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {PatternLanguageManagementModule} from './pattern-language-management/pattern-language-management.module';
 import {CoreModule} from './core/core.module';
-import {PageNotFoundComponent} from './page-not-found.component';
-import {LandingPageComponent} from './landing-page.component';
 
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {ExtensionsModule} from './extensions/extensions.module';
@@ -41,6 +39,11 @@ import {FormsModule} from '@angular/forms';
 import { ConfigService, configServiceInitializerFactory } from './core/service/config.service';
 import { JwtModule } from '@auth0/angular-jwt';
 import { TokenInterceptor } from './core/service/token.interceptor';
+import { PatternEvolutionManagementModule } from './pattern-evolution-management/pattern-evolution-management.module';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatNavList, MatListModule } from '@angular/material/list';
+import { LandingPageComponent } from './landing-page.component';
+import { PageNotFoundComponent } from './page-not-found.component';
 
 @NgModule({
     declarations: [
@@ -49,10 +52,12 @@ import { TokenInterceptor } from './core/service/token.interceptor';
         LandingPageComponent,
     ],
     imports: [
+        AppRoutingModule,
         BrowserModule,
         BrowserAnimationsModule,
-        PatternLanguageManagementModule,
-        PatternViewManagementModule,
+        PatternEvolutionManagementModule,
+        // PatternLanguageManagementModule,
+        // PatternViewManagementModule,
         MatToolbarModule,
         MatIconModule,
         MatCardModule,
@@ -63,13 +68,16 @@ import { TokenInterceptor } from './core/service/token.interceptor';
         CovalentTextEditorModule,
         CoreModule,
         HttpClientModule,
-        AppRoutingModule,
         ExtensionsModule,
         FlexLayoutModule,
         ToasterModule.forRoot(),
         MatInputModule,
         FormsModule,
-        JwtModule
+        JwtModule,
+        MatSidenavModule,
+        MatListModule,
+        // AppRoutingModule
+        
     ],
     providers: [
         CookieService,

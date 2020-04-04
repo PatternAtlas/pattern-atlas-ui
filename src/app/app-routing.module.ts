@@ -1,10 +1,18 @@
-import {PatternLanguageGraphComponent} from './pattern-language-management/pattern-language-graph/pattern-language-graph.component';
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {PageNotFoundComponent} from './page-not-found.component';
-import {ProcessOauthCallbackComponent} from './core/component/process-oauth-callback/process-oauth-callback.component';
-import {ToasterModule} from 'angular2-toaster';
+import { PatternLanguageGraphComponent } from './pattern-language-management/pattern-language-graph/pattern-language-graph.component';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ProcessOauthCallbackComponent } from './core/component/process-oauth-callback/process-oauth-callback.component';
+import { ToasterModule } from 'angular2-toaster';
 import { LoginComponent } from './core/component/login/login.component';
+import { PatternEvolutionHomeComponent } from './pattern-evolution-management/pattern-evolution-home/pattern-evolution-home.component';
+import { PatternLanguageManagementResolverService } from './pattern-language-management/pattern-language-management/pattern-language-management-resolver.service';
+import { PageNotFoundComponent } from './page-not-found.component';
+import { PL_ROUTES } from './pattern-language-management/pattern-language-management.module';
+import { PATTERN_EVOLUTION_ROUTES } from './pattern-evolution-management/pattern-evolution-routing.module';
+import { PatternLanguageManagementComponent } from './pattern-language-management/pattern-language-management/pattern-language-management.component';
+import { PatternLanguageContainerComponent } from './pattern-language-management/pattern-language-container/pattern-language-container.component';
+import { CreatePatternComponent } from './pattern-language-management/create-pattern/create-pattern.component';
+import { PatternContainerComponent } from './pattern-language-management/pattern-container/pattern-container.component';
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -21,12 +29,46 @@ import { LoginComponent } from './core/component/login/login.component';
 
 const routes: Routes = [
     {
+        path: '',
+        redirectTo: 'login',
+        pathMatch: 'full'
+    },
+    {
+        path: 'patternLanguages',
+        // resolve: {
+        //     patternlanguages: PatternLanguageManagementResolverService,
+
+        // },
+        loadChildren: './pattern-language-management/pattern-language-management.module#PatternLanguageManagementModule',
+    },
+    {
+        path: 'patternViews',
+        loadChildren: './pattern-view-management/pattern-view-management.module#PatternViewManagementModule',
+        // canActivate: [AuthGuard]  
+    },
+    {
+        path: 'patternEvolution',
+        // component: PatternEvolutionHomeComponent
+        loadChildren: './pattern-evolution-management/pattern-evolution-management.module#PatternEvolutionManagementModule',
+        // children: PATTERN_EVOLUTION_ROUTES
+    },
+    // {
+    //     path: 'login',
+    //     component: ProfileComponent,
+    //     canActivate: [AuthGuard]
+    // },
+    // {
+    //     path: 'admin',
+    //     component: AdminComponent,
+    //     canActivate: [RoleGuard],
+    //     data: {
+    //         expectedRole: 'admin'
+    //     }
+    // },
+    // { path: '**', redirectTo: '' }
+    {
         path: 'oauth-callback',
         component: ProcessOauthCallbackComponent
-    }, {
-        path: '',
-        redirectTo: 'patternlanguages',
-        pathMatch: 'full'
     },
     {
         path: 'graph',
@@ -43,7 +85,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes, {useHash: false, onSameUrlNavigation: 'reload'}), ToasterModule.forRoot()],
+    imports: [RouterModule.forRoot(routes, { useHash: false, onSameUrlNavigation: 'reload' }), ToasterModule.forRoot()],
     exports: [RouterModule]
 })
 export class AppRoutingModule {

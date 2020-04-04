@@ -33,6 +33,7 @@ import {PatternLanguageGraphComponent} from './pattern-language-graph/pattern-la
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatListModule} from '@angular/material/list';
 import {MatRippleModule} from '@angular/material/core';
+import { Routes, RouterModule } from '@angular/router';
 
 /*
  * Copyright (c) 2018 University of Stuttgart.
@@ -48,10 +49,27 @@ import {MatRippleModule} from '@angular/material/core';
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
+export const PL_ROUTES: Routes = [
+    {
+        path: '',
+        component: PatternLanguageManagementComponent
+    }, {
+        path: ':patternLanguageUri',
+        component: PatternLanguageContainerComponent,
+    }, {
+        path: ':patternLanguageUri/create-patterns',
+        component: CreatePatternComponent,
+    },
+    {
+        path: ':patternLanguageUri/:patternUri',
+        component: PatternContainerComponent
+    }
+
+]
+
 @NgModule({
     imports: [
         CommonModule,
-        PatternLanguageManagementRoutingModule,
         MatBadgeModule,
         MatButtonModule,
         MatToolbarModule,
@@ -74,7 +92,10 @@ import {MatRippleModule} from '@angular/material/core';
         GraphModule,
         DragDropModule,
         MatListModule,
-        MatRippleModule
+        MatRippleModule,
+        RouterModule.forChild(PL_ROUTES),
+        // PatternLanguageManagementRoutingModule,
+        
     ],
     declarations: [
         PatternLanguageManagementComponent,

@@ -8,6 +8,7 @@ import { AuthenticationService } from '../../service/authentication.service';
 // import { UserService } from '../../service/user.service';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
+import { ConfigService } from '../../service/config.service';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +28,7 @@ export class LoginComponent implements OnInit {
   private regexState: RegExp;
 
 
-  constructor(private http: HttpClient, private router: Router, private auth: AuthenticationService) {
+  constructor(private http: HttpClient, private router: Router, private auth: AuthenticationService, private config: ConfigService) {
     // http.get('resource').subscribe(data => console.log(data));
     this.regexCode = /code=(\w*)/;
     this.regexState = /state=(\w*)/;
@@ -56,8 +57,8 @@ export class LoginComponent implements OnInit {
       .set('scope', 'read+write')
       .set('state', '1234')
 
-      this.windowHandle = window.open('http://localhost:8081/oauth/authorize?' + params, '_self');
-      
+    this.windowHandle = window.open('http://localhost:8081/oauth/authorize?' + params, '_self');
+
 
     // this.windowHandle = window.open('http://localhost:8081/oauth/authorize' + params.toString(), '_self');
     // this.windowHandle = window.open('http://localhost:8081/oauth/authorize?response_type=code&client_id=pattern-pedia-public&redirect_uri=http://localhost:4200/login&code_challenge=4cc9b165-1230-4607-873b-3a78afcf60c5', '_self');
@@ -74,10 +75,10 @@ export class LoginComponent implements OnInit {
       // .set('client_secret', 'pattern-pedia-secret')
       .set('redirect_uri', 'http://localhost:4200/login')
       .set('grant_type', 'authorization_code')
-      // .set('code_verifier', '4cc9b165-1230-4607-873b-3a78afcf60c5')
+    // .set('code_verifier', '4cc9b165-1230-4607-873b-3a78afcf60c5')
     // console.log(params);
-    this.http.post<any>('http://localhost:8081/oauth/token', params, { headers: { authorization: 'Basic ' + btoa('pattern-pedia-private:pattern-pedia-secret')} }).subscribe(val => {
-    // this.http.post<any>('http://localhost:8081/oauth/token', params ).subscribe(val => {
+    this.http.post<any>('http://localhost:8081/oauth/token', params, { headers: { authorization: 'Basic ' + btoa('pattern-pedia-private:pattern-pedia-secret') } }).subscribe(val => {
+      // this.http.post<any>('http://localhost:8081/oauth/token', params ).subscribe(val => {
       console.log(val);
       // this.token == null ? this.token = val['access_token'] : null ;
       this.token = (val['access_token']);
@@ -101,31 +102,63 @@ export class LoginComponent implements OnInit {
   }
 
   getAll() {
-    this.http.get<any>('http://localhost:8081/alive', { headers: { authorization: 'Bearer ' + this.token } }).subscribe(val => {
+    // this.http.get<any>('http://localhost:8081/alive', { headers: { authorization: 'Bearer ' + this.token } }).subscribe(val => {
+    //   console.log(val);
+    // });
+
+    // const params = new HttpParams()
+    //   .set('client_id', 'pattern-pedia-private')
+    //   .set('client_secret', 'pattern-pedia-secret')
+    //   // .set('grant_type', 'refresh_token')
+    //   .set('token', localStorage.getItem('access_token'))
+    // this.http.post<any>('http://localhost:8081/oauth/check_token', params, { headers: { authorization: 'Basic ' + btoa(`${this.config.clientIdPrivate}:${this.config.clientSecret}`) } }).subscribe(val => {
+    //   console.log(val);
+    // });
+
+
+    // const params1 = new HttpParams()
+    //   // .set('code', code)
+    //   // .set('redirect_uri', `${window.location.origin}`)
+    //   .set('token', localStorage.getItem('access_token'))
+    // // .set('code_verifier', '4cc9b165-1230-4607-873b-3a78afcf60c5')
+    // this.http.delete<any>('http://localhost:8081/oauth/check_token',{ headers: { authorization: 'Bearer ' + localStorage.getItem('access_token') } }).subscribe(token => {
+    //   console.log(token);
+    // });
+
+    // this.http.get<any>('http://localhost:8081/user_info', { headers: { authorization: 'Bearer ' + localStorage.getItem('access_token') } }).subscribe(token => {
+    //   console.log(token);
+    // });
+
+
+    // this.http.get<any>('http://localhost:8080/user/getAll').subscribe(val => {
+    //   console.log(val);
+    // });
+
+    this.http.get<any>('http://localhost:8080/user/getAll', { headers: { authorization: 'Bearer ' + localStorage.getItem('access_token') } }).subscribe(val => {
       console.log(val);
     });
 
-    this.http.get<any>('http://localhost:8081/userinfo', { headers: { authorization: 'Bearer ' + this.token } }).subscribe(val => {
+    this.http.get<any>('http://localhost:8080/home', { headers: { authorization: 'Bearer ' + localStorage.getItem('access_token') } }).subscribe(val => {
       console.log(val);
     });
 
-    this.http.post<any>('http://localhost:8081/oauth/check_token', new HttpParams().set("token", this.token)).subscribe(val => {
+    this.http.get<any>('http://localhost:8080/test', { headers: { authorization: 'Bearer ' + localStorage.getItem('access_token') } }).subscribe(val => {
       console.log(val);
     });
 
-    this.http.get<any>('http://localhost:8080/user/getAll', { headers: { authorization: 'Bearer ' + this.token } }).subscribe(val => {
-      console.log(val);
-    });
+    // this.http.get<any>('http://localhost:8080/user/getuser', { headers: { authorization: 'Bearer ' + localStorage.getItem('access_token') } }).subscribe(val => {
+    //   console.log(val);
+    // });
   }
 
   logout() {
     console.log("lLog Out");
     const params = new HttpParams()
-    .set('client_id', 'pattern-pedia-public')
-    .set('grant_type', 'refresh_token')
-    .set('refresh_token', this.tokenRefresh)
+      .set('client_id', 'pattern-pedia-public')
+      .set('grant_type', 'refresh_token')
+      .set('refresh_token', this.tokenRefresh)
     console.log(params);
-    this.http.get<any>('http://localhost:8081/oauth/revoke_token', { headers: { authorization: 'Bearer ' + this.token } }).subscribe(val => {
+    this.http.get<any>('http://localhost:8081/oauth/revoke_token', { headers: { authorization: 'Bearer ' + localStorage.getItem('access_token') } }).subscribe(val => {
       console.log(val);
       this.token = null;
       this.tokenRefresh = null;
