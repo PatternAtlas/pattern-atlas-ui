@@ -1,1 +1,6 @@
-<p>pattern-evolution-home works!</p>
+<mat-list *ngFor="let patternEvolution of data ">
+    <mat-card>
+        {{patternEvolution.title}}
+        {{patternEvolution.more}}
+    </mat-card>
+</mat-list>

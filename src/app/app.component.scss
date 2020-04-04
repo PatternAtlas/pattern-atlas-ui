@@ -47,5 +47,19 @@
        `<body>` to be our scrolling element for mobile layouts. */
     flex: 1 0 auto;
   }
+
+//   /*left sidenav style override*/
+// mat-sidenav:not(.mat-drawer-opened) {
+//   transform: translate3d(0, 0, 0) !important;
+//   visibility: visible !important;
+//   width: 60px !important;
+//   overflow: hidden;
+// }
+// mat-sidenav:not(.mat-drawer-opened) .navigation-item-label {
+//   display: none !important;
+// }
+// mat-sidenav:not(.mat-drawer-closed) .navigation-item-short {
+//   display: none !important;
+// }
   
 

@@ -7,6 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PatternEvolutionHomeComponent implements OnInit {
 
+  data = [
+    {title: 'jdjds', more: 'ajbewgabwgipuabwiugepawegiawbgabiugnawöegu9wgawbegpubwg'},
+    {title: 'aweggw', more: 'ajbewgabwgipuabwiugepawegiawbgabiugnawöegu9wgawbegpubwg'},
+    {title: 'aweggw', more: 'ajbewgabwgipuabwiugepawegiawbgabiugnawöegu9wgawbegpubwg'}
+  ]
+
   constructor() { }
 
   ngOnInit(): void {

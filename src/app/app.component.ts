@@ -23,7 +23,9 @@ import { AuthenticationService } from './core/service/authentication.service';
 export class AppComponent {
 
     loginButton = "Login";
+    // isExpanded = true;
     private loggedIn: boolean;
+
 
     constructor(private auth: AuthenticationService) {
         this.auth.userLoggedInSubject$.subscribe(loggedIn => {
