@@ -1,0 +1,36 @@
+.container {
+  display: flex; /* or inline-flex */
+  flex-direction: row;
+  justify-content: left;
+  margin-top: 16px;
+
+  .list {
+    width: 45%;
+    margin: 0px 16px;
+    border-style: groove;
+
+    .mat-list {
+     
+      // width: 40%;
+      border-style: groove;
+      // overflow: auto;
+      // max-height: 100vh;
+      // border-width: 2px;
+
+      .new-button {
+        margin-bottom: 16px;
+        width: 100%;
+      }
+
+      .mat-list-item {
+        border-style: groove;
+        // border-width: 2px;
+      }
+    }
+  }
+
+  .detail {
+    width: 45%;
+    margin: 0px 16px;
+  }
+}

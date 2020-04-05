@@ -35,7 +35,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {CookieService} from 'ngx-cookie-service';
 import {ToasterModule} from 'angular2-toaster';
 import {MatInputModule} from '@angular/material/input';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ConfigService, configServiceInitializerFactory } from './core/service/config.service';
 import { JwtModule } from '@auth0/angular-jwt';
 import { TokenInterceptor } from './core/service/token.interceptor';
@@ -73,6 +73,7 @@ import { PageNotFoundComponent } from './core/component/page-not-found/page-not-
         ToasterModule.forRoot(),
         MatInputModule,
         FormsModule,
+        ReactiveFormsModule,
         JwtModule,
         MatSidenavModule,
         MatListModule,
