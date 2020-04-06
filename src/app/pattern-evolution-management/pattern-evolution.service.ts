@@ -40,7 +40,7 @@ export class PatternEvolutionService {
       }),
       catchError(error => {
         this.toasterService.pop('error', 'Getting pattern evolution list', error)
-        return null;
+        return [];
       }),
     )
   }

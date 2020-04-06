@@ -61,6 +61,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { RouterModule } from '@angular/router';
 import { LoginComponent } from './component/login/login.component';
 import { AuthenticationService } from './service/authentication.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 // import { AuthenticationService } from './service/authentication.service';
 
 @NgModule({
@@ -101,6 +102,7 @@ import { AuthenticationService } from './service/authentication.service';
         PatternService,
         PatternViewService,
         AuthenticationService,
+        // JwtHelperService,
     ],
     declarations: [
         DefaultPlRendererComponent,

@@ -35,10 +35,13 @@ export class AuthenticationService {
     public userLoggedInSubject$: BehaviorSubject<boolean>;
     public accessTokenSubject$: BehaviorSubject<string>;
 
+    // private jwtHelper: JwtHelperService;
+
     constructor(
         private http: HttpClient,
         private config: ConfigService,
         private router: Router,
+        // public jwtHelper: JwtHelperService
         // private userService: UserService,
     ) {
         console.log('Init Authentication Service');
@@ -102,6 +105,7 @@ export class AuthenticationService {
                 // .set('code_verifier', '4cc9b165-1230-4607-873b-3a78afcf60c5')
                 this.http.post<any>(this.config.tokenUrl, params, { headers: { authorization: 'Basic ' + btoa(`${this.config.clientIdPrivate}:${this.config.clientSecret}`) } }).subscribe(token => {
                     console.log(token);
+                    // this.jwtHelper.
                     localStorage.setItem(accessTokenKey, token[accessTokenKey]);
                     localStorage.setItem(refreshTokenKey, token[refreshTokenKey]);
                     this.accessTokenSubject$.next(token[accessTokenKey]);
@@ -128,4 +132,15 @@ export class AuthenticationService {
     public getAccesToken(): string {
         return localStorage.getItem(accessTokenKey);
     }
+
+    public isAuthenticated(): boolean {
+        const jwtHelper = new JwtHelperService();
+        return !jwtHelper.isTokenExpired(this.getAccesToken());
+    }
+
+    public getUserRole(): string[] {
+        const jwtHelper = new JwtHelperService();
+        return jwtHelper.decodeToken(this.getAccesToken())['authorities'];
+    }
+
  }

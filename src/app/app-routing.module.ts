@@ -12,6 +12,7 @@ import { PatternLanguageManagementComponent } from './pattern-language-managemen
 import { PatternLanguageContainerComponent } from './pattern-language-management/pattern-language-container/pattern-language-container.component';
 import { CreatePatternComponent } from './pattern-language-management/create-pattern/create-pattern.component';
 import { PatternContainerComponent } from './pattern-language-management/pattern-container/pattern-container.component';
+import { AuthGuardService as AuthGuard } from './core/service/auth-guard.service'
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -50,6 +51,8 @@ const routes: Routes = [
         // component: PatternEvolutionHomeComponent
         loadChildren: './pattern-evolution-management/pattern-evolution-management.module#PatternEvolutionManagementModule',
         // children: PATTERN_EVOLUTION_ROUTES
+        canActivate: [AuthGuard],
+        data: { role: 'MEMBER' }  
     },
     // {
     //     path: 'login',
