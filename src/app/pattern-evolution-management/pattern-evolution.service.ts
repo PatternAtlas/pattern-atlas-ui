@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { ConfigService } from '../core/service/config.service';
+import { ConfigService } from '../authentication/config.service';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { error } from 'protractor';

@@ -4,11 +4,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { BehaviorSubject, Observable } from 'rxjs';
-import { AuthenticationService } from '../../service/authentication.service';
+import { AuthenticationService } from '../../../authentication/authentication.service';
 // import { UserService } from '../../service/user.service';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
-import { ConfigService } from '../../service/config.service';
+import { ConfigService } from '../../../authentication/config.service';
 
 @Component({
   selector: 'app-login',

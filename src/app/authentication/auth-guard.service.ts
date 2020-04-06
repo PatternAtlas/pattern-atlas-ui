@@ -17,7 +17,6 @@ export class AuthGuardService implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot): boolean {
 
     const role = route.data.role;
-    console.log(route);
 
     if (!this.auth.isAuthenticated() || !this.auth.getUserRole().includes(role)) {
       // this.router.navigate(['login']);

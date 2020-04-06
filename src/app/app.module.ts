@@ -36,9 +36,9 @@ import {CookieService} from 'ngx-cookie-service';
 import {ToasterModule} from 'angular2-toaster';
 import {MatInputModule} from '@angular/material/input';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { ConfigService, configServiceInitializerFactory } from './core/service/config.service';
+import { ConfigService, configServiceInitializerFactory } from './authentication/config.service';
 import { JwtModule } from '@auth0/angular-jwt';
-import { TokenInterceptor } from './core/service/token.interceptor';
+import { TokenInterceptor } from './authentication/token.interceptor';
 import { PatternEvolutionManagementModule } from './pattern-evolution-management/pattern-evolution-management.module';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatNavList, MatListModule } from '@angular/material/list';
@@ -55,7 +55,7 @@ import { PageNotFoundComponent } from './core/component/page-not-found/page-not-
         AppRoutingModule,
         BrowserModule,
         BrowserAnimationsModule,
-        PatternEvolutionManagementModule,
+        // PatternEvolutionManagementModule,
         // PatternLanguageManagementModule,
         // PatternViewManagementModule,
         MatToolbarModule,

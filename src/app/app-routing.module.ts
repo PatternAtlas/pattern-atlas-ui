@@ -12,7 +12,10 @@ import { PatternLanguageManagementComponent } from './pattern-language-managemen
 import { PatternLanguageContainerComponent } from './pattern-language-management/pattern-language-container/pattern-language-container.component';
 import { CreatePatternComponent } from './pattern-language-management/create-pattern/create-pattern.component';
 import { PatternContainerComponent } from './pattern-language-management/pattern-container/pattern-container.component';
-import { AuthGuardService as AuthGuard } from './core/service/auth-guard.service'
+import { AuthGuardService as AuthGuard } from './authentication/auth-guard.service'
+import { USER_MANAGEMENT_ROUTES } from './user-management/user-management.module';
+import { ADMIN_MANAGEMENT_ROUTES } from './admin-management/admin-management.module';
+import { DEVELOPER_MANAGEMENT_ROUTES } from './developer-management/developer-management.module';
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -26,6 +29,14 @@ import { AuthGuardService as AuthGuard } from './core/service/auth-guard.service
  *
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
+
+export enum UserRole {
+    MEMBER = "MEMBER",
+    EXPERT = "EXPERT",
+    AUTHOR = "AUTHOR",
+    LIBRARIAN = "LIBRARIAN",
+    ADMIN = "ADMIN"
+}
 
 const routes: Routes = [
     {
@@ -44,30 +55,37 @@ const routes: Routes = [
     {
         path: 'patternViews',
         loadChildren: './pattern-view-management/pattern-view-management.module#PatternViewManagementModule',
-        // canActivate: [AuthGuard]  
+        // canActivate: [AuthGuard],
+        // data: { role: UserRole.MEMBER }  
     },
     {
         path: 'patternEvolution',
-        // component: PatternEvolutionHomeComponent
         loadChildren: './pattern-evolution-management/pattern-evolution-management.module#PatternEvolutionManagementModule',
         // children: PATTERN_EVOLUTION_ROUTES
-        canActivate: [AuthGuard],
-        data: { role: 'MEMBER' }  
+        // canActivate: [AuthGuard],
+        // data: { role: UserRole.MEMBER }
     },
-    // {
-    //     path: 'login',
-    //     component: ProfileComponent,
-    //     canActivate: [AuthGuard]
-    // },
-    // {
-    //     path: 'admin',
-    //     component: AdminComponent,
-    //     canActivate: [RoleGuard],
-    //     data: {
-    //         expectedRole: 'admin'
-    //     }
-    // },
-    // { path: '**', redirectTo: '' }
+    {
+        path: 'user',
+        loadChildren: './user-management/user-management.module#UserManagementModule',
+        // children: USER_MANAGEMENT_ROUTES
+        canActivate: [AuthGuard],
+        data: { role: UserRole.MEMBER }  
+    },
+    {
+        path: 'admin',
+        loadChildren: './admin-management/admin-management.module#AdminManagementModule',
+        //  children: ADMIN_MANAGEMENT_ROUTES,
+        canActivate: [AuthGuard],
+        data: { role: UserRole.ADMIN }  
+    },
+    {
+        path: 'developer',
+        loadChildren: './developer-management/developer-management.module#DeveloperManagementModule',
+        // children: DEVELOPER_MANAGEMENT_ROUTES,
+        canActivate: [AuthGuard],
+        data: { role: UserRole.ADMIN }
+    },
     {
         path: 'oauth-callback',
         component: ProcessOauthCallbackComponent

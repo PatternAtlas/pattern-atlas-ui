@@ -13,7 +13,7 @@
  */
 
 import { Component } from '@angular/core';
-import { AuthenticationService } from './core/service/authentication.service';
+import { AuthenticationService } from './authentication/authentication.service';
 
 @Component({
     selector: 'pp-root',

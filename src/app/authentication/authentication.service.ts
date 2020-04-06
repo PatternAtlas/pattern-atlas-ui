@@ -5,7 +5,7 @@ import { ConfigService } from "./config.service";
 import { Router } from "@angular/router";
 import { switchMap, skipWhile, tap, map, catchError } from "rxjs/operators";
 // import { TokenInterceptor } from "./token.interceptor";
-import { User, Role } from "./data/User";
+import { User, Role } from "../core/service/data/User";
 // import { UserService } from "./user.service";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { TokenInterceptor } from "./token.interceptor";
@@ -140,7 +140,9 @@ export class AuthenticationService {
 
     public getUserRole(): string[] {
         const jwtHelper = new JwtHelperService();
-        return jwtHelper.decodeToken(this.getAccesToken())['authorities'];
+        const authorities = jwtHelper.decodeToken(this.getAccesToken())['authorities'];
+        // console.log(authorities);
+        return authorities;
     }
 
  }
