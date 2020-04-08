@@ -1,4 +1,15 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {
+    AfterViewInit,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnChanges,
+    Output,
+    SimpleChanges,
+    ViewChild
+} from '@angular/core';
 import {D3Service} from '../../../graph/service/d3.service';
 import {NetworkLink} from '../../model/network-link.interface';
 import {MatDialog} from '@angular/material/dialog';
@@ -37,7 +48,6 @@ export class GraphNode {
     styleUrls: ['./graph-display.component.scss']
 })
 export class GraphDisplayComponent implements AfterViewInit, OnChanges {
-
     @ViewChild('graphWrapper', {static: true}) graph: ElementRef;
     graphNativeElement: GraphEditor;
     @ViewChild('svg') svg: ElementRef;
@@ -49,10 +59,10 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     @Input() showPatternLanguageName: boolean;
     @Output() addedEdge = new EventEmitter<any>();
     currentPattern: Pattern;
-    currentMentions: Array<PatternView>;
+    currentMentions: Array<PatternView> = [];
     currentEdges: Array<EdgeWithType>;
-    currentEdgesMap: Map<string, EdgeWithType[]>;
-    currentPatternRelationMap: Map<string, EdgeWithType[]>;
+    currentEdgesMap: Map<string, EdgeWithType[]> = new Map<string, EdgeWithType[]>();
+    currentPatternRelationMap: Map<string, EdgeWithType[]> = new Map<string, EdgeWithType[]>();;
     patternLanguages: Array<PatternLanguage>;
     patternView: PatternView;
     private edges: Array<NetworkLink>;
@@ -124,7 +134,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         if (this.graphNativeElement == null) {
             return;
         }
-
         this.graphNativeElement.setNodeClass = (className, node) => {
             if (this.highlightedNodeIds.length > 0) {
                 if (className === 'low-opacity-node') {
@@ -133,7 +142,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             }
             return false;
         };
-
         this.graphNativeElement.setEdgeClass = (className, edge, sourceNode, targetNode) => {
             if (targetNode == null) {
                 return false;
@@ -166,7 +174,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                 patternView: this.patternView
             }
         });
-
         dialogRef.afterClosed().subscribe((edge) => {
             if (edge) { // inform parent component that new edge was added
                 this.addedEdge.emit(edge);
@@ -323,20 +330,17 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             width: 1000,
             height: 500
         });
-
         // allow to create edges to any other node in the graph (this enables multiple edges between nodes)
         this.graphNativeElement.onCreateDraggedEdge = (edge: DraggedEdge) => {
             this.graphNativeElement.nodeList.forEach((node) => edge.validTargets.add(<string>node.id));
             return edge;
         };
-
         // subscribe to the end of the network graph force-layout simulation:
         networkGraph.ticker.subscribe(() => {
             console.log('started force simulation');
             this.graphNativeElement.setNodes(networkGraph.nodes, false);
             this.nodes = networkGraph.nodes;
             this.initGraphEdges();
-
             this.isLoading = false;
             this.cdr.detectChanges();
             this.saveGraph();
@@ -344,7 +348,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     }
 
     private getEdgesForPattern(): void {
-        this.currentEdgesMap = new Map();
+        this.currentEdgesMap.clear();
         this.patternService.getPatternByUrl(this.currentPattern._links.self.href).pipe(
             switchMap((pattern: PatternResponse) => {
                 return this.patternRelationDescriptionService.getEdgesForPattern(pattern);
@@ -387,8 +391,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                     this.prepareGraph(res.graph, this.patternView);
                 });
         }
-
-
     }
 
     private initGraphEdges() {
@@ -408,49 +410,43 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         this.clickedNodeId = node.id;
         const outgoingLinks = Array.from(this.graph.nativeElement.getEdgesByTarget(node.id));
         const ingoingLinks = Array.from(this.graph.nativeElement.getEdgesBySource(node.id));
-
         this.highlightedEdgeIds = [].concat(outgoingLinks).concat(ingoingLinks).map((edge) => edge.id ? edge.id : edgeId(edge));
         const outgoingNodeIds: string[] = outgoingLinks.map(it => it['source']);
         const ingoingNodeIds: string[] = ingoingLinks.map(it => it['target']);
-
         this.highlightedNodeIds = [];
         this.highlightedNodeIds = outgoingNodeIds.concat(ingoingNodeIds);
         this.highlightedNodeIds.push(node.id);
         this.currentPattern = this.patterns.find(pat => pat.id === node.id);
-        this.currentPatternRelationMap = this.getPatternRelationMap();
+        this.getPatternRelationMap();
         this.currentMentions = this.getMentionsInOtherPatternViews();
-        console.log(this.currentMentions);
         this.getEdgesForPattern();
         this.patternClicked = true;
         this.triggerRerendering();
     }
 
-    private getPatternRelationMap() {
-        const patternRelationMap = new Map<string, EdgeWithType[]>();
+    private getPatternRelationMap(): void {
+        this.currentPatternRelationMap.clear()
         if (this.currentPattern._links.undirectedEdges) {
             this.currentPattern._links.undirectedEdges instanceof Array ?
-                this.getListOfLinks('undirectedEdges', patternRelationMap)
-                : this.getLink('undirectedEdges', patternRelationMap);
+                this.getListOfLinks('undirectedEdges', this.currentPatternRelationMap)
+                : this.getLink('undirectedEdges', this.currentPatternRelationMap);
         }
         if (this.currentPattern._links.outgoingDirectedEdges) {
             this.currentPattern._links.outgoingDirectedEdges instanceof Array ?
-                this.getListOfLinks('outgoingDirectedEdges', patternRelationMap)
-                : this.getLink('outgoingDirectedEdges', patternRelationMap);
+                this.getListOfLinks('outgoingDirectedEdges', this.currentPatternRelationMap)
+                : this.getLink('outgoingDirectedEdges', this.currentPatternRelationMap);
         }
         if (this.currentPattern._links.ingoingDirectedEdges) {
             this.currentPattern._links.ingoingDirectedEdges instanceof Array ?
-                this.getListOfLinks('ingoingDirectedEdges', patternRelationMap)
-                : this.getLink('ingoingDirectedEdges', patternRelationMap);
-
+                this.getListOfLinks('ingoingDirectedEdges', this.currentPatternRelationMap)
+                : this.getLink('ingoingDirectedEdges', this.currentPatternRelationMap);
         }
-        return patternRelationMap;
     }
 
     private getLink(type: string, relationEdgesMap: Map<string, EdgeWithType[]>) {
         switch (type) {
             case 'outgoingDirectedEdges': {
                 const link = this.currentPattern._links.outgoingDirectedEdges as HalLink;
-
                 this.patternRelationDescriptionService.getDirectedEdgeByUrl(link.href).subscribe(
                     edge => {
                         const edgeWithType: EdgeWithType = {edge: edge, type: type};
@@ -464,7 +460,6 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
             }
             case 'ingoingDirectedEdges': {
                 const link = this.currentPattern._links.ingoingDirectedEdges as HalLink;
-
                 this.patternRelationDescriptionService.getDirectedEdgeByUrl(link.href).subscribe(
                     edge => {
                         const edgeWithType: EdgeWithType = {edge: edge, type: type};

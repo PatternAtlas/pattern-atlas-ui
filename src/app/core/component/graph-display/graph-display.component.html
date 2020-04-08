@@ -34,84 +34,96 @@
     </mat-sidenav>
 
     <mat-sidenav [opened]="patternClicked" position="end" fixedInViewport="true" mode="over">
-        <h4 style="margin: 1em">PV Relations of {{currentPattern?.name}}</h4>
-        <mat-accordion>
-            <mat-expansion-panel *ngFor="let relationEntry of currentPatternRelationMap | keyvalue">
-                <mat-expansion-panel-header>
-                    <mat-panel-title style="align-self: center">
-                        {{relationEntry.key}}
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <div *ngFor="let relation of relationEntry.value; first as isFirst">
-                    <mat-divider *ngIf="!isFirst"></mat-divider>
-                    <div [ngSwitch]="relation.type">
-                        <div *ngSwitchCase="'undirectedEdges'" class="horiz-centered">
-                            {{ relation?.edge.sourcePatternName}}
-                            <i class="material-icons flip">compare_arrows</i>
-                            {{ relation?.edge.pattern1Id === this.currentPattern.id ? relation.edge.pattern1Name :
-                            relation.edge.pattern2Name}}
-                        </div>
+        <div *ngIf="this.currentPatternRelationMap.size > 0">
+            <h4 style="margin: 1em">PV Relations of {{currentPattern?.name}}</h4>
+            <mat-accordion>
+                <mat-expansion-panel *ngFor="let relationEntry of currentPatternRelationMap | keyvalue">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title style="align-self: center">
+                            {{relationEntry.key}}
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div *ngFor="let relation of relationEntry.value; first as isFirst">
+                        <mat-divider *ngIf="!isFirst"></mat-divider>
+                        <div [ngSwitch]="relation.type">
+                            <div *ngSwitchCase="'undirectedEdges'" class="horiz-centered">
+                                {{ relation?.edge.sourcePatternName}}
+                                <i class="material-icons flip">compare_arrows</i>
+                                {{ relation?.edge.pattern1Id === this.currentPattern.id ? relation.edge.pattern1Name :
+                                relation.edge.pattern2Name}}
+                            </div>
 
-                        <div *ngSwitchCase="'outgoingDirectedEdges'" class="horiz-centered">
-                            <i class="material-icons">trending_flat</i>
-                            {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
-                            relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
+                            <div *ngSwitchCase="'outgoingDirectedEdges'" class="horiz-centered">
+                                <i class="material-icons">trending_flat</i>
+                                {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
+                                relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
 
+                            </div>
+                            <div *ngSwitchCase="'ingoingDirectedEdges'" class="horiz-centered">
+                                <i class="material-icons flip">trending_flat</i>
+                                {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
+                                relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
+                            </div>
                         </div>
-                        <div *ngSwitchCase="'ingoingDirectedEdges'" class="horiz-centered">
-                            <i class="material-icons flip">trending_flat</i>
-                            {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
-                            relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
-                        </div>
+                        <i>{{relation?.edge.description}}</i>
                     </div>
-                    <i>{{relation?.edge.description}}</i>
-                </div>
-            </mat-expansion-panel>
-        </mat-accordion>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+        <div *ngIf="this.currentEdgesMap.size > 0">
+            <h4 style="margin: 1em">PL Relations of {{currentPattern?.name}}</h4>
+            <mat-accordion>
+                <mat-expansion-panel *ngFor="let relationEntry of currentEdgesMap | keyvalue">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title style="align-self: center">
+                            {{relationEntry.key}}
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div *ngFor="let relation of relationEntry.value; first as isFirst">
+                        <mat-divider *ngIf="!isFirst"></mat-divider>
+                        <div [ngSwitch]="relation.type">
+                            <div *ngSwitchCase="'undirectedEdges'" class="horiz-centered">
+                                {{ relation?.edge.sourcePatternName}}
+                                <i class="material-icons flip">compare_arrows</i>
+                                {{ relation?.edge.pattern1Id === this.currentPattern.id ? relation.edge.pattern1Name :
+                                relation.edge.pattern2Name}}
+                            </div>
 
-        <h4 style="margin: 1em">PL Relations of {{currentPattern?.name}}</h4>
-        <mat-accordion>
-            <mat-expansion-panel *ngFor="let relationEntry of currentEdgesMap | keyvalue">
-                <mat-expansion-panel-header>
-                    <mat-panel-title style="align-self: center">
-                        {{relationEntry.key}}
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <div *ngFor="let relation of relationEntry.value; first as isFirst">
-                    <mat-divider *ngIf="!isFirst"></mat-divider>
-                    <div [ngSwitch]="relation.type">
-                        <div *ngSwitchCase="'undirectedEdges'" class="horiz-centered">
-                            {{ relation?.edge.sourcePatternName}}
-                            <i class="material-icons flip">compare_arrows</i>
-                            {{ relation?.edge.pattern1Id === this.currentPattern.id ? relation.edge.pattern1Name :
-                            relation.edge.pattern2Name}}
-                        </div>
+                            <div *ngSwitchCase="'outgoingDirectedEdges'" class="horiz-centered">
+                                <i class="material-icons">trending_flat</i>
+                                {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
+                                relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
 
-                        <div *ngSwitchCase="'outgoingDirectedEdges'" class="horiz-centered">
-                            <i class="material-icons">trending_flat</i>
-                            {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
-                            relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
-
+                            </div>
+                            <div *ngSwitchCase="'ingoingDirectedEdges'" class="horiz-centered">
+                                <i class="material-icons flip">trending_flat</i>
+                                {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
+                                relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
+                            </div>
                         </div>
-                        <div *ngSwitchCase="'ingoingDirectedEdges'" class="horiz-centered">
-                            <i class="material-icons flip">trending_flat</i>
-                            {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
-                            relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
-                        </div>
+                        <i>{{relation?.edge.description}}</i>
                     </div>
-                    <i>{{relation?.edge.description}}</i>
-                </div>
-            </mat-expansion-panel>
-        </mat-accordion>
-        <h4 style="margin: 1em">Mentions in other Pattern Views of {{currentPattern?.name}}</h4>
-        <mat-list role="list">
-            <mat-list-item role="listitem" *ngFor="let mention of currentMentions">
-                <button mat-button (click)="goToPatternView(mention.uri)">
-                    <mat-icon>link</mat-icon>
-                    Pattern View: {{mention.name}}
-                </button>
-            </mat-list-item>
-        </mat-list>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+        <div *ngIf="this.currentMentions.length > 0">
+            <h4 style="margin: 1em">Mentions in other Pattern Views of
+                {{currentPattern?.name}}</h4>
+            <mat-list role="list">
+                <mat-list-item role="listitem" *ngFor="let mention of currentMentions">
+                    <button mat-button (click)="goToPatternView(mention.uri)">
+                        <mat-icon>link</mat-icon>
+                        Pattern View: {{mention.name}}
+                    </button>
+                </mat-list-item>
+            </mat-list>
+        </div>
+        <div *ngIf="!(this.currentPatternRelationMap.size > 0)
+        && !(this.currentEdgesMap.size > 0)
+        && !(this.currentMentions.length > 0)
+        && this.currentPattern">
+            <h4>No relations found for {{currentPattern.name}}</h4>
+        </div>
     </mat-sidenav>
     <mat-progress-spinner *ngIf="isLoading"></mat-progress-spinner>
     <mat-sidenav-content>
