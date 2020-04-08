@@ -30,18 +30,17 @@ import {DeletePatternRelationComponent} from '../../core/component/delete-patter
     styleUrls: ['./pattern-view-renderer.component.scss']
 })
 export class PatternViewRendererComponent implements OnInit, AfterViewInit {
-
     patternViewResponse: PatternView;
     patterns: Array<Pattern> = [];
     displayText: string;
     isLoading = true;
-    private patternLanguages: Array<PatternLanguageModel>;
-    private patternViewUri: string;
     graphVisible = false;
-    private directedPatternRelations: DirectedEdgeModel[];
-    private undirectedPatternRelations: UndirectedEdgeModel[];
     patternLinks: Array<DirectedEdgeModel | UndirectedEdgeModel> = [];
     @ViewChild(GraphDisplayComponent, {static: false}) graphDisplayComponent: GraphDisplayComponent;
+    private patternLanguages: Array<PatternLanguageModel>;
+    private patternViewUri: string;
+    private directedPatternRelations: DirectedEdgeModel[];
+    private undirectedPatternRelations: UndirectedEdgeModel[];
 
     constructor(private matDialog: MatDialog, private patternLanguageService: PatternLanguageService, private patternViewService: PatternViewService,
                 private patternService: PatternService, private toasterService: ToasterService, private cdr: ChangeDetectorRef,
@@ -49,13 +48,10 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-
-
     }
 
     ngAfterViewInit(): void {
         this.patternViewUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternViewUri'));
-
         this.getData().pipe(
             switchMap(() => {
                 return this.getLinks();
@@ -85,32 +81,23 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
 
     addLinks(pattern: Pattern) {
         const dialogRef = this.matDialog.open(AddToViewComponent,
-            {data: {links: this.mapPatternLinksToTreeNode(pattern), title: 'Add linked Patterns', patternId: pattern.id}});
+            {
+                data: {
+                    links: this.mapPatternLinksToTreeNode(pattern),
+                    title: 'Add linked Patterns',
+                    patternId: pattern.id
+                }
+            });
         this.subscribeToLinkDialogResult(dialogRef);
     }
 
-    private getDirectedEdges(): Observable<Embedded<DirectedEdesResponse>> {
-        if (!this.patternViewResponse) {
-            return EMPTY;
-        }
-        return this.patternViewService.getDirectedEdges(this.patternViewResponse).pipe(
-            tap((edges) => {
-                this.directedPatternRelations = edges._embedded ? edges._embedded.directedEdgeModels : [];
-            }));
-    }
-
-    private getUndirectedEdges(): Observable<Embedded<UndirectedEdesResponse>> {
-        if (!this.patternViewResponse) {
-            return EMPTY;
-        }
-        return this.patternViewService.getUndirectedEdges(this.patternViewResponse).pipe(
-            tap((edges) => {
-                this.undirectedPatternRelations = edges._embedded ? edges._embedded.undirectedEdgeModels : [];
-            }));
-    }
-
     addLink() {
-        const dialogRef = this.matDialog.open(CreatePatternRelationComponent, {data: {patterns: this.patterns, patternview: this.patternViewResponse}});
+        const dialogRef = this.matDialog.open(CreatePatternRelationComponent, {
+            data: {
+                patterns: this.patterns,
+                patternview: this.patternViewResponse
+            }
+        });
         dialogRef.afterClosed().pipe(
             switchMap((edge) => {
                     return this.createLink(edge);
@@ -126,24 +113,6 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
             }
         });
     }
-
-    private deleteLink(edge): Observable<any> {
-        return this.patternViewService.deleteLink(edge._links.self.href);
-    }
-
-    private createLink(edge): Observable<any> {
-        const url = edge instanceof DirectedEdgeModel ? this.patternViewResponse._links.directedEdges.href :
-            this.patternViewResponse._links.undirectedEdges.href;
-        if (!edge || !url) {
-            return EMPTY;
-        }
-        return this.patternViewService.createLink(url, edge instanceof DirectedEdgeModel ?
-            new AddDirectedEdgeToViewRequest(<DirectedEdgeModel>edge) :
-            new AddUndirectedEdgeToViewRequest(<UndirectedEdgeModel>edge)).pipe(
-            switchMap(() => this.getLinks())
-        );
-    }
-
 
     detectChanges() {
         this.cdr.detectChanges();
@@ -168,7 +137,13 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
                 // reload patterns since ng for pattern loop doesnt get updated else
                 this.getData().subscribe(
                     () => {
-                        this.getLinks();
+                        this.getLinks().subscribe(
+                            () => {
+                                if (this.graphDisplayComponent) {
+                                    this.graphDisplayComponent.data.edges = this.patternLinks;
+                                }
+                            }
+                        );
                     }
                 );
             });
@@ -186,7 +161,13 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
                 // reload patterns since ng for pattern loop doesnt get updated else
                 this.getData().subscribe(
                     () => {
-                        this.getLinks();
+                        this.getLinks().subscribe(
+                            () => {
+                                if (this.graphDisplayComponent) {
+                                    this.graphDisplayComponent.data.edges = this.patternLinks;
+                                }
+                            }
+                        );
                     }
                 );
             });
@@ -204,11 +185,71 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
                 // reload patterns since ng for pattern loop doesnt get updated else
                 this.getData().subscribe(
                     () => {
-                        this.getLinks();
+                        this.getLinks().subscribe(
+                            () => {
+                                if (this.graphDisplayComponent) {
+                                    this.graphDisplayComponent.data.edges = this.patternLinks;
+                                }
+                            }
+                        );
                     }
                 );
             });
         }
+    }
+
+    changeRenderer(isGraphVisible: any) {
+        this.graphVisible = isGraphVisible;
+    }
+
+    addedEdgeInGraphView(edge: any) {
+        if (edge) {
+            this.createLink(edge).subscribe(() => {
+                this.toasterService.pop('success', 'Link added');
+                this.cdr.detectChanges();
+            });
+        }
+    }
+
+    reloadGraph() {
+        this.graphDisplayComponent.reformatGraph();
+    }
+
+    private getDirectedEdges(): Observable<Embedded<DirectedEdesResponse>> {
+        if (!this.patternViewResponse) {
+            return EMPTY;
+        }
+        return this.patternViewService.getDirectedEdges(this.patternViewResponse).pipe(
+            tap((edges) => {
+                this.directedPatternRelations = edges._embedded ? edges._embedded.directedEdgeModels : [];
+            }));
+    }
+
+    private getUndirectedEdges(): Observable<Embedded<UndirectedEdesResponse>> {
+        if (!this.patternViewResponse) {
+            return EMPTY;
+        }
+        return this.patternViewService.getUndirectedEdges(this.patternViewResponse).pipe(
+            tap((edges) => {
+                this.undirectedPatternRelations = edges._embedded ? edges._embedded.undirectedEdgeModels : [];
+            }));
+    }
+
+    private deleteLink(edge): Observable<any> {
+        return this.patternViewService.deleteLink(edge._links.self.href);
+    }
+
+    private createLink(edge): Observable<any> {
+        const url = edge instanceof DirectedEdgeModel ? this.patternViewResponse._links.directedEdges.href :
+            this.patternViewResponse._links.undirectedEdges.href;
+        if (!edge || !url) {
+            return EMPTY;
+        }
+        return this.patternViewService.createLink(url, edge instanceof DirectedEdgeModel ?
+            new AddDirectedEdgeToViewRequest(<DirectedEdgeModel>edge) :
+            new AddUndirectedEdgeToViewRequest(<UndirectedEdgeModel>edge)).pipe(
+            switchMap(() => this.getLinks())
+        );
     }
 
     private getPatternLanguages(): Observable<Array<PatternLanguageModel>> {
@@ -283,36 +324,32 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     private mapPatternLinksToTreeNode(pattern: Pattern): LinksToOtherPattern[] {
         const types: LinksToOtherPattern[] = [];
         const possibleEdgeTypes = [
-            {link: pattern._links.ingoingDirectedEdgesFromPatternLanguage, type: 'directed', displayName: 'Ingoing directed edges'},
-            {link: pattern._links.outgoingDirectedEdgesFromPatternLanguage, type: 'directed', displayName: 'Outgoing directed edges'},
-            {link: pattern._links.undirectedEdgesFromPatternLanguage, type: 'undirected', displayName: 'Undirected edges'}
+            {
+                link: pattern._links.ingoingDirectedEdgesFromPatternLanguage,
+                type: 'directed',
+                displayName: 'Ingoing directed edges'
+            },
+            {
+                link: pattern._links.outgoingDirectedEdgesFromPatternLanguage,
+                type: 'directed',
+                displayName: 'Outgoing directed edges'
+            },
+            {
+                link: pattern._links.undirectedEdgesFromPatternLanguage,
+                type: 'undirected',
+                displayName: 'Undirected edges'
+            }
         ];
         possibleEdgeTypes.forEach((edgeType: { link: HalLink | HalLink[], displayName: string, type: string }, index) => {
             if (edgeType.link) {
                 types.push({
-                    name: edgeType.displayName, links: Array.isArray(edgeType.link) ? edgeType.link : [edgeType.link], id: index.toString(),
+                    name: edgeType.displayName,
+                    links: Array.isArray(edgeType.link) ? edgeType.link : [edgeType.link],
+                    id: index.toString(),
                     type: edgeType.type
                 });
             }
         });
         return types;
-    }
-
-
-    changeRenderer(isGraphVisible: any) {
-        this.graphVisible = isGraphVisible;
-    }
-
-    addedEdgeInGraphView(edge: any) {
-        if (edge) {
-            this.createLink(edge).subscribe(() => {
-                this.toasterService.pop('success', 'Link added');
-                this.cdr.detectChanges();
-            });
-        }
-    }
-
-    reloadGraph() {
-        this.graphDisplayComponent.reformatGraph();
     }
 }
