@@ -56,10 +56,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
         this.viewContainerRef = this.ppPatternProperty.viewContainerRef;
         this.patternLanguageId = this.activatedRoute.snapshot.paramMap.get('patternLanguageId');
         this.patternId = this.activatedRoute.snapshot.paramMap.get('patternId');
-
         this.getData();
-
-
     }
 
     addLink() {
@@ -89,7 +86,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
             console.log('tried to get patterns before the pattern language object with the url was instanciated');
             return EMPTY;
         }
-
         return this.patternService.getPatternById(this.patternLanguage, this.patternId).pipe(
             tap(pattern => this.pattern = pattern),
             switchMap((pat) => {
@@ -103,12 +99,23 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
         return forkJoin([$getDirectedEdges, $getUndirectedEdges]).pipe(tap(() => this.isLoadingLinks = false));
     }
 
+    getPatternByLink(edge: DirectedEdgeModel | UndirectedEdgeModel, res: any) {
+        const url = res.url + '/' + res.body.id;
+        this.patternRelationDescriptorService.getEdgeByUrl(url, edge)
+            .subscribe(
+                edgeResult => {
+                    edge instanceof DirectedEdgeModel ?
+                        this.directedPatternRelations.push(edgeResult as DirectedEdgeModel) :
+                        this.undirectedPatternRelations.push(edgeResult as UndirectedEdgeModel);
+                }
+            );
+    }
+
     private createSectionComponent(section: string) {
         if (!this.pattern.content) {
             return;
         }
         const properties = this.pattern.content[section];
-
         const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MarkdownPatternSectionContentComponent);
         const componentRef = this.viewContainerRef.createComponent(componentFactory);
         const instance = (<MarkdownPatternSectionContentComponent>componentRef.instance);
@@ -119,7 +126,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
             this.pattern.content[section] = dataChange.currentValue;
             this.cdr.detectChanges();
             this.savePattern(section, dataChange.previousValue, instance);
-
         });
     }
 
@@ -165,7 +171,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
             switchMap(() => this.fillPatternSectionData()),
             switchMap(() => this.getPatternLanguageLinks())).subscribe(() =>
             this.cdr.detectChanges());
-
     }
 
     private fillPatternSectionData() {
@@ -188,21 +193,17 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
                 return result ? this.addContentInfoToPattern(result) : EMPTY;
             }),
             switchMap((edge) => {
-                const url = edge instanceof DirectedEdgeModel ?
-                    this.patternLanguage._links.directedEdges.href : this.patternLanguage._links.undirectedEdges.href;
-                return edge ? this.patternRelationDescriptorService.addRelationToPL(this.patternLanguage, edge) : EMPTY;
-            }),
-            switchMap((edgeCreated) => {
-                return edgeCreated ? this.getPatternLanguageLinks() : EMPTY;
-            }),
-        ).subscribe(
-            () => {
-                this.toasterService.pop('success', 'Created new Relation');
+                return edge ? this.insertEdge(edge) : EMPTY;
+            }))
+            .subscribe(
+                data => {
+                    this.toasterService.pop('success', 'Created new Relation');
+                }
+            );
+    }
 
-            },
-            (error) => {
-                this.toasterService.pop('error', 'Could not create new relation: ', error);
-                console.log(error);
-            });
+    private insertEdge(edge): Observable<any> {
+        return this.patternRelationDescriptorService.addRelationToPL(this.patternLanguage, edge).pipe(
+            tap((res) => res ? this.getPatternByLink(edge, res) : EMPTY));
     }
 }

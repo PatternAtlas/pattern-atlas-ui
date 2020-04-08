@@ -1,4 +1,12 @@
-import {ChangeDetectorRef, Component, ComponentFactoryResolver, ElementRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {
+    ChangeDetectorRef,
+    Component,
+    ComponentFactoryResolver,
+    ElementRef,
+    OnInit,
+    ViewChild,
+    ViewContainerRef
+} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UriConverter} from '../util/uri-converter';
 import {MatDialog} from '@angular/material/dialog';
@@ -26,7 +34,6 @@ import {FormControl} from '@angular/forms';
     styleUrls: ['./default-pl-renderer.component.scss']
 })
 export class DefaultPlRendererComponent implements OnInit {
-
     patterns: Array<Pattern> = [];
     patternsForCardsView: Array<Pattern> = [];
     patternLanguage: PatternLanguage;
@@ -95,7 +102,6 @@ export class DefaultPlRendererComponent implements OnInit {
                 patternlanguage: this.patternLanguage
             }
         });
-
         dialogRef.afterClosed().pipe(
             switchMap((edge) => {
                 return edge ? this.insertEdge(edge) : EMPTY;
@@ -122,7 +128,6 @@ export class DefaultPlRendererComponent implements OnInit {
             );
     }
 
-
     linkAddedInGraphEditor(edge) {
         this.insertEdge(edge).subscribe(res => {
             this.toasterService.pop('success', 'Added Relation');
@@ -147,7 +152,6 @@ export class DefaultPlRendererComponent implements OnInit {
     private loadData(): void {
         this.isLoadingPatternData = true;
         this.patternLanguageId = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageId'));
-
         if (this.patternLanguageId) {
             this.patternLanguageService.getPatternLanguageByID(this.patternLanguageId)
                 .pipe(
