@@ -35,7 +35,7 @@
 
     <mat-sidenav [opened]="patternClicked" position="end" fixedInViewport="true" mode="over">
         <div *ngIf="this.currentPatternRelationMap.size > 0">
-            <h4 style="margin: 1em">PV Relations of {{currentPattern?.name}}</h4>
+            <h4 style="margin: 1em">PV Relations of <i>{{currentPattern?.name}}</i></h4>
             <mat-accordion>
                 <mat-expansion-panel *ngFor="let relationEntry of currentPatternRelationMap | keyvalue">
                     <mat-expansion-panel-header>
@@ -71,7 +71,7 @@
             </mat-accordion>
         </div>
         <div *ngIf="this.currentEdgesMap.size > 0">
-            <h4 style="margin: 1em">PL Relations of {{currentPattern?.name}}</h4>
+            <h4 style="margin: 1em">PL Relations of <i>{{currentPattern?.name}}</i></h4>
             <mat-accordion>
                 <mat-expansion-panel *ngFor="let relationEntry of currentEdgesMap | keyvalue">
                     <mat-expansion-panel-header>
@@ -107,8 +107,7 @@
             </mat-accordion>
         </div>
         <div *ngIf="this.currentMentions.length > 0">
-            <h4 style="margin: 1em">Mentions in other Pattern Views of
-                {{currentPattern?.name}}</h4>
+            <h4 style="margin: 1em">Mentions of <i>{{currentPattern?.name}}</i> in other Pattern Views</h4>
             <mat-list role="list">
                 <mat-list-item role="listitem" *ngFor="let mention of currentMentions">
                     <button mat-button (click)="goToPatternView(mention.uri)">
