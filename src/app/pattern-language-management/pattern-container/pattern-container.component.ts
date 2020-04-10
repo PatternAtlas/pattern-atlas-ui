@@ -1,27 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ComponentRegistryService } from 'src/app/core/service/component-registry.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {ComponentRegistryService} from 'src/app/core/service/component-registry.service';
 
 @Component({
-    selector: 'pp-pattern-container',
-    templateUrl: './pattern-container.component.html',
-    styleUrls: ['./pattern-container.component.scss']
+  selector: 'pp-pattern-container',
+  templateUrl: './pattern-container.component.html',
+  styleUrls: ['./pattern-container.component.scss']
 })
 export class PatternContainerComponent implements OnInit {
 
-    plEncodedUri: string;
-    pEncodedUri: string;
+  plEncodedUri: string;
+  pEncodedUri: string;
 
-    // the list of registered renderer components for the language
-    renderer: Array<any>;
+  // the list of registered renderer components for the language
+  renderer: Array<any>;
 
-    constructor(private activatedRoute: ActivatedRoute,
-                private compRegistry: ComponentRegistryService) {
-    }
+  constructor(private activatedRoute: ActivatedRoute,
+              private compRegistry: ComponentRegistryService) {
+  }
 
-    ngOnInit() {
-        this.plEncodedUri = this.activatedRoute.snapshot.paramMap.get('patternUri');
-        this.renderer = this.compRegistry.getRenderingComponents(this.plEncodedUri);
-    }
+  ngOnInit() {
+    this.plEncodedUri = this.activatedRoute.snapshot.paramMap.get('patternUri');
+    this.renderer = this.compRegistry.getRenderingComponents(this.plEncodedUri);
+  }
+
+  delete() {
+    console.log('Test');
+  }
 
 }

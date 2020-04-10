@@ -1,15 +1,6 @@
 .card {
   width: 10em;
-  height: 16em;
-
-
-  &:hover {
-    background-color: grey;
-    color: white;
-    cursor: pointer;
-  }
-
-
+  height: 20em;
 }
 
 .card-container {
@@ -21,6 +12,12 @@
 .mat-card {
   display: flex;
   flex-direction: column;
+}
+
+.mat-card-title {
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 
