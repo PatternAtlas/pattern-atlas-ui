@@ -60,6 +60,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { RouterModule } from '@angular/router';
 import { LoginComponent } from './component/login/login.component';
+import { RatingComponent } from './component/rating/rating.component';
 
 // import { AuthenticationService } from './service/authentication.service';
 
@@ -116,7 +117,8 @@ import { LoginComponent } from './component/login/login.component';
         CardRendererComponent,
         CreateEditPatternLanguageComponent,
         ActionButtonBarComponent,
-        LoginComponent
+        LoginComponent,
+        RatingComponent
     ],
     entryComponents: [
         DefaultPlRendererComponent,
