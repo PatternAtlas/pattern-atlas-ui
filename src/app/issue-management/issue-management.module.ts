@@ -1,36 +1,35 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AppModule } from '../app.module';
-import { PatternEvolutionHomeComponent } from './pattern-evolution-home/pattern-evolution-home.component';
+import { IssueManagementHomeComponent } from './issue-management-home/issue-management-home.component';
+import { IssueCreateDialogComponent } from './issue-create-dialog/issue-create-dialog.component';
+import { IssueManagementService } from './issue-management.service';
+import { IssueManagementHomeDetailComponent } from './issue-management-home/issue-management-home-detail/issue-management-home-detail.component';
 import { RouterModule } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
-import { PatternEvolutionService } from './pattern-evolution.service';
-import { PatternEvolutionDetailComponent } from './pattern-evolution-home/pattern-evolution-detail/pattern-evolution-detail.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
-import { PatternEvolutionCreateDialogComponent } from './pattern-evolution-create-dialog/pattern-evolution-create-dialog.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 
-export const PATTERN_EVOLUTION_ROUTES = [
+export const ISSUE_ROTUES = [
   { 
-    path: '', component: PatternEvolutionHomeComponent 
+    path: '', component: IssueManagementHomeComponent 
   }, 
   // { path: 'some-other-route', component: SomeOtherComponent },
 ];
 
 @NgModule({
   declarations: [
-    PatternEvolutionHomeComponent,
-    PatternEvolutionDetailComponent,
-    PatternEvolutionCreateDialogComponent,
+    IssueManagementHomeComponent,
+    IssueCreateDialogComponent,
+    IssueManagementHomeDetailComponent
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild(PATTERN_EVOLUTION_ROUTES),
+    RouterModule.forChild(ISSUE_ROTUES),
     // ModalModule.forRoot(),
     MatListModule,
     MatExpansionModule,
@@ -41,16 +40,15 @@ export const PATTERN_EVOLUTION_ROUTES = [
     FormsModule,
     ReactiveFormsModule,
     MatInputModule
-    // AppModule,
   ],
   exports: [
-    PatternEvolutionHomeComponent,
+    IssueManagementHomeComponent
   ],
   providers: [
-    PatternEvolutionService
+    IssueManagementService,
   ],
   entryComponents: [
-    PatternEvolutionCreateDialogComponent
+    IssueCreateDialogComponent,
   ],
 })
-export class PatternEvolutionManagementModule { }
+export class IssueManagementModule { }

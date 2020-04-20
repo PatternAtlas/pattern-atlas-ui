@@ -12,31 +12,43 @@
   ~ SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
   -->
 
-<!-- <mat-toolbar color="primary">
+<mat-toolbar color="primary">
     <mat-icon>library_books</mat-icon>
     <span style="margin-left: 1rem">PatternAtlas</span>
     <span class="spacer"></span>
     <button mat-stroked-button (click)="loginOAuth()"> {{ loginButton }}</button>
 </mat-toolbar>
 <nav mat-tab-nav-bar>
-    <a mat-tab-link [routerLink]="'/patternlanguages'" routerLinkActive #rla1="routerLinkActive"
+    <a mat-tab-link [routerLink]="'/patternLanguages'" routerLinkActive #rla1="routerLinkActive"
         [active]="rla1.isActive">
         Pattern Languages
     </a>
-    <a mat-tab-link [routerLink]="'/patternviews'" routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive">
+    <a mat-tab-link [routerLink]="'/patternViews'" routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive">
         Pattern Views
     </a>
-    <a mat-tab-link [routerLink]="'/login'" routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive">
-        Amazing Login
+    <a mat-tab-link [routerLink]="'/issue'" routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive">
+        Issue
     </a>
-</nav> -->
+    <a mat-tab-link [routerLink]="'/user'" *ngIf="(auth.hasRole('MEMBER') | async)" routerLinkActive #rla4="routerLinkActive" [active]="rla4.isActive">
+        Personal
+    </a>
+    <a mat-tab-link [routerLink]="'/admin'" *ngIf="(auth.hasRole('ADMIN') | async)" routerLinkActive #rla5="routerLinkActive" [active]="rla5.isActive">
+        Admin
+    </a>
+    <a mat-tab-link [routerLink]="'/developer'" *ngIf="(auth.hasRole('ADMIN') | async)" routerLinkActive #rla6="routerLinkActive" [active]="rla6.isActive">
+        Developer
+    </a>
+</nav>
+<router-outlet></router-outlet>
+<toaster-container></toaster-container>
+
 <!-- <mat-toolbar color="primary">
     <mat-icon>library_books</mat-icon>
     <span style="margin-left: 1rem">PatternAtlas</span>
     <span class="spacer"></span>
     <button mat-stroked-button (click)="loginOAuth()"> {{ loginButton }}</button>
 </mat-toolbar> -->
-<div class="example-container">
+<!-- <div class="example-container">
     <mat-toolbar color="primary" class="toolbar">
         <mat-toolbar-row>
             <button mat-icon-button>
@@ -52,25 +64,25 @@
     <mat-sidenav-container class="sidenav-container">
         <mat-sidenav #sidenav [mode]="'side'" disableClose="true" opened="true">
             <mat-nav-list>
-                <!-- <mat-divider></mat-divider> -->
+                 <mat-divider></mat-divider> 
                 <a mat-list-item [routerLink]="'/patternLanguages'">
-                    <!-- <span class="navigation-item-short">PL</span> -->
+                    <span class="navigation-item-short">PL</span> 
                     <span class="navigation-item-label">Pattern Languages</span>
                 </a>
                 <mat-divider></mat-divider>
                 <a mat-list-item [routerLink]="'/patternViews'">Pattern Views</a>
                 <mat-divider></mat-divider>
-                <a mat-list-item [routerLink]="'/patternEvolution'">Pattern Evolution</a>
+                <a mat-list-item [routerLink]="'/issue'">Pattern Evolution</a>
                 <mat-divider></mat-divider>
                 <a mat-list-item [routerLink]="'/user'" *ngIf="(auth.hasRole('MEMBER') | async)">Personal</a>
                 <mat-divider></mat-divider>
                 <a mat-list-item [routerLink]="'/admin'" *ngIf="(auth.hasRole('ADMIN') | async)">Admin</a>
                 <mat-divider></mat-divider>
                 <a mat-list-item [routerLink]="'/developer'" *ngIf="(auth.hasRole('ADMIN') | async)">Developer</a>
-                <mat-divider></mat-divider>
-                <!-- <a mat-list-item [routerLink]="'/test'">Second Component</a> -->
-                <!-- <a mat-list-item (click)="sidenav.toggle()" href="" mat-list-item>Close</a> -->
-            </mat-nav-list>
+                <mat-divider></mat-divider> -->
+<!-- <a mat-list-item [routerLink]="'/test'">Second Component</a> -->
+<!-- <a mat-list-item (click)="sidenav.toggle()" href="" mat-list-item>Close</a> -->
+<!-- </mat-nav-list>
         </mat-sidenav>
         <mat-sidenav-content>
             <nav mat-tab-nav-bar>
@@ -81,15 +93,12 @@
                 <a mat-tab-link [routerLink]="'/patternViews'" routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive">
                     Pattern Views
                 </a>
-                <!-- <a mat-tab-link [routerLink]="'/login'" routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive">
+                <a mat-tab-link [routerLink]="'/issue'" routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive">
                     Amazing Login
-                </a> -->
+                </a>
             </nav> 
             <router-outlet></router-outlet>
             <toaster-container></toaster-container>
         </mat-sidenav-content>
     </mat-sidenav-container>
-</div>
-
-<!-- <router-outlet></router-outlet>
-<toaster-container></toaster-container> -->
+</div> -->

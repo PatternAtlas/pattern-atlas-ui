@@ -39,11 +39,11 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ConfigService, configServiceInitializerFactory } from './authentication/config.service';
 import { JwtModule } from '@auth0/angular-jwt';
 import { TokenInterceptor } from './authentication/token.interceptor';
-import { PatternEvolutionManagementModule } from './pattern-evolution-management/pattern-evolution-management.module';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatNavList, MatListModule } from '@angular/material/list';
 import { LandingPageComponent } from './core/component/landing-page/landing-page.component';
 import { PageNotFoundComponent } from './core/component/page-not-found/page-not-found.component';
+import { IssueManagementModule } from './issue-management/issue-management.module';
 
 @NgModule({
     declarations: [
@@ -55,9 +55,9 @@ import { PageNotFoundComponent } from './core/component/page-not-found/page-not-
         AppRoutingModule,
         BrowserModule,
         BrowserAnimationsModule,
-        // PatternEvolutionManagementModule,
-        // PatternLanguageManagementModule,
-        // PatternViewManagementModule,
+
+        IssueManagementModule,
+        
         MatToolbarModule,
         MatIconModule,
         MatCardModule,
