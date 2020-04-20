@@ -34,7 +34,7 @@ export class AuthenticationService {
     // private userLoggedIn = null;
     public userLoggedInSubject$: BehaviorSubject<boolean>;
     public accessTokenSubject$: BehaviorSubject<string>;
-
+    private jwtHelper: JwtHelperService;
     // private jwtHelper: JwtHelperService;
 
     constructor(
@@ -45,7 +45,7 @@ export class AuthenticationService {
         // private userService: UserService,
     ) {
         console.log('Init Authentication Service');
-        // this.jwtHelper = new JwtHelperService();
+        this.jwtHelper = new JwtHelperService();
         TokenInterceptor.init(this);
 
         this.regexCode = /code=(\w*)/;
@@ -60,8 +60,14 @@ export class AuthenticationService {
     }
 
     private authSetup() {
-        this.userLoggedInSubject$ = new BehaviorSubject<boolean>(false);
-        this.accessTokenSubject$ = new BehaviorSubject<string>(localStorage.getItem(accessTokenKey));
+        console.log('Check for token: ', localStorage.getItem(accessTokenKey));
+        localStorage.getItem(accessTokenKey) == null ? 
+        this.userLoggedInSubject$ = new BehaviorSubject<boolean>(false) : this.userLoggedInSubject$ = new BehaviorSubject<boolean>(true);
+        
+        // this.accessTokenSubject$ = new BehaviorSubject<string>(localStorage.getItem(accessTokenKey));
+        // this.accessTokenSubject$.subscribe(token => {
+        //     token !=
+        // })
     }
 
     public login() {
@@ -84,7 +90,7 @@ export class AuthenticationService {
 
     private checkState(state: string) {
         const stateLocal = localStorage.getItem(stateKey);
-        console.log(state === stateLocal);
+        // console.log(state === stateLocal);
         return state !== stateLocal
     }
 
@@ -108,14 +114,29 @@ export class AuthenticationService {
                     // this.jwtHelper.
                     localStorage.setItem(accessTokenKey, token[accessTokenKey]);
                     localStorage.setItem(refreshTokenKey, token[refreshTokenKey]);
-                    this.accessTokenSubject$.next(token[accessTokenKey]);
+                    // this.accessTokenSubject$.next(token[accessTokenKey]);
                     this.userLoggedInSubject$.next(true);
-                    
+
                 },
-                error => console.error('Error getToken(): ',error)
+                    error => console.error('Error getToken(): ', error)
                 );
             }
         }
+    }
+
+    refreshToken() {
+        console.log("Refresh Token");
+        const refreshToken = localStorage.getItem(refreshTokenKey);
+        const params = new HttpParams()
+            .set('client_id', this.config.clientIdPrivate)
+            .set('grant_type', 'refresh_token')
+            .set('refresh_token', refreshToken)
+        console.log(params);
+        this.http.post<any>('http://localhost:8081/oauth/token', params, { headers: { authorization: 'Bearer ' + this.getAccesToken } }).subscribe(val => {
+            console.log(val);
+            // this.token == null ? this.token = val['access_token'] : null ;
+            // this.token = (val['access_token']);
+        });
     }
 
     logout() {
@@ -125,8 +146,11 @@ export class AuthenticationService {
             localStorage.clear();
             this.userLoggedInSubject$.next(false);
         },
-        error => console.error('Error revokeToken(): ',error)
-        );
+            error => {
+                console.error('Error revokeToken(): ', error)
+                localStorage.clear();
+                this.userLoggedInSubject$.next(false);
+            });
     }
 
     public getAccesToken(): string {
@@ -134,15 +158,28 @@ export class AuthenticationService {
     }
 
     public isAuthenticated(): boolean {
-        const jwtHelper = new JwtHelperService();
-        return !jwtHelper.isTokenExpired(this.getAccesToken());
+        // const jwtHelper = new JwtHelperService();
+        return !this.jwtHelper.isTokenExpired(this.getAccesToken());
     }
 
     public getUserRole(): string[] {
-        const jwtHelper = new JwtHelperService();
-        const authorities = jwtHelper.decodeToken(this.getAccesToken())['authorities'];
+        // const jwtHelper = new JwtHelperService();
+        const authorities = this.jwtHelper.decodeToken(this.getAccesToken())['authorities'];
         // console.log(authorities);
         return authorities;
     }
 
- }
+    hasRole(role: string): Observable<boolean> {
+        const token = localStorage.getItem(accessTokenKey);
+        if (token == null) {
+            of(false);
+        } else {
+            const authorities = this.getUserRole();
+            return of(authorities.includes(role));
+        }
+
+       
+        // return authorities
+      }
+
+}

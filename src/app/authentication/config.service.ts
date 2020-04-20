@@ -19,6 +19,7 @@ export class ConfigService {
   tokenUrl: string;
   tokenRevokeUrl: string;
   signinUrl: string;
+  userInfoUrl: string;
   clientIdPrivate: string;
   clientIdPublic: string;
   clientSecret: string;
@@ -32,6 +33,7 @@ export class ConfigService {
     this.tokenUrl = environment.tokenUrl;
     this.tokenRevokeUrl = environment.tokenRevokeUrl;
     this.signinUrl = environment.signinUrl;
+    this.userInfoUrl = environment.userInfoUrl;
     this.clientIdPrivate = environment.clientIdPrivate;
     this.clientIdPublic = environment.clientIdPublic;
     this.clientSecret = environment.clientSecret;

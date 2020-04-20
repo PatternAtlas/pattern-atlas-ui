@@ -27,7 +27,7 @@ export class AppComponent {
     private loggedIn: boolean;
 
 
-    constructor(private auth: AuthenticationService) {
+    constructor(public auth: AuthenticationService) {
         this.auth.userLoggedInSubject$.subscribe(loggedIn => {
             console.log(loggedIn)
             this.loggedIn = loggedIn;

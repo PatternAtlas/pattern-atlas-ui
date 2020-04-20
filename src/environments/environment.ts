@@ -23,6 +23,7 @@ export const environment = {
   tokenUrl: 'http://localhost:8081/oauth/token',
   tokenRevokeUrl: 'http://localhost:8081/oauth/revoke_token',
   signinUrl: 'http://localhost:8081/user/create',
+  userInfoUrl: 'http://localhost:8081/user_info',
   clientIdPrivate: 'pattern-pedia-private',
   clientIdPublic: 'pattern-pedia-public',
   clientSecret: 'pattern-pedia-secret'

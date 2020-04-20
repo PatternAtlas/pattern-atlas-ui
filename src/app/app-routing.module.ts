@@ -41,7 +41,7 @@ export enum UserRole {
 const routes: Routes = [
     {
         path: '',
-        redirectTo: 'login',
+        redirectTo: 'patternEvolution',
         pathMatch: 'full'
     },
     {

@@ -62,11 +62,11 @@
                 <mat-divider></mat-divider>
                 <a mat-list-item [routerLink]="'/patternEvolution'">Pattern Evolution</a>
                 <mat-divider></mat-divider>
-                <a mat-list-item [routerLink]="'/user'">Personal</a>
+                <a mat-list-item [routerLink]="'/user'" *ngIf="(auth.hasRole('MEMBER') | async)">Personal</a>
                 <mat-divider></mat-divider>
-                <a mat-list-item [routerLink]="'/admin'">Admin</a>
+                <a mat-list-item [routerLink]="'/admin'" *ngIf="(auth.hasRole('ADMIN') | async)">Admin</a>
                 <mat-divider></mat-divider>
-                <a mat-list-item [routerLink]="'/developer'">Developer</a>
+                <a mat-list-item [routerLink]="'/developer'" *ngIf="(auth.hasRole('ADMIN') | async)">Developer</a>
                 <mat-divider></mat-divider>
                 <!-- <a mat-list-item [routerLink]="'/test'">Second Component</a> -->
                 <!-- <a mat-list-item (click)="sidenav.toggle()" href="" mat-list-item>Close</a> -->
@@ -81,9 +81,9 @@
                 <a mat-tab-link [routerLink]="'/patternViews'" routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive">
                     Pattern Views
                 </a>
-                <a mat-tab-link [routerLink]="'/login'" routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive">
+                <!-- <a mat-tab-link [routerLink]="'/login'" routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive">
                     Amazing Login
-                </a>
+                </a> -->
             </nav> 
             <router-outlet></router-outlet>
             <toaster-container></toaster-container>

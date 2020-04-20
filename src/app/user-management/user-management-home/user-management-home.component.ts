@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserManagementService } from '../user-management.service';
 
 @Component({
   selector: 'pp-user-management-home',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserManagementHomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private userManagementService: UserManagementService
+  ) { }
+
+  private data: any;
 
   ngOnInit(): void {
+    this.userManagementService.getUser().subscribe(result => {
+      console.log(result)
+    })
   }
 
 }

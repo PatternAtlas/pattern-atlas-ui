@@ -20,7 +20,7 @@ export class TokenInterceptor implements HttpInterceptor {
     constructor( private config: ConfigService) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler) {
-        if (request.url.includes(this.config.repositoryUrl) || request.url.includes('http://localhost:8081/oauth/check_token') ) {
+        if (request.url.includes(this.config.repositoryUrl) || request.url.includes(this.config.userInfoUrl) ) {
             return next.handle(this.addToken(request));
         } else {
             return next.handle(request);
@@ -30,8 +30,11 @@ export class TokenInterceptor implements HttpInterceptor {
 
     private addToken(request: HttpRequest<any>): HttpRequest<any> {
         const token = TokenInterceptor.authService.getAccesToken()
-        // console.log(token);
-        return request.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
+        if (token == null) {
+            return request;
+        } else {
+            return request.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
+        }        
     }
 
 
