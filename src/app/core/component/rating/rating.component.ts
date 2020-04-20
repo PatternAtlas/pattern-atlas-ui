@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'pp-rating',
@@ -7,9 +7,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RatingComponent implements OnInit {
 
+  @Input() rating: number;
+  @Input() userRatingPast: number;
+  @Output() userRatingCurrent = new EventEmitter();
+
   constructor() { }
 
   ngOnInit(): void {
+    console.log('eyy');
   }
+
+  up() {
+    this.rating += 1;
+  }
+
+  down(){
+    this.rating -= 1;
+  } 
 
 }

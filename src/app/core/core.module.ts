@@ -95,7 +95,9 @@ import { RatingComponent } from './component/rating/rating.component';
         MatProgressSpinnerModule,
         NavigateBackComponent,
         CardRendererComponent,
-        ActionButtonBarComponent]
+        ActionButtonBarComponent,
+        RatingComponent,
+    ]
     ,
     providers: [
         PatternLanguageService,

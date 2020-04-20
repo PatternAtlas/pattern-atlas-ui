@@ -1,13 +1,20 @@
 .container {
     // padding-top: 16px;
-    // border-style: groove;
+    border-style: groove;
     width: 100%;
     display: flex; /* or inline-flex */
     flex-direction: column;
     justify-content: center;
     align-items: center;
 
+    .container-rating {
+        width: 100%;
+        border-style: groove;
+        padding-top: 16px;
+    }
+
     .container-button {
+        border-style: groove;
         padding-top: 16px;
         display: flex;
         flex-direction: row;

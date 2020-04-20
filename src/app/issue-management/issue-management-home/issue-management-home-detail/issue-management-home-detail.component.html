@@ -19,6 +19,10 @@
 
         </mat-form-field>
 
+        <div class="container-rating">
+            <pp-rating [rating]="issue.rating"> </pp-rating>
+        </div>
+
         <div class="container-button" *ngIf="disabled">
             <button mat-flat-button type="button" color="accent" (click)="edit()">Edit</button>
             <button mat-flat-button type="button" color="warn" (click)="delete()">Delete</button>

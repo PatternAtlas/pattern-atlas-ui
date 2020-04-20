@@ -6,6 +6,9 @@ import { ToasterModule } from 'angular2-toaster';
 import { LoginComponent } from './core/component/login/login.component';
 import { PageNotFoundComponent } from './core/component/page-not-found/page-not-found.component';
 import { AuthGuardService as AuthGuard } from './authentication/auth-guard.service'
+import { DEVELOPER_MANAGEMENT_ROUTES } from './developer-management/developer-management.module';
+import { USER_MANAGEMENT_ROUTES } from './user-management/user-management.module';
+import { ADMIN_MANAGEMENT_ROUTES } from './admin-management/admin-management.module';
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -31,7 +34,7 @@ export enum UserRole {
 const routes: Routes = [
     {
         path: '',
-        redirectTo: 'patternEvolution',
+        redirectTo: 'issue',
         pathMatch: 'full'
     },
     {
@@ -57,22 +60,22 @@ const routes: Routes = [
     },
     {
         path: 'user',
-        loadChildren: './user-management/user-management.module#UserManagementModule',
-        // children: USER_MANAGEMENT_ROUTES
+        // loadChildren: './user-management/user-management.module#UserManagementModule',
+        children: USER_MANAGEMENT_ROUTES,
         canActivate: [AuthGuard],
         data: { role: UserRole.MEMBER }  
     },
     {
         path: 'admin',
-        loadChildren: './admin-management/admin-management.module#AdminManagementModule',
-        //  children: ADMIN_MANAGEMENT_ROUTES,
+        // loadChildren: './admin-management/admin-management.module#AdminManagementModule',
+         children: ADMIN_MANAGEMENT_ROUTES,
         canActivate: [AuthGuard],
         data: { role: UserRole.ADMIN }  
     },
     {
         path: 'developer',
-        loadChildren: './developer-management/developer-management.module#DeveloperManagementModule',
-        // children: DEVELOPER_MANAGEMENT_ROUTES,
+        // loadChildren: './developer-management/developer-management.module#DeveloperManagementModule',
+        children: DEVELOPER_MANAGEMENT_ROUTES,
         canActivate: [AuthGuard],
         data: { role: UserRole.ADMIN }
     },
