@@ -44,7 +44,7 @@ import { NavigateBackComponent } from './component/navigate-back/navigate-back.c
 import { PatternPropertyDirective } from './component/markdown-content-container/pattern-property.directive';
 import { DividerComponent } from './component/divider/divider.component';
 import { NgxMdModule } from 'ngx-md';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CreatePatternRelationComponent } from './component/create-pattern-relation/create-pattern-relation.component';
 // tslint:disable-next-line:max-line-length
 import { MarkdownPatternSectionContentComponent } from './component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-section-content.component';
@@ -61,6 +61,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { RouterModule } from '@angular/router';
 import { LoginComponent } from './component/login/login.component';
 import { RatingComponent } from './component/rating/rating.component';
+import { CommentListComponent } from './component/comment-list/comment-list.component';
 
 // import { AuthenticationService } from './service/authentication.service';
 
@@ -87,6 +88,7 @@ import { RatingComponent } from './component/rating/rating.component';
         MatButtonToggleModule,
         NgxMdModule.forRoot(), MatNativeDateModule, RouterModule,
         MatSortModule,
+        FormsModule,
     ],
     exports: [
         CovalentTextEditorModule,
@@ -97,6 +99,8 @@ import { RatingComponent } from './component/rating/rating.component';
         CardRendererComponent,
         ActionButtonBarComponent,
         RatingComponent,
+        CommentListComponent,
+
     ]
     ,
     providers: [
@@ -120,7 +124,8 @@ import { RatingComponent } from './component/rating/rating.component';
         CreateEditPatternLanguageComponent,
         ActionButtonBarComponent,
         LoginComponent,
-        RatingComponent
+        RatingComponent,
+        CommentListComponent,
     ],
     entryComponents: [
         DefaultPlRendererComponent,

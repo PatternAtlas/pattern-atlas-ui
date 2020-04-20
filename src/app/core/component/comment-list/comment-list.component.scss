@@ -1,0 +1,43 @@
+.container {
+    border-style: groove;
+    border-color: red;
+
+    .comment{
+        border-style: groove;
+        border-color: green;
+        width: 100%;
+        display: flex; /* or inline-flex */
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: flex-end;
+
+        .mat-form-field{
+            width: 100%;
+        }
+    }
+
+    
+
+    .mat-list {
+       
+        // width: 40%;
+        // border-style: groove;
+        // border-color: green;
+        width: 100%;
+        // overflow: auto;
+        // max-height: 100vh;
+        // border-width: 2px;
+  
+        .mat-list-item {
+          border-style: groove;
+          // border-width: 2px;
+        }
+      }
+}
+
+// mat-form-field.mat-form-field {
+//     padding: 8px;
+//     border-style: groove;
+//     width: 100%;
+//     font-size: 16px;
+// }

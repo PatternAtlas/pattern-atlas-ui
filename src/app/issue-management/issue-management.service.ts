@@ -28,7 +28,7 @@ export class IssueManagementService {
     private toasterService: ToasterService
   ) {
     this.repoEndpoint = this.config.repositoryUrl;
-    this.serviceEndpoint = '/patternEvolution/';
+    this.serviceEndpoint = '/issue/';
   }
 
   public getAllIssues(): Observable<Issue[]> {
@@ -48,7 +48,24 @@ export class IssueManagementService {
     issue.uri = issue.name;
     issue.version = '1.0'
     
-    return this.http.post<any>(this.repoEndpoint + '/patternEvolution/create', issue).pipe(
+    return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint + 'create', issue).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Created new issue')
+        return result
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Could not create new issue: ', error)
+        return null;
+      }),
+    )
+  }
+
+  public createComment(issue: Issue): Observable<Issue> {
+    issue.rating = 0;
+    issue.uri = issue.name;
+    issue.version = '1.0'
+    
+    return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint + 'create', issue).pipe(
       map(result => {
         this.toasterService.pop('success', 'Created new issue')
         return result
@@ -76,7 +93,7 @@ export class IssueManagementService {
 
   public deleteIssue(issue: Issue): Observable<Issue> {
 
-    return this.http.delete<any>(this.repoEndpoint + '/patternEvolution/delete/' + issue.id).pipe(
+    return this.http.delete<any>(this.repoEndpoint + this.serviceEndpoint + 'delete/' + issue.id).pipe(
       map(result => {
         this.toasterService.pop('success', 'Deleted issue')
         return result

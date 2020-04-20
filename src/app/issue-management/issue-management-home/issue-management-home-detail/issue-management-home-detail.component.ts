@@ -46,6 +46,7 @@ export class IssueManagementHomeDetailComponent implements OnInit {
   update() {
     this.issueManagementService.updateIssue(this.issue).subscribe(result => {
       this.changed.emit();
+      this.disabled = true;
     })
   }
 
@@ -53,6 +54,7 @@ export class IssueManagementHomeDetailComponent implements OnInit {
     console.log('Delete', this.issue)
     this.issueManagementService.deleteIssue(this.issue).subscribe(result => {
       this.changed.emit();
+      this.disabled = true;
     })
   }
 

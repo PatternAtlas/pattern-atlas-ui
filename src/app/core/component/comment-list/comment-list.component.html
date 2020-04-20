@@ -1,0 +1,18 @@
+<div class="container">
+    <div class="comment">
+        <mat-form-field appearance="standard">
+            <mat-label>Comment</mat-label>
+            <textarea matInput [(ngModel)]="comment" name="comment"></textarea>
+        </mat-form-field>
+        <div>
+            <button mat-flat-button color="" (click)="cancelComment()">Cancel </button>
+            <button mat-flat-button color="primary" (click)="addComment()">Comment </button>
+        </div>
+    </div>
+    <mat-list>
+        <mat-list-item *ngFor="let comment of data" (click)="toggleDetail(issueDetail)">
+            <p matLine> {{comment.description}} </p>
+            <p matLine> Rating {{comment.rating}} </p>
+        </mat-list-item>
+    </mat-list>
+</div>
