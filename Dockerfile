@@ -4,7 +4,8 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm install && \
+
+RUN rm -rf node_modules package-lock.json && npm cache clean --force && npm install && \
     npm run build
 
 FROM nginx:alpine
