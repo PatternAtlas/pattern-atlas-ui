@@ -30,9 +30,10 @@ export class DeletePatternRelationComponent implements OnInit {
     }
 
     deleteEdge(edge: EdgeWithType): void {
+        console.log(edge);
         this.patternViewService.deleteLink(edge.edge._links.self.href).subscribe(
             (res) => {
-                this.currentEdges = this.currentEdges.filter(item => item !== edge);
+                this.currentEdges = this.currentEdges.filter(item => item.edge.id !== edge.edge.id);
                 this.toasterService.pop('success', 'Relation removed');
                 if (this.currentEdges.length === 0) {
                     this.dialogRef.close();
