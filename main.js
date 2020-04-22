@@ -1691,8 +1691,9 @@ var DeletePatternRelationComponent = /** @class */ (function () {
     };
     DeletePatternRelationComponent.prototype.deleteEdge = function (edge) {
         var _this = this;
+        console.log(edge);
         this.patternViewService.deleteLink(edge.edge._links.self.href).subscribe(function (res) {
-            _this.currentEdges = _this.currentEdges.filter(function (item) { return item !== edge; });
+            _this.currentEdges = _this.currentEdges.filter(function (item) { return item.edge.id !== edge.edge.id; });
             _this.toasterService.pop('success', 'Relation removed');
             if (_this.currentEdges.length === 0) {
                 _this.dialogRef.close();
@@ -3346,6 +3347,16 @@ var DefaultPatternRendererComponent = /** @class */ (function () {
         var $getUndirectedEdges = this.getUndirectedEdges();
         return Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["forkJoin"])([$getDirectedEdges, $getUndirectedEdges]).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function () { return _this.isLoadingLinks = false; }));
     };
+    DefaultPatternRendererComponent.prototype.getPatternByLink = function (edge, res) {
+        var _this = this;
+        var url = res.url + '/' + res.body.id;
+        this.patternRelationDescriptorService.getEdgeByUrl(url, edge)
+            .subscribe(function (edgeResult) {
+            edge instanceof _model_hal_directed_edge_model__WEBPACK_IMPORTED_MODULE_5__["DirectedEdgeModel"] ?
+                _this.directedPatternRelations.push(edgeResult) :
+                _this.undirectedPatternRelations.push(edgeResult);
+        });
+    };
     DefaultPatternRendererComponent.prototype.createSectionComponent = function (section) {
         var _this = this;
         if (!this.pattern.content) {
@@ -3421,17 +3432,15 @@ var DefaultPatternRendererComponent = /** @class */ (function () {
         dialogRef.afterClosed().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["switchMap"])(function (result) {
             return result ? _this.addContentInfoToPattern(result) : rxjs__WEBPACK_IMPORTED_MODULE_4__["EMPTY"];
         }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["switchMap"])(function (edge) {
-            var url = edge instanceof _model_hal_directed_edge_model__WEBPACK_IMPORTED_MODULE_5__["DirectedEdgeModel"] ?
-                _this.patternLanguage._links.directedEdges.href : _this.patternLanguage._links.undirectedEdges.href;
-            return edge ? _this.patternRelationDescriptorService.addRelationToPL(_this.patternLanguage, edge) : rxjs__WEBPACK_IMPORTED_MODULE_4__["EMPTY"];
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["switchMap"])(function (edgeCreated) {
-            return edgeCreated ? _this.getPatternLanguageLinks() : rxjs__WEBPACK_IMPORTED_MODULE_4__["EMPTY"];
-        })).subscribe(function () {
+            return edge ? _this.insertEdge(edge) : rxjs__WEBPACK_IMPORTED_MODULE_4__["EMPTY"];
+        }))
+            .subscribe(function (data) {
             _this.toasterService.pop('success', 'Created new Relation');
-        }, function (error) {
-            _this.toasterService.pop('error', 'Could not create new relation: ', error);
-            console.log(error);
         });
+    };
+    DefaultPatternRendererComponent.prototype.insertEdge = function (edge) {
+        var _this = this;
+        return this.patternRelationDescriptorService.addRelationToPL(this.patternLanguage, edge).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) { return res ? _this.getPatternByLink(edge, res) : rxjs__WEBPACK_IMPORTED_MODULE_4__["EMPTY"]; }));
     };
     return DefaultPatternRendererComponent;
 }());
@@ -3703,7 +3712,15 @@ var DefaultPlRendererComponent = /** @class */ (function () {
     };
     DefaultPlRendererComponent.prototype.insertEdge = function (edge) {
         var _this = this;
-        return this.patternRelationDescriptorService.addRelationToPL(this.patternLanguage, edge).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["switchMap"])(function (res) { return res ? _this.getPatternLinks() : rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"]; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["switchMap"])(function () { return _this.patternService.getPatternsByUrl(_this.patternLanguage._links.patterns.href); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (patterns) { return _this.patterns = patterns; }));
+        return this.patternRelationDescriptorService.addRelationToPL(this.patternLanguage, edge).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) { return res ? _this.getPatternByLink(edge, res) : rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"]; }));
+    };
+    DefaultPlRendererComponent.prototype.getPatternByLink = function (edge, res) {
+        var _this = this;
+        var url = res.url + '/' + res.body.id;
+        this.patternRelationDescriptorService.getEdgeByUrl(url, edge)
+            .subscribe(function (edgeResult) {
+            _this.patternLinks.push(edgeResult);
+        });
     };
     DefaultPlRendererComponent.prototype.linkAddedInGraphEditor = function (edge) {
         var _this = this;
@@ -3715,6 +3732,14 @@ var DefaultPlRendererComponent = /** @class */ (function () {
     };
     DefaultPlRendererComponent.prototype.reloadGraph = function () {
         this.graphDisplayComponent.reformatGraph();
+    };
+    DefaultPlRendererComponent.prototype.setGraphVisible = function (newValueGraphVisible) {
+        if (newValueGraphVisible) { // reset the search field so all patterns are shown in the graph
+            this.filter.setValue('');
+        }
+        this.graphVisible = newValueGraphVisible;
+        // if user toggled to early, we will retrigger
+        this.toggleBeforeDataLoaded = this.isLoadingLinkData && this.isLoadingPatternData;
     };
     DefaultPlRendererComponent.prototype.loadData = function () {
         var _this = this;
@@ -3745,14 +3770,6 @@ var DefaultPlRendererComponent = /** @class */ (function () {
         return this.patternLanguageService.getUndirectedEdges(this.patternLanguage).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (edges) {
             _this.undirectedPatternRelations = edges._embedded ? edges._embedded.undirectedEdgeModels : [];
         }));
-    };
-    DefaultPlRendererComponent.prototype.setGraphVisible = function (newValueGraphVisible) {
-        if (newValueGraphVisible) { // reset the search field so all patterns are shown in the graph
-            this.filter.setValue('');
-        }
-        this.graphVisible = newValueGraphVisible;
-        // if user toggled to early, we will retrigger
-        this.toggleBeforeDataLoaded = this.isLoadingLinkData && this.isLoadingPatternData;
     };
     DefaultPlRendererComponent.prototype.loadPatterns = function () {
         var _this = this;
@@ -4441,6 +4458,10 @@ var PatternRelationDescriptorService = /** @class */ (function () {
     };
     PatternRelationDescriptorService.prototype.getUndirectedEdgeByUrl = function (url) {
         return this.http.get(url);
+    };
+    PatternRelationDescriptorService.prototype.getEdgeByUrl = function (url, edge) {
+        return edge instanceof _model_hal_directed_edge_model__WEBPACK_IMPORTED_MODULE_2__["DirectedEdgeModel"] ?
+            this.getDirectedEdgeByUrl(url) : this.getUndirectedEdgeByUrl(url);
     };
     PatternRelationDescriptorService.prototype.getEdgesForPattern = function (pattern) {
         var _this = this;
@@ -7332,7 +7353,7 @@ function View_PatternViewRendererComponent_0(_l) { return _angular_core__WEBPACK
         var pd_0 = (_co.changeRenderer($event) !== false);
         ad = (pd_0 && ad);
     } return ad; }, _core_component_toggle_renderer_toggle_renderer_component_ngfactory__WEBPACK_IMPORTED_MODULE_24__["View_ToggleRendererComponent_0"], _core_component_toggle_renderer_toggle_renderer_component_ngfactory__WEBPACK_IMPORTED_MODULE_24__["RenderType_ToggleRendererComponent"])), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵdid"](4, 114688, null, 0, _core_component_toggle_renderer_toggle_renderer_component__WEBPACK_IMPORTED_MODULE_25__["ToggleRendererComponent"], [], { graphVisible: [0, "graphVisible"] }, { toggledRenderer: "toggledRenderer" }), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵand"](16777216, null, 0, 1, null, View_PatternViewRendererComponent_1)), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵdid"](6, 16384, null, 0, _angular_common__WEBPACK_IMPORTED_MODULE_11__["NgIf"], [_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewContainerRef"], _angular_core__WEBPACK_IMPORTED_MODULE_1__["TemplateRef"]], { ngIf: [0, "ngIf"] }, null), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵand"](16777216, null, null, 1, null, View_PatternViewRendererComponent_2)), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵdid"](8, 16384, null, 0, _angular_common__WEBPACK_IMPORTED_MODULE_11__["NgIf"], [_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewContainerRef"], _angular_core__WEBPACK_IMPORTED_MODULE_1__["TemplateRef"]], { ngIf: [0, "ngIf"] }, null), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵand"](16777216, null, null, 1, null, View_PatternViewRendererComponent_4)), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵdid"](10, 16384, null, 0, _angular_common__WEBPACK_IMPORTED_MODULE_11__["NgIf"], [_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewContainerRef"], _angular_core__WEBPACK_IMPORTED_MODULE_1__["TemplateRef"]], { ngIf: [0, "ngIf"] }, null)], function (_ck, _v) { var _co = _v.component; var currVal_0 = "Add patterns"; var currVal_1 = true; var currVal_2 = !_co.graphVisible; var currVal_3 = "Create new Link"; var currVal_4 = _co.displayText; _ck(_v, 2, 0, currVal_0, currVal_1, currVal_2, currVal_3, currVal_4); var currVal_5 = _co.graphVisible; _ck(_v, 4, 0, currVal_5); var currVal_6 = _co.graphVisible; _ck(_v, 6, 0, currVal_6); var currVal_7 = (!_co.isLoading && !_co.graphVisible); _ck(_v, 8, 0, currVal_7); var currVal_8 = (!_co.isLoading && _co.graphVisible); _ck(_v, 10, 0, currVal_8); }, null); }
-function View_PatternViewRendererComponent_Host_0(_l) { return _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵvid"](0, [(_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](0, 0, null, null, 1, "pp-pattern-view-renderer", [], null, null, null, View_PatternViewRendererComponent_0, RenderType_PatternViewRendererComponent)), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵdid"](1, 4308992, null, 0, _pattern_view_renderer_component__WEBPACK_IMPORTED_MODULE_26__["PatternViewRendererComponent"], [_angular_material_dialog__WEBPACK_IMPORTED_MODULE_15__["MatDialog"], _core_service_pattern_language_service__WEBPACK_IMPORTED_MODULE_18__["PatternLanguageService"], _core_service_pattern_view_service__WEBPACK_IMPORTED_MODULE_19__["PatternViewService"], _core_service_pattern_service__WEBPACK_IMPORTED_MODULE_20__["PatternService"], angular2_toaster_src_toaster_service__WEBPACK_IMPORTED_MODULE_17__["ToasterService"], _angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectorRef"], _angular_router__WEBPACK_IMPORTED_MODULE_21__["ActivatedRoute"], _angular_core__WEBPACK_IMPORTED_MODULE_1__["ApplicationRef"]], null, null)], function (_ck, _v) { _ck(_v, 1, 0); }, null); }
+function View_PatternViewRendererComponent_Host_0(_l) { return _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵvid"](0, [(_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](0, 0, null, null, 1, "pp-pattern-view-renderer", [], null, null, null, View_PatternViewRendererComponent_0, RenderType_PatternViewRendererComponent)), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵdid"](1, 4308992, null, 0, _pattern_view_renderer_component__WEBPACK_IMPORTED_MODULE_26__["PatternViewRendererComponent"], [_angular_material_dialog__WEBPACK_IMPORTED_MODULE_15__["MatDialog"], _core_service_pattern_language_service__WEBPACK_IMPORTED_MODULE_18__["PatternLanguageService"], _core_service_pattern_view_service__WEBPACK_IMPORTED_MODULE_19__["PatternViewService"], _core_service_pattern_service__WEBPACK_IMPORTED_MODULE_20__["PatternService"], angular2_toaster_src_toaster_service__WEBPACK_IMPORTED_MODULE_17__["ToasterService"], _angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectorRef"], _angular_router__WEBPACK_IMPORTED_MODULE_21__["ActivatedRoute"], _core_service_pattern_relation_descriptor_service__WEBPACK_IMPORTED_MODULE_16__["PatternRelationDescriptorService"]], null, null)], function (_ck, _v) { _ck(_v, 1, 0); }, null); }
 var PatternViewRendererComponentNgFactory = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵccf"]("pp-pattern-view-renderer", _pattern_view_renderer_component__WEBPACK_IMPORTED_MODULE_26__["PatternViewRendererComponent"], View_PatternViewRendererComponent_Host_0, {}, {}, []);
 
 
@@ -7355,7 +7376,7 @@ __webpack_require__.r(__webpack_exports__);
  * @suppress {suspiciousCode,uselessCode,missingProperties,missingOverride,checkTypes}
  * tslint:disable
  */ 
-var styles = [".pattern-card[_ngcontent-%COMP%] {\n  min-height: 13em;\n  height: 13em;\n  min-width: 13em;\n  width: 13em;\n  margin: 0.25em;\n}\n\n.container[_ngcontent-%COMP%] {\n  display: -webkit-box;\n  display: flex;\n}\n\n.edge-button[_ngcontent-%COMP%] {\n  width: 4em !important;\n  min-width: unset !important;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS12aWV3cy11aS9zcmMvYXBwL3BhdHRlcm4tdmlldy1tYW5hZ2VtZW50L3BhdHRlcm4tdmlldy1yZW5kZXJlci9wYXR0ZXJuLXZpZXctcmVuZGVyZXIuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL3BhdHRlcm4tdmlldy1tYW5hZ2VtZW50L3BhdHRlcm4tdmlldy1yZW5kZXJlci9wYXR0ZXJuLXZpZXctcmVuZGVyZXIuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxnQkFBQTtFQUNBLFlBQUE7RUFDQSxlQUFBO0VBQ0EsV0FBQTtFQUNBLGNBQUE7QUNDRjs7QURHQTtFQUNFLG9CQUFBO0VBQUEsYUFBQTtBQ0FGOztBREdBO0VBQ0UscUJBQUE7RUFDQSwyQkFBQTtBQ0FGIiwiZmlsZSI6InNyYy9hcHAvcGF0dGVybi12aWV3LW1hbmFnZW1lbnQvcGF0dGVybi12aWV3LXJlbmRlcmVyL3BhdHRlcm4tdmlldy1yZW5kZXJlci5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5wYXR0ZXJuLWNhcmQge1xuICBtaW4taGVpZ2h0OiAxM2VtO1xuICBoZWlnaHQ6IDEzZW07XG4gIG1pbi13aWR0aDogMTNlbTtcbiAgd2lkdGg6IDEzZW07XG4gIG1hcmdpbjogMC4yNWVtO1xufVxuXG5cbi5jb250YWluZXIge1xuICBkaXNwbGF5OiBmbGV4O1xufVxuXG4uZWRnZS1idXR0b24ge1xuICB3aWR0aDogNGVtICFpbXBvcnRhbnQ7XG4gIG1pbi13aWR0aDogdW5zZXQgIWltcG9ydGFudDtcbn1cbiIsIi5wYXR0ZXJuLWNhcmQge1xuICBtaW4taGVpZ2h0OiAxM2VtO1xuICBoZWlnaHQ6IDEzZW07XG4gIG1pbi13aWR0aDogMTNlbTtcbiAgd2lkdGg6IDEzZW07XG4gIG1hcmdpbjogMC4yNWVtO1xufVxuXG4uY29udGFpbmVyIHtcbiAgZGlzcGxheTogZmxleDtcbn1cblxuLmVkZ2UtYnV0dG9uIHtcbiAgd2lkdGg6IDRlbSAhaW1wb3J0YW50O1xuICBtaW4td2lkdGg6IHVuc2V0ICFpbXBvcnRhbnQ7XG59Il19 */"];
+var styles = [".pattern-card[_ngcontent-%COMP%] {\n  min-height: 11em;\n  height: 11em;\n  min-width: 13em;\n  width: 13em;\n  margin: 0.25em;\n}\n\n.container[_ngcontent-%COMP%] {\n  display: -webkit-box;\n  display: flex;\n}\n\n.edge-button[_ngcontent-%COMP%] {\n  width: 4em !important;\n  min-width: unset !important;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS12aWV3cy11aS9zcmMvYXBwL3BhdHRlcm4tdmlldy1tYW5hZ2VtZW50L3BhdHRlcm4tdmlldy1yZW5kZXJlci9wYXR0ZXJuLXZpZXctcmVuZGVyZXIuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL3BhdHRlcm4tdmlldy1tYW5hZ2VtZW50L3BhdHRlcm4tdmlldy1yZW5kZXJlci9wYXR0ZXJuLXZpZXctcmVuZGVyZXIuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxnQkFBQTtFQUNBLFlBQUE7RUFDQSxlQUFBO0VBQ0EsV0FBQTtFQUNBLGNBQUE7QUNDRjs7QURHQTtFQUNFLG9CQUFBO0VBQUEsYUFBQTtBQ0FGOztBREdBO0VBQ0UscUJBQUE7RUFDQSwyQkFBQTtBQ0FGIiwiZmlsZSI6InNyYy9hcHAvcGF0dGVybi12aWV3LW1hbmFnZW1lbnQvcGF0dGVybi12aWV3LXJlbmRlcmVyL3BhdHRlcm4tdmlldy1yZW5kZXJlci5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5wYXR0ZXJuLWNhcmQge1xuICBtaW4taGVpZ2h0OiAxMWVtO1xuICBoZWlnaHQ6IDExZW07XG4gIG1pbi13aWR0aDogMTNlbTtcbiAgd2lkdGg6IDEzZW07XG4gIG1hcmdpbjogMC4yNWVtO1xufVxuXG5cbi5jb250YWluZXIge1xuICBkaXNwbGF5OiBmbGV4O1xufVxuXG4uZWRnZS1idXR0b24ge1xuICB3aWR0aDogNGVtIWltcG9ydGFudDtcbiAgbWluLXdpZHRoOiB1bnNldCFpbXBvcnRhbnQ7XG59XG4iLCIucGF0dGVybi1jYXJkIHtcbiAgbWluLWhlaWdodDogMTFlbTtcbiAgaGVpZ2h0OiAxMWVtO1xuICBtaW4td2lkdGg6IDEzZW07XG4gIHdpZHRoOiAxM2VtO1xuICBtYXJnaW46IDAuMjVlbTtcbn1cblxuLmNvbnRhaW5lciB7XG4gIGRpc3BsYXk6IGZsZXg7XG59XG5cbi5lZGdlLWJ1dHRvbiB7XG4gIHdpZHRoOiA0ZW0gIWltcG9ydGFudDtcbiAgbWluLXdpZHRoOiB1bnNldCAhaW1wb3J0YW50O1xufSJdfQ== */"];
 
 
 
@@ -7392,7 +7413,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var PatternViewRendererComponent = /** @class */ (function () {
-    function PatternViewRendererComponent(matDialog, patternLanguageService, patternViewService, patternService, toasterService, cdr, activatedRoute, applicationRef) {
+    function PatternViewRendererComponent(matDialog, patternLanguageService, patternViewService, patternService, toasterService, cdr, activatedRoute, patternRLDescriptorService) {
         this.matDialog = matDialog;
         this.patternLanguageService = patternLanguageService;
         this.patternViewService = patternViewService;
@@ -7400,7 +7421,7 @@ var PatternViewRendererComponent = /** @class */ (function () {
         this.toasterService = toasterService;
         this.cdr = cdr;
         this.activatedRoute = activatedRoute;
-        this.applicationRef = applicationRef;
+        this.patternRLDescriptorService = patternRLDescriptorService;
         this.patterns = [];
         this.isLoading = true;
         this.graphVisible = false;
@@ -7436,51 +7457,16 @@ var PatternViewRendererComponent = /** @class */ (function () {
         var dialogRef = this.matDialog.open(_add_to_view_add_to_view_component__WEBPACK_IMPORTED_MODULE_1__["AddToViewComponent"], { data: { links: this.mapPatternLinksToTreeNode(pattern), title: 'Add linked Patterns', patternId: pattern.id } });
         this.subscribeToLinkDialogResult(dialogRef);
     };
-    PatternViewRendererComponent.prototype.getDirectedEdges = function () {
-        var _this = this;
-        if (!this.patternViewResponse) {
-            return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
-        }
-        return this.patternViewService.getDirectedEdges(this.patternViewResponse).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (edges) {
-            _this.directedPatternRelations = edges._embedded ? edges._embedded.directedEdgeModels : [];
-        }));
-    };
-    PatternViewRendererComponent.prototype.getUndirectedEdges = function () {
-        var _this = this;
-        if (!this.patternViewResponse) {
-            return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
-        }
-        return this.patternViewService.getUndirectedEdges(this.patternViewResponse).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (edges) {
-            _this.undirectedPatternRelations = edges._embedded ? edges._embedded.undirectedEdgeModels : [];
-        }));
-    };
     PatternViewRendererComponent.prototype.addLink = function () {
         var _this = this;
         var dialogRef = this.matDialog.open(_core_component_create_pattern_relation_create_pattern_relation_component__WEBPACK_IMPORTED_MODULE_5__["CreatePatternRelationComponent"], { data: { patterns: this.patterns, patternview: this.patternViewResponse } });
         dialogRef.afterClosed().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["switchMap"])(function (edge) {
-            return _this.createLink(edge);
+            return edge ? _this.createLink(edge) : rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
         })).subscribe(function (res) {
             if (res) {
                 _this.toasterService.pop('success', 'Relation added');
-                _this.getData().subscribe(function () {
-                    _this.getLinks();
-                });
             }
         });
-    };
-    PatternViewRendererComponent.prototype.deleteLink = function (edge) {
-        return this.patternViewService.deleteLink(edge._links.self.href);
-    };
-    PatternViewRendererComponent.prototype.createLink = function (edge) {
-        var _this = this;
-        var url = edge instanceof _core_model_hal_directed_edge_model__WEBPACK_IMPORTED_MODULE_6__["DirectedEdgeModel"] ? this.patternViewResponse._links.directedEdges.href :
-            this.patternViewResponse._links.undirectedEdges.href;
-        if (!edge || !url) {
-            return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
-        }
-        return this.patternViewService.createLink(url, edge instanceof _core_model_hal_directed_edge_model__WEBPACK_IMPORTED_MODULE_6__["DirectedEdgeModel"] ?
-            new _core_model_hal_add_directed_edge_to_view_request__WEBPACK_IMPORTED_MODULE_7__["AddDirectedEdgeToViewRequest"](edge) :
-            new _core_model_hal_add_undirected_edge_to_view_request__WEBPACK_IMPORTED_MODULE_8__["AddUndirectedEdgeToViewRequest"](edge)).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["switchMap"])(function () { return _this.getLinks(); }));
     };
     PatternViewRendererComponent.prototype.detectChanges = function () {
         this.cdr.detectChanges();
@@ -7538,6 +7524,106 @@ var PatternViewRendererComponent = /** @class */ (function () {
                     _this.getLinks();
                 });
             });
+        }
+    };
+    PatternViewRendererComponent.prototype.changeRenderer = function (isGraphVisible) {
+        this.graphVisible = isGraphVisible;
+    };
+    PatternViewRendererComponent.prototype.addedEdgeInGraphView = function (edge) {
+        var _this = this;
+        if (edge) {
+            this.createLink(edge).subscribe(function () {
+                _this.toasterService.pop('success', 'Link added');
+                _this.cdr.detectChanges();
+            });
+        }
+    };
+    PatternViewRendererComponent.prototype.reloadGraph = function () {
+        this.graphDisplayComponent.reformatGraph();
+    };
+    PatternViewRendererComponent.prototype.getDirectedEdges = function () {
+        var _this = this;
+        if (!this.patternViewResponse) {
+            return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
+        }
+        return this.patternViewService.getDirectedEdges(this.patternViewResponse).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (edges) {
+            _this.directedPatternRelations = edges._embedded ? edges._embedded.directedEdgeModels : [];
+        }));
+    };
+    PatternViewRendererComponent.prototype.getUndirectedEdges = function () {
+        var _this = this;
+        if (!this.patternViewResponse) {
+            return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
+        }
+        return this.patternViewService.getUndirectedEdges(this.patternViewResponse).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (edges) {
+            _this.undirectedPatternRelations = edges._embedded ? edges._embedded.undirectedEdgeModels : [];
+        }));
+    };
+    PatternViewRendererComponent.prototype.createLink = function (edge) {
+        var _this = this;
+        var url = edge instanceof _core_model_hal_directed_edge_model__WEBPACK_IMPORTED_MODULE_6__["DirectedEdgeModel"] ? this.patternViewResponse._links.directedEdges.href :
+            this.patternViewResponse._links.undirectedEdges.href;
+        if (!edge || !url) {
+            return rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"];
+        }
+        return this.patternViewService.createLink(url, edge instanceof _core_model_hal_directed_edge_model__WEBPACK_IMPORTED_MODULE_6__["DirectedEdgeModel"] ?
+            new _core_model_hal_add_directed_edge_to_view_request__WEBPACK_IMPORTED_MODULE_7__["AddDirectedEdgeToViewRequest"](edge) :
+            new _core_model_hal_add_undirected_edge_to_view_request__WEBPACK_IMPORTED_MODULE_8__["AddUndirectedEdgeToViewRequest"](edge)).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(function (res) { return res ? _this.getEdgeByUrl(edge, res) : rxjs__WEBPACK_IMPORTED_MODULE_2__["EMPTY"]; }));
+    };
+    PatternViewRendererComponent.prototype.getEdgeByUrl = function (edge, res) {
+        var _this = this;
+        var getURL = res.url + '/' + res.body.id;
+        this.patternRLDescriptorService.getEdgeByUrl(getURL, edge)
+            .subscribe(function (edgeResult) {
+            edge instanceof _core_model_hal_directed_edge_model__WEBPACK_IMPORTED_MODULE_6__["DirectedEdgeModel"] ? _this.addDirectedEdgeToPattern(edgeResult)
+                : _this.addUndirectedEdgeToPattern(edgeResult);
+            _this.patternLinks.push(edgeResult);
+        });
+    };
+    PatternViewRendererComponent.prototype.addUndirectedEdgeToPattern = function (edge) {
+        var pattern1 = this.patterns.find(function (x) { return x.id === edge.pattern1Id; });
+        if (!pattern1._links.undirectedEdges) {
+            pattern1._links.undirectedEdges = edge._links.self;
+        }
+        else if (!Array.isArray(pattern1._links.undirectedEdges)) {
+            pattern1._links.undirectedEdges = [pattern1._links.undirectedEdges, edge._links.self];
+        }
+        else {
+            pattern1._links.undirectedEdges.push(edge._links.self);
+        }
+        var pattern2 = this.patterns.find(function (x) { return x.id === edge.pattern2Id; });
+        if (!pattern2._links.undirectedEdges) {
+            pattern2._links.undirectedEdges = edge._links.self;
+            return;
+        }
+        else if (!Array.isArray(pattern2._links.undirectedEdges)) {
+            pattern2._links.undirectedEdges = [pattern2._links.undirectedEdges, edge._links.self];
+        }
+        else {
+            pattern2._links.undirectedEdges.push(edge._links.self);
+        }
+    };
+    PatternViewRendererComponent.prototype.addDirectedEdgeToPattern = function (edge) {
+        var srcPattern = this.patterns.find(function (x) { return x.id === edge.sourcePatternId; });
+        if (!srcPattern._links.outgoingDirectedEdges) {
+            srcPattern._links.outgoingDirectedEdges = edge._links.self;
+        }
+        else if (!Array.isArray(srcPattern._links.outgoingDirectedEdges)) {
+            srcPattern._links.outgoingDirectedEdges = [srcPattern._links.outgoingDirectedEdges, edge._links.self];
+        }
+        else {
+            srcPattern._links.outgoingDirectedEdges.push(edge._links.self);
+        }
+        var targetPattern = this.patterns.find(function (x) { return x.id === edge.targetPatternId; });
+        if (!targetPattern._links.ingoingDirectedEdges) {
+            targetPattern._links.ingoingDirectedEdges = edge._links.self;
+            return;
+        }
+        else if (!Array.isArray(targetPattern._links.ingoingDirectedEdges)) {
+            targetPattern._links.ingoingDirectedEdges = [targetPattern._links.ingoingDirectedEdges, edge._links.self];
+        }
+        else {
+            targetPattern._links.ingoingDirectedEdges.push(edge._links.self);
         }
     };
     PatternViewRendererComponent.prototype.getPatternLanguages = function () {
@@ -7615,21 +7701,6 @@ var PatternViewRendererComponent = /** @class */ (function () {
             }
         });
         return types;
-    };
-    PatternViewRendererComponent.prototype.changeRenderer = function (isGraphVisible) {
-        this.graphVisible = isGraphVisible;
-    };
-    PatternViewRendererComponent.prototype.addedEdgeInGraphView = function (edge) {
-        var _this = this;
-        if (edge) {
-            this.createLink(edge).subscribe(function () {
-                _this.toasterService.pop('success', 'Link added');
-                _this.cdr.detectChanges();
-            });
-        }
-    };
-    PatternViewRendererComponent.prototype.reloadGraph = function () {
-        this.graphDisplayComponent.reformatGraph();
     };
     return PatternViewRendererComponent;
 }());
