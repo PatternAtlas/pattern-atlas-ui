@@ -2321,21 +2321,11 @@ $metadata.exp({ metadata: function metadata(metadataKey, metadataValue) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var __values = (this && this.__values) || function (o) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
-    if (m) return m.call(o);
-    return {
-        next: function () {
-            if (o && i >= o.length) o = void 0;
-            return { value: o && o[i++], done: !o };
-        }
-    };
-};
-/**
- * @license Angular v0.10.2
- * (c) 2010-2019 Google LLC. https://angular.io/
- * License: MIT
- */
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+* @license Angular v9.1.0-next.4+61.sha-e552591.with-local-changes
+* (c) 2010-2020 Google LLC. https://angular.io/
+* License: MIT
+*/
 (function (factory) {
      true ? !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
@@ -2343,7 +2333,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var __values =
 				__WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) :
         undefined;
-}(function () {
+}((function () {
     'use strict';
     /**
      * @license
@@ -3016,6 +3006,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var __values =
         }
         var __symbol__ = api.symbol;
         var _uncaughtPromiseErrors = [];
+        var isDisableWrappingUncaughtPromiseRejection = global[__symbol__('DISABLE_WRAPPING_UNCAUGHT_PROMISE_REJECTION')] === true;
         var symbolPromise = __symbol__('Promise');
         var symbolThen = __symbol__('then');
         var creationTrace = '__creationTrace__';
@@ -3031,19 +3022,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var __values =
             }
         };
         api.microtaskDrainDone = function () {
-            while (_uncaughtPromiseErrors.length) {
-                var _loop_1 = function () {
-                    var uncaughtPromiseError = _uncaughtPromiseErrors.shift();
-                    try {
-                        uncaughtPromiseError.zone.runGuarded(function () { throw uncaughtPromiseError; });
-                    }
-                    catch (error) {
-                        handleUnhandledRejection(error);
-                    }
-                };
-                while (_uncaughtPromiseErrors.length) {
-                    _loop_1();
+            var _loop_1 = function () {
+                var uncaughtPromiseError = _uncaughtPromiseErrors.shift();
+                try {
+                    uncaughtPromiseError.zone.runGuarded(function () { throw uncaughtPromiseError; });
                 }
+                catch (error) {
+                    handleUnhandledRejection(error);
+                }
+            };
+            while (_uncaughtPromiseErrors.length) {
+                _loop_1();
             }
         };
         var UNHANDLED_PROMISE_REJECTION_HANDLER_SYMBOL = __symbol__('unhandledPromiseRejectionHandler');
@@ -3051,7 +3040,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var __values =
             api.onUnhandledError(e);
             try {
                 var handler = Zone[UNHANDLED_PROMISE_REJECTION_HANDLER_SYMBOL];
-                if (handler && typeof handler === 'function') {
+                if (typeof handler === 'function') {
                     handler.call(this, e);
                 }
             }
@@ -3158,20 +3147,28 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var __values =
                     }
                     if (queue.length == 0 && state == REJECTED) {
                         promise[symbolState] = REJECTED_NO_CATCH;
-                        try {
-                            // try to print more readable error log
-                            throw new Error('Uncaught (in promise): ' + readableObjectToString(value) +
-                                (value && value.stack ? '\n' + value.stack : ''));
+                        var uncaughtPromiseError = value;
+                        if (!isDisableWrappingUncaughtPromiseRejection) {
+                            // If disable wrapping uncaught promise reject
+                            // and the rejected value is an Error object,
+                            // use the value instead of wrapping it.
+                            try {
+                                // Here we throws a new Error to print more readable error log
+                                // and if the value is not an error, zone.js builds an `Error`
+                                // Object here to attach the stack information.
+                                throw new Error('Uncaught (in promise): ' + readableObjectToString(value) +
+                                    (value && value.stack ? '\n' + value.stack : ''));
+                            }
+                            catch (err) {
+                                uncaughtPromiseError = err;
+                            }
                         }
-                        catch (err) {
-                            var error = err;
-                            error.rejection = value;
-                            error.promise = promise;
-                            error.zone = Zone.current;
-                            error.task = Zone.currentTask;
-                            _uncaughtPromiseErrors.push(error);
-                            api.scheduleMicroTask(); // to make sure that it is running
-                        }
+                        uncaughtPromiseError.rejection = value;
+                        uncaughtPromiseError.promise = promise;
+                        uncaughtPromiseError.zone = Zone.current;
+                        uncaughtPromiseError.task = Zone.currentTask;
+                        _uncaughtPromiseErrors.push(uncaughtPromiseError);
+                        api.scheduleMicroTask(); // to make sure that it is running
                     }
                 }
             }
@@ -3230,6 +3227,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var __values =
             }, chainPromise);
         }
         var ZONE_AWARE_PROMISE_TO_STRING = 'function ZoneAwarePromise() { [native code] }';
+        var noop = function () { };
         var ZoneAwarePromise = /** @class */ (function () {
             function ZoneAwarePromise(executor) {
                 var promise = this;
@@ -3253,7 +3251,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var __values =
                 return resolvePromise(new this(null), REJECTED, error);
             };
             ZoneAwarePromise.race = function (values) {
-                var e_1, _a;
                 var resolve;
                 var reject;
                 var promise = new this(function (res, rej) {
@@ -3262,21 +3259,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var __values =
                 });
                 function onResolve(value) { resolve(value); }
                 function onReject(error) { reject(error); }
-                try {
-                    for (var values_1 = __values(values), values_1_1 = values_1.next(); !values_1_1.done; values_1_1 = values_1.next()) {
-                        var value = values_1_1.value;
-                        if (!isThenable(value)) {
-                            value = this.resolve(value);
-                        }
-                        value.then(onResolve, onReject);
+                for (var _i = 0, values_1 = values; _i < values_1.length; _i++) {
+                    var value = values_1[_i];
+                    if (!isThenable(value)) {
+                        value = this.resolve(value);
                     }
-                }
-                catch (e_1_1) { e_1 = { error: e_1_1 }; }
-                finally {
-                    try {
-                        if (values_1_1 && !values_1_1.done && (_a = values_1.return)) _a.call(values_1);
-                    }
-                    finally { if (e_1) throw e_1.error; }
+                    value.then(onResolve, onReject);
                 }
                 return promise;
             };
@@ -3289,7 +3277,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var __values =
                 });
             };
             ZoneAwarePromise.allWithCallback = function (values, callback) {
-                var e_2, _a;
                 var resolve;
                 var reject;
                 var promise = new this(function (res, rej) {
@@ -3332,18 +3319,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var __values =
                     valueIndex++;
                 };
                 var this_1 = this;
-                try {
-                    for (var values_2 = __values(values), values_2_1 = values_2.next(); !values_2_1.done; values_2_1 = values_2.next()) {
-                        var value = values_2_1.value;
-                        _loop_2(value);
-                    }
-                }
-                catch (e_2_1) { e_2 = { error: e_2_1 }; }
-                finally {
-                    try {
-                        if (values_2_1 && !values_2_1.done && (_a = values_2.return)) _a.call(values_2);
-                    }
-                    finally { if (e_2) throw e_2.error; }
+                for (var _i = 0, values_2 = values; _i < values_2.length; _i++) {
+                    var value = values_2[_i];
+                    _loop_2(value);
                 }
                 // Make the unresolvedCount zero-based again.
                 unresolvedCount -= 2;
@@ -3357,8 +3335,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var __values =
                 enumerable: true,
                 configurable: true
             });
+            Object.defineProperty(ZoneAwarePromise.prototype, Symbol.species, {
+                get: function () { return ZoneAwarePromise; },
+                enumerable: true,
+                configurable: true
+            });
             ZoneAwarePromise.prototype.then = function (onFulfilled, onRejected) {
-                var chainPromise = new this.constructor(null);
+                var C = this.constructor[Symbol.species];
+                if (!C || typeof C !== 'function') {
+                    C = this.constructor || ZoneAwarePromise;
+                }
+                var chainPromise = new C(noop);
                 var zone = Zone.current;
                 if (this[symbolState] == UNRESOLVED) {
                     this[symbolValue].push(zone, chainPromise, onFulfilled, onRejected);
@@ -3372,7 +3359,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var __values =
                 return this.then(null, onRejected);
             };
             ZoneAwarePromise.prototype.finally = function (onFinally) {
-                var chainPromise = new this.constructor(null);
+                var C = this.constructor[Symbol.species];
+                if (!C || typeof C !== 'function') {
+                    C = ZoneAwarePromise;
+                }
+                var chainPromise = new C(noop);
                 chainPromise[symbolFinally] = symbolFinally;
                 var zone = Zone.current;
                 if (this[symbolState] == UNRESOLVED) {
@@ -3973,6 +3964,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var __values =
     var globalSources = {};
     var EVENT_NAME_SYMBOL_REGX = new RegExp('^' + ZONE_SYMBOL_PREFIX + '(\\w+)(true|false)$');
     var IMMEDIATE_PROPAGATION_SYMBOL = zoneSymbol('propagationStopped');
+    function prepareEventNames(eventName, eventNameToString) {
+        var falseEventName = (eventNameToString ? eventNameToString(eventName) : eventName) + FALSE_STR;
+        var trueEventName = (eventNameToString ? eventNameToString(eventName) : eventName) + TRUE_STR;
+        var symbol = ZONE_SYMBOL_PREFIX + falseEventName;
+        var symbolCapture = ZONE_SYMBOL_PREFIX + trueEventName;
+        zoneSymbolEventNames$1[eventName] = {};
+        zoneSymbolEventNames$1[eventName][FALSE_STR] = symbol;
+        zoneSymbolEventNames$1[eventName][TRUE_STR] = symbolCapture;
+    }
     function patchEventTarget(_global, apis, patchOptions) {
         var ADD_EVENT_LISTENER = (patchOptions && patchOptions.add) || ADD_EVENT_LISTENER_STR;
         var REMOVE_EVENT_LISTENER = (patchOptions && patchOptions.rm) || REMOVE_EVENT_LISTENER_STR;
@@ -4116,16 +4116,30 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var __values =
                 nativePrependEventListener = proto[zoneSymbol(patchOptions.prepend)] =
                     proto[patchOptions.prepend];
             }
-            function checkIsPassive(task) {
-                if (!passiveSupported && typeof taskData.options !== 'boolean' &&
-                    typeof taskData.options !== 'undefined' && taskData.options !== null) {
-                    // options is a non-null non-undefined object
-                    // passive is not supported
-                    // don't pass options as object
-                    // just pass capture as a boolean
-                    task.options = !!taskData.options.capture;
-                    taskData.options = task.options;
+            /**
+             * This util function will build an option object with passive option
+             * to handle all possible input from the user.
+             */
+            function buildEventListenerOptions(options, passive) {
+                if (!passiveSupported && typeof options === 'object' && options) {
+                    // doesn't support passive but user want to pass an object as options.
+                    // this will not work on some old browser, so we just pass a boolean
+                    // as useCapture parameter
+                    return !!options.capture;
                 }
+                if (!passiveSupported || !passive) {
+                    return options;
+                }
+                if (typeof options === 'boolean') {
+                    return { capture: options, passive: true };
+                }
+                if (!options) {
+                    return { passive: true };
+                }
+                if (typeof options === 'object' && options.passive !== false) {
+                    return Object.assign(Object.assign({}, options), { passive: true });
+                }
+                return options;
             }
             var customScheduleGlobal = function (task) {
                 // if there is already a task for the eventName + capture,
@@ -4133,7 +4147,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var __values =
                 if (taskData.isExisting) {
                     return;
                 }
-                checkIsPassive(task);
                 return nativeAddEventListener.call(taskData.target, taskData.eventName, taskData.capture ? globalZoneAwareCaptureCallback : globalZoneAwareCallback, taskData.options);
             };
             var customCancelGlobal = function (task) {
@@ -4174,7 +4187,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var __values =
                 return nativeRemoveEventListener.call(task.target, task.eventName, task.capture ? globalZoneAwareCaptureCallback : globalZoneAwareCallback, task.options);
             };
             var customScheduleNonGlobal = function (task) {
-                checkIsPassive(task);
                 return nativeAddEventListener.call(taskData.target, taskData.eventName, task.invoke, taskData.options);
             };
             var customSchedulePrepend = function (task) {
@@ -4192,6 +4204,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var __values =
             };
             var compare = (patchOptions && patchOptions.diff) ? patchOptions.diff : compareTaskCallbackVsDelegate;
             var blackListedEvents = Zone[zoneSymbol('BLACK_LISTED_EVENTS')];
+            var passiveEvents = _global[zoneSymbol('PASSIVE_EVENTS')];
             var makeAddListener = function (nativeListener, addSource, customScheduleFn, customCancelFn, returnTarget, prepend) {
                 if (returnTarget === void 0) { returnTarget = false; }
                 if (prepend === void 0) { prepend = false; }
@@ -4222,47 +4235,30 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var __values =
                     if (validateHandler && !validateHandler(nativeListener, delegate, target, arguments)) {
                         return;
                     }
-                    var options = arguments[2];
+                    var passive = passiveSupported && !!passiveEvents && passiveEvents.indexOf(eventName) !== -1;
+                    var options = buildEventListenerOptions(arguments[2], passive);
                     if (blackListedEvents) {
                         // check black list
                         for (var i = 0; i < blackListedEvents.length; i++) {
                             if (eventName === blackListedEvents[i]) {
-                                return nativeListener.apply(this, arguments);
+                                if (passive) {
+                                    return nativeListener.call(target, eventName, delegate, options);
+                                }
+                                else {
+                                    return nativeListener.apply(this, arguments);
+                                }
                             }
                         }
                     }
-                    var capture;
-                    var once = false;
-                    if (options === undefined) {
-                        capture = false;
-                    }
-                    else if (options === true) {
-                        capture = true;
-                    }
-                    else if (options === false) {
-                        capture = false;
-                    }
-                    else {
-                        capture = options ? !!options.capture : false;
-                        once = options ? !!options.once : false;
-                    }
+                    var capture = !options ? false : typeof options === 'boolean' ? true : options.capture;
+                    var once = options && typeof options === 'object' ? options.once : false;
                     var zone = Zone.current;
                     var symbolEventNames = zoneSymbolEventNames$1[eventName];
-                    var symbolEventName;
                     if (!symbolEventNames) {
-                        // the code is duplicate, but I just want to get some better performance
-                        var falseEventName = (eventNameToString ? eventNameToString(eventName) : eventName) + FALSE_STR;
-                        var trueEventName = (eventNameToString ? eventNameToString(eventName) : eventName) + TRUE_STR;
-                        var symbol = ZONE_SYMBOL_PREFIX + falseEventName;
-                        var symbolCapture = ZONE_SYMBOL_PREFIX + trueEventName;
-                        zoneSymbolEventNames$1[eventName] = {};
-                        zoneSymbolEventNames$1[eventName][FALSE_STR] = symbol;
-                        zoneSymbolEventNames$1[eventName][TRUE_STR] = symbolCapture;
-                        symbolEventName = capture ? symbolCapture : symbol;
+                        prepareEventNames(eventName, eventNameToString);
+                        symbolEventNames = zoneSymbolEventNames$1[eventName];
                     }
-                    else {
-                        symbolEventName = symbolEventNames[capture ? TRUE_STR : FALSE_STR];
-                    }
+                    var symbolEventName = symbolEventNames[capture ? TRUE_STR : FALSE_STR];
                     var existingTasks = target[symbolEventName];
                     var isExisting = false;
                     if (existingTasks) {
@@ -4355,19 +4351,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var __values =
                     eventName = patchOptions.transferEventName(eventName);
                 }
                 var options = arguments[2];
-                var capture;
-                if (options === undefined) {
-                    capture = false;
-                }
-                else if (options === true) {
-                    capture = true;
-                }
-                else if (options === false) {
-                    capture = false;
-                }
-                else {
-                    capture = options ? !!options.capture : false;
-                }
+                var capture = !options ? false : typeof options === 'boolean' ? true : options.capture;
                 var delegate = arguments[1];
                 if (!delegate) {
                     return nativeRemoveEventListener.apply(this, arguments);
@@ -4501,20 +4485,36 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var __values =
         return results;
     }
     function findEventTasks(target, eventName) {
-        var foundTasks = [];
-        for (var prop in target) {
-            var match = EVENT_NAME_SYMBOL_REGX.exec(prop);
-            var evtName = match && match[1];
-            if (evtName && (!eventName || evtName === eventName)) {
-                var tasks = target[prop];
-                if (tasks) {
-                    for (var i = 0; i < tasks.length; i++) {
-                        foundTasks.push(tasks[i]);
+        if (!eventName) {
+            var foundTasks = [];
+            for (var prop in target) {
+                var match = EVENT_NAME_SYMBOL_REGX.exec(prop);
+                var evtName = match && match[1];
+                if (evtName && (!eventName || evtName === eventName)) {
+                    var tasks = target[prop];
+                    if (tasks) {
+                        for (var i = 0; i < tasks.length; i++) {
+                            foundTasks.push(tasks[i]);
+                        }
                     }
                 }
             }
+            return foundTasks;
         }
-        return foundTasks;
+        var symbolEventName = zoneSymbolEventNames$1[eventName];
+        if (!symbolEventName) {
+            prepareEventNames(eventName);
+            symbolEventName = zoneSymbolEventNames$1[eventName];
+        }
+        var captureFalseTasks = target[symbolEventName[FALSE_STR]];
+        var captureTrueTasks = target[symbolEventName[TRUE_STR]];
+        if (!captureFalseTasks) {
+            return captureTrueTasks ? captureTrueTasks.slice() : [];
+        }
+        else {
+            return captureTrueTasks ? captureFalseTasks.concat(captureTrueTasks) :
+                captureFalseTasks.slice();
+        }
     }
     function patchEventPrototype(global, api) {
         var Event = global['Event'];
@@ -4704,7 +4704,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var __values =
         'unhandledrejection',
         'unload',
         'userproximity',
-        'vrdisplyconnected',
+        'vrdisplayconnected',
         'vrdisplaydisconnected',
         'vrdisplaypresentchange'
     ];
@@ -4906,13 +4906,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var __values =
         api.getGlobalObjects = function () { return ({ globalSources: globalSources, zoneSymbolEventNames: zoneSymbolEventNames$1, eventNames: eventNames, isBrowser: isBrowser, isMix: isMix, isNode: isNode, TRUE_STR: TRUE_STR,
             FALSE_STR: FALSE_STR, ZONE_SYMBOL_PREFIX: ZONE_SYMBOL_PREFIX, ADD_EVENT_LISTENER_STR: ADD_EVENT_LISTENER_STR, REMOVE_EVENT_LISTENER_STR: REMOVE_EVENT_LISTENER_STR }); };
     });
-    /**
-     * @license
-     * Copyright Google Inc. All Rights Reserved.
-     *
-     * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE file at https://angular.io/license
-     */
     /**
      * @license
      * Copyright Google Inc. All Rights Reserved.
@@ -5749,14 +5742,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var __values =
                 findPromiseRejectionHandler('rejectionhandled');
         }
     });
-    /**
-     * @license
-     * Copyright Google Inc. All Rights Reserved.
-     *
-     * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE file at https://angular.io/license
-     */
-}));
+})));
 
 
 /***/ }),
