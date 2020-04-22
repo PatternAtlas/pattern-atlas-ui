@@ -3,14 +3,14 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "pattern-atlas": {
+    "pattern-pedia": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
       "prefix": "pp",
       "schematics": {
         "@schematics/angular:component": {
-          "styleext": "scss"
+          "style": "scss"
         }
       },
       "architect": {
@@ -109,7 +109,7 @@
         }
       }
     },
-    "pattern-atlas-e2e": {
+    "pattern-pedia-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
