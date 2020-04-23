@@ -1,5 +1,11 @@
-<div class="container">
-    <button mat-flat-button color="primary" (click)="up()">Up </button>
-    <span> {{rating}} </span>
-    <button mat-flat-button color="warn" (click)="down()">Down</button>
+<div *ngIf="row" class="container-row">
+    <button mat-flat-button mat-flat-button type="button" color="primary" (click)="up()">Up </button>
+    <span class="rating"> {{rating}} </span>
+    <button class="item" mat-flat-button mat-flat-button type="button" color="warn" (click)="down()">Down</button>
+</div>
+
+<div *ngIf="!row" class="container-column">
+    <button mat-flat-button mat-flat-button type="button" color="primary" (click)="up()">Up </button>
+    <span class="rating"> {{rating}} </span>
+    <button class="item" mat-flat-button mat-flat-button type="button" color="warn" (click)="down()">Down</button>
 </div>

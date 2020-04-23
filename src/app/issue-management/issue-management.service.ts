@@ -4,6 +4,7 @@ import { ConfigService } from '../authentication/config.service';
 import { ToasterService } from 'angular2-toaster';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { AuthenticationService } from '../authentication/authentication.service';
 
 export interface Issue {
   id: string,
@@ -12,6 +13,18 @@ export interface Issue {
   description: string,
   rating: number,
   version: string,
+  comments: IssueComment[],
+}
+
+export interface IssueComment {
+  id: string,
+  text: string,
+  user: any,
+}
+
+export enum Rating {
+  UP = 'up',
+  DOWN = 'down',
 }
 
 @Injectable({
@@ -25,7 +38,8 @@ export class IssueManagementService {
   constructor(
     private http: HttpClient,
     private config: ConfigService,
-    private toasterService: ToasterService
+    private toasterService: ToasterService,
+    private auth: AuthenticationService,
   ) {
     this.repoEndpoint = this.config.repositoryUrl;
     this.serviceEndpoint = '/issue/';
@@ -60,12 +74,10 @@ export class IssueManagementService {
     )
   }
 
-  public createComment(issue: Issue): Observable<Issue> {
-    issue.rating = 0;
-    issue.uri = issue.name;
-    issue.version = '1.0'
-    
-    return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint + 'create', issue).pipe(
+  public createComment(issue: Issue, issueComment: IssueComment): Observable<Issue> {
+    const userId = this.auth.userSubject.value;
+
+    return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint + 'createComment/' + `${issue.id}&${userId}`, issueComment).pipe(
       map(result => {
         this.toasterService.pop('success', 'Created new issue')
         return result
@@ -80,6 +92,21 @@ export class IssueManagementService {
   public updateIssue(issue: Issue): Observable<Issue> {
 
     return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + 'update/' + issue.id, issue).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Updated issue')
+        return result
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Could not update issue: ', error)
+        return null;
+      }),
+    )
+  }
+
+  public updateRating(issue: Issue, rating: Rating): Observable<Issue> {
+    const userId = this.auth.userSubject.value;
+
+    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + 'updateRating/' + `${issue.id}&${userId}&${rating}`, null).pipe(
       map(result => {
         this.toasterService.pop('success', 'Updated issue')
         return result

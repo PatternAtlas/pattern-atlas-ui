@@ -1,39 +1,71 @@
 .container {
+  border-style: groove;
+  border-color: red;
+
+  .container-comment {
     border-style: groove;
-    border-color: red;
+    border-color: green;
+    width: 100%;
+    display: flex; /* or inline-flex */
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-end;
 
-    .comment{
-        border-style: groove;
-        border-color: green;
-        width: 100%;
-        display: flex; /* or inline-flex */
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: flex-end;
-
-        .mat-form-field{
-            width: 100%;
-        }
+    .mat-form-field {
+      width: 100%;
     }
+  }
 
-    
+  .mat-list {
+    // width: 40%;
+    // border-style: groove;
+    // border-color: green;
+    width: 100%;
+    overflow: auto;
+    max-height: 50vh;
+    // overflow: auto;
+    // max-height: 100vh;
+    // border-width: 2px;
 
-    .mat-list {
-       
-        // width: 40%;
-        // border-style: groove;
-        // border-color: green;
-        width: 100%;
-        // overflow: auto;
-        // max-height: 100vh;
-        // border-width: 2px;
-  
-        .mat-list-item {
-          border-style: groove;
-          // border-width: 2px;
+    .mat-list-item {
+      border-style: groove;
+      min-height: 128px;
+      display: flex; /* or inline-flex */
+      flex-direction: row;
+      width: 100%;
+      // justify-content: space-between;
+      align-items: center;
+
+      // .mat-list-item-content {
+      //   display: flex; /* or inline-flex */
+      //   flex-direction: row;
+      //   width: 100%;
+      //   // justify-content: space-between;
+      //   align-items: center;
+      //   background: red;
+        .container-text {
+          flex: 1;
         }
-      }
+  
+        // .container-rating {
+        //   margin-left: auto;
+        //   border-style: groove;
+        //   border-color: green;
+        // }
+      // }
+
+      // .mat-list-item-content {
+        // background: red;
+       
+      // }
+      // border-width: 2px;
+
+      
+    }
+  }
 }
+
+
 
 // mat-form-field.mat-form-field {
 //     padding: 8px;

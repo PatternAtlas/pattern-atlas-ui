@@ -1,6 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-
-
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { IssueComment } from 'src/app/issue-management/issue-management.service';
 
 @Component({
   selector: 'pp-comment-list',
@@ -9,21 +8,27 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class CommentListComponent implements OnInit {
 
-  @Input() data: any[]; 
+  @Input() data: IssueComment[];
+  @Output() createComment: EventEmitter<IssueComment> = new EventEmitter<IssueComment>();
+  
   comment: string;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.data = [{}, {}];
+    // this.data = [{}, {}];
   }
 
   cancelComment() {
-
+    // console.log('cancel');
+    this.comment = '';
   }
 
   addComment() {
-    console.log(this.comment)
+    // console.log(this.comment)
+    const commentIssue = {} as IssueComment;
+    commentIssue.text = this.comment
+    this.createComment.emit(commentIssue);
   }
 
 }

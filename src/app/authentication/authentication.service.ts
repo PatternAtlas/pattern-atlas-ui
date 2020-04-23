@@ -13,7 +13,8 @@ import { TokenInterceptor } from "./token.interceptor";
 
 const accessTokenKey = 'access_token';
 const refreshTokenKey = 'refresh_token';
-const tokenKey = 'token';
+const userKey = 'user_id';
+const roleKey = 'authorities';
 const stateKey = 'state';
 
 @Injectable({ providedIn: 'root' })
@@ -22,27 +23,16 @@ export class AuthenticationService {
     private regexCode: RegExp;
     private regexState: RegExp;
 
+    public accessTokenSubject: BehaviorSubject<string>;
+    public userSubject: BehaviorSubject<string>;
+    public roleSubject: BehaviorSubject<string[]>;
 
-    // private accessTokenSubject: BehaviorSubject<string>;
-    // accessToken$: Observable<string>;
-    // private loggedUserSubject: BehaviorSubject<User>;
-    // loggedUser$: Observable<User>;
-    // private logoutSubject: Subject<string>;
-    // logout$: Observable<string>;
-    // private userLoading = false;
-
-    // private userLoggedIn = null;
-    public userLoggedInSubject$: BehaviorSubject<boolean>;
-    public accessTokenSubject$: BehaviorSubject<string>;
     private jwtHelper: JwtHelperService;
-    // private jwtHelper: JwtHelperService;
 
     constructor(
         private http: HttpClient,
         private config: ConfigService,
         private router: Router,
-        // public jwtHelper: JwtHelperService
-        // private userService: UserService,
     ) {
         console.log('Init Authentication Service');
         this.jwtHelper = new JwtHelperService();
@@ -50,24 +40,40 @@ export class AuthenticationService {
 
         this.regexCode = /code=(\w*)/;
         this.regexState = /state=(\w*)/;
-        this.authSetup();
 
-        this.getToken();
-        // this.initAccessTokenPipe();
-        // this.initLoggedUserPipe();
-        // this.logoutSubject = new Subject<string>();
-        // this.logout$ = this.logoutSubject.asObservable();
+        this.initSubjectsPipe();
+
     }
 
-    private authSetup() {
-        console.log('Check for token: ', localStorage.getItem(accessTokenKey));
-        localStorage.getItem(accessTokenKey) == null ? 
-        this.userLoggedInSubject$ = new BehaviorSubject<boolean>(false) : this.userLoggedInSubject$ = new BehaviorSubject<boolean>(true);
-        
-        // this.accessTokenSubject$ = new BehaviorSubject<string>(localStorage.getItem(accessTokenKey));
-        // this.accessTokenSubject$.subscribe(token => {
-        //     token !=
-        // })
+    private initSubjectsPipe() {
+        this.userSubject = new BehaviorSubject<string>(null);
+        this.roleSubject = new BehaviorSubject<string[]>(null);
+        this.accessTokenSubject = new BehaviorSubject<string>(this.getAccesToken());
+
+        this.accessTokenSubject.subscribe(token => {
+            // console.log('accesTokenPipe: ', token);
+            if (token === 'logout') {
+                console.log('User logout');
+                this.userSubject.next(null);
+                this.roleSubject.next(null);
+                this.router.navigate(['/']);
+
+            } else if (token && !this.jwtHelper.isTokenExpired(token)) {
+                console.log('Token exists && token not expired')
+                this.userSubject.next(this.jwtHelper.decodeToken(token)[userKey]);
+                this.roleSubject.next(this.jwtHelper.decodeToken(token)[roleKey]);
+                this.router.navigate(['/issue']);
+                // this.router.navigate(['/user']);
+
+            } else if (token && this.getRefreshToken() && this.jwtHelper.isTokenExpired(this.getAccesToken())) {
+                console.log('Token exists && token expired');
+                this.refreshToken();
+
+            } else {
+                console.log('Token does not exist');
+                this.getToken();
+            }
+        })
     }
 
     public login() {
@@ -76,14 +82,16 @@ export class AuthenticationService {
         this.getAccesCode(state);
     }
 
-    private getAccesCode(state: string, clientPrivate?: boolean) {
+    private getAccesCode(state: string) {
         const params = new HttpParams()
             .set('response_type', 'code')
-            .set('client_id', this.config.clientIdPrivate)
+            .set('client_id', this.config.clientIdPublic)
             .set('redirect_uri', `${window.location.origin}`)
-            // .set('code_challenge', '4cc9b165-1230-4607-873b-3a78afcf60c5');
             .set('scope', 'read+write')
             .set('state', state)
+        // .set('client_id', this.config.clientIdPKCE)
+        // .set('code_challenge', '4cc9b165-1230-4607-873b-3a78afcf60c5')
+
 
         window.open(this.config.authorizeUrl + params, '_self');
     }
@@ -105,18 +113,24 @@ export class AuthenticationService {
             } else {
                 const code = this.regexCode.exec(url)[1];
                 const params = new HttpParams()
+                    .set('client_id', `${this.config.clientIdPublic}`)
+                    // .set('client_id', `${this.config.clientPKCE}`)
+                    // .set('code_verifier', '4cc9b165-1230-4607-873b-3a78afcf60c5')
                     .set('code', code)
                     .set('redirect_uri', `${window.location.origin}`)
                     .set('grant_type', 'authorization_code')
-                // .set('code_verifier', '4cc9b165-1230-4607-873b-3a78afcf60c5')
-                this.http.post<any>(this.config.tokenUrl, params, { headers: { authorization: 'Basic ' + btoa(`${this.config.clientIdPrivate}:${this.config.clientSecret}`) } }).subscribe(token => {
-                    console.log(token);
-                    // this.jwtHelper.
-                    localStorage.setItem(accessTokenKey, token[accessTokenKey]);
-                    localStorage.setItem(refreshTokenKey, token[refreshTokenKey]);
-                    // this.accessTokenSubject$.next(token[accessTokenKey]);
-                    this.userLoggedInSubject$.next(true);
 
+                // this.http.post<any>(this.config.tokenUrl, params, { headers: { authorization: 'Basic ' + btoa(`${this.config.clientIdPrivate}:${this.config.clientSecret}`) } }).subscribe(token => {
+                this.http.post<any>(this.config.tokenUrl, params).subscribe(token => {
+
+                    // console.log('Token response normal: ', token);
+                    const accessToken = token[accessTokenKey];
+                    const refreshToken = token[refreshTokenKey];
+
+                    localStorage.setItem(accessTokenKey, accessToken);
+                    localStorage.setItem(refreshTokenKey, refreshToken);
+
+                    this.accessTokenSubject.next(accessToken);
                 },
                     error => console.error('Error getToken(): ', error)
                 );
@@ -126,60 +140,65 @@ export class AuthenticationService {
 
     refreshToken() {
         console.log("Refresh Token");
-        const refreshToken = localStorage.getItem(refreshTokenKey);
         const params = new HttpParams()
-            .set('client_id', this.config.clientIdPrivate)
+            .set('client_id', `${this.config.clientIdPublic}`)
             .set('grant_type', 'refresh_token')
-            .set('refresh_token', refreshToken)
-        console.log(params);
-        this.http.post<any>('http://localhost:8081/oauth/token', params, { headers: { authorization: 'Bearer ' + this.getAccesToken } }).subscribe(val => {
-            console.log(val);
-            // this.token == null ? this.token = val['access_token'] : null ;
-            // this.token = (val['access_token']);
-        });
+            .set('refresh_token', `${this.getRefreshToken()}`)
+        this.http.post<any>('http://localhost:8081/oauth/token', params).subscribe(token => {
+
+            // console.log('Token refresh normal: ', token);
+            const accessToken = token[accessTokenKey];
+            const refreshToken = token[refreshTokenKey];
+
+            localStorage.setItem(accessTokenKey, accessToken);
+            localStorage.setItem(refreshTokenKey, refreshToken);
+
+            this.accessTokenSubject.next(accessToken);
+        },
+            error => {
+                console.error('Error getToken via refreshToken: ', error)
+
+            }
+        );
     }
 
     logout() {
         console.log("Logout");
-        const token = localStorage.getItem(accessTokenKey);
-        this.http.get<any>(this.config.tokenRevokeUrl, { headers: { authorization: 'Bearer ' + token } }).subscribe(val => {
-            localStorage.clear();
-            this.userLoggedInSubject$.next(false);
-        },
-            error => {
-                console.error('Error revokeToken(): ', error)
-                localStorage.clear();
-                this.userLoggedInSubject$.next(false);
-            });
+        localStorage.clear();
+        this.accessTokenSubject.next('logout');
     }
 
     public getAccesToken(): string {
         return localStorage.getItem(accessTokenKey);
     }
 
+    private getRefreshToken(): string {
+        return localStorage.getItem(refreshTokenKey);
+    }
+
     public isAuthenticated(): boolean {
-        // const jwtHelper = new JwtHelperService();
-        return !this.jwtHelper.isTokenExpired(this.getAccesToken());
-    }
-
-    public getUserRole(): string[] {
-        // const jwtHelper = new JwtHelperService();
-        const authorities = this.jwtHelper.decodeToken(this.getAccesToken())['authorities'];
-        // console.log(authorities);
-        return authorities;
-    }
-
-    hasRole(role: string): Observable<boolean> {
-        const token = localStorage.getItem(accessTokenKey);
-        if (token == null) {
-            of(false);
+        // console.log('isAuthenticated');
+        if (!this.jwtHelper.isTokenExpired(this.getAccesToken())) {
+            return true;
+        } else if (!this.jwtHelper.isTokenExpired(this.getRefreshToken())) {
+            this.refreshToken();
+            return true
         } else {
-            const authorities = this.getUserRole();
-            return of(authorities.includes(role));
+            this.logout();
+            return false;
         }
+    }
 
-       
-        // return authorities
-      }
+    public hasRole(role: string): Observable<boolean> {
+        return this.roleSubject.asObservable().pipe(
+            map(roles => {
+                // console.log(role, roles);
+                if (roles) {
+                    return roles.includes(role);
+                }
+                return null;
+            })
+        );
+    }
 
 }

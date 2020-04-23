@@ -20,7 +20,7 @@
         </mat-form-field>
 
         <div class="container-rating">
-            <pp-rating [rating]="issue.rating"> </pp-rating>
+            <pp-rating [rating]="issue.rating" (userRatingCurrent)="updateRating($event)"> </pp-rating>
         </div>
 
         <div class="container-button" *ngIf="disabled">
@@ -35,7 +35,7 @@
             <button mat-flat-button type="button" color="primary" (click)="exit()">Exit</button>
         </div>
 
-        <pp-comment-list></pp-comment-list>
+        <pp-comment-list [data]="issue.comments" (createComment)="createComment($event)"></pp-comment-list>
     </form>
 
     

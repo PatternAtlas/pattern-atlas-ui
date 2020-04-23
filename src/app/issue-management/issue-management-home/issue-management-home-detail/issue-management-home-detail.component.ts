@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Issue, IssueManagementService } from '../../issue-management.service';
+import { Issue, IssueManagementService, IssueComment, Rating } from '../../issue-management.service';
 
 @Component({
   selector: 'pp-issue-management-home-detail',
@@ -56,6 +56,24 @@ export class IssueManagementHomeDetailComponent implements OnInit {
       this.changed.emit();
       this.disabled = true;
     })
+  }
+
+  createComment(issueComment: IssueComment) {
+    console.log(issueComment);
+    this.issueManagementService.createComment(this.issue, issueComment).subscribe((result: Issue) => {
+      console.log('createComment: ', result);
+      this.issue = result;
+      this.changed.emit();
+    });
+  }
+
+  updateRating(rating: Rating) {
+    console.log(rating);
+    this.issueManagementService.updateRating(this.issue, rating).subscribe((result: Issue) => {
+      console.log('updateRating: ', result);
+      this.issue = result;
+      this.changed.emit();
+    });
   }
 
 }

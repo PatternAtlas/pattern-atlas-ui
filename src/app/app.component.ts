@@ -28,10 +28,16 @@ export class AppComponent {
 
 
     constructor(public auth: AuthenticationService) {
-        this.auth.userLoggedInSubject$.subscribe(loggedIn => {
-            console.log(loggedIn)
-            this.loggedIn = loggedIn;
-            loggedIn ? this.loginButton = 'Logout' : this.loginButton = 'Login'
+        this.auth.userSubject.subscribe(user => {
+            console.log(user)
+            // this.loggedIn = loggedIn;
+            if (user) {
+                console.log('user exists');
+            } else {
+                console.log('user does not exists');
+            }
+            user ? this.loggedIn = true : this.loggedIn = false
+            user ? this.loginButton = 'Logout' : this.loginButton = 'Login'
         })
     }
 

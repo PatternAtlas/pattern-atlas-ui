@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Rating } from 'src/app/issue-management/issue-management.service';
 
 @Component({
   selector: 'pp-rating',
@@ -7,6 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class RatingComponent implements OnInit {
 
+  @Input() row: boolean = true;
   @Input() rating: number;
   @Input() userRatingPast: number;
   @Output() userRatingCurrent = new EventEmitter();
@@ -14,15 +16,15 @@ export class RatingComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log('eyy');
+    // console.log('eyy');
   }
 
   up() {
-    this.rating += 1;
+    this.userRatingCurrent.emit(Rating.UP);
   }
 
   down(){
-    this.rating -= 1;
+    this.userRatingCurrent.emit(Rating.DOWN);
   } 
 
 }

@@ -21,8 +21,10 @@ export class ConfigService {
   signinUrl: string;
   userInfoUrl: string;
   clientIdPrivate: string;
-  clientIdPublic: string;
   clientSecret: string;
+  clientIdPublic: string;
+  clientIdPKCE: string;
+  
 
   constructor() { }
 
@@ -35,8 +37,9 @@ export class ConfigService {
     this.signinUrl = environment.signinUrl;
     this.userInfoUrl = environment.userInfoUrl;
     this.clientIdPrivate = environment.clientIdPrivate;
-    this.clientIdPublic = environment.clientIdPublic;
     this.clientSecret = environment.clientSecret;
+    this.clientIdPublic = environment.clientIdPublic;
+    this.clientIdPKCE = environment.clientIdPKCE;
 
     return of().toPromise();
   }

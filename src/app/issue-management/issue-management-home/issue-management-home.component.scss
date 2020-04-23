@@ -13,8 +13,8 @@
        
         // width: 40%;
         border-style: groove;
-        // overflow: auto;
-        // max-height: 100vh;
+        overflow: auto;
+        height: calc(100vh - 64px - 48px - 96px);
         // border-width: 2px;
   
         .new-button {
