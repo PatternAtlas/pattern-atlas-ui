@@ -2,8 +2,8 @@ import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 import { Injectable } from '@angular/core';
 import { Observable, of, pipe, throwError } from 'rxjs';
 import { filter, retryWhen, switchMap, take, delay } from 'rxjs/operators';
-import { AuthenticationService } from './authentication.service';
-import { ConfigService } from './config.service';
+import { AuthenticationService } from '../_services/authentication.service';
+import { ConfigService } from '../config.service';
 // import { AuthenticationService } from './authentication.service';
 
 @Injectable()

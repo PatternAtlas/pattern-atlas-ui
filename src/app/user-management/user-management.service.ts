@@ -5,9 +5,7 @@ import { ToasterService } from 'angular2-toaster';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class UserManagementService {
 
   private userInfoEndpoint: string;
@@ -36,4 +34,5 @@ export class UserManagementService {
       }),
     )
   }
+ 
 }

@@ -5,7 +5,22 @@
     display: flex; /* or inline-flex */
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: stretch;
+
+    .container-candidate {
+        display: flex; /* or inline-flex */
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        .language-select {
+            flex: 1;
+        }
+
+        .language-button {
+            padding-left: 8px;
+        }
+    }
 
     .container-rating {
         width: 100%;
@@ -23,7 +38,7 @@
 }
 
 mat-form-field.mat-form-field {
-    padding: 8px;
+    padding-bottom: 8px;
     border-style: groove;
     width: 100%;
     font-size: 16px;

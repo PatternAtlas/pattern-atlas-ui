@@ -4,7 +4,7 @@ import { ConfigService } from '../authentication/config.service';
 import { ToasterService } from 'angular2-toaster';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { AuthenticationService } from '../authentication/authentication.service';
+import { AuthenticationService } from '../authentication/_services/authentication.service';
 
 export interface Issue {
   id: string,
@@ -19,6 +19,7 @@ export interface Issue {
 export interface IssueComment {
   id: string,
   text: string,
+  rating: number;
   user: any,
 }
 
@@ -27,9 +28,7 @@ export enum Rating {
   DOWN = 'down',
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class IssueManagementService {
 
   private repoEndpoint: string;
@@ -113,6 +112,21 @@ export class IssueManagementService {
       }),
       catchError(error => {
         this.toasterService.pop('error', 'Could not update issue: ', error)
+        return null;
+      }),
+    )
+  }
+
+  public updateCommentRating(issueComment: IssueComment, rating: Rating): Observable<Issue> {
+    const userId = this.auth.userSubject.value;
+
+    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + 'updateCommentRating/' + `${issueComment.id}&${userId}&${rating}`, null).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Updated issue comment')
+        return result
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Could not update issue comment: ', error)
         return null;
       }),
     )

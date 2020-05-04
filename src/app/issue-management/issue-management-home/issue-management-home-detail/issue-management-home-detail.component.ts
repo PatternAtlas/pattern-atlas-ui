@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Issue, IssueManagementService, IssueComment, Rating } from '../../issue-management.service';
+import { IssueCommentRatingEvent } from 'src/app/core/component/comment-list/comment-list.component';
 
 @Component({
   selector: 'pp-issue-management-home-detail',
@@ -12,6 +13,8 @@ export class IssueManagementHomeDetailComponent implements OnInit {
   @Output() changed = new EventEmitter<boolean>();
 
   public disabled = true;
+  public patternLanguages = ['Lanuage 1', 'None'];
+  public patternLanguageSelected = 'None';
 
   // JavaScript passes Ojbects via reference
   private name: string;
@@ -19,8 +22,7 @@ export class IssueManagementHomeDetailComponent implements OnInit {
 
   constructor(
     private issueManagementService: IssueManagementService,
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
   }
@@ -68,12 +70,25 @@ export class IssueManagementHomeDetailComponent implements OnInit {
   }
 
   updateRating(rating: Rating) {
-    console.log(rating);
+    console.log(this.issue, rating);
     this.issueManagementService.updateRating(this.issue, rating).subscribe((result: Issue) => {
       console.log('updateRating: ', result);
       this.issue = result;
       this.changed.emit();
     });
+  }
+
+  updateCommentRating(issueCommentRatingEvent: IssueCommentRatingEvent) {
+    console.log(issueCommentRatingEvent);
+    this.issueManagementService.updateCommentRating(issueCommentRatingEvent.issueComment, issueCommentRatingEvent.issueCommentRating).subscribe((result: Issue) => {
+      console.log('updateCommentRating: ', result);
+      this.issue = result;
+      this.changed.emit();
+    });
+  }
+
+  createCandidate() {
+    console.log('Create Candidate: ');
   }
 
 }

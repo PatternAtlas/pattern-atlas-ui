@@ -1,19 +1,19 @@
 <div class="container" *ngIf="issue">
 
     <form (ngSubmit)="update()" #issueForm="ngForm">
-
-        <mat-form-field appearance="standard">
-            <mat-label for="name">Name</mat-label>
-            <input matInput [disabled]="disabled" placeholder="Placeholder" type="text" class="form-control" id="name"
-                required [(ngModel)]="issue.name" name="name" #name="ngModel">
-            <mat-hint *ngIf="!issue.name">Insert a name</mat-hint>
-        </mat-form-field>
+        <div>
+            <mat-form-field appearance="standard">
+                <mat-label for="name">Name</mat-label>
+                <input matInput [disabled]="disabled" placeholder="Placeholder" type="text" class="form-control"
+                    id="name" required [(ngModel)]="issue.name" name="name" #name="ngModel">
+                <mat-hint *ngIf="!issue.name">Insert a name</mat-hint>
+            </mat-form-field>
+        </div>
 
         <mat-form-field appearance="standard">
             <mat-label for="description">Description</mat-label>
             <textarea matInput [disabled]="disabled" placeholder="Placeholder" type="text" class="form-control"
-                id="description" required [(ngModel)]="issue.description" name="description"
-                #description="ngModel">
+                id="description" required [(ngModel)]="issue.description" name="description" #description="ngModel">
             </textarea>
             <mat-hint *ngIf="!issue.description">Pls insert a describtion</mat-hint>
 
@@ -21,6 +21,23 @@
 
         <div class="container-rating">
             <pp-rating [rating]="issue.rating" (userRatingCurrent)="updateRating($event)"> </pp-rating>
+        </div>
+
+        <div class="container-candidate" *ngIf="!disabled">
+            <div class="language-select">
+                <mat-form-field>
+                    <mat-label>Pattern Language</mat-label>
+                    <mat-select [(ngModel)]="patternLanguageSelected" name="patternLanguage">
+                        <mat-option *ngFor="let language of patternLanguages" [value]="language">
+                            {{language}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="language-button">
+                <button mat-flat-button type="button" color="accent" (click)="createCandidate()">Create
+                    Candidate</button>
+            </div>
         </div>
 
         <div class="container-button" *ngIf="disabled">
@@ -35,9 +52,10 @@
             <button mat-flat-button type="button" color="primary" (click)="exit()">Exit</button>
         </div>
 
-        <pp-comment-list [data]="issue.comments" (createComment)="createComment($event)"></pp-comment-list>
+        <pp-comment-list [data]="issue.comments" (createComment)="createComment($event)"
+            (commentRating)="updateCommentRating($event)"></pp-comment-list>
     </form>
 
-    
+
 
 </div>

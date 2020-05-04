@@ -1,14 +1,14 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, Subject, of, EMPTY, observable } from "rxjs";
 import { HttpClient, HttpRequest, HttpParams, HttpHeaders } from "@angular/common/http";
-import { ConfigService } from "./config.service";
+import { ConfigService } from "../config.service";
 import { Router } from "@angular/router";
 import { switchMap, skipWhile, tap, map, catchError } from "rxjs/operators";
 // import { TokenInterceptor } from "./token.interceptor";
-import { User, Role } from "../core/service/data/User";
+import { User, Role } from "../../core/service/data/User";
 // import { UserService } from "./user.service";
 import { JwtHelperService } from "@auth0/angular-jwt";
-import { TokenInterceptor } from "./token.interceptor";
+import { TokenInterceptor } from "../_interceptor/token.interceptor";
 
 
 const accessTokenKey = 'access_token';

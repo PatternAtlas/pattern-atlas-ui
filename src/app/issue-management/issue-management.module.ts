@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { CoreModule } from '../core/core.module';
+import { MatSelectModule } from '@angular/material/select';
 
 export const ISSUE_ROTUES = [
   { 
@@ -41,7 +42,8 @@ export const ISSUE_ROTUES = [
     MatFormFieldModule,
     FormsModule,
     ReactiveFormsModule,
-    MatInputModule
+    MatInputModule,
+    MatSelectModule,
   ],
   exports: [
     IssueManagementHomeComponent

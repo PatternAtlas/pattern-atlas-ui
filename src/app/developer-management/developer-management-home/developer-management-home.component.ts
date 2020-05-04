@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from 'src/app/authentication/authentication.service';
+import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
 
 @Component({
   selector: 'pp-developer-management-home',

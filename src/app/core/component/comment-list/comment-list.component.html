@@ -11,14 +11,15 @@
         </div>
     </div>
     <mat-list>
-        <mat-list-item *ngFor="let comment of data" (click)="toggleDetail(issueDetail)">
+        <mat-list-item *ngFor="let comment of data">
             <div class="container-text">
                 <p matLine> {{comment.id}} </p>
                 <p matLine> {{comment.text}} </p>
-                <p matLine> Rating {{comment.user}} </p>
+                <p matLine> Rating {{comment.rating}} </p>
+                <p matLine> User {{comment.user}} </p>
             </div>
             <div class="container-rating">
-                <pp-rating [row]="false" [rating]="0"></pp-rating>
+                <pp-rating [row]="false" [rating]="comment.rating" (userRatingCurrent)="updateCommentRating($event, comment)"></pp-rating>
             </div>
         </mat-list-item>
     </mat-list>

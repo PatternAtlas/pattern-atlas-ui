@@ -17,7 +17,7 @@ export class UserManagementHomeComponent implements OnInit {
   ngOnInit(): void {
     this.userManagementService.getUser().subscribe(result => {
       console.log(result)
-    })
+    });
   }
 
 }

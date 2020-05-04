@@ -22,8 +22,8 @@
     // border-color: green;
     width: 100%;
     overflow: auto;
-    max-height: 50vh;
-    // overflow: auto;
+    overflow: auto;
+    height: calc(100vh - 64px - 48px - 96px - 440px);
     // max-height: 100vh;
     // border-width: 2px;
 

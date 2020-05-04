@@ -1,5 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { IssueComment } from 'src/app/issue-management/issue-management.service';
+import { IssueComment, Rating } from 'src/app/issue-management/issue-management.service';
+
+export interface IssueCommentRatingEvent {
+  issueComment: IssueComment,
+  issueCommentRating: Rating,
+}
 
 @Component({
   selector: 'pp-comment-list',
@@ -10,6 +15,7 @@ export class CommentListComponent implements OnInit {
 
   @Input() data: IssueComment[];
   @Output() createComment: EventEmitter<IssueComment> = new EventEmitter<IssueComment>();
+  @Output() commentRating: EventEmitter<IssueCommentRatingEvent> = new EventEmitter<IssueCommentRatingEvent>();
   
   comment: string;
 
@@ -29,6 +35,16 @@ export class CommentListComponent implements OnInit {
     const commentIssue = {} as IssueComment;
     commentIssue.text = this.comment
     this.createComment.emit(commentIssue);
+    this.comment = '';
+  }
+
+  updateCommentRating(rating: Rating, comment: IssueComment) {
+    console.log('User Upvoted Comment', rating, comment);
+    const issueCommentRatingEvent = {} as IssueCommentRatingEvent;
+    issueCommentRatingEvent.issueComment = comment;
+    issueCommentRatingEvent.issueCommentRating = rating;
+    this.commentRating.emit(issueCommentRatingEvent);
+    // this.commentRating.emit(rating);
   }
 
 }
