@@ -4,9 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-
-RUN rm -rf node_modules package-lock.json && npm cache clean --force && npm install && \
-    npm run build
+RUN yarn && yarn build --prod
 
 FROM nginx:alpine
 
