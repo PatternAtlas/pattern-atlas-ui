@@ -44,6 +44,8 @@ import { LandingPageComponent } from './core/component/landing-page/landing-page
 import { PageNotFoundComponent } from './core/component/page-not-found/page-not-found.component';
 import { FilterViewComponent } from './filter/component/filter-view/filter-view.component';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { DesignModelModule } from './design-model-module/design-model.module';
+
 
 @NgModule({
     declarations: [
@@ -57,6 +59,9 @@ import { AuthenticationModule } from './authentication/authentication.module';
         BrowserModule,
         BrowserAnimationsModule,
         AuthenticationModule,
+        PatternLanguageManagementModule,
+        PatternViewManagementModule,
+        DesignModelModule,
         MatToolbarModule,
         MatIconModule,
         MatCardModule,

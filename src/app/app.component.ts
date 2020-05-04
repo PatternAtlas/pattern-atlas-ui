@@ -15,13 +15,17 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from './authentication/_services/authentication.service';
 import { PAUser } from './core/user-management';
+import { globals } from './globals';
+
 
 @Component({
-    selector: 'pp-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
+  selector: 'pp-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+
+  readonly featureToggleDesignModel = globals.featureToggles.designModel;
 
     loginButton = "Login";
     welcomeText = ""
@@ -47,6 +51,4 @@ export class AppComponent {
     loginOAuth() {
         this.user ? this.auth.logout() : this.auth.login()
     }
-
-
 }
