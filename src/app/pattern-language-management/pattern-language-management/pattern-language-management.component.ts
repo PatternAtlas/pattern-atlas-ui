@@ -19,7 +19,10 @@ import {MatDialog} from '@angular/material/dialog';
 import {CookieService} from 'ngx-cookie-service';
 import {ToasterService} from 'angular2-toaster';
 import {PatternLanguageService} from '../../core/service/pattern-language.service';
-import {CreateEditPatternLanguageComponent} from '../../core/component/create-edit-pattern-language/create-edit-pattern-language.component';
+import {
+  CreateEditComponentDialogType,
+  CreateEditPatternLanguageComponent
+} from '../../core/component/create-edit-pattern-language/create-edit-pattern-language.component';
 import {DialogPatternLanguageResult} from '../data/DialogPatternLanguageResult.interface';
 import {map} from 'rxjs/operators';
 import PatternLanguageModel from '../../core/model/hal/pattern-language-model.model';
@@ -83,7 +86,7 @@ export class PatternLanguageManagementComponent implements OnInit {
     }
 
     goToPatternLanguageCreation(): void {
-        const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent, {data: {isPatternLanguageCreation: true}});
+        const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent, {data: { componentDialogType: CreateEditComponentDialogType.PATTERN_LANGUAGE }});
 
         // Save PatternLanguage when user presses save
         (<CreateEditPatternLanguageComponent>dialogRef.componentInstance).saveClicked
