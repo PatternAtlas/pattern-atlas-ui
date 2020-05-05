@@ -4,8 +4,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {DialogData, MdEditorComponent} from '../../md-editor/md-editor.component';
 import * as MarkdownIt from 'markdown-it';
 import * as markdownitKatex from 'markdown-it-katex';
-import {AlgorithmDetectionService} from '../../../service/algorithm-detection.service';
-import {AlgorithmType} from '../../../model/algorithm-type.enum';
+import {ImageService} from '../../../service/image.service';
 
 @Component({
   selector: 'pp-markdown-pattern-section-content',
@@ -18,28 +17,55 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
   renderedData: string;
   title = '';
 
+
   showActionButtons = false;
   @ViewChild('markdownContent') markdownDiv: ElementRef;
   @Input() content: string;
   private markdown: MarkdownIt;
 
-  constructor(private dialog: MatDialog, private cdr: ChangeDetectorRef, private algoService: AlgorithmDetectionService) {
+  constructor(private dialog: MatDialog,
+              private cdr: ChangeDetectorRef,
+              private imageService: ImageService
+  ) {
     super();
     this.changeContent = new EventEmitter<DataChange>();
+    this.imageService = imageService;
   }
 
   ngAfterViewInit() {
     this.markdown = new MarkdownIt();
     this.markdown.use(markdownitKatex);
-    console.log("log" + this.data);
-    console.log("logrendered" + this.renderedData);
     this.changeText(this.renderedData);
   }
 
   changeText(value: string): void {
+    this.markdownDiv.nativeElement.innerHTML = '';
     this.renderedData = value;
-    this.markdownDiv.nativeElement.innerHTML = this.markdown.render(this.renderedData);
+    this.renderSVGTags(value);
     this.cdr.detectChanges();
+  }
+
+  renderSVGTags(data: string): void {
+    let editData =  data;
+    const indexes: number[] = this.getNextOccurance(editData, '<SVG>', '</SVG>');
+    console.log(indexes[0], indexes[1]);
+    if (indexes[0] !== -1 && indexes[1] !== -1) {
+      // render elements before svg imgage link
+      this.markdownDiv.nativeElement.innerHTML += this.markdown.render(editData.substring(0, indexes[0] - 1));
+      // get id for img on database
+      const id = editData.substring(indexes[0] + 5, indexes[1]);
+      // get image and add raw svg text to html
+      this.imageService.getImageById(id)
+        .subscribe(res => {
+          this.markdownDiv.nativeElement.innerHTML += res;
+          // cut off parts that were added to html and recursive call function to render the rest.
+          editData = editData.slice(indexes[1] + 6);
+          this.renderSVGTags(editData);
+        });
+    } else {
+      // if no svg tag remaining - render remaining elements
+      this.markdownDiv.nativeElement.innerHTML += this.markdown.render(editData);
+    }
   }
 
   openEditor(): void {
@@ -56,5 +82,9 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
       }
       this.changeContent.emit({previousValue: previousValue, currentValue: result.content});
     });
+  }
+
+  getNextOccurance(content: string, begin: string, end: string): number[] {
+    return [content.indexOf(begin, 0), content.indexOf(end, 0)];
   }
 }

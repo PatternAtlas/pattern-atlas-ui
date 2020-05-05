@@ -185,27 +185,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
             }));
     }
 
-    // private savePatternPipe(section: string, previousContent: any, instance: MarkdownPatternSectionContentComponent) {
-    //   this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).pipe(map(  data => {
-    //     console.log(section);
-    //     const test = data.body.renderedContent[section];
-    //     console.log(test);
-    //     this.pattern.renderedContent[section] = test;
-    //     instance.changeText(this.pattern.renderedContent[section]);
-    //     return test;
-    //   })).subscribe(() => {
-    //       this.toasterService.pop('success', 'Saved pattern');
-    //       console.log(this.pattern.renderedContent[section] + 'saved');
-    //     },
-    //     (error) => {
-    //       this.toasterService.pop('error', 'Could not save pattern, resetting content', error.message);
-    //       // reset text of the section:
-    //       this.pattern.content[section] = previousContent;
-    //       instance.changeText(previousContent);
-    //       this.cdr.detectChanges();
-    //     });
-    // }
-
     private savePattern(section: string, previousContent: any, instance: MarkdownPatternSectionContentComponent) {
         this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe(data => {
             console.log(section);
