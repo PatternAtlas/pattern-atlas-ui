@@ -4,7 +4,7 @@ node_js:
 cache:
   directories:
     - node_modules
-script: npm run travis
+script: yarn travis
 deploy:
   provider: pages
   skip-cleanup: true
