@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN yarn && yarn build --prod
+RUN yarn --network-timeout 120000 && yarn build --prod
 
 FROM nginx:alpine
 
