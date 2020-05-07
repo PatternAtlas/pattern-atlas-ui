@@ -20,6 +20,7 @@ import Pattern from '../model/hal/pattern.model';
 import {map} from 'rxjs/operators';
 import {PatternResponse} from '../model/hal/pattern-response.interface';
 import PatternLanguage from '../model/hal/pattern-language.model';
+import {Edge} from '../model/hal/edge.model';
 
 @Injectable()
 export class PatternService {
