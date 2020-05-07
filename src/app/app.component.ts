@@ -14,6 +14,7 @@
 
 import { Component } from '@angular/core';
 import { AuthenticationService } from './authentication/_services/authentication.service';
+import { User } from './user-management/user-management.service';
 
 @Component({
     selector: 'pp-root',
@@ -23,26 +24,28 @@ import { AuthenticationService } from './authentication/_services/authentication
 export class AppComponent {
 
     loginButton = "Login";
-    // isExpanded = true;
-    private loggedIn: boolean;
+    welcomeText = ""
+    user: User;
 
 
     constructor(public auth: AuthenticationService) {
-        this.auth.userSubject.subscribe(user => {
-            console.log(user)
-            // this.loggedIn = loggedIn;
-            if (user) {
-                console.log('user exists');
+        this.auth.userSubject.subscribe(_user => {
+            if (_user) {
+                console.log('User is Logged in: ', _user);
+                this.user = _user;
+                this.loginButton = 'Logout'; 
+                this.welcomeText = `Welcome ${_user.name}`;
             } else {
-                console.log('user does not exists');
+                console.log('No user logged in: ', _user);
+                this.user = null;
+                this.loginButton = 'Login';
+                this.welcomeText = '';
             }
-            user ? this.loggedIn = true : this.loggedIn = false
-            user ? this.loginButton = 'Logout' : this.loginButton = 'Login'
         })
     }
 
     loginOAuth() {
-        this.loggedIn ? this.auth.logout() : this.auth.login()
+        this.user ? this.auth.logout() : this.auth.login()
     }
 
 

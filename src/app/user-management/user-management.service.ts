@@ -5,6 +5,13 @@ import { ToasterService } from 'angular2-toaster';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
+export interface User {
+  id: string,
+  roles: any[],
+  email: string,
+  name: string,
+}
+
 @Injectable()
 export class UserManagementService {
 

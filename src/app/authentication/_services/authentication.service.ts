@@ -4,17 +4,14 @@ import { HttpClient, HttpRequest, HttpParams, HttpHeaders } from "@angular/commo
 import { ConfigService } from "../config.service";
 import { Router } from "@angular/router";
 import { switchMap, skipWhile, tap, map, catchError } from "rxjs/operators";
-// import { TokenInterceptor } from "./token.interceptor";
-import { User, Role } from "../../core/service/data/User";
-// import { UserService } from "./user.service";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { TokenInterceptor } from "../_interceptor/token.interceptor";
+import { User } from "src/app/user-management/user-management.service";
 
 
 const accessTokenKey = 'access_token';
 const refreshTokenKey = 'refresh_token';
-const userKey = 'user_id';
-const roleKey = 'authorities';
+
 const stateKey = 'state';
 
 @Injectable({ providedIn: 'root' })
@@ -24,7 +21,7 @@ export class AuthenticationService {
     private regexState: RegExp;
 
     public accessTokenSubject: BehaviorSubject<string>;
-    public userSubject: BehaviorSubject<string>;
+    public userSubject: BehaviorSubject<User>;
     public roleSubject: BehaviorSubject<string[]>;
 
     private jwtHelper: JwtHelperService;
@@ -46,7 +43,7 @@ export class AuthenticationService {
     }
 
     private initSubjectsPipe() {
-        this.userSubject = new BehaviorSubject<string>(null);
+        this.userSubject = new BehaviorSubject<User>(null);
         this.roleSubject = new BehaviorSubject<string[]>(null);
         this.accessTokenSubject = new BehaviorSubject<string>(this.getAccesToken());
 
@@ -60,8 +57,7 @@ export class AuthenticationService {
 
             } else if (token && !this.jwtHelper.isTokenExpired(token)) {
                 console.log('Token exists && token not expired')
-                this.userSubject.next(this.jwtHelper.decodeToken(token)[userKey]);
-                this.roleSubject.next(this.jwtHelper.decodeToken(token)[roleKey]);
+                this.getUserInfo();
                 this.router.navigate(['/issue']);
                 // this.router.navigate(['/user']);
 
@@ -131,6 +127,8 @@ export class AuthenticationService {
                     localStorage.setItem(refreshTokenKey, refreshToken);
 
                     this.accessTokenSubject.next(accessToken);
+
+                    // this.getUserInfo();
                 },
                     error => console.error('Error getToken(): ', error)
                 );
@@ -154,6 +152,23 @@ export class AuthenticationService {
             localStorage.setItem(refreshTokenKey, refreshToken);
 
             this.accessTokenSubject.next(accessToken);
+
+            // this.getUserInfo();
+        },
+            error => {
+                console.error('Error getToken via refreshToken: ', error)
+
+            }
+        );
+    }
+
+    getUserInfo() {
+        this.http.get<User>('http://localhost:8081/user_info').subscribe(user => {
+
+            console.log('UserInfo: ', user);
+            this.userSubject.next(user);
+            this.roleSubject.next(user.roles);
+
         },
             error => {
                 console.error('Error getToken via refreshToken: ', error)

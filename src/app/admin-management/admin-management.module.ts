@@ -7,6 +7,14 @@ import { UserManagementModule } from '../user-management/user-management.module'
 import { AdminManagementService } from './admin-management.service';
 import { CoreModule } from '../core/core.module';
 import {MatTableModule} from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { AdminManagementHomeDetailComponent } from './admin-management-home-detail/admin-management-home-detail.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { AdminManagementHomeStore } from './admin-management-home-helper/admin-management-home-store';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 
 export const ADMIN_MANAGEMENT_ROUTES = [
@@ -14,7 +22,8 @@ export const ADMIN_MANAGEMENT_ROUTES = [
     path: '',
     children: [
       { path: '', component: AdminManagementHomeComponent },
-      // { path: 'userDetails', component: UserDetailsComponent }
+      { path: 'edit/:id', component: AdminManagementHomeDetailComponent },
+      { path: 'create', component: AdminManagementHomeDetailComponent }
     ]
   }
 ];
@@ -22,16 +31,27 @@ export const ADMIN_MANAGEMENT_ROUTES = [
 @NgModule({
   declarations: [
     AdminManagementHomeComponent,
+    AdminManagementHomeDetailComponent,
    
   ],
   imports: [
     CommonModule,
     CoreModule,
     RouterModule.forChild(ADMIN_MANAGEMENT_ROUTES),
+    // Material
     MatTableModule,
+    MatIconModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonToggleModule,
+    // Form
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
-    AdminManagementService
+    AdminManagementService,
+    AdminManagementHomeStore,
   ]
 })
 export class AdminManagementModule { }

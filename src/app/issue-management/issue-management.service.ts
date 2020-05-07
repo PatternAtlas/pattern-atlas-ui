@@ -74,7 +74,7 @@ export class IssueManagementService {
   }
 
   public createComment(issue: Issue, issueComment: IssueComment): Observable<Issue> {
-    const userId = this.auth.userSubject.value;
+    const userId = this.auth.userSubject.value.id;
 
     return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint + 'createComment/' + `${issue.id}&${userId}`, issueComment).pipe(
       map(result => {
@@ -103,7 +103,7 @@ export class IssueManagementService {
   }
 
   public updateRating(issue: Issue, rating: Rating): Observable<Issue> {
-    const userId = this.auth.userSubject.value;
+    const userId = this.auth.userSubject.value.id;
 
     return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + 'updateRating/' + `${issue.id}&${userId}&${rating}`, null).pipe(
       map(result => {
@@ -118,7 +118,7 @@ export class IssueManagementService {
   }
 
   public updateCommentRating(issueComment: IssueComment, rating: Rating): Observable<Issue> {
-    const userId = this.auth.userSubject.value;
+    const userId = this.auth.userSubject.value.id;
 
     return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + 'updateCommentRating/' + `${issueComment.id}&${userId}&${rating}`, null).pipe(
       map(result => {

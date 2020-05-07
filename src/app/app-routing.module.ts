@@ -43,39 +43,46 @@ const routes: Routes = [
         //     patternlanguages: PatternLanguageManagementResolverService,
 
         // },
-        loadChildren: './pattern-language-management/pattern-language-management.module#PatternLanguageManagementModule',
+        // loadChildren: './pattern-language-management/pattern-language-management.module#PatternLanguageManagementModule',
+        loadChildren: () => import('./pattern-language-management/pattern-language-management.module').then(m => m.PatternLanguageManagementModule),
     },
     {
         path: 'patternViews',
-        loadChildren: './pattern-view-management/pattern-view-management.module#PatternViewManagementModule',
+        loadChildren: () => import('./pattern-view-management/pattern-view-management.module').then(m => m.PatternViewManagementModule),
+        // canActivate: [AuthGuard],
+        // data: { role: UserRole.MEMBER }  
+    },
+    {
+        path: 'candidate',
+        loadChildren: () => import('./candidate-management/candidate-management.module').then(m => m.CandidateManagementModule),
         // canActivate: [AuthGuard],
         // data: { role: UserRole.MEMBER }  
     },
     {
         path: 'issue',
-        loadChildren: './issue-management/issue-management.module#IssueManagementModule',
+        loadChildren: () => import('./issue-management/issue-management.module').then(m => m.IssueManagementModule),
         // children: ISSUE_ROTUES
         // canActivate: [AuthGuard],
         // data: { role: UserRole.MEMBER }
     },
     {
         path: 'user',
-        loadChildren: './user-management/user-management.module#UserManagementModule',
+        loadChildren: () => import('./user-management/user-management.module').then(m => m.UserManagementModule),
         // children: USER_MANAGEMENT_ROUTES,
         canActivate: [AuthGuard],
         data: { role: UserRole.MEMBER }  
     },
     {
         path: 'admin',
-        loadChildren: './admin-management/admin-management.module#AdminManagementModule',
+        loadChildren: () => import('./admin-management/admin-management.module').then(m => m.AdminManagementModule),
         //  children: ADMIN_MANAGEMENT_ROUTES,
         canActivate: [AuthGuard],
         data: { role: UserRole.ADMIN }  
     },
     {
         path: 'developer',
-        // loadChildren: './developer-management/developer-management.module#DeveloperManagementModule',
-        children: DEVELOPER_MANAGEMENT_ROUTES,
+        loadChildren: () => import('./developer-management/developer-management.module').then(m => m.DeveloperManagementModule),
+        // children: DEVELOPER_MANAGEMENT_ROUTES,
         canActivate: [AuthGuard],
         data: { role: UserRole.ADMIN }
     },

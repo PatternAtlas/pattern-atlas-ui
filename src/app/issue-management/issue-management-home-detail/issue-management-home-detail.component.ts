@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Issue, IssueManagementService, IssueComment, Rating } from '../../issue-management.service';
+import { Issue, IssueManagementService, IssueComment, Rating } from '../issue-management.service';
 import { IssueCommentRatingEvent } from 'src/app/core/component/comment-list/comment-list.component';
 
 @Component({

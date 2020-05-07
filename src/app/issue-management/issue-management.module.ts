@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { IssueManagementHomeComponent } from './issue-management-home/issue-management-home.component';
 import { IssueCreateDialogComponent } from './issue-create-dialog/issue-create-dialog.component';
 import { IssueManagementService } from './issue-management.service';
-import { IssueManagementHomeDetailComponent } from './issue-management-home/issue-management-home-detail/issue-management-home-detail.component';
+import { IssueManagementHomeDetailComponent } from './issue-management-home-detail/issue-management-home-detail.component';
 import { RouterModule } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
