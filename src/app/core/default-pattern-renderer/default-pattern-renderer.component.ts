@@ -21,6 +21,7 @@ import { Embedded } from '../model/hal/embedded';
 import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
 import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
 import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
+import * as d3 from 'd3';
 
 @Component({
     selector: 'pp-default-pattern-renderer',
@@ -56,9 +57,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
     ngAfterViewInit(): void {
         this.viewContainerRef = this.ppPatternProperty.viewContainerRef;
         this.patternLanguageUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageUri'));
-        console.log(this.patternLanguageUri);
         this.patternUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternUri'));
-        console.log(this.patternUri);
         this.getData();
     }
 
@@ -90,7 +89,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
             },
             (error) => {
                 this.toasterService.pop('error', 'Could not create new relation: ', error);
-                console.log(error);
             });
     }
 
@@ -153,7 +151,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
         instance.title = section;
         instance.isEditingEnabled = this.isEditingEnabled;
         instance.changeContent.subscribe((dataChange: DataChange) => {
-          console.log(dataChange);
             this.pattern.content[section] = dataChange.currentValue;
             this.cdr.detectChanges();
             // this.pattern.renderedContent[section] = this.savePatternPipe(section, dataChange.previousValue, instance);
@@ -187,13 +184,10 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
 
     private savePattern(section: string, previousContent: any, instance: MarkdownPatternSectionContentComponent) {
         this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe(data => {
-            console.log(section);
             const test = data.body.renderedContent[section];
-            console.log(data.body.renderedContent);
             this.pattern.renderedContent[section] = test;
             instance.changeText(this.pattern.renderedContent[section]);
             this.toasterService.pop('success', 'Saved pattern');
-            console.log(this.pattern.renderedContent[section] + 'saved');
           },
             (error) => {
                 this.toasterService.pop('error', 'Could not save pattern, resetting content', error.message);
@@ -217,4 +211,5 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
             this.isLoading = false;
         });
     }
+
 }

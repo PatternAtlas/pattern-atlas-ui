@@ -1,10 +1,21 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  ViewChild
+} from '@angular/core';
 import {DataChange, DataRenderingComponent} from '../interfaces/DataRenderingComponent.interface';
 import {MatDialog} from '@angular/material/dialog';
 import {DialogData, MdEditorComponent} from '../../md-editor/md-editor.component';
 import * as MarkdownIt from 'markdown-it';
 import * as markdownitKatex from 'markdown-it-katex';
 import {ImageService} from '../../../service/image.service';
+import * as d3 from "d3";
+
 
 @Component({
   selector: 'pp-markdown-pattern-section-content',
@@ -16,6 +27,8 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
   data: string;
   renderedData: string;
   title = '';
+  mouseDown = false;
+  last: MouseEvent;
 
 
   showActionButtons = false;
@@ -48,7 +61,6 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
   renderSVGTags(data: string): void {
     let editData =  data;
     const indexes: number[] = this.getNextOccurance(editData, '<SVG>', '</SVG>');
-    console.log(indexes[0], indexes[1]);
     if (indexes[0] !== -1 && indexes[1] !== -1) {
       // render elements before svg imgage link
       this.markdownDiv.nativeElement.innerHTML += this.markdown.render(editData.substring(0, indexes[0] - 1));
@@ -65,18 +77,18 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
     } else {
       // if no svg tag remaining - render remaining elements
       this.markdownDiv.nativeElement.innerHTML += this.markdown.render(editData);
+      // this.getSVG();
     }
+
   }
 
   openEditor(): void {
-    console.log('this data' + this.data + 'rendered' + this.renderedData);
     const dialogRef = this.dialog.open(MdEditorComponent,
       {data: {content: this.data, field: this.title}});
     dialogRef.afterClosed().subscribe(async (result: DialogData) => {
       const previousValue = this.data;
 
       if (result) {
-        console.log(this.data);
         this.data = result.content;
         this.changeText(this.renderedData);
       }
@@ -87,4 +99,6 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
   getNextOccurance(content: string, begin: string, end: string): number[] {
     return [content.indexOf(begin, 0), content.indexOf(end, 0)];
   }
+
+
 }

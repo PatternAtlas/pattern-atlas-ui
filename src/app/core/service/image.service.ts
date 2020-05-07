@@ -16,7 +16,6 @@ export class ImageService {
   getImageById(id: String): Observable<string> {
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
     const url = this.repoEndpoint + '/getImageById/' + id;
-    console.log('URL' + url);
-    return this.http.get<String>(url, {headers, responseType: 'text'});
+    return this.http.get<string>(url, {headers, responseType: 'text' as 'json'});
   }
 }
