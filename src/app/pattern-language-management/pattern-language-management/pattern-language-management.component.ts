@@ -12,17 +12,16 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
 import PatternLanguage from '../../core/model/hal/pattern-language.model';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { CookieService } from 'ngx-cookie-service';
-import { ToasterService } from 'angular2-toaster';
-import { PatternLanguageService } from '../../core/service/pattern-language.service';
-import { UriConverter } from '../../core/util/uri-converter';
-import { CreateEditPatternLanguageComponent } from '../../core/component/create-edit-pattern-language/create-edit-pattern-language.component';
-import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
-import { map } from 'rxjs/operators';
+import {ActivatedRoute, Router} from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
+import {CookieService} from 'ngx-cookie-service';
+import {ToasterService} from 'angular2-toaster';
+import {PatternLanguageService} from '../../core/service/pattern-language.service';
+import {CreateEditPatternLanguageComponent} from '../../core/component/create-edit-pattern-language/create-edit-pattern-language.component';
+import {DialogPatternLanguageResult} from '../data/DialogPatternLanguageResult.interface';
+import {map} from 'rxjs/operators';
 import PatternLanguageModel from '../../core/model/hal/pattern-language-model.model';
 
 @Component({
@@ -78,9 +77,8 @@ export class PatternLanguageManagementComponent implements OnInit {
     }
 
     navigateToPL(id: string): void {
-        const patternLanguage = this.patternLanguages.find((pl: PatternLanguageModel) => pl.id === id);
         this.zone.run(() => {
-            this.router.navigate([UriConverter.doubleEncodeUri(patternLanguage.uri)], {relativeTo: this.activatedRoute});
+            this.router.navigate([id], {relativeTo: this.activatedRoute});
         });
     }
 

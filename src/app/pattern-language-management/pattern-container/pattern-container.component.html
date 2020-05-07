@@ -1,17 +1,17 @@
 <!-- tab view if there are multiple renderer for the language available -->
 <mat-tab-group *ngIf="renderer && renderer.length > 1; else singleRenderer">
-  <!-- create a new tab for each available renderer -->
-  <mat-tab label="{{r.label || 'Tab ' + (i+1)}}" *ngFor="let r of renderer; let i = index">
-    <mat-card>
-      <ng-template ppPatternContainer [plId]="plEncodedUri" [pId]="pEncodedUri" [index]="i">
+    <!-- create a new tab for each available renderer -->
+    <mat-tab label="{{r.label || 'Tab ' + (i+1)}}" *ngFor="let r of renderer; let i = index">
+        <mat-card>
+            <ng-template ppPatternContainer [plId]="patternLanguageId" [pId]="patternId" [index]="i">
       </ng-template>
-    </mat-card>
-  </mat-tab>
+        </mat-card>
+    </mat-tab>
 </mat-tab-group>
 
 <!-- else, render everything in a single card -->
 <ng-template #singleRenderer>
   <mat-card>
-    <ng-template ppPatternContainer [plId]="plEncodedUri" [pId]="pEncodedUri"></ng-template>
-  </mat-card>
+    <ng-template ppPatternContainer [plId]="patternLanguageId" [pId]="patternId"></ng-template>
+    </mat-card>
 </ng-template>

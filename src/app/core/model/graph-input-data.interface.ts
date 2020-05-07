@@ -9,4 +9,5 @@ export interface GraphInputData {
     copyOfLinks: Edge[];
     patternLanguage: PatternLanguage;
     patternView: PatternView;
+    patternLanguages: PatternLanguage[];
 }

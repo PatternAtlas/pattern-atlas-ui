@@ -19,7 +19,7 @@ import {Observable} from 'rxjs';
 import Pattern from '../model/hal/pattern.model';
 import {map} from 'rxjs/operators';
 import {PatternResponse} from '../model/hal/pattern-response.interface';
-import {Edge} from '../model/hal/edge.model';
+import PatternLanguage from '../model/hal/pattern-language.model';
 
 @Injectable()
 export class PatternService {
@@ -30,7 +30,7 @@ export class PatternService {
   }
 
   public getPatternByEncodedUri(encodedUri: string): Observable<Pattern> {
-    const url = this.repoEndpoint + '/patterns/search/findByUri?uri=' + encodedUri;
+    const url = this.repoEndpoint + '/patterns/search/findByUri?encodedUri=' + encodedUri;
     return this.http.get<Pattern>(url);
   }
 
@@ -61,4 +61,14 @@ export class PatternService {
   getLinksForPattern(url: string) {
     return this.http.get<Array<Edge>>(url);
   }
+
+    getPatternById(patternLanguage: PatternLanguage, patternId: String): Observable<Pattern> {
+        console.log('patternid');
+        console.log(patternId);
+        return this.http.get <Pattern>(this.repoEndpoint + '/patternLanguages/' + patternLanguage.id + '/patterns/' + patternId);
+    }
+
+    getPatternByUrl(href: string): Observable<PatternResponse> {
+        return this.http.get<PatternResponse>(href);
+    }
 }

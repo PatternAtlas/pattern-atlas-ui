@@ -18,6 +18,8 @@ import {HalLink} from './hal-link.interface';
 class Pattern extends UriEntity {
     iconUrl?: string;
     content: any;
+    patternLanguageId: string;
+    patternLanguageName: string;
     _links: {
         self: HalLink;
         content: HalLink;

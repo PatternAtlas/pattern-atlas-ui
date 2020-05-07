@@ -22,7 +22,7 @@
             <ng-template #noImageAvatar><img mat-card-avatar [src]="'//via.placeholder.com/50x50'"></ng-template>
 
             <mat-card-title *ngIf="patternLanguage?.name && '' !== patternLanguage.name; else noPLName"
-                            style="width: 10rem; word-break: break-word">
+                            style="width: 10rem; word-break: break-word;">
                 {{patternLanguage.name}}
             </mat-card-title>
             <ng-template #noPLName>

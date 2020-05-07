@@ -1,6 +1,38 @@
 <mat-sidenav-container [hasBackdrop]="false" class="container">
-    <mat-sidenav #start fixedInViewport="true" mode="over">
-        <h4>{{currentPattern?.name}}</h4>
+    <mat-sidenav *ngIf="patternView" style="min-width: 300px;" [disableClose]="true" [opened]="true" fixedInViewport="false" mode="push">
+        <h3>Add Patterns</h3>
+            <mat-accordion>
+                <div cdkDropListGroup>
+                    <mat-expansion-panel *ngFor="let patternLang of patternLanguages" (afterExpand)="patternListExpanded(patternLang)">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                {{patternLang.name}}
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-panel-description>
+                            <div *ngIf="allPatternsLoading; else dragAndDropContent">
+                                <mat-spinner class="drag-and-drop-spinner"></mat-spinner>
+                            </div>
+                            <ng-template #dragAndDropContent>
+                            <div cdkDropList
+                                 [cdkDropListData]="patternLang.patterns"
+                                 class="pattern-list"
+                                 cdkDropListSortingDisabled
+                                 (cdkDropListDropped)="patternDropped($event)">
+                                <div class="pattern-box" *ngFor="let pattern of patternLang.patterns" cdkDrag>
+                                    {{pattern.name}}
+                                    <mat-icon>drag_handle</mat-icon>
+                                </div>
+                            </div>
+                            </ng-template>
+                        </mat-panel-description>
+                    </mat-expansion-panel>
+                </div>
+            </mat-accordion>
+    </mat-sidenav>
+
+    <mat-sidenav [opened]="patternClicked" position="end" fixedInViewport="true" mode="over">
+        <h4 style="margin: 1em">Relations of {{currentPattern?.name}}</h4>
         <mat-accordion>
             <mat-expansion-panel *ngFor="let relation of currentEdges">
                 <mat-expansion-panel-header>
@@ -9,20 +41,26 @@
                     </mat-panel-title>
                     <mat-panel-description class="horiz-centered">
                         <div [ngSwitch]="relation.type">
+
+                            <div *ngSwitchCase="'undirectedEdges'" class="horiz-centered">
+                                {{ relation?.edge.sourcePatternName}}
+                                <i class="material-icons flip">compare_arrows</i>
+                                {{ relation?.edge.pattern1Id === this.currentPattern.id ? relation.edge.pattern1Name :
+                                relation.edge.pattern2Name}}
+                            </div>
+
                             <div *ngSwitchCase="'outgoingDirectedEdges'" class="horiz-centered">
                                 <i class="material-icons">trending_flat</i>
-                                {{ relation?.edge.targetPatternName}}
+                                {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
+                                relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
 
                             </div>
                             <div *ngSwitchCase="'ingoingDirectedEdges'" class="horiz-centered">
                                 <i class="material-icons flip">trending_flat</i>
-                                {{ relation?.edge.sourcePatternName}}
+                                {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
+                                relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
                             </div>
-                            <div *ngSwitchCase="'undirectedEdges'" class="horiz-centered">
-                                {{ relation?.edge.sourcePatternName}}
-                                <i class="material-icons flip">compare_arrows</i>
-                                {{ relation?.edge.pattern1Id === this.currentPattern.id ? relation.edge.pattern1Name : relation.edge.pattern2Name}}
-                            </div>
+
                         </div>
                     </mat-panel-description>
                 </mat-expansion-panel-header>
@@ -31,6 +69,7 @@
         </mat-accordion>
 
     </mat-sidenav>
+    <mat-progress-spinner *ngIf="isLoading"></mat-progress-spinner>
     <mat-sidenav-content>
         <network-graph #graphWrapper
                        (onAddedEdge)="edgeAdded($event)"
@@ -38,7 +77,7 @@
                        (onClickedNode)="nodeClicked($event)"
                        (onNodePositionChange)="saveGraph()"
                        [ppGraphEventEmmiter]
-                       classes="highlighted-node highlighted-edge low-opacity-node low-opacity-edge"
+                       classes=" highlighted-edge low-opacity-node low-opacity-edge"
                        mode="layout"
                        style="width: 100%; height: 100%"
                        zoom="both">
@@ -97,11 +136,8 @@
                         word-break: break-word
                     }
 
-                    .highlighted-node {
-                        fill: rgb(63, 81, 181);
-                        opacity: 0.9;
-
-
+                    .cursive {
+                        font-style: italic;
                     }
 
                     .low-opacity-node {
@@ -116,19 +152,28 @@
 
                     <g data-template-type="node" id="default">
 
-                        <rect data-click="nodeclick" data-link-handles="edges" height="40" rx="5" ry="5"
+                        <rect data-click="nodeclick" data-link-handles="edges" height="50" rx="5" ry="5"
                               style="stroke:black;stroke-width:1;"
-                              width="100"
-                              x="-50" y="-20">
+                              width="170"
+                              x="-60" y="-25">
                         </rect>
-                        <image data-click="info" data-content="uri" width="10" x="35"
+                        <image width="40" x="-55" y="-20" data-click="iconUrl" data-href="iconUrl"></image>
+                        <image data-click="info" data-content="patternLanguageId" width="10" x="95"
                                xlink:href="assets/Info_Simple_bw.svg"
-                               y="-15"/>
+                               y="-20"/>
                         <text class="text" data-click="title" data-content="title" dominant-baseline="middle"
-                              height="40" text-anchor="middle"
-                              width="100"
-                              x="0"
+                              height="50" text-anchor="middle"
+                              width="120"
+                              x="45"
                               y="0">
+                        </text>
+                        <text class="text cursive" data-click="patternLanguageName" *ngIf="showPatternLanguageName"
+                              data-content="patternLanguageName"
+                              dominant-baseline="middle"
+                              height="50" text-anchor="middle"
+                              width="120"
+                              x="45"
+                              y="10">
                         </text>
                     </g>
 

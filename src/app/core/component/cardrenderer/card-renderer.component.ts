@@ -14,7 +14,8 @@ import {PatternService} from '../../service/pattern.service';
 export class CardRendererComponent {
 
   @Input() uriEntities: Array<Pattern>;
-  @Output() createEntityClicked: EventEmitter<void> = new EventEmitter<void>();
+  @Input() showLinks = true;
+    @Output() createEntityClicked: EventEmitter<void> = new EventEmitter<void>();
 
   constructor(private zone: NgZone,
               private router: Router,
@@ -24,7 +25,7 @@ export class CardRendererComponent {
 
   navigate(pattern: UriEntity): void {
     this.zone.run(() => {
-      this.router.navigate([UriConverter.doubleEncodeUri(pattern.uri)], {relativeTo: this.activatedRoute});
+      this.router.navigate([UriConverter.doubleEncodeUri(pattern.id)], {relativeTo: this.activatedRoute});
     });
   }
 
