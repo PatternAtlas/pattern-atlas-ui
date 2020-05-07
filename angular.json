@@ -137,5 +137,8 @@
       }
     }
   },
-  "defaultProject": "pattern-pedia"
+  "defaultProject": "pattern-pedia",
+  "cli": {
+    "packageManager": "yarn"
+  }
 }
