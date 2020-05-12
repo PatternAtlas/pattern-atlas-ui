@@ -58,7 +58,7 @@ export class AuthenticationService {
             } else if (token && !this.jwtHelper.isTokenExpired(token)) {
                 console.log('Token exists && token not expired')
                 this.getUserInfo();
-                this.router.navigate(['/issue']);
+                // this.router.navigate(['/issue']);
                 // this.router.navigate(['/user']);
 
             } else if (token && this.getRefreshToken() && this.jwtHelper.isTokenExpired(this.getAccesToken())) {

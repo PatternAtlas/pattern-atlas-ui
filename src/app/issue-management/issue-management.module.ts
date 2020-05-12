@@ -15,6 +15,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { CoreModule } from '../core/core.module';
 import { MatSelectModule } from '@angular/material/select';
+import { IssueManagementStore } from '../core/stores/issue-management-store';
 
 export const ISSUE_ROTUES = [
   { 
@@ -50,6 +51,7 @@ export const ISSUE_ROTUES = [
   ],
   providers: [
     IssueManagementService,
+    // IssueManagementStore,
   ],
   entryComponents: [
     IssueCreateDialogComponent,

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl, FormGroupDirective, NgForm, AbstractControl } from '@angular/forms';
 import { PAUser, AdminManagementService } from '../admin-management.service';
-import { AdminManagementHomeStore } from '../admin-management-home-helper/admin-management-home-store';
+import { AdminManagementHomeStore } from '../admin-management-helper/admin-management-store';
 import { UserRole } from 'src/app/app-routing.module';
 import { ErrorStateMatcher } from '@angular/material/core';
 

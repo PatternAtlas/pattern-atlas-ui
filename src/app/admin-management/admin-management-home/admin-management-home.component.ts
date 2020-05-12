@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminManagementService, PAUser } from '../admin-management.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AdminManagementHomeStore } from '../admin-management-home-helper/admin-management-home-store';
+import { AdminManagementHomeStore } from '../admin-management-helper/admin-management-store';
 
 @Component({
   selector: 'pp-admin-management-home',

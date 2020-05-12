@@ -1,0 +1,32 @@
+<div class="container" *ngIf="candidate">
+    <div>
+        <td-text-editor [value]="candidateMarkdown" [options]="options" #textEditor id="textEditor"></td-text-editor>
+    </div>
+    <div class="container-candidate" *ngIf="!disabled">
+        <div class="language-select">
+            <mat-form-field>
+                <mat-label>Pattern Language</mat-label>
+                <mat-select [(ngModel)]="patternLanguageSelected" name="patternLanguage">
+                    <mat-option *ngFor="let language of patternLanguages" [value]="language.id">
+                        {{language.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <!-- <div class="language-button">
+            <button mat-flat-button type="button" color="accent" (click)="createCandidate()">Create
+                Candidate</button>
+        </div> -->
+    </div>
+    <div class="container-rating">
+        <pp-rating [rating]="candidate.rating" (userRatingCurrent)="updateRating($event)"> </pp-rating>
+    </div>
+    <div>
+        <button mat-flat-button type="button" color="primary" (click)="create()">Save</button>
+        <button mat-flat-button type="button" color="primary" (click)="exit()">Exit</button>
+    </div>
+    <div>
+        <pp-comment-list [data]="candidate.comments" (createComment)="createComment($event)"
+            (commentRating)="updateCommentRating($event)"></pp-comment-list>
+    </div>
+</div>

@@ -5,6 +5,8 @@ import { ToasterService } from 'angular2-toaster';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { AuthenticationService } from '../authentication/_services/authentication.service';
+import { PAComment } from '../core/model/comment';
+import { Candidate } from '../candidate-management/candidate-management.service';
 
 export interface Issue {
   id: string,
@@ -16,11 +18,11 @@ export interface Issue {
   comments: IssueComment[],
 }
 
-export interface IssueComment {
-  id: string,
-  text: string,
-  rating: number;
-  user: any,
+export interface IssueComment extends PAComment {
+  // id: string,
+  // text: string,
+  // rating: number;
+  // user: any,
 }
 
 export enum Rating {
@@ -68,6 +70,20 @@ export class IssueManagementService {
       }),
       catchError(error => {
         this.toasterService.pop('error', 'Could not create new issue: ', error)
+        return null;
+      }),
+    )
+  }
+
+  public createIssue2Candidate(issue: Issue, patternLanguageId: string): Observable<Candidate> {
+    
+    return this.http.post<any>(this.repoEndpoint + '/candidate/' + 'createFromIssue/' + `${patternLanguageId}`, issue).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Created new candidate out of issue')
+        return result
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Could not create new candidate out of issue: ', error)
         return null;
       }),
     )

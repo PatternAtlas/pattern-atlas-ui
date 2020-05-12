@@ -13,7 +13,7 @@ import { AdminManagementHomeDetailComponent } from './admin-management-home-deta
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { AdminManagementHomeStore } from './admin-management-home-helper/admin-management-home-store';
+import { AdminManagementHomeStore } from './admin-management-helper/admin-management-store';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 

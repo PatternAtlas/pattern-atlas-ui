@@ -1,1 +1,37 @@
-<p>candidate-management-home works!</p>
+<!-- <mat-grid-list cols="5" rowHeight="100px">
+    <mat-grid-tile *ngFor="let candidate of candidates" [colspan]="1" [rowspan]="1"
+        [style.background]="'#DDBDF1'" (click)="candidateClicked(candidate)">
+        {{candidate.name}}
+    </mat-grid-tile>
+    <mat-grid-tile (click)="createCandidate()">
+        + Create Candidate
+    </mat-grid-tile>
+</mat-grid-list> -->
+<pp-action-button-bar [addButtonText]="'Add'" [goBackButton]="false" [reloadButton]="true"
+    (addClicked)="createCandidate()" (reloadClicked)="getAll()"></pp-action-button-bar>
+<div>
+    <mat-card class="landing-card" *ngFor="let candidate of candidates">
+        <mat-card-header>
+            <mat-card-title>{{ candidate.name }}</mat-card-title>
+            <mat-card-subtitle> Language: {{candidate.patternLanguageName}}</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image src="//via.placeholder.com/200x300" alt="Placholder image">
+        <mat-card-content>
+            <p>
+                {{ candidate.content }}
+            </p>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-flat-button color="primary" type="button" (click)="candidateDetail(candidate)"
+                matTooltip="Open candidate">
+                <mat-icon>launch</mat-icon>
+                Detail
+            </button>&nbsp;
+            <button mat-flat-button color="primary" type="button" (click)="candidateDetail(candidate)"
+                matTooltip="Edit candidate">
+                <mat-icon>edit</mat-icon>
+                Edit
+            </button>&nbsp;
+        </mat-card-actions>
+    </mat-card>
+</div>

@@ -62,6 +62,7 @@ import { RouterModule } from '@angular/router';
 import { LoginComponent } from './component/login/login.component';
 import { RatingComponent } from './component/rating/rating.component';
 import { CommentListComponent } from './component/comment-list/comment-list.component';
+import { IssueManagementStore } from './stores/issue-management-store';
 
 // import { AuthenticationService } from './service/authentication.service';
 
@@ -107,6 +108,8 @@ import { CommentListComponent } from './component/comment-list/comment-list.comp
         PatternLanguageService,
         PatternService,
         PatternViewService,
+        //Store
+        IssueManagementStore
     ],
     declarations: [
         DefaultPlRendererComponent,
