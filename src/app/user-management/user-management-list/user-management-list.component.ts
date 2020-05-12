@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { UserManagementService } from '../user-management.service';
 
 @Component({
-  selector: 'pp-user-management-home',
-  templateUrl: './user-management-home.component.html',
-  styleUrls: ['./user-management-home.component.scss']
+  selector: 'pp-user-management-list',
+  templateUrl: './user-management-list.component.html',
+  styleUrls: ['./user-management-list.component.scss']
 })
-export class UserManagementHomeComponent implements OnInit {
+export class UserManagementListComponent implements OnInit {
 
   constructor(
     private userManagementService: UserManagementService

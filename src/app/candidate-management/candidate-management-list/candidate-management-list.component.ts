@@ -3,11 +3,11 @@ import { Candidate, CandidateManagementService } from '../candidate-management.s
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'pp-candidate-management-home',
-  templateUrl: './candidate-management-home.component.html',
-  styleUrls: ['./candidate-management-home.component.scss']
+  selector: 'pp-candidate-management-list',
+  templateUrl: './candidate-management-list.component.html',
+  styleUrls: ['./candidate-management-list.component.scss']
 })
-export class CandidateManagementHomeComponent implements OnInit {
+export class CandidateManagementListComponent implements OnInit {
 
   candidates: Candidate[];
 

@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserManagementHomeComponent } from './user-management-home/user-management-home.component';
+import { UserManagementListComponent } from './user-management-list/user-management-list.component';
 import { RouterModule } from '@angular/router';
 import { CoreModule } from '../core/core.module';
 import { UserManagementService } from './user-management.service';
 
 export const USER_MANAGEMENT_ROUTES = [
   { 
-    path: '', component: UserManagementHomeComponent 
+    path: '', component: UserManagementListComponent 
   }, 
   // { path: 'some-other-route', component: SomeOtherComponent },
 ];
 
 @NgModule({
   declarations: [
-    UserManagementHomeComponent
+    UserManagementListComponent
   ],
   imports: [
     CommonModule,

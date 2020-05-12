@@ -43,8 +43,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatNavList, MatListModule } from '@angular/material/list';
 import { LandingPageComponent } from './core/component/landing-page/landing-page.component';
 import { PageNotFoundComponent } from './core/component/page-not-found/page-not-found.component';
-import { IssueManagementModule } from './issue-management/issue-management.module';
-import { UserManagementHomeComponent } from './user-management/user-management-home/user-management-home.component';
 import {FilterViewComponent} from './filter/component/filter-view/filter-view.component';
 
 @NgModule({

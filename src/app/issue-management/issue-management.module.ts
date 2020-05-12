@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IssueManagementHomeComponent } from './issue-management-home/issue-management-home.component';
 import { IssueCreateDialogComponent } from './issue-create-dialog/issue-create-dialog.component';
 import { IssueManagementService } from './issue-management.service';
-import { IssueManagementHomeDetailComponent } from './issue-management-home-detail/issue-management-home-detail.component';
+import { IssueManagementDetailComponent } from './issue-management-detail/issue-management-detail.component';
 import { RouterModule } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -16,19 +15,20 @@ import { MatInputModule } from '@angular/material/input';
 import { CoreModule } from '../core/core.module';
 import { MatSelectModule } from '@angular/material/select';
 import { IssueManagementStore } from '../core/stores/issue-management-store';
+import { IssueManagementListComponent } from './issue-management-list/issue-management-list.component';
 
 export const ISSUE_ROTUES = [
   { 
-    path: '', component: IssueManagementHomeComponent 
+    path: '', component: IssueManagementListComponent 
   }, 
   // { path: 'some-other-route', component: SomeOtherComponent },
 ];
 
 @NgModule({
   declarations: [
-    IssueManagementHomeComponent,
+    IssueManagementListComponent,
     IssueCreateDialogComponent,
-    IssueManagementHomeDetailComponent
+    IssueManagementDetailComponent
   ],
   imports: [
     CommonModule,
@@ -47,7 +47,7 @@ export const ISSUE_ROTUES = [
     MatSelectModule,
   ],
   exports: [
-    IssueManagementHomeComponent
+    IssueManagementListComponent
   ],
   providers: [
     IssueManagementService,

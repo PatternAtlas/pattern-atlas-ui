@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DeveloperManagementHomeComponent } from './developer-management-home/developer-management-home.component';
 import { RouterModule } from '@angular/router';
+import { DeveloperManagementListComponent } from './developer-management-list/developer-management-list.component';
 
 export const DEVELOPER_MANAGEMENT_ROUTES = [
   {
     path: '',
     children: [
-      { path: '', component: DeveloperManagementHomeComponent },
+      { path: '', component: DeveloperManagementListComponent },
       // { path: 'userDetails', component: UserDetailsComponent }
     ]
   }
@@ -16,7 +16,7 @@ export const DEVELOPER_MANAGEMENT_ROUTES = [
 
 @NgModule({
   declarations: [
-    DeveloperManagementHomeComponent
+    DeveloperManagementListComponent
   ],
   imports: [
     CommonModule,

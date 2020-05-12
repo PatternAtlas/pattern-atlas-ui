@@ -8,11 +8,11 @@ import { PatternLanguageService } from 'src/app/core/service/pattern-language.se
 import PatternLanguageModel from 'src/app/core/model/hal/pattern-language-model.model';
 
 @Component({
-  selector: 'pp-candidate-management-home-detail',
-  templateUrl: './candidate-management-home-detail.component.html',
-  styleUrls: ['./candidate-management-home-detail.component.scss']
+  selector: 'pp-candidate-management-detail',
+  templateUrl: './candidate-management-detail.component.html',
+  styleUrls: ['./candidate-management-detail.component.scss']
 })
-export class CandidateManagementHomeDetailComponent implements OnInit {
+export class CandidateManagementDetailComponent implements OnInit {
 
   candidateMarkdown: any;
   options: any = {};

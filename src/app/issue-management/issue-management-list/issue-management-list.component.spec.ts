@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IssueManagementHomeComponent } from './issue-management-home.component';
+import { IssueManagementListComponent } from './issue-management-list.component';
 
 describe('IssueManagementHomeComponent', () => {
-  let component: IssueManagementHomeComponent;
-  let fixture: ComponentFixture<IssueManagementHomeComponent>;
+  let component: IssueManagementListComponent;
+  let fixture: ComponentFixture<IssueManagementListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ IssueManagementHomeComponent ]
+      declarations: [ IssueManagementListComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IssueManagementHomeComponent);
+    fixture = TestBed.createComponent(IssueManagementListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

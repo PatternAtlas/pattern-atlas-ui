@@ -8,11 +8,11 @@ import { PatternLanguageService } from 'src/app/core/service/pattern-language.se
 import PatternLanguageModel from 'src/app/core/model/hal/pattern-language-model.model';
 
 @Component({
-  selector: 'pp-issue-management-home-detail',
-  templateUrl: './issue-management-home-detail.component.html',
-  styleUrls: ['./issue-management-home-detail.component.scss']
+  selector: 'pp-issue-management-detail',
+  templateUrl: './issue-management-detail.component.html',
+  styleUrls: ['./issue-management-detail.component.scss']
 })
-export class IssueManagementHomeDetailComponent implements OnInit {
+export class IssueManagementDetailComponent implements OnInit {
 
   @Input() issue: Issue;
   @Output() changed = new EventEmitter<boolean>();

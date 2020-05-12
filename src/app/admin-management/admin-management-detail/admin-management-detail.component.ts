@@ -7,11 +7,11 @@ import { UserRole } from 'src/app/app-routing.module';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 @Component({
-  selector: 'pp-admin-management-home-detail',
-  templateUrl: './admin-management-home-detail.component.html',
-  styleUrls: ['./admin-management-home-detail.component.scss']
+  selector: 'pp-admin-management-detail',
+  templateUrl: './admin-management-detail.component.html',
+  styleUrls: ['./admin-management-detail.component.scss']
 })
-export class AdminManagementHomeDetailComponent implements OnInit {
+export class AdminManagementDetailComponent implements OnInit {
 
   user: PAUser;
   userForm: FormGroup;

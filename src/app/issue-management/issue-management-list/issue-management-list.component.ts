@@ -4,11 +4,11 @@ import { IssueCreateDialogComponent } from '../issue-create-dialog/issue-create-
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'pp-issue-management-home',
-  templateUrl: './issue-management-home.component.html',
-  styleUrls: ['./issue-management-home.component.scss']
+  selector: 'pp-issue-management-list',
+  templateUrl: './issue-management-list.component.html',
+  styleUrls: ['./issue-management-list.component.scss']
 })
-export class IssueManagementHomeComponent implements OnInit {
+export class IssueManagementListComponent implements OnInit {
 
   data: Issue[];
   issueDetail: Issue;

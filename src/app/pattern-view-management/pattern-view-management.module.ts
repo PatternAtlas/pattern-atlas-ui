@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { PatternViewManagementRoutingModule } from './pattern-view-management-routing.module';
 import { PatternViewManagementComponent } from './pattern-view-management/pattern-view-management.component';
 import { CoreModule } from '../core/core.module';
 import { PatternViewRendererComponent } from './pattern-view-renderer/pattern-view-renderer.component';
@@ -17,14 +16,20 @@ import { MatTreeModule } from '@angular/material/tree';
 import { Routes, RouterModule } from '@angular/router';
 
 const PATTERN_VIEW_MANAGMENT_ROUTE: Routes = [
-    {
-        path: '',
-        component: PatternViewManagementComponent
-    },
-    {
-        path: ':patternViewUri',
-        component: PatternViewRendererComponent
-    },
+    // {
+    //     path: 'patternviews',
+    //     pathMatch: 'prefix',
+    //     children: [
+            {
+                path: '',
+                component: PatternViewManagementComponent
+            },
+            {
+                path: ':patternViewUri',
+                component: PatternViewRendererComponent
+            },
+    //     ]
+    // }
 ];
 
 @NgModule({
@@ -44,7 +49,6 @@ const PATTERN_VIEW_MANAGMENT_ROUTE: Routes = [
         MatIconModule,
         MatCheckboxModule,
         RouterModule.forChild(PATTERN_VIEW_MANAGMENT_ROUTE),
-        PatternViewManagementRoutingModule,
     ],
     entryComponents: [
         AddToViewComponent

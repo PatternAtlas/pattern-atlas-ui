@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CandidateManagementHomeComponent } from './candidate-management-home/candidate-management-home.component';
 import { CoreModule } from '../core/core.module';
 import { RouterModule } from '@angular/router';
 import { CandidateManagementService } from './candidate-management.service';
-import { CandidateManagementHomeDetailComponent } from './candidate-management-home-detail/candidate-management-home-detail.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,6 +11,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { CandidateManagementListComponent } from './candidate-management-list/candidate-management-list.component';
+import { CandidateManagementDetailComponent } from './candidate-management-detail/candidate-management-detail.component';
 
 export const CANDIATE_ROTUES = [
   {
@@ -20,31 +20,31 @@ export const CANDIATE_ROTUES = [
     children: [
       {
         path: '',
-        component: CandidateManagementHomeComponent,
+        component: CandidateManagementListComponent,
         // canActivate: [AuthGuard],
         // data: { role: UserRole.MEMBER } 
       },
       {
         path: 'detail/:name',
-        component: CandidateManagementHomeDetailComponent,
+        component: CandidateManagementDetailComponent,
         // canActivate: [AuthGuard],
         // data: { role: UserRole.MEMBER }  
       },
       {
         path: 'edit/:name',
-        component: CandidateManagementHomeDetailComponent,
+        component: CandidateManagementDetailComponent,
         // canActivate: [AuthGuard],
         // data: { role: UserRole.MEMBER }  
       },
       {
         path: 'create',
-        component: CandidateManagementHomeDetailComponent,
+        component: CandidateManagementDetailComponent,
         // canActivate: [AuthGuard],
         // data: { role: UserRole.MEMBER }  
       },
       {
         path: 'create/:name',
-        component: CandidateManagementHomeDetailComponent,
+        component: CandidateManagementDetailComponent,
         // canActivate: [AuthGuard],
         // data: { role: UserRole.MEMBER }  
       }
@@ -55,8 +55,8 @@ export const CANDIATE_ROTUES = [
 
 @NgModule({
   declarations: [
-    CandidateManagementHomeComponent,
-    CandidateManagementHomeDetailComponent
+    CandidateManagementListComponent,
+    CandidateManagementDetailComponent
   ],
   imports: [
     CommonModule,

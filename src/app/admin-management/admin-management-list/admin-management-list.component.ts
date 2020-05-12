@@ -4,11 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AdminManagementHomeStore } from '../admin-management-helper/admin-management-store';
 
 @Component({
-  selector: 'pp-admin-management-home',
-  templateUrl: './admin-management-home.component.html',
-  styleUrls: ['./admin-management-home.component.scss']
+  selector: 'pp-admin-management-list',
+  templateUrl: './admin-management-list.component.html',
+  styleUrls: ['./admin-management-list.component.scss']
 })
-export class AdminManagementHomeComponent implements OnInit {
+export class AdminManagementListComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'name', 'email', 'roles', 'actions'];
   dataSource: PAUser[];
