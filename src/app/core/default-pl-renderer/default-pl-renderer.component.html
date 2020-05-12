@@ -1,30 +1,33 @@
 <pp-action-button-bar (add2Clicked)="addPattern()" (addClicked)="addLink()" [addButtonText]="'Add Link'"
                       [displayText]="patternLanguage?.name" [secondAddButtonText]="'Add Pattern'"
                       [secondAddButton]="true">
-    <mat-button-toggle-group #group="matButtonToggleGroup" (change)="toggleRenderingComponent(group.value)"
-                             [value]="graphVisible"
-                             appearance="legacy"
-                             style="font-size: small; height: 35px; align-items: center;">
-        <mat-button-toggle [checked]="true" [value]="false" aria-label="Text align center" mat-raised-button>
-            Cards
-        </mat-button-toggle>
-        <mat-button-toggle [value]="true" aria-label="Text align left" mat-raised-button>
-            Graph
-        </mat-button-toggle>
-    </mat-button-toggle-group>
-    <mat-form-field id="search-field" #searchField appearance="outline"
+    <pp-toggle-renderer [graphVisible]="graphVisible" *ngIf="!isLoadingPatternData && !isLoadingLinkData"
+                        (toggledRenderer)="setGraphVisible($event)"></pp-toggle-renderer>
+    <span *ngIf="isLoadingLinkData"> Loading Links... </span>
+    <mat-form-field id="search-field" class="action-button-with-margin" #searchField appearance="outline"
                     *ngIf="!graphVisible" [floatLabel]="'always'">
         <mat-label>Filter</mat-label>
         <input matInput placeholder="Type to filter" [formControl]="filter">
         <mat-icon matSuffix>filter_list</mat-icon>
     </mat-form-field>
-    <button style="margin-left: 10px;" (click)="reloadGraph()" *ngIf="graphVisible" color="accent" mat-raised-button>
+    <button class="action-button-with-margin" (click)="reloadGraph()" *ngIf="graphVisible"
+            color="accent" mat-raised-button>
         <i class="material-icons">autorenew</i> Reformat
     </button>
 </pp-action-button-bar>
 
-<mat-progress-spinner *ngIf="isLoadingDataForRenderer" mode="indeterminate"></mat-progress-spinner>
+<mat-progress-spinner *ngIf="isLoadingPatternData" mode="indeterminate"></mat-progress-spinner>
 <div>
-    <ng-template #displayPLContainer></ng-template>
+    <pp-card-renderer *ngIf="!graphVisible && patterns && patternsForCardsView"
+                      [uriEntities]="this.patternsForCardsView"
+                      [showLinks]="false"></pp-card-renderer>
+    <pp-graph-display *ngIf="graphVisible && patterns && !isLoadingLinkData" [data]="{
+                patterns: this.patterns, edges: this.patternLinks,
+                patternLanguage: this.patternLanguage, patternView: null
+            }" (addedEdge)="linkAddedInGraphEditor($event)" [showPatternLanguageName]="false">
+    </pp-graph-display>
+
 </div>
 
+<pp-creative-license-footer *ngIf="patterns && patterns.length"
+                            [patternLanguage]="patternLanguage"></pp-creative-license-footer>

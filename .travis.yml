@@ -1,13 +1,13 @@
 language: node_js
 node_js:
-- '10'
+  - '10'
 cache:
   directories:
-  - node_modules
-script: npm run travis
+    - node_modules
+script: yarn travis
 deploy:
   provider: pages
   skip-cleanup: true
   github_token: $github_token
   keep-history: true
-  local-dir: dist/patterns-pedia
+  local-dir: dist/pattern-pedia

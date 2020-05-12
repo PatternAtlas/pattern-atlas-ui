@@ -21,7 +21,7 @@ import {PatternLanguageManagementModule} from './pattern-language-management/pat
 import {CoreModule} from './core/core.module';
 
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
-import {ExtensionsModule} from './extensions/extensions.module';
+// import {ExtensionsModule} from './extensions/extensions.module';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
@@ -45,12 +45,14 @@ import { LandingPageComponent } from './core/component/landing-page/landing-page
 import { PageNotFoundComponent } from './core/component/page-not-found/page-not-found.component';
 import { IssueManagementModule } from './issue-management/issue-management.module';
 import { UserManagementHomeComponent } from './user-management/user-management-home/user-management-home.component';
+import {FilterViewComponent} from './filter/component/filter-view/filter-view.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         PageNotFoundComponent,
         LandingPageComponent,
+        FilterViewComponent
     ],
     imports: [
         AppRoutingModule,
@@ -69,7 +71,8 @@ import { UserManagementHomeComponent } from './user-management/user-management-h
         CovalentTextEditorModule,
         CoreModule,
         HttpClientModule,
-        ExtensionsModule,
+        // ExtensionsModule,
+        AppRoutingModule,
         FlexLayoutModule,
         ToasterModule.forRoot(),
         MatInputModule,

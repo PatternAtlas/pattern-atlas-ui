@@ -14,7 +14,7 @@
 
 import UriEntity from './uri-entity.model';
 import PatternSchema from './pattern-schema.model';
-import { PatternLanguageResource } from './hal-resources.interface';
+import {PatternLanguageResource} from './hal-resources.interface';
 import Pattern from './pattern.model';
 
 class PatternLanguage extends UriEntity {
@@ -22,6 +22,7 @@ class PatternLanguage extends UriEntity {
     logo: string;
     patternSchema: PatternSchema;
     _links: PatternLanguageResource;
+    creativeCommonsReference: string;
 }
 
 export default PatternLanguage;
