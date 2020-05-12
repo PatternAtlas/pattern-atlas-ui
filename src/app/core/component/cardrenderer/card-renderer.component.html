@@ -1,11 +1,14 @@
 <div class="card-container">
   <mat-card *ngFor="let entity of uriEntities"
             class="card box">
-    <mat-card-title (click)="navigate(entity)" style="margin-bottom: 1rem">{{entity.name}}</mat-card-title>
+    <mat-card-title style="margin-bottom: 1rem">{{entity.name}}</mat-card-title>
     <mat-card-content>
       <img mat-card-image *ngIf="entity.iconUrl else noimage" [src]="entity.iconUrl">
       <ng-template #noimage><img mat-card-image src="//via.placeholder.com/350x150"></ng-template>
-      <button (click)="delete(entity)" class="save-button" mat-raised-button color="warn">
+      <button (click)="navigate(entity)" class="save-button" style="margin-bottom: 1rem" mat-raised-button color="primary">
+        <i class="material-icons">list</i>Details
+      </button>
+      <button (click)="delete(entity)" class="save-button" style="margin-bottom: 1rem" mat-raised-button color="warn">
         <i class="material-icons">delete</i>Delete
       </button>
     </mat-card-content>

@@ -23,9 +23,4 @@ export class PatternContainerComponent implements OnInit {
     this.patternLanguageId = this.activatedRoute.snapshot.paramMap.get('patternLanguageId');
     this.renderer = this.compRegistry.getRenderingComponents(this.patternLanguageId);
   }
-
-  delete() {
-    console.log('Test');
-  }
-
 }
