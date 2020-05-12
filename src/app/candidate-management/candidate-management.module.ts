@@ -13,6 +13,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { CandidateManagementListComponent } from './candidate-management-list/candidate-management-list.component';
 import { CandidateManagementDetailComponent } from './candidate-management-detail/candidate-management-detail.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 export const CANDIATE_ROTUES = [
   {
@@ -70,6 +72,8 @@ export const CANDIATE_ROTUES = [
     MatGridListModule,
     MatCardModule,
     MatIconModule,
+    MatToolbarModule,
+    MatExpansionModule
   ],
   providers: [
     CandidateManagementService
