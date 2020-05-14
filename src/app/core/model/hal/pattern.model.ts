@@ -19,6 +19,8 @@ class Pattern extends UriEntity {
     iconUrl?: string;
     content: any;
     renderedContent: any;
+    patternLanguageId: string;
+    patternLanguageName: string;
     _links: {
         self: HalLink;
         content: HalLink;

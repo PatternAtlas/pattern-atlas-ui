@@ -41,6 +41,7 @@ export interface PatternSchemaResource {
 }
 
 export interface DirectedEdgeResource {
+    self: HalLink;
     sourcePattern: HalLink;
     targetPattern: HalLink;
     patternLanguage: HalLink;

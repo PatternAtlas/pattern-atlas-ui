@@ -12,23 +12,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 /* You can add global styles to this file, and also import other style files */
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
-@import '../node_modules/angular2-toaster/toaster';
-
-$fa-font-path: "~font-awesome/fonts";
-@import "~font-awesome/scss/font-awesome.scss";
-
-@font-face {
-  font-family: 'Material Icons';
-  font-style: normal;
-  font-weight: 400;
-  src: url(../node_modules/material-design-icons/iconfont/MaterialIcons-Regular.eot); /* For IE6-8 */
-  src: local('Material Icons'),
-  local('MaterialIcons-Regular'),
-  url(../node_modules/material-design-icons/iconfont/MaterialIcons-Regular.woff2) format('woff2'),
-  url(../node_modules/material-design-icons/iconfont/MaterialIcons-Regular.woff) format('woff'),
-  url(../node_modules/material-design-icons/iconfont/MaterialIcons-Regular.ttf) format('truetype');
-}
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import '~angular2-toaster/toaster';
 
 body {
   font-family: sans-serif;
@@ -220,6 +205,24 @@ body {
   margin-right: 2em;
 }
 
+.badge-container {
+  float: left;
+}
+
+.cdk-overlay-pane.delete-relation-dialog {
+  position: relative !important;
+}
+
+.close.mat-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+  line-height: 14px;
+  font-size: 20px;
+  min-width: auto;
+}
+
 .mat-form-field-appearance-outline .mat-form-field-outline {
   background-color: white;
 }
@@ -227,5 +230,9 @@ body {
 .horiz-centered {
   display: inline-flex;
   align-items: center;
+}
+
+.action-button-with-margin {
+  margin-right: 10px !important;
 }
 

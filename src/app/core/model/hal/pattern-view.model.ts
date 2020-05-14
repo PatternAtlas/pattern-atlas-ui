@@ -10,5 +10,6 @@ export class PatternView extends UriEntity {
         patterns: HalLink;
         directedEdges: HalLink;
         undirectedEdges: HalLink;
+        graph: HalLink;
     };
 }
