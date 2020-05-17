@@ -22,16 +22,13 @@ export class CommentListComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    // this.data = [{}, {}];
   }
 
   cancelComment() {
-    // console.log('cancel');
     this.comment = '';
   }
 
   addComment() {
-    // console.log(this.comment)
     const commentIssue = {} as IssueComment;
     commentIssue.text = this.comment
     this.createComment.emit(commentIssue);
@@ -44,7 +41,6 @@ export class CommentListComponent implements OnInit {
     issueCommentRatingEvent.issueComment = comment;
     issueCommentRatingEvent.issueCommentRating = rating;
     this.commentRating.emit(issueCommentRatingEvent);
-    // this.commentRating.emit(rating);
   }
 
 }

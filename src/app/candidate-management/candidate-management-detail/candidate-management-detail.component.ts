@@ -86,44 +86,25 @@ export class CandidateManagementDetailComponent implements OnInit {
 
   update() {
     this.candidateService.updateCandidate(this.candidate).subscribe(result => {
-      // this.changed.emit();
-      // this.disabled = true;
+     console.log(result);
     })
   }
 
   delete() {
-    // console.log('Delete', this.issue)
-    // this.issueManagementService.deleteIssue(this.issue).subscribe(result => {
-    //   this.changed.emit();
-    //   this.disabled = true;
-    // })
+   
   }
 
   createComment(candidateComment: Comment) {
-    // console.log(issueComment);
-    // this.issueManagementService.createComment(this.issue, issueComment).subscribe((result: Issue) => {
-    //   console.log('createComment: ', result);
-    //   this.issue = result;
-    //   this.changed.emit();
-    // });
+   
   }
 
   updateRating(rating: Rating) {
-    // console.log(this.issue, rating);
-    // this.issueManagementService.updateRating(this.issue, rating).subscribe((result: Issue) => {
-    //   console.log('updateRating: ', result);
-    //   this.issue = result;
-    //   this.changed.emit();
-    // });
+   
   }
 
   updateCommentRating(issueCommentRatingEvent: any) {
     console.log(issueCommentRatingEvent);
-    // this.issueManagementService.updateCommentRating(issueCommentRatingEvent.issueComment, issueCommentRatingEvent.issueCommentRating).subscribe((result: Issue) => {
-    //   console.log('updateCommentRating: ', result);
-    //   this.issue = result;
-    //   this.changed.emit();
-    // });
+    
   }
 
   exit() {

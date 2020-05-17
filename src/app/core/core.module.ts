@@ -62,7 +62,6 @@ import {RouterModule} from '@angular/router';
 import {ToggleRendererComponent} from './component/toggle-renderer/toggle-renderer.component';
 import {DeletePatternRelationComponent} from './component/delete-pattern-relation/delete-pattern-relation.component';
 import { CreativeLicenseFooterComponent } from './component/creative-license-footer/creative-license-footer.component';
-import { LoginComponent } from './component/login/login.component';
 import { RatingComponent } from './component/rating/rating.component';
 import { CommentListComponent } from './component/comment-list/comment-list.component';
 import { IssueManagementStore } from './stores/issue-management-store';
@@ -132,7 +131,6 @@ import { MatSortModule } from '@angular/material/sort';
         CardRendererComponent,
         CreateEditPatternLanguageComponent,
         ActionButtonBarComponent,
-        LoginComponent,
         RatingComponent,
         CommentListComponent,
         ToggleRendererComponent,

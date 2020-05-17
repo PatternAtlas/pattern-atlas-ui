@@ -30,11 +30,6 @@ export class IssueManagementListComponent implements OnInit {
     this.issueManagmentService.getAllIssues().subscribe(result => {
       console.log(result);
       this.data = result;
-      // result.forEach(val => this.data.push(val));
-      // result.forEach(val => this.data.push(val));
-      // result.forEach(val => this.data.push(val));
-      // result.forEach(val => this.data.push(val));
-      // result.forEach(val => this.data.push(val));
     })
   }
 

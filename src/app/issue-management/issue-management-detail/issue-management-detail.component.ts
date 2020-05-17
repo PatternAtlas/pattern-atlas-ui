@@ -47,16 +47,12 @@ export class IssueManagementDetailComponent implements OnInit {
   edit() {
     console.log('Edit', this.issue)
     this.oldIssue = Object.assign({}, this.issue);
-    // this.name = this.issue.name;
-    // this.description = this.issue.description;
     this.disabled = !this.disabled;
   }
 
   cancel() {
     this.issue = this.oldIssue;
     this.disabled = !this.disabled;
-    // this.issue.name = this.name;
-    // this.issue.description = this.description;
   }
 
   exit() {
@@ -110,12 +106,6 @@ export class IssueManagementDetailComponent implements OnInit {
     console.log('Create Candidate: ', this.patternLanguageSelected);
     const candidate = new Candidate(this.issue.description, this.issue.name, this.patternLanguageSelected)
     this.router.navigate(['candidate/create', this.issue.name], { state: { data: candidate } });
-    // this.issueManagementService.createIssue2Candidate(this.issue, this.patternLanguageSelected).subscribe(candidateFromIssue => {
-    //   console.log('Candidate create: ', candidateFromIssue);
-    //   this.issueManagementStore.addCandidateFromIssue(candidateFromIssue);
-    //   // this.router.navigate(['candidate/edit', candidateFromIssue.name]);
-    //   this.router.navigate(['candidate/edit',  candidateFromIssue.name], {state: {data: candidateFromIssue }});
-    // })
   }
 
 }

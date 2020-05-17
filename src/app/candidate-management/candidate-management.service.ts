@@ -63,9 +63,7 @@ export class CandidateManagementService {
   }
 
   public createCandidate(candidate: Candidate, patternLanguageId: string): Observable<Candidate> {
-    // candidate.rating = 0;
     candidate.uri = candidate.name;
-    // candidate.version = '1.0'
     
     return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint + 'create', candidate).pipe(
       map(result => {

@@ -8,10 +8,8 @@ export const DEVELOPER_MANAGEMENT_ROUTES = [
     path: '',
     children: [
       { path: '', component: DeveloperManagementListComponent },
-      // { path: 'userDetails', component: UserDetailsComponent }
     ]
   }
-  // { path: 'some-other-route', component: SomeOtherComponent },
 ];
 
 @NgModule({

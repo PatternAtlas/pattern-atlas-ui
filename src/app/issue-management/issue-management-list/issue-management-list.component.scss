@@ -11,11 +11,9 @@
   
       .mat-list {
        
-        // width: 40%;
         border-style: groove;
         overflow: auto;
         height: calc(100vh - 64px - 48px - 96px);
-        // border-width: 2px;
   
         .new-button {
           margin-bottom: 16px;
@@ -24,7 +22,6 @@
   
         .mat-list-item {
           border-style: groove;
-          // border-width: 2px;
         }
       }
     }

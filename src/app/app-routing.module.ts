@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProcessOauthCallbackComponent } from './core/component/process-oauth-callback/process-oauth-callback.component';
 import { ToasterModule } from 'angular2-toaster';
-import { LoginComponent } from './core/component/login/login.component';
 import { PageNotFoundComponent } from './core/component/page-not-found/page-not-found.component';
 import { AuthGuardService as AuthGuard } from './authentication/_services/auth-guard.service'
 import { DEVELOPER_MANAGEMENT_ROUTES } from './developer-management/developer-management.module';
@@ -88,10 +87,6 @@ const routes: Routes = [
     {
         path: 'graph',
         component: PatternLanguageGraphComponent
-    },
-    {
-        path: 'login',
-        component: LoginComponent
     },
     {
         path: '**',
