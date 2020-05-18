@@ -83,14 +83,20 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
 
     getPatternInfos(): Observable<Pattern> {
         if (!this.patternLanguage) {
-            console.log('tried to get patterns before the pattern language object with the url was instanciated');
-            return EMPTY;
+          console.log('tried to get patterns before the pattern language object with the url was instanciated');
+          return EMPTY;
         }
         return this.patternService.getPatternById(this.patternLanguage, this.patternId).pipe(
-            tap(pattern => this.pattern = pattern),
-            switchMap((pat) => {
-                return this.patternService.getPatternContentByPattern(this.pattern);
-            }), map((patternContent) => this.pattern.content = patternContent.content));
+          tap(pattern => this.pattern = pattern),
+          switchMap((pat) => {
+            const content = this.patternService.getPatternContentByPattern(this.pattern);
+            const renderedContent = this.patternService.getPatternRenderedContentByPattern(this.pattern);
+            return forkJoin([content, renderedContent]);
+          }),
+          map((patternContent) => {
+            this.pattern.renderedContent = patternContent[1].renderedContent;
+            return this.pattern.content = patternContent[0].content;
+          }));
     }
 
     getPatternLanguageLinks(): Observable<any> {
@@ -112,20 +118,24 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
     }
 
     private createSectionComponent(section: string) {
-        if (!this.pattern.content) {
+        if (!this.pattern.renderedContent) {
             return;
         }
-        const properties = this.pattern.content[section];
+        const renderedContent = this.pattern.renderedContent[section];
+        const content = this.pattern.content[section];
+
         const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MarkdownPatternSectionContentComponent);
         const componentRef = this.viewContainerRef.createComponent(componentFactory);
         const instance = (<MarkdownPatternSectionContentComponent>componentRef.instance);
-        instance.data = properties;
+        instance.renderedData = renderedContent;
+        instance.data = content;
         instance.title = section;
         instance.isEditingEnabled = this.isEditingEnabled;
         instance.changeContent.subscribe((dataChange: DataChange) => {
             this.pattern.content[section] = dataChange.currentValue;
             this.cdr.detectChanges();
             this.savePattern(section, dataChange.previousValue, instance);
+            this.cdr.detectChanges();
         });
     }
 
@@ -153,7 +163,12 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
     }
 
     private savePattern(section: string, previousContent: any, instance: MarkdownPatternSectionContentComponent) {
-        this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe(() => this.toasterService.pop('success', 'Saved pattern'),
+        this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe(data => {
+            const test = data.body.renderedContent[section];
+            this.pattern.renderedContent[section] = test;
+            instance.changeText(this.pattern.renderedContent[section]);
+            this.toasterService.pop('success', 'Saved pattern');
+          },
             (error) => {
                 this.toasterService.pop('error', 'Could not save pattern, resetting content', error.message);
                 // reset text of the section:
