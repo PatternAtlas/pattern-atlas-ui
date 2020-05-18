@@ -1,5 +1,4 @@
 # PatternPedia
-Test
 ## License
 
 Copyright (c) 2019 University of Stuttgart.
