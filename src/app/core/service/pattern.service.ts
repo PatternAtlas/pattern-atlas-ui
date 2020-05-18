@@ -20,40 +20,48 @@ import Pattern from '../model/hal/pattern.model';
 import {map} from 'rxjs/operators';
 import {PatternResponse} from '../model/hal/pattern-response.interface';
 import PatternLanguage from '../model/hal/pattern-language.model';
+import {Edge} from '../model/hal/edge.model';
 
 @Injectable()
 export class PatternService {
 
-    private repoEndpoint = globals.repoEndpoint;
+  private repoEndpoint = globals.repoEndpoint;
 
-    constructor(private http: HttpClient) {
-    }
+  constructor(private http: HttpClient) {
+  }
 
-    public getPatternByEncodedUri(encodedUri: string): Observable<Pattern> {
-        const url = this.repoEndpoint + '/patterns/search/findByUri?encodedUri=' + encodedUri;
-        return this.http.get<Pattern>(url);
-    }
+  public getPatternByEncodedUri(encodedUri: string): Observable<Pattern> {
+    const url = this.repoEndpoint + '/patterns/search/findByUri?encodedUri=' + encodedUri;
+    return this.http.get<Pattern>(url);
+  }
 
-    getPatternsByUrl(patternsUrl: string): Observable<Array<Pattern>> {
-        return this.http.get<PatternResponse>(patternsUrl).pipe(
-            map(result => {
-                return <Array<Pattern>>(result._embedded ? result._embedded.patternModels : []);
-            })
-        );
-    }
+  getPatternsByUrl(patternsUrl: string): Observable<Array<Pattern>> {
+    return this.http.get<PatternResponse>(patternsUrl).pipe(
+      map(result => {
+        return <Array<Pattern>>(result._embedded ? result._embedded.patternModels : []);
+      })
+    );
+  }
 
-    getPatternContentByPattern(pattern: Pattern): Observable<{ content: any }> {
-        return this.http.get<{ content: any }>(pattern._links.content.href);
-    }
+  getPatternContentByPattern(pattern: Pattern): Observable<{ content: any }> {
+    return this.http.get<{ content: any }>(pattern._links.content.href);
+  }
 
-    savePattern(url: string, pattern: any): Observable<any> {
-        return this.http.post<Pattern>(url, pattern, {observe: 'response'});
-    }
+  savePattern(url: string, pattern: any): Observable<any> {
+    return this.http.post<Pattern>(url, pattern, {observe: 'response'});
+  }
 
-    updatePattern(url: string, pattern: any): Observable<any> {
-        return this.http.put<Pattern>(url, pattern, {observe: 'response'});
-    }
+  updatePattern(url: string, pattern: any): Observable<any> {
+    return this.http.put<Pattern>(url, pattern, {observe: 'response'});
+  }
 
+  deletePattern(url: string): Observable<any> {
+    return this.http.delete<Pattern>(url);
+  }
+
+  getLinksForPattern(url: string) {
+    return this.http.get<Array<Edge>>(url);
+  }
 
     getPatternById(patternLanguage: PatternLanguage, patternId: String): Observable<Pattern> {
         console.log('patternid');
