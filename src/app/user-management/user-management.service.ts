@@ -26,7 +26,7 @@ export class UserManagementService {
   ) {
     this.repoEndpoint = this.config.repositoryUrl;
     this.userInfoEndpoint = this.config.userInfoUrl;
-    this.serviceEndpoint = '/user/';
+    this.serviceEndpoint = '/users';
   }
 
   public getUser(): Observable<any> {

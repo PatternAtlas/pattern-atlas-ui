@@ -43,11 +43,14 @@ export class IssueManagementService {
     private auth: AuthenticationService,
   ) {
     this.repoEndpoint = this.config.repositoryUrl;
-    this.serviceEndpoint = '/issue/';
+    this.serviceEndpoint = '/issues';
   }
 
+  /**
+   * GET
+   */
   public getAllIssues(): Observable<Issue[]> {
-    return this.http.get<any>(this.repoEndpoint + this.serviceEndpoint + 'getAll').pipe(
+    return this.http.get<any>(this.repoEndpoint + this.serviceEndpoint).pipe(
       map(result => {
         return result
       }),
@@ -58,32 +61,21 @@ export class IssueManagementService {
     )
   }
 
+  /**
+   * CREATE
+   */
   public createIssue(issue: Issue): Observable<Issue> {
     issue.rating = 0;
     issue.uri = issue.name;
     issue.version = '1.0'
     
-    return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint + 'create', issue).pipe(
+    return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint, issue).pipe(
       map(result => {
         this.toasterService.pop('success', 'Created new issue')
         return result
       }),
       catchError(error => {
         this.toasterService.pop('error', 'Could not create new issue: ', error)
-        return null;
-      }),
-    )
-  }
-
-  public createIssue2Candidate(issue: Issue, patternLanguageId: string): Observable<Candidate> {
-    
-    return this.http.post<any>(this.repoEndpoint + '/candidate/' + 'createFromIssue/' + `${patternLanguageId}`, issue).pipe(
-      map(result => {
-        this.toasterService.pop('success', 'Created new candidate out of issue')
-        return result
-      }),
-      catchError(error => {
-        this.toasterService.pop('error', 'Could not create new candidate out of issue: ', error)
         return null;
       }),
     )
@@ -92,7 +84,7 @@ export class IssueManagementService {
   public createComment(issue: Issue, issueComment: IssueComment): Observable<Issue> {
     const userId = this.auth.userSubject.value.id;
 
-    return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint + 'createComment/' + `${issue.id}&${userId}`, issueComment).pipe(
+    return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint + `/${issue.id}/comments/${userId}`, issueComment).pipe(
       map(result => {
         this.toasterService.pop('success', 'Created new issue')
         return result
@@ -104,9 +96,12 @@ export class IssueManagementService {
     )
   }
 
+  /**
+   * UPDATE
+   */
   public updateIssue(issue: Issue): Observable<Issue> {
 
-    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + 'update/' + issue.id, issue).pipe(
+    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${issue.id}`, issue).pipe(
       map(result => {
         this.toasterService.pop('success', 'Updated issue')
         return result
@@ -121,7 +116,7 @@ export class IssueManagementService {
   public updateRating(issue: Issue, rating: Rating): Observable<Issue> {
     const userId = this.auth.userSubject.value.id;
 
-    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + 'updateRating/' + `${issue.id}&${userId}&${rating}`, null).pipe(
+    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${issue.id}/users/${userId}/rating/${rating}`, issue).pipe(
       map(result => {
         this.toasterService.pop('success', 'Updated issue')
         return result
@@ -136,7 +131,7 @@ export class IssueManagementService {
   public updateCommentRating(issueComment: IssueComment, rating: Rating): Observable<Issue> {
     const userId = this.auth.userSubject.value.id;
 
-    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + 'updateCommentRating/' + `${issueComment.id}&${userId}&${rating}`, null).pipe(
+    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/comments/${issueComment.id}/users/${userId}/rating/${rating}`, issueComment).pipe(
       map(result => {
         this.toasterService.pop('success', 'Updated issue comment')
         return result
@@ -148,9 +143,12 @@ export class IssueManagementService {
     )
   }
 
+  /**
+   * DELETE
+   */
   public deleteIssue(issue: Issue): Observable<Issue> {
 
-    return this.http.delete<any>(this.repoEndpoint + this.serviceEndpoint + 'delete/' + issue.id).pipe(
+    return this.http.delete<any>(this.repoEndpoint + this.serviceEndpoint + `/${issue.id}`).pipe(
       map(result => {
         this.toasterService.pop('success', 'Deleted issue')
         return result

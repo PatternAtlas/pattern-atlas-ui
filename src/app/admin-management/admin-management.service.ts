@@ -26,15 +26,14 @@ export class AdminManagementService {
   ) {
     this.repoEndpoint = this.config.repositoryUrl;
     this.userInfoEndpoint = this.config.userInfoUrl;
-    this.serviceEndpoint = '/user/';
+    this.serviceEndpoint = '/users';
   }
 
-   /** 
-   * Pattern Pedia API 
-   * */
-
+  /**
+  * GET
+  */
   public getAllUsers(): Observable<PAUser[]> {
-    return this.http.get<PAUser>(this.repoEndpoint + this.serviceEndpoint + 'getAll').pipe(
+    return this.http.get<PAUser>(this.repoEndpoint + this.serviceEndpoint).pipe(
       map(result => {
         return result
       }),
@@ -45,9 +44,12 @@ export class AdminManagementService {
     )
   }
 
+   /**
+  * CREATE
+  */
   public createUser(user: PAUser): Observable<PAUser> {
     
-    return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint + 'create', user).pipe(
+    return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint, user).pipe(
       map(result => {
         this.toasterService.pop('success', 'Created new user')
         return result
@@ -61,7 +63,7 @@ export class AdminManagementService {
 
   public updateUser(user: PAUser): Observable<PAUser> {
     
-    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + 'update', user).pipe(
+    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${user.id}`, user).pipe(
       map(result => {
         this.toasterService.pop('success', 'Updated user')
         return result
@@ -75,7 +77,7 @@ export class AdminManagementService {
 
   public deleteUser(user: PAUser): Observable<PAUser> {
     
-    return this.http.delete<any>(this.repoEndpoint + this.serviceEndpoint + 'delete/' + user.id).pipe(
+    return this.http.delete<any>(this.repoEndpoint + this.serviceEndpoint + `/${user.id}`).pipe(
       map(result => {
         this.toasterService.pop('success', 'Deleted user')
         return result
