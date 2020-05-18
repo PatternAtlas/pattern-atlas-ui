@@ -6,7 +6,7 @@ import { Router } from "@angular/router";
 import { switchMap, skipWhile, tap, map, catchError } from "rxjs/operators";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { TokenInterceptor } from "../_interceptor/token.interceptor";
-import { User } from "src/app/user-management/user-management.service";
+import { PAUser } from "src/app/core/user-management";
 
 
 const accessTokenKey = 'access_token';
@@ -21,7 +21,7 @@ export class AuthenticationService {
     private regexState: RegExp;
 
     public accessTokenSubject: BehaviorSubject<string>;
-    public userSubject: BehaviorSubject<User>;
+    public userSubject: BehaviorSubject<PAUser>;
     public roleSubject: BehaviorSubject<string[]>;
 
     private jwtHelper: JwtHelperService;
@@ -43,7 +43,7 @@ export class AuthenticationService {
     }
 
     private initSubjectsPipe() {
-        this.userSubject = new BehaviorSubject<User>(null);
+        this.userSubject = new BehaviorSubject<PAUser>(null);
         this.roleSubject = new BehaviorSubject<string[]>(null);
         this.accessTokenSubject = new BehaviorSubject<string>(this.getAccesToken());
 
@@ -163,7 +163,7 @@ export class AuthenticationService {
     }
 
     getUserInfo() {
-        this.http.get<User>('http://localhost:8081/user_info').subscribe(user => {
+        this.http.get<PAUser>('http://localhost:8081/user_info').subscribe(user => {
 
             console.log('UserInfo: ', user);
             this.userSubject.next(user);

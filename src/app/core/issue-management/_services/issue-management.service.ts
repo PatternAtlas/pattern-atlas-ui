@@ -1,34 +1,13 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { ConfigService } from '../authentication/config.service';
-import { ToasterService } from 'angular2-toaster';
-import { Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import { AuthenticationService } from '../authentication/_services/authentication.service';
-import { PAComment } from '../core/model/comment';
-import { Candidate } from '../candidate-management/candidate-management.service';
-
-export interface Issue {
-  id: string,
-  uri: string,
-  name: string
-  description: string,
-  rating: number,
-  version: string,
-  comments: IssueComment[],
-}
-
-export interface IssueComment extends PAComment {
-  // id: string,
-  // text: string,
-  // rating: number;
-  // user: any,
-}
-
-export enum Rating {
-  UP = 'up',
-  DOWN = 'down',
-}
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { ConfigService } from "src/app/authentication/config.service";
+import { ToasterService } from "angular2-toaster";
+import { AuthenticationService } from "src/app/authentication/_services/authentication.service";
+import { Issue } from "../_models/issue.model";
+import { Observable } from "rxjs";
+import { map, catchError } from "rxjs/operators";
+import { IssueComment } from "../_models/issue-comment.model";
+import { Rating } from "../../model/rating.enum";
 
 @Injectable()
 export class IssueManagementService {

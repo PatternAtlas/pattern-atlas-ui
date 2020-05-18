@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CandidateManagementService, Candidate } from '../candidate-management.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { IssueManagementStore } from 'src/app/core/stores/issue-management-store';
-import { Issue, Rating } from 'src/app/issue-management/issue-management.service';
+import { IssueManagementStore } from 'src/app/core/issue-management/_store/issue-management-store';
 import { TdTextEditorComponent } from '@covalent/text-editor';
 import { PatternLanguageService } from 'src/app/core/service/pattern-language.service';
 import PatternLanguageModel from 'src/app/core/model/hal/pattern-language-model.model';
+import { Rating } from 'src/app/core/model/rating.enum';
+import { Candidate, CandidateManagementService } from 'src/app/core/candidate-management';
 
 @Component({
   selector: 'pp-candidate-management-detail',

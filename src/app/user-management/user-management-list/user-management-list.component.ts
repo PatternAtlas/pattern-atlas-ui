@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserManagementService } from '../user-management.service';
+import { UserService } from 'src/app/core/user-management';
 
 @Component({
   selector: 'pp-user-management-list',
@@ -9,13 +9,13 @@ import { UserManagementService } from '../user-management.service';
 export class UserManagementListComponent implements OnInit {
 
   constructor(
-    private userManagementService: UserManagementService
+    private userService: UserService,
   ) { }
 
   private data: any;
 
   ngOnInit(): void {
-    this.userManagementService.getUser().subscribe(result => {
+    this.userService.getUserWithToken().subscribe(result => {
       console.log(result)
     });
   }

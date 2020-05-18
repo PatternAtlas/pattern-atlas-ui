@@ -14,7 +14,7 @@
 
 import { Component } from '@angular/core';
 import { AuthenticationService } from './authentication/_services/authentication.service';
-import { User } from './user-management/user-management.service';
+import { PAUser } from './core/user-management';
 
 @Component({
     selector: 'pp-root',
@@ -25,7 +25,7 @@ export class AppComponent {
 
     loginButton = "Login";
     welcomeText = ""
-    user: User;
+    user: PAUser;
 
 
     constructor(public auth: AuthenticationService) {

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AdminManagementService, PAUser } from '../admin-management.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AdminManagementHomeStore } from '../admin-management-helper/admin-management-store';
+import { UserService, PAUser, UserStore } from 'src/app/core/user-management';
 
 @Component({
   selector: 'pp-admin-management-list',
@@ -14,10 +13,10 @@ export class AdminManagementListComponent implements OnInit {
   dataSource: PAUser[];
 
   constructor(
-    private adminService: AdminManagementService,
+    private userService: UserService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private adminStore: AdminManagementHomeStore,
+    private adminStore: UserStore,
   ) { }
 
   ngOnInit(): void {
@@ -25,7 +24,7 @@ export class AdminManagementListComponent implements OnInit {
   }
 
   getAll() {
-    this.adminService.getAllUsers().subscribe(result => {
+    this.userService.getAllUsers().subscribe(result => {
       console.log(result);
       this.dataSource = result;
     })
@@ -44,7 +43,7 @@ export class AdminManagementListComponent implements OnInit {
 
   deleteUser(user: PAUser) {
     console.log('delete user: ', user);
-    this.adminService.deleteUser(user).subscribe(result => {
+    this.userService.deleteUser(user).subscribe(result => {
       console.log(result);
     })
   }

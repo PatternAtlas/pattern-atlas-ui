@@ -1,11 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Issue, IssueManagementService, IssueComment, Rating } from '../issue-management.service';
 import { IssueCommentRatingEvent } from 'src/app/core/component/comment-list/comment-list.component';
-import { IssueManagementStore } from '../../core/stores/issue-management-store';
+import { IssueManagementStore } from '../../core/issue-management/_store/issue-management-store';
 import { Router } from '@angular/router';
-import { Candidate } from 'src/app/candidate-management/candidate-management.service';
 import { PatternLanguageService } from 'src/app/core/service/pattern-language.service';
 import PatternLanguageModel from 'src/app/core/model/hal/pattern-language-model.model';
+import { Issue, IssueManagementService, IssueComment } from 'src/app/core/issue-management';
+import { Rating } from 'src/app/core/model/rating.enum';
+import { Candidate } from 'src/app/core/candidate-management';
 
 @Component({
   selector: 'pp-issue-management-detail',

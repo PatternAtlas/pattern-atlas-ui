@@ -1,38 +1,13 @@
-import { Injectable } from '@angular/core';
-import { PAComment } from '../core/model/comment';
-import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { ConfigService } from '../authentication/config.service';
-import { ToasterService } from 'angular2-toaster';
-import { AuthenticationService } from '../authentication/_services/authentication.service';
-import { map, catchError } from 'rxjs/operators';
-import { Rating } from '../issue-management/issue-management.service';
-import PatternLanguageModel from '../core/model/hal/pattern-language-model.model';
-
-export class Candidate {
-  comments: PAComment[];
-  content: string;
-  iconUrl: any;
-  id: string;
-  name: string;
-  patternLanguageId: string;
-  patternLanguageName: string;
-  rating: number = 0;
-  uri: string;
-  version: string = '0.1.0';
-
-  constructor()
-  constructor(_content: string, _name: string, _patternLanguageId: string)
-  constructor(_content?: string, _name?: string, _patternLanguageId?: string) {
-    this.content = _content;
-    this.name = _name;
-    this.patternLanguageId = _patternLanguageId;
-  }
-}
-
-export interface CandidateComment extends PAComment {
-
-}
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { ConfigService } from "src/app/authentication/config.service";
+import { ToasterService } from "angular2-toaster";
+import { AuthenticationService } from "src/app/authentication/_services/authentication.service";
+import { Observable } from "rxjs";
+import { map, catchError } from "rxjs/operators";
+import { Rating } from "../../model/rating.enum";
+import { Candidate } from "../_models/candidate.model";
+import { CandidateComment } from "../_models/candidate-comment.model";
 
 @Injectable()
 export class CandidateManagementService {

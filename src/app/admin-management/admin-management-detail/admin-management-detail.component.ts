@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl, FormGroupDirective, NgForm, AbstractControl } from '@angular/forms';
-import { PAUser, AdminManagementService } from '../admin-management.service';
-import { AdminManagementHomeStore } from '../admin-management-helper/admin-management-store';
-import { UserRole } from 'src/app/app-routing.module';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { UserStore, UserService, PAUser, UserRole } from 'src/app/core/user-management';
 
 @Component({
   selector: 'pp-admin-management-detail',
@@ -22,13 +20,13 @@ export class AdminManagementDetailComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private userFormBuilder: FormBuilder,
-    private adminStore: AdminManagementHomeStore,
-    private adminService: AdminManagementService,
+    private userStore: UserStore,
+    private userService: UserService,
   ) { }
 
   ngOnInit(): void {
 
-    this.adminStore.user.subscribe(user => {
+    this.userStore.user.subscribe(user => {
       if (user) {
         this.user = user;
       } else {
@@ -68,11 +66,11 @@ export class AdminManagementDetailComponent implements OnInit {
     this.user.roles = this.userForm.get('userRoles').value;
     this.user.password = this.userForm.get('password').value;
     if (this.user.id) {
-      this.adminService.updateUser(this.user).subscribe(result => {
+      this.userService.updateUser(this.user).subscribe(result => {
         console.log('updateUser: ', result);
       })
     } else {
-      this.adminService.createUser(this.user).subscribe(result => {
+      this.userService.createUser(this.user).subscribe(result => {
         console.log(result);
       })
     }

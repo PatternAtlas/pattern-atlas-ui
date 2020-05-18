@@ -9,6 +9,7 @@ import { DEVELOPER_MANAGEMENT_ROUTES } from './developer-management/developer-ma
 import { USER_MANAGEMENT_ROUTES } from './user-management/user-management.module';
 import { ADMIN_MANAGEMENT_ROUTES } from './admin-management/admin-management.module';
 import { PatternLanguageManagementResolverService } from './pattern-language-management/pattern-language-management/pattern-language-management-resolver.service';
+import { UserRole } from './core/user-management';
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -22,14 +23,6 @@ import { PatternLanguageManagementResolverService } from './pattern-language-man
  *
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
-
-export enum UserRole {
-    MEMBER = "MEMBER",
-    EXPERT = "EXPERT",
-    AUTHOR = "AUTHOR",
-    LIBRARIAN = "LIBRARIAN",
-    ADMIN = "ADMIN"
-}
 
 const routes: Routes = [
     {

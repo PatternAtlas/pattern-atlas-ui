@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CoreModule } from '../core/core.module';
 import { RouterModule } from '@angular/router';
-import { CandidateManagementService } from './candidate-management.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -76,7 +75,6 @@ export const CANDIATE_ROTUES = [
     MatExpansionModule
   ],
   providers: [
-    CandidateManagementService
   ]
 })
 export class CandidateManagementModule { }

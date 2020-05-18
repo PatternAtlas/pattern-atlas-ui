@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Issue } from '../issue-management.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Issue } from 'src/app/core/issue-management';
 
 export interface DialogData {
   description: string;

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { IssueComment, Rating } from 'src/app/issue-management/issue-management.service';
+import { IssueComment } from '../../issue-management';
+import { Rating } from '../../model/rating.enum';
 
 export interface IssueCommentRatingEvent {
   issueComment: IssueComment,

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Rating } from 'src/app/issue-management/issue-management.service';
+import { Rating } from '../../model/rating.enum';
 
 @Component({
   selector: 'pp-rating',

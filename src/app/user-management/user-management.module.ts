@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { UserManagementListComponent } from './user-management-list/user-management-list.component';
 import { RouterModule } from '@angular/router';
 import { CoreModule } from '../core/core.module';
-import { UserManagementService } from './user-management.service';
 
 export const USER_MANAGEMENT_ROUTES = [
   { 
@@ -26,7 +25,6 @@ export const USER_MANAGEMENT_ROUTES = [
     // UserManagementHomeComponent
   ],
   providers: [
-    UserManagementService
   ]
 
 })

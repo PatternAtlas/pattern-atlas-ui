@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Issue, IssueManagementService } from '../issue-management.service';
 import { IssueCreateDialogComponent } from '../issue-create-dialog/issue-create-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { IssueManagementService, Issue } from 'src/app/core/issue-management';
 
 @Component({
   selector: 'pp-issue-management-list',

@@ -1,7 +1,7 @@
-import { PAUser } from "../admin-management.service";
 import { BehaviorSubject } from "rxjs";
+import { PAUser } from "../_models/user.model";
 
-export class AdminManagementHomeStore {
+export class UserStore {
     private _user: BehaviorSubject<PAUser> = new BehaviorSubject(null);
 
     get user() {
