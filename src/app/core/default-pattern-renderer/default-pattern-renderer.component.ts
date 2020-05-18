@@ -39,7 +39,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
     private viewContainerRef;
     private patternLanguageId: string;
     private patternId: string;
-    private rendered: Observable<any>;
 
     constructor(private activatedRoute: ActivatedRoute,
                 private toasterService: ToasterService,
@@ -58,10 +57,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
         this.patternLanguageId = this.activatedRoute.snapshot.paramMap.get('patternLanguageId');
         this.patternId = this.activatedRoute.snapshot.paramMap.get('patternId');
         this.getData();
-    }
-
-    doubleEncodeUri(uri: string): string {
-        return UriConverter.doubleEncodeUri(uri);
     }
 
     addLink() {

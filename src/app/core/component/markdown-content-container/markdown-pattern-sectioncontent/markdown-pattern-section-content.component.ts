@@ -60,18 +60,18 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
 
   renderSVGTags(data: string): void {
     let editData =  data;
-    const indexes: number[] = this.getNextOccurance(editData, '<SVG>', '</SVG>');
-    if (indexes[0] !== -1 && indexes[1] !== -1) {
+    const svgIndexes: number[] = this.getNextOccurance(editData, '<SVG>', '</SVG>');
+    if (svgIndexes[0] !== -1 && svgIndexes[1] !== -1) {
       // render elements before svg imgage link
-      this.markdownDiv.nativeElement.innerHTML += this.markdown.render(editData.substring(0, indexes[0] - 1));
+      this.markdownDiv.nativeElement.innerHTML += this.markdown.render(editData.substring(0, svgIndexes[0] - 1));
       // get id for img on database
-      const id = editData.substring(indexes[0] + 5, indexes[1]);
+      const id = editData.substring(svgIndexes[0] + 5, svgIndexes[1]);
       // get image and add raw svg text to html
       this.imageService.getImageById(id)
         .subscribe(res => {
           this.markdownDiv.nativeElement.innerHTML += res;
           // cut off parts that were added to html and recursive call function to render the rest.
-          editData = editData.slice(indexes[1] + 6);
+          editData = editData.slice(svgIndexes[1] + 6);
           this.renderSVGTags(editData);
         });
     } else {
