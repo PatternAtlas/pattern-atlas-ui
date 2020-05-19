@@ -1,10 +1,7 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, pipe, throwError } from 'rxjs';
-import { filter, retryWhen, switchMap, take, delay } from 'rxjs/operators';
 import { AuthenticationService } from '../_services/authentication.service';
-import { ConfigService } from '../config.service';
-// import { AuthenticationService } from './authentication.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -16,10 +13,10 @@ export class TokenInterceptor implements HttpInterceptor {
         this.authService = authService;
     }
 
-    constructor( private config: ConfigService) { }
+    constructor() { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler) {
-        if (request.url.includes(this.config.repositoryUrl) || request.url.includes(this.config.userInfoUrl) ) {
+        if (request.url.includes(environment.repositoryUrl) || request.url.includes(environment.userInfoUrl) ) {
             return next.handle(this.addToken(request));
         } else {
             return next.handle(request);

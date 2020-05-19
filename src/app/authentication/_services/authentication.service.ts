@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, Subject, of, EMPTY, observable } from "rxjs";
 import { HttpClient, HttpRequest, HttpParams, HttpHeaders } from "@angular/common/http";
-import { ConfigService } from "../config.service";
 import { Router } from "@angular/router";
 import { switchMap, skipWhile, tap, map, catchError } from "rxjs/operators";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { TokenInterceptor } from "../_interceptor/token.interceptor";
 import { PAUser } from "src/app/core/user-management";
+import { environment } from "src/environments/environment";
 
 
 const accessTokenKey = 'access_token';
@@ -14,7 +14,7 @@ const refreshTokenKey = 'refresh_token';
 
 const stateKey = 'state';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class AuthenticationService {
 
     private regexCode: RegExp;
@@ -28,7 +28,6 @@ export class AuthenticationService {
 
     constructor(
         private http: HttpClient,
-        private config: ConfigService,
         private router: Router,
     ) {
         console.log('Init Authentication Service');
@@ -81,15 +80,15 @@ export class AuthenticationService {
     private getAccesCode(state: string) {
         const params = new HttpParams()
             .set('response_type', 'code')
-            .set('client_id', this.config.clientIdPublic)
+            .set('client_id', environment.clientIdPublic)
             .set('redirect_uri', `${window.location.origin}`)
             .set('scope', 'read+write')
             .set('state', state)
-        // .set('client_id', this.config.clientIdPKCE)
+        // .set('client_id', environment.clientIdPKCE)
         // .set('code_challenge', '4cc9b165-1230-4607-873b-3a78afcf60c5')
 
 
-        window.open(this.config.authorizeUrl + params, '_self');
+        window.open(environment.authorizeUrl + params, '_self');
     }
 
     private checkState(state: string) {
@@ -109,15 +108,15 @@ export class AuthenticationService {
             } else {
                 const code = this.regexCode.exec(url)[1];
                 const params = new HttpParams()
-                    .set('client_id', `${this.config.clientIdPublic}`)
-                    // .set('client_id', `${this.config.clientPKCE}`)
+                    .set('client_id', `${environment.clientIdPublic}`)
+                    // .set('client_id', `${environment.clientPKCE}`)
                     // .set('code_verifier', '4cc9b165-1230-4607-873b-3a78afcf60c5')
                     .set('code', code)
                     .set('redirect_uri', `${window.location.origin}`)
                     .set('grant_type', 'authorization_code')
 
-                // this.http.post<any>(this.config.tokenUrl, params, { headers: { authorization: 'Basic ' + btoa(`${this.config.clientIdPrivate}:${this.config.clientSecret}`) } }).subscribe(token => {
-                this.http.post<any>(this.config.tokenUrl, params).subscribe(token => {
+                // this.http.post<any>(environment.tokenUrl, params, { headers: { authorization: 'Basic ' + btoa(`${environment.clientIdPrivate}:${environment.clientSecret}`) } }).subscribe(token => {
+                this.http.post<any>(environment.tokenUrl, params).subscribe(token => {
 
                     // console.log('Token response normal: ', token);
                     const accessToken = token[accessTokenKey];
@@ -139,7 +138,7 @@ export class AuthenticationService {
     refreshToken() {
         console.log("Refresh Token");
         const params = new HttpParams()
-            .set('client_id', `${this.config.clientIdPublic}`)
+            .set('client_id', `${environment.clientIdPublic}`)
             .set('grant_type', 'refresh_token')
             .set('refresh_token', `${this.getRefreshToken()}`)
         this.http.post<any>('http://localhost:8081/oauth/token', params).subscribe(token => {

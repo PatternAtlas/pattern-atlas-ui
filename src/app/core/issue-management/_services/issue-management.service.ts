@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { ConfigService } from "src/app/authentication/config.service";
 import { ToasterService } from "angular2-toaster";
 import { AuthenticationService } from "src/app/authentication/_services/authentication.service";
 import { Issue } from "../_models/issue.model";
@@ -8,6 +7,7 @@ import { Observable } from "rxjs";
 import { map, catchError } from "rxjs/operators";
 import { IssueComment } from "../_models/issue-comment.model";
 import { Rating } from "../../model/rating.enum";
+import { environment } from "src/environments/environment";
 
 @Injectable()
 export class IssueManagementService {
@@ -17,11 +17,10 @@ export class IssueManagementService {
 
   constructor(
     private http: HttpClient,
-    private config: ConfigService,
     private toasterService: ToasterService,
     private auth: AuthenticationService,
   ) {
-    this.repoEndpoint = this.config.repositoryUrl;
+    this.repoEndpoint = environment.repositoryUrl;
     this.serviceEndpoint = '/issues';
   }
 

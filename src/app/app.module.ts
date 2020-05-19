@@ -12,38 +12,38 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import {BrowserModule} from '@angular/platform-browser';
-import {NgModule, APP_INITIALIZER} from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 
-import {AppRoutingModule} from './app-routing.module';
-import {AppComponent} from './app.component';
-import {PatternLanguageManagementModule} from './pattern-language-management/pattern-language-management.module';
-import {CoreModule} from './core/core.module';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { PatternLanguageManagementModule } from './pattern-language-management/pattern-language-management.module';
+import { CoreModule } from './core/core.module';
 
-import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 // import {ExtensionsModule} from './extensions/extensions.module';
-import {MatButtonModule} from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
-import {MatIconModule} from '@angular/material/icon';
-import {MatTabsModule} from '@angular/material/tabs';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {PatternViewManagementModule} from './pattern-view-management/pattern-view-management.module';
-import {NgxMdModule} from 'ngx-md';
-import {CovalentTextEditorModule} from '@covalent/text-editor';
-import {FlexLayoutModule} from '@angular/flex-layout';
-import {CookieService} from 'ngx-cookie-service';
-import {ToasterModule} from 'angular2-toaster';
-import {MatInputModule} from '@angular/material/input';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { ConfigService, configServiceInitializerFactory } from './authentication/config.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PatternViewManagementModule } from './pattern-view-management/pattern-view-management.module';
+import { NgxMdModule } from 'ngx-md';
+import { CovalentTextEditorModule } from '@covalent/text-editor';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { CookieService } from 'ngx-cookie-service';
+import { ToasterModule } from 'angular2-toaster';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JwtModule } from '@auth0/angular-jwt';
 import { TokenInterceptor } from './authentication/_interceptor/token.interceptor';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatNavList, MatListModule } from '@angular/material/list';
 import { LandingPageComponent } from './core/component/landing-page/landing-page.component';
 import { PageNotFoundComponent } from './core/component/page-not-found/page-not-found.component';
-import {FilterViewComponent} from './filter/component/filter-view/filter-view.component';
+import { FilterViewComponent } from './filter/component/filter-view/filter-view.component';
+import { AuthenticationModule } from './authentication/authentication.module';
 
 @NgModule({
     declarations: [
@@ -56,7 +56,7 @@ import {FilterViewComponent} from './filter/component/filter-view/filter-view.co
         AppRoutingModule,
         BrowserModule,
         BrowserAnimationsModule,
-
+        AuthenticationModule,
         // IssueManagementModule,
         // UserManagementHomeComponent,
         MatToolbarModule,
@@ -80,17 +80,11 @@ import {FilterViewComponent} from './filter/component/filter-view/filter-view.co
         MatSidenavModule,
         MatListModule,
         // AppRoutingModule
-        
+
     ],
     providers: [
         CookieService,
-        ConfigService, {
-            provide: APP_INITIALIZER,
-            useFactory: configServiceInitializerFactory,
-            deps: [ConfigService],
-            multi: true
-          },
-          { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+        { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
     ],
     bootstrap: [AppComponent]
 })

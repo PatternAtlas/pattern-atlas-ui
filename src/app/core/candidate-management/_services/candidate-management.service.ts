@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { ConfigService } from "src/app/authentication/config.service";
 import { ToasterService } from "angular2-toaster";
 import { AuthenticationService } from "src/app/authentication/_services/authentication.service";
 import { Observable } from "rxjs";
@@ -8,6 +7,7 @@ import { map, catchError } from "rxjs/operators";
 import { Rating } from "../../model/rating.enum";
 import { Candidate } from "../_models/candidate.model";
 import { CandidateComment } from "../_models/candidate-comment.model";
+import { environment } from "src/environments/environment";
 
 @Injectable()
 export class CandidateManagementService {
@@ -17,11 +17,10 @@ export class CandidateManagementService {
 
   constructor(
     private http: HttpClient,
-    private config: ConfigService,
     private toasterService: ToasterService,
     private auth: AuthenticationService,
   ) {
-    this.repoEndpoint = this.config.repositoryUrl;
+    this.repoEndpoint = environment.repositoryUrl;
     this.serviceEndpoint = '/candidates';
   }
 
@@ -31,7 +30,7 @@ export class CandidateManagementService {
   public getAllCandidates(): Observable<Candidate[]> {
     return this.http.get<any>(this.repoEndpoint + this.serviceEndpoint).pipe(
       map(result => {
-        return result._embedded.candidateModels
+        return result._embedded ? result._embedded.candidateModels : []
       }),
       catchError(error => {
         this.toasterService.pop('error', 'Getting candidate list', error)

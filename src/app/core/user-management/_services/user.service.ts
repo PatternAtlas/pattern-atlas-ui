@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { ToasterService } from 'angular2-toaster';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { ConfigService } from 'src/app/authentication/config.service';
 import { PAUser } from '../_models/user.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class UserService {
@@ -15,11 +15,10 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
-    private config: ConfigService,
     private toasterService: ToasterService
   ) {
-    this.repoEndpoint = this.config.repositoryUrl;
-    this.userInfoEndpoint = this.config.userInfoUrl;
+    this.repoEndpoint = environment.repositoryUrl;
+    this.userInfoEndpoint = environment.userInfoUrl;
     this.serviceEndpoint = '/users';
   }
 

@@ -21,7 +21,6 @@ export const environment = {
   repositoryUrl: 'http://localhost:8080',
   authorizeUrl: 'http://localhost:8081/oauth/authorize?',
   tokenUrl: 'http://localhost:8081/oauth/token',
-  // tokenUrl: 'http://localhost:8081/get_token',
   tokenRevokeUrl: 'http://localhost:8081/oauth/revoke_token',
   signinUrl: 'http://localhost:8081/user/create',
   userInfoUrl: 'http://localhost:8081/user_info',
