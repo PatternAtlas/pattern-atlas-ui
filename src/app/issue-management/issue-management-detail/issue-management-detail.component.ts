@@ -21,10 +21,6 @@ export class IssueManagementDetailComponent implements OnInit {
   public disabled = true;
   public patternLanguages: PatternLanguageModel[];
   public patternLanguageSelected: string;
-
-  // JavaScript passes Ojbects via reference
-  private name: string;
-  private description: string;
   private oldIssue: Issue;
 
   constructor(

@@ -19,7 +19,6 @@ export class AuthGuardService implements CanActivate {
     const role = route.data.role;
 
     if (!this.auth.isAuthenticated() || !this.auth.roleSubject.value.includes(role)) {
-      // this.router.navigate(['login']);
       console.log('Not allowed')
       this.toaserService.pop('error', 'You do not have the rights for Route', route.routeConfig.path);
       return false;

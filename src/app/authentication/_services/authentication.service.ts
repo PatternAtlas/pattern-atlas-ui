@@ -47,7 +47,6 @@ export class AuthenticationService {
         this.accessTokenSubject = new BehaviorSubject<string>(this.getAccesToken());
 
         this.accessTokenSubject.subscribe(token => {
-            // console.log('accesTokenPipe: ', token);
             if (token === 'logout') {
                 console.log('User logout');
                 this.userSubject.next(null);
@@ -58,7 +57,6 @@ export class AuthenticationService {
                 console.log('Token exists && token not expired')
                 this.getUserInfo();
                 this.router.navigate(['/issue']);
-                // this.router.navigate(['/user']);
 
             } else if (token && this.getRefreshToken() && this.jwtHelper.isTokenExpired(this.getAccesToken())) {
                 console.log('Token exists && token expired');
@@ -84,6 +82,7 @@ export class AuthenticationService {
             .set('redirect_uri', `${window.location.origin}`)
             .set('scope', 'read+write')
             .set('state', state)
+        // outcomment IF PKCE Authentaction flow is used
         // .set('client_id', environment.clientIdPKCE)
         // .set('code_challenge', '4cc9b165-1230-4607-873b-3a78afcf60c5')
 
@@ -93,7 +92,6 @@ export class AuthenticationService {
 
     private checkState(state: string) {
         const stateLocal = localStorage.getItem(stateKey);
-        // console.log(state === stateLocal);
         return state !== stateLocal
     }
 
@@ -109,16 +107,16 @@ export class AuthenticationService {
                 const code = this.regexCode.exec(url)[1];
                 const params = new HttpParams()
                     .set('client_id', `${environment.clientIdPublic}`)
-                    // .set('client_id', `${environment.clientPKCE}`)
-                    // .set('code_verifier', '4cc9b165-1230-4607-873b-3a78afcf60c5')
+                   
                     .set('code', code)
                     .set('redirect_uri', `${window.location.origin}`)
                     .set('grant_type', 'authorization_code')
+                    // outcomment IF PKCE Authentaction flow is used
+                     // .set('client_id', `${environment.clientPKCE}`)
+                    // .set('code_verifier', '4cc9b165-1230-4607-873b-3a78afcf60c5')
 
-                // this.http.post<any>(environment.tokenUrl, params, { headers: { authorization: 'Basic ' + btoa(`${environment.clientIdPrivate}:${environment.clientSecret}`) } }).subscribe(token => {
                 this.http.post<any>(environment.tokenUrl, params).subscribe(token => {
 
-                    // console.log('Token response normal: ', token);
                     const accessToken = token[accessTokenKey];
                     const refreshToken = token[refreshTokenKey];
 
@@ -126,8 +124,6 @@ export class AuthenticationService {
                     localStorage.setItem(refreshTokenKey, refreshToken);
 
                     this.accessTokenSubject.next(accessToken);
-
-                    // this.getUserInfo();
                 },
                     error => console.error('Error getToken(): ', error)
                 );
@@ -143,7 +139,6 @@ export class AuthenticationService {
             .set('refresh_token', `${this.getRefreshToken()}`)
         this.http.post<any>('http://localhost:8081/oauth/token', params).subscribe(token => {
 
-            // console.log('Token refresh normal: ', token);
             const accessToken = token[accessTokenKey];
             const refreshToken = token[refreshTokenKey];
 
@@ -151,8 +146,6 @@ export class AuthenticationService {
             localStorage.setItem(refreshTokenKey, refreshToken);
 
             this.accessTokenSubject.next(accessToken);
-
-            // this.getUserInfo();
         },
             error => {
                 console.error('Error getToken via refreshToken: ', error)
@@ -191,7 +184,6 @@ export class AuthenticationService {
     }
 
     public isAuthenticated(): boolean {
-        // console.log('isAuthenticated');
         if (!this.jwtHelper.isTokenExpired(this.getAccesToken())) {
             return true;
         } else if (!this.jwtHelper.isTokenExpired(this.getRefreshToken())) {
@@ -206,7 +198,6 @@ export class AuthenticationService {
     public hasRole(role: string): Observable<boolean> {
         return this.roleSubject.asObservable().pipe(
             map(roles => {
-                // console.log(role, roles);
                 if (roles) {
                     return roles.includes(role);
                 }

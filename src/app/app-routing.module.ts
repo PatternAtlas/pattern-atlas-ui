@@ -40,20 +40,14 @@ const routes: Routes = [
     {
         path: 'patternViews',
         loadChildren: () => import('./pattern-view-management/pattern-view-management.module').then(m => m.PatternViewManagementModule),
-        // canActivate: [AuthGuard],
-        // data: { role: UserRole.MEMBER }  
     },
     {
         path: 'candidate',
         loadChildren: () => import('./candidate-management/candidate-management.module').then(m => m.CandidateManagementModule),
-        // canActivate: [AuthGuard],
-        // data: { role: UserRole.MEMBER }  
     },
     {
         path: 'issue',
         loadChildren: () => import('./issue-management/issue-management.module').then(m => m.IssueManagementModule),
-        // canActivate: [AuthGuard],
-        // data: { role: UserRole.MEMBER }
     },
     {
         path: 'user',

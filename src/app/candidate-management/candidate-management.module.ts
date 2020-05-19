@@ -14,6 +14,10 @@ import { CandidateManagementListComponent } from './candidate-management-list/ca
 import { CandidateManagementDetailComponent } from './candidate-management-detail/candidate-management-detail.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatExpansionModule } from '@angular/material/expansion';
+// Routing
+import { AuthGuardService as AuthGuard } from '../authentication/_services/auth-guard.service'
+import { UserRole } from '../core/user-management';
+
 
 export const CANDIATE_ROTUES = [
   {
@@ -22,30 +26,32 @@ export const CANDIATE_ROTUES = [
       {
         path: '',
         component: CandidateManagementListComponent,
-        // canActivate: [AuthGuard],
-        // data: { role: UserRole.MEMBER } 
       },
       {
         path: 'detail/:name',
         component: CandidateManagementDetailComponent,
+        // Will be used in the future
         // canActivate: [AuthGuard],
         // data: { role: UserRole.MEMBER }  
       },
       {
         path: 'edit/:name',
         component: CandidateManagementDetailComponent,
+        // Will be used in the future
         // canActivate: [AuthGuard],
         // data: { role: UserRole.MEMBER }  
       },
       {
         path: 'create',
         component: CandidateManagementDetailComponent,
+        // Will be used in the future
         // canActivate: [AuthGuard],
         // data: { role: UserRole.MEMBER }  
       },
       {
         path: 'create/:name',
         component: CandidateManagementDetailComponent,
+        // Will be used in the future
         // canActivate: [AuthGuard],
         // data: { role: UserRole.MEMBER }  
       }

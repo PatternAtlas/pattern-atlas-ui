@@ -57,8 +57,6 @@ import { AuthenticationModule } from './authentication/authentication.module';
         BrowserModule,
         BrowserAnimationsModule,
         AuthenticationModule,
-        // IssueManagementModule,
-        // UserManagementHomeComponent,
         MatToolbarModule,
         MatIconModule,
         MatCardModule,
@@ -69,7 +67,6 @@ import { AuthenticationModule } from './authentication/authentication.module';
         CovalentTextEditorModule,
         CoreModule,
         HttpClientModule,
-        // ExtensionsModule,
         AppRoutingModule,
         FlexLayoutModule,
         ToasterModule.forRoot(),
@@ -79,8 +76,6 @@ import { AuthenticationModule } from './authentication/authentication.module';
         JwtModule,
         MatSidenavModule,
         MatListModule,
-        // AppRoutingModule
-
     ],
     providers: [
         CookieService,

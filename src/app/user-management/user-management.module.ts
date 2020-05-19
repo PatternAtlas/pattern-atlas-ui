@@ -5,10 +5,9 @@ import { RouterModule } from '@angular/router';
 import { CoreModule } from '../core/core.module';
 
 export const USER_MANAGEMENT_ROUTES = [
-  { 
-    path: '', component: UserManagementListComponent 
-  }, 
-  // { path: 'some-other-route', component: SomeOtherComponent },
+  {
+    path: '', component: UserManagementListComponent,
+  },
 ];
 
 @NgModule({
@@ -19,10 +18,9 @@ export const USER_MANAGEMENT_ROUTES = [
     CommonModule,
     CoreModule,
     RouterModule.forChild(USER_MANAGEMENT_ROUTES),
-    
+
   ],
   exports: [
-    // UserManagementHomeComponent
   ],
   providers: [
   ]

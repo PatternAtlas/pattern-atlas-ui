@@ -1,12 +1,3 @@
-<!-- <mat-grid-list cols="5" rowHeight="100px">
-    <mat-grid-tile *ngFor="let candidate of candidates" [colspan]="1" [rowspan]="1"
-        [style.background]="'#DDBDF1'" (click)="candidateClicked(candidate)">
-        {{candidate.name}}
-    </mat-grid-tile>
-    <mat-grid-tile (click)="createCandidate()">
-        + Create Candidate
-    </mat-grid-tile>
-</mat-grid-list> -->
 <pp-action-button-bar [addButtonText]="'Add'" [goBackButton]="false" [reloadButton]="true"
     (addClicked)="createCandidate()" (reloadClicked)="getAll()"></pp-action-button-bar>
 <mat-accordion *ngFor="let language of patternLanguages">
@@ -15,9 +6,6 @@
             <mat-panel-title>
                 {{language.name}}
             </mat-panel-title>
-            <!-- <mat-panel-description>
-                Type your name and age
-            </mat-panel-description> -->
         </mat-expansion-panel-header>
         <div class="container">
             <ng-container *ngFor="let candidate of candidates">

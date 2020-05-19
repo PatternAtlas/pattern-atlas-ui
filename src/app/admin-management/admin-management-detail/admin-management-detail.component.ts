@@ -54,7 +54,6 @@ export class AdminManagementDetailComponent implements OnInit {
     console.log(control);
     let pass = this.userForm.get('password').value
     let confirmPass = this.userForm.get('confirmPassword').value;
-    // this.userForm.get('confirmPassword').setErrors({'incorrect': true});
 
     return pass === confirmPass ? null : { 'incorrect': true }
   }
@@ -91,7 +90,6 @@ export function ValidatePassword(formGroup: FormGroup) {
   console.log(formGroup);
   let pass = formGroup.get('password').value
   let confirmPass = formGroup.get('confirmPassword').value;
-  // formGroup.get('confirmPassword').setErrors({'incorrect': true});
   pass === confirmPass ? formGroup.get('confirmPassword').setErrors(null) : formGroup.get('confirmPassword').setErrors({ 'incorrect': true });
   return true;
 }

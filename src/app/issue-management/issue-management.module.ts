@@ -16,10 +16,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { IssueManagementListComponent } from './issue-management-list/issue-management-list.component';
 
 export const ISSUE_ROTUES = [
-  { 
-    path: '', component: IssueManagementListComponent 
-  }, 
-  // { path: 'some-other-route', component: SomeOtherComponent },
+  {
+    path: '',
+    children: [
+      {
+        path: '',
+        component: IssueManagementListComponent
+      }
+    ]
+  },
 ];
 
 @NgModule({
@@ -32,7 +37,6 @@ export const ISSUE_ROTUES = [
     CommonModule,
     CoreModule,
     RouterModule.forChild(ISSUE_ROTUES),
-    // ModalModule.forRoot(),
     MatListModule,
     MatExpansionModule,
     MatCardModule,
