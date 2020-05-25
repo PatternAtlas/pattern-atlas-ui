@@ -23,6 +23,9 @@
                         <i class="material-icons">trending_flat</i>
                         <a [routerLink]="['..', relation.targetPatternId]">{{ relation?.targetPatternName}}</a>
                         <i>{{relation?.description ? ': ' + relation?.description : ''}}</i>
+                      <button (click)="deleteEdge(relation)" class="save-button" style="margin-bottom: 1rem" mat-raised-button color="warn">
+                        <i class="material-icons">delete</i>
+                      </button>
                     </p>
                     <br/>
                 </ng-container>
