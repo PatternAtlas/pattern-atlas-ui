@@ -212,12 +212,12 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
   private deleteEdge(edge: DirectedEdgeModel | UndirectedEdgeModel): void {
     this.patternRelationDescriptorService.deleteEdge(edge._links.self.href)
       .subscribe(value => {
-        console.log('directed Edge');
+        // check both edge lists to update view
         this.directedPatternRelations = this.directedPatternRelations.filter(val => val.id !== edge.id);
         this.undirectedPatternRelations = this.undirectedPatternRelations.filter(relat => relat.id !== edge.id);
         this.toasterService.pop('success', 'Relation successfully deleted!');
       }, error => {
-        this.toasterService.pop('error', 'Could not delete Realtion');
+        this.toasterService.pop('error', 'Could not delete Relation');
       });
   }
 }
