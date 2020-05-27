@@ -3,7 +3,7 @@ import {Subject} from 'rxjs';
 import {debounceTime, takeUntil} from 'rxjs/operators';
 
 @Directive({
-    selector: '[ppGraphEventEmmiter]'
+  selector: '[ppGraphEventEmmiter]'
 })
 export class EmitEventOnAddedEdgeDirective implements OnInit, OnDestroy {
     @Output('onAddedEdge') edgeAddedEventEmitter = new EventEmitter<any>();
@@ -18,46 +18,46 @@ export class EmitEventOnAddedEdgeDirective implements OnInit, OnDestroy {
     private unsubscribe: Subject<void> = new Subject();
 
     ngOnInit(): void {
-        // delay trigggering click events and don't trigger it if nothing changed
-        this.movements.pipe(
-            debounceTime(1000),
-            takeUntil(this.unsubscribe)
-        ).subscribe((e) => {
-            this.onNodePositionChangeEventEmitter.emit(e);
-        });
+      // delay trigggering click events and don't trigger it if nothing changed
+      this.movements.pipe(
+        debounceTime(1000),
+        takeUntil(this.unsubscribe)
+      ).subscribe((e) => {
+        this.onNodePositionChangeEventEmitter.emit(e);
+      });
     }
 
     @HostListener('edgeadd', ['$event']) onEdgeAdd($event) {
-        this.edgeAddedEventEmitter.emit($event);
+      this.edgeAddedEventEmitter.emit($event);
     }
 
     @HostListener('nodeclick', ['$event']) onNodeClick($event) {
-        console.log('click-event');
-        if ($event.details && $event.details.key === 'image-clicked') {
-            console.log('image');
-            // $event.preventDefault();
-            // return;
-        }
+      console.log('click-event');
+      if ($event.details && $event.details.key === 'image-clicked') {
+        console.log('image');
+        // $event.preventDefault();
+        // return;
+      }
 
-        this.nodeClickedEventEmitter.emit($event);
+      this.nodeClickedEventEmitter.emit($event);
 
     }
 
     @HostListener('backgroundclick', ['$event']) onBackgroundClick($event) {
-        console.log($event);
-        if ($event.details && $event.details.key === 'image-clicked') {
-            console.log('image');
-        }
-        this.backgroundClickedEventEmitter.emit($event);
+      console.log($event);
+      if ($event.details && $event.details.key === 'image-clicked') {
+        console.log('image');
+      }
+      this.backgroundClickedEventEmitter.emit($event);
     }
 
     @HostListener('nodepositionchange', ['$event']) onNodePositionChange(event) {
-        this.movements.next(event);
+      this.movements.next(event);
     }
 
     ngOnDestroy() {
-        this.unsubscribe.next();
-        this.unsubscribe.complete();
+      this.unsubscribe.next();
+      this.unsubscribe.complete();
     }
 
 

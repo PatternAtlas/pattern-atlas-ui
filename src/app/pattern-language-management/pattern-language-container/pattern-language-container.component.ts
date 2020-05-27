@@ -17,9 +17,9 @@ import {ActivatedRoute} from '@angular/router';
 import {ComponentRegistryService} from 'src/app/core/service/component-registry.service';
 
 @Component({
-    selector: 'pp-pattern-language-container',
-    templateUrl: './pattern-language-container.component.html',
-    styleUrls: ['./pattern-language-container.component.scss']
+  selector: 'pp-pattern-language-container',
+  templateUrl: './pattern-language-container.component.html',
+  styleUrls: ['./pattern-language-container.component.scss']
 })
 export class PatternLanguageContainerComponent implements OnInit {
 
@@ -33,8 +33,8 @@ export class PatternLanguageContainerComponent implements OnInit {
     }
 
     ngOnInit() {
-        // Todo: We use encoded uris just for navigation. Now we can get the Uri from the patternlanguage entity. We have to add redux!
-        this.plEncodedId = this.activatedRoute.snapshot.params['patternLanguageId'];
-        this.renderer = this.compRegistry.getRenderingComponents(this.plEncodedId);
+      // Todo: We use encoded uris just for navigation. Now we can get the Uri from the patternlanguage entity. We have to add redux!
+      this.plEncodedId = this.activatedRoute.snapshot.params['patternLanguageId'];
+      this.renderer = this.compRegistry.getRenderingComponents(this.plEncodedId);
     }
 }

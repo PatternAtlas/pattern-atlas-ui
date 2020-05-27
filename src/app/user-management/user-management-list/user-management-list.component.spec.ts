@@ -10,7 +10,7 @@ describe('UserManagementListComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ UserManagementListComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

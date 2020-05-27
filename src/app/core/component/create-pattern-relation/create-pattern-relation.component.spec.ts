@@ -10,7 +10,7 @@ describe('CreatePatternRelationComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ CreatePatternRelationComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

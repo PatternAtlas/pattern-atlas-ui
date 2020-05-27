@@ -10,7 +10,7 @@ describe('DeletePatternRelationComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ DeletePatternRelationComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

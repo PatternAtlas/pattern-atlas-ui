@@ -10,7 +10,7 @@ describe('CreatePatternComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ CreatePatternComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

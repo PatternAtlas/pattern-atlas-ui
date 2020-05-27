@@ -17,7 +17,7 @@ import {ComponentRegistryService} from '../../core/service/component-registry.se
 import {UriConverter} from '../../core/util/uri-converter';
 
 @Directive({
-    selector: '[ppPatternLanguageContainer]'
+  selector: '[ppPatternLanguageContainer]'
 })
 export class PatternLanguageContainerDirective implements OnInit {
 
@@ -33,17 +33,17 @@ export class PatternLanguageContainerDirective implements OnInit {
     }
 
     ngOnInit(): void {
-        const componentFactory = this.getRenderingComponent();
-        this.viewContainerRef.clear();
-        const componentRef = this.viewContainerRef.createComponent(componentFactory);
+      const componentFactory = this.getRenderingComponent();
+      this.viewContainerRef.clear();
+      const componentRef = this.viewContainerRef.createComponent(componentFactory);
     }
 
     private getRenderingComponent() {
-        const renderingComponent = this.compRegistry.getPLRenderingComponents(UriConverter.doubleDecodeUri(this.patternLanguageId.toLowerCase()), this.index);
-        if (renderingComponent) {
-            return this.componentFactoryResolver.resolveComponentFactory(renderingComponent.plcomponent);
-        }
-        // no special renderer, use default renderer:
-        return this.componentFactoryResolver.resolveComponentFactory(this.compRegistry.getPLRenderingComponents('default').plcomponent);
+      const renderingComponent = this.compRegistry.getPLRenderingComponents(UriConverter.doubleDecodeUri(this.patternLanguageId.toLowerCase()), this.index);
+      if (renderingComponent) {
+        return this.componentFactoryResolver.resolveComponentFactory(renderingComponent.plcomponent);
+      }
+      // no special renderer, use default renderer:
+      return this.componentFactoryResolver.resolveComponentFactory(this.compRegistry.getPLRenderingComponents('default').plcomponent);
     }
 }

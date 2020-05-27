@@ -39,54 +39,54 @@ export class PatternViewService {
 
 
     getPatternViews(): Observable<PatternViewResponse> {
-        return this.http.get<PatternViewResponse>(this.repoEndpoint + '/patternViews');
+      return this.http.get<PatternViewResponse>(this.repoEndpoint + '/patternViews');
     }
 
 
     savePatternView(url: string, view: PatternView) {
-        return this.http.post<PatternViewResponse>(url, view, {observe: 'response'});
+      return this.http.post<PatternViewResponse>(url, view, {observe: 'response'});
     }
 
     addPatterns(url: string, patterns: Pattern[]): Observable<any> {
-        const observables = patterns.map(pat => this.http.post<PatternViewResponse>(url, pat, {observe: 'response'}));
-        return observables.length > 0 ? forkJoin(observables) : of(null);
+      const observables = patterns.map(pat => this.http.post<PatternViewResponse>(url, pat, {observe: 'response'}));
+      return observables.length > 0 ? forkJoin(observables) : of(null);
     }
 
     getPatternViewByUri(encodedUri: string): Observable<PatternView> {
-        return this.http.get<PatternView>(this.repoEndpoint + `/patternViews/findByUri?encodedUri=${encodedUri}`);
+      return this.http.get<PatternView>(this.repoEndpoint + `/patternViews/findByUri?encodedUri=${encodedUri}`);
     }
 
     createLink(url, edge: DirectedEdgeModel | UndirectedEdgeModel | AddDirectedEdgeToViewRequest | AddUndirectedEdgeToViewRequest): Observable<HttpResponse<Object>> {
-        return this.http.post(url, edge, {observe: 'response'});
+      return this.http.post(url, edge, {observe: 'response'});
     }
 
     addLinks(patternView: PatternView, items: LinksToOtherPattern[]): Observable<any> {
 
-        const observables = items
-            .map(item => item.type === 'directed' ?
-                this.http.post(patternView._links.directedEdges.href, new AddDirectedEdgeToViewRequest(<DirectedEdgeModel>item.edge), {observe: 'response'}) :
-                this.http.post(patternView._links.undirectedEdges.href, new AddUndirectedEdgeToViewRequest(<UndirectedEdgeModel>item.edge), {observe: 'response'}));
-        return observables.length > 0 ? forkJoin(observables) : EMPTY;
+      const observables = items
+        .map(item => item.type === 'directed' ?
+          this.http.post(patternView._links.directedEdges.href, new AddDirectedEdgeToViewRequest(<DirectedEdgeModel>item.edge), {observe: 'response'}) :
+          this.http.post(patternView._links.undirectedEdges.href, new AddUndirectedEdgeToViewRequest(<UndirectedEdgeModel>item.edge), {observe: 'response'}));
+      return observables.length > 0 ? forkJoin(observables) : EMPTY;
     }
 
     getDirectedEdges(patternView: PatternView): Observable<Embedded<DirectedEdesResponse>> {
-        return this.http.get<Embedded<DirectedEdesResponse>>(patternView._links.directedEdges.href);
+      return this.http.get<Embedded<DirectedEdesResponse>>(patternView._links.directedEdges.href);
     }
 
     getUndirectedEdges(patternView: PatternView): Observable<Embedded<UndirectedEdesResponse>> {
-        return this.http.get<Embedded<UndirectedEdesResponse>>(patternView._links.undirectedEdges.href);
+      return this.http.get<Embedded<UndirectedEdesResponse>>(patternView._links.undirectedEdges.href);
     }
 
     deleteLink(patternLink: any): Observable<any> {
-        return this.http.delete(patternLink);
+      return this.http.delete(patternLink);
     }
 
     saveGraph(patternView: PatternView, nodeList: any[]) {
-        return this.http.post<any>(patternView._links.graph.href, nodeList, {observe: 'response'});
+      return this.http.post<any>(patternView._links.graph.href, nodeList, {observe: 'response'});
     }
 
     getGraph(patternView: PatternView) {
-        return this.http.get<{ graph: Array<GraphNode> }>(patternView._links.graph.href);
+      return this.http.get<{ graph: Array<GraphNode> }>(patternView._links.graph.href);
     }
 
 }

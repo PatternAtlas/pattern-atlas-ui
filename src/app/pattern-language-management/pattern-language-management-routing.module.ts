@@ -21,39 +21,39 @@ import {PatternLanguageManagementResolverService} from './pattern-language-manag
 import {CreatePatternComponent} from './create-pattern/create-pattern.component';
 
 const routes: Routes = [
-    {
-        path: 'patternlanguages',
-        pathMatch: 'prefix',
-        runGuardsAndResolvers: 'always',
-        resolve: {
-            patternlanguages: PatternLanguageManagementResolverService,
+  {
+    path: 'patternlanguages',
+    pathMatch: 'prefix',
+    runGuardsAndResolvers: 'always',
+    resolve: {
+      patternlanguages: PatternLanguageManagementResolverService,
 
-        },
-        children: [
-            {
-                path: '',
-                component: PatternLanguageManagementComponent
-            }, {
-                path: ':patternLanguageId',
-                component: PatternLanguageContainerComponent,
-            }, {
-                path: ':patternLanguageId/create-patterns',
-                component: CreatePatternComponent,
-            },
-            {
-                path: ':patternLanguageId/:patternId',
-                component: PatternContainerComponent
-            }
+    },
+    children: [
+      {
+        path: '',
+        component: PatternLanguageManagementComponent
+      }, {
+        path: ':patternLanguageId',
+        component: PatternLanguageContainerComponent,
+      }, {
+        path: ':patternLanguageId/create-patterns',
+        component: CreatePatternComponent,
+      },
+      {
+        path: ':patternLanguageId/:patternId',
+        component: PatternContainerComponent
+      }
 
-        ],
-    }
+    ],
+  }
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
 export class PatternLanguageManagementRoutingModule {
-    constructor() {
-    }
+  constructor() {
+  }
 }

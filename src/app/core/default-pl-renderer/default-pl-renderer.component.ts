@@ -1,11 +1,11 @@
 import {
-    ChangeDetectorRef,
-    Component,
-    ComponentFactoryResolver,
-    ElementRef,
-    OnInit,
-    ViewChild,
-    ViewContainerRef
+  ChangeDetectorRef,
+  Component,
+  ComponentFactoryResolver,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  ViewContainerRef
 } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UriConverter} from '../util/uri-converter';
@@ -29,9 +29,9 @@ import Pattern from '../model/hal/pattern.model';
 import {FormControl} from '@angular/forms';
 
 @Component({
-    selector: 'pp-default-pl-renderer',
-    templateUrl: './default-pl-renderer.component.html',
-    styleUrls: ['./default-pl-renderer.component.scss']
+  selector: 'pp-default-pl-renderer',
+  templateUrl: './default-pl-renderer.component.html',
+  styleUrls: ['./default-pl-renderer.component.scss']
 })
 export class DefaultPlRendererComponent implements OnInit {
     patterns: Array<Pattern> = [];
@@ -65,132 +65,132 @@ export class DefaultPlRendererComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.loadData();
-        this.filter = new FormControl('');
-        this.filter.valueChanges.subscribe((filterText: string) => {
-            if (this.graphVisible || !this.patterns || this.patterns.length === 0) {
-                return;
-            }
-            this.patternsForCardsView = this.patterns.filter(pattern => pattern.name.toLowerCase().includes(filterText.toLowerCase()));
-        });
+      this.loadData();
+      this.filter = new FormControl('');
+      this.filter.valueChanges.subscribe((filterText: string) => {
+        if (this.graphVisible || !this.patterns || this.patterns.length === 0) {
+          return;
+        }
+        this.patternsForCardsView = this.patterns.filter(pattern => pattern.name.toLowerCase().includes(filterText.toLowerCase()));
+      });
     }
 
     detectChanges() {
-        this.cdr.detectChanges();
+      this.cdr.detectChanges();
     }
 
     getPatternLinks(): Observable<any> {
-        const $getDirectedEdges = this.getDirectedEdges();
-        const $getUndirectedEdges = this.getUndirectedEdges();
-        return forkJoin([$getDirectedEdges, $getUndirectedEdges]).pipe(
-            tap((edges) => {
-                this.patternLinks = [];
-                this.patternLinks.push(...this.directedPatternRelations);
-                this.patternLinks.push(...this.undirectedPatternRelations);
-            }));
+      const $getDirectedEdges = this.getDirectedEdges();
+      const $getUndirectedEdges = this.getUndirectedEdges();
+      return forkJoin([$getDirectedEdges, $getUndirectedEdges]).pipe(
+        tap((edges) => {
+          this.patternLinks = [];
+          this.patternLinks.push(...this.directedPatternRelations);
+          this.patternLinks.push(...this.undirectedPatternRelations);
+        }));
     }
 
     public addPattern(): void {
-        this.router.navigate(['create-patterns'], {relativeTo: this.activatedRoute});
+      this.router.navigate(['create-patterns'], {relativeTo: this.activatedRoute});
     }
 
     public addLink() {
-        // Todo: Make patternlanguage camelcase
-        const dialogRef = this.dialog.open(CreatePatternRelationComponent, {
-            data: {
-                patterns: this.patterns,
-                patternlanguage: this.patternLanguage
-            }
-        });
-        dialogRef.afterClosed().pipe(
-            switchMap((edge) => {
-                return edge ? this.insertEdge(edge) : EMPTY;
-            })).subscribe(res => {
-            if (res) {
-                this.toasterService.pop('success', 'Added Relation');
-                this.detectChanges();
-            }
-        });
+      // Todo: Make patternlanguage camelcase
+      const dialogRef = this.dialog.open(CreatePatternRelationComponent, {
+        data: {
+          patterns: this.patterns,
+          patternlanguage: this.patternLanguage
+        }
+      });
+      dialogRef.afterClosed().pipe(
+        switchMap((edge) => {
+          return edge ? this.insertEdge(edge) : EMPTY;
+        })).subscribe(res => {
+        if (res) {
+          this.toasterService.pop('success', 'Added Relation');
+          this.detectChanges();
+        }
+      });
     }
 
     insertEdge(edge): Observable<any> {
-        return this.patternRelationDescriptorService.addRelationToPL(this.patternLanguage, edge).pipe(
-            tap((res) => res ? this.getPatternByLink(edge, res) : EMPTY));
+      return this.patternRelationDescriptorService.addRelationToPL(this.patternLanguage, edge).pipe(
+        tap((res) => res ? this.getPatternByLink(edge, res) : EMPTY));
     }
 
     getPatternByLink(edge: DirectedEdgeModel | UndirectedEdgeModel, res: any) {
-        const url = res.url + '/' + res.body.id;
-        this.patternRelationDescriptorService.getEdgeByUrl(url, edge)
-            .subscribe(
-                edgeResult => {
-                    this.patternLinks.push(edgeResult);
-                }
-            );
+      const url = res.url + '/' + res.body.id;
+      this.patternRelationDescriptorService.getEdgeByUrl(url, edge)
+        .subscribe(
+          edgeResult => {
+            this.patternLinks.push(edgeResult);
+          }
+        );
     }
 
     linkAddedInGraphEditor(edge) {
-        this.insertEdge(edge).subscribe(res => {
-            this.toasterService.pop('success', 'Added Relation');
-            this.graphDisplayComponent.updateSideMenu();
-            this.detectChanges();
-        });
+      this.insertEdge(edge).subscribe(res => {
+        this.toasterService.pop('success', 'Added Relation');
+        this.graphDisplayComponent.updateSideMenu();
+        this.detectChanges();
+      });
     }
 
     reloadGraph() {
-        this.graphDisplayComponent.reformatGraph();
+      this.graphDisplayComponent.reformatGraph();
     }
 
     setGraphVisible(newValueGraphVisible: boolean) {
-        if (newValueGraphVisible) { // reset the search field so all patterns are shown in the graph
-            this.filter.setValue('');
-        }
-        this.graphVisible = newValueGraphVisible;
-        // if user toggled to early, we will retrigger
-        this.toggleBeforeDataLoaded = this.isLoadingLinkData && this.isLoadingPatternData;
+      if (newValueGraphVisible) { // reset the search field so all patterns are shown in the graph
+        this.filter.setValue('');
+      }
+      this.graphVisible = newValueGraphVisible;
+      // if user toggled to early, we will retrigger
+      this.toggleBeforeDataLoaded = this.isLoadingLinkData && this.isLoadingPatternData;
     }
 
     private loadData(): void {
-        this.isLoadingPatternData = true;
-        this.patternLanguageId = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageId'));
-        if (this.patternLanguageId) {
-            this.patternLanguageService.getPatternLanguageByID(this.patternLanguageId)
-                .pipe(
-                    tap(patternlanguage => this.patternLanguage = patternlanguage),
-                    switchMap(() => this.loadPatterns()),
-                    switchMap(() => this.getPatternLinks())
-                ).subscribe(() => {
-                this.isLoadingLinkData = false;
-                this.detectChanges();
-            });
-        }
+      this.isLoadingPatternData = true;
+      this.patternLanguageId = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageId'));
+      if (this.patternLanguageId) {
+        this.patternLanguageService.getPatternLanguageByID(this.patternLanguageId)
+          .pipe(
+            tap(patternlanguage => this.patternLanguage = patternlanguage),
+            switchMap(() => this.loadPatterns()),
+            switchMap(() => this.getPatternLinks())
+          ).subscribe(() => {
+            this.isLoadingLinkData = false;
+            this.detectChanges();
+          });
+      }
     }
 
     private getDirectedEdges(): Observable<Embedded<DirectedEdesResponse>> {
-        if (!this.patternLanguage) {
-            return EMPTY;
-        }
-        return this.patternLanguageService.getDirectedEdges(this.patternLanguage).pipe(
-            tap((edges) => {
-                this.directedPatternRelations = edges._embedded ? edges._embedded.directedEdgeModels : [];
-            }));
+      if (!this.patternLanguage) {
+        return EMPTY;
+      }
+      return this.patternLanguageService.getDirectedEdges(this.patternLanguage).pipe(
+        tap((edges) => {
+          this.directedPatternRelations = edges._embedded ? edges._embedded.directedEdgeModels : [];
+        }));
     }
 
     private getUndirectedEdges(): Observable<Embedded<UndirectedEdesResponse>> {
-        if (!this.patternLanguage) {
-            return EMPTY;
-        }
-        return this.patternLanguageService.getUndirectedEdges(this.patternLanguage).pipe(
-            tap((edges) => {
-                this.undirectedPatternRelations = edges._embedded ? edges._embedded.undirectedEdgeModels : [];
-            }));
+      if (!this.patternLanguage) {
+        return EMPTY;
+      }
+      return this.patternLanguageService.getUndirectedEdges(this.patternLanguage).pipe(
+        tap((edges) => {
+          this.undirectedPatternRelations = edges._embedded ? edges._embedded.undirectedEdgeModels : [];
+        }));
     }
 
     private loadPatterns(): Observable<any[]> {
-        return this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href).pipe(
-            tap(patterns => {
-                this.patterns = patterns;
-                this.patternsForCardsView = this.patterns;
-                this.isLoadingPatternData = false;
-            }));
+      return this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href).pipe(
+        tap(patterns => {
+          this.patterns = patterns;
+          this.patternsForCardsView = this.patterns;
+          this.isLoadingPatternData = false;
+        }));
     }
 }

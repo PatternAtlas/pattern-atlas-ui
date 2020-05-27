@@ -9,7 +9,7 @@ export class LoadmoreNode {
     childrenChange = new BehaviorSubject<LoadmoreNode[]>([]);
 
     get children(): LoadmoreNode[] {
-        return this.childrenChange.value;
+      return this.childrenChange.value;
     }
 
     constructor(public item: string,
@@ -20,15 +20,15 @@ export class LoadmoreNode {
 
 /** Flat node with expandable and level information */
 export class LoadmoreFlatNode {
-    constructor(public item: string,
+  constructor(public item: string,
                 public level = 1,
                 public expandable = false,
                 public loadMoreParentItem: string | null = null) {
-    }
+  }
 }
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class LoadmoreDatabase {
     batchNumber = 5;
@@ -38,45 +38,45 @@ export class LoadmoreDatabase {
     /** The data */
     rootLevelNodes: string[] = ['Vegetables', 'Fruits'];
     dataMap = new Map<string, string[]>([
-        ['Fruits', ['Apple', 'Orange', 'Banana']],
-        ['Vegetables', ['Tomato', 'Potato', 'Onion']],
-        ['Apple', ['Fuji', 'Macintosh']],
-        ['Onion', ['Yellow', 'White', 'Purple', 'Green', 'Shallot', 'Sweet', 'Red', 'Leek']],
+      ['Fruits', ['Apple', 'Orange', 'Banana']],
+      ['Vegetables', ['Tomato', 'Potato', 'Onion']],
+      ['Apple', ['Fuji', 'Macintosh']],
+      ['Onion', ['Yellow', 'White', 'Purple', 'Green', 'Shallot', 'Sweet', 'Red', 'Leek']],
     ]);
 
     initialize() {
-        const data = this.rootLevelNodes.map(name => this._generateNode(name));
-        this.dataChange.next(data);
+      const data = this.rootLevelNodes.map(name => this._generateNode(name));
+      this.dataChange.next(data);
     }
 
     /** Expand a node whose children are not loaded */
     loadMore(item: string, onlyFirstTime = false) {
-        if (!this.nodeMap.has(item) || !this.dataMap.has(item)) {
-            return;
-        }
-        const parent = this.nodeMap.get(item)!;
-        const children = this.dataMap.get(item)!;
-        if (onlyFirstTime && parent.children!.length > 0) {
-            return;
-        }
-        const newChildrenNumber = parent.children!.length + this.batchNumber;
-        const nodes = children.slice(0, newChildrenNumber)
-            .map(name => this._generateNode(name));
-        if (newChildrenNumber < children.length) {
-            // Need a new load more node
-            nodes.push(new LoadmoreNode(LOAD_MORE, false, item));
-        }
+      if (!this.nodeMap.has(item) || !this.dataMap.has(item)) {
+        return;
+      }
+      const parent = this.nodeMap.get(item)!;
+      const children = this.dataMap.get(item)!;
+      if (onlyFirstTime && parent.children!.length > 0) {
+        return;
+      }
+      const newChildrenNumber = parent.children!.length + this.batchNumber;
+      const nodes = children.slice(0, newChildrenNumber)
+        .map(name => this._generateNode(name));
+      if (newChildrenNumber < children.length) {
+        // Need a new load more node
+        nodes.push(new LoadmoreNode(LOAD_MORE, false, item));
+      }
 
-        parent.childrenChange.next(nodes);
-        this.dataChange.next(this.dataChange.value);
+      parent.childrenChange.next(nodes);
+      this.dataChange.next(this.dataChange.value);
     }
 
     private _generateNode(item: string): LoadmoreNode {
-        if (this.nodeMap.has(item)) {
-            return this.nodeMap.get(item)!;
-        }
-        const result = new LoadmoreNode(item, this.dataMap.has(item));
-        this.nodeMap.set(item, result);
-        return result;
+      if (this.nodeMap.has(item)) {
+        return this.nodeMap.get(item)!;
+      }
+      const result = new LoadmoreNode(item, this.dataMap.has(item));
+      this.nodeMap.set(item, result);
+      return result;
     }
 }

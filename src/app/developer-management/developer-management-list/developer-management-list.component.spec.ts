@@ -10,7 +10,7 @@ describe('DeveloperManagementListComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ DeveloperManagementListComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -18,9 +18,9 @@ import UriEntity from '../../core/model/hal/uri-entity.model';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
-    selector: 'pp-solution-language-management',
-    templateUrl: './pattern-view-management.component.html',
-    styleUrls: ['./pattern-view-management.component.scss']
+  selector: 'pp-solution-language-management',
+  templateUrl: './pattern-view-management.component.html',
+  styleUrls: ['./pattern-view-management.component.scss']
 })
 export class PatternViewManagementComponent implements OnInit {
     public patternViewResponse;
@@ -32,39 +32,39 @@ export class PatternViewManagementComponent implements OnInit {
 
     ngOnInit() {
 
-        this.getData().subscribe();
+      this.getData().subscribe();
 
     }
 
     private getData(): Observable<PatternViewResponse> {
-        return this.patternViewService.getPatternViews().pipe(tap((views) => {
-            this.patternViewResponse = views;
-        }));
+      return this.patternViewService.getPatternViews().pipe(tap((views) => {
+        this.patternViewResponse = views;
+      }));
 
 
     }
 
     navigate(view: UriEntity): void {
-        this.zone.run(() => {
-            this.router.navigate([UriConverter.doubleEncodeUri(view.uri)], {relativeTo: this.activatedRoute});
-        });
+      this.zone.run(() => {
+        this.router.navigate([UriConverter.doubleEncodeUri(view.uri)], {relativeTo: this.activatedRoute});
+      });
     }
 
     createView() {
-        const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent, {data: { componentDialogType: CreateEditComponentDialogType.PATTERN_VIEW }});
-        let view;
-        // Save PatternLanguage when user presses save
-        (<CreateEditPatternLanguageComponent>dialogRef.componentInstance)
-            .saveClicked.pipe(
-            tap((result: DialogPatternLanguageResult) => {
-                view = <PatternView>result.dialogResult;
-            }),
-            switchMap(() => this.patternViewService.savePatternView(this.patternViewResponse._links.patternViews.href, view)),
-            switchMap(() => this.getData())
+      const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent, {data: { componentDialogType: CreateEditComponentDialogType.PATTERN_VIEW }});
+      let view;
+      // Save PatternLanguage when user presses save
+      (<CreateEditPatternLanguageComponent>dialogRef.componentInstance)
+        .saveClicked.pipe(
+          tap((result: DialogPatternLanguageResult) => {
+            view = <PatternView>result.dialogResult;
+          }),
+          switchMap(() => this.patternViewService.savePatternView(this.patternViewResponse._links.patternViews.href, view)),
+          switchMap(() => this.getData())
         ).subscribe(res => {
-            if (res) {
-                this.toastService.pop('success', 'Created View');
-            }
+          if (res) {
+            this.toastService.pop('success', 'Created View');
+          }
         });
     }
 

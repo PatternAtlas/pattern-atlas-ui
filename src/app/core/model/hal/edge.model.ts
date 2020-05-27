@@ -9,9 +9,9 @@ export class Edge {
     patternlanguage?: PatternLanguage;
 
     constructor(description: any, type: string, patternView: PatternView = null, patternLanguage: PatternLanguage = null) {
-        this.description = description;
-        this.type = type;
-        this.patternView = patternView;
-        this.patternlanguage = patternLanguage;
+      this.description = description;
+      this.type = type;
+      this.patternView = patternView;
+      this.patternlanguage = patternLanguage;
     }
 }

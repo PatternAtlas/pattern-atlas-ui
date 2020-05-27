@@ -10,7 +10,7 @@ describe('PatternViewRendererComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ PatternViewRendererComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

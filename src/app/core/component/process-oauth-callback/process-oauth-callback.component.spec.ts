@@ -10,7 +10,7 @@ describe('ProcessOauthCallbackComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ ProcessOauthCallbackComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -16,43 +16,43 @@ import { MatTreeModule } from '@angular/material/tree';
 import { Routes, RouterModule } from '@angular/router';
 
 const PATTERN_VIEW_MANAGMENT_ROUTE: Routes = [
-    // {
-    //     path: 'patternviews',
-    //     pathMatch: 'prefix',
-    //     children: [
-            {
-                path: '',
-                component: PatternViewManagementComponent
-            },
-            {
-                path: ':patternViewUri',
-                component: PatternViewRendererComponent
-            },
-    //     ]
-    // }
+  // {
+  //     path: 'patternviews',
+  //     pathMatch: 'prefix',
+  //     children: [
+  {
+    path: '',
+    component: PatternViewManagementComponent
+  },
+  {
+    path: ':patternViewUri',
+    component: PatternViewRendererComponent
+  },
+  //     ]
+  // }
 ];
 
 @NgModule({
-    declarations: [
-        PatternViewManagementComponent,
-        PatternViewRendererComponent,
-        AddToViewComponent],
-    imports: [
-        CommonModule,
-        MatCardModule,
-        MatBadgeModule,
-        CoreModule,
-        MatToolbarModule,
-        MatDialogModule,
-        MatButtonModule,
-        MatTreeModule,
-        MatIconModule,
-        MatCheckboxModule,
-        RouterModule.forChild(PATTERN_VIEW_MANAGMENT_ROUTE),
-    ],
-    entryComponents: [
-        AddToViewComponent
-    ]
+  declarations: [
+    PatternViewManagementComponent,
+    PatternViewRendererComponent,
+    AddToViewComponent],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatBadgeModule,
+    CoreModule,
+    MatToolbarModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatTreeModule,
+    MatIconModule,
+    MatCheckboxModule,
+    RouterModule.forChild(PATTERN_VIEW_MANAGMENT_ROUTE),
+  ],
+  entryComponents: [
+    AddToViewComponent
+  ]
 })
 export class PatternViewManagementModule {
 }

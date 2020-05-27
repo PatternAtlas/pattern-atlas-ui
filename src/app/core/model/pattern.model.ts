@@ -21,11 +21,11 @@ class Pattern {
     sectionPropertiesRendered: Map<string, string[]>;
 
     constructor(id: string, uri: string = null, name: string = null, sectionProperties: Map<string, string[]> = null) {
-        this.name = name;
-        this.uri = uri;
-        this.id = id;
-        this.sectionsProperties = sectionProperties;
-        this.sectionPropertiesRendered = sectionProperties;
+      this.name = name;
+      this.uri = uri;
+      this.id = id;
+      this.sectionsProperties = sectionProperties;
+      this.sectionPropertiesRendered = sectionProperties;
     }
 }
 

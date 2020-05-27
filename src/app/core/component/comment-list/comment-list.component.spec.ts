@@ -10,7 +10,7 @@ describe('CommentListComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ CommentListComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

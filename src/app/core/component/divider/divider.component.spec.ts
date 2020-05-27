@@ -10,7 +10,7 @@ describe('DividerComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ DividerComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

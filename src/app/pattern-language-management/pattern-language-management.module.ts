@@ -50,65 +50,65 @@ import { Routes, RouterModule } from '@angular/router';
  */
 
 export const PL_ROUTES: Routes = [
-    {
-        path: '',
-        component: PatternLanguageManagementComponent
-    }, {
-        path: ':patternLanguageId',
-        component: PatternLanguageContainerComponent,
-    }, {
-        path: ':patternLanguageId/create-patterns',
-        component: CreatePatternComponent,
-    },
-    {
-        path: ':patternLanguageId/:patternId',
-        component: PatternContainerComponent
-    }
+  {
+    path: '',
+    component: PatternLanguageManagementComponent
+  }, {
+    path: ':patternLanguageId',
+    component: PatternLanguageContainerComponent,
+  }, {
+    path: ':patternLanguageId/create-patterns',
+    component: CreatePatternComponent,
+  },
+  {
+    path: ':patternLanguageId/:patternId',
+    component: PatternContainerComponent
+  }
 
 ]
 
 @NgModule({
-    imports: [
-        CommonModule,
-        MatBadgeModule,
-        MatButtonModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatSidenavModule,
-        MatCardModule,
-        MatDialogModule,
-        MatTabsModule,
-        MatInputModule,
-        MatChipsModule,
-        MatAutocompleteModule,
-        CoreModule,
-        MatGridListModule,
-        ReactiveFormsModule,
-        FlexLayoutModule,
-        MatSelectModule,
-        MatRadioModule,
-        MatCheckboxModule,
-        ToasterModule,
-        GraphModule,
-        DragDropModule,
-        MatListModule,
-        MatRippleModule,
-        RouterModule.forChild(PL_ROUTES),
-        // PatternLanguageManagementRoutingModule,
+  imports: [
+    CommonModule,
+    MatBadgeModule,
+    MatButtonModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatSidenavModule,
+    MatCardModule,
+    MatDialogModule,
+    MatTabsModule,
+    MatInputModule,
+    MatChipsModule,
+    MatAutocompleteModule,
+    CoreModule,
+    MatGridListModule,
+    ReactiveFormsModule,
+    FlexLayoutModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatCheckboxModule,
+    ToasterModule,
+    GraphModule,
+    DragDropModule,
+    MatListModule,
+    MatRippleModule,
+    RouterModule.forChild(PL_ROUTES),
+    // PatternLanguageManagementRoutingModule,
         
-    ],
-    declarations: [
-        PatternLanguageManagementComponent,
-        PatternLanguageContainerComponent,
-        PatternLanguageContainerDirective,
-        PatternContainerComponent,
-        PatternContainerDirective,
-        CreatePatternComponent,
-        ProcessOauthCallbackComponent,
-        PatternLanguageGraphComponent
-    ],
-    entryComponents: [
-    ],
+  ],
+  declarations: [
+    PatternLanguageManagementComponent,
+    PatternLanguageContainerComponent,
+    PatternLanguageContainerDirective,
+    PatternContainerComponent,
+    PatternContainerDirective,
+    CreatePatternComponent,
+    ProcessOauthCallbackComponent,
+    PatternLanguageGraphComponent
+  ],
+  entryComponents: [
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PatternLanguageManagementModule {

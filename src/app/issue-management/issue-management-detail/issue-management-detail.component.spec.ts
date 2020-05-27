@@ -10,7 +10,7 @@ describe('IssueManagementDetailComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ IssueManagementDetailComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

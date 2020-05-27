@@ -48,45 +48,45 @@ import { DesignModelModule } from './design-model-module/design-model.module';
 
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        PageNotFoundComponent,
-        LandingPageComponent,
-        FilterViewComponent
-    ],
-    imports: [
-        AppRoutingModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-        AuthenticationModule,
-        PatternLanguageManagementModule,
-        PatternViewManagementModule,
-        DesignModelModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatCardModule,
-        MatButtonModule,
-        MatIconModule,
-        MatTabsModule,
-        NgxMdModule,
-        CovalentTextEditorModule,
-        CoreModule,
-        HttpClientModule,
-        AppRoutingModule,
-        FlexLayoutModule,
-        ToasterModule.forRoot(),
-        MatInputModule,
-        FormsModule,
-        ReactiveFormsModule,
-        JwtModule,
-        MatSidenavModule,
-        MatListModule,
-    ],
-    providers: [
-        CookieService,
-        { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
-    ],
-    bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    PageNotFoundComponent,
+    LandingPageComponent,
+    FilterViewComponent
+  ],
+  imports: [
+    AppRoutingModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    AuthenticationModule,
+    PatternLanguageManagementModule,
+    PatternViewManagementModule,
+    DesignModelModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTabsModule,
+    NgxMdModule,
+    CovalentTextEditorModule,
+    CoreModule,
+    HttpClientModule,
+    AppRoutingModule,
+    FlexLayoutModule,
+    ToasterModule.forRoot(),
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule,
+    JwtModule,
+    MatSidenavModule,
+    MatListModule,
+  ],
+  providers: [
+    CookieService,
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }

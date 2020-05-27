@@ -10,7 +10,7 @@ describe('ToggleRendererComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ ToggleRendererComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -7,9 +7,9 @@ import {ToasterService} from 'angular2-toaster';
 import {HalLink} from '../../model/hal/hal-link.interface';
 
 @Component({
-    selector: 'pp-delete-pattern-relation',
-    templateUrl: './delete-pattern-relation.component.html',
-    styleUrls: ['./delete-pattern-relation.component.scss']
+  selector: 'pp-delete-pattern-relation',
+  templateUrl: './delete-pattern-relation.component.html',
+  styleUrls: ['./delete-pattern-relation.component.scss']
 })
 export class DeletePatternRelationComponent implements OnInit {
 
@@ -19,46 +19,46 @@ export class DeletePatternRelationComponent implements OnInit {
                 @Inject(MAT_DIALOG_DATA) public data: DeleteRelationDialogData,
                 private patternRelationDescriptorService: PatternRelationDescriptorService,
                 private patternViewService: PatternViewService, private toasterService: ToasterService) {
-        this.getEdgesForPattern();
+      this.getEdgesForPattern();
     }
 
     ngOnInit() {
     }
 
     close(): void {
-        this.dialogRef.close();
+      this.dialogRef.close();
     }
 
     deleteEdge(edge: EdgeWithType): void {
-        console.log(edge);
-        this.patternViewService.deleteLink(edge.edge._links.self.href).subscribe(
-            (res) => {
-                this.currentEdges = this.currentEdges.filter(item => item.edge.id !== edge.edge.id);
-                this.toasterService.pop('success', 'Relation removed');
-                if (this.currentEdges.length === 0) {
-                    this.dialogRef.close();
-                }
-            }
-        );
+      console.log(edge);
+      this.patternViewService.deleteLink(edge.edge._links.self.href).subscribe(
+        (res) => {
+          this.currentEdges = this.currentEdges.filter(item => item.edge.id !== edge.edge.id);
+          this.toasterService.pop('success', 'Relation removed');
+          if (this.currentEdges.length === 0) {
+            this.dialogRef.close();
+          }
+        }
+      );
     }
 
     private getEdgesForPattern(): void {
-        let links = [];
-        if (!this.data.edges.length) {
-            links[0] = this.data.edges;
-        } else {
-            links = this.data.edges;
-        }
-        for (const link of links) {
-            this.patternRelationDescriptorService.getUndirectedEdgeByUrl(link.href).subscribe(
-                data => {
-                    const edgeWithType: EdgeWithType = new EdgeWithType();
-                    edgeWithType.edge = data;
-                    edgeWithType.type = data.type;
-                    this.currentEdges.push(edgeWithType);
-                }
-            );
-        }
+      let links = [];
+      if (!this.data.edges.length) {
+        links[0] = this.data.edges;
+      } else {
+        links = this.data.edges;
+      }
+      for (const link of links) {
+        this.patternRelationDescriptorService.getUndirectedEdgeByUrl(link.href).subscribe(
+          data => {
+            const edgeWithType: EdgeWithType = new EdgeWithType();
+            edgeWithType.edge = data;
+            edgeWithType.type = data.type;
+            this.currentEdges.push(edgeWithType);
+          }
+        );
+      }
     }
 
 }

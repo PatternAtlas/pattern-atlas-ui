@@ -10,7 +10,7 @@ describe('CandidateManagementDetailComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ CandidateManagementDetailComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
