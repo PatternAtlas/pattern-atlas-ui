@@ -6,7 +6,10 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
-    "lint": "ng lint",
+    "lint": "stylelint 'src/**/*.scss' ; ng lint",
+    "lint-ci-warn": "stylelint 'src/**/*.scss' ; ng lint ; exit 0",
+    "lint-ci-error": "stylelint 'src/**/*.scss' || ec=$? ; ng lint || ec=$? ; exit $ec",
+    "sass-lint": "sass-lint -c .sass-lint.yml -q -v",
     "e2e": "ng e2e",
     "travis": "ng build --base-href '/pattern-pedia/'"
   },
@@ -45,6 +48,10 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.901.2",
+    "@angular-eslint/builder": "0.0.1-alpha.29",
+    "@angular-eslint/eslint-plugin": "0.0.1-alpha.29",
+    "@angular-eslint/eslint-plugin-template": "0.0.1-alpha.29",
+    "@angular-eslint/template-parser": "0.0.1-alpha.29",
     "@angular/cli": "~9.1.2",
     "@angular/compiler-cli": "9.1.2",
     "@angular/language-service": "9.1.2",
@@ -54,8 +61,10 @@
     "@types/lodash": "^4.14.149",
     "@types/marked": "0.7.2",
     "@types/node": "^13.7.1",
+    "@typescript-eslint/eslint-plugin": "^2.31.0",
+    "@typescript-eslint/parser": "^2.31.0",
     "@webcomponents/webcomponentsjs": "^2.4.1",
-    "codelyzer": "^5.2.1",
+    "eslint": "^6.8.0",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~4.0.0",
@@ -65,8 +74,9 @@
     "karma-jasmine-html-reporter": "1.4.0",
     "katex": "^0.11.1",
     "protractor": "~5.4.2",
+    "stylelint": "^13.5.0",
+    "stylelint-config-sass-guidelines": "^7.0.0",
     "ts-node": "~8.0.1",
-    "tslint": "~5.12.1",
     "typescript": "~3.6.4"
   }
 }

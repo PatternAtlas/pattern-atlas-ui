@@ -4,7 +4,9 @@ node_js:
 cache:
   directories:
     - node_modules
-script: yarn travis
+script:
+  - yarn lint-ci-warn
+  - yarn travis
 deploy:
   provider: pages
   skip-cleanup: true
