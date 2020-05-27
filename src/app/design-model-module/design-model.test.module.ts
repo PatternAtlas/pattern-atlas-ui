@@ -3,14 +3,12 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DesignModelModule } from './design-model.module';
-import { ToasterModule, ToasterService } from 'angular2-toaster';
-import { MaterialDesignModule } from '../material-design/material-design.module';
+import { ToasterService } from 'angular2-toaster';
 
 
 @NgModule({
   imports: [
     DesignModelModule,
-    MaterialDesignModule,
 
     HttpClientTestingModule,
     RouterTestingModule,
