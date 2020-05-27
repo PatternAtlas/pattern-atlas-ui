@@ -118,7 +118,7 @@ import { DesignModelService } from './service/design-model.service';
     PatternLanguageService,
     PatternService,
     PatternViewService,
-    DesignModelService
+    DesignModelService,
     // USER
     UserService,
     UserStore,

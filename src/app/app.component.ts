@@ -25,30 +25,30 @@ import { globals } from './globals';
 })
 export class AppComponent {
 
-  readonly featureToggleDesignModel = globals.featureToggles.designModel;
+  readonly featureToggles = globals.featureToggles;
 
-    loginButton = "Login";
-    welcomeText = ""
-    user: PAUser;
+  loginButton = 'Login';
+  welcomeText = '';
+  user: PAUser;
 
 
-    constructor(public auth: AuthenticationService) {
-        this.auth.userSubject.subscribe(_user => {
-            if (_user) {
-                console.log('User is Logged in: ', _user);
-                this.user = _user;
-                this.loginButton = 'Logout'; 
-                this.welcomeText = `Welcome ${_user.name}`;
-            } else {
-                console.log('No user logged in: ', _user);
-                this.user = null;
-                this.loginButton = 'Login';
-                this.welcomeText = '';
-            }
-        })
-    }
+  constructor(public auth: AuthenticationService) {
+    this.auth.userSubject.subscribe(_user => {
+      if (_user) {
+        console.log('User is Logged in: ', _user);
+        this.user = _user;
+        this.loginButton = 'Logout';
+        this.welcomeText = `Welcome ${_user.name}`;
+      } else {
+        console.log('No user logged in: ', _user);
+        this.user = null;
+        this.loginButton = 'Login';
+        this.welcomeText = '';
+      }
+    });
+  }
 
-    loginOAuth() {
-        this.user ? this.auth.logout() : this.auth.login()
-    }
+  loginOAuth() {
+    this.user ? this.auth.logout() : this.auth.login();
+  }
 }

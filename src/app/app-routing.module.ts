@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProcessOauthCallbackComponent } from './core/component/process-oauth-callback/process-oauth-callback.component';
 import { ToasterModule } from 'angular2-toaster';
 import { PageNotFoundComponent } from './core/component/page-not-found/page-not-found.component';
-import { AuthGuardService as AuthGuard } from './authentication/_services/auth-guard.service'
+import { AuthGuardService as AuthGuard } from './authentication/_services/auth-guard.service';
 import { DEVELOPER_MANAGEMENT_ROUTES } from './developer-management/developer-management.module';
 import { USER_MANAGEMENT_ROUTES } from './user-management/user-management.module';
 import { ADMIN_MANAGEMENT_ROUTES } from './admin-management/admin-management.module';
@@ -25,65 +25,69 @@ import { UserRole } from './core/user-management';
  */
 
 const routes: Routes = [
-    {
-        path: '',
-        redirectTo: 'issue',
-        pathMatch: 'full'
+  {
+    path: '',
+    redirectTo: 'issue',
+    pathMatch: 'full'
+  },
+  {
+    path: 'patternLanguages',
+    resolve: {
+      patternlanguages: PatternLanguageManagementResolverService,
     },
-    {
-        path: 'patternLanguages',
-        resolve: {
-            patternlanguages: PatternLanguageManagementResolverService,
-        },
-        loadChildren: () => import('./pattern-language-management/pattern-language-management.module').then(m => m.PatternLanguageManagementModule),
-    },
-    {
-        path: 'patternViews',
-        loadChildren: () => import('./pattern-view-management/pattern-view-management.module').then(m => m.PatternViewManagementModule),
-    },
-    {
-        path: 'candidate',
-        loadChildren: () => import('./candidate-management/candidate-management.module').then(m => m.CandidateManagementModule),
-    },
-    {
-        path: 'issue',
-        loadChildren: () => import('./issue-management/issue-management.module').then(m => m.IssueManagementModule),
-    },
-    {
-        path: 'user',
-        loadChildren: () => import('./user-management/user-management.module').then(m => m.UserManagementModule),
-        canActivate: [AuthGuard],
-        data: { role: UserRole.MEMBER }  
-    },
-    {
-        path: 'admin',
-        loadChildren: () => import('./admin-management/admin-management.module').then(m => m.AdminManagementModule),
-        canActivate: [AuthGuard],
-        data: { role: UserRole.ADMIN }  
-    },
-    {
-        path: 'developer',
-        loadChildren: () => import('./developer-management/developer-management.module').then(m => m.DeveloperManagementModule),
-        canActivate: [AuthGuard],
-        data: { role: UserRole.ADMIN }
-    },
-    {
-        path: 'oauth-callback',
-        component: ProcessOauthCallbackComponent
-    },
-    {
-        path: 'graph',
-        component: PatternLanguageGraphComponent
-    },
-    {
-        path: '**',
-        component: PageNotFoundComponent
-    }
+    loadChildren: () => import('./pattern-language-management/pattern-language-management.module').then(m => m.PatternLanguageManagementModule),
+  },
+  {
+    path: 'patternViews',
+    loadChildren: () => import('./pattern-view-management/pattern-view-management.module').then(m => m.PatternViewManagementModule),
+  },
+  {
+    path: 'design-models',
+    loadChildren: () => import('./pattern-view-management/pattern-view-management.module').then(m => m.PatternViewManagementModule),
+  },
+  {
+    path: 'candidate',
+    loadChildren: () => import('./candidate-management/candidate-management.module').then(m => m.CandidateManagementModule),
+  },
+  {
+    path: 'issue',
+    loadChildren: () => import('./issue-management/issue-management.module').then(m => m.IssueManagementModule),
+  },
+  {
+    path: 'user',
+    loadChildren: () => import('./user-management/user-management.module').then(m => m.UserManagementModule),
+    canActivate: [AuthGuard],
+    data: { role: UserRole.MEMBER }
+  },
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin-management/admin-management.module').then(m => m.AdminManagementModule),
+    canActivate: [AuthGuard],
+    data: { role: UserRole.ADMIN }
+  },
+  {
+    path: 'developer',
+    loadChildren: () => import('./developer-management/developer-management.module').then(m => m.DeveloperManagementModule),
+    canActivate: [AuthGuard],
+    data: { role: UserRole.ADMIN }
+  },
+  {
+    path: 'oauth-callback',
+    component: ProcessOauthCallbackComponent
+  },
+  {
+    path: 'graph',
+    component: PatternLanguageGraphComponent
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent
+  }
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes, { useHash: false, onSameUrlNavigation: 'reload' }), ToasterModule.forRoot()],
-    exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes, { useHash: false, onSameUrlNavigation: 'reload' }), ToasterModule.forRoot()],
+  exports: [RouterModule]
 })
 export class AppRoutingModule {
 }
