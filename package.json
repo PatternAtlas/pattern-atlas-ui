@@ -2,7 +2,7 @@
   "name": "pattern-pedia",
   "version": "0.0.1",
   "scripts": {
-    "ng": "node_modules/.bin/ng",
+    "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
