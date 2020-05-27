@@ -32,15 +32,15 @@
      routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive">
     Pattern Views
   </a>
-  <a mat-tab-link [routerLink]="'/design-models'" *ngIf="featureToggles.designModel"
+  <a mat-tab-link [routerLink]="'/design-models'" *ngIf="featureToggles?.designModels"
      routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive">
     Design Models
   </a>
-  <a mat-tab-link [routerLink]="'/candidate'" *ngIf="featureToggles.patternCandidate"
+  <a mat-tab-link [routerLink]="'/candidate'" *ngIf="featureToggles?.patternCandidate"
      routerLinkActive #rla4="routerLinkActive" [active]="rla4.isActive">
     Pattern Candidate
   </a>
-  <a mat-tab-link [routerLink]="'/issue'" *ngIf="featureToggles.issue"
+  <a mat-tab-link [routerLink]="'/issue'" *ngIf="featureToggles?.issue"
      routerLinkActive #rla5="routerLinkActive" [active]="rla5.isActive">
     Issue
   </a>
@@ -60,3 +60,11 @@
 
 <router-outlet></router-outlet>
 <toaster-container></toaster-container>
+
+
+<div *ngIf="showFeatureToggles" class="feature-toggles">
+  <span *ngFor="let feature of featureToggleKeys">
+    <mat-slide-toggle (change)="toggleFeature($event, feature)" [checked]="featureToggles && featureToggles[feature]"></mat-slide-toggle>
+    {{feature}}
+  </span>
+</div>

@@ -12,10 +12,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from './authentication/_services/authentication.service';
 import { PAUser } from './core/user-management';
-import { globals } from './globals';
+import { FeatureToggleService } from './core/service/feature-toggle.service';
 
 
 @Component({
@@ -23,16 +23,51 @@ import { globals } from './globals';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
-  readonly featureToggles = globals.featureToggles;
+  readonly featureToggleKeys = ['designModels', 'patternCandidate', 'issue'];
+
+  featureToggles: { [ key: string ]: boolean };
+
+  showFeatureToggles = false;
 
   loginButton = 'Login';
   welcomeText = '';
   user: PAUser;
 
 
-  constructor(public auth: AuthenticationService) {
+  constructor(public auth: AuthenticationService,
+              private featureToggleService: FeatureToggleService) {
+  }
+
+
+  ngOnInit() {
+    this.subscribeToUserAuth();
+    this.initFeatureToggles();
+  }
+
+
+  initFeatureToggles(): void {
+    this.showFeatureToggles = document && document.location && !!document.location.host.match(/^localhost(:[0-9]+)?$/);
+
+    this.featureToggleService.getFeatures().subscribe(featureToggles => {
+      this.featureToggles = featureToggles;
+    });
+  }
+
+
+  toggleFeature(event, key: string): void {
+    const enable = event && event.checked;
+    this.featureToggleService.set(key, enable);
+  }
+
+
+  loginOAuth(): void {
+    this.user ? this.auth.logout() : this.auth.login();
+  }
+
+
+  private subscribeToUserAuth(): void {
     this.auth.userSubject.subscribe(_user => {
       if (_user) {
         console.log('User is Logged in: ', _user);
@@ -46,9 +81,5 @@ export class AppComponent {
         this.welcomeText = '';
       }
     });
-  }
-
-  loginOAuth() {
-    this.user ? this.auth.logout() : this.auth.login();
   }
 }

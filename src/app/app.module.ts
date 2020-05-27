@@ -45,6 +45,7 @@ import { PageNotFoundComponent } from './core/component/page-not-found/page-not-
 import { FilterViewComponent } from './filter/component/filter-view/filter-view.component';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { DesignModelModule } from './design-model-module/design-model.module';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 @NgModule({
@@ -54,34 +55,35 @@ import { DesignModelModule } from './design-model-module/design-model.module';
         LandingPageComponent,
         FilterViewComponent
     ],
-    imports: [
-        AppRoutingModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-        AuthenticationModule,
-        PatternLanguageManagementModule,
-        PatternViewManagementModule,
-        DesignModelModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatCardModule,
-        MatButtonModule,
-        MatIconModule,
-        MatTabsModule,
-        NgxMdModule,
-        CovalentTextEditorModule,
-        CoreModule,
-        HttpClientModule,
-        AppRoutingModule,
-        FlexLayoutModule,
-        ToasterModule.forRoot(),
-        MatInputModule,
-        FormsModule,
-        ReactiveFormsModule,
-        JwtModule,
-        MatSidenavModule,
-        MatListModule,
-    ],
+  imports: [
+    AppRoutingModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    AuthenticationModule,
+    PatternLanguageManagementModule,
+    PatternViewManagementModule,
+    DesignModelModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTabsModule,
+    NgxMdModule,
+    CovalentTextEditorModule,
+    CoreModule,
+    HttpClientModule,
+    AppRoutingModule,
+    FlexLayoutModule,
+    ToasterModule.forRoot(),
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule,
+    JwtModule,
+    MatSidenavModule,
+    MatListModule,
+    MatSlideToggleModule,
+  ],
     providers: [
         CookieService,
         { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
