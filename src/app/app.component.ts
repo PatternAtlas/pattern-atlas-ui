@@ -13,6 +13,8 @@
  */
 
 import { Component } from '@angular/core';
+import { AuthenticationService } from './authentication/_services/authentication.service';
+import { PAUser } from './core/user-management';
 
 @Component({
     selector: 'pp-root',
@@ -21,7 +23,29 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-    constructor() {
+    loginButton = "Login";
+    welcomeText = ""
+    user: PAUser;
+
+
+    constructor(public auth: AuthenticationService) {
+        this.auth.userSubject.subscribe(_user => {
+            if (_user) {
+                console.log('User is Logged in: ', _user);
+                this.user = _user;
+                this.loginButton = 'Logout'; 
+                this.welcomeText = `Welcome ${_user.name}`;
+            } else {
+                console.log('No user logged in: ', _user);
+                this.user = null;
+                this.loginButton = 'Login';
+                this.welcomeText = '';
+            }
+        })
+    }
+
+    loginOAuth() {
+        this.user ? this.auth.logout() : this.auth.login()
     }
 
 

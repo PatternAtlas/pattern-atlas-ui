@@ -1,0 +1,38 @@
+.container {
+  border-style: groove;
+  border-color: red;
+
+  .container-comment {
+    border-style: groove;
+    border-color: green;
+    width: 100%;
+    display: flex; /* or inline-flex */
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-end;
+
+    .mat-form-field {
+      width: 100%;
+    }
+  }
+
+  .mat-list {
+    width: 100%;
+    overflow: auto;
+    overflow: auto;
+    height: calc(100vh - 64px - 48px - 96px - 440px);
+
+    .mat-list-item {
+      border-style: groove;
+      min-height: 128px;
+      display: flex; /* or inline-flex */
+      flex-direction: row;
+      width: 100%;
+      align-items: center;
+        .container-text {
+          flex: 1;
+        }      
+    }
+  }
+}
+
