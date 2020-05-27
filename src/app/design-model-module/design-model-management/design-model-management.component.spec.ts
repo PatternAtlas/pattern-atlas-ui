@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DesignModelManagementComponent } from './design-model-management.component';
+import { DesignModelTestModule } from '../design-model.test.module';
 
 describe('DesignModelManagementComponent', () => {
   let component: DesignModelManagementComponent;
@@ -8,7 +9,8 @@ describe('DesignModelManagementComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DesignModelManagementComponent ]
+      imports: [DesignModelTestModule],
+      declarations: [DesignModelManagementComponent]
     })
     .compileComponents();
   }));

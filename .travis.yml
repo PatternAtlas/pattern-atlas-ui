@@ -1,11 +1,15 @@
 language: node_js
 node_js:
   - '10'
+dist: focal
+addons:
+  chrome: stable
 cache:
   directories:
     - node_modules
 script:
   - yarn lint-ci-warn
+  - yarn test-ci
   - yarn travis
 deploy:
   provider: pages

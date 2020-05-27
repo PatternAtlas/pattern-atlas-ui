@@ -6,13 +6,13 @@ import {
 import { switchMap, tap } from 'rxjs/operators';
 import { DialogPatternLanguageResult } from '../../pattern-language-management/data/DialogPatternLanguageResult.interface';
 import { PatternView } from '../../core/model/hal/pattern-view.model';
-import { PatternViewService } from '../../core/service/pattern-view.service';
 import { MatDialog } from '@angular/material/dialog';
 import { PatternLanguageService } from '../../core/service/pattern-language.service';
 import { ToasterService } from 'angular2-toaster';
 import { Observable } from 'rxjs';
 import { PatternViewResponse } from '../../core/model/hal/pattern-view-response.interface';
 import { DesignModelService } from '../../core/service/design-model.service';
+
 
 @Component({
   selector: 'pp-design-model-management',
