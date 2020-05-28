@@ -1,4 +1,6 @@
-html, body, svg {
+html,
+body,
+svg {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -29,7 +31,7 @@ html, body, svg {
 .pattern-list {
   border: solid 1px #ccc;
   min-height: 40px;
-  background: white;
+  background: #fff;
   overflow: hidden;
   display: block;
 }
@@ -39,7 +41,7 @@ html, body, svg {
 }
 
 .pattern-box {
-  padding: 10px 10px;
+  padding: 10px;
   border-bottom: solid 1px #ccc;
   color: rgba(0, 0, 0, 0.87);
   display: flex;
@@ -49,7 +51,7 @@ html, body, svg {
   box-sizing: border-box;
   cursor: move;
   width: 18em;
-  background: white;
+  background: #fff;
   font-size: 14px;
 }
 
@@ -57,8 +59,8 @@ html, body, svg {
   box-sizing: border-box;
   border-radius: 4px;
   box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-  0 8px 10px 1px rgba(0, 0, 0, 0.14),
-  0 3px 14px 2px rgba(0, 0, 0, 0.12);
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
 .cdk-drag-placeholder {
@@ -66,7 +68,7 @@ html, body, svg {
 }
 
 .pattern-box:last-child {
-  border: none;
+  border: 0;
 }
 
 .pattern-list.cdk-drop-list-dragging .pattern-box:not(.cdk-drag-placeholder) {

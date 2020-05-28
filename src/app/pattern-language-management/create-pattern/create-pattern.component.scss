@@ -8,13 +8,13 @@
   flex: 1;
 
   min-height: 500px;
-  background: #eeeeee;
+  background: #eee;
   border: #7f7f7f 1pt solid;
 
 }
 
 .last {
-  background-color: white;
+  background-color: #fff;
 }
 
 icon-form {
@@ -24,14 +24,14 @@ icon-form {
 }
 
 .label-preview {
-  color: grey;
+  color: #808080;
 }
 
 .icon-full-width {
   width: 100%;
 }
 
-.iconPreviewer {
+.iconPreviewer { /* stylelint-disable-line selector-class-pattern */
   height: 100%;
   width: 100%;
 }
@@ -48,7 +48,6 @@ icon-form {
 }
 
 @media screen and (max-width: 600px) {
-
   .parent {
     flex-direction: column-reverse;
   }
@@ -56,12 +55,12 @@ icon-form {
   .item {
     flex: 1;
     min-height: 200px;
-    background: #eeeeee;
+    background: #eee;
 
   }
 
   .last {
-    background-color: white;
+    background-color: #fff;
   }
 
 }
