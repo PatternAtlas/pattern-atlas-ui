@@ -13,6 +13,6 @@
  */
 
 export class RdfModelNode {
-    constructor(public interfaceName: string, public attributes: Array<string>, public nominalValue: string, public datatype?: string) {
-    }
+  constructor(public interfaceName: string, public attributes: Array<string>, public nominalValue: string, public datatype?: string) {
+  }
 }

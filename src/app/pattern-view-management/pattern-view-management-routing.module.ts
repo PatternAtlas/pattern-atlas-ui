@@ -4,25 +4,25 @@ import {PatternViewManagementComponent} from './pattern-view-management/pattern-
 import {PatternViewRendererComponent} from './pattern-view-renderer/pattern-view-renderer.component';
 
 const routes: Routes = [
-    {
-        path: 'patternviews',
-        pathMatch: 'prefix',
-        children: [
-            {
-                path: '',
-                component: PatternViewManagementComponent
-            },
-          {
-            path: ':patternViewUri',
-            component: PatternViewRendererComponent
-          },
-        ]
-    }
+  {
+    path: 'patternviews',
+    pathMatch: 'prefix',
+    children: [
+      {
+        path: '',
+        component: PatternViewManagementComponent
+      },
+      {
+        path: ':patternViewUri',
+        component: PatternViewRendererComponent
+      },
+    ]
+  }
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
 export class PatternViewManagementRoutingModule {
 }

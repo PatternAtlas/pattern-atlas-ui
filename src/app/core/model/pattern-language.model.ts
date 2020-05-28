@@ -39,7 +39,7 @@ class PatternLanguage implements TurtleFileModelInterface {
   }
 
   public constructor(iri: string = null, name: string = null, logos: string[] = null, patternIRIs: string[] = null, sections: string[] = null,
-                     restrictions: Map<string, PatternLanguageSectionRestriction[]> = null, prefixes: CustomPrefix[] = null) {
+    restrictions: Map<string, PatternLanguageSectionRestriction[]> = null, prefixes: CustomPrefix[] = null) {
     this.name = name;
     this.logos = logos || [];
     this.patternIRIs = patternIRIs || [];
@@ -84,7 +84,7 @@ class PatternLanguage implements TurtleFileModelInterface {
     const ary = this.getPrefixes();
     ary.push('\n');
     ary.push(`<${UriConverter.getFileName(this.iri)}> rdf:type owl:Ontology ;`);
-    ary.push(`owl:imports <${this.patternpediaBaseURI}> , <${UriConverter.getPatternListIriForPLIri(this.iri)}>, <${UriConverter.getRelationListIriForPLIri(this.iri)}>.`);
+    ary.push(`owl:imports <${this.patternpediaBaseURI}> , <${UriConverter.getPatternListIriForPLIri(this.iri)}>, <${UriConverter.getRelationListIriForPLIri(this.iri)}>.`); // eslint-disable-line max-len
     ary.push('\n');
     ary.push('# #################################################################');
     ary.push('# #');
@@ -117,14 +117,14 @@ class PatternLanguage implements TurtleFileModelInterface {
 
       ary.push(`### ${this.iri}`);
       ary.push(`:${UriConverter.removeWhitespace(this.name)}Individual rdf:type owl:Class ; `);
-      ary.push(` rdfs:subClassOf pp:Pattern ,`);
+      ary.push(' rdfs:subClassOf pp:Pattern ,');
 
 
       restrictionsArray.forEach((restriction, index) => {
         ary.push(`${'\t'.repeat(3)}[ rdf:type owl:Restriction ;`);
         ary.push(`${'\t'.repeat(3)} owl:onProperty ${this.addPrefixCharacterOrAngleBrackets(restriction.name)} ; `);
         if (restriction.restrictionType === 'min' || restriction.restrictionType === 'max') {
-          ary.push(`${'\t'.repeat(3)} ${restriction.restrictionType === 'min' ? 'owl:minCardinality' : 'owl:maxCardinality'} "${restriction.cardinality}"^^xsd:nonNegativeInteger;`);
+          ary.push(`${'\t'.repeat(3)} ${restriction.restrictionType === 'min' ? 'owl:minCardinality' : 'owl:maxCardinality'} "${restriction.cardinality}"^^xsd:nonNegativeInteger;`); // eslint-disable-line max-len
           ary.push(`${'\t'.repeat(3)} owl:onDataRange ${this.addAngleBracketsIfNeeded(restriction.type)}`);
         } else if (restriction.restrictionType === 'exactly') {
           ary.push(`${'\t'.repeat(3)} owl:qualifiedCardinality"${restriction.cardinality}"^^xsd:nonNegativeInteger;`);
@@ -135,7 +135,7 @@ class PatternLanguage implements TurtleFileModelInterface {
           ary.push(`${'\t'.repeat(3)} owl:allValuesFrom ${this.addAngleBracketsIfNeeded(restriction.type)}`);
         }
         ary.push(`${'\t'.repeat(4)}] ${index === (restrictionsArray.length - 1) ? '.' : ','}`);
-        ary.push(`\n`);
+        ary.push('\n');
       });
     }
 

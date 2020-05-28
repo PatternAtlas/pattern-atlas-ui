@@ -20,7 +20,7 @@ export class DirectedPatternRelationDescriptorIndividual extends PatternRelation
   toTurtle(): string {
     const ary = [];
     ary.push(`:${this.individualName}`);
-    ary.push(`rdf:type owl:NamedIndividual , pp:DirectedPatternRelationDescriptor ;`);
+    ary.push('rdf:type owl:NamedIndividual , pp:DirectedPatternRelationDescriptor ;');
     if (this.relationType) {
       ary.push(`pp:hasRelationType "${this.relationType}"^^xsd:string ;`);
     }
