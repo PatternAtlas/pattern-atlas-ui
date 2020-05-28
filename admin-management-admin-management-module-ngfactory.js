@@ -3087,7 +3087,7 @@ __webpack_require__.r(__webpack_exports__);
  * @suppress {suspiciousCode,uselessCode,missingProperties,missingOverride,checkTypes,extraRequire}
  * tslint:disable
  */ 
-var styles = [".container[_ngcontent-%COMP%] {\n  border-style: groove;\n  width: 100%;\n  display: flex;\n  \n  flex-direction: column;\n  justify-content: center;\n  align-items: stretch;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS12aWV3cy11aS9zcmMvYXBwL2FkbWluLW1hbmFnZW1lbnQvYWRtaW4tbWFuYWdlbWVudC1kZXRhaWwvYWRtaW4tbWFuYWdlbWVudC1kZXRhaWwuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL2FkbWluLW1hbmFnZW1lbnQvYWRtaW4tbWFuYWdlbWVudC1kZXRhaWwvYWRtaW4tbWFuYWdlbWVudC1kZXRhaWwuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFFSSxvQkFBQTtFQUNBLFdBQUE7RUFDQSxhQUFBO0VBQWUsbUJBQUE7RUFDZixzQkFBQTtFQUNBLHVCQUFBO0VBQ0Esb0JBQUE7QUNDSiIsImZpbGUiOiJzcmMvYXBwL2FkbWluLW1hbmFnZW1lbnQvYWRtaW4tbWFuYWdlbWVudC1kZXRhaWwvYWRtaW4tbWFuYWdlbWVudC1kZXRhaWwuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuY29udGFpbmVyIHtcbiAgICAvLyBwYWRkaW5nLXRvcDogMTZweDtcbiAgICBib3JkZXItc3R5bGU6IGdyb292ZTtcbiAgICB3aWR0aDogMTAwJTtcbiAgICBkaXNwbGF5OiBmbGV4OyAvKiBvciBpbmxpbmUtZmxleCAqL1xuICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG4gICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gICAgYWxpZ24taXRlbXM6IHN0cmV0Y2g7XG59IiwiLmNvbnRhaW5lciB7XG4gIGJvcmRlci1zdHlsZTogZ3Jvb3ZlO1xuICB3aWR0aDogMTAwJTtcbiAgZGlzcGxheTogZmxleDtcbiAgLyogb3IgaW5saW5lLWZsZXggKi9cbiAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gIGFsaWduLWl0ZW1zOiBzdHJldGNoO1xufSJdfQ== */"];
+var styles = [".container[_ngcontent-%COMP%] {\n  border-style: groove;\n  width: 100%;\n  display: flex;\n  \n  flex-direction: column;\n  justify-content: center;\n  align-items: stretch;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL3RyYXZpcy9idWlsZC9QYXR0ZXJuUGVkaWEvcGF0dGVybi1wZWRpYS12aWV3cy11aS9zcmMvYXBwL2FkbWluLW1hbmFnZW1lbnQvYWRtaW4tbWFuYWdlbWVudC1kZXRhaWwvYWRtaW4tbWFuYWdlbWVudC1kZXRhaWwuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL2FkbWluLW1hbmFnZW1lbnQvYWRtaW4tbWFuYWdlbWVudC1kZXRhaWwvYWRtaW4tbWFuYWdlbWVudC1kZXRhaWwuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFFRSxvQkFBQTtFQUNBLFdBQUE7RUFDQSxhQUFBO0VBQWUsbUJBQUE7RUFDZixzQkFBQTtFQUNBLHVCQUFBO0VBQ0Esb0JBQUE7QUNDRiIsImZpbGUiOiJzcmMvYXBwL2FkbWluLW1hbmFnZW1lbnQvYWRtaW4tbWFuYWdlbWVudC1kZXRhaWwvYWRtaW4tbWFuYWdlbWVudC1kZXRhaWwuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuY29udGFpbmVyIHtcbiAgLy8gcGFkZGluZy10b3A6IDE2cHg7XG4gIGJvcmRlci1zdHlsZTogZ3Jvb3ZlO1xuICB3aWR0aDogMTAwJTtcbiAgZGlzcGxheTogZmxleDsgLyogb3IgaW5saW5lLWZsZXggKi9cbiAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gIGFsaWduLWl0ZW1zOiBzdHJldGNoO1xufVxuIiwiLmNvbnRhaW5lciB7XG4gIGJvcmRlci1zdHlsZTogZ3Jvb3ZlO1xuICB3aWR0aDogMTAwJTtcbiAgZGlzcGxheTogZmxleDtcbiAgLyogb3IgaW5saW5lLWZsZXggKi9cbiAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gIGFsaWduLWl0ZW1zOiBzdHJldGNoO1xufSJdfQ== */"];
 
 
 
@@ -3147,7 +3147,7 @@ var AdminManagementDetailComponent = /** @class */ (function () {
         console.log(control);
         var pass = this.userForm.get('password').value;
         var confirmPass = this.userForm.get('confirmPassword').value;
-        return pass === confirmPass ? null : { 'incorrect': true };
+        return pass === confirmPass ? null : { incorrect: true };
     };
     AdminManagementDetailComponent.prototype.onSubmit = function () {
         console.log('submit');
@@ -3180,7 +3180,7 @@ function ValidatePassword(formGroup) {
     console.log(formGroup);
     var pass = formGroup.get('password').value;
     var confirmPass = formGroup.get('confirmPassword').value;
-    pass === confirmPass ? formGroup.get('confirmPassword').setErrors(null) : formGroup.get('confirmPassword').setErrors({ 'incorrect': true });
+    pass === confirmPass ? formGroup.get('confirmPassword').setErrors(null) : formGroup.get('confirmPassword').setErrors({ incorrect: true });
     return true;
 }
 
