@@ -8,7 +8,7 @@ cache:
   directories:
     - node_modules
 script:
-  - yarn lint-ci-warn
+  - yarn lint-ci
   - yarn test-ci
   - yarn travis
 deploy:
