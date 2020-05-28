@@ -18,7 +18,7 @@ export class UndirectedPatternRelationDescriptorIndividual extends PatternRelati
   toTurtle(): string {
     const ary = [];
     ary.push(`:${this.individualName}`);
-    ary.push(`rdf:type owl:NamedIndividual , pp:UndirectedPatternRelationDescriptor ;`);
+    ary.push('rdf:type owl:NamedIndividual , pp:UndirectedPatternRelationDescriptor ;');
     if (this.relationType) {
       ary.push(`pp:hasRelationType "${this.relationType}"^^xsd:string ;`);
     }

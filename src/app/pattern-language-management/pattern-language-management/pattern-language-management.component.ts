@@ -28,9 +28,9 @@ import {map} from 'rxjs/operators';
 import PatternLanguageModel from '../../core/model/hal/pattern-language-model.model';
 
 @Component({
-    selector: 'pp-pattern-language-management',
-    templateUrl: './pattern-language-management.component.html',
-    styleUrls: ['./pattern-language-management.component.scss']
+  selector: 'pp-pattern-language-management',
+  templateUrl: './pattern-language-management.component.html',
+  styleUrls: ['./pattern-language-management.component.scss']
 })
 
 
@@ -51,60 +51,60 @@ export class PatternLanguageManagementComponent implements OnInit {
 
     // function used to sort the patternlanguages (by name)
     private static sortPatternLanguages(pl1: PatternLanguageModel, pl2: PatternLanguageModel): number {
-        if (pl1.name > pl2.name) {
-            return 1;
-        }
-        if (pl1.name < pl2.name) {
-            return -1;
-        }
-        return 0;
+      if (pl1.name > pl2.name) {
+        return 1;
+      }
+      if (pl1.name < pl2.name) {
+        return -1;
+      }
+      return 0;
     }
 
     ngOnInit() {
-        this.patternLanguages = Array.from<PatternLanguageModel>(this.activatedRoute.snapshot.data.patternlanguages.values())
-            .sort(PatternLanguageManagementComponent.sortPatternLanguages);
+      this.patternLanguages = Array.from<PatternLanguageModel>(this.activatedRoute.snapshot.data.patternlanguages.values())
+        .sort(PatternLanguageManagementComponent.sortPatternLanguages);
     }
 
     // reload the current data from https://purl.org/patternpedia that contains all patternlangauges
     async reloadPatternRepo() {
-        this.patternLanguageService.getPatternLanguages()
-            .pipe(
-                map(result => result.sort(PatternLanguageManagementComponent.sortPatternLanguages)))
-            .subscribe(result => {
-                this.patternLanguages = result;
-                this._toasterService.pop('success', 'Reloaded Pattern Languages');
-                this.cdr.detectChanges();
-                return result;
-            });
-        this.cdr.detectChanges();
+      this.patternLanguageService.getPatternLanguages()
+        .pipe(
+          map(result => result.sort(PatternLanguageManagementComponent.sortPatternLanguages)))
+        .subscribe(result => {
+          this.patternLanguages = result;
+          this._toasterService.pop('success', 'Reloaded Pattern Languages');
+          this.cdr.detectChanges();
+          return result;
+        });
+      this.cdr.detectChanges();
     }
 
     navigateToPL(id: string): void {
-        this.zone.run(() => {
-            this.router.navigate([id], {relativeTo: this.activatedRoute});
-        });
+      this.zone.run(() => {
+        this.router.navigate([id], {relativeTo: this.activatedRoute});
+      });
     }
 
     goToPatternLanguageCreation(): void {
-        const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent, {data: { componentDialogType: CreateEditComponentDialogType.PATTERN_LANGUAGE }});
+      const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent, {data: { componentDialogType: CreateEditComponentDialogType.PATTERN_LANGUAGE }});
 
-        // Save PatternLanguage when user presses save
-        (<CreateEditPatternLanguageComponent>dialogRef.componentInstance).saveClicked
-            .subscribe((result: DialogPatternLanguageResult) => {
-                const patternLanguage = <PatternLanguage>result.dialogResult;
-                this.patternLanguageService.savePatternLanguage(patternLanguage)
-                    .subscribe(() => {
-                        this.patternLanguageService.getPatternLanguages()
-                            .pipe(
-                                map(patternLanguageModels => patternLanguageModels.sort(PatternLanguageManagementComponent.sortPatternLanguages)))
-                            .subscribe(patternLanguageModels => {
-                                this.patternLanguages = patternLanguageModels;
-                            });
-                        this._toasterService.pop('success', 'Pattern Language created');
-                    }, err => {
-                        console.error(err);
-                        this._toasterService.pop('error', 'Error occurred', JSON.stringify(err));
-                    });
+      // Save PatternLanguage when user presses save
+      (<CreateEditPatternLanguageComponent>dialogRef.componentInstance).saveClicked
+        .subscribe((result: DialogPatternLanguageResult) => {
+          const patternLanguage = <PatternLanguage>result.dialogResult;
+          this.patternLanguageService.savePatternLanguage(patternLanguage)
+            .subscribe(() => {
+              this.patternLanguageService.getPatternLanguages()
+                .pipe(
+                  map(patternLanguageModels => patternLanguageModels.sort(PatternLanguageManagementComponent.sortPatternLanguages)))
+                .subscribe(patternLanguageModels => {
+                  this.patternLanguages = patternLanguageModels;
+                });
+              this._toasterService.pop('success', 'Pattern Language created');
+            }, err => {
+              console.error(err);
+              this._toasterService.pop('error', 'Error occurred', JSON.stringify(err));
             });
+        });
     }
 }

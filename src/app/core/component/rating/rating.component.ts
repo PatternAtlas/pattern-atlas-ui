@@ -8,7 +8,7 @@ import { Rating } from '../../model/rating.enum';
 })
 export class RatingComponent implements OnInit {
 
-  @Input() row: boolean = true;
+  @Input() row = true;
   @Input() rating: number;
   @Input() userRatingPast: number;
   @Output() userRatingCurrent = new EventEmitter();

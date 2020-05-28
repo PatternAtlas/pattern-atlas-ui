@@ -1,4 +1,4 @@
-import { PAComment } from "../../model/comment";
+import { PAComment } from '../../model/comment';
 
 export class Candidate {
     comments: PAComment[];
@@ -8,9 +8,9 @@ export class Candidate {
     name: string;
     patternLanguageId: string;
     patternLanguageName: string;
-    rating: number = 0;
+    rating = 0;
     uri: string;
-    version: string = '0.1.0';
+    version = '0.1.0';
   
     constructor()
     constructor(_content: string, _name: string, _patternLanguageId: string)
@@ -19,4 +19,4 @@ export class Candidate {
       this.name = _name;
       this.patternLanguageId = _patternLanguageId;
     }
-  }
+}

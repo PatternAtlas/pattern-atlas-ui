@@ -12,7 +12,7 @@ describe('DesignModelManagementComponent', () => {
       imports: [DesignModelTestModule],
       declarations: [DesignModelManagementComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

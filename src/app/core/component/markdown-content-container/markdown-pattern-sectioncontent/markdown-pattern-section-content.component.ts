@@ -14,7 +14,7 @@ import {DialogData, MdEditorComponent} from '../../md-editor/md-editor.component
 import * as MarkdownIt from 'markdown-it';
 import * as markdownitKatex from 'markdown-it-katex';
 import {ImageService} from '../../../service/image.service';
-import * as d3 from "d3";
+import * as d3 from 'd3';
 
 
 @Component({

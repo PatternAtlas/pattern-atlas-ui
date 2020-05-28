@@ -7,9 +7,9 @@ export class CreateUndirectedEdgeRequest {
     description: string;
 
     constructor(edge: UndirectedEdgeModel) {
-        this.p1Id = edge.pattern1Id;
-        this.p2Id = edge.pattern2Id;
-        this.type = edge.type;
-        this.description = edge.description;
+      this.p1Id = edge.pattern1Id;
+      this.p2Id = edge.pattern2Id;
+      this.type = edge.type;
+      this.description = edge.description;
     }
 }

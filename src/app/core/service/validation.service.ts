@@ -43,7 +43,7 @@ export class ValidationService {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
       if (control.value !== undefined) {
         if (!this.allValuesMatchRegex(control.value, /!\[.*\]\(http(s)?:\/\/([a-zA-Z.0-9]+[\/]*)+\)/g)) {
-          return {'xsdImage': true};
+          return {xsdImage: true};
         }
       }
       return null;
@@ -60,7 +60,7 @@ export class ValidationService {
         }
         for (const item of arrayOfImageValues) {
           if (isNaN(+item)) {
-            return {'xsdInteger': true};
+            return {xsdInteger: true};
           }
         }
       }
@@ -73,7 +73,7 @@ export class ValidationService {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
       if (control.value !== undefined) {
         if (!this.allValuesMatchRegex(control.value, /\[.*\]\(http:\/\/([a-zA-Z.0-9]+[\/]*)+\)/g)) {
-          return {'xsdAnyURI': true};
+          return {xsdAnyURI: true};
         }
       }
       return null;
@@ -84,11 +84,11 @@ export class ValidationService {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
       if (control.value !== undefined) {
         if (control.value.indexOf(':') === -1) {
-          return {'startsWithValidPrefix': true};
+          return {startsWithValidPrefix: true};
         }
         const prefix = control.value.trim().substring(0, control.value.indexOf(':'));
         if (allowedPrefixes.findIndex(it => it === prefix) === -1) {
-          return {'startsWithValidPrefix': true};
+          return {startsWithValidPrefix: true};
         }
       }
       return null;

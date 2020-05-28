@@ -14,46 +14,46 @@
 
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {PatternLanguageManagementComponent} from './pattern-language-management/pattern-language-management.component'; // tslint:disable-line:max-line-length
+import {PatternLanguageManagementComponent} from './pattern-language-management/pattern-language-management.component';
 import {PatternLanguageContainerComponent} from './pattern-language-container/pattern-language-container.component';
 import {PatternContainerComponent} from './pattern-container/pattern-container.component';
 import {PatternLanguageManagementResolverService} from './pattern-language-management/pattern-language-management-resolver.service';
 import {CreatePatternComponent} from './create-pattern/create-pattern.component';
 
 const routes: Routes = [
-    {
-        path: 'patternlanguages',
-        pathMatch: 'prefix',
-        runGuardsAndResolvers: 'always',
-        resolve: {
-            patternlanguages: PatternLanguageManagementResolverService,
+  {
+    path: 'patternlanguages',
+    pathMatch: 'prefix',
+    runGuardsAndResolvers: 'always',
+    resolve: {
+      patternlanguages: PatternLanguageManagementResolverService,
 
-        },
-        children: [
-            {
-                path: '',
-                component: PatternLanguageManagementComponent
-            }, {
-                path: ':patternLanguageId',
-                component: PatternLanguageContainerComponent,
-            }, {
-                path: ':patternLanguageId/create-patterns',
-                component: CreatePatternComponent,
-            },
-            {
-                path: ':patternLanguageId/:patternId',
-                component: PatternContainerComponent
-            }
+    },
+    children: [
+      {
+        path: '',
+        component: PatternLanguageManagementComponent
+      }, {
+        path: ':patternLanguageId',
+        component: PatternLanguageContainerComponent,
+      }, {
+        path: ':patternLanguageId/create-patterns',
+        component: CreatePatternComponent,
+      },
+      {
+        path: ':patternLanguageId/:patternId',
+        component: PatternContainerComponent
+      }
 
-        ],
-    }
+    ],
+  }
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
 export class PatternLanguageManagementRoutingModule {
-    constructor() {
-    }
+  constructor() {
+  }
 }

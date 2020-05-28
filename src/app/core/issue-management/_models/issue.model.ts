@@ -1,4 +1,4 @@
-import { IssueComment } from "./issue-comment.model";
+import { IssueComment } from './issue-comment.model';
 
 export interface Issue {
     id: string,

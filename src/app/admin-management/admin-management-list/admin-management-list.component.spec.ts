@@ -10,7 +10,7 @@ describe('AdminManagementListComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ AdminManagementListComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

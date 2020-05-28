@@ -44,7 +44,7 @@ export class IssueManagementListComponent implements OnInit {
       if (result != null) {
         this.issueManagmentService.createIssue(result).subscribe(result => {
           console.log('Created Issue: ', result);
-         this.getAll();
+          this.getAll();
         })
       }
     });

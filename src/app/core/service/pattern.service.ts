@@ -67,13 +67,13 @@ export class PatternService {
     return this.http.get<Array<Edge>>(url);
   }
 
-    getPatternById(patternLanguage: PatternLanguage, patternId: String): Observable<Pattern> {
-        console.log('patternid');
-        console.log(patternId);
-        return this.http.get <Pattern>(this.repoEndpoint + '/patternLanguages/' + patternLanguage.id + '/patterns/' + patternId);
-    }
+  getPatternById(patternLanguage: PatternLanguage, patternId: String): Observable<Pattern> {
+    console.log('patternid');
+    console.log(patternId);
+    return this.http.get <Pattern>(this.repoEndpoint + '/patternLanguages/' + patternLanguage.id + '/patterns/' + patternId);
+  }
 
-    getPatternByUrl(href: string): Observable<PatternResponse> {
-        return this.http.get<PatternResponse>(href);
-    }
+  getPatternByUrl(href: string): Observable<PatternResponse> {
+    return this.http.get<PatternResponse>(href);
+  }
 }

@@ -1,4 +1,4 @@
-import { UserRole } from "./role.model";
+import { UserRole } from './role.model';
 
 export interface PAUser {
     id: string,

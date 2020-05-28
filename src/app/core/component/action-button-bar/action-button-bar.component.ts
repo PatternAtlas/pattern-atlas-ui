@@ -1,10 +1,10 @@
 import { ApplicationRef, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-    selector: 'pp-action-button-bar',
-    templateUrl: './action-button-bar.component.html',
-    styleUrls: ['./action-button-bar.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Default
+  selector: 'pp-action-button-bar',
+  templateUrl: './action-button-bar.component.html',
+  styleUrls: ['./action-button-bar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class ActionButtonBarComponent implements OnInit {
     @Output() addClicked = new EventEmitter<void>();
@@ -28,14 +28,14 @@ export class ActionButtonBarComponent implements OnInit {
     }
 
     addButtonClicked() {
-        this.addClicked.emit();
+      this.addClicked.emit();
     }
 
     reloadButtonClicked() {
-        this.reloadClicked.emit();
+      this.reloadClicked.emit();
     }
 
     secondAddButtonClicked() {
-        this.add2Clicked.emit();
+      this.add2Clicked.emit();
     }
 }

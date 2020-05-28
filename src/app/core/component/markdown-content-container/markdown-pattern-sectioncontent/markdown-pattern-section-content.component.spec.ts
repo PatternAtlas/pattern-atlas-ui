@@ -10,7 +10,7 @@ describe('MarkdownPatternSectioncontentComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ MarkdownPatternSectionContentComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

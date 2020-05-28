@@ -19,16 +19,16 @@ abstract class Writer<T> {
     executor: SparqlExecutor;
 
     protected constructor(supportedIRI: string, executor: SparqlExecutor) {
-        this._supportedIRI = supportedIRI;
-        this.executor = executor;
+      this._supportedIRI = supportedIRI;
+      this.executor = executor;
     }
 
     set supportedIRI(iri: string) {
-        this._supportedIRI = iri;
+      this._supportedIRI = iri;
     }
 
     get supportedIRI(): string {
-        return this._supportedIRI;
+      return this._supportedIRI;
 
     }
 

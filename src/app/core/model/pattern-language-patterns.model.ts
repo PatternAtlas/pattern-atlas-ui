@@ -11,9 +11,9 @@ export class PatternLanguagePatterns {
 
 
     constructor(iri: string, plIri: string, patterns: Pattern[]) {
-        this.iri = iri;
-        this.plIri = plIri;
-        this.patterns = patterns;
+      this.iri = iri;
+      this.plIri = plIri;
+      this.patterns = patterns;
     }
 
 }

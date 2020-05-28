@@ -10,7 +10,7 @@ describe('AddToViewComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ AddToViewComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

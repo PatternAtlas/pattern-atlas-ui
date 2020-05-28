@@ -1,10 +1,10 @@
 .container {
   border-style: groove;
-  border-color: red;
+  border-color: #f00;
 
   .container-comment {
     border-style: groove;
-    border-color: green;
+    border-color: #008000;
     width: 100%;
     display: flex; /* or inline-flex */
     flex-direction: column;
@@ -19,7 +19,6 @@
   .mat-list {
     width: 100%;
     overflow: auto;
-    overflow: auto;
     height: calc(100vh - 64px - 48px - 96px - 440px);
 
     .mat-list-item {
@@ -29,9 +28,10 @@
       flex-direction: row;
       width: 100%;
       align-items: center;
-        .container-text {
-          flex: 1;
-        }      
+
+      .container-text {
+        flex: 1;
+      }
     }
   }
 }

@@ -8,10 +8,8 @@
     "test": "ng test",
     "test-docker": "ng test --browsers=ChromiumHeadlessNoSandbox",
     "test-ci": "ng test --no-watch --no-progress --browsers=ChromeHeadlessNoSandbox",
-    "lint": "stylelint 'src/**/*.scss' ; ng lint",
-    "lint-ci-warn": "stylelint 'src/**/*.scss' ; ng lint ; exit 0",
-    "lint-ci-error": "stylelint 'src/**/*.scss' || ec=$? ; ng lint || ec=$? ; exit $ec",
-    "sass-lint": "sass-lint -c .sass-lint.yml -q -v",
+    "lint": "stylelint 'src/**/*.scss' ; ng lint ; eslint 'src/**/*.ts'",
+    "lint-ci": "stylelint 'src/**/*.scss' || ec=$? ; ng lint || ec=$? ; eslint 'src/**/*.ts' || ec=$? ; exit $ec",
     "e2e": "ng e2e",
     "travis": "ng build --base-href '/pattern-pedia/'"
   },

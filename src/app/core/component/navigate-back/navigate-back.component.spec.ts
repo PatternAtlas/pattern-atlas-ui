@@ -10,7 +10,7 @@ describe('NavigateBackComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ NavigateBackComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

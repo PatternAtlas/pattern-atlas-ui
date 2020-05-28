@@ -10,7 +10,7 @@ describe('ActionButtonBarComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ ActionButtonBarComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

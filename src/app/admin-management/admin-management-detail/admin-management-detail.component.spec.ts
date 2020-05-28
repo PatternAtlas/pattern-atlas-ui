@@ -9,7 +9,7 @@ describe('AdminManagementDetailComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ AdminManagementDetailComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

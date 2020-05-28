@@ -56,7 +56,7 @@ export class CandidateManagementDetailComponent implements OnInit {
         this.candidateMarkdown = this.candidate.content;
       } else if (!name && this.router.url.includes('/create') && !window.history.state.data) {
         this.candidate = new Candidate()
-        this.candidateMarkdown = this.defaultSections.join("");
+        this.candidateMarkdown = this.defaultSections.join('');
       } else if (name && this.router.url.includes('/detail') && window.history.state.data) {
         this.candidate = window.history.state.data as Candidate;
         this.patternLanguageSelected = this.candidate.patternLanguageId;
@@ -86,7 +86,7 @@ export class CandidateManagementDetailComponent implements OnInit {
 
   update() {
     this.candidateService.updateCandidate(this.candidate).subscribe(result => {
-     console.log(result);
+      console.log(result);
     })
   }
 

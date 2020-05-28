@@ -5,10 +5,7 @@ import { ProcessOauthCallbackComponent } from './core/component/process-oauth-ca
 import { ToasterModule } from 'angular2-toaster';
 import { PageNotFoundComponent } from './core/component/page-not-found/page-not-found.component';
 import { AuthGuardService as AuthGuard } from './authentication/_services/auth-guard.service';
-import { DEVELOPER_MANAGEMENT_ROUTES } from './developer-management/developer-management.module';
-import { USER_MANAGEMENT_ROUTES } from './user-management/user-management.module';
-import { ADMIN_MANAGEMENT_ROUTES } from './admin-management/admin-management.module';
-import { PatternLanguageManagementResolverService } from './pattern-language-management/pattern-language-management/pattern-language-management-resolver.service';
+import { PatternLanguageManagementResolverService } from './pattern-language-management/pattern-language-management/pattern-language-management-resolver.service'; // eslint-disable-line max-len
 import { UserRole } from './core/user-management';
 /*
  * Copyright (c) 2018 University of Stuttgart.

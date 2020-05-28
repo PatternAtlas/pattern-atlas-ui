@@ -10,7 +10,7 @@ describe('CardRendererComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ CardRendererComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

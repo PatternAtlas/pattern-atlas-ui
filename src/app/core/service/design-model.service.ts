@@ -12,81 +12,84 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {globals} from '../../globals';
-import {EMPTY, forkJoin, Observable, of} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { globals } from '../../globals';
+import { EMPTY, forkJoin, Observable, of } from 'rxjs';
 import Pattern from '../model/hal/pattern.model';
-import {PatternView} from '../model/hal/pattern-view.model';
-import {PatternViewResponse} from '../model/hal/pattern-view-response.interface';
-import {DirectedEdgeModel} from '../model/hal/directed-edge.model';
-import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
-import {LinksToOtherPattern} from '../../pattern-view-management/add-to-view/add-to-view.component';
-import {AddDirectedEdgeToViewRequest} from '../model/hal/add-directed-edge-to-view-request';
-import {AddUndirectedEdgeToViewRequest} from '../model/hal/add-undirected-edge-to-view-request';
-import {Embedded} from '../model/hal/embedded';
-import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
-import {DirectedEdesResponse} from '../model/hal/directed-edes-response.interface';
-import {GraphNode} from '../component/graph-display/graph-display.component';
+import { PatternView } from '../model/hal/pattern-view.model';
+import { PatternViewResponse } from '../model/hal/pattern-view-response.interface';
+import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
+import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
+import { LinksToOtherPattern } from '../../pattern-view-management/add-to-view/add-to-view.component';
+import { AddDirectedEdgeToViewRequest } from '../model/hal/add-directed-edge-to-view-request';
+import { AddUndirectedEdgeToViewRequest } from '../model/hal/add-undirected-edge-to-view-request';
+import { Embedded } from '../model/hal/embedded';
+import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
+import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
+import { GraphNode } from '../component/graph-display/graph-display.component';
 
 
 @Injectable()
 export class DesignModelService {
 
-    private repoEndpoint = globals.repoEndpoint;
+  private repoEndpoint = globals.repoEndpoint;
 
-    constructor(private http: HttpClient) {
-    }
-
-
-    getPatternViews(): Observable<PatternViewResponse> {
-        return this.http.get<PatternViewResponse>(this.repoEndpoint + '/patternViews');
-    }
+  constructor(private http: HttpClient) {
+  }
 
 
-    savePatternView(url: string, view: PatternView) {
-        return this.http.post<PatternViewResponse>(url, view, {observe: 'response'});
-    }
+  getPatternViews(): Observable<PatternViewResponse> {
+    return this.http.get<PatternViewResponse>(this.repoEndpoint + '/patternViews');
+  }
 
-    addPatterns(url: string, patterns: Pattern[]): Observable<any> {
-        const observables = patterns.map(pat => this.http.post<PatternViewResponse>(url, pat, {observe: 'response'}));
-        return observables.length > 0 ? forkJoin(observables) : of(null);
-    }
 
-    getPatternViewByUri(encodedUri: string): Observable<PatternView> {
-        return this.http.get<PatternView>(this.repoEndpoint + `/patternViews/findByUri?encodedUri=${encodedUri}`);
-    }
+  savePatternView(url: string, view: PatternView) {
+    return this.http.post<PatternViewResponse>(url, view, { observe: 'response' });
+  }
 
-    createLink(url, edge: DirectedEdgeModel | UndirectedEdgeModel | AddDirectedEdgeToViewRequest | AddUndirectedEdgeToViewRequest): Observable<HttpResponse<Object>> {
-        return this.http.post(url, edge, {observe: 'response'});
-    }
+  addPatterns(url: string, patterns: Pattern[]): Observable<any> {
+    const observables = patterns.map(pat => this.http.post<PatternViewResponse>(url, pat, { observe: 'response' }));
+    return observables.length > 0 ? forkJoin(observables) : of(null);
+  }
 
-    addLinks(patternView: PatternView, items: LinksToOtherPattern[]): Observable<any> {
+  getPatternViewByUri(encodedUri: string): Observable<PatternView> {
+    return this.http.get<PatternView>(this.repoEndpoint + `/patternViews/findByUri?encodedUri=${encodedUri}`);
+  }
 
-        const observables = items
-            .map(item => item.type === 'directed' ?
-                this.http.post(patternView._links.directedEdges.href, new AddDirectedEdgeToViewRequest(<DirectedEdgeModel>item.edge), {observe: 'response'}) :
-                this.http.post(patternView._links.undirectedEdges.href, new AddUndirectedEdgeToViewRequest(<UndirectedEdgeModel>item.edge), {observe: 'response'}));
-        return observables.length > 0 ? forkJoin(observables) : EMPTY;
-    }
+  createLink(
+    url,
+    edge: DirectedEdgeModel | UndirectedEdgeModel | AddDirectedEdgeToViewRequest | AddUndirectedEdgeToViewRequest
+  ): Observable<HttpResponse<Object>> {
+    return this.http.post(url, edge, { observe: 'response' });
+  }
 
-    getDirectedEdges(patternView: PatternView): Observable<Embedded<DirectedEdesResponse>> {
-        return this.http.get<Embedded<DirectedEdesResponse>>(patternView._links.directedEdges.href);
-    }
+  addLinks(patternView: PatternView, items: LinksToOtherPattern[]): Observable<any> {
 
-    getUndirectedEdges(patternView: PatternView): Observable<Embedded<UndirectedEdesResponse>> {
-        return this.http.get<Embedded<UndirectedEdesResponse>>(patternView._links.undirectedEdges.href);
-    }
+    const observables = items
+      .map(item => item.type === 'directed' ?
+        this.http.post(patternView._links.directedEdges.href, new AddDirectedEdgeToViewRequest(<DirectedEdgeModel>item.edge), { observe: 'response' }) :
+        this.http.post(patternView._links.undirectedEdges.href, new AddUndirectedEdgeToViewRequest(<UndirectedEdgeModel>item.edge), { observe: 'response' }));
+    return observables.length > 0 ? forkJoin(observables) : EMPTY;
+  }
 
-    deleteLink(patternLink: any): Observable<any> {
-        return this.http.delete(patternLink);
-    }
+  getDirectedEdges(patternView: PatternView): Observable<Embedded<DirectedEdesResponse>> {
+    return this.http.get<Embedded<DirectedEdesResponse>>(patternView._links.directedEdges.href);
+  }
 
-    saveGraph(patternView: PatternView, nodeList: any[]) {
-        return this.http.post<any>(patternView._links.graph.href, nodeList, {observe: 'response'});
-    }
+  getUndirectedEdges(patternView: PatternView): Observable<Embedded<UndirectedEdesResponse>> {
+    return this.http.get<Embedded<UndirectedEdesResponse>>(patternView._links.undirectedEdges.href);
+  }
 
-    getGraph(patternView: PatternView) {
-        return this.http.get<{ graph: Array<GraphNode> }>(patternView._links.graph.href);
-    }
+  deleteLink(patternLink: any): Observable<any> {
+    return this.http.delete(patternLink);
+  }
+
+  saveGraph(patternView: PatternView, nodeList: any[]) {
+    return this.http.post<any>(patternView._links.graph.href, nodeList, { observe: 'response' });
+  }
+
+  getGraph(patternView: PatternView) {
+    return this.http.get<{ graph: Array<GraphNode> }>(patternView._links.graph.href);
+  }
 }

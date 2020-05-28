@@ -7,9 +7,9 @@ export class CreateDirectedEdgeRequest {
     description: string;
 
     constructor(edge: DirectedEdgeModel) {
-        this.sourcePatternId = edge.sourcePatternId;
-        this.targetPatternId = edge.targetPatternId;
-        this.type = edge.type;
-        this.description = edge.description;
+      this.sourcePatternId = edge.sourcePatternId;
+      this.targetPatternId = edge.targetPatternId;
+      this.type = edge.type;
+      this.description = edge.description;
     }
 }

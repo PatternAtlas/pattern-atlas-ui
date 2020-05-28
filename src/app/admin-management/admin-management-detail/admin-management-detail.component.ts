@@ -45,9 +45,9 @@ export class AdminManagementDetailComponent implements OnInit {
       password: ['', Validators.required],
       confirmPassword: ['']
     },
-      {
-        validator: ValidatePassword
-      });
+    {
+      validator: ValidatePassword
+    });
   }
 
   checkPasswords(control: AbstractControl) {
@@ -55,7 +55,7 @@ export class AdminManagementDetailComponent implements OnInit {
     let pass = this.userForm.get('password').value
     let confirmPass = this.userForm.get('confirmPassword').value;
 
-    return pass === confirmPass ? null : { 'incorrect': true }
+    return pass === confirmPass ? null : { incorrect: true }
   }
 
   onSubmit() {
@@ -90,7 +90,7 @@ export function ValidatePassword(formGroup: FormGroup) {
   console.log(formGroup);
   let pass = formGroup.get('password').value
   let confirmPass = formGroup.get('confirmPassword').value;
-  pass === confirmPass ? formGroup.get('confirmPassword').setErrors(null) : formGroup.get('confirmPassword').setErrors({ 'incorrect': true });
+  pass === confirmPass ? formGroup.get('confirmPassword').setErrors(null) : formGroup.get('confirmPassword').setErrors({ incorrect: true });
   return true;
 }
 
