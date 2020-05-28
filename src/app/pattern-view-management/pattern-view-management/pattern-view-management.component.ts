@@ -2,7 +2,10 @@ import {Component, NgZone, OnInit} from '@angular/core';
 import {PatternViewService} from '../../core/service/pattern-view.service';
 import {PatternView} from '../../core/model/hal/pattern-view.model';
 import {MatDialog} from '@angular/material/dialog';
-import {CreateEditPatternLanguageComponent} from '../../core/component/create-edit-pattern-language/create-edit-pattern-language.component';
+import {
+  CreateEditComponentDialogType,
+  CreateEditPatternLanguageComponent
+} from '../../core/component/create-edit-pattern-language/create-edit-pattern-language.component';
 import {DialogPatternLanguageResult} from '../../pattern-language-management/data/DialogPatternLanguageResult.interface';
 import {PatternLanguageService} from '../../core/service/pattern-language.service';
 import PatternLanguage from '../../core/model/hal/pattern-language.model';
@@ -48,7 +51,7 @@ export class PatternViewManagementComponent implements OnInit {
     }
 
     createView() {
-        const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent, {data: {isPatternLanguageCreation: false}});
+        const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent, {data: { componentDialogType: CreateEditComponentDialogType.PATTERN_VIEW }});
         let view;
         // Save PatternLanguage when user presses save
         (<CreateEditPatternLanguageComponent>dialogRef.componentInstance)

@@ -71,100 +71,101 @@ import { IssueManagementService } from './issue-management/_services/issue-manag
 import { IssueManagementStore } from './issue-management/_store/issue-management-store';
 import { CandidateManagementService } from './candidate-management/_services/candidate-management.service';
 import { CandidateManagementStore } from './candidate-management';
+import { DesignModelService } from './service/design-model.service';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        DragDropModule,
-        PrettyJsonModule,
-        MatButtonModule,
-        TextFieldModule,
-        CovalentTextEditorModule,
-        MatCardModule,
-        FlexLayoutModule,
-        MatProgressSpinnerModule,
-        MatListModule,
-        MatDatepickerModule, MatInputModule,
-        ReactiveFormsModule,
-        MatTooltipModule,
-        MatSelectModule,
-        MatDialogModule, MatGridListModule, MatSidenavModule,
-        MatAutocompleteModule,
-        MatIconModule, MatToolbarModule,
-        MatBadgeModule,
-        MatExpansionModule,
-        MatButtonToggleModule,
-        NgxMdModule.forRoot(),
-        MatNativeDateModule,
-        RouterModule,
-        MatSortModule,
-        FormsModule,
-    ],
-    exports: [
-        CovalentTextEditorModule,
-        EmitEventOnKeyupDirective,
-        EmitEventOnAddedEdgeDirective,
-        MatProgressSpinnerModule,
-        NavigateBackComponent,
-        CardRendererComponent,
-        ActionButtonBarComponent,
-        RatingComponent,
-        CommentListComponent,
-        ToggleRendererComponent,
-        GraphDisplayComponent
-    ]
-    ,
-    providers: [
-        PatternLanguageService,
-        PatternService,
-        PatternViewService,
-        // USER
-        UserService,
-        UserStore,
-        // ISSUE
-        IssueManagementService,
-        IssueManagementStore,
-        // CANDIDATE
-        CandidateManagementService,
-        CandidateManagementStore
-    ],
-    declarations: [
-        DefaultPlRendererComponent,
-        DefaultPatternRendererComponent,
-        MdEditorComponent,
-        EmitEventOnKeyupDirective,
-        EmitEventOnAddedEdgeDirective,
-        NavigateBackComponent,
-        PatternPropertyDirective,
-        DividerComponent,
-        CreatePatternRelationComponent,
-        MarkdownPatternSectionContentComponent,
-        GraphDisplayComponent,
-        CardRendererComponent,
-        CreateEditPatternLanguageComponent,
-        ActionButtonBarComponent,
-        RatingComponent,
-        CommentListComponent,
-        ToggleRendererComponent,
-        DeletePatternRelationComponent,
-        CreativeLicenseFooterComponent
-    ],
-    entryComponents: [
-        DefaultPlRendererComponent,
-        DefaultPatternRendererComponent,
-        MdEditorComponent,
-        DividerComponent,
-        CreatePatternRelationComponent,
-        DeletePatternRelationComponent,
-        MarkdownPatternSectionContentComponent,
-        CardRendererComponent,
-        GraphDisplayComponent,
-        CreateEditPatternLanguageComponent
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [
+    CommonModule,
+    DragDropModule,
+    PrettyJsonModule,
+    MatButtonModule,
+    TextFieldModule,
+    CovalentTextEditorModule,
+    MatCardModule,
+    FlexLayoutModule,
+    MatProgressSpinnerModule,
+    MatListModule,
+    MatDatepickerModule, MatInputModule,
+    ReactiveFormsModule,
+    MatTooltipModule,
+    MatSelectModule,
+    MatDialogModule, MatGridListModule, MatSidenavModule,
+    MatAutocompleteModule,
+    MatIconModule, MatToolbarModule,
+    MatBadgeModule,
+    MatExpansionModule,
+    MatButtonToggleModule,
+    NgxMdModule.forRoot(),
+    MatNativeDateModule,
+    RouterModule,
+    MatSortModule,
+    FormsModule,
+  ],
+  exports: [
+    CovalentTextEditorModule,
+    EmitEventOnKeyupDirective,
+    EmitEventOnAddedEdgeDirective,
+    MatProgressSpinnerModule,
+    NavigateBackComponent,
+    CardRendererComponent,
+    ActionButtonBarComponent,
+    RatingComponent,
+    CommentListComponent,
+    ToggleRendererComponent,
+    GraphDisplayComponent
+  ],
+  providers: [
+    PatternLanguageService,
+    PatternService,
+    PatternViewService,
+    DesignModelService,
+    // USER
+    UserService,
+    UserStore,
+    // ISSUE
+    IssueManagementService,
+    IssueManagementStore,
+    // CANDIDATE
+    CandidateManagementService,
+    CandidateManagementStore
+  ],
+  declarations: [
+    DefaultPlRendererComponent,
+    DefaultPatternRendererComponent,
+    MdEditorComponent,
+    EmitEventOnKeyupDirective,
+    EmitEventOnAddedEdgeDirective,
+    NavigateBackComponent,
+    PatternPropertyDirective,
+    DividerComponent,
+    CreatePatternRelationComponent,
+    MarkdownPatternSectionContentComponent,
+    GraphDisplayComponent,
+    CardRendererComponent,
+    CreateEditPatternLanguageComponent,
+    ActionButtonBarComponent,
+    RatingComponent,
+    CommentListComponent,
+    ToggleRendererComponent,
+    DeletePatternRelationComponent,
+    CreativeLicenseFooterComponent
+  ],
+  entryComponents: [
+    DefaultPlRendererComponent,
+    DefaultPatternRendererComponent,
+    MdEditorComponent,
+    DividerComponent,
+    CreatePatternRelationComponent,
+    DeletePatternRelationComponent,
+    MarkdownPatternSectionContentComponent,
+    CardRendererComponent,
+    GraphDisplayComponent,
+    CreateEditPatternLanguageComponent
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class CoreModule {
-    constructor(private cr: ComponentRegistryService) {
-        this.cr.registerComponent('default', { plcomponent: DefaultPlRendererComponent, pcomponent: DefaultPatternRendererComponent });
-    }
+  constructor(private cr: ComponentRegistryService) {
+    this.cr.registerComponent('default', { plcomponent: DefaultPlRendererComponent, pcomponent: DefaultPatternRendererComponent });
+  }
 }
