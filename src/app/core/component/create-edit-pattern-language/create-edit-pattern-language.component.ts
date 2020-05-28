@@ -50,8 +50,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     this.dialogTitle = ['Pattern Language', 'Pattern View', 'Design Model'][ this.componentDialogType ];
     this.isPatternLanguageDialog = this.componentDialogType === CreateEditComponentDialogType.PATTERN_LANGUAGE;
 
-    // tslint:disable-next-line:max-line-length
-    const urlRegex = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
+    const urlRegex = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i; // eslint-disable-line max-len
     this.patternLanguageForm = this._fb.group({
       name: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9 _-]+')]],
       iconUrl: ['', [Validators.pattern(urlRegex)]]

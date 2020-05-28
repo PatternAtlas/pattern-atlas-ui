@@ -28,7 +28,8 @@ export class IssueManagementDetailComponent implements OnInit {
     public issueManagementStore: IssueManagementStore,
     private router: Router,
     private patternLanguageService: PatternLanguageService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.getPatternLanguages();
@@ -38,11 +39,11 @@ export class IssueManagementDetailComponent implements OnInit {
     this.patternLanguageService.getPatternLanguages().subscribe(result => {
       console.log(result);
       this.patternLanguages = result;
-    })
+    });
   }
 
   edit() {
-    console.log('Edit', this.issue)
+    console.log('Edit', this.issue);
     this.oldIssue = Object.assign({}, this.issue);
     this.disabled = !this.disabled;
   }
@@ -53,7 +54,7 @@ export class IssueManagementDetailComponent implements OnInit {
   }
 
   exit() {
-    console.log('Exit', this.issue)
+    console.log('Exit', this.issue);
     this.issue = null;
   }
 
@@ -61,15 +62,15 @@ export class IssueManagementDetailComponent implements OnInit {
     this.issueManagementService.updateIssue(this.issue).subscribe(result => {
       this.changed.emit();
       this.disabled = true;
-    })
+    });
   }
 
   delete() {
-    console.log('Delete', this.issue)
+    console.log('Delete', this.issue);
     this.issueManagementService.deleteIssue(this.issue).subscribe(result => {
       this.changed.emit();
       this.disabled = true;
-    })
+    });
   }
 
   createComment(issueComment: IssueComment) {
@@ -92,16 +93,18 @@ export class IssueManagementDetailComponent implements OnInit {
 
   updateCommentRating(issueCommentRatingEvent: IssueCommentRatingEvent) {
     console.log(issueCommentRatingEvent);
-    this.issueManagementService.updateCommentRating(issueCommentRatingEvent.issueComment, issueCommentRatingEvent.issueCommentRating).subscribe((result: Issue) => {
-      console.log('updateCommentRating: ', result);
-      this.issue = result;
-      this.changed.emit();
-    });
+    this.issueManagementService.updateCommentRating(issueCommentRatingEvent.issueComment, issueCommentRatingEvent.issueCommentRating).subscribe(
+      (result: Issue) => {
+        console.log('updateCommentRating: ', result);
+        this.issue = result;
+        this.changed.emit();
+      }
+    );
   }
 
   createCandidate() {
     console.log('Create Candidate: ', this.patternLanguageSelected);
-    const candidate = new Candidate(this.issue.description, this.issue.name, this.patternLanguageSelected)
+    const candidate = new Candidate(this.issue.description, this.issue.name, this.patternLanguageSelected);
     this.router.navigate(['candidate/create', this.issue.name], { state: { data: candidate } });
   }
 

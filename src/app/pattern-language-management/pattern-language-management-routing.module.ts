@@ -14,7 +14,7 @@
 
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {PatternLanguageManagementComponent} from './pattern-language-management/pattern-language-management.component'; // tslint:disable-line:max-line-length
+import {PatternLanguageManagementComponent} from './pattern-language-management/pattern-language-management.component';
 import {PatternLanguageContainerComponent} from './pattern-language-container/pattern-language-container.component';
 import {PatternContainerComponent} from './pattern-container/pattern-container.component';
 import {PatternLanguageManagementResolverService} from './pattern-language-management/pattern-language-management-resolver.service';

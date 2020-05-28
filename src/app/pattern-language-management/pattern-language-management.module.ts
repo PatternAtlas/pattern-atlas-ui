@@ -3,7 +3,7 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {PatternLanguageManagementRoutingModule} from './pattern-language-management-routing.module';
-import {PatternLanguageManagementComponent} from './pattern-language-management/pattern-language-management.component'; // tslint:disable-line:max-line-length
+import {PatternLanguageManagementComponent} from './pattern-language-management/pattern-language-management.component';
 import {CoreModule} from '../core/core.module';
 import {PatternLanguageContainerComponent} from './pattern-language-container/pattern-language-container.component';
 import {PatternLanguageContainerDirective} from './pattern-language-container/pattern-language-container.directive';
@@ -95,7 +95,7 @@ export const PL_ROUTES: Routes = [
     MatRippleModule,
     RouterModule.forChild(PL_ROUTES),
     // PatternLanguageManagementRoutingModule,
-        
+
   ],
   declarations: [
     PatternLanguageManagementComponent,
