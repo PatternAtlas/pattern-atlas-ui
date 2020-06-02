@@ -62,6 +62,9 @@ import {RouterModule} from '@angular/router';
 import {ToggleRendererComponent} from './component/toggle-renderer/toggle-renderer.component';
 import {DeletePatternRelationComponent} from './component/delete-pattern-relation/delete-pattern-relation.component';
 import { CreativeLicenseFooterComponent } from './component/creative-license-footer/creative-license-footer.component';
+import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import { CommentDialogComponent } from './component/markdown-content-container/comment-dialog/comment-dialog.component';
+import { DiscussDialogComponent } from './component/markdown-content-container/discuss-dialog/discuss-dialog.component';
 
 @NgModule({
     imports: [
@@ -81,7 +84,7 @@ import { CreativeLicenseFooterComponent } from './component/creative-license-foo
         MatSelectModule,
         MatDialogModule, MatGridListModule, MatSidenavModule,
         MatAutocompleteModule,
-        MatIconModule, MatToolbarModule, MatBadgeModule, MatExpansionModule,
+        MatIconModule, MatToolbarModule, MatBadgeModule, MatExpansionModule, MatSnackBarModule,
         MatButtonToggleModule,
         NgxMdModule.forRoot(), MatNativeDateModule, RouterModule, FormsModule
     ],
@@ -119,7 +122,9 @@ import { CreativeLicenseFooterComponent } from './component/creative-license-foo
         ActionButtonBarComponent,
         ToggleRendererComponent,
         DeletePatternRelationComponent,
-        CreativeLicenseFooterComponent
+        CreativeLicenseFooterComponent,
+        CommentDialogComponent,
+        DiscussDialogComponent
     ],
     entryComponents: [
         DefaultPlRendererComponent,
@@ -131,7 +136,9 @@ import { CreativeLicenseFooterComponent } from './component/creative-license-foo
         MarkdownPatternSectionContentComponent,
         CardRendererComponent,
         GraphDisplayComponent,
-        CreateEditPatternLanguageComponent
+        CreateEditPatternLanguageComponent,
+        CommentDialogComponent,
+        DiscussDialogComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
