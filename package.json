@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "ng": "ng",
-    "serve": "ng serve",
+    "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "test-docker": "ng test --browsers=ChromiumHeadlessNoSandbox",
