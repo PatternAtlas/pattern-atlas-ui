@@ -43,7 +43,7 @@ export class UriConverter {
   }
 
   static getURL(patternlanguageIri: string) {
-    if (patternlanguageIri.indexOf('patternlanguages') !== -1) {
+    if (patternlanguageIri.indexOf(globals.pathConstants.patternLanguages) !== -1) {
       return patternlanguageIri;
 
     }
@@ -80,8 +80,8 @@ export class UriConverter {
   }
 
   static getGithubAPIURLForURI(iri: string): string {
-    if (iri.indexOf('patternlanguages') !== -1 || iri.indexOf('patternviews') !== -1) {
-      const foldername = iri.indexOf('patternlanguages') !== -1 ? 'patternlanguages' : 'patternviews';
+    if (iri.indexOf(globals.pathConstants.patternLanguages) !== -1 || iri.indexOf(globals.pathConstants.patternViews) !== -1) {
+      const foldername = iri.indexOf(globals.pathConstants.patternLanguages) !== -1 ? globals.pathConstants.patternLanguages : globals.pathConstants.patternViews;
       let relativePath = this.getFileName(iri.split(foldername + '/')[1]);
       // is this a request for the base file of a patternlanguage add the patternlanguage identifier again (convention)
       relativePath = relativePath.indexOf('/') !== -1 ? relativePath : `${relativePath}/${relativePath}`;

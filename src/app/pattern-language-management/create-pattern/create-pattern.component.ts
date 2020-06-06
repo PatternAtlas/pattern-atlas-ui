@@ -14,6 +14,7 @@ import * as MarkdownIt from 'markdown-it';
 import * as markdownitKatex from 'markdown-it-katex';
 import { PatternService } from '../../core/service/pattern.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/internal/operators';
+import {globals} from '../../globals';
 
 
 @Component({
@@ -65,7 +66,7 @@ export class CreatePatternComponent implements OnInit {
 
 
   ngOnInit() {
-    this.patternLanguageId = this.activatedRoute.snapshot.paramMap.get('patternLanguageId');
+    this.patternLanguageId = this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId);
     this.markdown = new MarkdownIt();
     this.markdown.use(markdownitKatex);
 

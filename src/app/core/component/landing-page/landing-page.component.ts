@@ -12,7 +12,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {globals} from '../../../globals';
 
 @Component({
   selector: 'pp-landing-page',
@@ -20,8 +21,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./landing-page.component.scss']
 })
 export class LandingPageComponent implements OnInit {
+  patternLanguagesPath: string = globals.pathConstants.patternLanguages;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }

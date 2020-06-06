@@ -17,6 +17,7 @@ import { PatternLanguageSectionRestriction } from './PatternLanguageSectionRestr
 import PatternAtlas from './pattern-atlas.model';
 import { CustomPrefix } from '../../pattern-language-management/data/CustomPrefix.interface';
 import { TurtleFileModelInterface } from './TurtleFileModel.interface';
+import {globals} from '../../globals';
 
 class PatternLanguage implements TurtleFileModelInterface {
   private patternpediaBaseURI = 'https://purl.org/patternpedia';
@@ -54,8 +55,8 @@ class PatternLanguage implements TurtleFileModelInterface {
     const ary: Array<string> = [];
     const standardPrefixes = new PatternAtlas().defaultPrefixes;
     ary.push(
-      `@prefix : <${this.patternpediaBaseURI + '/patternlanguages/' + UriConverter.removeWhitespace(this.name).toLowerCase()}#> .`,
-      `@base <${this.patternpediaBaseURI + '/patternlanguages/' + UriConverter.removeWhitespace(this.name).toLowerCase()}> .`
+      `@prefix : <${this.patternpediaBaseURI + '/' + globals.pathConstants.patternLanguages + '/' + UriConverter.removeWhitespace(this.name).toLowerCase()}#> .`,
+      `@base <${this.patternpediaBaseURI + '/' + globals.pathConstants.patternLanguages + '/' + UriConverter.removeWhitespace(this.name).toLowerCase()}> .`
     );
     standardPrefixes.forEach((value: boolean, key: string) => {
       ary.push(
