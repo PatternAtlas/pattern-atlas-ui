@@ -21,10 +21,8 @@ export class ImageService {
   }
 
   updateImage(image: Image): Observable<any> {
-    console.log('update image');
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
     const url = this.repoEndpoint + '/updateImage/' + image.id;
-    console.log(url);
     return this.http.post<string>(url, image.data, {headers, observe: 'response', responseType: 'text' as 'json'});
   }
 }

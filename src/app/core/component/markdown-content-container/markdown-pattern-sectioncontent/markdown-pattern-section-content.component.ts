@@ -20,6 +20,9 @@ import {select, event, Selection} from 'd3-selection';
 import {Point} from '../../../model/svg-objects.interface';
 import {CommentDialogComponent} from '../comment-dialog/comment-dialog.component';
 import {DiscussDialogComponent} from '../discuss-dialog/discuss-dialog.component';
+import {DiscussionTopic} from '../../../model/discussion-topic';
+import {DiscussionService} from '../../../service/discussion.service';
+import {DiscussionComment} from '../../../model/discussion-comment';
 
 
 @Component({
@@ -54,11 +57,11 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
   constructor(private dialog: MatDialog,
               private cdr: ChangeDetectorRef,
               private imageService: ImageService,
-              private snackBar: MatSnackBar
+              private snackBar: MatSnackBar,
+              private discussionService: DiscussionService
   ) {
     super();
     this.changeContent = new EventEmitter<DataChange>();
-    this.imageService = imageService;
   }
 
   ngAfterViewInit() {
@@ -90,9 +93,7 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
             let resIncId = res.substr(0, res.indexOf('<svg ') + 5)
               + 'id=\"' + id + '\" '
               + res.substr(res.indexOf('<svg ') + 5 , res.length - 1);
-            console.log(resIncId)
             resIncId = resIncId.replace(new RegExp('glyph', 'g'), 'glyph' + id);
-            console.log(resIncId);
             this.markdownDiv.nativeElement.innerHTML += resIncId;
           } else {
             this.markdownDiv.nativeElement.innerHTML += res;
@@ -104,9 +105,7 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
     } else {
       // if no svg tag remaining - render remaining elements
       this.markdownDiv.nativeElement.innerHTML += this.markdown.render(editData);
-      // console.log(this.markdownDiv.nativeElement.innerHTML);
       this.getSVG();
-      // console.log('getsvg');
     }
 
   }
@@ -163,8 +162,7 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
   commentSVG() {
     const snackBarInstruction = this.snackBar.open('Mark area to comment in Picture', null, {duration: 3000});
     this.isCommentingEnabled = true;
-    console.log(this.isCommentingEnabled);
-    console.log(this.svg);
+
 
 
     this.svg.on('mousedown', (d, i, n) => {
@@ -173,15 +171,9 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
       const y = event.y;
       const point = {x, y};
       this.svgCommentMouseDownCoordinate = this.getSVGPointFromClientCoordinates(point);
-      console.log('this div');
-      console.log(n[i].parentNode.parentElement.id);
-      console.log('commentSVG');
-      console.log(d3.select(n[i]));
-      console.log(this.svgCommentMouseDownCoordinate.x + ' ' + this.svgCommentMouseDownCoordinate.y);
     });
 
     this.svg.on('mouseup', (d, i, n) => {
-      console.log(this.isCommentingEnabled);
       if (this.isCommentingEnabled === true) {
         const x = event.x;
         const y = event.y;
@@ -206,8 +198,6 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
           this.svgCommentStartCoordinates =  startCoordinates;
 
           if (this.commentSvg === n[i] && n[i].parentNode.parentElement.id === this.title) {
-            console.log(this.commentSvg);
-            console.log(n[i]);
             this.isCommentingEnabled = false;
             this.addCommentText();
           }
@@ -223,8 +213,6 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      console.log('result' + result);
       if (result !== undefined) {
         this.comment = result;
         this.drawRect();
@@ -264,9 +252,20 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
         .text(this.comment);
     }
     const id = d3.select(this.commentSvg).node().id;
-    const data = new Blob([d3.select(this.commentSvg).node().outerHTML], {type: 'image/svg+xml'});
-    const image = {id, data};
-    this.imageService.updateImage(image).subscribe();
+    const discussionTopic = new DiscussionTopic(this.comment, null, null, this.svgCommentStartCoordinates.x, this.svgCommentStartCoordinates.y, id);
+    this.discussionService.addTopic(discussionTopic).subscribe( value => {
+      const children = d3.select<SVGSVGElement, Node>(this.commentSvg).select<SVGSVGElement>('g[id=comments]').node().children;
+      for (let i = 0; i < children.length; i++) {
+        if (children[i].getAttribute('x') === this.svgCommentStartCoordinates.x.toString()
+          && children[i].getAttribute('y') === this.svgCommentStartCoordinates.y.toString()) {
+          children[i].id = value.body.id;
+        }
+      }
+      const data = new Blob([d3.select(this.commentSvg).node().outerHTML], {type: 'image/svg+xml'});
+      const image = {id, data};
+      this.imageService.updateImage(image).subscribe();
+    });
+
   }
 
   private discuss(nElement: any) {
@@ -281,7 +280,6 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
         comments.push(node.textContent);
       }
     });
-    console.log(comments);
     const dialogRef = this.dialog.open(DiscussDialogComponent, {
       width: '500px',
       data: {
@@ -292,21 +290,29 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       if (result !== undefined) {
         if (result.isDelete) {
-          const id = d3.select<SVGSVGElement, Node>(nElement).node().parentNode.parentElement.id;
+          const topicId = d3.select<SVGSVGElement, Node>(nElement).node().id;
+          console.log(topicId);
+          const imageId = d3.select<SVGSVGElement, Node>(nElement).node().parentNode.parentElement.id;
           d3.select(nElement).remove();
-          const data = new Blob([d3.select<SVGSVGElement, Node>('#' + id).node().outerHTML], {type: 'image/svg+xml'});
-          const image = {id, data};
+          const data = new Blob([d3.select<SVGSVGElement, Node>('#' + imageId).node().outerHTML], {type: 'image/svg+xml'});
+          const image = {id: imageId, data};
           this.imageService.updateImage(image).subscribe();
+          this.discussionService.deleteTopicById(topicId).subscribe();
         }
         if (result.response !== undefined) {
-          d3.select(nElement).append('comment').text(result.response);
-          const id = d3.select<SVGSVGElement, Node>(nElement).node().parentNode.parentElement.id;
-          const data = new Blob([d3.select<SVGSVGElement, Node>(nElement).node().parentNode.parentElement.outerHTML], {type: 'image/svg+xml'});
-          const image = {id, data};
-          this.imageService.updateImage(image).subscribe();
+          const replyTo =  d3.select<SVGSVGElement, Node>(nElement).node().lastElementChild.id;
+          const topicId = d3.select<SVGSVGElement, Node>(nElement).node().id;
+          console.log(replyTo, topicId);
+          const discussionComment = new DiscussionComment(result.response, replyTo, topicId);
+          this.discussionService.addComment(discussionComment, topicId).subscribe(value => {
+            d3.select(nElement).append('comment').attr('id', value.body.id).text(result.response);
+            const id = d3.select<SVGSVGElement, Node>(nElement).node().parentNode.parentElement.id;
+            const data = new Blob([d3.select<SVGSVGElement, Node>(nElement).node().parentNode.parentElement.outerHTML], {type: 'image/svg+xml'});
+            const image = {id, data};
+            this.imageService.updateImage(image).subscribe();
+          });
         }
       }
     });
