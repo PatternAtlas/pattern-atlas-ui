@@ -29,8 +29,7 @@ export class AppComponent {
   loginButton = 'Login';
   welcomeText = '';
   user: PAUser;
-  patternLanguagesPath: string = globals.pathConstants.patternLanguages;
-  patternViewsPath: string = globals.pathConstants.patternViews;
+  readonly pathConstants = globals.pathConstants;
 
 
   constructor(public auth: AuthenticationService) {

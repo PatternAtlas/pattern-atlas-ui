@@ -13,7 +13,7 @@
  */
 
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -39,10 +39,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JwtModule } from '@auth0/angular-jwt';
 import { TokenInterceptor } from './authentication/_interceptor/token.interceptor';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatNavList, MatListModule } from '@angular/material/list';
+import { MatListModule } from '@angular/material/list';
 import { LandingPageComponent } from './core/component/landing-page/landing-page.component';
 import { PageNotFoundComponent } from './core/component/page-not-found/page-not-found.component';
-import { FilterViewComponent } from './filter/component/filter-view/filter-view.component';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { DesignModelModule } from './design-model-module/design-model.module';
 
@@ -52,7 +51,6 @@ import { DesignModelModule } from './design-model-module/design-model.module';
     AppComponent,
     PageNotFoundComponent,
     LandingPageComponent,
-    FilterViewComponent
   ],
   imports: [
     AppRoutingModule,

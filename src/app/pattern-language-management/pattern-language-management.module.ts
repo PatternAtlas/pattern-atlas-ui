@@ -35,6 +35,7 @@ import {MatListModule} from '@angular/material/list';
 import {MatRippleModule} from '@angular/material/core';
 import { Routes, RouterModule } from '@angular/router';
 import {globals} from '../globals';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 /*
  * Copyright (c) 2018 University of Stuttgart.
@@ -74,6 +75,7 @@ export const PL_ROUTES: Routes = [
     MatBadgeModule,
     MatButtonModule,
     MatToolbarModule,
+    MatFormFieldModule,
     MatIconModule,
     MatSidenavModule,
     MatCardModule,

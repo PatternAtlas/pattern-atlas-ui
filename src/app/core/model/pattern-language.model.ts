@@ -12,11 +12,11 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { UriConverter } from '../util/uri-converter';
-import { PatternLanguageSectionRestriction } from './PatternLanguageSectionRestriction.model';
+import {UriConverter} from '../util/uri-converter';
+import {PatternLanguageSectionRestriction} from './PatternLanguageSectionRestriction.model';
 import PatternAtlas from './pattern-atlas.model';
-import { CustomPrefix } from '../../pattern-language-management/data/CustomPrefix.interface';
-import { TurtleFileModelInterface } from './TurtleFileModel.interface';
+import {CustomPrefix} from '../../pattern-language-management/data/CustomPrefix.interface';
+import {TurtleFileModelInterface} from './TurtleFileModel.interface';
 import {globals} from '../../globals';
 
 class PatternLanguage implements TurtleFileModelInterface {
@@ -40,7 +40,7 @@ class PatternLanguage implements TurtleFileModelInterface {
   }
 
   public constructor(iri: string = null, name: string = null, logos: string[] = null, patternIRIs: string[] = null, sections: string[] = null,
-    restrictions: Map<string, PatternLanguageSectionRestriction[]> = null, prefixes: CustomPrefix[] = null) {
+                     restrictions: Map<string, PatternLanguageSectionRestriction[]> = null, prefixes: CustomPrefix[] = null) {
     this.name = name;
     this.logos = logos || [];
     this.patternIRIs = patternIRIs || [];
@@ -55,7 +55,8 @@ class PatternLanguage implements TurtleFileModelInterface {
     const ary: Array<string> = [];
     const standardPrefixes = new PatternAtlas().defaultPrefixes;
     ary.push(
-      `@prefix : <${this.patternpediaBaseURI + '/' + globals.pathConstants.patternLanguages + '/' + UriConverter.removeWhitespace(this.name).toLowerCase()}#> .`,
+      `@prefix : <${this.patternpediaBaseURI + '/' + globals.pathConstants.patternLanguages + '/'
+      + UriConverter.removeWhitespace(this.name).toLowerCase()}#> .`,
       `@base <${this.patternpediaBaseURI + '/' + globals.pathConstants.patternLanguages + '/' + UriConverter.removeWhitespace(this.name).toLowerCase()}> .`
     );
     standardPrefixes.forEach((value: boolean, key: string) => {
@@ -144,7 +145,7 @@ class PatternLanguage implements TurtleFileModelInterface {
     ary.push(`:${UriConverter.removeWhitespace(this.name)} rdf:type owl:NamedIndividual ,`);
     ary.push('pp:PatternLanguage ;');
     if (this.logos.length > 0) {
-      ary.push(`pp:hasLogo "${this.logos[ 0 ]}"^^xsd:anyURI ;`);
+      ary.push(`pp:hasLogo "${this.logos[0]}"^^xsd:anyURI ;`);
     }
     ary.push(`pp:hasName "${this.name}"^^xsd:string .`);
 
