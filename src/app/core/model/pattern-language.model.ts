@@ -40,7 +40,7 @@ class PatternLanguage implements TurtleFileModelInterface {
   }
 
   public constructor(iri: string = null, name: string = null, logos: string[] = null, patternIRIs: string[] = null, sections: string[] = null,
-                     restrictions: Map<string, PatternLanguageSectionRestriction[]> = null, prefixes: CustomPrefix[] = null) {
+    restrictions: Map<string, PatternLanguageSectionRestriction[]> = null, prefixes: CustomPrefix[] = null) {
     this.name = name;
     this.logos = logos || [];
     this.patternIRIs = patternIRIs || [];
