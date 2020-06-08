@@ -14,12 +14,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTreeModule } from '@angular/material/tree';
 import { Routes, RouterModule } from '@angular/router';
+import { GraphDataService } from '../core/service/graph-data.service';
+import { PatternViewService } from '../core/service/pattern-view.service';
+
 
 const PATTERN_VIEW_MANAGMENT_ROUTE: Routes = [
-  // {
-  //     path: 'patternviews',
-  //     pathMatch: 'prefix',
-  //     children: [
   {
     path: '',
     component: PatternViewManagementComponent
@@ -28,15 +27,15 @@ const PATTERN_VIEW_MANAGMENT_ROUTE: Routes = [
     path: ':patternViewUri',
     component: PatternViewRendererComponent
   },
-  //     ]
-  // }
 ];
+
 
 @NgModule({
   declarations: [
     PatternViewManagementComponent,
     PatternViewRendererComponent,
-    AddToViewComponent],
+    AddToViewComponent
+  ],
   imports: [
     CommonModule,
     MatCardModule,
@@ -49,6 +48,9 @@ const PATTERN_VIEW_MANAGMENT_ROUTE: Routes = [
     MatIconModule,
     MatCheckboxModule,
     RouterModule.forChild(PATTERN_VIEW_MANAGMENT_ROUTE),
+  ],
+  providers: [
+    { provide: GraphDataService, useClass: PatternViewService },
   ],
   entryComponents: [
     AddToViewComponent

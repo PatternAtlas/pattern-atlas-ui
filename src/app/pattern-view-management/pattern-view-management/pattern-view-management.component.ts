@@ -1,6 +1,6 @@
 import {Component, NgZone, OnInit} from '@angular/core';
 import {PatternViewService} from '../../core/service/pattern-view.service';
-import {PatternView} from '../../core/model/hal/pattern-view.model';
+import {PatternContainer} from '../../core/model/hal/pattern-container.model';
 import {MatDialog} from '@angular/material/dialog';
 import {
   CreateEditComponentDialogType,
@@ -11,7 +11,7 @@ import {PatternLanguageService} from '../../core/service/pattern-language.servic
 import PatternLanguage from '../../core/model/hal/pattern-language.model';
 import {switchMap, tap} from 'rxjs/operators';
 import {Observable} from 'rxjs';
-import {PatternViewResponse} from '../../core/model/hal/pattern-view-response.interface';
+import {PatternContainerResponse} from '../../core/model/hal/pattern-container-response.interface';
 import {ToasterService} from 'angular2-toaster';
 import {UriConverter} from '../../core/util/uri-converter';
 import UriEntity from '../../core/model/hal/uri-entity.model';
@@ -36,7 +36,7 @@ export class PatternViewManagementComponent implements OnInit {
 
     }
 
-    private getData(): Observable<PatternViewResponse> {
+    private getData(): Observable<PatternContainerResponse> {
       return this.patternViewService.getPatternViews().pipe(tap((views) => {
         this.patternViewResponse = views;
       }));
@@ -57,7 +57,7 @@ export class PatternViewManagementComponent implements OnInit {
       (<CreateEditPatternLanguageComponent>dialogRef.componentInstance)
         .saveClicked.pipe(
           tap((result: DialogPatternLanguageResult) => {
-            view = <PatternView>result.dialogResult;
+            view = <PatternContainer>result.dialogResult;
           }),
           switchMap(() => this.patternViewService.savePatternView(this.patternViewResponse._links.patternViews.href, view)),
           switchMap(() => this.getData())

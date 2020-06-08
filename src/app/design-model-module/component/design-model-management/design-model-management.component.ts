@@ -2,16 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import {
   CreateEditComponentDialogType,
   CreateEditPatternLanguageComponent
-} from '../../core/component/create-edit-pattern-language/create-edit-pattern-language.component';
+} from '../../../core/component/create-edit-pattern-language/create-edit-pattern-language.component';
 import { switchMap, tap } from 'rxjs/operators';
-import { DialogPatternLanguageResult } from '../../pattern-language-management/data/DialogPatternLanguageResult.interface';
-import { PatternView } from '../../core/model/hal/pattern-view.model';
+import { DialogPatternLanguageResult } from '../../../pattern-language-management/data/DialogPatternLanguageResult.interface';
+import { PatternContainer } from '../../../core/model/hal/pattern-container.model';
 import { MatDialog } from '@angular/material/dialog';
-import { PatternLanguageService } from '../../core/service/pattern-language.service';
+import { PatternLanguageService } from '../../../core/service/pattern-language.service';
 import { ToasterService } from 'angular2-toaster';
 import { Observable } from 'rxjs';
-import { PatternViewResponse } from '../../core/model/hal/pattern-view-response.interface';
-import { DesignModelService } from '../../core/service/design-model.service';
+import { DesignModelService } from '../../service/design-model.service';
+import { DesignModelResponse } from '../../model/hal/design-model-response';
 
 
 @Component({
@@ -36,8 +36,8 @@ export class DesignModelManagementComponent implements OnInit {
   }
 
 
-  private getData(): Observable<PatternViewResponse> {
-    return this.designModelService.getPatternViews().pipe(tap((modelResponse) => {
+  private getData(): Observable<DesignModelResponse> {
+    return this.designModelService.getDesignModels().pipe(tap((modelResponse) => {
       this.designModelResponse = modelResponse;
     }));
   }
@@ -50,19 +50,15 @@ export class DesignModelManagementComponent implements OnInit {
     // Save design model when user presses save
     (<CreateEditPatternLanguageComponent>dialogRef.componentInstance)
       .saveClicked.pipe(
-        tap((result: DialogPatternLanguageResult) => {
-          model = <PatternView>result.dialogResult;
-        }),
-        switchMap(() => this.designModelService.savePatternView(this.designModelResponse._links.patternViews.href, model)),
-        switchMap(() => this.getData())
-      ).subscribe(res => {
-        if (res) {
-          this.toastService.pop('success', 'Created Design Model');
-        }
-      });
-  }
-
-  navigateToModel(id) {
-    console.error('IMPLEMENT NAVIGATION TO DESIGN MODEL', id); // TODO
+      tap((result: DialogPatternLanguageResult) => {
+        model = <PatternContainer>result.dialogResult;
+      }),
+      switchMap(() => this.designModelService.saveDesignModel(this.designModelResponse._links.designModels.href, model)),
+      switchMap(() => this.getData())
+    ).subscribe(res => {
+      if (res) {
+        this.toastService.pop('success', 'Created Design Model');
+      }
+    });
   }
 }

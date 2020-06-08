@@ -1,19 +1,23 @@
 html,
 body,
 svg {
-  width: 100%;
+  box-sizing: border-box;
   height: 100%;
   margin: 0;
+  width: 100%;
+
+  &.left-sidenav-open {
+    width: calc(100% - 300px);
+  }
 }
 
 .container {
   position: fixed;
-  height: calc(80% - 10px);
-  min-height: calc(80% - 10px);
+  height: calc(100vh - 177px);
   width: 100%;
-  min-width: 100%;
+  margin: 0;
 
-  h4 {
+  h3 {
     margin-left: 1em;
   }
 }
@@ -34,10 +38,15 @@ svg {
   background: #fff;
   overflow: hidden;
   display: block;
+  width: 100%;
 }
 
-.mat-expansion-panel-body {
-  padding: 0 5px 5px !important;
+::ng-deep .mat-expansion-panel-body {
+  padding: 8px !important;
+
+  .mat-expansion-panel-header-description {
+    margin-right: 0;
+  }
 }
 
 .pattern-box {
@@ -50,7 +59,6 @@ svg {
   justify-content: space-between;
   box-sizing: border-box;
   cursor: move;
-  width: 18em;
   background: #fff;
   font-size: 14px;
 }
@@ -59,8 +67,8 @@ svg {
   box-sizing: border-box;
   border-radius: 4px;
   box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  0 8px 10px 1px rgba(0, 0, 0, 0.14),
+  0 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
 .cdk-drag-placeholder {

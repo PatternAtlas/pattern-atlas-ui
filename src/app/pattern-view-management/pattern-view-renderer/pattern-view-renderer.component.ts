@@ -7,7 +7,7 @@ import { switchMap, tap } from 'rxjs/operators';
 import { ToasterService } from 'angular2-toaster';
 import { PatternViewService } from '../../core/service/pattern-view.service';
 import Pattern from '../../core/model/hal/pattern.model';
-import { PatternView } from '../../core/model/hal/pattern-view.model';
+import { PatternContainer } from '../../core/model/hal/pattern-container.model';
 import { UriConverter } from '../../core/util/uri-converter';
 import { ActivatedRoute } from '@angular/router';
 import { PatternService } from '../../core/service/pattern.service';
@@ -32,7 +32,8 @@ import { PatternRelationDescriptorService } from '../../core/service/pattern-rel
 })
 export class PatternViewRendererComponent implements OnInit, AfterViewInit {
 
-  patternViewResponse: PatternView;
+  patternViewService: PatternViewService;
+  patternViewResponse: PatternContainer;
   patterns: Array<Pattern> = [];
   displayText: string;
   isLoading = true;
@@ -44,14 +45,14 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
   private directedPatternRelations: DirectedEdgeModel[];
   private undirectedPatternRelations: UndirectedEdgeModel[];
 
-  constructor(private matDialog: MatDialog, private patternLanguageService: PatternLanguageService, private patternViewService: PatternViewService,
+  constructor(private matDialog: MatDialog, private patternLanguageService: PatternLanguageService, patternViewService: PatternViewService,
               private patternService: PatternService, private toasterService: ToasterService, private cdr: ChangeDetectorRef,
               private activatedRoute: ActivatedRoute, private patternRLDescriptorService: PatternRelationDescriptorService) {
+
+    this.patternViewService = patternViewService;
   }
 
   ngOnInit() {
-
-
   }
 
   ngAfterViewInit(): void {
@@ -281,11 +282,11 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
   }
 
   private getCurrentPatternViewAndPatterns(): Observable<Pattern[]> {
-    return this.patternViewService.getPatternViewByUri(this.patternViewUri).pipe(
-      tap(patternViewResponse => {
-        this.patternViewResponse = patternViewResponse;
+    return this.patternViewService.getPatternContainerByUri(this.patternViewUri).pipe(
+      tap(patternContainerResponse => {
+        this.patternViewResponse = patternContainerResponse;
       }),
-      switchMap((patternViewResponse: PatternView) => this.patternService.getPatternsByUrl(patternViewResponse._links.patterns.href)),
+      switchMap((patternContainerResponse: PatternContainer) => this.patternService.getPatternsByUrl(patternContainerResponse._links.patterns.href)),
       tap(patterns => {
         this.patterns = patterns;
       }));

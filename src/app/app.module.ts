@@ -21,7 +21,6 @@ import { PatternLanguageManagementModule } from './pattern-language-management/p
 import { CoreModule } from './core/core.module';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-// import {ExtensionsModule} from './extensions/extensions.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -39,7 +38,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JwtModule } from '@auth0/angular-jwt';
 import { TokenInterceptor } from './authentication/_interceptor/token.interceptor';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatNavList, MatListModule } from '@angular/material/list';
+import { MatListModule } from '@angular/material/list';
 import { LandingPageComponent } from './core/component/landing-page/landing-page.component';
 import { PageNotFoundComponent } from './core/component/page-not-found/page-not-found.component';
 import { FilterViewComponent } from './filter/component/filter-view/filter-view.component';

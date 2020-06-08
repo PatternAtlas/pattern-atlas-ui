@@ -24,7 +24,7 @@ import { UserRole } from './core/user-management';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'issue',
+    redirectTo: 'patternLanguages',
     pathMatch: 'full'
   },
   {
@@ -40,7 +40,7 @@ const routes: Routes = [
   },
   {
     path: 'design-models',
-    loadChildren: () => import('./pattern-view-management/pattern-view-management.module').then(m => m.PatternViewManagementModule),
+    loadChildren: () => import('./design-model-module/design-model.module').then(m => m.DesignModelModule),
   },
   {
     path: 'candidate',
