@@ -23,6 +23,7 @@ import {DiscussDialogComponent} from '../discuss-dialog/discuss-dialog.component
 import {DiscussionTopic} from '../../../model/discussion-topic';
 import {DiscussionService} from '../../../service/discussion.service';
 import {DiscussionComment} from '../../../model/discussion-comment';
+import {ImageModel} from "../../../model/image-model";
 
 
 @Component({
@@ -35,6 +36,7 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
   data: string;
   renderedData: string;
   title = '';
+  imageModels = new Array<ImageModel>();
   mouseDown = false;
   last: MouseEvent;
   private texts: any;
@@ -88,15 +90,19 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
       // get image and add raw svg text to html
       this.imageService.getImageById(id)
         .subscribe(res => {
+          const imageModel = new ImageModel(atob(res.body.image), res.body.topicModels, id);
+          this.imageModels.push(imageModel);
+          console.log(imageModel.image);
+          console.log(imageModel.topicModels);
           //adding svgDatabaseId to svg
-          if (!res.includes('<svg id')) {
-            let resIncId = res.substr(0, res.indexOf('<svg ') + 5)
+          if (!imageModel.image.includes('<svg id')) {
+            let resIncId = imageModel.image.substr(0, imageModel.image.indexOf('<svg ') + 5)
               + 'id=\"' + id + '\" '
-              + res.substr(res.indexOf('<svg ') + 5 , res.length - 1);
+              + imageModel.image.substr(imageModel.image.indexOf('<svg ') + 5 , imageModel.image.length - 1);
             resIncId = resIncId.replace(new RegExp('glyph', 'g'), 'glyph' + id);
             this.markdownDiv.nativeElement.innerHTML += resIncId;
           } else {
-            this.markdownDiv.nativeElement.innerHTML += res;
+            this.markdownDiv.nativeElement.innerHTML += imageModel.image;
           }
           // cut off parts that were added to html and recursive call function to render the rest.
           editData = editData.slice(svgIndexes[1] + 6);
@@ -142,6 +148,28 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
       }
         return this;
     });
+    this.imageModels.forEach(model => {
+      if (d3.select('[id="' + model.imageId + '"').select('g[id=comments]').node() === null) {
+        d3.select('[id="' + model.imageId + '"').append('g').attr('id', 'comments');
+      }
+      model.topicModels.forEach( topic => {
+        d3.select('[id="' + model.imageId + '"').select('g[id=comments]').append('rect')
+          .attr('id', topic.discussionTopic.id)
+          .attr('x', topic.discussionTopic.x)
+          .attr('y', topic.discussionTopic.y)
+          .attr('width', topic.discussionTopic.width)
+          .attr('height', topic.discussionTopic.height)
+          .attr('fill', topic.discussionTopic.fill)
+          .attr('opacity', '0.3')
+          .append('svg:title')
+          .text(topic.discussionTopic.title);
+        topic.discussionComments.forEach(comment => {
+             d3.select('[id="' + topic.discussionTopic.id + '"').append('comment').attr('id', comment.id).text(comment.text);
+        });
+      });
+
+    });
+
     d3.selectAll<SVGSVGElement, unknown>('rect').on('click', (d, i, n) => {
       this.discuss(n[i]);
     });
@@ -252,7 +280,7 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
         .text(this.comment);
     }
     const id = d3.select(this.commentSvg).node().id;
-    const discussionTopic = new DiscussionTopic(this.comment, null, null, this.svgCommentStartCoordinates.x, this.svgCommentStartCoordinates.y, id);
+    const discussionTopic = new DiscussionTopic(this.comment, null, null, this.svgCommentStartCoordinates.x, this.svgCommentStartCoordinates.y, this.svgCommentWidth, this.svgCommentHeight, 'blue', id);
     this.discussionService.addTopic(discussionTopic).subscribe( value => {
       const children = d3.select<SVGSVGElement, Node>(this.commentSvg).select<SVGSVGElement>('g[id=comments]').node().children;
       for (let i = 0; i < children.length; i++) {
