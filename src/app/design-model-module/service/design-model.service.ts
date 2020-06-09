@@ -109,7 +109,12 @@ export class DesignModelService implements GraphDataService {
     const observables = items
       .map(item => item.type === 'directed' ?
         this.http.post(patternContainer._links.directedEdges.href, new AddDirectedEdgeToViewRequest(<DirectedEdgeModel>item.edge), { observe: 'response' }) :
-        this.http.post(patternContainer._links.undirectedEdges.href, new AddUndirectedEdgeToViewRequest(<UndirectedEdgeModel>item.edge), { observe: 'response' }));
+        this.http.post(
+          patternContainer._links.undirectedEdges.href,
+          new AddUndirectedEdgeToViewRequest(<UndirectedEdgeModel>item.edge),
+          { observe: 'response' }
+        )
+      );
     return observables.length > 0 ? forkJoin(observables) : EMPTY;
   }
 

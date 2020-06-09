@@ -49,16 +49,22 @@ export class DesignModelManagementComponent implements OnInit {
 
     // Save design model when user presses save
     (<CreateEditPatternLanguageComponent>dialogRef.componentInstance)
-      .saveClicked.pipe(
-      tap((result: DialogPatternLanguageResult) => {
-        model = <PatternContainer>result.dialogResult;
-      }),
-      switchMap(() => this.designModelService.saveDesignModel(this.designModelResponse._links.designModels.href, model)),
-      switchMap(() => this.getData())
-    ).subscribe(res => {
-      if (res) {
-        this.toastService.pop('success', 'Created Design Model');
-      }
-    });
+      .saveClicked
+      .pipe(
+        tap(
+          (result: DialogPatternLanguageResult) => {
+            model = <PatternContainer>result.dialogResult;
+          }
+        ),
+        switchMap(() => this.designModelService.saveDesignModel(this.designModelResponse._links.designModels.href, model)),
+        switchMap(() => this.getData())
+      )
+      .subscribe(
+        res => {
+          if (res) {
+            this.toastService.pop('success', 'Created Design Model');
+          }
+        }
+      );
   }
 }

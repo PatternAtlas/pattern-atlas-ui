@@ -10,9 +10,9 @@ describe('DesignModelRendererComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [DesignModelTestModule],
-      declarations: [ DesignModelRendererComponent ]
+      declarations: [DesignModelRendererComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
