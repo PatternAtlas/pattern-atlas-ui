@@ -18,6 +18,7 @@ import { PatternContainer } from '../model/hal/pattern-container.model';
 import { GraphNode } from '../component/graph-display/graph-display.component';
 import { PatternContainerResponse } from '../model/hal/pattern-container-response.interface';
 import { Injectable } from '@angular/core';
+import PatternLanguage from '../model/hal/pattern-language.model';
 
 
 @Injectable()
@@ -29,7 +30,7 @@ export abstract class GraphDataService {
 
   abstract getPatternContainer(url: string): Observable<PatternContainer> ;
 
-  abstract saveGraph(patternContainer: PatternContainer, nodeList: any[]): Observable<any>;
+  abstract saveGraph(patternContainer: PatternContainer | PatternLanguage, nodeList: any[]): Observable<any>;
 
   abstract getGraph(patternContainer: PatternContainer): Observable<{ graph: Array<GraphNode> }>;
 }

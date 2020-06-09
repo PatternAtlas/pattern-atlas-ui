@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DesignModelService } from '../../service/design-model.service';
-import { PatternViewService } from '../../../core/service/pattern-view.service';
 import { PatternLanguageService } from '../../../core/service/pattern-language.service';
 import { GraphInputData } from '../../../core/model/graph-input-data.interface';
 
@@ -64,9 +63,10 @@ export class DesignModelRendererComponent implements OnInit {
 
   private loadDesignModel(id): void {
     this.designModelId = id;
-    this.designModelService.getDesignModelByUuid(id).subscribe(dm => {
-      console.debug('Fetched design model is:', dm);
-      this.patchGraphData({ patternContainer: dm, patterns: dm.patterns });
+    this.designModelService.getPatternContainerByUuid(id).subscribe(patternContainer => {
+      console.debug('Fetched pattern container is:', patternContainer);
+
+      this.patchGraphData({ patternContainer: patternContainer, patterns: patternContainer });
     });
   }
 

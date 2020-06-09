@@ -30,6 +30,7 @@ import { GraphNode } from '../../core/component/graph-display/graph-display.comp
 import { DesignModel } from '../model/hal/design-model';
 import { DesignModelResponse } from '../model/hal/design-model-response';
 import { GraphDataService } from '../../core/service/graph-data.service';
+import { map } from 'rxjs/operators';
 
 
 @Injectable()
@@ -56,11 +57,36 @@ export class DesignModelService implements GraphDataService {
   }
 
   getPatternContainerByUri(uri: string): Observable<PatternContainer> {
-    return this.getDesignModelByUrl(uri);
+    return this.getDesignModelByUrl(uri).pipe(
+      map(designModel => {
+        const patternContainer = new PatternContainer();
+        patternContainer.patterns = designModel._embedded.patterns;
+        patternContainer._links = designModel._links;
+        return patternContainer;
+      })
+    );
   }
 
   getPatternContainer(url: string): Observable<PatternContainer> {
-    return this.getDesignModelByUrl(url);
+    return this.getDesignModelByUrl(url).pipe(
+      map(designModel => {
+        const patternContainer = new PatternContainer();
+        patternContainer.patterns = designModel._embedded.patterns;
+        patternContainer._links = designModel._links;
+        return patternContainer;
+      })
+    );
+  }
+
+  getPatternContainerByUuid(uuid: string): Observable<PatternContainer> {
+    return this.getDesignModelByUuid(uuid).pipe(
+      map(designModel => {
+        const patternContainer = new PatternContainer();
+        patternContainer.patterns = designModel._embedded ? designModel._embedded.patterns : [];
+        patternContainer._links = designModel._links;
+        return patternContainer;
+      })
+    );
   }
 
   getDesignModelByUrl(url: string): Observable<DesignModel> {
@@ -68,7 +94,7 @@ export class DesignModelService implements GraphDataService {
   }
 
   getDesignModelByUuid(uuid: string): Observable<DesignModel> {
-    return this.http.get<DesignModel>(this.repoEndpoint + '/designModels/' + uuid);
+    return this.http.get<DesignModel>(this.repoEndpoint + '/designModels/' + uuid + '/patterns');
   }
 
   createLink(
@@ -78,32 +104,54 @@ export class DesignModelService implements GraphDataService {
     return this.http.post(url, edge, { observe: 'response' });
   }
 
-  addLinks(patternView: PatternContainer, items: LinksToOtherPattern[]): Observable<any> {
+  addLinks(patternContainer: PatternContainer, items: LinksToOtherPattern[]): Observable<any> {
 
     const observables = items
       .map(item => item.type === 'directed' ?
-        this.http.post(patternView._links.directedEdges.href, new AddDirectedEdgeToViewRequest(<DirectedEdgeModel>item.edge), { observe: 'response' }) :
-        this.http.post(patternView._links.undirectedEdges.href, new AddUndirectedEdgeToViewRequest(<UndirectedEdgeModel>item.edge), { observe: 'response' }));
+        this.http.post(patternContainer._links.directedEdges.href, new AddDirectedEdgeToViewRequest(<DirectedEdgeModel>item.edge), { observe: 'response' }) :
+        this.http.post(patternContainer._links.undirectedEdges.href, new AddUndirectedEdgeToViewRequest(<UndirectedEdgeModel>item.edge), { observe: 'response' }));
     return observables.length > 0 ? forkJoin(observables) : EMPTY;
   }
 
-  getDirectedEdges(patternView: PatternContainer): Observable<Embedded<DirectedEdesResponse>> {
-    return this.http.get<Embedded<DirectedEdesResponse>>(patternView._links.directedEdges.href);
+  getDirectedEdges(patternContainer: PatternContainer): Observable<Embedded<DirectedEdesResponse>> {
+    return this.http.get<Embedded<DirectedEdesResponse>>(patternContainer._links.directedEdges.href);
   }
 
-  getUndirectedEdges(patternView: PatternContainer): Observable<Embedded<UndirectedEdesResponse>> {
-    return this.http.get<Embedded<UndirectedEdesResponse>>(patternView._links.undirectedEdges.href);
+  getUndirectedEdges(patternContainer: PatternContainer): Observable<Embedded<UndirectedEdesResponse>> {
+    return this.http.get<Embedded<UndirectedEdesResponse>>(patternContainer._links.undirectedEdges.href);
   }
 
   deleteLink(patternLink: any): Observable<any> {
     return this.http.delete(patternLink);
   }
 
-  saveGraph(patternView: PatternContainer, nodeList: any[]) {
-    return this.http.post<any>(patternView._links.graph.href, nodeList, { observe: 'response' });
+  saveGraph(patternContainer: PatternContainer, nodeList: any[]) {
+    return this.http.post<any>(patternContainer._links.patterns.href, nodeList, { observe: 'response' });
   }
 
-  getGraph(patternView: PatternContainer) {
-    return this.http.get<{ graph: Array<GraphNode> }>(patternView._links.graph.href);
+  getGraph(patternContainer: PatternContainer): Observable<{ graph: Array<GraphNode> }> {
+    const graphNodes = [];
+
+    patternContainer.patterns.forEach(pattern => {
+      let x = 0;
+      let y = 0;
+
+      try {
+        x = pattern[ 'graphData' ][ 'x' ];
+        y = pattern[ 'graphData' ][ 'y' ];
+      } catch (e) {
+      }
+
+      graphNodes.push({
+        id: pattern.id,
+        title: pattern.name,
+        type: 'default',
+        x: x,
+        y: y,
+        patternLanguageId: pattern.patternLanguageId
+      });
+    });
+
+    return of({ graph: graphNodes });
   }
 }

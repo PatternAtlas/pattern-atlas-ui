@@ -34,6 +34,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatListModule} from '@angular/material/list';
 import {MatRippleModule} from '@angular/material/core';
 import { Routes, RouterModule } from '@angular/router';
+import { GraphDataService } from '../core/service/graph-data.service';
+import { DesignModelService } from '../design-model-module/service/design-model.service';
 
 /*
  * Copyright (c) 2018 University of Stuttgart.
@@ -105,9 +107,10 @@ export const PL_ROUTES: Routes = [
     PatternContainerDirective,
     CreatePatternComponent,
     ProcessOauthCallbackComponent,
-    PatternLanguageGraphComponent
+    PatternLanguageGraphComponent,
   ],
-  entryComponents: [
+  providers: [
+    { provide: GraphDataService, useClass: DesignModelService }
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
