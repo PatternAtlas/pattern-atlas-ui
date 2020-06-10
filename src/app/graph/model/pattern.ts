@@ -1,4 +1,4 @@
-import {PatternRelation} from '.';
+import { PatternRelation } from '.';
 import UriEntity from '../../core/model/hal/uri-entity.model';
 
 export class Pattern extends UriEntity {

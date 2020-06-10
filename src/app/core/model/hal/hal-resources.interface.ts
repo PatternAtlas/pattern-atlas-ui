@@ -15,40 +15,40 @@
 import { HalLink } from './hal-link.interface';
 
 export interface PatternResource {
-    self: HalLink;
-    content: HalLink;
-    renderedContent: HalLink;
-    patternLanguage: HalLink;
+  self: HalLink;
+  content: HalLink;
+  renderedContent: HalLink;
+  patternLanguage: HalLink;
 }
 
 export interface PatternLanguageResource {
-    self: HalLink;
-    patterns: HalLink;
-    patternLanguages: HalLink;
-    directedEdges: HalLink;
-    undirectedEdges: HalLink;
-    graph: HalLink;
+  self: HalLink;
+  patterns: HalLink;
+  patternLanguages: HalLink;
+  directedEdges: HalLink;
+  undirectedEdges: HalLink;
+  graph: HalLink;
 }
 
 export interface PatternLanguagesResource {
-    self: HalLink;
-    findByUri: HalLink;
+  self: HalLink;
+  findByUri: HalLink;
 }
 
 export interface PatternSchemaResource {
-    self: HalLink;
-    patternLanguage: HalLink;
+  self: HalLink;
+  patternLanguage: HalLink;
 }
 
 export interface DirectedEdgeResource {
-    self: HalLink;
-    sourcePattern: HalLink;
-    targetPattern: HalLink;
-    patternLanguage: HalLink;
+  self: HalLink;
+  sourcePattern: HalLink;
+  targetPattern: HalLink;
+  patternLanguage: HalLink;
 }
 
 export interface UndirectedEdgeResource {
-    self: HalLink;
-    patternLanguage: HalLink;
-    pattern: Array<HalLink>;
+  self: HalLink;
+  patternLanguage: HalLink;
+  pattern: Array<HalLink>;
 }

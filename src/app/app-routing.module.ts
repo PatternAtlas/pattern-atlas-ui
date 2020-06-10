@@ -7,7 +7,7 @@ import { PageNotFoundComponent } from './core/component/page-not-found/page-not-
 import { AuthGuardService as AuthGuard } from './authentication/_services/auth-guard.service';
 import { PatternLanguageManagementResolverService } from './pattern-language-management/pattern-language-management/pattern-language-management-resolver.service'; // eslint-disable-line max-len
 import { UserRole } from './core/user-management';
-import {globals} from './globals';
+import { globals } from './globals';
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *

@@ -14,7 +14,7 @@ import * as MarkdownIt from 'markdown-it';
 import * as markdownitKatex from 'markdown-it-katex';
 import { PatternService } from '../../core/service/pattern.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/internal/operators';
-import {globals} from '../../globals';
+import { globals } from '../../globals';
 
 
 @Component({

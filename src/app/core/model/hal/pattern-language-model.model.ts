@@ -16,9 +16,9 @@ import UriEntity from './uri-entity.model';
 import { PatternLanguageResource } from './hal-resources.interface';
 
 class PatternLanguageModel extends UriEntity {
-    logo: string;
-    patternCount: number;
-    _links: PatternLanguageResource;
+  logo: string;
+  patternCount: number;
+  _links: PatternLanguageResource;
 }
 
 export default PatternLanguageModel;

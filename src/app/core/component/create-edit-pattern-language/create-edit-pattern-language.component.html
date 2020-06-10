@@ -50,7 +50,9 @@
                   (cdkDropListDropped)="dropSection($event)">
           <mat-list-item matRipple *ngFor="let section of sections; last as last; let i = index" cdkDrag>
             {{i + 1}}&nbsp;{{section}}
-            <button mat-button color="warn" (click)="removeSection(section)"><mat-icon>delete</mat-icon></button>
+            <button mat-button color="warn" (click)="removeSection(section)">
+              <mat-icon>delete</mat-icon>
+            </button>
             <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
           </mat-list-item>
         </mat-list>
@@ -62,9 +64,11 @@
 
 <div mat-dialog-actions>
   <button mat-raised-button (click)="close()">
-    <mat-icon>close</mat-icon> Close
+    <mat-icon>close</mat-icon>
+    Close
   </button>
   <button mat-raised-button color="primary" (click)="save()">
-    <mat-icon>save</mat-icon> Save {{dialogTitle}}
+    <mat-icon>save</mat-icon>
+    Save {{dialogTitle}}
   </button>
 </div>

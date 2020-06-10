@@ -64,4 +64,5 @@ export class PatternAtlas {
 
   }
 }
+
 export default PatternAtlas;

@@ -1,5 +1,5 @@
-import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
-import {Router} from '@angular/router';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'pp-pattern-language-graph',
@@ -9,9 +9,10 @@ import {Router} from '@angular/router';
 export class PatternLanguageGraphComponent implements OnInit {
 
   @ViewChild('graphWrapper') graph: ElementRef;
+
   constructor(
-        private zone: NgZone,
-        private router: Router) {
+    private zone: NgZone,
+    private router: Router) {
   }
 
   private async loadData(): Promise<void> {

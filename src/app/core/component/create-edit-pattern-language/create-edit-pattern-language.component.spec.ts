@@ -8,7 +8,7 @@ describe('CreateEditPatternLanguageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreateEditPatternLanguageComponent ]
+      declarations: [CreateEditPatternLanguageComponent]
     })
       .compileComponents();
   }));
