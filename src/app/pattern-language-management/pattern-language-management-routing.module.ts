@@ -19,10 +19,11 @@ import {PatternLanguageContainerComponent} from './pattern-language-container/pa
 import {PatternContainerComponent} from './pattern-container/pattern-container.component';
 import {PatternLanguageManagementResolverService} from './pattern-language-management/pattern-language-management-resolver.service';
 import {CreatePatternComponent} from './create-pattern/create-pattern.component';
+import {globals} from '../globals';
 
 const routes: Routes = [
   {
-    path: 'patternlanguages',
+    path: globals.pathConstants.patternLanguages,
     pathMatch: 'prefix',
     runGuardsAndResolvers: 'always',
     resolve: {
@@ -34,14 +35,14 @@ const routes: Routes = [
         path: '',
         component: PatternLanguageManagementComponent
       }, {
-        path: ':patternLanguageId',
+        path: ':' + globals.pathConstants.patternLanguageId,
         component: PatternLanguageContainerComponent,
       }, {
-        path: ':patternLanguageId/create-patterns',
+        path: ':' + globals.pathConstants.patternLanguageId + '/create-patterns',
         component: CreatePatternComponent,
       },
       {
-        path: ':patternLanguageId/:patternId',
+        path: ':' + globals.pathConstants.patternLanguageId + '/:patternId',
         component: PatternContainerComponent
       }
 

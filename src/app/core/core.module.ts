@@ -71,6 +71,7 @@ import { IssueManagementStore } from './issue-management/_store/issue-management
 import { CandidateManagementService } from './candidate-management/_services/candidate-management.service';
 import { CandidateManagementStore } from './candidate-management';
 import { DesignModelService } from './service/design-model.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   imports: [
@@ -84,6 +85,7 @@ import { DesignModelService } from './service/design-model.service';
     FlexLayoutModule,
     MatProgressSpinnerModule,
     MatListModule,
+    MatFormFieldModule,
     MatDatepickerModule, MatInputModule,
     ReactiveFormsModule,
     MatTooltipModule,

@@ -19,6 +19,7 @@ import {switchMap, tap} from 'rxjs/operators';
 import {PatternResponse} from '../../model/hal/pattern-response.interface';
 import {EMPTY, Observable} from 'rxjs';
 import {CdkDragDrop} from '@angular/cdk/drag-drop';
+import {globals} from '../../../globals';
 
 export class GraphNode {
     id: string;
@@ -198,7 +199,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     nodeClicked(event) {
       const node = event['detail']['node'];
       if (event['detail']['key'] === 'info') {
-        this.router.navigate(['/patternlanguages/' + (<GraphNode>node).patternLanguageId + '/' + node.id]);
+        this.router.navigate(['/' + globals.pathConstants.patternLanguages + '/' + (<GraphNode>node).patternLanguageId + '/' + node.id]);
       }
       this.showInfoForClickedNode(node);
     }

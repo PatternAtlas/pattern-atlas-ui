@@ -34,6 +34,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatListModule} from '@angular/material/list';
 import {MatRippleModule} from '@angular/material/core';
 import { Routes, RouterModule } from '@angular/router';
+import {globals} from '../globals';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 /*
  * Copyright (c) 2018 University of Stuttgart.
@@ -54,14 +56,14 @@ export const PL_ROUTES: Routes = [
     path: '',
     component: PatternLanguageManagementComponent
   }, {
-    path: ':patternLanguageId',
+    path: ':' + globals.pathConstants.patternLanguageId,
     component: PatternLanguageContainerComponent,
   }, {
-    path: ':patternLanguageId/create-patterns',
+    path: ':' + globals.pathConstants.patternLanguageId + '/create-patterns',
     component: CreatePatternComponent,
   },
   {
-    path: ':patternLanguageId/:patternId',
+    path: ':' + globals.pathConstants.patternLanguageId + '/:patternId',
     component: PatternContainerComponent
   }
 
@@ -73,6 +75,7 @@ export const PL_ROUTES: Routes = [
     MatBadgeModule,
     MatButtonModule,
     MatToolbarModule,
+    MatFormFieldModule,
     MatIconModule,
     MatSidenavModule,
     MatCardModule,

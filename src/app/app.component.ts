@@ -12,10 +12,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { Component } from '@angular/core';
-import { AuthenticationService } from './authentication/_services/authentication.service';
-import { PAUser } from './core/user-management';
-import { globals } from './globals';
+import {Component} from '@angular/core';
+import {AuthenticationService} from './authentication/_services/authentication.service';
+import {PAUser} from './core/user-management';
+import {globals} from './globals';
 
 
 @Component({
@@ -26,10 +26,10 @@ import { globals } from './globals';
 export class AppComponent {
 
   readonly featureToggles = globals.featureToggles;
-
   loginButton = 'Login';
   welcomeText = '';
   user: PAUser;
+  readonly pathConstants = globals.pathConstants;
 
 
   constructor(public auth: AuthenticationService) {
