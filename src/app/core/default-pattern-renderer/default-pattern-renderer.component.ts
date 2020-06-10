@@ -1,24 +1,25 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ToasterService } from 'angular2-toaster';
-import { PatternPropertyDirective } from '../component/markdown-content-container/pattern-property.directive';
-import { MatDialog } from '@angular/material/dialog';
-import { CreatePatternRelationComponent } from '../component/create-pattern-relation/create-pattern-relation.component';
+import {AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ToasterService} from 'angular2-toaster';
+import {PatternPropertyDirective} from '../component/markdown-content-container/pattern-property.directive';
+import {MatDialog} from '@angular/material/dialog';
+import {CreatePatternRelationComponent} from '../component/create-pattern-relation/create-pattern-relation.component';
 import Pattern from '../model/hal/pattern.model';
-import { PatternLanguageService } from '../service/pattern-language.service';
+import {PatternLanguageService} from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
-import { PatternService } from '../service/pattern.service';
-import { MarkdownPatternSectionContentComponent } from '../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-section-content.component'; // eslint-disable-line max-len
-import { DataChange } from '../component/markdown-content-container/interfaces/DataRenderingComponent.interface';
+import {PatternService} from '../service/pattern.service';
+import {MarkdownPatternSectionContentComponent} from '../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-section-content.component'; // eslint-disable-line max-len
+import {DataChange} from '../component/markdown-content-container/interfaces/DataRenderingComponent.interface';
 import PatternSectionSchema from '../model/hal/pattern-section-schema.model';
-import { map, switchMap, tap } from 'rxjs/operators';
-import { EMPTY, forkJoin, Observable } from 'rxjs';
-import { PatternRelationDescriptorService } from '../service/pattern-relation-descriptor.service';
-import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
-import { Embedded } from '../model/hal/embedded';
-import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
-import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
-import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
+import {map, switchMap, tap} from 'rxjs/operators';
+import {EMPTY, forkJoin, Observable} from 'rxjs';
+import {PatternRelationDescriptorService} from '../service/pattern-relation-descriptor.service';
+import {DirectedEdgeModel} from '../model/hal/directed-edge.model';
+import {Embedded} from '../model/hal/embedded';
+import {DirectedEdesResponse} from '../model/hal/directed-edes-response.interface';
+import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
+import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
+import {globals} from '../../globals';
 
 @Component({
   selector: 'pp-default-pattern-renderer',
@@ -53,7 +54,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.viewContainerRef = this.ppPatternProperty.viewContainerRef;
-    this.patternLanguageId = this.activatedRoute.snapshot.paramMap.get('patternLanguageId');
+    this.patternLanguageId = this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId);
     this.patternId = this.activatedRoute.snapshot.paramMap.get('patternId');
     this.getData();
   }
@@ -93,8 +94,8 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
         return forkJoin([content, renderedContent]);
       }),
       map((patternContent) => {
-        this.pattern.renderedContent = patternContent[ 1 ].renderedContent;
-        return this.pattern.content = patternContent[ 0 ].content;
+        this.pattern.renderedContent = patternContent[1].renderedContent;
+        return this.pattern.content = patternContent[0].content;
       }));
   }
 
@@ -120,8 +121,8 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
     if (!this.pattern.renderedContent) {
       return;
     }
-    const renderedContent = this.pattern.renderedContent[ section ];
-    const content = this.pattern.content[ section ];
+    const renderedContent = this.pattern.renderedContent[section];
+    const content = this.pattern.content[section];
 
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MarkdownPatternSectionContentComponent);
     const componentRef = this.viewContainerRef.createComponent(componentFactory);
@@ -131,7 +132,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
     instance.title = section;
     instance.isEditingEnabled = this.isEditingEnabled;
     instance.changeContent.subscribe((dataChange: DataChange) => {
-      this.pattern.content[ section ] = dataChange.currentValue;
+      this.pattern.content[section] = dataChange.currentValue;
       this.cdr.detectChanges();
       this.savePattern(section, dataChange.previousValue, instance);
       this.cdr.detectChanges();
@@ -164,15 +165,15 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
   private savePattern(section: string, previousContent: any, instance: MarkdownPatternSectionContentComponent) {
     this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe(
       data => {
-        const test = data.body.renderedContent[ section ];
-        this.pattern.renderedContent[ section ] = test;
-        instance.changeText(this.pattern.renderedContent[ section ]);
+        const test = data.body.renderedContent[section];
+        this.pattern.renderedContent[section] = test;
+        instance.changeText(this.pattern.renderedContent[section]);
         this.toasterService.pop('success', 'Saved pattern');
       },
       (error) => {
         this.toasterService.pop('error', 'Could not save pattern, resetting content', error.message);
         // reset text of the section:
-        this.pattern.content[ section ] = previousContent;
+        this.pattern.content[section] = previousContent;
         instance.changeText(previousContent);
         this.cdr.detectChanges();
       });
@@ -200,7 +201,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
 
   private showAndHandleLinkDialog() {
     const dialogRef = this.dialog.open(CreatePatternRelationComponent,
-      { data: { firstPattern: this.pattern, patterns: this.patterns } }
+      {data: {firstPattern: this.pattern, patterns: this.patterns}}
     );
     dialogRef.afterClosed().pipe(
       switchMap(result => {

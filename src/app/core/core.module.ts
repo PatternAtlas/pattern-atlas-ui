@@ -71,6 +71,7 @@ import { IssueManagementStore } from './issue-management/_store/issue-management
 import { CandidateManagementService } from './candidate-management/_services/candidate-management.service';
 import { CandidateManagementStore } from './candidate-management';
 import { MatTreeModule } from '@angular/material/tree';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 
 @NgModule({
@@ -85,6 +86,7 @@ import { MatTreeModule } from '@angular/material/tree';
     FlexLayoutModule,
     MatProgressSpinnerModule,
     MatListModule,
+    MatFormFieldModule,
     MatDatepickerModule, MatInputModule,
     ReactiveFormsModule,
     MatTooltipModule,

@@ -30,6 +30,8 @@ import { PatternResponse } from '../../model/hal/pattern-response.interface';
 import { EMPTY, Observable } from 'rxjs';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { GraphDataService } from '../../service/graph-data.service';
+import {globals} from '../../../globals';
+
 
 export class GraphNode {
     id: string;
@@ -207,7 +209,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     nodeClicked(event) {
       const node = event['detail']['node'];
       if (event['detail']['key'] === 'info') {
-        this.router.navigate(['/patternLanguages/' + (<GraphNode>node).patternLanguageId + '/' + node.id]);
+        this.router.navigate(['/' + globals.pathConstants.patternLanguages + '/' + (<GraphNode>node).patternLanguageId + '/' + node.id]);
       }
       this.showInfoForClickedNode(node);
     }

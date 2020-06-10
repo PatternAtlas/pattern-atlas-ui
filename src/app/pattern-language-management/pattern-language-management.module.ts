@@ -36,6 +36,9 @@ import {MatRippleModule} from '@angular/material/core';
 import { Routes, RouterModule } from '@angular/router';
 import { GraphDataService } from '../core/service/graph-data.service';
 import { DesignModelService } from '../design-model-module/service/design-model.service';
+import {globals} from '../globals';
+import {MatFormFieldModule} from '@angular/material/form-field';
+
 
 /*
  * Copyright (c) 2018 University of Stuttgart.
@@ -56,14 +59,14 @@ export const PL_ROUTES: Routes = [
     path: '',
     component: PatternLanguageManagementComponent
   }, {
-    path: ':patternLanguageId',
+    path: ':' + globals.pathConstants.patternLanguageId,
     component: PatternLanguageContainerComponent,
   }, {
-    path: ':patternLanguageId/create-patterns',
+    path: ':' + globals.pathConstants.patternLanguageId + '/create-patterns',
     component: CreatePatternComponent,
   },
   {
-    path: ':patternLanguageId/:patternId',
+    path: ':' + globals.pathConstants.patternLanguageId + '/:patternId',
     component: PatternContainerComponent
   }
 
@@ -75,6 +78,7 @@ export const PL_ROUTES: Routes = [
     MatBadgeModule,
     MatButtonModule,
     MatToolbarModule,
+    MatFormFieldModule,
     MatIconModule,
     MatSidenavModule,
     MatCardModule,
@@ -107,7 +111,7 @@ export const PL_ROUTES: Routes = [
     PatternContainerDirective,
     CreatePatternComponent,
     ProcessOauthCallbackComponent,
-    PatternLanguageGraphComponent,
+    PatternLanguageGraphComponent
   ],
   providers: [
     { provide: GraphDataService, useClass: DesignModelService }

@@ -22,5 +22,11 @@ export const globals = {
     designModel: false,
     patternCandidate: true,
     issue: true,
+  },
+  pathConstants: {
+    patternLanguages: 'pattern-languages',
+    patternLanguageId: 'pattern-language-id',
+    patternViews: 'pattern-views',
+    patternViewURI: 'pattern-view-uri'
   }
 };

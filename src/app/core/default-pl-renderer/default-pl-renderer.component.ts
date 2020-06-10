@@ -27,6 +27,7 @@ import {ToasterService} from 'angular2-toaster';
 import {PatternService} from '../service/pattern.service';
 import Pattern from '../model/hal/pattern.model';
 import {FormControl} from '@angular/forms';
+import {globals} from '../../globals';
 
 @Component({
   selector: 'pp-default-pl-renderer',
@@ -151,7 +152,7 @@ export class DefaultPlRendererComponent implements OnInit {
 
     private loadData(): void {
       this.isLoadingPatternData = true;
-      this.patternLanguageId = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get('patternLanguageId'));
+      this.patternLanguageId = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId));
       if (this.patternLanguageId) {
         this.patternLanguageService.getPatternLanguageByID(this.patternLanguageId)
           .pipe(
