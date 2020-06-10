@@ -15,32 +15,32 @@
                       (addClicked)="goToPatternLanguageCreation()"
                       (reloadClicked)="reloadPatternRepo()"></pp-action-button-bar>
 <div class="container">
-    <mat-card class="landing-card" *ngFor="let patternLanguage of patternLanguages">
-        <mat-card-header>
-            <img *ngIf="patternLanguage?.logo && patternLanguage?.logo !== ''; else noImageAvatar" mat-card-avatar
-                 [src]="patternLanguage.logo">
-            <ng-template #noImageAvatar><img mat-card-avatar [src]="'//via.placeholder.com/50x50'"></ng-template>
+  <mat-card class="landing-card" *ngFor="let patternLanguage of patternLanguages">
+    <mat-card-header>
+      <img *ngIf="patternLanguage?.logo && patternLanguage?.logo !== ''; else noImageAvatar" mat-card-avatar
+           [src]="patternLanguage.logo">
+      <ng-template #noImageAvatar><img mat-card-avatar [src]="'//via.placeholder.com/50x50'"></ng-template>
 
-            <mat-card-title *ngIf="patternLanguage?.name && '' !== patternLanguage.name; else noPLName"
-                            style="width: 10rem; word-break: break-word;">
-                {{patternLanguage.name}}
-            </mat-card-title>
-            <ng-template #noPLName>
-                <mat-card-title style="width: 10rem">
-                    No Name Provided
-                </mat-card-title>
-            </ng-template>
-        </mat-card-header>
-        <img mat-card-image *ngIf="patternLanguage?.logo && patternLanguage?.logo !== ''; else noImage"
-             [src]="patternLanguage.logo">
-        <ng-template #noImage><img mat-card-image [src]="'//via.placeholder.com/200x300'"></ng-template>
-        <mat-card-actions>
-            <div style="text-align: center">
-                <button matBadge="{{patternLanguage?.patternCount}}" mat-stroked-button color="primary"
-                        (click)="navigateToPL(patternLanguage.id)"><i class="material-icons">pageview</i>View
-                </button>
-            </div>
-        </mat-card-actions>
-    </mat-card>
+      <mat-card-title *ngIf="patternLanguage?.name && '' !== patternLanguage.name; else noPLName"
+                      style="width: 10rem; word-break: break-word;">
+        {{patternLanguage.name}}
+      </mat-card-title>
+      <ng-template #noPLName>
+        <mat-card-title style="width: 10rem">
+          No Name Provided
+        </mat-card-title>
+      </ng-template>
+    </mat-card-header>
+    <img mat-card-image *ngIf="patternLanguage?.logo && patternLanguage?.logo !== ''; else noImage"
+         [src]="patternLanguage.logo">
+    <ng-template #noImage><img mat-card-image [src]="'//via.placeholder.com/200x300'"></ng-template>
+    <mat-card-actions>
+      <div style="text-align: center">
+        <button matBadge="{{patternLanguage?.patternCount}}" mat-stroked-button color="primary"
+                (click)="navigateToPL(patternLanguage.id)"><i class="material-icons">pageview</i>View
+        </button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
 </div>
 

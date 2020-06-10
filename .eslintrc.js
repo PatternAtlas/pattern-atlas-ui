@@ -18,10 +18,16 @@ module.exports = {
       // "extends": "tslint:recommended",
 
       rules: {
-        'indent': ['error', 2],
+        // https://eslint.org/docs/rules/indent
+        'indent': ['error', 2, {
+          "FunctionDeclaration": {"parameters": "first"},
+          "FunctionExpression": {"parameters": "first"},
+          "SwitchCase": 1
+        }],
 
         'eol-last': ['error', 'always'],
 
+        'object-curly-spacing': ['error', 'always'],
 
         // ORIGINAL tslint.json -> "array-type": false,
         '@typescript-eslint/array-type': 'off',

@@ -3,7 +3,7 @@ import { PatternRelationDescriptorIndividual } from './pattern-relation-descript
 import { UriConverter } from '../util/uri-converter';
 
 
-export class UndirectedPatternRelationDescriptorIndividual extends PatternRelationDescriptorIndividual{
+export class UndirectedPatternRelationDescriptorIndividual extends PatternRelationDescriptorIndividual {
   hasPattern: Pattern[];
 
 
@@ -22,8 +22,8 @@ export class UndirectedPatternRelationDescriptorIndividual extends PatternRelati
     if (this.relationType) {
       ary.push(`pp:hasRelationType "${this.relationType}"^^xsd:string ;`);
     }
-    ary.push(`pp:hasPattern :${UriConverter.removeWhitespace(this.hasPattern[0].name)} ; `);
-    ary.push(`pp:hasPattern :${UriConverter.removeWhitespace(this.hasPattern[1].name)} ${this.description ?
+    ary.push(`pp:hasPattern :${UriConverter.removeWhitespace(this.hasPattern[ 0 ].name)} ; `);
+    ary.push(`pp:hasPattern :${UriConverter.removeWhitespace(this.hasPattern[ 1 ].name)} ${this.description ?
       '; \n pp:hasDescription "' + this.description + '"^^xsd:string . '
       : '.'}`);
     ary.push(' ');

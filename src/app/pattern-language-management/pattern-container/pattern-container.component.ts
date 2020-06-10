@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {ComponentRegistryService} from 'src/app/core/service/component-registry.service';
-import {globals} from '../../globals';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ComponentRegistryService } from 'src/app/core/service/component-registry.service';
+import { globals } from '../../globals';
 
 @Component({
   selector: 'pp-pattern-container',

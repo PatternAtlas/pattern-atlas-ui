@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {NetworkGraph, Node} from '../model';
+import { Injectable } from '@angular/core';
+import { NetworkGraph, Node } from '../model';
 import * as d3 from 'd3';
 
 @Injectable({
