@@ -12,40 +12,49 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit } from '@angular/core';
 import { AuthenticationService } from './authentication/_services/authentication.service';
 import { PAUser } from './core/user-management';
+import { PrivilegeService } from './authentication/_services/privilege.service';
 
 @Component({
     selector: 'pp-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
+    styleUrls: ['./app.component.scss'],
+    // changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
-    loginButton = "Login";
-    welcomeText = ""
-    user: PAUser;
+    userName: string;
+    loggedIn = false;
 
+    constructor(
+        public auth: AuthenticationService,
+        public p: PrivilegeService,
+        private ref: ChangeDetectorRef
+        ) {
+    }
 
-    constructor(public auth: AuthenticationService) {
-        this.auth.userSubject.subscribe(_user => {
+    ngOnInit(): void {
+        this.auth.user.subscribe(_user => {
             if (_user) {
-                console.log('User is Logged in: ', _user);
-                this.user = _user;
-                this.loginButton = 'Logout'; 
-                this.welcomeText = `Welcome ${_user.name}`;
+                this.userName = _user.name;
+                this.loggedIn = true;
+                // this.ref.detectChanges();
             } else {
-                console.log('No user logged in: ', _user);
-                this.user = null;
-                this.loginButton = 'Login';
-                this.welcomeText = '';
+                this.userName = null;
+                this.loggedIn = false;
+                // this.ref.detectChanges();
             }
         })
     }
 
-    loginOAuth() {
-        this.user ? this.auth.logout() : this.auth.login()
+    login () {
+        this.auth.login();
+    }
+
+    logout() {
+        this.auth.logout();
     }
 
 

@@ -71,6 +71,14 @@ import { IssueManagementService } from './issue-management/_services/issue-manag
 import { IssueManagementStore } from './issue-management/_store/issue-management-store';
 import { CandidateManagementService } from './candidate-management/_services/candidate-management.service';
 import { CandidateManagementStore } from './candidate-management';
+import { AuthorManagementService } from './author-management';
+import { RatingManagementService } from './rating-management';
+import { CommentListItemComponent } from './component/comment-list-item/comment-list-item.component';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { PatternLanguagePickerComponent } from './component/pattern-language-picker/pattern-language-picker.component';
+import { AuthorPickerComponent } from './component/author-picker/author-picker.component';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
     imports: [
@@ -99,6 +107,9 @@ import { CandidateManagementStore } from './candidate-management';
         RouterModule,
         MatSortModule,
         FormsModule,
+        ScrollingModule,
+        MatRadioModule,
+        MatChipsModule,
     ],
     exports: [
         CovalentTextEditorModule,
@@ -111,7 +122,9 @@ import { CandidateManagementStore } from './candidate-management';
         RatingComponent,
         CommentListComponent,
         ToggleRendererComponent,
-        GraphDisplayComponent
+        GraphDisplayComponent,
+        PatternLanguagePickerComponent,
+        AuthorPickerComponent,
     ]
     ,
     providers: [
@@ -126,7 +139,10 @@ import { CandidateManagementStore } from './candidate-management';
         IssueManagementStore,
         // CANDIDATE
         CandidateManagementService,
-        CandidateManagementStore
+        CandidateManagementStore,
+        // SHARED
+        AuthorManagementService,
+        RatingManagementService
     ],
     declarations: [
         DefaultPlRendererComponent,
@@ -147,7 +163,10 @@ import { CandidateManagementStore } from './candidate-management';
         CommentListComponent,
         ToggleRendererComponent,
         DeletePatternRelationComponent,
-        CreativeLicenseFooterComponent
+        CreativeLicenseFooterComponent,
+        CommentListItemComponent,
+        PatternLanguagePickerComponent,
+        AuthorPickerComponent,
     ],
     entryComponents: [
         DefaultPlRendererComponent,

@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot } from '@angular/router';
 import { AuthenticationService } from './authentication.service';
 import { ToasterService } from 'angular2-toaster';
+import { PrivilegeService } from './privilege.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -9,20 +12,19 @@ import { ToasterService } from 'angular2-toaster';
 export class AuthGuardService implements CanActivate {
 
   constructor(
-    public auth: AuthenticationService, 
+    public auth: AuthenticationService,
     public router: Router,
+    public privilegeService: PrivilegeService,
     private toaserService: ToasterService
-    ) { }
 
-  canActivate(route: ActivatedRouteSnapshot): boolean {
+  ) { }
 
-    const role = route.data.role;
+  canActivate(route: ActivatedRouteSnapshot): Observable<boolean> | boolean {
+    const privilege = route.data.privilege;
 
-    if (!this.auth.isAuthenticated() || !this.auth.roleSubject.value.includes(role)) {
-      console.log('Not allowed')
-      this.toaserService.pop('error', 'You do not have the rights for Route', route.routeConfig.path);
-      return false;
-    }
-    return true;
+    return this.privilegeService.hasPrivilege(privilege).pipe(
+      map(result => {
+        return result;
+      }));
   }
 }

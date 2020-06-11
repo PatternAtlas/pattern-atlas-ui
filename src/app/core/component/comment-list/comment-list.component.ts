@@ -1,11 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { IssueComment } from '../../issue-management';
-import { Rating } from '../../model/rating.enum';
-
-export interface IssueCommentRatingEvent {
-  issueComment: IssueComment,
-  issueCommentRating: Rating,
-}
+import { PAComment } from '../../shared';
+import { IssueManagementService, Issue } from '../../issue-management';
+import { CandidateManagementService, Candidate } from '../../candidate-management';
+import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
 
 @Component({
   selector: 'pp-comment-list',
@@ -14,34 +11,77 @@ export interface IssueCommentRatingEvent {
 })
 export class CommentListComponent implements OnInit {
 
-  @Input() data: IssueComment[];
-  @Output() createComment: EventEmitter<IssueComment> = new EventEmitter<IssueComment>();
-  @Output() commentRating: EventEmitter<IssueCommentRatingEvent> = new EventEmitter<IssueCommentRatingEvent>();
-  
-  comment: string;
+  @Input() data: PAComment[];
+  @Input() commentEntity: any;
+  @Input() context: number;
+  @Output() createCommentEvent: EventEmitter<PAComment> = new EventEmitter<PAComment>();
+  @Output() updateCommentEvent: EventEmitter<PAComment> = new EventEmitter<PAComment>();
+  @Output() deleteCommentEvent: EventEmitter<PAComment> = new EventEmitter<PAComment>();
 
-  constructor() { }
+
+  commentText: string;
+
+  constructor(
+    private issueManagementService: IssueManagementService,
+    private canididateManagementService: CandidateManagementService,
+    public auth: AuthenticationService
+  ) { }
 
   ngOnInit(): void {
   }
 
   cancelComment() {
-    this.comment = '';
+    this.commentText = null;
   }
 
-  addComment() {
-    const commentIssue = {} as IssueComment;
-    commentIssue.text = this.comment
-    this.createComment.emit(commentIssue);
-    this.comment = '';
+  submit() {
+    switch (this.context) {
+      case 0: {
+        this.issueManagementService.createComment(this.commentEntity, new PAComment(this.commentText)).subscribe(result => {
+          this.data.push(result)
+          this.cancelComment();
+        });
+        break;
+      }
+      case 1: {
+        this.canididateManagementService.createComment(this.commentEntity, new PAComment(this.commentText)).subscribe(result => {
+          this.data.push(result)
+          this.cancelComment();
+        });
+        break;
+      }
+      default: {
+        console.log('Pattern comment');
+        this.cancelComment();
+        break;
+      }
+    }
   }
 
-  updateCommentRating(rating: Rating, comment: IssueComment) {
-    console.log('User Upvoted Comment', rating, comment);
-    const issueCommentRatingEvent = {} as IssueCommentRatingEvent;
-    issueCommentRatingEvent.issueComment = comment;
-    issueCommentRatingEvent.issueCommentRating = rating;
-    this.commentRating.emit(issueCommentRatingEvent);
+  deleteComment(comment: PAComment) {
+    switch (this.context) {
+      case 0: {
+        this.issueManagementService.deleteComment(this.commentEntity, new PAComment(this.commentText)).subscribe(result => {
+          if (result) {
+            const index = this.data.indexOf(comment);
+            if (index > -1) this.data.splice(index, 1);
+          }
+        });
+        break;
+      }
+      case 1: {
+        this.canididateManagementService.deleteComment(this.commentEntity, new PAComment(this.commentText)).subscribe(result => {
+          if (result) {
+            const index = this.data.indexOf(comment);
+            if (index > -1) this.data.splice(index, 1);
+          }
+        });
+        break;
+      }
+      default: {
+        console.log('Pattern comment delete');
+        break;
+      }
+    }
   }
-
 }

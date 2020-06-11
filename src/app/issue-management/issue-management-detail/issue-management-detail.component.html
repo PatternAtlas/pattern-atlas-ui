@@ -1,61 +1,60 @@
-<div class="container" *ngIf="issue">
-
-    <form (ngSubmit)="update()" #issueForm="ngForm">
-        <div>
+<mat-toolbar style="margin-bottom: 10px">
+    <button mat-raised-button color="primary" (click)="exit()"><i
+        class="material-icons">keyboard_backspace</i></button>
+</mat-toolbar>
+<div class="container-double">
+    <mat-card class="left" *ngIf="issue">
+        <form (ngSubmit)="submit()" #issueForm="ngForm">
             <mat-form-field appearance="standard">
                 <mat-label for="name">Name</mat-label>
-                <input matInput [disabled]="disabled" placeholder="Placeholder" type="text" class="form-control"
-                    id="name" required [(ngModel)]="issue.name" name="name" #name="ngModel">
+                <input matInput [maxlength]="80" [disabled]="disabled" placeholder="Placeholder" type="text"
+                    class="form-control" id="name" required [(ngModel)]="issue.name" name="name" #name="ngModel">
                 <mat-hint *ngIf="!issue.name">Insert a name</mat-hint>
             </mat-form-field>
-        </div>
 
-        <mat-form-field appearance="standard">
-            <mat-label for="description">Description</mat-label>
-            <textarea matInput [disabled]="disabled" placeholder="Placeholder" type="text" class="form-control"
-                id="description" required [(ngModel)]="issue.description" name="description" #description="ngModel">
+            <mat-form-field appearance="standard">
+                <mat-label for="description">Description</mat-label>
+                <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="10"
+                    [disabled]="disabled" placeholder="Placeholder" type="text" class="form-control" id="description"
+                    required [(ngModel)]="issue.description" name="description" #description="ngModel">
             </textarea>
-            <mat-hint *ngIf="!issue.description">Pls insert a describtion</mat-hint>
+                <mat-hint *ngIf="!issue.description">Pls insert a describtion</mat-hint>
+            </mat-form-field>
 
-        </mat-form-field>
+            <pp-author-picker class="detail-component" [authors]="issue.authors" [disabled]="disabled"
+                [authorEntity]="issue" [context]="0">
+            </pp-author-picker>
 
-        <div class="container-rating">
-            <pp-rating [rating]="issue.rating" (userRatingCurrent)="updateRating($event)"> </pp-rating>
-        </div>
+            <pp-pattern-language-picker class="detail-component" *ngIf="candidate"
+                [(patternLanguageSelected)]="patternLanguageSelected"></pp-pattern-language-picker>
 
-        <div class="container-candidate" *ngIf="!disabled">
-            <div class="language-select">
-                <mat-form-field>
-                    <mat-label>Pattern Language</mat-label>
-                    <mat-select [(ngModel)]="patternLanguageSelected" name="patternLanguage">
-                        <mat-option *ngFor="let language of patternLanguages" [value]="language.id">
-                            {{language.name}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+            <pp-rating [disabled]="!issue.id" [upVotes]="issue.upVotes"
+                [downVotes]="issue.downVotes" [ratingEntity]="issue" [context]="0"></pp-rating>
+
+            <!-- DETAIL BUTTONS-->
+            <div class="detail-component buttons" *ngIf="disabled && !candidate">
+                <button mat-flat-button type="button" color="accent" (click)="edit()" [disabled]="!(p.isGroubMember(issue.authors) | async)">Edit</button>
+                <button mat-flat-button type="button" color="warn" (click)="delete()" [disabled]="!(p.isGroubMember(issue.authors) | async)">Delete</button>
+                <button mat-flat-button type="button" color="accent" (click)="selectLanguage()" [disabled]="!(p.isGroubMember(issue.authors) | async)">Candidate</button>
             </div>
-            <div class="language-button">
-                <button mat-flat-button type="button" color="accent" (click)="createCandidate()">Create
-                    Candidate</button>
+
+            <!-- EDIT BUTTONS-->
+            <div class="detail-component buttons" *ngIf="!disabled && !candidate">
+                <button mat-flat-button type="submit" color="accent" [disabled]="!issueForm.form.valid">Save</button>
+                <button mat-flat-button type="button" color="warn" (click)="cancel()">Cancel</button>
             </div>
-        </div>
 
-        <div class="container-button" *ngIf="disabled">
-            <button mat-flat-button type="button" color="accent" (click)="edit()">Edit</button>
-            <button mat-flat-button type="button" color="warn" (click)="delete()">Delete</button>
-            <button mat-flat-button type="button" color="primary" (click)="exit()">Exit</button>
-        </div>
-
-        <div class="container-button" *ngIf="!disabled">
-            <button mat-flat-button type="submit" color="accent" [disabled]="!issueForm.form.valid">Save</button>
-            <button mat-flat-button type="button" color="warn" (click)="cancel()">Cancel</button>
-            <button mat-flat-button type="button" color="primary" (click)="exit()">Exit</button>
-        </div>
-
-        <pp-comment-list [data]="issue.comments" (createComment)="createComment($event)"
-            (commentRating)="updateCommentRating($event)"></pp-comment-list>
-    </form>
+            <!-- CANDIDATE BUTTONS-->
+            <div class="detail-component buttons" *ngIf="candidate">
+                <button mat-flat-button type="button" color="accent" [disabled]="!patternLanguageSelected"
+                    (click)="createCandidate()">Create Candidate</button>
+                <button mat-flat-button type="button" color="warn" (click)="cancelCandidate()">Cancel</button>
+            </div>
 
 
+        </form>
+    </mat-card>
+    <pp-comment-list class="right scrollable-double" [data]="issue.comments" [commentEntity]="issue" [context]="0">
+    </pp-comment-list>
 
 </div>

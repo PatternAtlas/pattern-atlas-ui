@@ -5,6 +5,9 @@ import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { PAUser } from '../_models/user.model';
 import { environment } from 'src/environments/environment';
+import { RoleModel } from '../_models/role.model';
+import { PrivilegeModel } from '../_models/privilege.model';
+import { RoleModelRequest } from '../_models/role.model.request';
 
 @Injectable()
 export class UserService {
@@ -26,12 +29,25 @@ export class UserService {
   * GET
   */
   public getAllUsers(): Observable<PAUser[]> {
-    return this.http.get<PAUser>(this.repoEndpoint + this.serviceEndpoint).pipe(
+    return this.http.get<any>(this.repoEndpoint + this.serviceEndpoint).pipe(
+      map(result => {
+        return result._embedded.userModels
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Getting user list', error)
+        return [];
+      }),
+    )
+  }
+
+  public getUser(userId: string): Observable<PAUser> {
+    return this.http.get<any>(this.repoEndpoint + this.serviceEndpoint + `/${userId}`).pipe(
       map(result => {
         return result
       }),
       catchError(error => {
-        this.toasterService.pop('error', 'Getting user list', error)
+        console.error(error);
+        this.toasterService.pop('error', 'Getting user info did not work: ', error)
         return [];
       }),
     )
@@ -45,6 +61,30 @@ export class UserService {
       catchError(error => {
         console.error(error);
         this.toasterService.pop('error', 'Getting user info did not work: ', error)
+        return [];
+      }),
+    )
+  }
+
+  public getAllRoles(): Observable<RoleModel[]> {
+    return this.http.get<any>(this.repoEndpoint + this.serviceEndpoint + '/roles').pipe(
+      map(result => {
+        return result._embedded.roleModels
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Getting roles list', error)
+        return [];
+      }),
+    )
+  }
+
+  public getAllPrivileges(): Observable<PrivilegeModel[]> {
+    return this.http.get<any>(this.repoEndpoint + this.serviceEndpoint + '/roles/privileges').pipe(
+      map(result => {
+        return result._embedded.privilegeModels
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Getting privilege list', error)
         return [];
       }),
     )
@@ -67,6 +107,9 @@ export class UserService {
     )
   }
 
+ /**
+  * UDPATE
+  */
   public updateUser(user: PAUser): Observable<PAUser> {
     
     return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${user.id}`, user).pipe(
@@ -74,13 +117,30 @@ export class UserService {
         this.toasterService.pop('success', 'Updated user')
         return result
       }),
-      catchError(error => {
-        this.toasterService.pop('error', 'Could not update user: ', error)
+      catchError(e => {
+        this.toasterService.pop('error', 'Could not update user: ', e.error.message)
         return null;
       }),
     )
   }
 
+  public updateUserRole(role: RoleModel, privilege: PrivilegeModel, roleModelRequest: RoleModelRequest): Observable<RoleModel> {
+    
+    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/roles/${role.id}/privileges/${privilege.id}`, roleModelRequest).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Updated role')
+        return result
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Could not update role: ', error)
+        return null;
+      }),
+    )
+  }
+
+  /**
+  * DELETE
+  */
   public deleteUser(user: PAUser): Observable<PAUser> {
     
     return this.http.delete<any>(this.repoEndpoint + this.serviceEndpoint + `/${user.id}`).pipe(

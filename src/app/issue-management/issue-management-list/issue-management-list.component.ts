@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { IssueCreateDialogComponent } from '../issue-create-dialog/issue-create-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
-import { IssueManagementService, Issue } from 'src/app/core/issue-management';
+import { IssueManagementService, Issue, IssueManagementStore } from 'src/app/core/issue-management';
+import { Router, ActivatedRoute } from '@angular/router';
+import { PrivilegeService } from 'src/app/authentication/_services/privilege.service';
 
 @Component({
   selector: 'pp-issue-management-list',
@@ -11,19 +11,18 @@ import { IssueManagementService, Issue } from 'src/app/core/issue-management';
 export class IssueManagementListComponent implements OnInit {
 
   data: Issue[];
-  issueDetail: Issue;
+  activeIssue: Issue = new Issue();
 
   constructor(
     private issueManagmentService: IssueManagementService,
-    public dialog: MatDialog,
+    public issueManagementStore: IssueManagementStore,
+    private router: Router,
+    private activeRoute: ActivatedRoute,
+    private p: PrivilegeService,
   ) { }
 
   ngOnInit(): void {
     this.getAll()
-  }
-
-  toggleDetail(issueDetail: Issue) {
-    this.issueDetail = issueDetail;
   }
 
   getAll() {
@@ -33,26 +32,28 @@ export class IssueManagementListComponent implements OnInit {
     })
   }
 
-  new(): void {
-    console.log('New Issue');
-    const dialogRef = this.dialog.open(IssueCreateDialogComponent, {
-      width: '500px',
-      data: { name: '', description: '' }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result != null) {
-        this.issueManagmentService.createIssue(result).subscribe(result => {
-          console.log('Created Issue: ', result);
-         this.getAll();
-        })
-      }
-    });
+  /** LIST */
+  opened(issue: Issue) {
+    this.activeIssue = issue;
   }
 
-  change() {
-    console.log(event);
-    this.getAll();
+  closed(issue: Issue) {
+    // IF open issue gets closed again -> comments list hide
+    if (this.activeIssue.id === issue.id) this.activeIssue = new Issue();
   }
 
+  /** NAVIGATION */
+  new() {
+    this.router.navigate(['./create'], { relativeTo: this.activeRoute.parent });
+  }
+
+  detail(issue: Issue) {
+    this.issueManagementStore.addIssue(issue);
+    this.router.navigate(['./detail', issue.name], { relativeTo: this.activeRoute.parent });
+  }
+
+  edit(issue: Issue) {
+    this.issueManagementStore.addIssue(issue);
+    this.router.navigate(['./edit', issue.name], { relativeTo: this.activeRoute.parent });
+  }
 }

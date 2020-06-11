@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { IssueManagementStore } from 'src/app/core/issue-management/_store/issue-management-store';
 import { TdTextEditorComponent } from '@covalent/text-editor';
-import { PatternLanguageService } from 'src/app/core/service/pattern-language.service';
 import PatternLanguageModel from 'src/app/core/model/hal/pattern-language-model.model';
-import { Rating } from 'src/app/core/model/rating.enum';
-import { Candidate, CandidateManagementService } from 'src/app/core/candidate-management';
+import { Candidate, CandidateManagementService, CandidateManagementStore } from 'src/app/core/candidate-management';
+import { merge } from 'rxjs';
 
 @Component({
   selector: 'pp-candidate-management-detail',
@@ -14,34 +12,50 @@ import { Candidate, CandidateManagementService } from 'src/app/core/candidate-ma
 })
 export class CandidateManagementDetailComponent implements OnInit {
 
+
+
+  @ViewChild('textEditor') private _textEditor: TdTextEditorComponent;
+  private nameRegex = /\s(.*?)\n/;
+
   candidateMarkdown: any;
   options: any = {};
   defaultSections = ['# Candidate Name\n', '## Icon\n', '## Context\n', '## Driving Question\n', '## Solution\n']
-  candidate: Candidate;
 
-  @ViewChild('textEditor') private _textEditor: TdTextEditorComponent;
 
-  private nameRegex = /\s(.*?)\n/;
-
-  public patternLanguages: PatternLanguageModel[];
   public patternLanguageSelected: string;
+  candidate: Candidate;
+  private oldCandidate: Candidate;
+
+  disabled: boolean = true;
+  pattern: boolean = false;
+
 
   constructor(
     private router: Router,
     private activeRoute: ActivatedRoute,
-    public issueStore: IssueManagementStore,
-    private candidateService: CandidateManagementService,
-    private patternLanguageService: PatternLanguageService,
+    private candidateManagementService: CandidateManagementService,
+    public candidateStore: CandidateManagementStore,
   ) { }
 
   ngOnInit(): void {
-    this.getPatternLanguages();
+    this.candidateStore.candidate.subscribe(_candidate => {
+      // console.log(_candidate);
 
-    this.activeRoute.params.subscribe(params => {
-      const name = params.name;
-      if (name && this.router.url.includes('/create') && window.history.state.data) {
-        this.candidate = window.history.state.data as Candidate;
-        this.patternLanguageSelected = this.candidate.patternLanguageId;
+      if (_candidate && this.router.url.includes('detail')) {
+        this.disabled = true;
+        this.candidate = _candidate;
+        this.candidateMarkdown = this.candidate.content;
+        this.patternLanguageSelected = this.candidate.patternLanguageId ? this.candidate.patternLanguageId : '-1';
+
+      } else if (_candidate && this.router.url.includes('edit')) {
+        this.candidate = _candidate;
+        this.candidateMarkdown = this.candidate.content;
+        this.patternLanguageSelected = this.candidate.patternLanguageId ? this.candidate.patternLanguageId : '-1';
+
+      } else if (!_candidate && window.history.state.data) {
+        this.candidate = window.history.state.data as Candidate
+        console.log(this.candidate);
+        this.edit();
         this.candidateMarkdown =
           `# ${this.candidate.name}\n` +
           this.defaultSections[1] +
@@ -49,66 +63,74 @@ export class CandidateManagementDetailComponent implements OnInit {
           `${this.candidate.content}\n` +
           this.defaultSections[3] +
           this.defaultSections[4];
+        this.patternLanguageSelected = this.candidate.patternLanguageId ? this.candidate.patternLanguageId : '-1';
 
-      } else if (name && this.router.url.includes('/edit') && window.history.state.data) {
-        this.candidate = window.history.state.data as Candidate;
-        this.patternLanguageSelected = this.candidate.patternLanguageId;
-        this.candidateMarkdown = this.candidate.content;
-      } else if (!name && this.router.url.includes('/create') && !window.history.state.data) {
-        this.candidate = new Candidate()
+      } else {
+        this.disabled = false;
+        this.candidate = new Candidate();
         this.candidateMarkdown = this.defaultSections.join("");
-      } else if (name && this.router.url.includes('/detail') && window.history.state.data) {
-        this.candidate = window.history.state.data as Candidate;
-        this.patternLanguageSelected = this.candidate.patternLanguageId;
-        this.candidateMarkdown = this.candidate.content;
       }
-    })
+    });
   }
 
-  getPatternLanguages() {
-    this.patternLanguageService.getPatternLanguages().subscribe(result => {
-      console.log(result);
-      this.patternLanguages = result;
-    })
+  /** BUTTONS */
+  edit() {
+    this.oldCandidate = Object.assign({}, this.candidate);
+    this.disabled = !this.disabled;
+  }
+
+  cancel() {
+    if (!this.oldCandidate) this.exit();
+    this.candidate = this.oldCandidate;
+    this.disabled = !this.disabled;
+  }
+
+  exit() {
+    this.router.navigateByUrl('/candidate')
+  }
+
+  /** Pattern */
+  confirmPattern() {
+    this.pattern = !this.pattern;
+  }
+
+  createPattern() {
+    console.log('Create Candidate: ', this.candidate, this.patternLanguageSelected);
+    // const candidate = new Candidate(this.candidate.description, this.candidate.name, this.patternLanguageSelected.id, this.candidate.authors)
+    // this.router.navigate(['candidate/create', this.candidate.name], { state: { data: candidate } });
+  }
+
+  cancelPattern() {
+    this.pattern = !this.pattern;
+  }
+
+  /** SERVICE */
+  /** ISSUE */
+  submit() {
+    this.candidate.name = this.nameRegex.exec(this._textEditor.value)[1];
+    this.candidate.content = this._textEditor.value;
+    this.candidate.uri = `/candidates/${this.candidate.name}`
+    this.candidate.patternLanguageId = this.patternLanguageSelected == '-1' ? null : this.patternLanguageSelected;
+    this.candidate.id ? this.update() : this.create();
   }
 
   create() {
-    console.log(this._textEditor.value);
-    this.candidate.name = this.nameRegex.exec(this._textEditor.value)[1];
-    this.candidate.content = this._textEditor.value;
-    this.candidate.patternLanguageId = this.patternLanguageSelected;
-    console.log(this.candidate);
-
-    this.candidateService.createCandidate(this.candidate, this.patternLanguageSelected).subscribe(result => {
-      console.log('created canddiate: ', result);
+    this.candidateManagementService.createCandidate(this.candidate).subscribe(result => {
+      this.candidate = result
+      this.disabled = true;
     })
   }
 
   update() {
-    this.candidateService.updateCandidate(this.candidate).subscribe(result => {
-     console.log(result);
+    this.candidateManagementService.updateCandidate(this.candidate).subscribe(result => {
+      this.candidate = result;
+      this.disabled = true;
     })
   }
 
   delete() {
-   
+    this.candidateManagementService.deleteCandidate(this.candidate).subscribe(result => {
+      this.exit();
+    })
   }
-
-  createComment(candidateComment: Comment) {
-   
-  }
-
-  updateRating(rating: Rating) {
-   
-  }
-
-  updateCommentRating(issueCommentRatingEvent: any) {
-    console.log(issueCommentRatingEvent);
-    
-  }
-
-  exit() {
-    this.router.navigate(['candidate/']);
-  }
-
 }

@@ -44,6 +44,9 @@ import { LandingPageComponent } from './core/component/landing-page/landing-page
 import { PageNotFoundComponent } from './core/component/page-not-found/page-not-found.component';
 import { FilterViewComponent } from './filter/component/filter-view/filter-view.component';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { MatMenuModule } from '@angular/material/menu';
+import { IssueManagementModule } from './issue-management/issue-management.module';
+import { CandidateManagementModule } from './candidate-management/candidate-management.module';
 
 @NgModule({
     declarations: [
@@ -76,6 +79,10 @@ import { AuthenticationModule } from './authentication/authentication.module';
         JwtModule,
         MatSidenavModule,
         MatListModule,
+        MatMenuModule,
+
+        IssueManagementModule,
+        CandidateManagementModule,
     ],
     providers: [
         CookieService,

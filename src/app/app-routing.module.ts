@@ -10,6 +10,8 @@ import { USER_MANAGEMENT_ROUTES } from './user-management/user-management.module
 import { ADMIN_MANAGEMENT_ROUTES } from './admin-management/admin-management.module';
 import { PatternLanguageManagementResolverService } from './pattern-language-management/pattern-language-management/pattern-language-management-resolver.service';
 import { UserRole } from './core/user-management';
+import { PrintHook } from '@angular/flex-layout';
+import { Privilege } from './core/user-management/_models/privilege.enum';
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -27,7 +29,7 @@ import { UserRole } from './core/user-management';
 const routes: Routes = [
     {
         path: '',
-        redirectTo: 'issue',
+        redirectTo: 'userInfo',
         pathMatch: 'full'
     },
     {
@@ -50,22 +52,22 @@ const routes: Routes = [
         loadChildren: () => import('./issue-management/issue-management.module').then(m => m.IssueManagementModule),
     },
     {
-        path: 'user',
+        path: 'userInfo',
         loadChildren: () => import('./user-management/user-management.module').then(m => m.UserManagementModule),
         canActivate: [AuthGuard],
-        data: { role: UserRole.MEMBER }  
+        data: { privilege: Privilege.READ_USER }  
     },
     {
         path: 'admin',
         loadChildren: () => import('./admin-management/admin-management.module').then(m => m.AdminManagementModule),
         canActivate: [AuthGuard],
-        data: { role: UserRole.ADMIN }  
+        data: { privilege: Privilege.READ_USER_ALL }  
     },
     {
         path: 'developer',
         loadChildren: () => import('./developer-management/developer-management.module').then(m => m.DeveloperManagementModule),
         canActivate: [AuthGuard],
-        data: { role: UserRole.ADMIN }
+        data: { privilege: Privilege.DEVELOPER }
     },
     {
         path: 'oauth-callback',

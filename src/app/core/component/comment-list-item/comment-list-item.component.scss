@@ -1,0 +1,28 @@
+button {
+    margin-left: 10px;
+}
+
+.container-comment-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    .comment-input {
+        flex: 1 1 auto;
+        margin-right: 16px;
+
+        .user {
+            font-size: 13px;
+            color: gray;
+        }
+
+        .comment-buttons {
+            float: right;
+        }
+    }
+
+    .comment-rating {
+        width: 70px;
+    }
+}

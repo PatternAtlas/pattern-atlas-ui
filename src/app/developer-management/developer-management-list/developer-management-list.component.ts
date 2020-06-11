@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
 
 @Component({
   selector: 'pp-developer-management-list',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DeveloperManagementListComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private auth: AuthenticationService
+  ) { }
 
   ngOnInit(): void {
+    this.auth.refreshToken();
   }
 
 }

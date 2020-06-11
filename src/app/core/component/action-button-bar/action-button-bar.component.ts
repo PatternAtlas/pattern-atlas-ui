@@ -18,6 +18,9 @@ export class ActionButtonBarComponent implements OnInit {
     @Input() firstAddButton = true;
     @Input() secondAddButtonText: string;
 
+    @Input() back = false;
+    @Output() backClicked = new EventEmitter<void>();
+
     @Input() displayText: string;
 
     constructor(private cdr: ChangeDetectorRef,

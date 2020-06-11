@@ -1,7 +1,7 @@
 <pp-action-button-bar [addButtonText]="'Add'" [goBackButton]="false" [reloadButton]="true"
-    (addClicked)="createCandidate()" (reloadClicked)="getAll()"></pp-action-button-bar>
-<mat-accordion *ngFor="let language of patternLanguages">
-    <mat-expansion-panel [expanded]="true">
+    (addClicked)="new()" (reloadClicked)="getAll()"></pp-action-button-bar>
+<mat-accordion multi="false" *ngFor="let language of patternLanguages">
+    <mat-expansion-panel>
         <mat-expansion-panel-header>
             <mat-panel-title>
                 {{language.name}}
@@ -21,12 +21,12 @@
                         </p>
                     </mat-card-content>
                     <mat-card-actions>
-                        <button mat-flat-button color="primary" type="button" (click)="candidateDetail(candidate)"
+                        <button mat-flat-button color="primary" type="button" (click)="detail(candidate)"
                             matTooltip="Open candidate">
                             <mat-icon>launch</mat-icon>
                             Detail
                         </button>&nbsp;
-                        <button mat-flat-button color="primary" type="button" (click)="candidateDetail(candidate)"
+                        <button mat-flat-button color="primary" type="button" (click)="edit(candidate)"
                             matTooltip="Edit candidate">
                             <mat-icon>edit</mat-icon>
                             Edit

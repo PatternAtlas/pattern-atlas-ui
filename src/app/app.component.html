@@ -15,10 +15,17 @@
 <mat-toolbar color="primary">
     <mat-icon>library_books</mat-icon>
     <span style="margin-left: 1rem">PatternAtlas</span>
+
     <span class="spacer"></span>
-    {{welcomeText}}
     <div class="log-button">
-        <button mat-stroked-button (click)="loginOAuth()"> {{ loginButton }}</button>
+        <button *ngIf="!loggedIn" mat-button (click)="login()"> Login </button>
+        <button *ngIf="loggedIn" mat-button [matMenuTriggerFor]="menu">Hello {{userName}} <mat-icon>more_vert</mat-icon></button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item routerLink="/userInfo"> UserInfo </button>
+            <button *ngIf="p.hidden('READ_USER_ALL') | async" mat-menu-item routerLink="/admin"> Admin </button>
+            <button mat-menu-item routerLink="/developer"> Developer </button>
+            <button mat-menu-item color="warn" (click)="logout()"> Logout </button>
+        </mat-menu>
     </div>
 </mat-toolbar>
 <nav mat-tab-nav-bar>
@@ -35,7 +42,7 @@
     <a mat-tab-link [routerLink]="'/issue'" routerLinkActive #rla4="routerLinkActive" [active]="rla4.isActive">
         Issue
     </a>
-    <a mat-tab-link [routerLink]="'/user'" *ngIf="(auth.hasRole('MEMBER') | async)" routerLinkActive
+    <!-- <a mat-tab-link [routerLink]="'/user'" *ngIf="(auth.hasRole('MEMBER') | async)" routerLinkActive
         #rla5="routerLinkActive" [active]="rla5.isActive">
         Personal
     </a>
@@ -46,7 +53,7 @@
     <a mat-tab-link [routerLink]="'/developer'" *ngIf="(auth.hasRole('ADMIN') | async)" routerLinkActive
         #rla7="routerLinkActive" [active]="rla7.isActive">
         Developer
-    </a>
+    </a> -->
 </nav>
 <router-outlet></router-outlet>
 <toaster-container></toaster-container>

@@ -1,0 +1,26 @@
+<mat-form-field>
+    <mat-chip-list #chipList aria-label="Fruit selection" [disabled]="disabled || !authorEntity.id">
+        <mat-chip *ngFor="let author of authors" [selectable]="true" [removable]="true" (removed)="delete(author)">
+            {{author.name}} ({{author.authorRole}})
+            <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input placeholder="Authors" #authorInput [formControl]="authorCtrl" [matAutocomplete]="auto"
+            [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+    </mat-chip-list>
+    <mat-autocomplete #auto="matAutocomplete">
+        <mat-option class="item" *ngFor="let selectAuthor of allAuthors">
+            <span class="name">{{selectAuthor.name}}</span>
+            <mat-radio-group [ngModel]="isChecked(selectAuthor)">
+                <mat-radio-button *ngFor="let role of roles" [value]="role" (change)="submit($event, selectAuthor)"
+                    (click)="$event.stopPropagation()">
+                    {{role}}</mat-radio-button>
+            </mat-radio-group>
+            <!-- <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+                <mat-button-toggle *ngFor="let role of roles" [value]="role" [checked]="false"
+                    (click)="authorSelected($event, selectAuthor); $event.stopPropagation();">{{role}}
+                </mat-button-toggle>
+            </mat-button-toggle-group> -->
+            <mat-divider></mat-divider>
+        </mat-option>
+    </mat-autocomplete>
+</mat-form-field>

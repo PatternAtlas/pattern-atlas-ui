@@ -1,0 +1,29 @@
+<div class="container-comment-item">
+    <form class="comment-input" (ngSubmit)="update()" #commentForm="ngForm">
+        <!-- <div class="text"> -->
+            <mat-form-field appearance="standard">
+                <!-- <mat-label>Comment Edit</mat-label> -->
+                <textarea matInput [disabled]="disabled" [(ngModel)]="comment.text" name="comment" required></textarea>
+            </mat-form-field>
+        <!-- </div> -->
+
+        <button mat-button class="user" (click)="authorInfo">{{comment.userName}}</button>
+
+        <div class="comment-buttons">
+            <button *ngIf="!disabled" mat-flat-button type="submit" color="primary"
+                [disabled]="!commentForm.form.valid">
+                Save </button>
+            <button *ngIf="!disabled" mat-flat-button type="button" color="" (click)="cancel()"> Cancel
+            </button>
+            <button *ngIf="disabled" mat-flat-button type="button" color="primary" (click)="edit()"
+                [disabled]="p.disabled(comment.userId) | async"> Edit </button>
+            <button *ngIf="disabled" mat-flat-button type="button" color="warn" (click)="delete()"
+                [disabled]="p.disabled(comment.userId) | async"> Delete </button>
+        </div>
+    </form>
+    <!-- <div class="spacer"></div> -->
+
+    <pp-rating class="comment-rating" [row]="false" [upVotes]="comment.upVotes" [downVotes]="comment.downVotes"
+        [ratingEntity]="commentEntity" [context]="context" [commentEntity]="comment"></pp-rating>
+
+</div>

@@ -5,7 +5,7 @@ import { Router } from "@angular/router";
 import { switchMap, skipWhile, tap, map, catchError } from "rxjs/operators";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { TokenInterceptor } from "../_interceptor/token.interceptor";
-import { PAUser } from "src/app/core/user-management";
+import { PAUser, UserRole, UserInfoModel } from "src/app/core/user-management";
 import { environment } from "src/environments/environment";
 
 
@@ -20,9 +20,10 @@ export class AuthenticationService {
     private regexCode: RegExp;
     private regexState: RegExp;
 
-    public accessTokenSubject: BehaviorSubject<string>;
-    public userSubject: BehaviorSubject<PAUser>;
-    public roleSubject: BehaviorSubject<string[]>;
+    private accessTokenSubject: BehaviorSubject<string>;
+    private userSubject: BehaviorSubject<UserInfoModel>;
+    private rolePASubject: BehaviorSubject<UserRole[]>;
+    // public roleSubject: BehaviorSubject<string[]>;
 
     private jwtHelper: JwtHelperService;
 
@@ -42,21 +43,22 @@ export class AuthenticationService {
     }
 
     private initSubjectsPipe() {
-        this.userSubject = new BehaviorSubject<PAUser>(null);
-        this.roleSubject = new BehaviorSubject<string[]>(null);
+        this.userSubject = new BehaviorSubject<UserInfoModel>(null);
+        this.rolePASubject = new BehaviorSubject<UserRole[]>(null);
         this.accessTokenSubject = new BehaviorSubject<string>(this.getAccesToken());
 
         this.accessTokenSubject.subscribe(token => {
             if (token === 'logout') {
                 console.log('User logout');
                 this.userSubject.next(null);
-                this.roleSubject.next(null);
+                // this.roleSubject.next(null);
                 this.router.navigate(['/']);
 
             } else if (token && !this.jwtHelper.isTokenExpired(token)) {
                 console.log('Token exists && token not expired')
                 this.getUserInfo();
-                this.router.navigate(['/issue']);
+                this.getRoles();
+                this.router.navigate(['/']);
 
             } else if (token && this.getRefreshToken() && this.jwtHelper.isTokenExpired(this.getAccesToken())) {
                 console.log('Token exists && token expired');
@@ -70,6 +72,7 @@ export class AuthenticationService {
     }
 
     public login() {
+        localStorage.clear();
         const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         localStorage.setItem(stateKey, state);
         this.getAccesCode(state);
@@ -107,13 +110,13 @@ export class AuthenticationService {
                 const code = this.regexCode.exec(url)[1];
                 const params = new HttpParams()
                     .set('client_id', `${environment.clientIdPublic}`)
-                   
+
                     .set('code', code)
                     .set('redirect_uri', `${window.location.origin}`)
                     .set('grant_type', 'authorization_code')
-                    // outcomment IF PKCE Authentaction flow is used
-                     // .set('client_id', `${environment.clientPKCE}`)
-                    // .set('code_verifier', '4cc9b165-1230-4607-873b-3a78afcf60c5')
+                // outcomment IF PKCE Authentaction flow is used
+                // .set('client_id', `${environment.clientPKCE}`)
+                // .set('code_verifier', '4cc9b165-1230-4607-873b-3a78afcf60c5')
 
                 this.http.post<any>(environment.tokenUrl, params).subscribe(token => {
 
@@ -131,7 +134,7 @@ export class AuthenticationService {
         }
     }
 
-    refreshToken() {
+    public refreshToken() {
         console.log("Refresh Token");
         const params = new HttpParams()
             .set('client_id', `${environment.clientIdPublic}`)
@@ -154,19 +157,21 @@ export class AuthenticationService {
         );
     }
 
-    getUserInfo() {
-        this.http.get<PAUser>('http://localhost:8081/user_info').subscribe(user => {
-
-            console.log('UserInfo: ', user);
+    private getUserInfo() {
+        this.http.get<UserInfoModel>('http://localhost:8081/user_info').subscribe(user => {
+            console.log(user);
             this.userSubject.next(user);
-            this.roleSubject.next(user.roles);
+        }, error => {
+            console.error('Error getToken via refreshToken: ', error)
+        });
+    }
 
-        },
-            error => {
-                console.error('Error getToken via refreshToken: ', error)
-
-            }
-        );
+    private getRoles() {
+        this.http.get<any>('http://localhost:8080/users/roles').subscribe(roles => {
+            this.rolePASubject.next(roles._embedded.roleModels);
+        }, error => {
+            console.error('Error getToken via refreshToken: ', error)
+        });
     }
 
     logout() {
@@ -195,15 +200,11 @@ export class AuthenticationService {
         }
     }
 
-    public hasRole(role: string): Observable<boolean> {
-        return this.roleSubject.asObservable().pipe(
-            map(roles => {
-                if (roles) {
-                    return roles.includes(role);
-                }
-                return null;
-            })
-        );
+    get user(): Observable<UserInfoModel> {
+        return this.userSubject.asObservable();
     }
 
+    get roles(): Observable<UserRole[]> {
+        return this.rolePASubject.asObservable();
+    }
 }
