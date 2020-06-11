@@ -12,15 +12,15 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 /* You can add global styles to this file, and also import other style files */
-@import '~@angular/material/prebuilt-themes/indigo-pink.css';
-@import '~angular2-toaster/toaster';
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "~angular2-toaster/toaster";
 
 body {
   font-family: sans-serif;
 }
 
 .material-icons {
-  font-family: 'Material Icons';
+  font-family: "Material Icons";
   font-weight: normal;
   font-style: normal;
   font-size: 24px; /* Preferred icon size */
@@ -41,7 +41,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 
   /* Support for IE. */
-  font-feature-settings: 'liga';
+  font-feature-settings: "liga";
 }
 
 /* Rules for sizing the icon. */
@@ -111,7 +111,7 @@ body {
 }
 
 .mat-card {
-  border-top: 1px solid rgba(0, 0, 0, .14);
+  border-top: 1px solid rgba(0, 0, 0, 0.14);
   min-height: 18rem;
   min-width: 10rem;
   word-break: break-all;
@@ -227,6 +227,10 @@ body {
   background-color: white;
 }
 
+.mat-form-field {
+  width: 100%;
+}
+
 .horiz-centered {
   display: inline-flex;
   align-items: center;
@@ -236,3 +240,71 @@ body {
   margin-right: 10px !important;
 }
 
+$break-small: 759px;
+$break-large: 760px;
+
+.container-double {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.left {
+  margin: 8px 8px;
+  @media screen and (max-width: $break-small) {
+    width: 100%;
+  }
+  @media screen and (min-width: $break-large) {
+    max-width: 60%;
+    flex: 2 350px;
+  }
+}
+.right {
+  margin: 8px 8px;
+  @media screen and (max-width: $break-small) {
+    width: 100%;
+  }
+  @media screen and (min-width: $break-large) {
+    max-width: 500px;
+    flex: 1 350px;
+  }
+}
+
+.scrollable-double {
+  @media screen and (max-width: $break-small) {
+    height: 100%;
+  }
+  @media screen and (min-width: $break-large) {
+    height: calc(100vh - 32px - 64px - 48px - 64px - 16px);
+  }
+}
+
+.detail-component {
+  height: 100%;
+  width: 100%;
+  padding: 4px 0px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+// .scrollable-double {
+//   height: $base-height;
+// }
+
+// @mixin styling($base-height) {
+//   .scrollable-double {
+//     height: $base-height;
+//   }
+// }
+
+// @media screen and (max-width: 759px) {
+//   @include styling($base-height: 100%);
+// }
+// @media screen and (min-width: 760px) {
+//   @include styling($base-height: calc(100vh - 32px - 64px - 48px - 64px - 16px));
+// }
