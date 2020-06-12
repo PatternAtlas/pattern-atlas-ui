@@ -1,25 +1,37 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
-import {D3Service} from '../../../graph/service/d3.service';
-import {NetworkLink} from '../../model/network-link.interface';
-import {MatDialog} from '@angular/material/dialog';
-import {CreatePatternRelationComponent} from '../create-pattern-relation/create-pattern-relation.component';
-import {PatternView} from '../../model/hal/pattern-view.model';
+import {
+  AfterContentInit,
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
+import { D3Service } from '../../../graph/service/d3.service';
+import { NetworkLink } from '../../model/network-link.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { CreatePatternRelationComponent } from '../create-pattern-relation/create-pattern-relation.component';
+import { PatternContainer } from '../../model/hal/pattern-container.model';
 import PatternLanguage from '../../model/hal/pattern-language.model';
-import {EdgeWithType, PatternRelationDescriptorService} from '../../service/pattern-relation-descriptor.service';
-import {ToasterService} from 'angular2-toaster';
+import { EdgeWithType, PatternRelationDescriptorService } from '../../service/pattern-relation-descriptor.service';
+import { ToasterService } from 'angular2-toaster';
 import GraphEditor from '@ustutt/grapheditor-webcomponent/lib/grapheditor';
-import {DraggedEdge, edgeId} from '@ustutt/grapheditor-webcomponent/lib/edge';
+import { DraggedEdge, edgeId } from '@ustutt/grapheditor-webcomponent/lib/edge';
 import Pattern from '../../model/hal/pattern.model';
-import {PatternLanguageService} from '../../service/pattern-language.service';
-import {GraphInputData} from '../../model/graph-input-data.interface';
-import {PatternService} from '../../service/pattern.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {PatternViewService} from '../../service/pattern-view.service';
-import {switchMap, tap} from 'rxjs/operators';
-import {PatternResponse} from '../../model/hal/pattern-response.interface';
-import {EMPTY, Observable} from 'rxjs';
-import {CdkDragDrop} from '@angular/cdk/drag-drop';
+import { GraphInputData } from '../../model/graph-input-data.interface';
+import { PatternService } from '../../service/pattern.service';
+import { Router } from '@angular/router';
+import { switchMap, tap } from 'rxjs/operators';
+import { PatternResponse } from '../../model/hal/pattern-response.interface';
+import { EMPTY, Observable } from 'rxjs';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { GraphDataService } from '../../service/graph-data.service';
 import {globals} from '../../../globals';
+
 
 export class GraphNode {
     id: string;
@@ -35,7 +47,7 @@ export class GraphNode {
   templateUrl: './graph-display.component.html',
   styleUrls: ['./graph-display.component.scss']
 })
-export class GraphDisplayComponent implements AfterViewInit, OnChanges {
+export class GraphDisplayComponent implements AfterContentInit, OnChanges {
 
     @ViewChild('graphWrapper', {static: true}) graph: ElementRef;
     graphNativeElement: GraphEditor;
@@ -50,7 +62,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     currentPattern: Pattern;
     currentEdges: Array<EdgeWithType>;
     patternLanguages: Array<PatternLanguage>;
-    patternView: PatternView;
+    patternContainer: PatternContainer;
     private edges: Array<NetworkLink>;
     private nodes: Array<GraphNode>;
     private copyOfLinks: Array<NetworkLink>;
@@ -66,11 +78,9 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
                 private matDialog: MatDialog,
                 private patternRelationDescriptionService: PatternRelationDescriptorService,
                 private toastService: ToasterService,
-                private patternLanguageService: PatternLanguageService,
-                private patternViewService: PatternViewService,
                 private patternService: PatternService,
-                private router: Router,
-                private activatedRoute: ActivatedRoute) {
+                private graphDataService: GraphDataService,
+                private router: Router) {
     }
 
     static mapPatternLinksToEdges(links: any[]): NetworkLink[] {
@@ -100,23 +110,25 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
 
     static mapPatternsToNodes(patterns: Array<Pattern>, offsetIndex: number = 0): Array<GraphNode> {
       const nodes: Array<any> = [];
-      for (let i = 0; i < patterns.length; i++) {
-        const node = {
-          id: patterns[i].id,
-          iconUrl: patterns[i].iconUrl,
-          title: patterns[i].name,
-          type: 'default',
-          x: 5 * offsetIndex,
-          y: 5 * offsetIndex,
-          patternLanguageId: patterns[i].patternLanguageId,
-          patternLanguageName: patterns[i].patternLanguageName
-        };
-        nodes.push(node);
+      if(patterns) {
+        for (let i = 0; i < patterns.length; i++) {
+          const node = {
+            id: patterns[ i ].id,
+            iconUrl: patterns[ i ].iconUrl,
+            title: patterns[ i ].name,
+            type: 'default',
+            x: 5 * offsetIndex,
+            y: 5 * offsetIndex,
+            patternLanguageId: patterns[ i ].patternLanguageId,
+            patternLanguageName: patterns[ i ].patternLanguageName
+          };
+          nodes.push(node);
+        }
       }
       return nodes;
     }
 
-    ngAfterViewInit() {
+    ngAfterContentInit() {
       this.graphNativeElement = this.graph.nativeElement;
       if (this.graphNativeElement == null) {
         return;
@@ -160,7 +172,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
           secondPattern: this.patterns.find((pat) => event.detail.edge.target === pat.id),
           patterns: this.patterns,
           patternLanguage: this.patternLanguage,
-          patternView: this.patternView
+          patternContainer: this.patternContainer
         }
       });
 
@@ -183,9 +195,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     }
 
     addPatternToGraph(pattern: Pattern) {
-      const patternList = [];
-      patternList.push(pattern);
-      this.patternViewService.addPatterns(this.patternView._links.patterns.href, patternList).pipe(
+      this.graphDataService.addPatterns(this.patternContainer._links.patterns.href, [pattern]).pipe(
         switchMap(result => result ? this.getCurrentPatternViewAndPatterns() : EMPTY))
         .subscribe((res) => {
           if (res) {
@@ -205,14 +215,13 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     }
 
     saveGraph() {
-      if (this.nodes && this.patternLanguage) {
-        this.patternLanguageService.saveGraph(this.patternLanguage, this.graphNativeElement.nodeList)
-          .subscribe(() => console.log('saved graph layout'));
+      if (!this.nodes) {
+        console.error('No nodes to save');
+        return;
       }
-      if (this.nodes && this.patternView) {
-        this.patternViewService.saveGraph(this.patternView, this.graphNativeElement.nodeList)
-          .subscribe(() => console.log('saved graph layout'));
-      }
+
+      this.graphDataService.saveGraph(this.patternLanguage ? this.patternLanguage : this.patternContainer, this.graphNativeElement.nodeList)
+        .subscribe(() => console.info('saved pattern ' + (this.patternLanguage ? 'language' : 'container') + ' graph layout'));
     }
 
     reformatGraph() {
@@ -252,11 +261,11 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     }
 
     private getCurrentPatternViewAndPatterns(): Observable<Pattern[]> {
-      return this.patternViewService.getPatternViewByUri(this.patternView.uri).pipe(
-        tap(patternViewResponse => {
-          this.patternView = patternViewResponse;
+      return this.graphDataService.getPatternContainer(this.patternContainer._links.self.href).pipe(
+        tap(patternContainerResponse => {
+          this.patternContainer = patternContainerResponse;
         }),
-        switchMap((patternViewResponse: PatternView) => this.patternService.getPatternsByUrl(patternViewResponse._links.patterns.href)),
+        switchMap((patternContainerResponse: PatternContainer) => this.patternService.getPatternsByUrl(patternContainerResponse._links.patterns.href)),
         tap(patterns => {
           this.patterns = patterns;
         }));
@@ -269,9 +278,9 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
         this.copyOfLinks = GraphDisplayComponent.mapPatternLinksToEdges(this.patternGraphData.edges);
         this.patterns = this.patternGraphData.patterns;
         this.patternLanguage = this.patternGraphData.patternLanguage;
-        this.patternView = this.patternGraphData.patternView;
+        this.patternContainer = this.patternGraphData.patternContainer;
         this.nodes = GraphDisplayComponent.mapPatternsToNodes(this.patterns);
-        if (this.patternView) {
+        if (this.patternContainer) {
           this.patternLanguages = this.patternGraphData.patternLanguages;
           this.allPatternsLoading = false;
         }
@@ -316,22 +325,14 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
 
     private getGraph() {
       this.initData();
-      if (this.patterns.length === 0) {
+      if (!this.patterns || this.patterns.length === 0) {
         return;
       }
-      if (!this.patternLanguage) {
-        this.patternViewService.getGraph(this.patternView)
-          .subscribe((res: { graph: Array<GraphNode> }) => {
-            this.prepareGraph(res.graph, this.patternView);
-          });
-      } else {
-        this.patternLanguageService.getGraph(this.patternLanguage)
-          .subscribe((res: { graph: Array<GraphNode> }) => {
-            this.prepareGraph(res.graph, this.patternView);
-          });
-      }
 
-
+      this.graphDataService.getGraph(this.patternContainer)
+        .subscribe((res: { graph: Array<GraphNode> }) => {
+          this.prepareGraph(res.graph, this.patternContainer);
+        });
     }
 
     private initGraphEdges() {
@@ -366,6 +367,9 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
     }
 
     private initGraphData(graphData: Array<GraphNode>) {
+      if(!this.graphNativeElement) {
+        return;
+      }
       this.graphNativeElement.setNodes(graphData);
       if (this.patterns.length > graphData.length) { // add newly added patterns that are not in the pattern graph yet
         const newPatterns = this.patterns.filter(pat => !this.graphNativeElement.nodeList.map(node => <string>node.id).includes(pat.id));
@@ -375,7 +379,7 @@ export class GraphDisplayComponent implements AfterViewInit, OnChanges {
       this.isLoading = false;
     }
 
-    private prepareGraph(graph: Array<GraphNode>, patternGraphData: PatternView | PatternLanguage) {
+    private prepareGraph(graph: Array<GraphNode>, patternGraphData: PatternContainer | PatternLanguage) {
       if ((!graph && Array.isArray(this.patternGraphData.patterns)) ||
             Array.isArray(this.patternGraphData.patterns) && (this.patternGraphData.patterns.length > graph.length)) {
         this.startSimulation();

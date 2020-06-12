@@ -13,6 +13,7 @@ import { DirectedEdgeModel } from '../../core/model/hal/directed-edge.model';
 import { UndirectedEdgeModel } from '../../core/model/hal/undirected-edge.model';
 
 
+// TODO the following model definitions should be moved in separate classes. As the PatternViewService using the definitions from this component.
 /** Nested node */
 export class LoadmoreNode {
   childrenChange = new BehaviorSubject<LoadmoreNode[]>([]);

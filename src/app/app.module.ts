@@ -21,7 +21,6 @@ import { PatternLanguageManagementModule } from './pattern-language-management/p
 import { CoreModule } from './core/core.module';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-// import {ExtensionsModule} from './extensions/extensions.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';

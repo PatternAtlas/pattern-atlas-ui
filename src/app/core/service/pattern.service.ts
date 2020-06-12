@@ -38,7 +38,7 @@ export class PatternService {
   getPatternsByUrl(patternsUrl: string): Observable<Array<Pattern>> {
     return this.http.get<PatternResponse>(patternsUrl).pipe(
       map(result => {
-        return <Array<Pattern>>(result._embedded ? result._embedded.patternModels : []);
+        return <Array<Pattern>>(result && result._embedded ? result._embedded.patternModels : []);
       })
     );
   }
@@ -48,7 +48,7 @@ export class PatternService {
   }
 
   getPatternRenderedContentByPattern(pattern: Pattern): Observable<{ renderedContent: any }> {
-    return this.http.get<{ renderedContent: any }>(pattern._links.renderedContent.href);
+    return this.http.get<{ renderedContent: any }>(pattern._links.content.href);
   }
 
   savePattern(url: string, pattern: any): Observable<any> {

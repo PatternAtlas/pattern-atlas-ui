@@ -1,5 +1,5 @@
 <mat-sidenav-container [hasBackdrop]="false" class="container">
-    <mat-sidenav *ngIf="patternView" style="min-width: 300px;" [disableClose]="true" [opened]="true" fixedInViewport="false" mode="push">
+    <mat-sidenav *ngIf="patternContainer" #leftSidenav style="min-width: 300px;" [disableClose]="true" [opened]="true" fixedInViewport="false" mode="push">
         <h3>Add Patterns</h3>
             <mat-accordion>
                 <div cdkDropListGroup>
@@ -87,7 +87,7 @@
                     height: 700px;
                 }
             </style>
-            <svg #svg slot="graph">
+            <svg #svg slot="graph" [class.left-sidenav-open]="!!patternContainer">
                 <!-- TODO: Move style to scss file -->
                 <style>
                     .node {

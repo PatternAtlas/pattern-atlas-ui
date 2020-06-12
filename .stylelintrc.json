@@ -8,6 +8,7 @@
     "order/properties-alphabetical-order": null,
     "selector-max-compound-selectors": 4,
     "selector-max-id": 1,
+    "selector-no-qualifying-type": null,
     "selector-pseudo-element-no-unknown": [
       true,
       {

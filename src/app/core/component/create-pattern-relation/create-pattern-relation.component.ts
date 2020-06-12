@@ -5,7 +5,7 @@ import {PatternRelationDescriptorDirection} from '../../model/pattern-relation-d
 import Pattern from '../../model/hal/pattern.model';
 import {DirectedEdgeModel} from '../../model/hal/directed-edge.model';
 import {UndirectedEdgeModel} from '../../model/hal/undirected-edge.model';
-import {PatternView} from '../../model/hal/pattern-view.model';
+import {PatternContainer} from '../../model/hal/pattern-container.model';
 import PatternLanguage from '../../model/hal/pattern-language.model';
 
 @Component({
@@ -63,13 +63,13 @@ export class CreatePatternRelationComponent implements OnInit {
       switch (dialogResult.direction.name) {
       case PatternRelationDescriptorDirection.DirectedRight:
         return new DirectedEdgeModel(dialogResult.firstPattern, dialogResult.secondPattern, this.data.patternLanguage, description, type,
-          this.data.patternView);
+          this.data.patternContainer);
       case PatternRelationDescriptorDirection.DirectedLeft:
         return new DirectedEdgeModel(dialogResult.secondPattern, dialogResult.firstPattern, this.data.patternLanguage, description, type,
-          this.data.patternView);
+          this.data.patternContainer);
       case PatternRelationDescriptorDirection.UnDirected:
         return new UndirectedEdgeModel(dialogResult.secondPattern, dialogResult.firstPattern, this.data.patternLanguage, description, type,
-          this.data.patternView);
+          this.data.patternContainer);
       }
       return null;
 
@@ -82,7 +82,7 @@ export interface DialogData {
     secondPattern?: Pattern;
     patterns: Pattern[];
     patternLanguage: PatternLanguage;
-    patternView: PatternView;
+    patternContainer: PatternContainer;
 }
 
 export interface PatternRelationDirection {
