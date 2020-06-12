@@ -1,4 +1,4 @@
 export enum Rating {
-    UP = 'up',
-    DOWN = 'down',
-  }
+  UP = 'up',
+  DOWN = 'down',
+}

@@ -1,38 +1,38 @@
 <h1 mat-dialog-title>{{data.title}}</h1>
 <mat-dialog-content>
-<p *ngIf="data.links?.length === 0 && !data.patternlanguages">No links found.</p>
-<mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+  <p *ngIf="data.links?.length === 0 && !data.patternlanguages">No links found.</p>
+  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
     <!-- Leaf node -->
     <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
-        <button mat-icon-button disabled></button>
-        <mat-checkbox class="checklist-leaf-node" [checked]="checklistSelection.isSelected(node)"
-                      (change)="todoLeafItemSelectionToggle(node)"> {{node.item.name}}
-        </mat-checkbox>
+      <button mat-icon-button disabled></button>
+      <mat-checkbox class="checklist-leaf-node" [checked]="checklistSelection.isSelected(node)"
+                    (change)="todoLeafItemSelectionToggle(node)"> {{node.item.name}}
+      </mat-checkbox>
     </mat-tree-node>
 
     <!-- expandable node -->
     <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
-        <button mat-icon-button
-                [attr.aria-label]="'toggle ' + node.filename"
-                (click)="loadChildren(node)"
-                matTreeNodeToggle>
-            <mat-icon class="mat-icon-rtl-mirror">
-                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-            </mat-icon>
-        </button>
-        <mat-checkbox class="checklist-leaf-node" [checked]="descendantsAllSelected(node)"
-                      [indeterminate]="descendantsPartiallySelected(node)"
-                      (change)="todoItemSelectionToggle(node)"> {{node.item.name}}
-        </mat-checkbox>
+      <button mat-icon-button
+              [attr.aria-label]="'toggle ' + node.filename"
+              (click)="loadChildren(node)"
+              matTreeNodeToggle>
+        <mat-icon class="mat-icon-rtl-mirror">
+          {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+        </mat-icon>
+      </button>
+      <mat-checkbox class="checklist-leaf-node" [checked]="descendantsAllSelected(node)"
+                    [indeterminate]="descendantsPartiallySelected(node)"
+                    (change)="todoItemSelectionToggle(node)"> {{node.item.name}}
+      </mat-checkbox>
     </mat-tree-node>
 
     <mat-tree-node *matTreeNodeDef="let node; when: isLoadMore">
-        No patterns found for this language.
+      No patterns found for this language.
     </mat-tree-node>
-</mat-tree>
+  </mat-tree>
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button mat-button [mat-dialog-close]="null">Close</button>
-    <button mat-button [mat-dialog-close]="getPatterns()">Save
-    </button>
+  <button mat-button [mat-dialog-close]="null">Close</button>
+  <button mat-button [mat-dialog-close]="getPatterns()">Save
+  </button>
 </mat-dialog-actions>

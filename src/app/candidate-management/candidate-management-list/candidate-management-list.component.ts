@@ -45,7 +45,7 @@ export class CandidateManagementListComponent implements OnInit {
 
   candidateDetail(candidate) {
     console.log(candidate);
-    this.router.navigate(['candidate/edit',  candidate.name], {state: {data: candidate }});
+    this.router.navigate(['candidate/edit',  candidate.name], { state: { data: candidate } });
   }
 
   createCandidate() {

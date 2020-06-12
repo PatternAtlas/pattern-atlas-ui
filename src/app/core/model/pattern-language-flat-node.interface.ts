@@ -2,8 +2,8 @@
 import UriEntity from './hal/uri-entity.model';
 
 export interface PatternLanguageFlatNode extends UriEntity {
-    expandable: boolean;
-    name: string;
-    level: number;
-    patternsUrl?: string;
+  expandable: boolean;
+  name: string;
+  level: number;
+  patternsUrl?: string;
 }

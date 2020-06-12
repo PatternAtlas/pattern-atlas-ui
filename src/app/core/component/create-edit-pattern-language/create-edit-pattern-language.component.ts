@@ -90,50 +90,50 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     if (this.patternLanguageForm.valid) {
 
       switch (this.componentDialogType) {
-      case CreateEditComponentDialogType.PATTERN_VIEW:
+        case CreateEditComponentDialogType.PATTERN_VIEW:
 
-        this.saveClicked.emit({
-          dialogResult: {
-            name: this.name.value
+          this.saveClicked.emit({
+            dialogResult: {
+              name: this.name.value
+            }
+          });
+          this.dialogRef.close();
+          break;
+
+        case CreateEditComponentDialogType.PATTERN_LANGUAGE:
+
+          const patternLanguage = new PatternLanguage();
+          patternLanguage.name = this.name.value;
+          patternLanguage.logo = this.iconUrl.value;
+          const patternSchema = new PatternSchema();
+          patternSchema.patternSectionSchemas = [];
+
+
+          for (let i = 0; i < this.sections.length; i++) {
+            const patternSectionSchema = new PatternSectionSchema();
+            patternSectionSchema.name = this.sections[ i ];
+            patternSectionSchema.label = this.sections[ i ];
+            patternSectionSchema.position = i;
+            patternSectionSchema.type = 'any';
+            patternSchema.patternSectionSchemas.push(patternSectionSchema);
           }
-        });
-        this.dialogRef.close();
-        break;
+          patternLanguage.patternSchema = patternSchema;
+          this.saveClicked.emit({
+            dialogResult: patternLanguage
+          });
+          this.dialogRef.close();
+          break;
 
-      case CreateEditComponentDialogType.PATTERN_LANGUAGE:
+        case CreateEditComponentDialogType.DESIGN_MODEL:
 
-        const patternLanguage = new PatternLanguage();
-        patternLanguage.name = this.name.value;
-        patternLanguage.logo = this.iconUrl.value;
-        const patternSchema = new PatternSchema();
-        patternSchema.patternSectionSchemas = [];
-
-
-        for (let i = 0; i < this.sections.length; i++) {
-          const patternSectionSchema = new PatternSectionSchema();
-          patternSectionSchema.name = this.sections[ i ];
-          patternSectionSchema.label = this.sections[ i ];
-          patternSectionSchema.position = i;
-          patternSectionSchema.type = 'any';
-          patternSchema.patternSectionSchemas.push(patternSectionSchema);
-        }
-        patternLanguage.patternSchema = patternSchema;
-        this.saveClicked.emit({
-          dialogResult: patternLanguage
-        });
-        this.dialogRef.close();
-        break;
-
-      case CreateEditComponentDialogType.DESIGN_MODEL:
-
-        this.saveClicked.emit({
-          dialogResult: {
-            name: this.name.value,
-            logo: this.iconUrl.value
-          }
-        });
-        this.dialogRef.close();
-        break;
+          this.saveClicked.emit({
+            dialogResult: {
+              name: this.name.value,
+              logo: this.iconUrl.value
+            }
+          });
+          this.dialogRef.close();
+          break;
       }
     }
   }

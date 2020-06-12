@@ -15,7 +15,7 @@ export class NavigateBackComponent implements OnInit {
 
   navigateBack(): void {
     this.zone.run(() => {
-      this.router.navigate(['..'], {relativeTo: this.activatedRoute});
+      this.router.navigate(['..'], { relativeTo: this.activatedRoute });
     });
   }
 

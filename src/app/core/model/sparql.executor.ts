@@ -13,6 +13,7 @@
  */
 
 export interface SparqlExecutor {
-    exec(qry: string, graphs: Array<string>): Promise<Array<any>>;
-    ask(qry: string, graphs: Array<string>): Promise<boolean>;
+  exec(qry: string, graphs: Array<string>): Promise<Array<any>>;
+
+  ask(qry: string, graphs: Array<string>): Promise<boolean>;
 }

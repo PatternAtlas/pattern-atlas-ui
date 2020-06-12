@@ -27,6 +27,7 @@ export const globals = {
     patternLanguages: 'pattern-languages',
     patternLanguageId: 'pattern-language-id',
     patternViews: 'pattern-views',
-    patternViewURI: 'pattern-view-uri'
+    patternViewURI: 'pattern-view-uri',
+    designModels: 'design-models'
   }
 };
