@@ -25,8 +25,8 @@ import { globals } from './globals';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'patternLanguages',
-    pathMatch: 'full'
+    pathMatch: 'full',
+    redirectTo: globals.pathConstants.patternLanguages
   },
   {
     path: globals.pathConstants.patternLanguages,
@@ -40,7 +40,7 @@ const routes: Routes = [
     loadChildren: () => import('./pattern-view-management/pattern-view-management.module').then(m => m.PatternViewManagementModule),
   },
   {
-    path: 'design-models',
+    path: globals.pathConstants.designModels,
     loadChildren: () => import('./design-model-module/design-model.module').then(m => m.DesignModelModule),
   },
   {
