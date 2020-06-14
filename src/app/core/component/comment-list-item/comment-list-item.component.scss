@@ -2,7 +2,12 @@ button {
     margin-left: 10px;
 }
 
+.mat-card {
+    min-height: fit-content;
+}
+
 .container-comment-item {
+    margin: 16px 1px 1px 1px;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IssueCreateDialogComponent } from './issue-create-dialog/issue-create-dialog.component';
 import { IssueManagementDetailComponent } from './issue-management-detail/issue-management-detail.component';
 import { RouterModule } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
@@ -53,7 +52,6 @@ export const ISSUE_ROTUES = [
 @NgModule({
   declarations: [
     IssueManagementListComponent,
-    IssueCreateDialogComponent,
     IssueManagementDetailComponent
   ],
   imports: [
@@ -77,9 +75,6 @@ export const ISSUE_ROTUES = [
     IssueManagementListComponent
   ],
   providers: [
-  ],
-  entryComponents: [
-    IssueCreateDialogComponent,
   ],
 })
 export class IssueManagementModule { }

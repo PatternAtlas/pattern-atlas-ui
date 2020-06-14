@@ -8,6 +8,7 @@ import { Candidate, CandidateManagementStore } from 'src/app/core/candidate-mana
 import { RatingModelRequest, RatingManagementService } from 'src/app/core/rating-management';
 import { AuthorManagementService, AuthorModelRequest, AuthorModel, Author } from 'src/app/core/author-management';
 import { PrivilegeService } from 'src/app/authentication/_services/privilege.service';
+import PatternLanguageSchemaModel from 'src/app/core/model/pattern-language-schema.model';
 
 @Component({
   selector: 'pp-issue-management-detail',
@@ -16,7 +17,7 @@ import { PrivilegeService } from 'src/app/authentication/_services/privilege.ser
 })
 export class IssueManagementDetailComponent implements OnInit {
 
-  public patternLanguageSelected: string;
+  public patternLanguageSelected: PatternLanguageSchemaModel;
   public issue: Issue;
   private oldIssue: Issue;
 
@@ -44,6 +45,7 @@ export class IssueManagementDetailComponent implements OnInit {
 
       } else if (!_issue && window.history.state.data) {
         this.issue = window.history.state.data as Issue;
+
       } else {
         this.disabled = false;
         this.issue = new Issue();
@@ -73,9 +75,11 @@ export class IssueManagementDetailComponent implements OnInit {
   }
 
   createCandidate() {
-    console.log('Create Candidate: ', this.issue, this.patternLanguageSelected);
-    const candidate = new Candidate(this.issue.description, this.issue.name, this.patternLanguageSelected, this.issue.authors)
-    console.log(candidate);
+    const content: {[key: string]: string} = {};
+    for (let section of this.patternLanguageSelected.patternSchema) {
+      section.label === 'Context' ? content[section.label]  = this.issue.description : content[section.label] = 'Enter your input for this section here.';
+    }
+    const candidate = new Candidate(content, this.issue.name, this.patternLanguageSelected.patternLanguageId, this.issue.authors)
     this.router.navigate(['candidate/create', this.issue.name], { state: { data: candidate } });
   }
 

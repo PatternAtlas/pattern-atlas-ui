@@ -5,6 +5,7 @@ import { IssueManagementService, Issue } from '../../issue-management';
 import { CandidateManagementService, Candidate } from '../../candidate-management';
 import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
 import { PrivilegeService } from 'src/app/authentication/_services/privilege.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'pp-comment-list-item',
@@ -21,6 +22,9 @@ export class CommentListItemComponent implements OnInit {
   disabled: boolean = true;
   isAuthor: boolean = false;
   oldComment: PAComment;
+
+  commentCtrl = new FormControl();
+  newComment = false;
 
   constructor(
     private issueManagementService: IssueManagementService,
@@ -39,6 +43,11 @@ export class CommentListItemComponent implements OnInit {
   cancel() {
     this.comment = this.oldComment;
     this.disabled = true;
+  }
+
+  addComment() {
+    console.log('addComment');
+    this.newComment = !this.newComment;
   }
 
   authorInfo() {

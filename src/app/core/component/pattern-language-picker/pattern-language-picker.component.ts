@@ -1,6 +1,20 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import PatternLanguageModel from '../../model/hal/pattern-language-model.model';
 import { PatternLanguageService } from '../../service/pattern-language.service';
+import PatternLanguageSchemaModel from '../../model/pattern-language-schema.model';
+import PatternSectionSchema from '../../model/hal/pattern-section-schema.model';
+import { FormControl } from '@angular/forms';
+
+export const patternLanguageNone = new PatternLanguageSchemaModel(
+  null,
+  'NONE',
+  [
+    new PatternSectionSchema('Icon', 'Icon', 'any', 0),
+    new PatternSectionSchema('Context', 'Context', 'any', 1),
+    new PatternSectionSchema('Driving Question', 'Driving Question', 'any', 2),
+    new PatternSectionSchema('Solution', 'Solution', 'any', 3)
+  ]
+);
 
 @Component({
   selector: 'pp-pattern-language-picker',
@@ -9,32 +23,40 @@ import { PatternLanguageService } from '../../service/pattern-language.service';
 })
 export class PatternLanguagePickerComponent implements OnInit {
 
-  @Input() disabled: boolean = false;
+  @Input() set disabled(disabled: boolean) {
+    if (disabled) this.patternLanguageCrtl.disable();
+    if (!disabled) this.patternLanguageCrtl.enable();
+  }
+  // @Input() disabled: boolean;
+  // @Input() set patternLanguageSelected(patternLanguageSelected: string) {
+  //   console.log(patternLanguageSelected);
+  //   if (patternLanguageSelected && this.patternLanguages) {
+  //     this.patternLanguageCrtl.setValue(this.patternLanguages.find(l => l.patternLanguageId == patternLanguageSelected));
+  //     console.log(this.patternLanguageCrtl.value);
+  //   }
+  // }
   @Input() patternLanguageSelected: string;
   @Output() patternLanguageSelectedChange = new EventEmitter();
 
-  public patternLanguages: PatternLanguageModel[];
+  patternLanguages: PatternLanguageSchemaModel[];
+  patternLanguageCrtl: FormControl = new FormControl({ value: null, disabled: true });
 
   constructor(
     private patternLanguageService: PatternLanguageService,
   ) { }
 
   ngOnInit(): void {
-    this.patternLanguageService.getPatternLanguages().subscribe(result => {
+    this.patternLanguageService.getPatternLanguagesSchemas().subscribe(result => {
       console.log(result);
       this.patternLanguages = result;
-      const patternLanguageNone = new PatternLanguageModel();
-      patternLanguageNone.name = 'NONE';
-      patternLanguageNone.id = '-1';
       this.patternLanguages.push(patternLanguageNone);
-      // if (!this.patternLanguageSelected) this.patternLanguageSelected = patternLanguageNone;
-      // this.selectionChange()
+      if (this.patternLanguageSelected) this.patternLanguageCrtl.setValue(this.patternLanguages.find(l => l.patternLanguageId == this.patternLanguageSelected));
     })
   }
 
   selectionChange() {
-    console.log(this.patternLanguageSelected);
-    this.patternLanguageSelectedChange.emit(this.patternLanguageSelected)
+    // console.log(this.patternLanguageCrtl.value);
+    this.patternLanguageSelectedChange.emit(this.patternLanguageCrtl.value)
   }
 
 }

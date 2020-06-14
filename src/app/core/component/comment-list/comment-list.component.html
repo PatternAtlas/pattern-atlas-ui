@@ -1,29 +1,31 @@
-<!-- <div class=""> -->
-<mat-card class="container-new-comment">
-    <form (ngSubmit)="submit()" #commentForm="ngForm">
-        <mat-form-field appearance="standard">
-            <mat-label>Comment</mat-label>
-            <textarea matInput [(ngModel)]="commentText" name="comment" [disabled]="!commentEntity.id" required></textarea>
-        </mat-form-field>
-        <div class="new-comment-buttons">
-            <button mat-flat-button mat-flat-button type="button" color="" (click)="cancelComment()"
-                [disabled]="!(auth.user | async)"> Cancel </button>
-            <button mat-flat-button mat-flat-button type="submit" color="primary"
-                [disabled]="!(auth.user | async) || !commentForm.form.valid"> Create
-            </button>
-        </div>
-    </form>
+<div class="container-new-comment">
+    <mat-card>
+        <form (ngSubmit)="submit()" #commentForm="ngForm">
+            <mat-form-field appearance="standard">
+                <mat-label>Comment</mat-label>
+                <textarea matInput [(ngModel)]="commentText" name="comment" [disabled]="!commentEntity.id"
+                    required></textarea>
+            </mat-form-field>
+            <div class="new-comment-buttons">
+                <button mat-flat-button mat-flat-button type="button" color="" (click)="cancelComment()"
+                    [disabled]="!(auth.user | async)"> Cancel </button>
+                <button mat-flat-button mat-flat-button type="submit" color="primary"
+                    [disabled]="!(auth.user | async) || !commentForm.form.valid"> Create
+                </button>
+            </div>
+        </form>
+    </mat-card>
 
     <div *ngIf="data" class="container-comment-list">
-        <mat-divider></mat-divider>
+        <!-- <mat-divider></mat-divider> -->
         <ng-container *ngFor="let comment of data; last as last">
             <pp-comment-list-item [comment]="comment" [commentEntity]="commentEntity" [context]="context"
                 (deleteComment)=deleteComment($event)></pp-comment-list-item>
-                <mat-divider class="comment-divider"[inset]="true" *ngIf="!last"></mat-divider>
+            <!-- <mat-divider class="comment-divider" [inset]="true" *ngIf="!last"></mat-divider> -->
         </ng-container>
     </div>
     <div *ngIf="!data || data.length == 0">
         <span>No comment yet</span>
     </div>
-</mat-card>
-<!-- </div> -->
+    <!-- </mat-card> -->
+</div>

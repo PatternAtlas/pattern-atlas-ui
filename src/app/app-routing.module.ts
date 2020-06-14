@@ -28,11 +28,6 @@ import { Privilege } from './core/user-management/_models/privilege.enum';
 
 const routes: Routes = [
     {
-        path: '',
-        redirectTo: 'userInfo',
-        pathMatch: 'full'
-    },
-    {
         path: 'patternLanguages',
         resolve: {
             patternlanguages: PatternLanguageManagementResolverService,
@@ -52,7 +47,7 @@ const routes: Routes = [
         loadChildren: () => import('./issue-management/issue-management.module').then(m => m.IssueManagementModule),
     },
     {
-        path: 'userInfo',
+        path: 'user-info',
         loadChildren: () => import('./user-management/user-management.module').then(m => m.UserManagementModule),
         canActivate: [AuthGuard],
         data: { privilege: Privilege.READ_USER }  
@@ -78,9 +73,14 @@ const routes: Routes = [
         component: PatternLanguageGraphComponent
     },
     {
+        path: '',
+        redirectTo: 'candidate',
+        pathMatch: 'full'
+    },
+    {
         path: '**',
         component: PageNotFoundComponent
-    }
+    },
 ];
 
 @NgModule({

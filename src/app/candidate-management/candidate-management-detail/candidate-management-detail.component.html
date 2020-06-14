@@ -5,15 +5,17 @@
 <div class="container-double">
     <mat-card class="left" *ngIf="candidate">
         <!-- <div> -->
-        <td-text-editor [value]="candidateMarkdown" [options]="options" #textEditor id="textEditor"></td-text-editor>
+        <td-text-editor *ngIf="!disabled" [value]="candidateMarkdown" [options]="options" #textEditor id="textEditor"></td-text-editor>
         <!-- </div> -->
+        <div *ngIf="disabled" class="detailView" [innerHTML]="value"></div>
+        <div *ngIf="disabled" class="spacer"></div>
 
         <pp-author-picker class="detail-component" [authors]="candidate.authors" [disabled]="disabled"
             [authorEntity]="candidate" [context]="1">
         </pp-author-picker>
 
         <pp-pattern-language-picker class="detail-component" [disabled]="disabled"
-            [(patternLanguageSelected)]="patternLanguageSelected"></pp-pattern-language-picker>
+            [patternLanguageSelected]="candidate.patternLanguageId" (patternLanguageSelectedChange)="patternLanguageSelectedChange($event)"></pp-pattern-language-picker>
 
         <pp-rating class="detail-component" [disabled]="!candidate.id" [upVotes]="candidate.upVotes"
             [downVotes]="candidate.downVotes" [ratingEntity]="candidate" [context]="1"></pp-rating>
@@ -33,7 +35,7 @@
 
         <!-- CANDIDATE BUTTONS-->
         <div class="detail-component buttons" *ngIf="pattern">
-            <button mat-flat-button type="button" color="accent" [disabled]="!patternLanguageSelected"
+            <button mat-flat-button type="button" color="accent" [disabled]="!candidate.patternLanguageId"
                 (click)="createPattern()">Save</button>
             <button mat-flat-button type="button" color="warn" (click)="cancelPattern()">Cancel</button>
         </div>

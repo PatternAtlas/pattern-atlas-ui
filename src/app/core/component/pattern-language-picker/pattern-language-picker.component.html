@@ -1,8 +1,8 @@
 <mat-form-field>
     <mat-label>Pattern Language</mat-label>
-    <mat-select [(ngModel)]="patternLanguageSelected" (selectionChange)="selectionChange()" name="patternLanguage" [disabled]="disabled">
-        <mat-option *ngFor="let language of patternLanguages" [value]="language.id">
-            {{language.name}}
+    <mat-select placeholder="PatternLanguage" [formControl]="patternLanguageCrtl" (selectionChange)="selectionChange()" name="patternLanguage">
+        <mat-option *ngFor="let language of patternLanguages" [value]="language">
+            {{language.patternLanguageName}}
         </mat-option>
     </mat-select>
 </mat-form-field>

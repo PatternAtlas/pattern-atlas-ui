@@ -1,6 +1,10 @@
 .container-new-comment {
   box-sizing: border-box;
   height: 100%;
+  // display: flex;
+  // flex-direction: column;
+  // width: fit-content;
+  // border: groove;
 }
 
 .new-comment-buttons {
@@ -14,12 +18,25 @@ button {
 }
 
 .container-comment-list {
-  margin-top: 16px;
+  // margin-top: 16px;
   overflow-y: scroll;
-  max-height: calc(100% - 99px - 36px - 16px);
+  max-height: calc(100% - 99px - 36px - 32px - 16px);
+ 
+  // max-width: 450px;
 
-  .comment-divider {
-    margin-top: 16px;
-  }
-  
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: flex-start;
+  // align-items: stretch;
+  // width: 100%;
+
+  // .comment-divider {
+  //   margin-top: 16px;
+  // }
+}
+
+.mat-card {
+  min-height: 1rem;
+  margin-bottom: 2px;
+  // min-width: 10rem;
 }

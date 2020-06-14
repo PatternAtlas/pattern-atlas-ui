@@ -24,6 +24,7 @@ import {Embedded} from '../model/hal/embedded';
 import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
 import {GraphNode} from '../component/graph-display/graph-display.component';
 import PatternLanguageModel from '../model/hal/pattern-language-model.model';
+import PatternLanguageSchemaModel from '../model/pattern-language-schema.model';
 
 @Injectable()
 export class PatternLanguageService {
@@ -41,6 +42,13 @@ export class PatternLanguageService {
                     }
                 )
             );
+    }
+
+    public getPatternLanguagesSchemas(): Observable<PatternLanguageSchemaModel[]> {
+        return this.http.get<any>(this.repoEndpoint + '/patternLanguages/patternSchemas').pipe(
+            map(result => result._embedded ? result._embedded.patternLanguageSchemaModels : []
+            )
+        );
     }
 
     public getPatternLanguageResult(): Observable<PatternLanguages> {

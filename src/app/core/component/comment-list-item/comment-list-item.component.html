@@ -1,10 +1,11 @@
-<div class="container-comment-item">
+<!-- <div class="container-comment-item"> -->
+<mat-card class="container-comment-item">
     <form class="comment-input" (ngSubmit)="update()" #commentForm="ngForm">
         <!-- <div class="text"> -->
-            <mat-form-field appearance="standard">
-                <!-- <mat-label>Comment Edit</mat-label> -->
-                <textarea matInput [disabled]="disabled" [(ngModel)]="comment.text" name="comment" required></textarea>
-            </mat-form-field>
+        <mat-form-field appearance="standard">
+            <!-- <mat-label>Comment Edit</mat-label> -->
+            <textarea matInput [disabled]="disabled" [(ngModel)]="comment.text" name="comment" required></textarea>
+        </mat-form-field>
         <!-- </div> -->
 
         <button mat-button class="user" (click)="authorInfo">{{comment.userName}}</button>
@@ -14,6 +15,9 @@
                 [disabled]="!commentForm.form.valid">
                 Save </button>
             <button *ngIf="!disabled" mat-flat-button type="button" color="" (click)="cancel()"> Cancel
+            </button>
+
+            <button *ngIf="disabled" mat-flat-button type="button" color="accent" (click)="addComment()"> Comment
             </button>
             <button *ngIf="disabled" mat-flat-button type="button" color="primary" (click)="edit()"
                 [disabled]="p.disabled(comment.userId) | async"> Edit </button>
@@ -25,5 +29,11 @@
 
     <pp-rating class="comment-rating" [row]="false" [upVotes]="comment.upVotes" [downVotes]="comment.downVotes"
         [ratingEntity]="commentEntity" [context]="context" [commentEntity]="comment"></pp-rating>
-
-</div>
+</mat-card>
+<mat-card *ngIf="newComment">
+    <mat-form-field appearance="standard">
+        <mat-label>Comment commment</mat-label>
+        <textarea matInput [formControl]="commentCtrl" ></textarea>
+    </mat-form-field>
+</mat-card>
+<!-- </div> -->

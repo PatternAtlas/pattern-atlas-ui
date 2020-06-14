@@ -1,6 +1,7 @@
 <mat-tab-group mat-stretch-tabs>
   <mat-tab label="User Management">
-    <button class="new-button" mat-raised-button color="accent" (click)="newUser()">New User</button>
+    <pp-action-button-bar [addButtonText]="'Add'" [goBackButton]="false" [reloadButton]="true"
+    (addClicked)="newUser()" (reloadClicked)="getAll()"></pp-action-button-bar>
 
     <table mat-table [dataSource]="dataSource">
 

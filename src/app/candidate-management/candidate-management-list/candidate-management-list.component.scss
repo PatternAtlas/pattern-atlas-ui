@@ -1,9 +1,22 @@
-mat-grid-tile {
-    background: lightblue;
+.mat-card {
+    min-height: 5rem !important;
+    max-width: 200px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin: 0px 1em;
 }
 
-.landing-card {
-    min-height: 20rem !important;
-    min-width: 13rem !important;
-   
+.mat-card-header {
+    flex-shrink: 0;
+}
+
+.container {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.mat-card-content {
+    flex-grow: 1;
+    overflow: auto;
 }

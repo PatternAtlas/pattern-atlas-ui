@@ -4,20 +4,20 @@
     <mat-expansion-panel>
         <mat-expansion-panel-header>
             <mat-panel-title>
-                {{language.name}}
+                Candidates in Pattern Language {{language.name}}
             </mat-panel-title>
         </mat-expansion-panel-header>
         <div class="container">
             <ng-container *ngFor="let candidate of candidates">
-                <mat-card class="landing-card" *ngIf="(candidate.patternLanguageId == language.id)">
+                <mat-card  *ngIf="(candidate.patternLanguageId == language.id)">
                     <mat-card-header>
                         <mat-card-title>{{ candidate.name }}</mat-card-title>
                         <mat-card-subtitle> Language: {{candidate.patternLanguageName}}</mat-card-subtitle>
                     </mat-card-header>
-                    <img mat-card-image src="//via.placeholder.com/200x300" alt="Placholder image">
+                    <!-- <img mat-card-image src="//via.placeholder.com/200x300" alt="Placholder image"> -->
                     <mat-card-content>
                         <p>
-                            {{ candidate.content }}
+                            {{ candidate.content['Context'] }}
                         </p>
                     </mat-card-content>
                     <mat-card-actions>

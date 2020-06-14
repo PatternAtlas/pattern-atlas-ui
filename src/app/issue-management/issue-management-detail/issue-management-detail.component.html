@@ -25,7 +25,7 @@
                 [authorEntity]="issue" [context]="0">
             </pp-author-picker>
 
-            <pp-pattern-language-picker class="detail-component" *ngIf="candidate"
+            <pp-pattern-language-picker class="detail-component" *ngIf="candidate" [disabled]="!candidate"
                 [(patternLanguageSelected)]="patternLanguageSelected"></pp-pattern-language-picker>
 
             <pp-rating [disabled]="!issue.id" [upVotes]="issue.upVotes"
