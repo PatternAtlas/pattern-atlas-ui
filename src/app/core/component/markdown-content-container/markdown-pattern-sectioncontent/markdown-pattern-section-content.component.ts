@@ -23,7 +23,7 @@ import {DiscussDialogComponent} from '../discuss-dialog/discuss-dialog.component
 import {DiscussionTopic} from '../../../model/discussion-topic';
 import {DiscussionService} from '../../../service/discussion.service';
 import {DiscussionComment} from '../../../model/discussion-comment';
-import {ImageModel} from "../../../model/image-model";
+import {ImageModel} from '../../../model/image-model';
 
 
 @Component({
@@ -37,9 +37,6 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
   renderedData: string;
   title = '';
   imageModels = new Array<ImageModel>();
-  mouseDown = false;
-  last: MouseEvent;
-  private texts: any;
   svg: Selection<SVGSVGElement, any, any, any>;
   svgCommentMouseDownCoordinate;
   svgCommentMouseUpCoordinate;
@@ -94,12 +91,13 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
           this.imageModels.push(imageModel);
           console.log(imageModel.image);
           console.log(imageModel.topicModels);
-          //adding svgDatabaseId to svg
+          // adding svgDatabaseId to svg
           if (!imageModel.image.includes('<svg id')) {
             let resIncId = imageModel.image.substr(0, imageModel.image.indexOf('<svg ') + 5)
               + 'id=\"' + id + '\" '
               + imageModel.image.substr(imageModel.image.indexOf('<svg ') + 5 , imageModel.image.length - 1);
             resIncId = resIncId.replace(new RegExp('glyph', 'g'), 'glyph' + id);
+            resIncId = resIncId.replace(new RegExp('clip', 'g'), 'clip' + id);
             this.markdownDiv.nativeElement.innerHTML += resIncId;
           } else {
             this.markdownDiv.nativeElement.innerHTML += imageModel.image;
@@ -151,23 +149,23 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
     this.imageModels.forEach(model => {
       if (d3.select('[id="' + model.imageId + '"').select('g[id=comments]').node() === null) {
         d3.select('[id="' + model.imageId + '"').append('g').attr('id', 'comments');
-      }
-      model.topicModels.forEach( topic => {
-        d3.select('[id="' + model.imageId + '"').select('g[id=comments]').append('rect')
-          .attr('id', topic.discussionTopic.id)
-          .attr('x', topic.discussionTopic.x)
-          .attr('y', topic.discussionTopic.y)
-          .attr('width', topic.discussionTopic.width)
-          .attr('height', topic.discussionTopic.height)
-          .attr('fill', topic.discussionTopic.fill)
-          .attr('opacity', '0.3')
-          .append('svg:title')
-          .text(topic.discussionTopic.title);
-        topic.discussionComments.forEach(comment => {
-             d3.select('[id="' + topic.discussionTopic.id + '"').append('comment').attr('id', comment.id).text(comment.text);
-        });
-      });
 
+        model.topicModels.forEach(topic => {
+          d3.select('[id="' + model.imageId + '"').select('g[id=comments]').append('rect')
+            .attr('id', topic.discussionTopic.id)
+            .attr('x', topic.discussionTopic.x)
+            .attr('y', topic.discussionTopic.y)
+            .attr('width', topic.discussionTopic.width)
+            .attr('height', topic.discussionTopic.height)
+            .attr('fill', topic.discussionTopic.fill)
+            .attr('opacity', '0.3')
+            .append('svg:title')
+            .text(topic.discussionTopic.title);
+          topic.discussionComments.forEach(comment => {
+            d3.select('[id="' + topic.discussionTopic.id + '"').append('comment').attr('id', comment.id).text(comment.text);
+          });
+        });
+      }
     });
 
     d3.selectAll<SVGSVGElement, unknown>('rect').on('click', (d, i, n) => {
@@ -251,8 +249,9 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
 
   drawRect() {
     if (d3.select(this.commentSvg).select('g[id=comments]').node() === null) {
-    d3.select(this.commentSvg).append('g').attr('id', 'comments')
-    .append('rect')
+      d3.select(this.commentSvg).append('g').attr('id', 'comments');
+    }
+    d3.select(this.commentSvg).select('g[id=comments]').append('rect')
       .attr('x', this.svgCommentStartCoordinates.x)
       .attr('y', this.svgCommentStartCoordinates.y)
       .attr('width', this.svgCommentWidth)
@@ -265,22 +264,9 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
       .append('svg:title')
       .text(this.comment);
 
-    } else {
-      d3.select(this.commentSvg).select('g[id=comments]').append('rect')
-        .attr('x', this.svgCommentStartCoordinates.x)
-        .attr('y', this.svgCommentStartCoordinates.y)
-        .attr('width', this.svgCommentWidth)
-        .attr('height', this.svgCommentHeight)
-        .attr('fill', 'blue')
-        .attr('opacity', '0.3')
-        .on('click', (d, i, n) => {
-          this.discuss(n[i]);
-        })
-        .append('svg:title')
-        .text(this.comment);
-    }
     const id = d3.select(this.commentSvg).node().id;
-    const discussionTopic = new DiscussionTopic(this.comment, null, null, this.svgCommentStartCoordinates.x, this.svgCommentStartCoordinates.y, this.svgCommentWidth, this.svgCommentHeight, 'blue', id);
+    const discussionTopic = new DiscussionTopic(this.comment, null, null, this.svgCommentStartCoordinates.x,
+      this.svgCommentStartCoordinates.y, this.svgCommentWidth, this.svgCommentHeight, 'blue', id);
     this.discussionService.addTopic(discussionTopic).subscribe( value => {
       const children = d3.select<SVGSVGElement, Node>(this.commentSvg).select<SVGSVGElement>('g[id=comments]').node().children;
       for (let i = 0; i < children.length; i++) {
@@ -324,7 +310,7 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
           console.log(topicId);
           const imageId = d3.select<SVGSVGElement, Node>(nElement).node().parentNode.parentElement.id;
           d3.select(nElement).remove();
-          const data = new Blob([d3.select<SVGSVGElement, Node>('#' + imageId).node().outerHTML], {type: 'image/svg+xml'});
+          const data = new Blob([d3.select<SVGSVGElement, Node>('[id="' + imageId + '"').node().outerHTML], {type: 'image/svg+xml'});
           const image = {id: imageId, data};
           this.imageService.updateImage(image).subscribe();
           this.discussionService.deleteTopicById(topicId).subscribe();

@@ -65,6 +65,8 @@ import { CreativeLicenseFooterComponent } from './component/creative-license-foo
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import { CommentDialogComponent } from './component/markdown-content-container/comment-dialog/comment-dialog.component';
 import { DiscussDialogComponent } from './component/markdown-content-container/discuss-dialog/discuss-dialog.component';
+import {ImageService} from './service/image.service';
+import {DiscussionService} from './service/discussion.service';
 
 @NgModule({
     imports: [
@@ -103,7 +105,9 @@ import { DiscussDialogComponent } from './component/markdown-content-container/d
     providers: [
         PatternLanguageService,
         PatternService,
-        PatternViewService
+        PatternViewService,
+        ImageService,
+        DiscussionService
     ],
     declarations: [
         DefaultPlRendererComponent,
@@ -124,7 +128,7 @@ import { DiscussDialogComponent } from './component/markdown-content-container/d
         DeletePatternRelationComponent,
         CreativeLicenseFooterComponent,
         CommentDialogComponent,
-        DiscussDialogComponent
+        DiscussDialogComponent,
     ],
     entryComponents: [
         DefaultPlRendererComponent,

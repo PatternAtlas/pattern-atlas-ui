@@ -23,13 +23,13 @@ export class ImageService {
 
   getImageById(id: String): Observable<any> {
     // const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
-    const url = this.repoEndpoint + '/getImageAndCommentsById/' + id;
+    const url = this.repoEndpoint + '/get-image-and-comments-by-id/' + id;
     return this.http.get<ImageModel>(url, {observe: 'response'});
   }
 
   updateImage(image: Image): Observable<any> {
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
-    const url = this.repoEndpoint + '/updateImage/' + image.id;
+    const url = this.repoEndpoint + '/update-image/' + image.id;
     return this.http.post<string>(url, image.data, {headers, observe: 'response', responseType: 'text' as 'json'});
   }
 }
