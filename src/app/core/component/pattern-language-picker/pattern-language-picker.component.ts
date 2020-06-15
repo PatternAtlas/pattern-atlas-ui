@@ -4,9 +4,11 @@ import { PatternLanguageService } from '../../service/pattern-language.service';
 import PatternLanguageSchemaModel from '../../model/pattern-language-schema.model';
 import PatternSectionSchema from '../../model/hal/pattern-section-schema.model';
 import { FormControl } from '@angular/forms';
+import { ConfirmData, ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 export const patternLanguageNone = new PatternLanguageSchemaModel(
-  null,
+  '-1',
   'NONE',
   [
     new PatternSectionSchema('Icon', 'Icon', 'any', 0),
@@ -28,21 +30,28 @@ export class PatternLanguagePickerComponent implements OnInit {
     if (!disabled) this.patternLanguageCrtl.enable();
   }
   // @Input() disabled: boolean;
-  // @Input() set patternLanguageSelected(patternLanguageSelected: string) {
-  //   console.log(patternLanguageSelected);
-  //   if (patternLanguageSelected && this.patternLanguages) {
-  //     this.patternLanguageCrtl.setValue(this.patternLanguages.find(l => l.patternLanguageId == patternLanguageSelected));
-  //     console.log(this.patternLanguageCrtl.value);
-  //   }
-  // }
-  @Input() patternLanguageSelected: string;
+  @Input() set patternLanguageSelected(patternLanguageSelected: string) {
+    if (patternLanguageSelected) {
+      this._patternLanguageSelected = patternLanguageSelected;
+      if (this.patternLanguages) {
+        const patternLanguageSchemaModel = this.patternLanguages.find(l => l.patternLanguageId == this._patternLanguageSelected);
+        this._oldValue = patternLanguageSchemaModel
+        this.patternLanguageCrtl.setValue(patternLanguageSchemaModel);
+      }
+    }
+  }
+  // @Input() patternLanguageSelected: string;
+  @Input() confirmDialog: ConfirmData;
   @Output() patternLanguageSelectedChange = new EventEmitter();
 
+  private _patternLanguageSelected: string;
+  private _oldValue: PatternLanguageSchemaModel;
   patternLanguages: PatternLanguageSchemaModel[];
   patternLanguageCrtl: FormControl = new FormControl({ value: null, disabled: true });
 
   constructor(
     private patternLanguageService: PatternLanguageService,
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -50,13 +59,29 @@ export class PatternLanguagePickerComponent implements OnInit {
       console.log(result);
       this.patternLanguages = result;
       this.patternLanguages.push(patternLanguageNone);
-      if (this.patternLanguageSelected) this.patternLanguageCrtl.setValue(this.patternLanguages.find(l => l.patternLanguageId == this.patternLanguageSelected));
+      if (this._patternLanguageSelected) {
+        const patternLanguageSchemaModel = this.patternLanguages.find(l => l.patternLanguageId == this._patternLanguageSelected);
+        this._oldValue = patternLanguageSchemaModel
+        this.patternLanguageCrtl.setValue(patternLanguageSchemaModel);
+      }
     })
   }
 
   selectionChange() {
-    // console.log(this.patternLanguageCrtl.value);
-    this.patternLanguageSelectedChange.emit(this.patternLanguageCrtl.value)
+    if (this.confirmDialog) {
+      let confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+        data: this.confirmDialog
+      });
+      confirmDialog.afterClosed().subscribe(result => {
+        if (result) {
+          this.patternLanguageSelectedChange.emit(this.patternLanguageCrtl.value)
+        } else {
+          this.patternLanguageCrtl.setValue(this._oldValue);
+        }
+      });
+    } else {
+      this.patternLanguageSelectedChange.emit(this.patternLanguageCrtl.value)
+    }
   }
 
 }

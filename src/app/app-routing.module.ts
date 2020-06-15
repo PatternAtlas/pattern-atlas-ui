@@ -74,7 +74,7 @@ const routes: Routes = [
     },
     {
         path: '',
-        redirectTo: 'candidate',
+        redirectTo: 'issue',
         pathMatch: 'full'
     },
     {

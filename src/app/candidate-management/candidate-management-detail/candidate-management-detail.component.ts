@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TdTextEditorComponent } from '@covalent/text-editor';
 import { Candidate, CandidateManagementService, CandidateManagementStore } from 'src/app/core/candidate-management';
@@ -9,6 +9,8 @@ import { PatternService } from 'src/app/core/service/pattern.service';
 import * as marked from 'marked';
 import * as MarkdownIt from 'markdown-it';
 import * as markdownitKatex from 'markdown-it-katex';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent, ConfirmData } from 'src/app/core/component/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'pp-candidate-management-detail',
@@ -33,6 +35,7 @@ export class CandidateManagementDetailComponent implements OnInit {
 
   disabled: boolean = true;
   pattern: boolean = false;
+  confirmDialog: ConfirmData;
 
   constructor(
     private router: Router,
@@ -40,9 +43,12 @@ export class CandidateManagementDetailComponent implements OnInit {
     private candidateManagementService: CandidateManagementService,
     public candidateStore: CandidateManagementStore,
     private patternService: PatternService,
+    public dialog: MatDialog,
+    private ref: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
+
     this.candidateStore.candidate.subscribe((_candidate: Candidate) => {
       // console.log(_candidate);
       if (_candidate && this.router.url.includes('detail')) {
@@ -64,6 +70,11 @@ export class CandidateManagementDetailComponent implements OnInit {
         this.disabled = false;
         this.candidate = new Candidate(null, 'New Candidate', null, null);
         this.patternLanguageSelectedChange(patternLanguageNone);
+      }
+      this.confirmDialog = {
+        title: `Change Pattern Language for Candidate ${this.candidate.name}`,
+        text: 'If you change the language everything writen will be deleted and the'
+          + ' new pattern schema will be used'
       }
     });
   }
@@ -114,11 +125,21 @@ export class CandidateManagementDetailComponent implements OnInit {
   }
 
   createPattern() {
-    console.log('Create Candidate: ', this.candidate);
+    let confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: `Create Candidate out of Candidate ${this.candidate.name}`,
+        text: 'Are you sure that you want to create a pattern out of this pattern candidate?'
+      }
+    });
 
-    this.patternService.savePattern(`http://localhost:8080/patternLanguages/${this.candidate.patternLanguageId}/patterns`, this.candidate).subscribe(result => {
-      this.router.navigate(['patternLanguages', this.candidate.patternLanguageId]);
-    })
+    confirmDialog.afterClosed().subscribe(result => {
+      if (result) {
+        this.patternService.savePattern(`http://localhost:8080/patternLanguages/${this.candidate.patternLanguageId}/patterns`, this.candidate).subscribe(result => {
+          this.router.navigate(['patternLanguages', this.candidate.patternLanguageId]);
+        })
+      }
+    });
+
   }
 
   cancelPattern() {
@@ -180,8 +201,20 @@ export class CandidateManagementDetailComponent implements OnInit {
   }
 
   delete() {
-    this.candidateManagementService.deleteCandidate(this.candidate).subscribe(result => {
-      this.exit();
-    })
+    let confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: `Delete Candidate ${this.candidate.name}`,
+        text: 'Are you sure you want to delete this pattern candidate?'
+      }
+    });
+
+    confirmDialog.afterClosed().subscribe(result => {
+      if (result) {
+        this.candidateManagementService.deleteCandidate(this.candidate).subscribe(result => {
+          this.exit();
+        })
+      }
+    });
+
   }
 }

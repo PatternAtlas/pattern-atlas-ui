@@ -79,6 +79,7 @@ import { PatternLanguagePickerComponent } from './component/pattern-language-pic
 import { AuthorPickerComponent } from './component/author-picker/author-picker.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatChipsModule } from '@angular/material/chips';
+import { ConfirmDialogComponent } from './component/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
     imports: [
@@ -167,6 +168,7 @@ import { MatChipsModule } from '@angular/material/chips';
         CommentListItemComponent,
         PatternLanguagePickerComponent,
         AuthorPickerComponent,
+        ConfirmDialogComponent,
     ],
     entryComponents: [
         DefaultPlRendererComponent,
@@ -178,7 +180,8 @@ import { MatChipsModule } from '@angular/material/chips';
         MarkdownPatternSectionContentComponent,
         CardRendererComponent,
         GraphDisplayComponent,
-        CreateEditPatternLanguageComponent
+        CreateEditPatternLanguageComponent,
+        ConfirmDialogComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -26,7 +26,8 @@
             </pp-author-picker>
 
             <pp-pattern-language-picker class="detail-component" *ngIf="candidate" [disabled]="!candidate"
-                [(patternLanguageSelected)]="patternLanguageSelected"></pp-pattern-language-picker>
+                [patternLanguageSelected]="patternLanguageSelected.patternLanguageId"
+                (patternLanguageSelectedChange)="patternLanguageSelectedChange($event)"></pp-pattern-language-picker>
 
             <pp-rating [disabled]="!issue.id" [upVotes]="issue.upVotes"
                 [downVotes]="issue.downVotes" [ratingEntity]="issue" [context]="0"></pp-rating>

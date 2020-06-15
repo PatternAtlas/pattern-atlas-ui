@@ -9,6 +9,9 @@ import { RatingModelRequest, RatingManagementService } from 'src/app/core/rating
 import { AuthorManagementService, AuthorModelRequest, AuthorModel, Author } from 'src/app/core/author-management';
 import { PrivilegeService } from 'src/app/authentication/_services/privilege.service';
 import PatternLanguageSchemaModel from 'src/app/core/model/pattern-language-schema.model';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from 'src/app/core/component/confirm-dialog/confirm-dialog.component';
+import { patternLanguageNone } from 'src/app/core/component/pattern-language-picker/pattern-language-picker.component';
 
 @Component({
   selector: 'pp-issue-management-detail',
@@ -17,7 +20,7 @@ import PatternLanguageSchemaModel from 'src/app/core/model/pattern-language-sche
 })
 export class IssueManagementDetailComponent implements OnInit {
 
-  public patternLanguageSelected: PatternLanguageSchemaModel;
+  public patternLanguageSelected: PatternLanguageSchemaModel = patternLanguageNone;
   public issue: Issue;
   private oldIssue: Issue;
 
@@ -30,6 +33,7 @@ export class IssueManagementDetailComponent implements OnInit {
     public candidateManagementStore: CandidateManagementStore,
     private p: PrivilegeService,
     private router: Router,
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -70,17 +74,33 @@ export class IssueManagementDetailComponent implements OnInit {
   }
 
   /** CANDIDATE */
+  patternLanguageSelectedChange(patternLanguage: PatternLanguageSchemaModel) {
+    this.patternLanguageSelected = patternLanguage;
+  }
   selectLanguage() {
     this.candidate = !this.candidate;
   }
 
   createCandidate() {
-    const content: {[key: string]: string} = {};
-    for (let section of this.patternLanguageSelected.patternSchema) {
-      section.label === 'Context' ? content[section.label]  = this.issue.description : content[section.label] = 'Enter your input for this section here.';
-    }
-    const candidate = new Candidate(content, this.issue.name, this.patternLanguageSelected.patternLanguageId, this.issue.authors)
-    this.router.navigate(['candidate/create', this.issue.name], { state: { data: candidate } });
+    let confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: `Create Candidate out of Issue ${this.issue.name}`,
+        text: 'Are you sure that you want to create a Pattern Candidate out of this Issue?'
+      }
+    });
+
+    confirmDialog.afterClosed().subscribe(result => {
+      if (result) {
+        const content: { [key: string]: string } = {};
+        for (let section of this.patternLanguageSelected.patternSchema) {
+          section.label === 'Context' ? content[section.label] = this.issue.description : content[section.label] = 'Enter your input for this section here.';
+        }
+        const candidate = new Candidate(content, this.issue.name, this.patternLanguageSelected.patternLanguageId, this.issue.authors)
+        this.router.navigate(['candidate/create', this.issue.name], { state: { data: candidate } });
+      }
+    });
+
+
   }
 
   cancelCandidate() {
@@ -110,8 +130,19 @@ export class IssueManagementDetailComponent implements OnInit {
   }
 
   delete() {
-    this.issueManagementService.deleteIssue(this.issue).subscribe(result => {
-      this.exit();
-    })
+    let confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: `Delete Issue ${this.issue.name}`,
+        text: 'Are you sure that you want to delete this Issue?'
+      }
+    });
+
+    confirmDialog.afterClosed().subscribe(result => {
+      if (result) {
+        this.issueManagementService.deleteIssue(this.issue).subscribe(result => {
+          this.exit();
+        })
+      }
+    });
   }
 }

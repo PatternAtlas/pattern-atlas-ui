@@ -15,7 +15,8 @@
         </pp-author-picker>
 
         <pp-pattern-language-picker class="detail-component" [disabled]="disabled"
-            [patternLanguageSelected]="candidate.patternLanguageId" (patternLanguageSelectedChange)="patternLanguageSelectedChange($event)"></pp-pattern-language-picker>
+            [patternLanguageSelected]="candidate.patternLanguageId" [confirmDialog]="confirmDialog"
+            (patternLanguageSelectedChange)="patternLanguageSelectedChange($event)"></pp-pattern-language-picker>
 
         <pp-rating class="detail-component" [disabled]="!candidate.id" [upVotes]="candidate.upVotes"
             [downVotes]="candidate.downVotes" [ratingEntity]="candidate" [context]="1"></pp-rating>
