@@ -16,9 +16,8 @@
                 Save </button>
             <button *ngIf="!disabled" mat-flat-button type="button" color="" (click)="cancel()"> Cancel
             </button>
-
-            <button *ngIf="disabled" mat-flat-button type="button" color="accent" (click)="addComment()"> Comment
-            </button>
+            <!-- <button *ngIf="disabled" mat-flat-button type="button" color="accent" (click)="addComment()"> Comment
+            </button> -->
             <button *ngIf="disabled" mat-flat-button type="button" color="primary" (click)="edit()"
                 [disabled]="p.disabled(comment.userId) | async"> Edit </button>
             <button *ngIf="disabled" mat-flat-button type="button" color="warn" (click)="delete()"

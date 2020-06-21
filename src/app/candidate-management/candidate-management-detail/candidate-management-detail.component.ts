@@ -63,6 +63,7 @@ export class CandidateManagementDetailComponent implements OnInit {
 
       } else if (!_candidate && window.history.state.data) {
         this.candidate = window.history.state.data as Candidate
+        console.log(this.candidate);
         this.contentToMarkdown();
         this.edit();
 
@@ -81,7 +82,7 @@ export class CandidateManagementDetailComponent implements OnInit {
 
   // CHANGE MARKDOWN
   contentToMarkdown() {
-    console.log(this.candidate);
+    // console.log(this.candidate);
     this.candidateMarkdown = `# ${this.candidate.name}\n`;
     for (let key in this.candidate.content) {
       this.candidateMarkdown = this.candidateMarkdown + `## ${key}\n${this.candidate.content[key]}\n`;
@@ -109,6 +110,7 @@ export class CandidateManagementDetailComponent implements OnInit {
 
   /** Pattern Language */
   patternLanguageSelectedChange(patternLanguage: PatternLanguageSchemaModel) {
+    console.log(patternLanguage);
     this.candidate.patternLanguageId = patternLanguage.patternLanguageId;
     this.candidate.patternLanguageName = patternLanguage.patternLanguageName;
     const content: { [key: string]: string } = {};
@@ -122,6 +124,7 @@ export class CandidateManagementDetailComponent implements OnInit {
   /** Pattern */
   confirmPattern() {
     this.pattern = !this.pattern;
+    console.log(this.candidate.patternLanguageId);
   }
 
   createPattern() {
@@ -179,6 +182,7 @@ export class CandidateManagementDetailComponent implements OnInit {
 
   submit() {
     if (this.createContent()) {
+      if (this.candidate.patternLanguageId === '-1') this.candidate.patternLanguageId = null;
       this.candidate.uri = `/candidates/${this.candidate.name}`
       this.candidate.id ? this.update() : this.create();
     }

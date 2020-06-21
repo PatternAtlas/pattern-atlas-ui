@@ -25,7 +25,7 @@
          <div class="detail-component buttons" *ngIf="disabled && !pattern">
             <button mat-flat-button type="button" color="accent" (click)="edit()">Edit</button>
             <button mat-flat-button type="button" color="warn" (click)="delete()">Delete</button>
-            <button mat-flat-button type="button" color="accent" (click)="confirmPattern()">Pattern</button>
+            <button mat-flat-button type="button" color="accent" (click)="confirmPattern()">Candidate To Pattern</button>
         </div>
 
         <!-- EDIT BUTTONS-->
@@ -37,7 +37,7 @@
         <!-- CANDIDATE BUTTONS-->
         <div class="detail-component buttons" *ngIf="pattern">
             <button mat-flat-button type="button" color="accent" [disabled]="!candidate.patternLanguageId"
-                (click)="createPattern()">Save</button>
+                (click)="createPattern()">Save as Pattern</button>
             <button mat-flat-button type="button" color="warn" (click)="cancelPattern()">Cancel</button>
         </div>
     </mat-card>

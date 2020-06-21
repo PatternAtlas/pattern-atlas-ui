@@ -21,7 +21,7 @@ export class AuthorPickerComponent implements OnInit, OnChanges {
   @Input() authorEntity: any;
   @Input() context: number;
   @Input() disabled: boolean = true;
-  @Input() authors: AuthorModel[] = [];
+  @Input() authors: AuthorModel[];
 
   separatorKeysCodes: number[] = [ENTER, COMMA];
   authorCtrl = new FormControl();

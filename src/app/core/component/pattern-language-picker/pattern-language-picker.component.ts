@@ -72,11 +72,14 @@ export class PatternLanguagePickerComponent implements OnInit {
       let confirmDialog = this.dialog.open(ConfirmDialogComponent, {
         data: this.confirmDialog
       });
+
       confirmDialog.afterClosed().subscribe(result => {
         if (result) {
+          this._oldValue = this.patternLanguageCrtl.value;
           this.patternLanguageSelectedChange.emit(this.patternLanguageCrtl.value)
         } else {
           this.patternLanguageCrtl.setValue(this._oldValue);
+          // this.patternLanguageSelectedChange.emit(this._oldValue)
         }
       });
     } else {
