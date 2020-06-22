@@ -15,8 +15,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTreeModule } from '@angular/material/tree';
 import { DesignModelService } from './service/design-model.service';
 import { DesignModelRendererComponent } from './component/design-model-renderer/design-model-renderer.component';
-import { GraphDataService } from '../core/service/graph-data.service';
-import { PatternViewService } from '../core/service/pattern-view.service';
+import { GraphDataService } from '../core/service/graph-data/graph-data.service';
 
 
 @NgModule({

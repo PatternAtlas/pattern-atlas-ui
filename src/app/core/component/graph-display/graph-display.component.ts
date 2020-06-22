@@ -29,8 +29,10 @@ import { switchMap, tap } from 'rxjs/operators';
 import { PatternResponse } from '../../model/hal/pattern-response.interface';
 import { EMPTY, Observable } from 'rxjs';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { GraphDataService } from '../../service/graph-data.service';
+import { GraphDataService } from '../../service/graph-data/graph-data.service';
 import { globals } from '../../../globals';
+import { GraphDataSavePatternService } from '../../service/graph-data/graph-data-save-pattern.service';
+import { PatternRelationDescriptorDirection } from '../../model/pattern-relation-descriptor-direction.enum';
 
 
 export class GraphNode {
@@ -59,6 +61,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   @Input() data: GraphInputData;
   @Input() showPatternLanguageName: boolean;
   @Output() addedEdge = new EventEmitter<any>();
+  @Output() updatedGraphEvent = new EventEmitter<void>();
   currentPattern: Pattern;
   currentEdges: Array<EdgeWithType>;
   patternLanguages: Array<PatternLanguage>;
@@ -166,11 +169,13 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
 
   edgeAdded(event) {
     this.currentEdge = event.detail.edge;
+    const patterns = Array.isArray(this.patterns) ? this.patterns : this.patternContainer.patterns;
     const dialogRef = this.matDialog.open(CreatePatternRelationComponent, {
       data: {
-        firstPattern: this.patterns.find((pat) => event.detail.edge.source === pat.id),
-        secondPattern: this.patterns.find((pat) => event.detail.edge.target === pat.id),
-        patterns: this.patterns,
+        firstPattern: patterns.find((pat) => event.detail.edge.source === pat.id),
+        secondPattern: patterns.find((pat) => event.detail.edge.target === pat.id),
+        preselectedEdgeDirection: PatternRelationDescriptorDirection.DirectedRight,
+        patterns: patterns,
         patternLanguage: this.patternLanguage,
         patternContainer: this.patternContainer
       }
@@ -199,6 +204,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
       switchMap(result => result ? this.getCurrentPatternViewAndPatterns() : EMPTY))
       .subscribe(
         (res) => {
+          this.updatedGraphEvent.emit();
           if (res) {
             this.reformatGraph();
             this.toastService.pop('success', 'Pattern added');
@@ -215,11 +221,23 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     this.showInfoForClickedNode(node);
   }
 
+  nodePositionChanged(event) {
+    const movedNode = event.detail.node;
+    try {
+      (<GraphDataSavePatternService>this.graphDataService)
+        .savePattern(this.patternLanguage ? this.patternLanguage : this.patternContainer, movedNode)
+        .subscribe(() => console.debug('Pattern saved', movedNode));
+    } catch (e) {
+      this.saveGraph();
+    }
+  }
+
   saveGraph() {
     if (!this.nodes) {
       console.error('No nodes to save');
       return;
     }
+    console.warn('Save graph', this.patternLanguage ? this.patternLanguage : this.patternContainer, this.graphNativeElement.nodeList);
 
     this.graphDataService.saveGraph(this.patternLanguage ? this.patternLanguage : this.patternContainer, this.graphNativeElement.nodeList)
       .subscribe(() => console.info('saved pattern ' + (this.patternLanguage ? 'language' : 'container') + ' graph layout'));
@@ -262,6 +280,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   }
 
   private getCurrentPatternViewAndPatterns(): Observable<Pattern[]> {
+    console.log('1', this.patternGraphData);
     return this.graphDataService.getPatternContainer(this.patternContainer._links.self.href).pipe(
       tap(patternContainerResponse => {
         this.patternContainer = patternContainerResponse;
@@ -269,6 +288,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
       switchMap((patternContainerResponse: PatternContainer) => this.patternService.getPatternsByUrl(patternContainerResponse._links.patterns.href)),
       tap(patterns => {
         this.patterns = patterns;
+        console.log('2', this.patternGraphData);
       }));
   }
 

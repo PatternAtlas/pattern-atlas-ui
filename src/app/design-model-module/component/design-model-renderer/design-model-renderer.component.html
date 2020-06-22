@@ -8,7 +8,6 @@
 <pp-graph-display *ngIf="!isLoading"
                   [data]="graphData"
                   (addedEdge)="addedEdgeInGraphView($event)"
-                  [showPatternLanguageName]="true">
+                  [showPatternLanguageName]="true"
+                  (updatedGraphEvent)="reloadGraph()">
 </pp-graph-display>
-
-

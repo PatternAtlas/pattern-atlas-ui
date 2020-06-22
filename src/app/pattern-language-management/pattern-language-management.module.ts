@@ -34,7 +34,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatListModule } from '@angular/material/list';
 import { MatRippleModule } from '@angular/material/core';
 import { Routes, RouterModule } from '@angular/router';
-import { GraphDataService } from '../core/service/graph-data.service';
+import { GraphDataService } from '../core/service/graph-data/graph-data.service';
 import { DesignModelService } from '../design-model-module/service/design-model.service';
 import { globals } from '../globals';
 import { MatFormFieldModule } from '@angular/material/form-field';

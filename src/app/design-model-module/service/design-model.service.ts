@@ -29,31 +29,41 @@ import { DirectedEdesResponse } from '../../core/model/hal/directed-edes-respons
 import { GraphNode } from '../../core/component/graph-display/graph-display.component';
 import { DesignModel } from '../model/hal/design-model';
 import { DesignModelResponse } from '../model/hal/design-model-response';
-import { GraphDataService } from '../../core/service/graph-data.service';
+import { GraphDataService } from '../../core/service/graph-data/graph-data.service';
 import { map } from 'rxjs/operators';
+import { GraphDataSavePatternService } from '../../core/service/graph-data/graph-data-save-pattern.service';
 
 
 @Injectable()
-export class DesignModelService implements GraphDataService {
+export class DesignModelService implements GraphDataService, GraphDataSavePatternService {
 
-  private repoEndpoint = globals.repoEndpoint;
+  private readonly repoEndpoint = globals.repoEndpoint;
+  private readonly designModelsEndpoint = this.repoEndpoint + '/design-models';
 
-  constructor(private http: HttpClient) {
+
+  constructor(private httpClient: HttpClient) {
   }
 
 
   getDesignModels(): Observable<DesignModelResponse> {
-    return this.http.get<DesignModelResponse>(this.repoEndpoint + '/designModels');
+    return this.httpClient.get<DesignModelResponse>(this.designModelsEndpoint);
   }
 
 
   saveDesignModel(url: string, view: PatternContainer) {
-    return this.http.post<DesignModelResponse>(url, view, { observe: 'response' });
+    return this.httpClient.post<DesignModelResponse>(url, view, { observe: 'response' });
   }
 
   addPatterns(url: string, patterns: Pattern[]): Observable<any> {
-    const observables = patterns.map(pat => this.http.post<DesignModelResponse>(url, pat, { observe: 'response' }));
+    console.warn('Add Patterns', url, patterns);
+    const observables = patterns.map(pat => this.httpClient.post<DesignModelResponse>(url, pat, { observe: 'response' }));
     return observables.length > 0 ? forkJoin(observables) : of(null);
+  }
+
+  savePattern(patternContainer: PatternContainer, node: any) {
+    const url = patternContainer._links.patterns.href + '/' + node.id + '/position';
+    console.debug('Put Pattern on ', url, patternContainer, node);
+    return this.httpClient.put<any>(url, node);
   }
 
   getPatternContainerByUri(uri: string): Observable<PatternContainer> {
@@ -68,6 +78,7 @@ export class DesignModelService implements GraphDataService {
   }
 
   getPatternContainer(url: string): Observable<PatternContainer> {
+    console.debug('Request pattern container');
     return this.getDesignModelByUrl(url).pipe(
       map(designModel => {
         const patternContainer = new PatternContainer();
@@ -90,26 +101,36 @@ export class DesignModelService implements GraphDataService {
   }
 
   getDesignModelByUrl(url: string): Observable<DesignModel> {
-    return this.http.get<DesignModel>(url);
+    return this.httpClient.get<DesignModel>(url);
   }
 
   getDesignModelByUuid(uuid: string): Observable<DesignModel> {
-    return this.http.get<DesignModel>(this.repoEndpoint + '/designModels/' + uuid + '/patterns');
+    return this.httpClient.get<DesignModel>(this.designModelsEndpoint + '/' + uuid + '/patterns');
   }
+
+
+  addEdge(links: { edges: string }, edge: DirectedEdgeModel | UndirectedEdgeModel): void {
+    links.edges = links.edges || this.designModelsEndpoint + '/5754bddb-4528-4577-bc7f-f403c0fd8e30/edges';
+    console.debug('Add edge', links.edges, edge);
+    this.httpClient.post(links.edges, edge).subscribe(response => {
+      console.debug('Add edge response', response);
+    });
+  }
+
 
   createLink(
     url,
     edge: DirectedEdgeModel | UndirectedEdgeModel | AddDirectedEdgeToViewRequest | AddUndirectedEdgeToViewRequest
   ): Observable<HttpResponse<Object>> {
-    return this.http.post(url, edge, { observe: 'response' });
+    return this.httpClient.post(url, edge, { observe: 'response' });
   }
 
   addLinks(patternContainer: PatternContainer, items: LinksToOtherPattern[]): Observable<any> {
 
     const observables = items
       .map(item => item.type === 'directed' ?
-        this.http.post(patternContainer._links.directedEdges.href, new AddDirectedEdgeToViewRequest(<DirectedEdgeModel>item.edge), { observe: 'response' }) :
-        this.http.post(
+        this.httpClient.post(patternContainer._links.directedEdges.href, new AddDirectedEdgeToViewRequest(<DirectedEdgeModel>item.edge), { observe: 'response' }) :
+        this.httpClient.post(
           patternContainer._links.undirectedEdges.href,
           new AddUndirectedEdgeToViewRequest(<UndirectedEdgeModel>item.edge),
           { observe: 'response' }
@@ -119,19 +140,20 @@ export class DesignModelService implements GraphDataService {
   }
 
   getDirectedEdges(patternContainer: PatternContainer): Observable<Embedded<DirectedEdesResponse>> {
-    return this.http.get<Embedded<DirectedEdesResponse>>(patternContainer._links.directedEdges.href);
+    return this.httpClient.get<Embedded<DirectedEdesResponse>>(patternContainer._links.directedEdges.href);
   }
 
   getUndirectedEdges(patternContainer: PatternContainer): Observable<Embedded<UndirectedEdesResponse>> {
-    return this.http.get<Embedded<UndirectedEdesResponse>>(patternContainer._links.undirectedEdges.href);
+    return this.httpClient.get<Embedded<UndirectedEdesResponse>>(patternContainer._links.undirectedEdges.href);
   }
 
   deleteLink(patternLink: any): Observable<any> {
-    return this.http.delete(patternLink);
+    return this.httpClient.delete(patternLink);
   }
 
   saveGraph(patternContainer: PatternContainer, nodeList: any[]) {
-    return this.http.post<any>(patternContainer._links.patterns.href, nodeList, { observe: 'response' });
+    console.debug('Save Graph', patternContainer, nodeList);
+    return this.httpClient.post<any>(patternContainer._links.patterns.href, nodeList, { observe: 'response' });
   }
 
   getGraph(patternContainer: PatternContainer): Observable<{ graph: Array<GraphNode> }> {

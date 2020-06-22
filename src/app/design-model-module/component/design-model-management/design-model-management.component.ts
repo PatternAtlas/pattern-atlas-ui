@@ -56,7 +56,7 @@ export class DesignModelManagementComponent implements OnInit {
             model = <PatternContainer>result.dialogResult;
           }
         ),
-        switchMap(() => this.designModelService.saveDesignModel(this.designModelResponse._links.designModels.href, model)),
+        switchMap(() => this.designModelService.saveDesignModel(this.designModelResponse._links.self.href, model)),
         switchMap(() => this.getData())
       )
       .subscribe(

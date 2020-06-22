@@ -13,12 +13,12 @@
  */
 
 import { Observable } from 'rxjs';
-import Pattern from '../model/hal/pattern.model';
-import { PatternContainer } from '../model/hal/pattern-container.model';
-import { GraphNode } from '../component/graph-display/graph-display.component';
-import { PatternContainerResponse } from '../model/hal/pattern-container-response.interface';
+import Pattern from '../../model/hal/pattern.model';
+import { PatternContainer } from '../../model/hal/pattern-container.model';
+import { GraphNode } from '../../component/graph-display/graph-display.component';
+import { PatternContainerResponse } from '../../model/hal/pattern-container-response.interface';
 import { Injectable } from '@angular/core';
-import PatternLanguage from '../model/hal/pattern-language.model';
+import PatternLanguage from '../../model/hal/pattern-language.model';
 
 
 @Injectable()

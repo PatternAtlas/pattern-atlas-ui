@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { DesignModelService } from '../../service/design-model.service';
 import { PatternLanguageService } from '../../../core/service/pattern-language.service';
 import { GraphInputData } from '../../../core/model/graph-input-data.interface';
+import { UndirectedEdgeModel } from '../../../core/model/hal/undirected-edge.model';
+import { DirectedEdgeModel } from '../../../core/model/hal/directed-edge.model';
 
 
 @Component({
@@ -26,6 +28,7 @@ export class DesignModelRendererComponent implements OnInit {
 
 
   private designModelId: [];
+  private designModelLinks;
 
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -51,10 +54,25 @@ export class DesignModelRendererComponent implements OnInit {
 
 
   private patchGraphData(data?: object): void {
+    const newGraphData = {
+      patterns: [],
+      edges: [],
+      copyOfLinks: [],
+      patternLanguage: null,
+      patternContainer: null,
+      patternLanguages: []
+    };
+
     if (data) {
-      Object.keys(data).forEach(key => {
-        this.graphData[ key ] = data[ key ];
+      Object.keys(this.graphData).forEach(key => {
+        newGraphData[ key ] = this.graphData[ key ];
       });
+
+      Object.keys(data).forEach(key => {
+        newGraphData[ key ] = data[ key ];
+      });
+
+      this.graphData = newGraphData;
     }
 
     console.debug('New graphData is', this.graphData);
@@ -65,6 +83,7 @@ export class DesignModelRendererComponent implements OnInit {
     this.designModelId = id;
     this.designModelService.getPatternContainerByUuid(id).subscribe(patternContainer => {
       console.debug('Fetched pattern container is:', patternContainer);
+      this.designModelLinks = patternContainer._links;
 
       this.patchGraphData({ patternContainer: patternContainer, patterns: patternContainer });
     });
@@ -72,7 +91,7 @@ export class DesignModelRendererComponent implements OnInit {
 
 
   addedEdgeInGraphView(event) {
-    console.error('TODO: IMPLEMENT', this);
+    this.designModelService.addEdge(this.designModelLinks, event);
   }
 
 

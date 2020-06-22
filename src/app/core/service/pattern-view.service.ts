@@ -28,7 +28,7 @@ import { Embedded } from '../model/hal/embedded';
 import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
 import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
 import { GraphNode } from '../component/graph-display/graph-display.component';
-import { GraphDataService } from './graph-data.service';
+import { GraphDataService } from './graph-data/graph-data.service';
 
 
 @Injectable()

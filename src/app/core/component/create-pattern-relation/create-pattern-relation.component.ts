@@ -22,31 +22,41 @@ export class CreatePatternRelationComponent implements OnInit {
 
   directionEnum = PatternRelationDescriptorDirection;
   patterns: Pattern[];
-  types = [{ name: PatternRelationDescriptorDirection.DirectedRight, icon: 'trending_flat' },
-    { name: PatternRelationDescriptorDirection.DirectedLeft, icon: 'trending_flat' }, {
-      name: PatternRelationDescriptorDirection.UnDirected,
-      icon: 'compare_arrows'
-    }];
+  directionTypes = [
+    { name: PatternRelationDescriptorDirection.DirectedRight, icon: 'trending_flat' },
+    { name: PatternRelationDescriptorDirection.DirectedLeft, icon: 'trending_flat' },
+    { name: PatternRelationDescriptorDirection.UnDirected, icon: 'sync_alt' }
+  ];
   relationForm: FormGroup;
-  relationTypes = ['isRelatedTo', 'isUsedBefore', 'isUsedAfter', 'dependsOn', 'canBeUsedWith',
-    'cannotBeUsedWith', 'consistsOf', 'uses', 'usedIn', 'isAlternativeTo', 'isVariationOf'];
+  relationTypes = [ // TODO load relation types from API
+    'isRelatedTo',
+    'isUsedBefore',
+    'isUsedAfter',
+    'dependsOn',
+    'canBeUsedWith',
+    'cannotBeUsedWith',
+    'consistsOf',
+    'uses',
+    'usedIn',
+    'isAlternativeTo',
+    'isVariationOf'
+  ];
 
 
   ngOnInit() {
+    let preselectedEdgeDirection;
+    try {
+      preselectedEdgeDirection = this.directionTypes.filter(type => type.name === this.data.preselectedEdgeDirection)[ 0 ];
+    } catch (e) {
+    }
+
     this.relationForm = this.fb.group({
-      firstPattern: ['', [Validators.required]],
-      secondPattern: ['', [Validators.required]],
-      direction: ['', [Validators.required]],
+      firstPattern: [this.data.firstPattern, [Validators.required]],
+      secondPattern: [this.data.secondPattern, [Validators.required]],
+      direction: [preselectedEdgeDirection, [Validators.required]],
       relationType: ['', [Validators.required]],
       description: ['', []],
     });
-
-    if (this.data.firstPattern) {
-      this.relationForm.get('firstPattern').setValue(this.data.firstPattern);
-    }
-    if (this.data.secondPattern) {
-      this.relationForm.get('secondPattern').setValue(this.data.secondPattern);
-    }
   }
 
   close(): void {
@@ -80,6 +90,7 @@ export class CreatePatternRelationComponent implements OnInit {
 export interface DialogData {
   firstPattern?: Pattern;
   secondPattern?: Pattern;
+  preselectedEdgeDirection?: PatternRelationDescriptorDirection;
   patterns: Pattern[];
   patternLanguage: PatternLanguage;
   patternContainer: PatternContainer;
@@ -97,5 +108,3 @@ export interface DialogDataResult {
   secondPattern: Pattern;
   description?: string;
 }
-
-

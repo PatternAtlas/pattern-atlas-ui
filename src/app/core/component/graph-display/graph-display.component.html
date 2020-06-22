@@ -76,7 +76,7 @@
                    (onAddedEdge)="edgeAdded($event)"
                    (onClickedBackground)="backgroundClicked()"
                    (onClickedNode)="nodeClicked($event)"
-                   (onNodePositionChange)="saveGraph()"
+                   (onNodePositionChange)="nodePositionChanged($event)"
                    [ppGraphEventEmmiter]
                    classes=" highlighted-edge low-opacity-node low-opacity-edge"
                    mode="layout"
