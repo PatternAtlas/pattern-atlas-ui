@@ -32,5 +32,5 @@ export abstract class GraphDataService {
 
   abstract saveGraph(patternContainer: PatternContainer | PatternLanguage, nodeList: any[]): Observable<any>;
 
-  abstract getGraph(patternContainer: PatternContainer): Observable<{ graph: Array<GraphNode> }>;
+  abstract getGraph(patternContainer: PatternContainer | PatternLanguage): Observable<{ graph: Array<GraphNode> }>;
 }

@@ -38,6 +38,7 @@ import { GraphDataService } from '../core/service/graph-data/graph-data.service'
 import { DesignModelService } from '../design-model-module/service/design-model.service';
 import { globals } from '../globals';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { PatternLanguageService } from '../core/service/pattern-language.service';
 
 
 /*
@@ -114,7 +115,7 @@ export const PL_ROUTES: Routes = [
     PatternLanguageGraphComponent
   ],
   providers: [
-    { provide: GraphDataService, useClass: DesignModelService }
+    { provide: GraphDataService, useClass: PatternLanguageService }
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

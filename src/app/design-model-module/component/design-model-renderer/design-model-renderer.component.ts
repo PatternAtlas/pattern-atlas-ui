@@ -5,6 +5,7 @@ import { PatternLanguageService } from '../../../core/service/pattern-language.s
 import { GraphInputData } from '../../../core/model/graph-input-data.interface';
 import { UndirectedEdgeModel } from '../../../core/model/hal/undirected-edge.model';
 import { DirectedEdgeModel } from '../../../core/model/hal/directed-edge.model';
+import { ConcreteSolutionService } from '../../service/concrete-solution.service';
 
 
 @Component({
@@ -27,12 +28,12 @@ export class DesignModelRendererComponent implements OnInit {
   };
 
 
-  private designModelId: [];
-  private designModelLinks;
+  private designModelId: string;
 
 
   constructor(private activatedRoute: ActivatedRoute,
               private designModelService: DesignModelService,
+              private concreteSolutionService: ConcreteSolutionService,
               private patternLanguageService: PatternLanguageService) {
   }
 
@@ -83,19 +84,32 @@ export class DesignModelRendererComponent implements OnInit {
     this.designModelId = id;
     this.designModelService.getPatternContainerByUuid(id).subscribe(patternContainer => {
       console.debug('Fetched pattern container is:', patternContainer);
-      this.designModelLinks = patternContainer._links;
 
       this.patchGraphData({ patternContainer: patternContainer, patterns: patternContainer });
+
+      this.designModelService.getEdges().subscribe(edges => this.patchGraphData({ edges: edges }));
     });
   }
 
 
   addedEdgeInGraphView(event) {
-    this.designModelService.addEdge(this.designModelLinks, event);
+    this.designModelService.addEdge(event);
   }
 
 
   reloadGraph() {
     this.loadDesignModel(this.designModelId);
+  }
+
+
+  deletePatternInstance(uuid: string): void {
+    this.designModelService.deletePattern(uuid).subscribe(
+      () => this.reloadGraph()
+    );
+  }
+
+
+  aggregateConcreteSolutions(): void {
+    this.concreteSolutionService.aggregateDesignModel(this.designModelId);
   }
 }

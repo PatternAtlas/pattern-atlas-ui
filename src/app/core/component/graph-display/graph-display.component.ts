@@ -55,13 +55,18 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   graphNativeElement: GraphEditor;
   @ViewChild('svg') svg: ElementRef;
   patternGraphData: any;
+
+  @Input() data: GraphInputData;
+  @Input() showPatternLanguageName: boolean;
+  @Input() enableDeletePattern: boolean = false;
+
+  @Output() addedEdge = new EventEmitter<any>();
+  @Output() updatedGraphEvent = new EventEmitter<void>();
+  @Output() deletePatternEvent = new EventEmitter<string>();
+
   isLoading = true;
   patternClicked = false;
   allPatternsLoading = true;
-  @Input() data: GraphInputData;
-  @Input() showPatternLanguageName: boolean;
-  @Output() addedEdge = new EventEmitter<any>();
-  @Output() updatedGraphEvent = new EventEmitter<void>();
   currentPattern: Pattern;
   currentEdges: Array<EdgeWithType>;
   patternLanguages: Array<PatternLanguage>;
@@ -217,6 +222,11 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     const node = event[ 'detail' ][ 'node' ];
     if (event[ 'detail' ][ 'key' ] === 'info') {
       this.router.navigate(['/' + globals.pathConstants.patternLanguages + '/' + (<GraphNode>node).patternLanguageId + '/' + node.id]);
+      return;
+    }
+    if (event[ 'detail' ][ 'key' ] === 'delete') {
+      this.deletePatternEvent.emit(node.id);
+      return;
     }
     this.showInfoForClickedNode(node);
   }
@@ -272,8 +282,8 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     }
     this.allPatternsLoading = true;
     this.patternService.getPatternsByUrl(patternLang._links.patterns.href).subscribe(
-      data => {
-        patternLang.patterns = data;
+      (data: Array<Pattern>) => {
+        patternLang.patterns = data.sort((a, b) => a.name.localeCompare(b.name));
         this.allPatternsLoading = false;
       }
     );
@@ -350,7 +360,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
       return;
     }
 
-    this.graphDataService.getGraph(this.patternContainer)
+    this.graphDataService.getGraph(!!this.patternContainer ? this.patternContainer : this.patternLanguage)
       .subscribe((res: { graph: Array<GraphNode> }) => {
         this.prepareGraph(res.graph, this.patternContainer);
       });

@@ -16,6 +16,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import { DesignModelService } from './service/design-model.service';
 import { DesignModelRendererComponent } from './component/design-model-renderer/design-model-renderer.component';
 import { GraphDataService } from '../core/service/graph-data/graph-data.service';
+import { ConcreteSolutionService } from './service/concrete-solution.service';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { GraphDataService } from '../core/service/graph-data/graph-data.service'
     MatTreeModule
   ],
   providers: [
+    ConcreteSolutionService,
     DesignModelService,
     { provide: GraphDataService, useClass: DesignModelService }
   ]

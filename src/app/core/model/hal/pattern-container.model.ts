@@ -8,6 +8,7 @@ export class PatternContainer extends UriEntity {
     self: HalLink;
     patternViews: HalLink;
     patterns: HalLink;
+    edges?: HalLink;
     directedEdges: HalLink;
     undirectedEdges: HalLink;
     graph: HalLink;

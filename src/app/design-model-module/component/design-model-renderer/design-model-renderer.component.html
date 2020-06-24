@@ -3,11 +3,18 @@
     <mat-icon>autorenew</mat-icon>
     Reload
   </button>
+
+  <button mat-raised-button class="action-button-with-margin" (click)="aggregateConcreteSolutions()" color="accent">
+    <mat-icon>handyman</mat-icon>
+    Aggregate Concrete Solutions
+  </button>
 </pp-action-button-bar>
 
 <pp-graph-display *ngIf="!isLoading"
                   [data]="graphData"
                   (addedEdge)="addedEdgeInGraphView($event)"
                   [showPatternLanguageName]="true"
+                  [enableDeletePattern]="true"
+                  (deletePatternEvent)="deletePatternInstance($event)"
                   (updatedGraphEvent)="reloadGraph()">
 </pp-graph-display>

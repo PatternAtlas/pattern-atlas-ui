@@ -30,8 +30,9 @@ import { GraphNode } from '../../core/component/graph-display/graph-display.comp
 import { DesignModel } from '../model/hal/design-model';
 import { DesignModelResponse } from '../model/hal/design-model-response';
 import { GraphDataService } from '../../core/service/graph-data/graph-data.service';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { GraphDataSavePatternService } from '../../core/service/graph-data/graph-data-save-pattern.service';
+import { HalLink } from '../../core/model/hal/hal-link.interface';
 
 
 @Injectable()
@@ -39,6 +40,7 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
 
   private readonly repoEndpoint = globals.repoEndpoint;
   private readonly designModelsEndpoint = this.repoEndpoint + '/design-models';
+  private designModelLinks;
 
 
   constructor(private httpClient: HttpClient) {
@@ -66,12 +68,22 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
     return this.httpClient.put<any>(url, node);
   }
 
+  deletePattern(uuid: string): Observable<any> {
+    console.debug('Delete pattern', this.designModelLinks.patterns.href, uuid);
+    return this.httpClient.delete(this.designModelLinks.patterns.href + '/' + uuid).pipe(
+      tap(response => {
+        console.debug('Delete pattern response', response);
+      })
+    );
+  }
+
   getPatternContainerByUri(uri: string): Observable<PatternContainer> {
     return this.getDesignModelByUrl(uri).pipe(
       map(designModel => {
         const patternContainer = new PatternContainer();
         patternContainer.patterns = designModel._embedded.patterns;
         patternContainer._links = designModel._links;
+        this.designModelLinks = patternContainer._links;
         return patternContainer;
       })
     );
@@ -84,6 +96,7 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
         const patternContainer = new PatternContainer();
         patternContainer.patterns = designModel._embedded.patterns;
         patternContainer._links = designModel._links;
+        this.designModelLinks = patternContainer._links;
         return patternContainer;
       })
     );
@@ -95,6 +108,7 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
         const patternContainer = new PatternContainer();
         patternContainer.patterns = designModel._embedded ? designModel._embedded.patterns : [];
         patternContainer._links = designModel._links;
+        this.designModelLinks = patternContainer._links;
         return patternContainer;
       })
     );
@@ -109,11 +123,23 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
   }
 
 
-  addEdge(links: { edges: string }, edge: DirectedEdgeModel | UndirectedEdgeModel): void {
-    links.edges = links.edges || this.designModelsEndpoint + '/5754bddb-4528-4577-bc7f-f403c0fd8e30/edges';
-    console.debug('Add edge', links.edges, edge);
-    this.httpClient.post(links.edges, edge).subscribe(response => {
+  getEdges(): Observable<DirectedEdgeModel[] | UndirectedEdgeModel[]> {
+    return this.httpClient.get<DirectedEdgeModel[] | UndirectedEdgeModel[]>(this.designModelLinks.edges.href);
+  }
+
+
+  addEdge(edge: DirectedEdgeModel | UndirectedEdgeModel): void {
+    console.debug('Add edge', this.designModelLinks.edges.href, edge);
+    this.httpClient.post(this.designModelLinks.edges.href, edge).subscribe(response => {
       console.debug('Add edge response', response);
+    });
+  }
+
+
+  deleteEdge(uuid: string): void {
+    console.debug('Delete edge', this.designModelLinks.edges.href, uuid);
+    this.httpClient.delete(this.designModelLinks.edges.href + '/' + uuid).subscribe(response => {
+      console.debug('Delete edge response', response);
     });
   }
 
@@ -139,13 +165,6 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
     return observables.length > 0 ? forkJoin(observables) : EMPTY;
   }
 
-  getDirectedEdges(patternContainer: PatternContainer): Observable<Embedded<DirectedEdesResponse>> {
-    return this.httpClient.get<Embedded<DirectedEdesResponse>>(patternContainer._links.directedEdges.href);
-  }
-
-  getUndirectedEdges(patternContainer: PatternContainer): Observable<Embedded<UndirectedEdesResponse>> {
-    return this.httpClient.get<Embedded<UndirectedEdesResponse>>(patternContainer._links.undirectedEdges.href);
-  }
 
   deleteLink(patternLink: any): Observable<any> {
     return this.httpClient.delete(patternLink);
@@ -172,6 +191,8 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
       graphNodes.push({
         id: pattern.id,
         title: pattern.name,
+        uri: pattern.uri,
+        iconUrl: pattern.iconUrl,
         type: 'default',
         x: x,
         y: y,
