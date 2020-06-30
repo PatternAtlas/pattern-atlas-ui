@@ -19,6 +19,7 @@ import { Embedded } from '../model/hal/embedded';
 import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
 import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
 import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
+import { globals } from '../../globals';
 
 @Component({
   selector: 'pp-default-pattern-renderer',
@@ -53,7 +54,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.viewContainerRef = this.ppPatternProperty.viewContainerRef;
-    this.patternLanguageId = this.activatedRoute.snapshot.paramMap.get('patternLanguageId');
+    this.patternLanguageId = this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId);
     this.patternId = this.activatedRoute.snapshot.paramMap.get('patternId');
     this.getData();
   }

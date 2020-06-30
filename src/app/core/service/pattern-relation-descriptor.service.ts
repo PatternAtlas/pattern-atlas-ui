@@ -1,68 +1,68 @@
-import {Injectable} from '@angular/core';
-import {globals} from '../../globals';
-import {HttpClient} from '@angular/common/http';
-import {forkJoin, Observable, of} from 'rxjs';
-import {DirectedEdgeModel} from '../model/hal/directed-edge.model';
-import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
-import {HalLink} from '../model/hal/hal-link.interface';
-import {map} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { globals } from '../../globals';
+import { HttpClient } from '@angular/common/http';
+import { forkJoin, Observable, of } from 'rxjs';
+import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
+import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
+import { HalLink } from '../model/hal/hal-link.interface';
+import { map } from 'rxjs/operators';
 import PatternLanguage from '../model/hal/pattern-language.model';
-import {CreateUndirectedEdgeRequest} from '../model/hal/create-undirected-edge-request';
-import {CreateDirectedEdgeRequest} from '../model/hal/create-directed-edge-request';
-import {PatternResponse} from '../model/hal/pattern-response.interface';
+import { CreateUndirectedEdgeRequest } from '../model/hal/create-undirected-edge-request';
+import { CreateDirectedEdgeRequest } from '../model/hal/create-directed-edge-request';
+import { PatternResponse } from '../model/hal/pattern-response.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PatternRelationDescriptorService {
 
-    private repoEndpoint = globals.repoEndpoint;
+  private repoEndpoint = globals.repoEndpoint;
 
-    constructor(private http: HttpClient) {
+  constructor(private http: HttpClient) {
+  }
+
+  addRelationToPL(patternLanguage: PatternLanguage, relation: DirectedEdgeModel | UndirectedEdgeModel): Observable<any> {
+    return relation instanceof DirectedEdgeModel ?
+      this.http.post(patternLanguage._links.directedEdges.href, new CreateDirectedEdgeRequest(relation), { observe: 'response' }) :
+      this.http.post(patternLanguage._links.undirectedEdges.href, new CreateUndirectedEdgeRequest(relation), { observe: 'response' });
+  }
+
+  getDirectedEdgeByUrl(url: string): Observable<DirectedEdgeModel> {
+    return this.http.get<DirectedEdgeModel>(url);
+  }
+
+  getUndirectedEdgeByUrl(url: string): Observable<UndirectedEdgeModel> {
+    return this.http.get<UndirectedEdgeModel>(url);
+  }
+
+  getEdgeByUrl(url: string, edge: DirectedEdgeModel | UndirectedEdgeModel): Observable<DirectedEdgeModel | UndirectedEdgeModel> {
+    return edge instanceof DirectedEdgeModel ?
+      this.getDirectedEdgeByUrl(url) : this.getUndirectedEdgeByUrl(url);
+  }
+
+  getEdgesForPattern(pattern: PatternResponse): Observable<EdgeWithType[]> {
+    if (!pattern) {
+      return of(null);
     }
-
-    addRelationToPL(patternLanguage: PatternLanguage, relation: DirectedEdgeModel | UndirectedEdgeModel): Observable<any> {
-      return relation instanceof DirectedEdgeModel ?
-        this.http.post(patternLanguage._links.directedEdges.href, new CreateDirectedEdgeRequest(relation), {observe: 'response'}) :
-        this.http.post(patternLanguage._links.undirectedEdges.href, new CreateUndirectedEdgeRequest(relation), {observe: 'response'});
-    }
-
-    getDirectedEdgeByUrl(url: string): Observable<DirectedEdgeModel> {
-      return this.http.get<DirectedEdgeModel>(url);
-    }
-
-    getUndirectedEdgeByUrl(url: string): Observable<UndirectedEdgeModel> {
-      return this.http.get<UndirectedEdgeModel>(url);
-    }
-
-    getEdgeByUrl(url: string, edge: DirectedEdgeModel | UndirectedEdgeModel): Observable<DirectedEdgeModel | UndirectedEdgeModel> {
-      return edge instanceof DirectedEdgeModel ?
-        this.getDirectedEdgeByUrl(url) : this.getUndirectedEdgeByUrl(url);
-    }
-
-    getEdgesForPattern(pattern: PatternResponse): Observable<EdgeWithType[]> {
-      if (!pattern) {
-        return of(null);
+    const observables = [];
+    const edgeLinks = ['undirectedEdges', 'outgoingDirectedEdges', 'ingoingDirectedEdges'];
+    edgeLinks.forEach((edgeType: string) => {
+      const edgeLink = pattern._links[ edgeType ];
+      if (edgeLink) {
+        const halLinks = Array.isArray(edgeLink) ? <HalLink[]>edgeLink : [edgeLink];
+        observables.push(...halLinks.map(link =>
+          this.getUndirectedEdgeByUrl(link.href).pipe(map(res => {
+            return <EdgeWithType>{ type: edgeType, edge: res };
+          }))
+        ));
       }
-      const observables = [];
-      const edgeLinks = ['undirectedEdges', 'outgoingDirectedEdges', 'ingoingDirectedEdges'];
-      edgeLinks.forEach((edgeType: string) => {
-        const edgeLink = pattern._links[edgeType];
-        if (edgeLink) {
-          const halLinks = Array.isArray(edgeLink) ? <HalLink[]>edgeLink : [edgeLink];
-          observables.push(...halLinks.map(link =>
-            this.getUndirectedEdgeByUrl(link.href).pipe(map(res => {
-              return <EdgeWithType>{type: edgeType, edge: res};
-            }))
-          ));
-        }
-      });
+    });
 
-      return observables.length > 0 ? forkJoin(observables) : of(null);
-    }
+    return observables.length > 0 ? forkJoin(observables) : of(null);
+  }
 }
 
 export class EdgeWithType {
-    type: string;
-    edge: (DirectedEdgeModel | UndirectedEdgeModel);
+  type: string;
+  edge: (DirectedEdgeModel | UndirectedEdgeModel);
 }

@@ -1,0 +1,14 @@
+<pp-action-button-bar [firstAddButton]="false">
+  <button mat-raised-button class="action-button-with-margin" (click)="reloadGraph()" color="accent">
+    <mat-icon>autorenew</mat-icon>
+    Reload
+  </button>
+</pp-action-button-bar>
+
+<pp-graph-display *ngIf="!isLoading"
+                  [data]="graphData"
+                  (addedEdge)="addedEdgeInGraphView($event)"
+                  [showPatternLanguageName]="true">
+</pp-graph-display>
+
+

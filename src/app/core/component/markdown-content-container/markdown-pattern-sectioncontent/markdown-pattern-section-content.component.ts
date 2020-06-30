@@ -8,12 +8,12 @@ import {
   Input,
   ViewChild
 } from '@angular/core';
-import {DataChange, DataRenderingComponent} from '../interfaces/DataRenderingComponent.interface';
-import {MatDialog} from '@angular/material/dialog';
-import {DialogData, MdEditorComponent} from '../../md-editor/md-editor.component';
+import { DataChange, DataRenderingComponent } from '../interfaces/DataRenderingComponent.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogData, MdEditorComponent } from '../../md-editor/md-editor.component';
 import * as MarkdownIt from 'markdown-it';
 import * as markdownitKatex from 'markdown-it-katex';
-import {ImageService} from '../../../service/image.service';
+import { ImageService } from '../../../service/image.service';
 import * as d3 from 'd3';
 
 
@@ -84,7 +84,7 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
 
   openEditor(): void {
     const dialogRef = this.dialog.open(MdEditorComponent,
-      {data: {content: this.data, field: this.title}});
+      { data: { content: this.data, field: this.title } });
     dialogRef.afterClosed().subscribe(async (result: DialogData) => {
       const previousValue = this.data;
 
@@ -92,7 +92,7 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
         this.data = result.content;
         this.changeText(this.renderedData);
       }
-      this.changeContent.emit({previousValue: previousValue, currentValue: result.content});
+      this.changeContent.emit({ previousValue: previousValue, currentValue: result.content });
     });
   }
 

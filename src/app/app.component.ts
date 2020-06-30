@@ -26,10 +26,10 @@ import { globals } from './globals';
 export class AppComponent {
 
   readonly featureToggles = globals.featureToggles;
-
   loginButton = 'Login';
   welcomeText = '';
   user: PAUser;
+  readonly pathConstants = globals.pathConstants;
 
 
   constructor(public auth: AuthenticationService) {

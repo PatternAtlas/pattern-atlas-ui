@@ -18,10 +18,16 @@ module.exports = {
       // "extends": "tslint:recommended",
 
       rules: {
-        'indent': ['error', 2],
+        // https://eslint.org/docs/rules/indent
+        'indent': ['error', 2, {
+          "FunctionDeclaration": {"parameters": "first"},
+          "FunctionExpression": {"parameters": "first"},
+          "SwitchCase": 1
+        }],
 
         'eol-last': ['error', 'always'],
 
+        'object-curly-spacing': ['error', 'always'],
 
         // ORIGINAL tslint.json -> "array-type": false,
         '@typescript-eslint/array-type': 'off',
@@ -98,14 +104,14 @@ module.exports = {
         'no-multiple-empty-lines': 'off',
 
         // ORIGINAL tslint.json -> "no-console": [true, "debug", "info", "time", "timeEnd", "trace"],
-        'no-restricted-syntax': [
-          'error',
-          {
-            selector:
-              'CallExpression[callee.object.name="console"][callee.property.name=/^(debug|info|time|timeEnd|trace)$/]',
-            message: 'Unexpected property on console object was called',
-          },
-        ],
+        // 'no-restricted-syntax': [
+        //   'error',
+        //   {
+        //     selector:
+        //       'CallExpression[callee.object.name="console"][callee.property.name=/^(debug|info|time|timeEnd|trace)$/]',
+        //     message: 'Unexpected property on console object was called',
+        //   },
+        // ],
 
         // ORIGINAL tslint.json -> "no-empty": false,
         'no-empty': 'off',

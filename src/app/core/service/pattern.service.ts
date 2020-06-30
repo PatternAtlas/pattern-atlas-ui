@@ -12,15 +12,15 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {globals} from '../../globals';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { globals } from '../../globals';
+import { Observable } from 'rxjs';
 import Pattern from '../model/hal/pattern.model';
-import {map} from 'rxjs/operators';
-import {PatternResponse} from '../model/hal/pattern-response.interface';
+import { map } from 'rxjs/operators';
+import { PatternResponse } from '../model/hal/pattern-response.interface';
 import PatternLanguage from '../model/hal/pattern-language.model';
-import {Edge} from '../model/hal/edge.model';
+import { Edge } from '../model/hal/edge.model';
 
 @Injectable()
 export class PatternService {
@@ -38,7 +38,7 @@ export class PatternService {
   getPatternsByUrl(patternsUrl: string): Observable<Array<Pattern>> {
     return this.http.get<PatternResponse>(patternsUrl).pipe(
       map(result => {
-        return <Array<Pattern>>(result._embedded ? result._embedded.patternModels : []);
+        return <Array<Pattern>>(result && result._embedded ? result._embedded.patternModels : []);
       })
     );
   }
@@ -48,15 +48,15 @@ export class PatternService {
   }
 
   getPatternRenderedContentByPattern(pattern: Pattern): Observable<{ renderedContent: any }> {
-    return this.http.get<{ renderedContent: any }>(pattern._links.renderedContent.href);
+    return this.http.get<{ renderedContent: any }>(pattern._links.content.href);
   }
 
   savePattern(url: string, pattern: any): Observable<any> {
-    return this.http.post<Pattern>(url, pattern, {observe: 'response'});
+    return this.http.post<Pattern>(url, pattern, { observe: 'response' });
   }
 
   updatePattern(url: string, pattern: any): Observable<any> {
-    return this.http.put<Pattern>(url, pattern, {observe: 'response'});
+    return this.http.put<Pattern>(url, pattern, { observe: 'response' });
   }
 
   deletePattern(url: string): Observable<any> {

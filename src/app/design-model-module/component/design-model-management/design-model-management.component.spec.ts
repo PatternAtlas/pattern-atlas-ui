@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DesignModelManagementComponent } from './design-model-management.component';
-import { DesignModelTestModule } from '../design-model.test.module';
+import { DesignModelTestModule } from '../../design-model.test.module';
 
 describe('DesignModelManagementComponent', () => {
   let component: DesignModelManagementComponent;

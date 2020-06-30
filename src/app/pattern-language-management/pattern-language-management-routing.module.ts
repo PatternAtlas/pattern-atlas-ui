@@ -12,17 +12,18 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {PatternLanguageManagementComponent} from './pattern-language-management/pattern-language-management.component';
-import {PatternLanguageContainerComponent} from './pattern-language-container/pattern-language-container.component';
-import {PatternContainerComponent} from './pattern-container/pattern-container.component';
-import {PatternLanguageManagementResolverService} from './pattern-language-management/pattern-language-management-resolver.service';
-import {CreatePatternComponent} from './create-pattern/create-pattern.component';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { PatternLanguageManagementComponent } from './pattern-language-management/pattern-language-management.component';
+import { PatternLanguageContainerComponent } from './pattern-language-container/pattern-language-container.component';
+import { PatternContainerComponent } from './pattern-container/pattern-container.component';
+import { PatternLanguageManagementResolverService } from './pattern-language-management/pattern-language-management-resolver.service';
+import { CreatePatternComponent } from './create-pattern/create-pattern.component';
+import { globals } from '../globals';
 
 const routes: Routes = [
   {
-    path: 'patternlanguages',
+    path: globals.pathConstants.patternLanguages,
     pathMatch: 'prefix',
     runGuardsAndResolvers: 'always',
     resolve: {
@@ -34,14 +35,14 @@ const routes: Routes = [
         path: '',
         component: PatternLanguageManagementComponent
       }, {
-        path: ':patternLanguageId',
+        path: ':' + globals.pathConstants.patternLanguageId,
         component: PatternLanguageContainerComponent,
       }, {
-        path: ':patternLanguageId/create-patterns',
+        path: ':' + globals.pathConstants.patternLanguageId + '/create-patterns',
         component: CreatePatternComponent,
       },
       {
-        path: ':patternLanguageId/:patternId',
+        path: ':' + globals.pathConstants.patternLanguageId + '/:patternId',
         component: PatternContainerComponent
       }
 

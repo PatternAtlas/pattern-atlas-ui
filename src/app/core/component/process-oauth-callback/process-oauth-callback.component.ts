@@ -12,14 +12,17 @@ import { switchMap } from 'rxjs/internal/operators';
 export class ProcessOauthCallbackComponent implements OnInit {
 
   constructor(private _httpClient: HttpClient, private _route: ActivatedRoute, private _cookieService: CookieService, private _router: Router) {
-    this._route.params.subscribe( params => console.log(params) );
+    this._route.params.subscribe(params => console.log(params));
 
   }
 
   ngOnInit() {
     this._route.queryParams.pipe(
       switchMap((params) => {
-        return this._httpClient.get('https://eqjjnlkv6a.execute-api.eu-central-1.amazonaws.com/default/authenticate/' + params['code'], {responseType: 'text'});
+        return this._httpClient.get(
+          'https://eqjjnlkv6a.execute-api.eu-central-1.amazonaws.com/default/authenticate/' + params[ 'code' ],
+          { responseType: 'text' }
+        );
       })).subscribe(
       (res) => {
         const response = res.replace('"', '');
@@ -29,7 +32,7 @@ export class ProcessOauthCallbackComponent implements OnInit {
           this._cookieService.set('patternpedia_github_token', urlResponse.get('access_token'));
         }
 
-        this._router.navigate(['..'], {relativeTo: this._route});
+        this._router.navigate(['..'], { relativeTo: this._route });
       });
   }
 

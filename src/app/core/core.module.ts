@@ -70,7 +70,9 @@ import { IssueManagementService } from './issue-management/_services/issue-manag
 import { IssueManagementStore } from './issue-management/_store/issue-management-store';
 import { CandidateManagementService } from './candidate-management/_services/candidate-management.service';
 import { CandidateManagementStore } from './candidate-management';
-import { DesignModelService } from './service/design-model.service';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatFormFieldModule } from '@angular/material/form-field';
+
 
 @NgModule({
   imports: [
@@ -84,6 +86,7 @@ import { DesignModelService } from './service/design-model.service';
     FlexLayoutModule,
     MatProgressSpinnerModule,
     MatListModule,
+    MatFormFieldModule,
     MatDatepickerModule, MatInputModule,
     ReactiveFormsModule,
     MatTooltipModule,
@@ -94,6 +97,7 @@ import { DesignModelService } from './service/design-model.service';
     MatBadgeModule,
     MatExpansionModule,
     MatButtonToggleModule,
+    MatTreeModule,
     NgxMdModule.forRoot(),
     MatNativeDateModule,
     RouterModule,
@@ -117,7 +121,6 @@ import { DesignModelService } from './service/design-model.service';
     PatternLanguageService,
     PatternService,
     PatternViewService,
-    DesignModelService,
     // USER
     UserService,
     UserStore,

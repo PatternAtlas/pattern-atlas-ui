@@ -8,7 +8,7 @@ describe('GraphDisplayComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GraphDisplayComponent ]
+      declarations: [GraphDisplayComponent]
     })
       .compileComponents();
   }));

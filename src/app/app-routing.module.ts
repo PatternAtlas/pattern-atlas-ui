@@ -7,6 +7,7 @@ import { PageNotFoundComponent } from './core/component/page-not-found/page-not-
 import { AuthGuardService as AuthGuard } from './authentication/_services/auth-guard.service';
 import { PatternLanguageManagementResolverService } from './pattern-language-management/pattern-language-management/pattern-language-management-resolver.service'; // eslint-disable-line max-len
 import { UserRole } from './core/user-management';
+import { globals } from './globals';
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -24,23 +25,23 @@ import { UserRole } from './core/user-management';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'issue',
-    pathMatch: 'full'
+    pathMatch: 'full',
+    redirectTo: globals.pathConstants.patternLanguages
   },
   {
-    path: 'patternLanguages',
+    path: globals.pathConstants.patternLanguages,
     resolve: {
       patternlanguages: PatternLanguageManagementResolverService,
     },
     loadChildren: () => import('./pattern-language-management/pattern-language-management.module').then(m => m.PatternLanguageManagementModule),
   },
   {
-    path: 'patternViews',
+    path: globals.pathConstants.patternViews,
     loadChildren: () => import('./pattern-view-management/pattern-view-management.module').then(m => m.PatternViewManagementModule),
   },
   {
-    path: 'design-models',
-    loadChildren: () => import('./pattern-view-management/pattern-view-management.module').then(m => m.PatternViewManagementModule),
+    path: globals.pathConstants.designModels,
+    loadChildren: () => import('./design-model-module/design-model.module').then(m => m.DesignModelModule),
   },
   {
     path: 'candidate',

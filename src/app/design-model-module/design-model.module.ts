@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DesignModelRoutingModule } from './design-model-routing.module';
 import { CoreModule } from '../core/core.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { DesignModelManagementComponent } from './design-model-management/design-model-management.component';
+import { DesignModelManagementComponent } from './component/design-model-management/design-model-management.component';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -13,11 +13,16 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTreeModule } from '@angular/material/tree';
+import { DesignModelService } from './service/design-model.service';
+import { DesignModelRendererComponent } from './component/design-model-renderer/design-model-renderer.component';
+import { GraphDataService } from '../core/service/graph-data.service';
+import { PatternViewService } from '../core/service/pattern-view.service';
 
 
 @NgModule({
   declarations: [
-    DesignModelManagementComponent
+    DesignModelManagementComponent,
+    DesignModelRendererComponent
   ],
   imports: [
     CommonModule,
@@ -33,6 +38,10 @@ import { MatTreeModule } from '@angular/material/tree';
     MatIconModule,
     MatToolbarModule,
     MatTreeModule
+  ],
+  providers: [
+    DesignModelService,
+    { provide: GraphDataService, useClass: DesignModelService }
   ]
 })
 export class DesignModelModule {
