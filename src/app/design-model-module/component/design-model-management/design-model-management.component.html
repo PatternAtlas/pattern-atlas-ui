@@ -1,0 +1,28 @@
+<pp-action-button-bar [goBackButton]="false"
+                      [addButtonText]="'Add Design Model'"
+                      (addClicked)="addDesignModel()">
+</pp-action-button-bar>
+
+
+<div class="container">
+  <mat-card *ngFor="let designModel of designModelResponse?._embedded?.designModels"
+            [routerLink]="[designModel.id]" class="landing-card">
+
+    <mat-card-header>
+      <img mat-card-avatar [src]="designModel?.logo || '//via.placeholder.com/50x50'" alt=""/>
+
+      <mat-card-title>
+        {{designModel.name}}
+      </mat-card-title>
+    </mat-card-header>
+
+    <img mat-card-image [src]="designModel?.logo || '//via.placeholder.com/200x300'" alt=""/>
+
+    <mat-card-actions>
+      <button mat-stroked-button color="primary">
+        <mat-icon>pageview</mat-icon>
+        View
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

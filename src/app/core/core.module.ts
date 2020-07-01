@@ -46,8 +46,7 @@ import { DividerComponent } from './component/divider/divider.component';
 import { NgxMdModule } from 'ngx-md';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreatePatternRelationComponent } from './component/create-pattern-relation/create-pattern-relation.component';
-// tslint:disable-next-line:max-line-length
-import { MarkdownPatternSectionContentComponent } from './component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-section-content.component';
+import { MarkdownPatternSectionContentComponent } from './component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-section-content.component'; // eslint-disable-line max-len
 import { PatternLanguageService } from './service/pattern-language.service';
 import { PatternService } from './service/pattern.service';
 import { GraphDisplayComponent } from './component/graph-display/graph-display.component';
@@ -186,7 +185,7 @@ import { ConfirmDialogComponent } from './component/confirm-dialog/confirm-dialo
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class CoreModule {
-    constructor(private cr: ComponentRegistryService) {
-        this.cr.registerComponent('default', { plcomponent: DefaultPlRendererComponent, pcomponent: DefaultPatternRendererComponent });
-    }
+  constructor(private cr: ComponentRegistryService) {
+    this.cr.registerComponent('default', { plcomponent: DefaultPlRendererComponent, pcomponent: DefaultPatternRendererComponent });
+  }
 }

@@ -1,3 +1,3 @@
 export interface PatternRenderingComponentInterface {
-    pId: string;
+  pId: string;
 }

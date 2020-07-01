@@ -1,13 +1,19 @@
-import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {debounceTime, distinctUntilChanged} from 'rxjs/internal/operators';
-import {DialogPatternLanguageResult} from '../../../pattern-language-management/data/DialogPatternLanguageResult.interface';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs/internal/operators';
+import { DialogPatternLanguageResult } from '../../../pattern-language-management/data/DialogPatternLanguageResult.interface';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import PatternLanguage from '../../model/hal/pattern-language.model';
 import PatternSchema from '../../model/hal/pattern-schema.model';
 import PatternSectionSchema from '../../model/hal/pattern-section-schema.model';
-import {ActivatedRoute} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+
+
+export enum CreateEditComponentDialogType {
+  PATTERN_LANGUAGE, PATTERN_VIEW, DESIGN_MODEL
+}
+
 
 @Component({
   selector: 'pp-create-edit-pattern-language',
@@ -20,7 +26,9 @@ export class CreateEditPatternLanguageComponent implements OnInit {
   patternLanguageForm: FormGroup;
   iconPreviewVisible = false;
   saveRequested = false;
-  isPatternLanguageDialog = false;
+  componentDialogType;
+  dialogTitle: string;
+  isPatternLanguageDialog: boolean;
 
   @Output() saveClicked = new EventEmitter<DialogPatternLanguageResult>();
 
@@ -32,14 +40,17 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     return this.patternLanguageForm.get('iconUrl');
   }
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { isPatternLanguageCreation: boolean }, public dialogRef: MatDialogRef<CreateEditPatternLanguageComponent>,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { componentDialogType: CreateEditComponentDialogType },
+              public dialogRef: MatDialogRef<CreateEditPatternLanguageComponent>,
               private _fb: FormBuilder, private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-    this.isPatternLanguageDialog = this.data.isPatternLanguageCreation;
-    // tslint:disable-next-line:max-line-length
-    const urlRegex = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
+    this.componentDialogType = this.data.componentDialogType;
+    this.dialogTitle = ['Pattern Language', 'Pattern View', 'Design Model'][ this.componentDialogType ];
+    this.isPatternLanguageDialog = this.componentDialogType === CreateEditComponentDialogType.PATTERN_LANGUAGE;
+
+    const urlRegex = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i; // eslint-disable-line max-len
     this.patternLanguageForm = this._fb.group({
       name: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9 _-]+')]],
       iconUrl: ['', [Validators.pattern(urlRegex)]]
@@ -78,35 +89,52 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     this.saveRequested = true;
     if (this.patternLanguageForm.valid) {
 
-      if (!this.isPatternLanguageDialog) {
-        this.saveClicked.emit({
-          dialogResult: {name: this.name.value}
-        });
-        this.dialogRef.close();
-        return;
+      switch (this.componentDialogType) {
+        case CreateEditComponentDialogType.PATTERN_VIEW:
+
+          this.saveClicked.emit({
+            dialogResult: {
+              name: this.name.value
+            }
+          });
+          this.dialogRef.close();
+          break;
+
+        case CreateEditComponentDialogType.PATTERN_LANGUAGE:
+
+          const patternLanguage = new PatternLanguage();
+          patternLanguage.name = this.name.value;
+          patternLanguage.logo = this.iconUrl.value;
+          const patternSchema = new PatternSchema();
+          patternSchema.patternSectionSchemas = [];
+
+
+          for (let i = 0; i < this.sections.length; i++) {
+            const patternSectionSchema = new PatternSectionSchema();
+            patternSectionSchema.name = this.sections[ i ];
+            patternSectionSchema.label = this.sections[ i ];
+            patternSectionSchema.position = i;
+            patternSectionSchema.type = 'any';
+            patternSchema.patternSectionSchemas.push(patternSectionSchema);
+          }
+          patternLanguage.patternSchema = patternSchema;
+          this.saveClicked.emit({
+            dialogResult: patternLanguage
+          });
+          this.dialogRef.close();
+          break;
+
+        case CreateEditComponentDialogType.DESIGN_MODEL:
+
+          this.saveClicked.emit({
+            dialogResult: {
+              name: this.name.value,
+              logo: this.iconUrl.value
+            }
+          });
+          this.dialogRef.close();
+          break;
       }
-
-
-      const patternLanguage = new PatternLanguage();
-      patternLanguage.name = this.name.value;
-      patternLanguage.logo = this.iconUrl.value;
-      const patternSchema = new PatternSchema();
-      patternSchema.patternSectionSchemas = [];
-
-
-      for (let i = 0; i < this.sections.length; i++) {
-        const patternSectionSchema = new PatternSectionSchema();
-        patternSectionSchema.name = this.sections[i];
-        patternSectionSchema.label = this.sections[i];
-        patternSectionSchema.position = i;
-        patternSectionSchema.type = 'any';
-        patternSchema.patternSectionSchemas.push(patternSectionSchema);
-      }
-      patternLanguage.patternSchema = patternSchema;
-      this.saveClicked.emit({
-        dialogResult: patternLanguage
-      });
-      this.dialogRef.close();
     }
   }
 }

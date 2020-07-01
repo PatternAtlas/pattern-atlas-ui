@@ -19,15 +19,15 @@ import { Observable } from 'rxjs';
 import PatternLanguageModel from '../../core/model/hal/pattern-language-model.model';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class PatternLanguageManagementResolverService implements Resolve<Array<PatternLanguageModel>> {
 
-    constructor(private patternLanguageService: PatternLanguageService) {
-    }
+  constructor(private patternLanguageService: PatternLanguageService) {
+  }
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Array<PatternLanguageModel>> {
-        return this.patternLanguageService.getPatternLanguages();
-    }
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Array<PatternLanguageModel>> {
+    return this.patternLanguageService.getPatternLanguages();
+  }
 
 }

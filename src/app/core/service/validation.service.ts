@@ -24,26 +24,25 @@ export class ValidationService {
       return section + ': Please enter an integer.';
     }
 
-    if( keyError === 'xsdAnyURI') {
+    if (keyError === 'xsdAnyURI') {
 
       return section + ': Please enter a valid URL/URL.';
     }
     if (keyError === 'minlength') {
-      return section + ': Please enter only ' + errorValue['requiredLength'] + ' entries';
+      return section + ': Please enter only ' + errorValue[ 'requiredLength' ] + ' entries';
     }
     if (keyError === 'maxlength') {
-      return section + ': Please enter max. ' + errorValue['requiredLength'] + ' entries';
+      return section + ': Please enter max. ' + errorValue[ 'requiredLength' ] + ' entries';
     }
   }
 
 
-
   // checks if value is an array of strings matching the markdown image patterns (e.g. [![test](http://placekitten.com/200/300), ![](http://any.valid.url.com)]
   static xsdImage(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: boolean } | null => {
+    return (control: AbstractControl): { [ key: string ]: boolean } | null => {
       if (control.value !== undefined) {
         if (!this.allValuesMatchRegex(control.value, /!\[.*\]\(http(s)?:\/\/([a-zA-Z.0-9]+[\/]*)+\)/g)) {
-          return {'xsdImage': true};
+          return { xsdImage: true };
         }
       }
       return null;
@@ -52,7 +51,7 @@ export class ValidationService {
 
   // checks if value is an array of strings matching the markdown image patterns (e.g. [![test](http://placekitten.com/200/300), ![](http://any.valid.url.com)]
   static xsdInteger(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: boolean } | null => {
+    return (control: AbstractControl): { [ key: string ]: boolean } | null => {
       if (control.value !== undefined) {
         let arrayOfImageValues = control.value;
         if (!(arrayOfImageValues instanceof Array)) {
@@ -60,7 +59,7 @@ export class ValidationService {
         }
         for (const item of arrayOfImageValues) {
           if (isNaN(+item)) {
-            return {'xsdInteger': true};
+            return { xsdInteger: true };
           }
         }
       }
@@ -70,10 +69,10 @@ export class ValidationService {
 
   // checks if value is an array of strings matching the markdown url patterns (e.g. [[test](http://placekitten.com/200/300), [](http://any.valid.url.com)]
   static xsdAnyURI(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: boolean } | null => {
+    return (control: AbstractControl): { [ key: string ]: boolean } | null => {
       if (control.value !== undefined) {
         if (!this.allValuesMatchRegex(control.value, /\[.*\]\(http:\/\/([a-zA-Z.0-9]+[\/]*)+\)/g)) {
-          return {'xsdAnyURI': true};
+          return { xsdAnyURI: true };
         }
       }
       return null;
@@ -81,14 +80,14 @@ export class ValidationService {
   }
 
   static startsWithValidPrefix(allowedPrefixes: string[]): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: boolean } | null => {
+    return (control: AbstractControl): { [ key: string ]: boolean } | null => {
       if (control.value !== undefined) {
         if (control.value.indexOf(':') === -1) {
-          return {'startsWithValidPrefix': true};
+          return { startsWithValidPrefix: true };
         }
         const prefix = control.value.trim().substring(0, control.value.indexOf(':'));
         if (allowedPrefixes.findIndex(it => it === prefix) === -1) {
-          return {'startsWithValidPrefix': true};
+          return { startsWithValidPrefix: true };
         }
       }
       return null;

@@ -26,13 +26,13 @@ export class CandidateManagementService {
   public getAllCandidates(): Observable<Candidate[]> {
     return this.http.get<any>(this.repoEndpoint + this.serviceEndpoint).pipe(
       map(result => {
-        return result._embedded ? result._embedded.candidateModels : []
+        return result._embedded ? result._embedded.candidateModels : [];
       }),
       catchError(e => {
         this.toasterService.pop('error', 'Getting candidate list', e.error.message)
         return [];
       }),
-    )
+    );
   }
 
   /**
@@ -42,14 +42,14 @@ export class CandidateManagementService {
     candidate.uri = candidate.name;    
     return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint, candidate).pipe(
       map(result => {
-        this.toasterService.pop('success', 'Created new candidate')
-        return result
+        this.toasterService.pop('success', 'Created new candidate');
+        return result;
       }),
       catchError(e => {
         this.toasterService.pop('error', 'Could not create new candidate: ', e.error.message)
         return null;
       }),
-    )
+    );
   }
 
   public createComment(candidate: Candidate, comment: PAComment): Observable<PAComment> {
@@ -62,7 +62,7 @@ export class CandidateManagementService {
         this.toasterService.pop('error', 'Could not create new comment: ', e.error.message)
         return null;
       }),
-    )
+    );
   }
 
   /**
@@ -71,14 +71,14 @@ export class CandidateManagementService {
   public updateCandidate(candidate: Candidate): Observable<Candidate> {
     return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}`, candidate).pipe(
       map(result => {
-        this.toasterService.pop('success', 'Updated candidate')
-        return result
+        this.toasterService.pop('success', 'Updated candidate');
+        return result;
       }),
       catchError(e => {
         this.toasterService.pop('error', 'Could not update candidate: ', e.error.message)
         return null;
       }),
-    )
+    );
   }
 
   public updateComment(candidate: Candidate, comment: PAComment): Observable<PAComment> {
@@ -91,7 +91,7 @@ export class CandidateManagementService {
         this.toasterService.pop('error', 'Could not update candidate comment: ', e.error.message)
         return null;
       }),
-    )
+    );
   }
 
   /**
@@ -107,7 +107,7 @@ export class CandidateManagementService {
         this.toasterService.pop('error', 'Could not delete candidate: ', e.error.message)
         return null;
       }),
-    )
+    );
   }
 
   public deleteComment(candidate: Candidate, comment: PAComment): Observable<Candidate> {
@@ -120,6 +120,6 @@ export class CandidateManagementService {
         this.toasterService.pop('error', 'Could not delete candidate comment: ', e.error.message)
         return null;
       }),
-    )
+    );
   }
 }

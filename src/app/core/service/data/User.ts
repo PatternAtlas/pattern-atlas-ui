@@ -11,10 +11,10 @@ export class User {
     role: Role;
 
     constructor(data: any = null) {
-        if (data) {
-            this.id = Number(data.id);
-            this.email = String(data.email);
-            this.role = Role[String(data.role)];
-        }
+      if (data) {
+        this.id = Number(data.id);
+        this.email = String(data.email);
+        this.role = Role[String(data.role)];
+      }
     }
 }

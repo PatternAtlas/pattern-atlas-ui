@@ -12,15 +12,15 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {globals} from '../../globals';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { globals } from '../../globals';
+import { Observable } from 'rxjs';
 import Pattern from '../model/hal/pattern.model';
-import {map} from 'rxjs/operators';
-import {PatternResponse} from '../model/hal/pattern-response.interface';
+import { map } from 'rxjs/operators';
+import { PatternResponse } from '../model/hal/pattern-response.interface';
 import PatternLanguage from '../model/hal/pattern-language.model';
-import {Edge} from '../model/hal/edge.model';
+import { Edge } from '../model/hal/edge.model';
 
 @Injectable()
 export class PatternService {
@@ -38,7 +38,7 @@ export class PatternService {
   getPatternsByUrl(patternsUrl: string): Observable<Array<Pattern>> {
     return this.http.get<PatternResponse>(patternsUrl).pipe(
       map(result => {
-        return <Array<Pattern>>(result._embedded ? result._embedded.patternModels : []);
+        return <Array<Pattern>>(result && result._embedded ? result._embedded.patternModels : []);
       })
     );
   }
@@ -47,12 +47,16 @@ export class PatternService {
     return this.http.get<{ content: any }>(pattern._links.content.href);
   }
 
+  getPatternRenderedContentByPattern(pattern: Pattern): Observable<{ renderedContent: any }> {
+    return this.http.get<{ renderedContent: any }>(pattern._links.content.href);
+  }
+
   savePattern(url: string, pattern: any): Observable<any> {
-    return this.http.post<Pattern>(url, pattern, {observe: 'response'});
+    return this.http.post<Pattern>(url, pattern, { observe: 'response' });
   }
 
   updatePattern(url: string, pattern: any): Observable<any> {
-    return this.http.put<Pattern>(url, pattern, {observe: 'response'});
+    return this.http.put<Pattern>(url, pattern, { observe: 'response' });
   }
 
   deletePattern(url: string): Observable<any> {
@@ -63,13 +67,13 @@ export class PatternService {
     return this.http.get<Array<Edge>>(url);
   }
 
-    getPatternById(patternLanguage: PatternLanguage, patternId: String): Observable<Pattern> {
-        console.log('patternid');
-        console.log(patternId);
-        return this.http.get <Pattern>(this.repoEndpoint + '/patternLanguages/' + patternLanguage.id + '/patterns/' + patternId);
-    }
+  getPatternById(patternLanguage: PatternLanguage, patternId: String): Observable<Pattern> {
+    console.log('patternid');
+    console.log(patternId);
+    return this.http.get <Pattern>(this.repoEndpoint + '/patternLanguages/' + patternLanguage.id + '/patterns/' + patternId);
+  }
 
-    getPatternByUrl(href: string): Observable<PatternResponse> {
-        return this.http.get<PatternResponse>(href);
-    }
+  getPatternByUrl(href: string): Observable<PatternResponse> {
+    return this.http.get<PatternResponse>(href);
+  }
 }

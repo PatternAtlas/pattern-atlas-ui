@@ -23,6 +23,6 @@ export class Node implements d3.SimulationNodeDatum {
   hide: boolean;
 
   constructor(id: string) {
-      this.id = id;
+    this.id = id;
   }
 }

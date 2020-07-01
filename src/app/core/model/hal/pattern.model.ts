@@ -13,25 +13,27 @@
  */
 
 import UriEntity from './uri-entity.model';
-import {HalLink} from './hal-link.interface';
+import { HalLink } from './hal-link.interface';
 
 class Pattern extends UriEntity {
-    iconUrl?: string;
-    content: any;
-    patternLanguageId: string;
-    patternLanguageName: string;
-    _links: {
-        self: HalLink;
-        content: HalLink;
-        patternLanguage: HalLink;
-        undirectedEdges?: HalLink | HalLink[];
-        undirectedEdgesFromPatternLanguage?: HalLink | HalLink[];
-        outgoingDirectedEdges?: HalLink | HalLink[];
-        outgoingDirectedEdgesFromPatternLanguage?: HalLink | HalLink[];
-        ingoingDirectedEdges?: HalLink | HalLink[];
-        ingoingDirectedEdgesFromPatternLanguage?: HalLink | HalLink[];
+  iconUrl?: string;
+  content: any;
+  renderedContent: any;
+  patternLanguageId: string;
+  patternLanguageName: string;
+  _links: {
+    self: HalLink;
+    content: HalLink;
+    renderedContent: HalLink;
+    patternLanguage: HalLink;
+    undirectedEdges?: HalLink | HalLink[];
+    undirectedEdgesFromPatternLanguage?: HalLink | HalLink[];
+    outgoingDirectedEdges?: HalLink | HalLink[];
+    outgoingDirectedEdgesFromPatternLanguage?: HalLink | HalLink[];
+    ingoingDirectedEdges?: HalLink | HalLink[];
+    ingoingDirectedEdgesFromPatternLanguage?: HalLink | HalLink[];
 
-    };
+  };
 }
 
 export default Pattern;

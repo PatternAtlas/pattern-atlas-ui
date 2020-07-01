@@ -15,6 +15,6 @@
 import { RdfModelNode } from './rdf-model-node';
 
 export class RdfModelTriple {
-    constructor(public subject?: RdfModelNode, public predicate?: RdfModelNode, public object?: RdfModelNode) {
-    }
+  constructor(public subject?: RdfModelNode, public predicate?: RdfModelNode, public object?: RdfModelNode) {
+  }
 }

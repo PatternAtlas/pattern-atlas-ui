@@ -1,25 +1,25 @@
-<mat-toolbar style="margin-bottom: 10px">
-    <pp-navigate-back *ngIf="goBackButton"></pp-navigate-back>
+<mat-toolbar>
+  <pp-navigate-back *ngIf="goBackButton"></pp-navigate-back>
 
-    <span class="action-button-with-margin"><b>{{this.displayText}}</b></span>
+  <span class="action-button-with-margin"><b>{{this.displayText}}</b></span>
 
-    <ng-content></ng-content>
+  <ng-content></ng-content>
 
-    <button (click)="reloadButtonClicked()" *ngIf="reloadButton" class="action-button-with-margin" color="accent"
-            mat-raised-button>
-        <i class="material-icons">autorenew</i> Reload
-    </button>
+  <button (click)="reloadButtonClicked()" *ngIf="reloadButton" class="action-button-with-margin" color="accent"
+          mat-raised-button>
+    <i class="material-icons">autorenew</i> Reload
+  </button>
 
-    <button (click)="addButtonClicked()" *ngIf="firstAddButton" class="action-button-with-margin" color="accent"
-            mat-raised-button>
-        <i class="material-icons">add</i> {{addButtonText}}
-    </button>
+  <button (click)="addButtonClicked()" *ngIf="firstAddButton" class="action-button-with-margin" color="accent"
+          mat-raised-button>
+    <i class="material-icons">add</i> {{addButtonText}}
+  </button>
 
-    <button style="margin-left: 0;" (click)="secondAddButtonClicked()" *ngIf="secondAddButton"
-            class="action-button-with-margin" color="accent"
-            mat-raised-button>
-        <i class="material-icons">add</i> {{secondAddButtonText}}
-    </button>
+  <button style="margin-left: 0;" (click)="secondAddButtonClicked()" *ngIf="secondAddButton"
+          class="action-button-with-margin" color="accent"
+          mat-raised-button>
+    <i class="material-icons">add</i> {{secondAddButtonText}}
+  </button>
 </mat-toolbar>
 
 

@@ -17,79 +17,80 @@ import { globals } from '../../globals';
 
 export class UriConverter {
 
-    static encodeUri(uri: string): string {
-        return encodeURIComponent(uri);
-    }
+  static encodeUri(uri: string): string {
+    return encodeURIComponent(uri);
+  }
 
-    static doubleEncodeUri(uri: string): string {
-        return encodeURIComponent(encodeURIComponent(uri));
-    }
+  static doubleEncodeUri(uri: string): string {
+    return encodeURIComponent(encodeURIComponent(uri));
+  }
 
-    static decodeUri(id: string): string {
-        return decodeURIComponent(id);
-    }
+  static decodeUri(id: string): string {
+    return decodeURIComponent(id);
+  }
 
-    static doubleDecodeUri(id: string): string {
-        return decodeURIComponent(decodeURIComponent(id));
-    }
+  static doubleDecodeUri(id: string): string {
+    return decodeURIComponent(decodeURIComponent(id));
+  }
 
-    static getFileName(iri: string): string {
-        return iri.split('#')[0];
-    }
+  static getFileName(iri: string): string {
+    return iri.split('#')[0];
+  }
 
-    static extractIndividualNameFromIri(iri: string): string {
-        return iri.includes('#') ? iri.split('#')[1] :
-            iri.split('/')[iri.split('/').length - 1];
-    }
+  static extractIndividualNameFromIri(iri: string): string {
+    return iri.includes('#') ? iri.split('#')[1] :
+      iri.split('/')[iri.split('/').length - 1];
+  }
 
-    static getURL(patternlanguageIri: string) {
-        if (patternlanguageIri.indexOf('patternlanguages') !== -1) {
-            return patternlanguageIri;
-
-        }
-        return this.getFileName(patternlanguageIri);
-    }
-
-    static removeWhitespace(text: string): string {
-        return text.replace(/\s/g, '');
-    }
-
-
-    static extractDataValue(pl: QueriedData[]): string[] {
-        return pl.map((graph: QueriedData) => {
-            return this.getURL(graph.value);
-        });
-    }
-
-    static getSectionName(patternSection: string) {
-        return patternSection.split('#has')[1];
-    }
-
-    static isIri(name: string): boolean {
-        return (name.indexOf('#') >= 0) || (name.indexOf('://') >= 0) || (name.indexOf('purl.org/patternpedia') >= 0);
-    }
-
-
-    static getPatternListIriForPLIri(plIri: string): string {
-        return this.getFileName(plIri) + '/' + this.extractIndividualNameFromIri(this.getFileName(plIri)).toLowerCase() + '-Patterns';
+  static getURL(patternlanguageIri: string) {
+    if (patternlanguageIri.indexOf(globals.pathConstants.patternLanguages) !== -1) {
+      return patternlanguageIri;
 
     }
+    return this.getFileName(patternlanguageIri);
+  }
 
-    static getRelationListIriForPLIri(plIri: string): string {
-        return this.getFileName(plIri) + '/' + this.extractIndividualNameFromIri(this.getFileName(plIri)).toLowerCase() + '-Relations';
-    }
+  static removeWhitespace(text: string): string {
+    return text.replace(/\s/g, '');
+  }
 
-    static getGithubAPIURLForURI(iri: string): string {
-        if (iri.indexOf('patternlanguages') !== -1 || iri.indexOf('patternviews') !== -1) {
-            const foldername = iri.indexOf('patternlanguages') !== -1 ? 'patternlanguages' : 'patternviews';
-            let relativePath = this.getFileName(iri.split(foldername + '/')[1]);
-            // is this a request for the base file of a patternlanguage add the patternlanguage identifier again (convention)
-            relativePath = relativePath.indexOf('/') !== -1 ? relativePath : `${relativePath}/${relativePath}`;
-            return `${globals.urlGithubAPI}/${foldername}/${relativePath}.ttl`;
-        }
-        if (iri.indexOf('patternatlas') !== -1) {
-            return `${globals.urlGithubAPI}/patternatlas.ttl`;
-        }
-        return iri;
+
+  static extractDataValue(pl: QueriedData[]): string[] {
+    return pl.map((graph: QueriedData) => {
+      return this.getURL(graph.value);
+    });
+  }
+
+  static getSectionName(patternSection: string) {
+    return patternSection.split('#has')[1];
+  }
+
+  static isIri(name: string): boolean {
+    return (name.indexOf('#') >= 0) || (name.indexOf('://') >= 0) || (name.indexOf('purl.org/patternpedia') >= 0);
+  }
+
+
+  static getPatternListIriForPLIri(plIri: string): string {
+    return this.getFileName(plIri) + '/' + this.extractIndividualNameFromIri(this.getFileName(plIri)).toLowerCase() + '-Patterns';
+
+  }
+
+  static getRelationListIriForPLIri(plIri: string): string {
+    return this.getFileName(plIri) + '/' + this.extractIndividualNameFromIri(this.getFileName(plIri)).toLowerCase() + '-Relations';
+  }
+
+  static getGithubAPIURLForURI(iri: string): string {
+    if (iri.indexOf(globals.pathConstants.patternLanguages) !== -1 || iri.indexOf(globals.pathConstants.patternViews) !== -1) {
+      const foldername = iri.indexOf(globals.pathConstants.patternLanguages) !== -1
+        ? globals.pathConstants.patternLanguages : globals.pathConstants.patternViews;
+      let relativePath = this.getFileName(iri.split(foldername + '/')[1]);
+      // is this a request for the base file of a patternlanguage add the patternlanguage identifier again (convention)
+      relativePath = relativePath.indexOf('/') !== -1 ? relativePath : `${relativePath}/${relativePath}`;
+      return `${globals.urlGithubAPI}/${foldername}/${relativePath}.ttl`;
     }
+    if (iri.indexOf('patternatlas') !== -1) {
+      return `${globals.urlGithubAPI}/patternatlas.ttl`;
+    }
+    return iri;
+  }
 }

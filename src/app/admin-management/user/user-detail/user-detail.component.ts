@@ -43,9 +43,9 @@ export class UserDetailComponent implements OnInit {
       password: [null],
       confirmPassword: [null]
     },
-      {
-        validator: ValidatePassword
-      });
+    {
+      validator: ValidatePassword
+    });
   }
 
   onSubmit() {
@@ -79,7 +79,7 @@ export class UserDetailComponent implements OnInit {
 export function ValidatePassword(formGroup: FormGroup) {
   let pass = formGroup.get('password').value
   let confirmPass = formGroup.get('confirmPassword').value;
-  pass === confirmPass ? formGroup.get('confirmPassword').setErrors(null) : formGroup.get('confirmPassword').setErrors({ 'incorrect': true });
+  pass === confirmPass ? formGroup.get('confirmPassword').setErrors(null) : formGroup.get('confirmPassword').setErrors({ incorrect: true });
   return true;
 }
 

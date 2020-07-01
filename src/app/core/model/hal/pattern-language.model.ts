@@ -14,15 +14,15 @@
 
 import UriEntity from './uri-entity.model';
 import PatternSchema from './pattern-schema.model';
-import {PatternLanguageResource} from './hal-resources.interface';
+import { PatternLanguageResource } from './hal-resources.interface';
 import Pattern from './pattern.model';
 
 class PatternLanguage extends UriEntity {
-    patterns?: Array<Pattern>;
-    logo: string;
-    patternSchema: PatternSchema;
-    _links: PatternLanguageResource;
-    creativeCommonsReference: string;
+  patterns?: Array<Pattern>;
+  logo: string;
+  patternSchema: PatternSchema;
+  _links: PatternLanguageResource;
+  creativeCommonsReference: string;
 }
 
 export default PatternLanguage;

@@ -17,6 +17,7 @@
 
 body {
   font-family: sans-serif;
+  margin: 0;
 }
 
 .material-icons {
@@ -94,14 +95,17 @@ body {
 .container {
   display: flex;
   flex-wrap: wrap;
+  margin: 8px;
 }
 
 .center-content {
+  /* stylelint-disable value-no-vendor-prefix */
   display: flex !important;
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-flex;
+  /* stylelint-enable value-no-vendor-prefix */
   justify-content: center;
   align-items: center;
 }
@@ -136,16 +140,16 @@ body {
 .add-card {
   color: #3f51b5;
 
+  max-height: 21em;
+
   &:hover {
-    background-color: lightgray;
+    background-color: #d3d3d3;
     cursor: pointer;
   }
-
-  max-height: 21em;
 }
 
 .mat-form-field-appearance-outline .mat-form-field-infix {
-  padding: 0.25em 0 0.25em 0;
+  padding: 0.25em 0;
   width: 6em;
 }
 
@@ -158,11 +162,12 @@ body {
 }
 
 .flip {
-  & .mat-badge {
-    transform: rotate(0deg);
-  }
 
   transform: rotate(180deg);
+
+  .mat-badge {
+    transform: rotate(0deg);
+  }
 }
 
 .flip-horizontal {
@@ -224,7 +229,7 @@ body {
 }
 
 .mat-form-field-appearance-outline .mat-form-field-outline {
-  background-color: white;
+  background-color: #fff;
 }
 
 .mat-form-field {

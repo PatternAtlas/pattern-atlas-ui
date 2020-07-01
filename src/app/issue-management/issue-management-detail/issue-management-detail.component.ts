@@ -119,7 +119,7 @@ export class IssueManagementDetailComponent implements OnInit {
     this.issueManagementService.createIssue(this.issue).subscribe(result => {
       this.issue = result
       this.disabled = true;
-    })
+    });
   }
 
   update() {

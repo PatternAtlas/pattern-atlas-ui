@@ -19,7 +19,7 @@ import { PatternRenderingComponentInterface } from '../../core/model/pattern-ren
 import { DefaultPatternRendererComponent } from '../../core/default-pattern-renderer/default-pattern-renderer.component';
 
 @Directive({
-    selector: '[ppPatternContainer]'
+  selector: '[ppPatternContainer]'
 })
 export class PatternContainerDirective implements OnInit, OnChanges {
 
@@ -44,8 +44,8 @@ export class PatternContainerDirective implements OnInit, OnChanges {
     const renderingComponent = this.compRegistry.getPLRenderingComponents(this.plId, this.index);
 
     const componentFactory = renderingComponent ?
-    this.componentFactoryResolver.resolveComponentFactory(renderingComponent.pcomponent) :
-    this.componentFactoryResolver.resolveComponentFactory(DefaultPatternRendererComponent);
+      this.componentFactoryResolver.resolveComponentFactory(renderingComponent.pcomponent) :
+      this.componentFactoryResolver.resolveComponentFactory(DefaultPatternRendererComponent);
 
     this.viewContainerRef.clear();
     const componentRef = this.viewContainerRef.createComponent(componentFactory);
@@ -63,8 +63,8 @@ export class PatternContainerDirective implements OnInit, OnChanges {
     if (changes['pId']
       && this.ref
       && (JSON.stringify(changes['pId'].currentValue) !== JSON.stringify(changes['pId'].previousValue))) {
-        // this.ref.pId = this.pId;
-        this.cdr.detectChanges();
+      // this.ref.pId = this.pId;
+      this.cdr.detectChanges();
     }
   }
 }

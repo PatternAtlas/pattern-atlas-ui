@@ -38,11 +38,11 @@ export class PatternAtlas {
     ary.push(
       `@prefix : <${UriConverter.getFileName(defaultPrefixBegin ? defaultPrefixBegin : iri)}#> .`,
       `@prefix pp: <${globals.urlPatternRepoOntology}#> .`,
-      `@prefix owl: <http://www.w3.org/2002/07/owl#> .`,
-      `@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .`,
-      `@prefix xml: <http://www.w3.org/XML/1998/namespace> .`,
-      `@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .`,
-      `@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .`,
+      '@prefix owl: <http://www.w3.org/2002/07/owl#> .',
+      '@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .',
+      '@prefix xml: <http://www.w3.org/XML/1998/namespace> .',
+      '@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .',
+      '@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .',
       `@base <${UriConverter.getFileName(iri)}> .`
     );
     return ary;
@@ -56,12 +56,13 @@ export class PatternAtlas {
     this.id = iri;
     this.defaultPrefixes.set('owl', '<http://www.w3.org/2002/07/owl#>');
     this.defaultPrefixes.set('pp', `<${globals.urlPatternRepoOntology}#>`);
-    this.defaultPrefixes.set('xml', `<http://www.w3.org/2001/XMLSchema#>`);
-    this.defaultPrefixes.set('rdf', `<http://www.w3.org/1999/02/22-rdf-syntax-ns#>`);
+    this.defaultPrefixes.set('xml', '<http://www.w3.org/2001/XMLSchema#>');
+    this.defaultPrefixes.set('rdf', '<http://www.w3.org/1999/02/22-rdf-syntax-ns#>');
     this.defaultPrefixes.set('rdfs', '<http://www.w3.org/2000/01/rdf-schema#>');
     this.defaultPrefixes.set('xsd', '<http://www.w3.org/2001/XMLSchema#>');
 
 
   }
 }
+
 export default PatternAtlas;

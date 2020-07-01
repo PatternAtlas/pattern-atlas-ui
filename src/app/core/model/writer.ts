@@ -15,24 +15,24 @@
 import { SparqlExecutor } from './sparql.executor';
 
 abstract class Writer<T> {
-    _supportedIRI: string;
-    executor: SparqlExecutor;
+  _supportedIRI: string;
+  executor: SparqlExecutor;
 
-    protected constructor(supportedIRI: string, executor: SparqlExecutor) {
-        this._supportedIRI = supportedIRI;
-        this.executor = executor;
-    }
+  protected constructor(supportedIRI: string, executor: SparqlExecutor) {
+    this._supportedIRI = supportedIRI;
+    this.executor = executor;
+  }
 
-    set supportedIRI(iri: string) {
-        this._supportedIRI = iri;
-    }
+  set supportedIRI(iri: string) {
+    this._supportedIRI = iri;
+  }
 
-    get supportedIRI(): string {
-        return this._supportedIRI;
+  get supportedIRI(): string {
+    return this._supportedIRI;
 
-    }
+  }
 
-    abstract writePatternToStore(pattern: T): Promise<void>;
+  abstract writePatternToStore(pattern: T): Promise<void>;
 }
 
 export default Writer;
