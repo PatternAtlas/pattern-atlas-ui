@@ -29,14 +29,12 @@ export class CandidateManagementListComponent implements OnInit {
 
   getAll() {
     this.candidateService.getAllCandidates().subscribe(result => {
-      // console.log(result);
       this.candidates = result;
     })
   }
 
   getPatternLanguages() {
     this.patternLanguageService.getPatternLanguages().subscribe(result => {
-      // console.log(result);
       const none = new PatternLanguageModel()
       none.name = 'NONE';
       none.id = null;

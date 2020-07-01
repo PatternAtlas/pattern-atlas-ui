@@ -21,7 +21,6 @@ import { globals } from './globals';
     selector: 'pp-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
-    // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
 
@@ -43,11 +42,9 @@ export class AppComponent implements OnInit {
             if (_user) {
                 this.userName = _user.name;
                 this.loggedIn = true;
-                // this.ref.detectChanges();
             } else {
                 this.userName = null;
                 this.loggedIn = false;
-                // this.ref.detectChanges();
             }
         })
     }

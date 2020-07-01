@@ -21,7 +21,6 @@ import { globals } from 'src/app/globals';
 export class CandidateManagementDetailComponent implements OnInit {
 
   @ViewChild('textEditor') private _textEditor: TdTextEditorComponent;
-  // @ViewChild('detailView') detailView: ElementRef;
 
   markdown;
   value;
@@ -51,7 +50,6 @@ export class CandidateManagementDetailComponent implements OnInit {
   ngOnInit(): void {
 
     this.candidateStore.candidate.subscribe((_candidate: Candidate) => {
-      // console.log(_candidate);
       if (_candidate && this.router.url.includes('detail')) {
         this.disabled = true;
         this.candidate = _candidate;
@@ -83,7 +81,6 @@ export class CandidateManagementDetailComponent implements OnInit {
 
   // CHANGE MARKDOWN
   contentToMarkdown() {
-    // console.log(this.candidate);
     this.candidateMarkdown = `# ${this.candidate.name}\n`;
     for (let key in this.candidate.content) {
       this.candidateMarkdown = this.candidateMarkdown + `## ${key}\n${this.candidate.content[key]}\n`;
@@ -158,7 +155,6 @@ export class CandidateManagementDetailComponent implements OnInit {
     var currentKey;
     console.log(textEditorValue);
     for (let line of textEditorValue) {
-      // var line = textEditorValue[_i];
       // NAME
       if (line.type == 'heading' && line.depth == 1) {
         this.candidate.name = line.text;

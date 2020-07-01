@@ -23,7 +23,6 @@ export class AuthenticationService {
   private accessTokenSubject: BehaviorSubject<string>;
   private userSubject: BehaviorSubject<UserInfoModel>;
   private rolePASubject: BehaviorSubject<UserRole[]>;
-  // public roleSubject: BehaviorSubject<string[]>;
 
   private jwtHelper: JwtHelperService;
 
