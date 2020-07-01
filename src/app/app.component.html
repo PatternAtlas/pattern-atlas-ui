@@ -29,31 +29,26 @@
     </div>
 </mat-toolbar>
 <nav mat-tab-nav-bar>
-    <a mat-tab-link [routerLink]="'/patternLanguages'" routerLinkActive #rla1="routerLinkActive"
-        [active]="rla1.isActive">
-        Pattern Languages
-    </a>
-    <a mat-tab-link [routerLink]="'/patternViews'" routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive">
-        Pattern Views
-    </a>
-    <a mat-tab-link [routerLink]="'/candidate'" routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive">
-        Pattern Candidate
-    </a>
-    <a mat-tab-link [routerLink]="'/issue'" routerLinkActive #rla4="routerLinkActive" [active]="rla4.isActive">
-        Issue
-    </a>
-    <!-- <a mat-tab-link [routerLink]="'/user'" *ngIf="(auth.hasRole('MEMBER') | async)" routerLinkActive
-        #rla5="routerLinkActive" [active]="rla5.isActive">
-        Personal
-    </a>
-    <a mat-tab-link [routerLink]="'/admin'" *ngIf="(auth.hasRole('ADMIN') | async)" routerLinkActive
-        #rla6="routerLinkActive" [active]="rla6.isActive">
-        Admin
-    </a>
-    <a mat-tab-link [routerLink]="'/developer'" *ngIf="(auth.hasRole('ADMIN') | async)" routerLinkActive
-        #rla7="routerLinkActive" [active]="rla7.isActive">
-        Developer
-    </a> -->
+    <a mat-tab-link [routerLink]="'/' + pathConstants.patternLanguages"
+     routerLinkActive #rla1="routerLinkActive" [active]="rla1.isActive">
+    Pattern Languages
+  </a>
+  <a mat-tab-link [routerLink]="'/' + pathConstants.patternViews"
+     routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive">
+    Pattern Views
+  </a>
+  <a mat-tab-link [routerLink]="'/' + pathConstants.designModels" *ngIf="featureToggles.designModel"
+     routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive">
+    Design Models
+  </a>
+  <a mat-tab-link [routerLink]="'/candidate'" *ngIf="featureToggles.patternCandidate"
+     routerLinkActive #rla4="routerLinkActive" [active]="rla4.isActive">
+    Pattern Candidate
+  </a>
+  <a mat-tab-link [routerLink]="'/issue'" *ngIf="featureToggles.issue"
+     routerLinkActive #rla5="routerLinkActive" [active]="rla5.isActive">
+    Issue
+  </a>
 </nav>
 
 <router-outlet></router-outlet>

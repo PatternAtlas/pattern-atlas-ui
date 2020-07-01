@@ -14,8 +14,8 @@
 
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit } from '@angular/core';
 import { AuthenticationService } from './authentication/_services/authentication.service';
-import { PAUser } from './core/user-management';
 import { PrivilegeService } from './authentication/_services/privilege.service';
+import { globals } from './globals';
 
 @Component({
     selector: 'pp-root',
@@ -25,8 +25,11 @@ import { PrivilegeService } from './authentication/_services/privilege.service';
 })
 export class AppComponent implements OnInit {
 
+    readonly featureToggles = globals.featureToggles;
+    readonly pathConstants = globals.pathConstants;
     userName: string;
     loggedIn = false;
+    
 
     constructor(
         public auth: AuthenticationService,

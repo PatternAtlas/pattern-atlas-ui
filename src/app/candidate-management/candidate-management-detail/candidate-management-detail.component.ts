@@ -11,6 +11,7 @@ import * as MarkdownIt from 'markdown-it';
 import * as markdownitKatex from 'markdown-it-katex';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent, ConfirmData } from 'src/app/core/component/confirm-dialog/confirm-dialog.component';
+import { globals } from 'src/app/globals';
 
 @Component({
   selector: 'pp-candidate-management-detail',
@@ -138,7 +139,7 @@ export class CandidateManagementDetailComponent implements OnInit {
     confirmDialog.afterClosed().subscribe(result => {
       if (result) {
         this.patternService.savePattern(`http://localhost:8080/patternLanguages/${this.candidate.patternLanguageId}/patterns`, this.candidate).subscribe(result => {
-          this.router.navigate(['patternLanguages', this.candidate.patternLanguageId]);
+          this.router.navigate([globals.pathConstants.patternLanguages, this.candidate.patternLanguageId]);
         })
       }
     });
