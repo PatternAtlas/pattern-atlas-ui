@@ -24,6 +24,7 @@ import {DiscussionTopic} from '../../../model/discussion-topic';
 import {DiscussionService} from '../../../service/discussion.service';
 import {DiscussionComment} from '../../../model/discussion-comment';
 import {ImageModel} from '../../../model/image-model';
+import * as QuantumCircuit from 'quantum-circuit';
 
 
 @Component({
@@ -32,7 +33,6 @@ import {ImageModel} from '../../../model/image-model';
   styleUrls: ['./markdown-pattern-section-content.component.scss']
 })
 export class MarkdownPatternSectionContentComponent extends DataRenderingComponent implements AfterViewInit {
-
   data: string;
   renderedData: string;
   title = '';
@@ -73,6 +73,7 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
     this.markdownDiv.nativeElement.innerHTML = '';
     this.renderedData = value;
     this.renderSVGTags(value);
+
     this.cdr.detectChanges();
   }
 
@@ -89,13 +90,13 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
         .subscribe(res => {
           const imageModel = new ImageModel(atob(res.body.image), res.body.topicModels, id);
           this.imageModels.push(imageModel);
-          console.log(imageModel.image);
-          console.log(imageModel.topicModels);
+          // console.log(imageModel.image);
+          // console.log(imageModel.topicModels);
           // adding svgDatabaseId to svg
           if (!imageModel.image.includes('<svg id')) {
             let resIncId = imageModel.image.substr(0, imageModel.image.indexOf('<svg ') + 5)
               + 'id=\"' + id + '\" '
-              + imageModel.image.substr(imageModel.image.indexOf('<svg ') + 5 , imageModel.image.length - 1);
+              + imageModel.image.substr(imageModel.image.indexOf('<svg ') + 5, imageModel.image.length - 1);
             resIncId = resIncId.replace(new RegExp('glyph', 'g'), 'glyph' + id);
             resIncId = resIncId.replace(new RegExp('clip', 'g'), 'clip' + id);
             this.markdownDiv.nativeElement.innerHTML += resIncId;
@@ -109,6 +110,7 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
     } else {
       // if no svg tag remaining - render remaining elements
       this.markdownDiv.nativeElement.innerHTML += this.markdown.render(editData);
+      this.renderQASM(this.markdownDiv.nativeElement.innerHTML);
       this.getSVG();
     }
 
@@ -123,6 +125,8 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
       if (result) {
         this.data = result.content;
         this.changeText(this.renderedData);
+        // console.log(this.renderedData);
+        // console.log(this.data);
       }
       this.changeContent.emit({previousValue: previousValue, currentValue: result.content});
     });
@@ -133,18 +137,18 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
   }
 
   private getSVG() {
-    this.svg = d3.selectAll<SVGSVGElement, unknown>('svg').select( function () {
+    this.svg = d3.selectAll<SVGSVGElement, unknown>('svg').select(function () {
       for (let i = 0; i < this.children.length; i++) {
         if (this.children[i].id === 'surface1' && this.attributes.getNamedItem('resized') === null) {
           const width = d3.select(this).node().width.baseVal.valueInSpecifiedUnits;
-          const height =  d3.select(this).node().height.baseVal.valueInSpecifiedUnits;
+          const height = d3.select(this).node().height.baseVal.valueInSpecifiedUnits;
           d3.select(this).attr('width', width * 2)
             .attr('height', height * 2)
             .attr('preserveAspectRatio', 'xMidYMid meet')
             .attr('resized', 'true');
         }
       }
-        return this;
+      return this;
     });
     this.imageModels.forEach(model => {
       if (d3.select('[id="' + model.imageId + '"').select('g[id=comments]').node() === null) {
@@ -190,7 +194,6 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
     this.isCommentingEnabled = true;
 
 
-
     this.svg.on('mousedown', (d, i, n) => {
       this.commentSvg = n[i];
       const x = event.x;
@@ -210,18 +213,18 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
           if (this.svgCommentMouseDownCoordinate.x < this.svgCommentMouseUpCoordinate.x) {
             startCoordinates.x = this.svgCommentMouseDownCoordinate.x;
             this.svgCommentWidth = this.svgCommentMouseUpCoordinate.x - this.svgCommentMouseDownCoordinate.x;
-          } else  {
-            startCoordinates.x =  this.svgCommentMouseUpCoordinate.x;
+          } else {
+            startCoordinates.x = this.svgCommentMouseUpCoordinate.x;
             this.svgCommentWidth = this.svgCommentMouseDownCoordinate.x - this.svgCommentMouseUpCoordinate.x;
           }
           if (this.svgCommentMouseDownCoordinate.y < this.svgCommentMouseUpCoordinate.y) {
             startCoordinates.y = this.svgCommentMouseDownCoordinate.y;
             this.svgCommentHeight = this.svgCommentMouseUpCoordinate.y - this.svgCommentMouseDownCoordinate.y;
-          } else  {
-            startCoordinates.y =  this.svgCommentMouseUpCoordinate.y;
+          } else {
+            startCoordinates.y = this.svgCommentMouseUpCoordinate.y;
             this.svgCommentHeight = this.svgCommentMouseDownCoordinate.y - this.svgCommentMouseUpCoordinate.y;
           }
-          this.svgCommentStartCoordinates =  startCoordinates;
+          this.svgCommentStartCoordinates = startCoordinates;
 
           if (this.commentSvg === n[i] && n[i].parentNode.parentElement.id === this.title) {
             this.isCommentingEnabled = false;
@@ -267,7 +270,7 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
     const id = d3.select(this.commentSvg).node().id;
     const discussionTopic = new DiscussionTopic(this.comment, null, null, this.svgCommentStartCoordinates.x,
       this.svgCommentStartCoordinates.y, this.svgCommentWidth, this.svgCommentHeight, 'blue', id);
-    this.discussionService.addTopic(discussionTopic).subscribe( value => {
+    this.discussionService.addTopic(discussionTopic).subscribe(value => {
       const children = d3.select<SVGSVGElement, Node>(this.commentSvg).select<SVGSVGElement>('g[id=comments]').node().children;
       for (let i = 0; i < children.length; i++) {
         if (children[i].getAttribute('x') === this.svgCommentStartCoordinates.x.toString()
@@ -316,7 +319,7 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
           this.discussionService.deleteTopicById(topicId).subscribe();
         }
         if (result.response !== undefined) {
-          const replyTo =  d3.select<SVGSVGElement, Node>(nElement).node().lastElementChild.id;
+          const replyTo = d3.select<SVGSVGElement, Node>(nElement).node().lastElementChild.id;
           const topicId = d3.select<SVGSVGElement, Node>(nElement).node().id;
           console.log(replyTo, topicId);
           const discussionComment = new DiscussionComment(result.response, replyTo, topicId);
@@ -330,5 +333,37 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
         }
       }
     });
+  }
+
+  private renderQASM(content: string) {
+    const qasmIndexes: number[] = this.getNextOccurance(content, 'OPENQASM 2.0;', 'end');
+    if (qasmIndexes[0] !== -1 && qasmIndexes[1] !== -1) {
+      const circuit = new QuantumCircuit();
+      circuit.importQASM(content.substring(qasmIndexes[0], qasmIndexes[1])
+        .replace(new RegExp('<p>', 'g'), ' ').replace(new RegExp('</p>', 'g'), ' '));
+      circuit.run();
+      // console.log(content.substring(qasmIndexes[0], qasmIndexes[1]))
+      const svg = circuit.exportSVG(true);
+      const quirkData = circuit.exportQuirk(true);
+      const quirkURL = 'http://algassert.com/quirk#circuit=' + JSON.stringify(quirkData).replace(new RegExp('"', 'g'), '&quot;');
+      console.log(quirkURL);
+      this.markdownDiv.nativeElement.innerHTML = this.markdownDiv.nativeElement.innerHTML.replace(content.substring(qasmIndexes[0], qasmIndexes[1] + 3),
+        svg + ' ' +
+        '<a href="' + quirkURL + '" target="_blank">Open Quirk</a>');
+        // this.markdown.render('[Open Quirk](' + quirkURL + ')'));
+      this.renderQASM(this.markdownDiv.nativeElement.innerHTML);
+    } else {
+      this.checkEmptyInnerHTML();
+    }
+  }
+
+  private checkEmptyInnerHTML() {
+    if (this.markdownDiv.nativeElement.innerHTML.length === 0) {
+      this.markdownDiv.nativeElement.innerHTML = this.markdown.render('Enter your input for this section here.');
+    }
+  }
+
+  goToLink(url: string) {
+    window.open(url, '_blank');
   }
 }
