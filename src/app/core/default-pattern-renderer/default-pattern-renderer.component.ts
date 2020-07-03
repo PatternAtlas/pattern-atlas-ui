@@ -164,8 +164,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
 
     private savePattern(section: string, previousContent: any, instance: MarkdownPatternSectionContentComponent) {
         this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe(data => {
-            const test = data.body.renderedContent[section];
-            this.pattern.renderedContent[section] = test;
+            this.pattern.renderedContent[section] = data.body.renderedContent[section];
             instance.changeText(this.pattern.renderedContent[section]);
             this.toasterService.pop('success', 'Saved pattern');
           },
