@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IssueManagementService, Issue, IssueManagementStore } from 'src/app/core/issue-management';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PrivilegeService } from 'src/app/authentication/_services/privilege.service';
+import { Context } from 'src/app/core/shared';
 
 @Component({
   selector: 'pp-issue-management-list',
@@ -22,7 +23,7 @@ export class IssueManagementListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getAll()
+    this.getAll();
   }
 
   getAll() {

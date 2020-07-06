@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { RatingModelRequest, RatingManagementService, RatingModel } from '../../rating-management';
 import { PrivilegeService } from 'src/app/authentication/_services/privilege.service';
 import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
-import { PAComment } from '../../shared';
+import { PAComment, Context } from '../../shared';
 
 @Component({
   selector: 'pp-rating',
@@ -64,7 +64,7 @@ export class RatingComponent implements OnInit {
 
   click(rating: number) {
     switch (this.context) {
-      case 0: {
+      case Context.ISSUE: {
         this.commentEntity ?
           this.ratingService.updateRatingIssueComment(this.ratingEntity, this.commentEntity, new RatingModelRequest(rating)).subscribe(result => {
             this.update(result);
@@ -75,7 +75,7 @@ export class RatingComponent implements OnInit {
           });
         break;
       }
-      case 1: {
+      case Context.CANDIDATE: {
         this.commentEntity ?
           this.ratingService.updateRatingCandidateComment(this.ratingEntity, this.commentEntity, new RatingModelRequest(rating)).subscribe(result => {
             this.update(result);

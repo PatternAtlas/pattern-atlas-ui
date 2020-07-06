@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { PAComment } from '../../shared';
+import { PAComment, Context } from '../../shared';
 import { IssueManagementService, Issue } from '../../issue-management';
 import { CandidateManagementService, Candidate } from '../../candidate-management';
 import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
@@ -36,14 +36,14 @@ export class CommentListComponent implements OnInit {
 
   submit() {
     switch (this.context) {
-      case 0: {
+      case Context.ISSUE: {
         this.issueManagementService.createComment(this.commentEntity, new PAComment(this.commentText)).subscribe(result => {
           this.data.push(result)
           this.cancelComment();
         });
         break;
       }
-      case 1: {
+      case Context.CANDIDATE: {
         this.canididateManagementService.createComment(this.commentEntity, new PAComment(this.commentText)).subscribe(result => {
           this.data.push(result)
           this.cancelComment();
@@ -60,7 +60,7 @@ export class CommentListComponent implements OnInit {
 
   deleteComment(comment: PAComment) {
     switch (this.context) {
-      case 0: {
+      case Context.ISSUE: {
         this.issueManagementService.deleteComment(this.commentEntity, new PAComment(this.commentText)).subscribe(result => {
           if (result) {
             const index = this.data.indexOf(comment);
@@ -69,7 +69,7 @@ export class CommentListComponent implements OnInit {
         });
         break;
       }
-      case 1: {
+      case Context.CANDIDATE: {
         this.canididateManagementService.deleteComment(this.commentEntity, new PAComment(this.commentText)).subscribe(result => {
           if (result) {
             const index = this.data.indexOf(comment);

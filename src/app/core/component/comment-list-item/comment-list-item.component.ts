@@ -1,11 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { RatingModelRequest, RatingManagementService } from '../../rating-management';
-import { PAComment } from '../../shared';
+import { PAComment, Context } from '../../shared';
 import { IssueManagementService, Issue } from '../../issue-management';
 import { CandidateManagementService, Candidate } from '../../candidate-management';
 import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
 import { PrivilegeService } from 'src/app/authentication/_services/privilege.service';
 import { FormControl } from '@angular/forms';
+import { Content } from '@angular/compiler/src/render3/r3_ast';
 
 @Component({
   selector: 'pp-comment-list-item',
@@ -56,14 +57,14 @@ export class CommentListItemComponent implements OnInit {
 
   update() {
     switch (this.context) {
-      case 0: {
+      case Context.ISSUE: {
         this.issueManagementService.updateComment(this.commentEntity, this.comment).subscribe(result => {
           if (result) this.comment = result;
           this.disabled = true;
         });
         break;
       }
-      case 1: {
+      case Context.CANDIDATE: {
         this.canididateManagementService.updateComment(this.commentEntity, this.comment).subscribe(result => {
           if (result) this.comment = result;
           this.disabled = true;
