@@ -24,8 +24,8 @@ export class IssueManagementDetailComponent implements OnInit {
   public issue: Issue;
   private oldIssue: Issue;
 
-  disabled: boolean = true;
-  candidate: boolean = false;
+  disabled = true;
+  candidate = false;
 
   constructor(
     private issueManagementService: IssueManagementService,

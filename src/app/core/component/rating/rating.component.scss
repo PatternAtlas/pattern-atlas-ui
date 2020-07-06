@@ -1,27 +1,27 @@
 .container-row {
-    // border-style: groove;
-    margin: 4px 0px;
-    width: 100%;
-    display: flex; /* or inline-flex */
-    flex-direction: row;
-    justify-content: center;
-    align-items: baseline;
+  // border-style: groove;
+  margin: 4px 0;
+  width: 100%;
+  display: flex; /* or inline-flex */
+  flex-direction: row;
+  justify-content: center;
+  align-items: baseline;
 
-    .rating {
-        margin: 0px 16px;
-    }
+  .rating {
+    margin: 0 16px;
+  }
 }
 
 .container-column {
-    // border-style: groove;
-    width: 100%;
-    display: flex; /* or inline-flex */
-    flex-direction: column;
-    justify-content: center;
-    align-items: stretch;
+  // border-style: groove;
+  width: 100%;
+  display: flex; /* or inline-flex */
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
 
-    .rating {
-        margin: 8px 0px;
-        text-align: center;
-    }
+  .rating {
+    margin: 8px 0;
+    text-align: center;
+  }
 }

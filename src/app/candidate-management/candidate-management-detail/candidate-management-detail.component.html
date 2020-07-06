@@ -7,7 +7,7 @@
         <!-- <div> -->
         <td-text-editor *ngIf="!disabled" [value]="candidateMarkdown" [options]="options" #textEditor id="textEditor"></td-text-editor>
         <!-- </div> -->
-        <div *ngIf="disabled" class="detailView" [innerHTML]="value"></div>
+        <div *ngIf="disabled" class="detail-view" [innerHTML]="value"></div>
         <div *ngIf="disabled" class="spacer"></div>
 
         <pp-author-picker class="detail-component" [authors]="candidate.authors" [disabled]="disabled"

@@ -1,5 +1,5 @@
 export enum Author {
-    OWNER        = "OWNER",
-    MAINTAINER   = "MAINTAINER",
-    MEMBER       = "MEMBER",
+    OWNER        = 'OWNER',
+    MAINTAINER   = 'MAINTAINER',
+    MEMBER       = 'MEMBER',
   }

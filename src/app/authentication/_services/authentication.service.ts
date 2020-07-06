@@ -1,12 +1,12 @@
-import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, Subject, of, EMPTY, observable } from "rxjs";
-import { HttpClient, HttpRequest, HttpParams, HttpHeaders } from "@angular/common/http";
-import { Router } from "@angular/router";
-import { switchMap, skipWhile, tap, map, catchError } from "rxjs/operators";
-import { JwtHelperService } from "@auth0/angular-jwt";
-import { TokenInterceptor } from "../_interceptor/token.interceptor";
-import { PAUser, UserRole, UserInfoModel } from "src/app/core/user-management";
-import { environment } from "src/environments/environment";
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, Subject, of, EMPTY, observable } from 'rxjs';
+import { HttpClient, HttpRequest, HttpParams, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { switchMap, skipWhile, tap, map, catchError } from 'rxjs/operators';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { TokenInterceptor } from '../_interceptor/token.interceptor';
+import { PAUser, UserRole, UserInfoModel } from 'src/app/core/user-management';
+import { environment } from 'src/environments/environment';
 
 
 const accessTokenKey = 'access_token';
@@ -127,7 +127,7 @@ export class AuthenticationService {
 
           this.accessTokenSubject.next(accessToken);
         },
-          error => console.error('Error getToken(): ', error)
+        error => console.error('Error getToken(): ', error)
         );
       }
     }
@@ -149,10 +149,10 @@ export class AuthenticationService {
 
       this.accessTokenSubject.next(accessToken);
     },
-      error => {
-        console.error('Error getToken via refreshToken: ', error)
+    error => {
+      console.error('Error getToken via refreshToken: ', error)
 
-      }
+    }
     );
   }
 

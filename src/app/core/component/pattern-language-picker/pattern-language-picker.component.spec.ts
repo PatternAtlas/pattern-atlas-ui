@@ -10,7 +10,7 @@ describe('PatternLanguagePickerComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ PatternLanguagePickerComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

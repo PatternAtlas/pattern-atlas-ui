@@ -19,8 +19,8 @@ export class CommentListItemComponent implements OnInit {
   @Input() context: number;
   @Output() deleteComment: EventEmitter<PAComment> = new EventEmitter<PAComment>();
 
-  disabled: boolean = true;
-  isAuthor: boolean = false;
+  disabled = true;
+  isAuthor = false;
   oldComment: PAComment;
 
   commentCtrl = new FormControl();

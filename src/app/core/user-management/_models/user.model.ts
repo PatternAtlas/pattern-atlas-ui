@@ -1,6 +1,6 @@
-import { UserRole } from "./role.enum";
-import { Issue } from "../../issue-management";
-import { PAComment } from "../../shared";
+import { UserRole } from './role.enum';
+import { Issue } from '../../issue-management';
+import { PAComment } from '../../shared';
 
 export class PAUser {
     // USER INFO
@@ -19,7 +19,7 @@ export class PAUser {
     constructor()
     constructor(_role: UserRole) 
     constructor(_role?: UserRole) {
-        this.role = _role;
+      this.role = _role;
     }
 
 }

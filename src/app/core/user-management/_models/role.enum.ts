@@ -1,7 +1,7 @@
 export enum UserRole {
-    MEMBER = "MEMBER",
-    EXPERT = "EXPERT",
+    MEMBER = 'MEMBER',
+    EXPERT = 'EXPERT',
     // AUTHOR = "AUTHOR",
-    LIBRARIAN = "LIBRARIAN",
-    ADMIN = "ADMIN"
+    LIBRARIAN = 'LIBRARIAN',
+    ADMIN = 'ADMIN'
 }

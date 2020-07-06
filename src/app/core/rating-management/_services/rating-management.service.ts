@@ -1,14 +1,14 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { ToasterService } from "angular2-toaster";
-import { environment } from "src/environments/environment";
-import { Issue } from "../../issue-management";
-import { Observable } from "rxjs";
-import { map, catchError } from "rxjs/operators";
-import { Candidate } from "../../candidate-management";
-import { RatingModelRequest } from "../_models/rating.model.request";
-import { PAComment } from "../../shared";
-import { RatingModel } from "../_models/rating.model";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ToasterService } from 'angular2-toaster';
+import { environment } from 'src/environments/environment';
+import { Issue } from '../../issue-management';
+import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { Candidate } from '../../candidate-management';
+import { RatingModelRequest } from '../_models/rating.model.request';
+import { PAComment } from '../../shared';
+import { RatingModel } from '../_models/rating.model';
 
 @Injectable()
 export class RatingManagementService {

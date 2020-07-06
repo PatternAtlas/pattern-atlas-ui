@@ -1,5 +1,5 @@
-import { AuthorModel } from "../../author-management";
-import { PAComment } from "../../shared/_models/comment.model";
+import { AuthorModel } from '../../author-management';
+import { PAComment } from '../../shared/_models/comment.model';
 
 export class Issue {
     authors: AuthorModel[];

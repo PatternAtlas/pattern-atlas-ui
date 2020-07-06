@@ -20,7 +20,7 @@ export class AuthorPickerComponent implements OnInit, OnChanges {
 
   @Input() authorEntity: any;
   @Input() context: number;
-  @Input() disabled: boolean = true;
+  @Input() disabled = true;
   @Input() authors: AuthorModel[];
 
   separatorKeysCodes: number[] = [ENTER, COMMA];

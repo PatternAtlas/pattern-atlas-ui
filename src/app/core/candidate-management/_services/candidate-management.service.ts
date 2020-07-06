@@ -1,12 +1,12 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { ToasterService } from "angular2-toaster";
-import { AuthenticationService } from "src/app/authentication/_services/authentication.service";
-import { Observable } from "rxjs";
-import { map, catchError } from "rxjs/operators";
-import { Candidate } from "../_models/candidate.model";
-import { environment } from "src/environments/environment";
-import { PAComment } from "../../shared";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ToasterService } from 'angular2-toaster';
+import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
+import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { Candidate } from '../_models/candidate.model';
+import { environment } from 'src/environments/environment';
+import { PAComment } from '../../shared';
 
 @Injectable()
 export class CandidateManagementService {

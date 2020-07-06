@@ -6,8 +6,8 @@ export class AuthorModel {
     constructor()
     constructor(_userId: string, _authorRole: string, _name: string)
     constructor(_userId?: string, _authorRole?: string, _name?: string) {
-        this.userId = _userId;
-        this.authorRole = _authorRole;
-        this.name = _name;
+      this.userId = _userId;
+      this.authorRole = _authorRole;
+      this.name = _name;
     }
 }

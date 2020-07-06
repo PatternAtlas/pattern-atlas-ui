@@ -17,7 +17,7 @@ export class ConfirmDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<ConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ConfirmData) {
-      console.log(data);
+    console.log(data);
   }
 
   ngOnInit(): void {

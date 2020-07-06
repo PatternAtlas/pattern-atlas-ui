@@ -25,7 +25,7 @@ export class CandidateManagementDetailComponent implements OnInit {
   markdown;
   value;
 
-  candidateMarkdown: string = '';
+  candidateMarkdown = '';
   options: any = {};
 
   candidate: Candidate;
@@ -33,8 +33,8 @@ export class CandidateManagementDetailComponent implements OnInit {
 
   private patternSchema: PatternSectionSchema[];
 
-  disabled: boolean = true;
-  pattern: boolean = false;
+  disabled = true;
+  pattern = false;
   confirmDialog: ConfirmData;
 
   constructor(
@@ -135,7 +135,8 @@ export class CandidateManagementDetailComponent implements OnInit {
 
     confirmDialog.afterClosed().subscribe(result => {
       if (result) {
-        this.patternService.savePattern(`http://localhost:8080/patternLanguages/${this.candidate.patternLanguageId}/patterns`, this.candidate).subscribe(result => {
+        const url = `http://localhost:8080/patternLanguages/${this.candidate.patternLanguageId}/patterns`;
+        this.patternService.savePattern(url, this.candidate).subscribe(result => {
           this.router.navigate([globals.pathConstants.patternLanguages, this.candidate.patternLanguageId]);
         })
       }

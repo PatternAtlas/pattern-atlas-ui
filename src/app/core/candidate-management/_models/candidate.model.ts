@@ -1,5 +1,5 @@
-import { PAComment } from "../../shared/_models/comment.model";
-import { AuthorModel } from "../../author-management";
+import { PAComment } from '../../shared/_models/comment.model';
+import { AuthorModel } from '../../author-management';
 
 export class Candidate {
   authors: AuthorModel[];
@@ -13,7 +13,7 @@ export class Candidate {
   upVotes: string[];
   downVotes: string[];
   uri: string;
-  version: string = '0.1.0';
+  version = '0.1.0';
 
   constructor()
   constructor(_content: any, _name: string, _patternLanguageId: string, _authors: AuthorModel[])

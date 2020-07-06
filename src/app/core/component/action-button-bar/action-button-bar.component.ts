@@ -23,22 +23,22 @@ export class ActionButtonBarComponent implements OnInit {
 
     @Input() displayText: string;
 
-  constructor(private cdr: ChangeDetectorRef,
+    constructor(private cdr: ChangeDetectorRef,
               private applicationRef: ApplicationRef) {
-  }
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
-  addButtonClicked() {
-    this.addClicked.emit();
-  }
+    addButtonClicked() {
+      this.addClicked.emit();
+    }
 
-  reloadButtonClicked() {
-    this.reloadClicked.emit();
-  }
+    reloadButtonClicked() {
+      this.reloadClicked.emit();
+    }
 
-  secondAddButtonClicked() {
-    this.add2Clicked.emit();
-  }
+    secondAddButtonClicked() {
+      this.add2Clicked.emit();
+    }
 }

@@ -1,33 +1,33 @@
 button {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 
 .mat-card {
-    min-height: fit-content;
+  min-height: fit-content;
 }
 
 .container-comment-item {
-    margin: 16px 1px 1px 1px;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
+  margin: 16px 1px 1px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
 
-    .comment-input {
-        flex: 1 1 auto;
-        margin-right: 16px;
+  .comment-input {
+    flex: 1 1 auto;
+    margin-right: 16px;
 
-        .user {
-            font-size: 13px;
-            color: gray;
-        }
-
-        .comment-buttons {
-            float: right;
-        }
+    .user {
+      font-size: 13px;
+      color: #808080;
     }
 
-    .comment-rating {
-        width: 70px;
+    .comment-buttons {
+      float: right;
     }
+  }
+
+  .comment-rating {
+    width: 70px;
+  }
 }

@@ -1,12 +1,12 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { ToasterService } from "angular2-toaster";
-import { AuthenticationService } from "src/app/authentication/_services/authentication.service";
-import { Issue } from "../_models/issue.model";
-import { Observable, of } from "rxjs";
-import { map, catchError } from "rxjs/operators";
-import { environment } from "src/environments/environment";
-import { PAComment } from "../../shared/_models/comment.model";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ToasterService } from 'angular2-toaster';
+import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
+import { Issue } from '../_models/issue.model';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+import { PAComment } from '../../shared/_models/comment.model';
 
 @Injectable()
 export class IssueManagementService {

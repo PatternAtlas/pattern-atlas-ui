@@ -11,8 +11,8 @@ import { PAComment } from '../../shared';
 })
 export class RatingComponent implements OnInit {
 
-  @Input() row: boolean = true;
-  @Input() disabled: boolean = false;
+  @Input() row = true;
+  @Input() disabled = false;
 
   @Input() upVotes: string[] = [];
   @Input() downVotes: string[] = [];

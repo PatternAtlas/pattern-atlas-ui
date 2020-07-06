@@ -43,16 +43,16 @@ export class PatternLanguageService {
       );
   }
 
-    public getPatternLanguagesSchemas(): Observable<PatternLanguageSchemaModel[]> {
-        return this.http.get<any>(this.repoEndpoint + '/patternLanguages/patternSchemas').pipe(
-            map(result => result._embedded ? result._embedded.patternLanguageSchemaModels : []
-            )
-        );
-    }
+  public getPatternLanguagesSchemas(): Observable<PatternLanguageSchemaModel[]> {
+    return this.http.get<any>(this.repoEndpoint + '/patternLanguages/patternSchemas').pipe(
+      map(result => result._embedded ? result._embedded.patternLanguageSchemaModels : []
+      )
+    );
+  }
 
-    public getPatternLanguageResult(): Observable<PatternLanguages> {
-        return this.http.get<PatternLanguages>(this.repoEndpoint + '/patternLanguages');
-    }
+  public getPatternLanguageResult(): Observable<PatternLanguages> {
+    return this.http.get<PatternLanguages>(this.repoEndpoint + '/patternLanguages');
+  }
 
   public getPatternLanguageByUrl(url: string): Observable<PatternLanguage> {
     return this.http.get(url).pipe(

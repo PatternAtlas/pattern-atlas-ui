@@ -50,46 +50,46 @@ import { FilterViewComponent } from './filter/component/filter-view/filter-view.
 
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        PageNotFoundComponent,
-        LandingPageComponent,
-        FilterViewComponent
-    ],
-    imports: [
-        AppRoutingModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-        AuthenticationModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatCardModule,
-        MatButtonModule,
-        MatIconModule,
-        MatTabsModule,
-        NgxMdModule,
-        CovalentTextEditorModule,
-        CoreModule,
-        HttpClientModule,
-        AppRoutingModule,
-        FlexLayoutModule,
-        ToasterModule.forRoot(),
-        MatInputModule,
-        FormsModule,
-        ReactiveFormsModule,
-        JwtModule,
-        MatSidenavModule,
-        MatListModule,
-        MatMenuModule,
+  declarations: [
+    AppComponent,
+    PageNotFoundComponent,
+    LandingPageComponent,
+    FilterViewComponent
+  ],
+  imports: [
+    AppRoutingModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    AuthenticationModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTabsModule,
+    NgxMdModule,
+    CovalentTextEditorModule,
+    CoreModule,
+    HttpClientModule,
+    AppRoutingModule,
+    FlexLayoutModule,
+    ToasterModule.forRoot(),
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule,
+    JwtModule,
+    MatSidenavModule,
+    MatListModule,
+    MatMenuModule,
 
-        IssueManagementModule,
-        CandidateManagementModule,
-    ],
-    providers: [
-        CookieService,
-        { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
-    ],
-    bootstrap: [AppComponent]
+    IssueManagementModule,
+    CandidateManagementModule,
+  ],
+  providers: [
+    CookieService,
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }

@@ -1,6 +1,6 @@
-import { BehaviorSubject } from "rxjs";
-import { Issue } from "../_models/issue.model";
-import { Injectable } from "@angular/core";
+import { BehaviorSubject } from 'rxjs';
+import { Issue } from '../_models/issue.model';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class IssueManagementStore {
@@ -10,26 +10,26 @@ export class IssueManagementStore {
     // public _issue2Candidate: Issue;
     
     get issue() {
-        return this._issue.asObservable();
+      return this._issue.asObservable();
     }
     // get issue2Candidate() {
     //     return this._issue2Candidate.asObservable();
     // }
 
     addIssue(issue: Issue) {
-        this._issue.next(issue);
+      this._issue.next(issue);
     }
 
     resetIssue() {
-        this._issue.next(null);
+      this._issue.next(null);
     }
 
-    // addIssue2Candidate(issue2Candidate: Issue) {
-    //     console.log(issue2Candidate)
-    //     this._issue2Candidate.next(issue2Candidate);
-    // }
+  // addIssue2Candidate(issue2Candidate: Issue) {
+  //     console.log(issue2Candidate)
+  //     this._issue2Candidate.next(issue2Candidate);
+  // }
 
-    // resetIssue2Candidate() {
-    //     this._issue2Candidate.next(null);
-    // }
+  // resetIssue2Candidate() {
+  //     this._issue2Candidate.next(null);
+  // }
 }

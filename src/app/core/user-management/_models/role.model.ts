@@ -1,4 +1,4 @@
-import { PrivilegeModel } from "./privilege.model";
+import { PrivilegeModel } from './privilege.model';
 
 export class RoleModel {
     id: string;

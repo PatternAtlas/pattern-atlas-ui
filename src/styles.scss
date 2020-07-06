@@ -12,8 +12,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 /* You can add global styles to this file, and also import other style files */
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
-@import "~angular2-toaster/toaster";
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import '~angular2-toaster/toaster';
 
 body {
   font-family: sans-serif;
@@ -21,7 +21,7 @@ body {
 }
 
 .material-icons {
-  font-family: "Material Icons";
+  font-family: 'Material Icons';
   font-weight: normal;
   font-style: normal;
   font-size: 24px; /* Preferred icon size */
@@ -42,7 +42,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 
   /* Support for IE. */
-  font-feature-settings: "liga";
+  font-feature-settings: 'liga';
 }
 
 /* Rules for sizing the icon. */
@@ -256,7 +256,7 @@ $break-large: 760px;
 }
 
 .left {
-  margin: 8px 8px;
+  margin: 8px;
   @media screen and (max-width: $break-small) {
     width: 100%;
   }
@@ -265,8 +265,9 @@ $break-large: 760px;
     flex: 2 350px;
   }
 }
+
 .right {
-  margin: 8px 8px;
+  margin: 8px;
   @media screen and (max-width: $break-small) {
     width: 100%;
   }
@@ -288,7 +289,7 @@ $break-large: 760px;
 .detail-component {
   height: 100%;
   width: 100%;
-  padding: 4px 0px;
+  padding: 4px 0;
 }
 
 .buttons {
