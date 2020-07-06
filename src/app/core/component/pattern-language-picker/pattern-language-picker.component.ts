@@ -29,7 +29,6 @@ export class PatternLanguagePickerComponent implements OnInit {
     if (disabled) this.patternLanguageCrtl.disable();
     if (!disabled) this.patternLanguageCrtl.enable();
   }
-  // @Input() disabled: boolean;
   @Input() set patternLanguageSelected(patternLanguageSelected: string) {
     if (patternLanguageSelected) {
       this._patternLanguageSelected = patternLanguageSelected;
@@ -40,7 +39,6 @@ export class PatternLanguagePickerComponent implements OnInit {
       }
     }
   }
-  // @Input() patternLanguageSelected: string;
   @Input() confirmDialog: ConfirmData;
   @Output() patternLanguageSelectedChange = new EventEmitter();
 
@@ -79,7 +77,6 @@ export class PatternLanguagePickerComponent implements OnInit {
           this.patternLanguageSelectedChange.emit(this.patternLanguageCrtl.value)
         } else {
           this.patternLanguageCrtl.setValue(this._oldValue);
-          // this.patternLanguageSelectedChange.emit(this._oldValue)
         }
       });
     } else {

@@ -297,20 +297,3 @@ $break-large: 760px;
   flex-direction: row;
   justify-content: space-around;
 }
-
-// .scrollable-double {
-//   height: $base-height;
-// }
-
-// @mixin styling($base-height) {
-//   .scrollable-double {
-//     height: $base-height;
-//   }
-// }
-
-// @media screen and (max-width: 759px) {
-//   @include styling($base-height: 100%);
-// }
-// @media screen and (min-width: 760px) {
-//   @include styling($base-height: calc(100vh - 32px - 64px - 48px - 64px - 16px));
-// }
