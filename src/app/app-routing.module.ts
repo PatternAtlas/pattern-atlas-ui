@@ -80,11 +80,6 @@ const routes: Routes = [
     component: PatternLanguageGraphComponent
   },
   {
-    path: '',
-    redirectTo: 'issue',
-    pathMatch: 'full'
-  },
-  {
     path: '**',
     component: PageNotFoundComponent
   },
