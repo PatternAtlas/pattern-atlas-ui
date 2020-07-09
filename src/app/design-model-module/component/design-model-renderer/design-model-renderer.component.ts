@@ -6,6 +6,13 @@ import { GraphInputData } from '../../../core/model/graph-input-data.interface';
 import { UndirectedEdgeModel } from '../../../core/model/hal/undirected-edge.model';
 import { DirectedEdgeModel } from '../../../core/model/hal/directed-edge.model';
 import { ConcreteSolutionService } from '../../service/concrete-solution.service';
+import {
+  CreateEditComponentDialogType,
+  CreateEditPatternLanguageComponent
+} from '../../../core/component/create-edit-pattern-language/create-edit-pattern-language.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
+import { TechnologySelectorComponent } from '../technology-selector/technology-selector.component';
 
 
 @Component({
@@ -34,7 +41,8 @@ export class DesignModelRendererComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute,
               private designModelService: DesignModelService,
               private concreteSolutionService: ConcreteSolutionService,
-              private patternLanguageService: PatternLanguageService) {
+              private patternLanguageService: PatternLanguageService,
+              private dialog: MatDialog) {
   }
 
 
@@ -109,7 +117,23 @@ export class DesignModelRendererComponent implements OnInit {
   }
 
 
+  selectTechnology(): Promise<string> {
+    return new Promise<string>(resolve => {
+      const response = this.concreteSolutionService.getTechnologies(this.designModelId);
+
+      const dialogRef = this.dialog.open(TechnologySelectorComponent, { data: { options: response } });
+
+      dialogRef.componentInstance.getSelectedTechnology().subscribe(technology => {
+        dialogRef.close();
+        resolve(technology);
+      });
+    });
+  }
+
+
   aggregateConcreteSolutions(): void {
-    this.concreteSolutionService.aggregateDesignModel(this.designModelId);
+    this.selectTechnology().then(technology => {
+      this.concreteSolutionService.aggregateDesignModel(this.designModelId, technology);
+    });
   }
 }

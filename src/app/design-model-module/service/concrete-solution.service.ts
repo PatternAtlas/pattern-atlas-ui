@@ -15,6 +15,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { globals } from '../../globals';
+import { tap } from 'rxjs/operators';
 
 
 @Injectable()
@@ -27,9 +28,30 @@ export class ConcreteSolutionService {
   }
 
 
-  aggregateDesignModel(uuid: string) {
-    this.httpClient.post(this.repoEndpoint + '/aggregate/' + uuid, null).subscribe(response => {
-      console.warn('Aggregation response is', response);
-    })
+  getTechnologies(uuid: string) {
+    return this.httpClient.get(this.repoEndpoint + '/technologies/' + uuid);
+  }
+
+
+  aggregateDesignModel(uuid: string, technology: string) {
+    this.httpClient.post(this.repoEndpoint + '/aggregate/' + uuid, null, {
+      params: { technology: technology }
+    }).subscribe((response: any) => {
+      try {
+        console.debug('Aggregation response is', response);
+        const blob = new Blob([response.file], { type: response.mime });
+        const url = window.URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = response.name;
+        document.body.appendChild(link);
+
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        document.body.removeChild(link);
+      } catch (e) {
+        console.error('Could not download aggregation result', e);
+      }
+    });
   }
 }

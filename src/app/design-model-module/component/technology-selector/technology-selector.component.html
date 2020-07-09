@@ -1,0 +1,12 @@
+<div *ngIf="noTechnologyFound">
+  Sorry, there are no technologies supporting your design model.
+</div>
+
+<mat-form-field *ngIf="!noTechnologyFound">
+  <mat-label>Technology</mat-label>
+  <mat-select (selectionChange)="selected($event)">
+    <mat-option *ngFor="let opt of data.options | async" [value]="opt">
+      {{opt}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

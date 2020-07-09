@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DesignModelRoutingModule } from './design-model-routing.module';
 import { CoreModule } from '../core/core.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DesignModelManagementComponent } from './component/design-model-management/design-model-management.component';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,12 +17,15 @@ import { DesignModelService } from './service/design-model.service';
 import { DesignModelRendererComponent } from './component/design-model-renderer/design-model-renderer.component';
 import { GraphDataService } from '../core/service/graph-data/graph-data.service';
 import { ConcreteSolutionService } from './service/concrete-solution.service';
+import { TechnologySelectorComponent } from './component/technology-selector/technology-selector.component';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @NgModule({
   declarations: [
     DesignModelManagementComponent,
-    DesignModelRendererComponent
+    DesignModelRendererComponent,
+    TechnologySelectorComponent
   ],
   imports: [
     CommonModule,
@@ -37,7 +40,9 @@ import { ConcreteSolutionService } from './service/concrete-solution.service';
     MatListModule,
     MatIconModule,
     MatToolbarModule,
-    MatTreeModule
+    MatTreeModule,
+    MatSelectModule,
+    FormsModule,
   ],
   providers: [
     ConcreteSolutionService,
