@@ -33,7 +33,7 @@
     "angular2-toaster": "8.0.0",
     "core-js": "2.6.3",
     "d3": "^5.9.2",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "madr": "2.1.2",
     "markdown-it": "10.0.0",
     "markdown-it-katex": "2.0.3",
