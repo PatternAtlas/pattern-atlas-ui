@@ -33,6 +33,7 @@ import { GraphDataService } from '../../core/service/graph-data/graph-data.servi
 import { map, tap } from 'rxjs/operators';
 import { GraphDataSavePatternService } from '../../core/service/graph-data/graph-data-save-pattern.service';
 import { HalLink } from '../../core/model/hal/hal-link.interface';
+import { TextComponent } from '@ustutt/grapheditor-webcomponent/lib/edge';
 
 
 @Injectable()
@@ -123,22 +124,52 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
   }
 
 
-  getEdges(): Observable<DirectedEdgeModel[] | UndirectedEdgeModel[]> {
-    return this.httpClient.get<DirectedEdgeModel[] | UndirectedEdgeModel[]>(this.designModelLinks.edges.href);
+  getEdgeTypes(): Observable<string[]> {
+    // TODO: This should be loaded from the backend
+    return of(['hostedOn', 'messageChannel']);
   }
 
 
-  addEdge(edge: DirectedEdgeModel | UndirectedEdgeModel): void {
-    console.debug('Add edge', this.designModelLinks.edges.href, edge);
-    this.httpClient.post(this.designModelLinks.edges.href, edge).subscribe(response => {
-      console.debug('Add edge response', response);
+  getEdges(): Observable<DirectedEdgeModel[] | UndirectedEdgeModel[]> {
+    return this.httpClient.get<any[]>(this.designModelLinks.edges.href)
+      .pipe(
+        map(edges => {
+          return edges.map(edge => {
+            edge.texts = [<TextComponent>{
+              value: edge.type,
+              width: 100,
+              positionOnLine: 0.5,
+              offsetX: 8,
+              offsetY: -2,
+              clickEventKey: 'edge-type',
+              template: 'edge-label'
+            }];
+            return edge;
+          });
+        })
+      );
+  }
+
+
+  addEdge(edge: DirectedEdgeModel | UndirectedEdgeModel): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      console.debug('Add edge', this.designModelLinks.edges.href, edge);
+      this.httpClient.post(this.designModelLinks.edges.href, edge).subscribe(
+        response => {
+          console.debug('Add edge response', response);
+          resolve();
+        }, error => {
+          console.error('Failed to add edge', error);
+          reject();
+        }
+      );
     });
   }
 
 
-  deleteEdge(uuid: string): void {
-    console.debug('Delete edge', this.designModelLinks.edges.href, uuid);
-    this.httpClient.delete(this.designModelLinks.edges.href + '/' + uuid).subscribe(response => {
+  deleteEdge(edge: { source: string, target: string }): void {
+    console.debug('Delete edge', this.designModelLinks.edges.href, edge);
+    this.httpClient.delete(this.designModelLinks.edges.href + '/' + edge.source + '/' + edge.target).subscribe(response => {
       console.debug('Delete edge response', response);
     });
   }

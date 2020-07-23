@@ -28,7 +28,7 @@
     "@angular/router": "9.1.2",
     "@auth0/angular-jwt": "^4.0.0",
     "@covalent/text-editor": "3.0.0-beta.1-2",
-    "@ustutt/grapheditor-webcomponent": "0.3.1",
+    "@ustutt/grapheditor-webcomponent": "0.5.4",
     "angular2-prettyjson": "3.0.1",
     "angular2-toaster": "8.0.0",
     "core-js": "2.6.3",

@@ -28,15 +28,13 @@ export class ConcreteSolutionService {
   }
 
 
-  getTechnologies(uuid: string) {
+  getConcreteSolutionSet(uuid: string) {
     return this.httpClient.get(this.repoEndpoint + '/technologies/' + uuid);
   }
 
 
-  aggregateDesignModel(uuid: string, technology: string) {
-    this.httpClient.post(this.repoEndpoint + '/aggregate/' + uuid, null, {
-      params: { technology: technology }
-    }).subscribe((response: any) => {
+  aggregateDesignModel(uuid: string, query: {}) {
+    this.httpClient.post(this.repoEndpoint + '/aggregate/' + uuid, query).subscribe((response: any) => {
       try {
         console.debug('Aggregation response is', response);
         const blob = new Blob([response.file], { type: response.mime });

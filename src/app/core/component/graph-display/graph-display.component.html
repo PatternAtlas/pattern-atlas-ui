@@ -1,5 +1,5 @@
 <mat-sidenav-container [hasBackdrop]="false" class="container">
-  <mat-sidenav *ngIf="patternContainer" #leftSidenav style="min-width: 300px;" [disableClose]="true" [opened]="true" fixedInViewport="false"
+  <mat-sidenav *ngIf="patternContainer" #leftSidenav style="width: 300px;" [disableClose]="true" [opened]="true" fixedInViewport="false"
                mode="push">
     <h3>Add Patterns</h3>
     <mat-accordion>
@@ -74,6 +74,7 @@
   <mat-sidenav-content>
     <network-graph #graphWrapper
                    (onAddedEdge)="edgeAdded($event)"
+                   (onRemovedEdge)="edgeRemoved($event)"
                    (onClickedBackground)="backgroundClicked()"
                    (onClickedNode)="nodeClicked($event)"
                    (onNodePositionChange)="nodePositionChanged($event)"
@@ -93,10 +94,6 @@
 
           .node-action {
             cursor: pointer;
-          }
-
-          svg {
-            background-color: white;
           }
 
           .link-handle {
@@ -176,6 +173,8 @@
                   x="45"
                   y="10">
             </text>
+
+            <g class="concrete-solutions-container" transform="translate(-60,25)"></g>
           </g>
 
           <g data-line-attachement-point="-9 0" data-template-type="marker" id="arrow">

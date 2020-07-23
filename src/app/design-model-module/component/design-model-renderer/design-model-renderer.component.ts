@@ -35,6 +35,15 @@ export class DesignModelRendererComponent implements OnInit {
   };
 
 
+  showConcreteSolutions = false;
+
+  concreteSolutionsUnfiltered;
+
+  concreteSolutions;
+
+  previousUserQuery: string = '';
+  userQuery: string = '';
+
   private designModelId: string;
 
 
@@ -90,6 +99,7 @@ export class DesignModelRendererComponent implements OnInit {
 
   private loadDesignModel(id): void {
     this.designModelId = id;
+
     this.designModelService.getPatternContainerByUuid(id).subscribe(patternContainer => {
       console.debug('Fetched pattern container is:', patternContainer);
 
@@ -97,16 +107,33 @@ export class DesignModelRendererComponent implements OnInit {
 
       this.designModelService.getEdges().subscribe(edges => this.patchGraphData({ edges: edges }));
     });
+
+    this.loadConcreteSolutions();
   }
 
 
   addedEdgeInGraphView(event) {
-    this.designModelService.addEdge(event);
+    this.designModelService.addEdge(event).then(
+      () => this.reloadGraph()
+    );
+  }
+
+
+  removedEdgeInGraphView(event) {
+    this.designModelService.deleteEdge(event);
   }
 
 
   reloadGraph() {
     this.loadDesignModel(this.designModelId);
+  }
+
+
+  toggleShowConcreteSolutions() {
+    this.showConcreteSolutions = !this.showConcreteSolutions;
+    if (this.showConcreteSolutions) {
+      this.reloadGraph();
+    }
   }
 
 
@@ -117,9 +144,17 @@ export class DesignModelRendererComponent implements OnInit {
   }
 
 
-  selectTechnology(): Promise<string> {
-    return new Promise<string>(resolve => {
-      const response = this.concreteSolutionService.getTechnologies(this.designModelId);
+  loadConcreteSolutions(): void {
+    this.concreteSolutionService.getConcreteSolutionSet(this.designModelId).subscribe(cs => {
+      this.concreteSolutionsUnfiltered = cs;
+      this.filterConcreteSolutions();
+    });
+  }
+
+
+  selectTechnology(): Promise<{}> {
+    return new Promise<{}>(resolve => {
+      const response = this.concreteSolutionService.getConcreteSolutionSet(this.designModelId);
 
       const dialogRef = this.dialog.open(TechnologySelectorComponent, { data: { options: response } });
 
@@ -135,5 +170,14 @@ export class DesignModelRendererComponent implements OnInit {
     this.selectTechnology().then(technology => {
       this.concreteSolutionService.aggregateDesignModel(this.designModelId, technology);
     });
+  }
+
+
+  filterConcreteSolutions(): void {
+    this.concreteSolutions = this.concreteSolutionsUnfiltered.filter(cs => cs.aggregatorType.toLowerCase().indexOf(this.userQuery.toLowerCase()) !== -1);
+    if(this.previousUserQuery !== this.userQuery) {
+      this.reloadGraph();
+    }
+    this.previousUserQuery = this.userQuery;
   }
 }

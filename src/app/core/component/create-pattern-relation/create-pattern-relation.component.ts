@@ -7,6 +7,7 @@ import { DirectedEdgeModel } from '../../model/hal/directed-edge.model';
 import { UndirectedEdgeModel } from '../../model/hal/undirected-edge.model';
 import { PatternContainer } from '../../model/hal/pattern-container.model';
 import PatternLanguage from '../../model/hal/pattern-language.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'pp-create-pattern-relation',
@@ -28,7 +29,8 @@ export class CreatePatternRelationComponent implements OnInit {
     { name: PatternRelationDescriptorDirection.UnDirected, icon: 'sync_alt' }
   ];
   relationForm: FormGroup;
-  relationTypes = [ // TODO load relation types from API
+  relationTypes = [
+    // Fallback values, can be overwritten by providing an Observable as data.relationTypes
     'isRelatedTo',
     'isUsedBefore',
     'isUsedAfter',
@@ -41,6 +43,8 @@ export class CreatePatternRelationComponent implements OnInit {
     'isAlternativeTo',
     'isVariationOf'
   ];
+
+  private subscriptionRefs = [];
 
 
   ngOnInit() {
@@ -57,10 +61,15 @@ export class CreatePatternRelationComponent implements OnInit {
       relationType: ['', [Validators.required]],
       description: ['', []],
     });
+
+    if (this.data.relationTypes) {
+      this.subscriptionRefs.push(this.data.relationTypes.subscribe(relationTypes => this.relationTypes = relationTypes));
+    }
   }
 
   close(): void {
     this.dialogRef.close();
+    this.subscriptionRefs.forEach(subscription => subscription.unsubscribe());
   }
 
   // adds a relation created by the dialog to the local data and returns whether this was successful (or not, e.g. when simply closing the dialog)
@@ -94,6 +103,7 @@ export interface DialogData {
   patterns: Pattern[];
   patternLanguage: PatternLanguage;
   patternContainer: PatternContainer;
+  relationTypes?: Observable<string[]>;
 }
 
 export interface PatternRelationDirection {

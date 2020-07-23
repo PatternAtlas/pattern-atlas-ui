@@ -11,11 +11,15 @@ import { options } from 'marked';
 })
 export class TechnologySelectorComponent implements OnInit {
 
-  private selectedTechnology = new Subject<string>();
+  private selectedTechnology = new Subject<{}>();
 
   private technologyCollectionObservableRef: Subscription;
 
   noTechnologyFound: boolean;
+
+  selection = {};
+
+  showTechSelection = true;
 
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: { options: Observable<string[]> },
@@ -28,7 +32,8 @@ export class TechnologySelectorComponent implements OnInit {
       options => {
         // Auto select single option
         if (options.length === 1) {
-          this.selected({ value: options[ 0 ] });
+          this.selection [ options[ 0 ] ] = true;
+          this.aggregate();
         }
       },
       error => {
@@ -43,13 +48,19 @@ export class TechnologySelectorComponent implements OnInit {
   }
 
 
-  selected(event) {
-    console.warn(event.value);
-    this.selectedTechnology.next(event.value);
+  aggregate() {
+    for (const key of Object.keys(this.selection)) {
+      if (!this.selection[ key ]) {
+        delete this.selection[ key ];
+      }
+    }
+    const selection = { technology: Object.keys(this.selection) };
+    console.warn('Technology selection is', selection);
+    this.selectedTechnology.next(selection);
   }
 
 
-  getSelectedTechnology(): Observable<string> {
+  getSelectedTechnology(): Observable<{}> {
     return this.selectedTechnology.asObservable();
   }
 }

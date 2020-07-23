@@ -51,16 +51,23 @@ export class GraphNode {
 })
 export class GraphDisplayComponent implements AfterContentInit, OnChanges {
 
-  @ViewChild('graphWrapper', { static: true }) graph: ElementRef;
+  @ViewChild('graphWrapper', { static: true })
+  graph: ElementRef;
+
+  @ViewChild('svg')
+  svg: ElementRef;
+
   graphNativeElement: GraphEditor;
-  @ViewChild('svg') svg: ElementRef;
   patternGraphData: any;
 
   @Input() data: GraphInputData;
   @Input() showPatternLanguageName: boolean;
   @Input() enableDeletePattern: boolean = false;
+  @Input() showConcreteSolutions: boolean = false;
+  @Input() concreteSolutions = [];
 
   @Output() addedEdge = new EventEmitter<any>();
+  @Output() removedEdge = new EventEmitter<any>();
   @Output() updatedGraphEvent = new EventEmitter<void>();
   @Output() deletePatternEvent = new EventEmitter<string>();
 
@@ -92,26 +99,30 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   }
 
   static mapPatternLinksToEdges(links: any[]): NetworkLink[] {
-    const edges: any = [];
     if (!links.length) {
       return [];
     }
-    for (let i = 0; i < links.length; i++) {
-      const currentLink = links[ i ];
+    const edges: any = [];
+    for (let currentLink of links) {
+
+      const edge: any = {
+        id: currentLink.id,
+        markerEnd: { template: 'arrow', scale: 0.5, relativeRotation: 0 },
+        texts: currentLink.texts || []
+      };
+
       if (currentLink.sourcePatternId && currentLink.targetPatternId) {
-        edges.push({
-          source: currentLink.sourcePatternId, target: currentLink.targetPatternId,
-          id: currentLink.id,
-          markerEnd: { template: 'arrow', scale: 0.5, relativeRotation: 0 },
-        });
-      } else { // undirected link
-        edges.push(<NetworkLink>{
-          source: currentLink.pattern1Id, target: currentLink.pattern2Id,
-          id: currentLink.id,
-          markerEnd: { template: 'arrow', scale: 0.5, relativeRotation: 0 },
-          markerStart: { template: 'arrow', scale: 0.5, relativeRotation: 0 }
-        });
+        // directed link
+        edge.source = currentLink.sourcePatternId;
+        edge.target = currentLink.targetPatternId;
+      } else {
+        // undirected link
+        edge.source = currentLink.pattern1Id;
+        edge.target = currentLink.pattern2Id;
+        edge.markerStart = { template: 'arrow', scale: 0.5, relativeRotation: 0 };
       }
+
+      edges.push(edge);
     }
     return edges;
   }
@@ -170,9 +181,19 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
       this.initData();
       this.getGraph();
     }
+    if (changes.showConcreteSolutions != null) {
+      setTimeout(() => { // Give time for property updates
+        this.triggerRerendering(true);
+      });
+    }
   }
 
   edgeAdded(event) {
+    if (!event.cancelable) {
+      // Skip event on initial graph composition
+      return;
+    }
+
     this.currentEdge = event.detail.edge;
     const patterns = Array.isArray(this.patterns) ? this.patterns : this.patternContainer.patterns;
     const dialogRef = this.matDialog.open(CreatePatternRelationComponent, {
@@ -182,7 +203,8 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
         preselectedEdgeDirection: PatternRelationDescriptorDirection.DirectedRight,
         patterns: patterns,
         patternLanguage: this.patternLanguage,
-        patternContainer: this.patternContainer
+        patternContainer: this.patternContainer,
+        relationTypes: this.graphDataService.getEdgeTypes()
       }
     });
 
@@ -194,6 +216,12 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
         this.triggerRerendering();
       }
     });
+  }
+
+  edgeRemoved(event: CustomEvent) {
+    if (event.type === 'edgeremove' && event.cancelable) {
+      this.removedEdge.emit(event.detail.edge);
+    }
   }
 
   patternDropped(event: CdkDragDrop<any[]>) {
@@ -247,7 +275,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
       console.error('No nodes to save');
       return;
     }
-    console.warn('Save graph', this.patternLanguage ? this.patternLanguage : this.patternContainer, this.graphNativeElement.nodeList);
+    console.debug('Save graph', this.patternLanguage ? this.patternLanguage : this.patternContainer, this.graphNativeElement.nodeList);
 
     this.graphDataService.saveGraph(this.patternLanguage ? this.patternLanguage : this.patternContainer, this.graphNativeElement.nodeList)
       .subscribe(() => console.info('saved pattern ' + (this.patternLanguage ? 'language' : 'container') + ' graph layout'));
@@ -272,8 +300,10 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     }
   }
 
-  triggerRerendering() {
-    this.graphNativeElement.completeRender();
+  triggerRerendering(forceUpdateTemplates = false) {
+    if (this.graphNativeElement) {
+      this.graphNativeElement.completeRender(forceUpdateTemplates);
+    }
   }
 
   patternListExpanded(patternLang: PatternLanguage) {
@@ -407,6 +437,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
       newPatterns.forEach((pat, index) => this.addNewPatternNodeToGraph(pat, index));
     }
     this.initGraphEdges();
+    this.patchGraphWithConcreteSolutions();
     this.isLoading = false;
   }
 
@@ -417,5 +448,81 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
       return;
     }
     this.initGraphData(graph);
+  }
+
+
+  /**
+   * Extend the design model graph with a dynamic number of concrete solutions per pattern instance.
+   * As the currently used graph implementation does not support dynamic extension with svg elements,
+   * e.g. iterating over an array and render text elements for it.
+   * Due to this restriction, this implements an ugly patch mechanism using direct DOM manipulation.
+   */
+  private patchGraphWithConcreteSolutions(): void {
+    if (!this.showConcreteSolutions) {
+      return;
+    }
+
+    setTimeout(() => {
+      try {
+        document.querySelectorAll('network-graph svg .concrete-solutions-container').forEach((csc: SVGGElement) => {
+
+          const elementId = (<SVGGElement>csc.parentNode).id.match(/node-(.+)/);
+          if (!elementId) {
+            return;
+          }
+          const patternInstanceId = elementId[ 1 ];
+          const patternInstance = this.patternContainer.patterns.filter(patternInstance => patternInstance.id === patternInstanceId)[ 0 ];
+          const concreteSolutions = this.concreteSolutions.filter(cs => cs.patternUri === patternInstance.uri).sort((a, b) => {
+            return a.aggregatorType.localeCompare(b.aggregatorType);
+          });
+
+          csc.innerHTML = '';
+          concreteSolutions.forEach((cs, idx) => {
+            this.addConcreteSolutionSvgElement(csc, idx, cs.aggregatorType);
+          });
+        });
+      } catch (e) {
+        console.log('Failed to patch concrete solutions into design model graph');
+      }
+
+      console.warn(document.querySelector('svg'));
+    });
+  }
+
+
+  /**
+   * Construct SVG group element with an rectangle and a text, representing a concrete solution.
+   * @param concreteSolutionsContainerElement
+   * @param index
+   * @param text
+   */
+  private addConcreteSolutionSvgElement(concreteSolutionsContainerElement: SVGGElement, index: number, text: string): void {
+    const csSvgGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    csSvgGroup.setAttribute('transform', 'translate(0,' + (index * 25) + ')');
+
+    const csSvgRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    csSvgRect.setAttribute('height', '25');
+    csSvgRect.setAttribute('width', '170');
+    csSvgRect.setAttribute('rx', '5');
+    csSvgRect.setAttribute('ry', '5');
+    csSvgRect.style.stroke = '#000';
+    csSvgRect.style.strokeWidth = '1';
+    csSvgRect.style.cursor = 'pointer';
+    csSvgRect.onclick = (event) => {
+      console.warn('Implement type selection', index, text, event);
+      event.stopImmediatePropagation();
+    };
+
+    csSvgGroup.appendChild(csSvgRect);
+
+    const csSvgText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    csSvgText.setAttribute('x', '5');
+    csSvgText.setAttribute('y', '15');
+    csSvgText.style.fill = '#000';
+    csSvgText.innerHTML = text;
+    csSvgText.classList.add('text');
+    csSvgGroup.appendChild(csSvgText);
+
+    concreteSolutionsContainerElement.appendChild(csSvgGroup);
   }
 }

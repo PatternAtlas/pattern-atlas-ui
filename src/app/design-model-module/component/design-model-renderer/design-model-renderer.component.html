@@ -4,6 +4,15 @@
     Reload
   </button>
 
+  <button mat-raised-button class="action-button-with-margin" (click)="toggleShowConcreteSolutions()" color="accent">
+    <mat-icon>handyman</mat-icon>
+    {{showConcreteSolutions ? 'Hide' : 'Show'}} Concrete Solutions
+  </button>
+
+  <mat-form-field class="user-query-input">
+    <input matInput [(ngModel)]="userQuery" (ngModelChange)="filterConcreteSolutions()" placeholder="User query"/>
+  </mat-form-field>
+
   <button mat-raised-button class="action-button-with-margin" (click)="aggregateConcreteSolutions()" color="accent">
     <mat-icon>handyman</mat-icon>
     Aggregate Concrete Solutions
@@ -13,8 +22,11 @@
 <pp-graph-display *ngIf="!isLoading"
                   [data]="graphData"
                   (addedEdge)="addedEdgeInGraphView($event)"
+                  (removedEdge)="removedEdgeInGraphView($event)"
                   [showPatternLanguageName]="true"
                   [enableDeletePattern]="true"
+                  [showConcreteSolutions]="showConcreteSolutions"
+                  [concreteSolutions]="concreteSolutions"
                   (deletePatternEvent)="deletePatternInstance($event)"
                   (updatedGraphEvent)="reloadGraph()">
 </pp-graph-display>

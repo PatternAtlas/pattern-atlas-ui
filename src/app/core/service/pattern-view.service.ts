@@ -102,4 +102,7 @@ export class PatternViewService implements GraphDataService {
     return this.http.get<{ graph: Array<GraphNode> }>(patternView._links.graph.href);
   }
 
+  getEdgeTypes(): Observable<string[]> {
+    return of();
+  }
 }
