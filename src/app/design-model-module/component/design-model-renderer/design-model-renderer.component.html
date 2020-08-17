@@ -9,14 +9,19 @@
     {{showConcreteSolutions ? 'Hide' : 'Show'}} Concrete Solutions
   </button>
 
-  <mat-form-field class="user-query-input">
-    <input matInput [(ngModel)]="userQuery" (ngModelChange)="filterConcreteSolutions()" placeholder="User query"/>
-  </mat-form-field>
+  <div *ngIf="showConcreteSolutions">
+    <mat-form-field class="user-query-input">
+      <input matInput [formControl]="userQueryInput" placeholder="User query"/>
+      <mat-error *ngIf="userQueryInput.hasError('invalidSyntax')">
+        Syntax error, please check your query.
+      </mat-error>
+    </mat-form-field>
 
-  <button mat-raised-button class="action-button-with-margin" (click)="aggregateConcreteSolutions()" color="accent">
-    <mat-icon>handyman</mat-icon>
-    Aggregate Concrete Solutions
-  </button>
+    <button mat-raised-button class="action-button-with-margin" (click)="aggregateConcreteSolutions()" color="accent">
+      <mat-icon>handyman</mat-icon>
+      Aggregate Concrete Solutions
+    </button>
+  </div>
 </pp-action-button-bar>
 
 <pp-graph-display *ngIf="!isLoading"
@@ -28,5 +33,6 @@
                   [showConcreteSolutions]="showConcreteSolutions"
                   [concreteSolutions]="concreteSolutions"
                   (deletePatternEvent)="deletePatternInstance($event)"
-                  (updatedGraphEvent)="reloadGraph()">
+                  (updatedGraphEvent)="reloadGraph()"
+                  (aggregationAssignmentsUpdate)="aggregationAssignmentsUpdate($event)">
 </pp-graph-display>

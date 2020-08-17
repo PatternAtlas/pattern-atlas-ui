@@ -21,7 +21,7 @@ import { tap } from 'rxjs/operators';
 @Injectable()
 export class ConcreteSolutionService {
 
-  private readonly repoEndpoint = globals.repoEndpoint + '/concrete-solutions';
+  private readonly repoEndpoint = globals.repoEndpoint + '/design-models';
 
 
   constructor(private httpClient: HttpClient) {
@@ -29,24 +29,26 @@ export class ConcreteSolutionService {
 
 
   getConcreteSolutionSet(uuid: string) {
-    return this.httpClient.get(this.repoEndpoint + '/technologies/' + uuid);
+    return this.httpClient.get(this.repoEndpoint + '/' + uuid + '/concrete-solutions');
   }
 
 
   aggregateDesignModel(uuid: string, query: {}) {
-    this.httpClient.post(this.repoEndpoint + '/aggregate/' + uuid, query).subscribe((response: any) => {
+    this.httpClient.post(this.repoEndpoint + '/' + uuid + '/aggregate', query).subscribe((files: any) => {
       try {
-        console.debug('Aggregation response is', response);
-        const blob = new Blob([response.file], { type: response.mime });
-        const url = window.URL.createObjectURL(blob);
+        console.debug('Aggregation response is', files);
+        files.forEach(file => {
+          const blob = new Blob([file.file], { type: file.mime });
+          const url = window.URL.createObjectURL(blob);
 
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = response.name;
-        document.body.appendChild(link);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = file.name;
+          document.body.appendChild(link);
 
-        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-        document.body.removeChild(link);
+          link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          document.body.removeChild(link);
+        });
       } catch (e) {
         console.error('Could not download aggregation result', e);
       }

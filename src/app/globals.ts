@@ -19,9 +19,9 @@ export const globals = {
   loadOntologyLocally: true,
   repoEndpoint: 'http://localhost:8080',
   featureToggles: {
-    designModel: false,
-    patternCandidate: true,
-    issue: true,
+    designModel: true,
+    patternCandidate: false,
+    issue: false,
   },
   pathConstants: {
     patternLanguages: 'pattern-languages',

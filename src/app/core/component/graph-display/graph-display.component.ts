@@ -70,6 +70,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   @Output() removedEdge = new EventEmitter<any>();
   @Output() updatedGraphEvent = new EventEmitter<void>();
   @Output() deletePatternEvent = new EventEmitter<string>();
+  @Output() aggregationAssignmentsUpdate = new EventEmitter<{ [ key: string ]: string }>();
 
   isLoading = true;
   patternClicked = false;
@@ -87,6 +88,9 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   private highlightedNodeIds: Array<string> = [];
   private clickedNodeId: string = null;
   private highlightedEdgeIds: Array<string> = [];
+  private manualAssignments: { [ key: string ]: string } = {};
+  private aggregationAssignments: { [ key: string ]: string } = {};
+
 
   constructor(private cdr: ChangeDetectorRef,
               private d3Service: D3Service,
@@ -462,6 +466,8 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
       return;
     }
 
+    this.aggregationAssignments = {};
+
     setTimeout(() => {
       try {
         document.querySelectorAll('network-graph svg .concrete-solutions-container').forEach((csc: SVGGElement) => {
@@ -478,14 +484,14 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
 
           csc.innerHTML = '';
           concreteSolutions.forEach((cs, idx) => {
-            this.addConcreteSolutionSvgElement(csc, idx, cs.aggregatorType);
+            this.addConcreteSolutionSvgElement(csc, idx, cs);
           });
+
+          this.aggregationAssignmentsUpdate.emit(this.aggregationAssignments);
         });
       } catch (e) {
         console.log('Failed to patch concrete solutions into design model graph');
       }
-
-      console.warn(document.querySelector('svg'));
     });
   }
 
@@ -496,31 +502,59 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
    * @param index
    * @param text
    */
-  private addConcreteSolutionSvgElement(concreteSolutionsContainerElement: SVGGElement, index: number, text: string): void {
+  private addConcreteSolutionSvgElement(concreteSolutionsContainerElement: SVGGElement, index: number, concreteSolution: any): void {
+
+    const patternId = (<HTMLElement>concreteSolutionsContainerElement.parentNode).id.match(/node-(.+)/)[ 1 ];
+    const concreteSolutionId = concreteSolution.id;
+
+    if (this.manualAssignments[ patternId ]) {
+      this.aggregationAssignments[ patternId ] = this.manualAssignments[ patternId ];
+    }
+    if (!this.aggregationAssignments[ patternId ] && concreteSolution.fulfills) {
+      this.aggregationAssignments[ patternId ] = concreteSolutionId;
+    }
+
+    const color = this.aggregationAssignments[ patternId ] === concreteSolutionId ? '#00c' : concreteSolution.fulfills ? '#000' : '#ccc';
+    const border = this.manualAssignments[ patternId ] === concreteSolutionId ? '4' : '0';
+
+
+    const clickHandler = (event) => {
+      if (this.manualAssignments[ patternId ] !== concreteSolutionId) {
+        this.manualAssignments[ patternId ] = concreteSolutionId;
+      } else {
+        delete this.manualAssignments[ patternId ];
+        delete this.aggregationAssignments[ patternId ];
+      }
+      console.debug('Manual selected', this.manualAssignments);
+      this.triggerRerendering(true);
+      this.patchGraphWithConcreteSolutions();
+      event.stopImmediatePropagation();
+    };
+
+
     const csSvgGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    csSvgGroup.setAttribute('transform', 'translate(0,' + (index * 25) + ')');
+    csSvgGroup.setAttribute('transform', 'translate(0,' + (index * 26 + 1) + ')');
 
     const csSvgRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
     csSvgRect.setAttribute('height', '25');
     csSvgRect.setAttribute('width', '170');
     csSvgRect.setAttribute('rx', '5');
     csSvgRect.setAttribute('ry', '5');
-    csSvgRect.style.stroke = '#000';
+    csSvgRect.style.stroke = color;
     csSvgRect.style.strokeWidth = '1';
+    csSvgRect.style.strokeDasharray = border;
     csSvgRect.style.cursor = 'pointer';
-    csSvgRect.onclick = (event) => {
-      console.warn('Implement type selection', index, text, event);
-      event.stopImmediatePropagation();
-    };
+    csSvgRect.onclick = clickHandler;
 
     csSvgGroup.appendChild(csSvgRect);
 
     const csSvgText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     csSvgText.setAttribute('x', '5');
     csSvgText.setAttribute('y', '15');
-    csSvgText.style.fill = '#000';
-    csSvgText.innerHTML = text;
+    csSvgText.style.fill = color;
+    csSvgText.innerHTML = concreteSolution.name;
     csSvgText.classList.add('text');
+    csSvgText.onclick = clickHandler;
     csSvgGroup.appendChild(csSvgText);
 
     concreteSolutionsContainerElement.appendChild(csSvgGroup);

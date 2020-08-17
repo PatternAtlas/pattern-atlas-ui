@@ -3,16 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { DesignModelService } from '../../service/design-model.service';
 import { PatternLanguageService } from '../../../core/service/pattern-language.service';
 import { GraphInputData } from '../../../core/model/graph-input-data.interface';
-import { UndirectedEdgeModel } from '../../../core/model/hal/undirected-edge.model';
-import { DirectedEdgeModel } from '../../../core/model/hal/directed-edge.model';
 import { ConcreteSolutionService } from '../../service/concrete-solution.service';
-import {
-  CreateEditComponentDialogType,
-  CreateEditPatternLanguageComponent
-} from '../../../core/component/create-edit-pattern-language/create-edit-pattern-language.component';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 import { TechnologySelectorComponent } from '../technology-selector/technology-selector.component';
+import { FormControl } from '@angular/forms';
+import { Pattern } from '../../../graph/model';
 
 
 @Component({
@@ -41,10 +36,13 @@ export class DesignModelRendererComponent implements OnInit {
 
   concreteSolutions;
 
-  previousUserQuery: string = '';
-  userQuery: string = '';
+  userQueryCurrentValue: string;
+  userQueryInput = new FormControl('');
+
+  aggregationAssignments: { [ key: string ]: string } = {};
 
   private designModelId: string;
+  private designModelPatterns: Pattern[];
 
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -68,6 +66,9 @@ export class DesignModelRendererComponent implements OnInit {
     this.activatedRoute.params.subscribe(pathParams => {
       this.loadDesignModel(pathParams.designModelUri);
     });
+
+
+    this.userQueryInput.valueChanges.subscribe(userQuery => this.filterConcreteSolutions(userQuery));
   }
 
 
@@ -102,6 +103,8 @@ export class DesignModelRendererComponent implements OnInit {
 
     this.designModelService.getPatternContainerByUuid(id).subscribe(patternContainer => {
       console.debug('Fetched pattern container is:', patternContainer);
+
+      this.designModelPatterns = patternContainer.patterns;
 
       this.patchGraphData({ patternContainer: patternContainer, patterns: patternContainer });
 
@@ -147,12 +150,20 @@ export class DesignModelRendererComponent implements OnInit {
   loadConcreteSolutions(): void {
     this.concreteSolutionService.getConcreteSolutionSet(this.designModelId).subscribe(cs => {
       this.concreteSolutionsUnfiltered = cs;
-      this.filterConcreteSolutions();
+      this.filterConcreteSolutions(this.userQueryInput.value);
     });
   }
 
 
+  aggregationAssignmentsUpdate(aggregationAssignments: { [ key: string ]: string }): void {
+    console.warn(aggregationAssignments);
+    this.aggregationAssignments = aggregationAssignments;
+  }
+
+
   selectTechnology(): Promise<{}> {
+    console.warn('#', Object.keys(this.aggregationAssignments).length, this.aggregationAssignments);
+
     return new Promise<{}>(resolve => {
       const response = this.concreteSolutionService.getConcreteSolutionSet(this.designModelId);
 
@@ -167,17 +178,35 @@ export class DesignModelRendererComponent implements OnInit {
 
 
   aggregateConcreteSolutions(): void {
-    this.selectTechnology().then(technology => {
-      this.concreteSolutionService.aggregateDesignModel(this.designModelId, technology);
-    });
+      this.concreteSolutionService.aggregateDesignModel(this.designModelId, this.aggregationAssignments);
   }
 
 
-  filterConcreteSolutions(): void {
-    this.concreteSolutions = this.concreteSolutionsUnfiltered.filter(cs => cs.aggregatorType.toLowerCase().indexOf(this.userQuery.toLowerCase()) !== -1);
-    if(this.previousUserQuery !== this.userQuery) {
-      this.reloadGraph();
+  filterConcreteSolutions(userQuery: string): void {
+    if (this.userQueryCurrentValue === userQuery) {
+      return;
     }
-    this.previousUserQuery = this.userQuery;
+    this.userQueryCurrentValue = userQuery;
+
+    try {
+      this.concreteSolutions = this.concreteSolutionsUnfiltered.map(cs => {
+        cs.fulfills = DesignModelRendererComponent.concreteSolutionFulfills(cs, userQuery);
+        return cs;
+      });
+      this.reloadGraph();
+    } catch (e) {
+      this.userQueryInput.setErrors({ invalidSyntax: true });
+    }
+  }
+
+
+  static concreteSolutionFulfills(concreteSolutionProperties: any, userQuery: string): boolean {
+    if (!userQuery.length) {
+      return true;
+    }
+
+    const result = Function('"use strict"; return ((cs) => { return ' + userQuery + '})')()(concreteSolutionProperties); // TODO replace by properties or capabilities
+    console.debug(userQuery, result, !!result, concreteSolutionProperties);
+    return !!result;
   }
 }
