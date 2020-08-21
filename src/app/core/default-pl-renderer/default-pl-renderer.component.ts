@@ -154,7 +154,7 @@ export class DefaultPlRendererComponent implements OnInit {
     this.isLoadingPatternData = true;
     this.patternLanguageId = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId));
     if (this.patternLanguageId) {
-      this.patternLanguageService.getPatternLanguageByID(this.patternLanguageId)
+      this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageId)
         .pipe(
           tap(patternlanguage => this.patternLanguage = patternlanguage),
           switchMap(() => this.loadPatterns()),
