@@ -88,7 +88,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
 
   addLinks(pattern: Pattern) {
     const dialogRef = this.matDialog.open(AddToViewComponent,
-      { data: { links: this.mapPatternLinksToTreeNode(pattern), title: 'Add linked Patterns', patternId: pattern.id } });
+      {data: {links: this.mapPatternLinksToTreeNode(pattern), title: 'Add related Patterns', patternId: pattern.id}});
     this.subscribeToLinkDialogResult(dialogRef);
   }
 
