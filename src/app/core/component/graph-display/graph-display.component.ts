@@ -355,7 +355,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   }
 
   private showInfoForClickedNode(node): void {
-    this.clickedNodeId = node.uri;
+    this.clickedNodeId = node.id;
     const outgoingLinks = Array.from(this.graph.nativeElement.getEdgesByTarget(node.id));
     const ingoingLinks = Array.from(this.graph.nativeElement.getEdgesBySource(node.id));
 
