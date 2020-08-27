@@ -24,13 +24,15 @@ import { DraggedEdge, edgeId } from '@ustutt/grapheditor-webcomponent/lib/edge';
 import Pattern from '../../model/hal/pattern.model';
 import { GraphInputData } from '../../model/graph-input-data.interface';
 import { PatternService } from '../../service/pattern.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap, tap } from 'rxjs/operators';
 import { PatternResponse } from '../../model/hal/pattern-response.interface';
 import { EMPTY, Observable } from 'rxjs';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { GraphDataService } from '../../service/graph-data.service';
 import { globals } from '../../../globals';
+import UriEntity from '../../model/hal/uri-entity.model';
+import { UriConverter } from '../../util/uri-converter';
 
 
 export class GraphNode {
@@ -40,6 +42,7 @@ export class GraphNode {
   x: number;
   y: number;
   patternLanguageId: string;
+  uri: string;
 }
 
 @Component({
@@ -80,6 +83,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
               private toastService: ToasterService,
               private patternService: PatternService,
               private graphDataService: GraphDataService,
+              private activatedRoute: ActivatedRoute,
               private router: Router) {
   }
 
@@ -120,7 +124,8 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
           x: 5 * offsetIndex,
           y: 5 * offsetIndex,
           patternLanguageId: patterns[ i ].patternLanguageId,
-          patternLanguageName: patterns[ i ].patternLanguageName
+          patternLanguageName: patterns[ i ].patternLanguageName,
+          uri: patterns[ i ].uri
         };
         nodes.push(node);
       }
@@ -210,7 +215,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   nodeClicked(event) {
     const node = event[ 'detail' ][ 'node' ];
     if (event[ 'detail' ][ 'key' ] === 'info') {
-      this.router.navigate(['/' + globals.pathConstants.patternLanguages + '/' + (<GraphNode>node).patternLanguageId + '/' + node.id]);
+      this.router.navigate( [UriConverter.doubleEncodeUri(node.uri)], { relativeTo: this.activatedRoute });
     }
     this.showInfoForClickedNode(node);
   }

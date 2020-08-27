@@ -26,6 +26,8 @@ import {
 import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
 import { map } from 'rxjs/operators';
 import PatternLanguageModel from '../../core/model/hal/pattern-language-model.model';
+import UriEntity from '../../core/model/hal/uri-entity.model';
+import { UriConverter } from '../../core/util/uri-converter';
 
 @Component({
   selector: 'pp-pattern-language-management',
@@ -79,9 +81,9 @@ export class PatternLanguageManagementComponent implements OnInit {
       this.cdr.detectChanges();
     }
 
-    navigateToPL(id: string): void {
+    navigateToPL(pl: UriEntity): void {
       this.zone.run(() => {
-        this.router.navigate([id], { relativeTo: this.activatedRoute });
+        this.router.navigate([UriConverter.doubleEncodeUri(pl.uri)], { relativeTo: this.activatedRoute });
       });
     }
 

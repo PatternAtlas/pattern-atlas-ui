@@ -59,6 +59,8 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
     this.getData();
   }
 
+
+
   addLink() {
     if (!this.patterns || this.patterns.length === 0) {
       this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href).subscribe((patterns) => {
@@ -86,7 +88,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
       console.log('tried to get patterns before the pattern language object with the url was instanciated');
       return EMPTY;
     }
-    return this.patternService.getPatternById(this.patternLanguage, this.patternId).pipe(
+    return this.patternService.getPatternByEncodedUri(this.patternId).pipe(
       tap(pattern => this.pattern = pattern),
       switchMap((pat) => {
         const content = this.patternService.getPatternContentByPattern(this.pattern);
@@ -181,7 +183,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
 
   private getData(): void {
     // get pattern language object with all the hal links that we need
-    this.patternLanguageService.getPatternLanguageByID(this.patternLanguageId).pipe(
+    this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageId).pipe(
       tap((patternLanguage) => this.patternLanguage = patternLanguage),
       // get our individual pattern
       switchMap(() => this.fillPatternSectionData()),
