@@ -15,6 +15,7 @@ import * as markdownitKatex from 'markdown-it-katex';
 import { PatternService } from '../../core/service/pattern.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/internal/operators';
 import { globals } from '../../globals';
+import { UriConverter } from '../../core/util/uri-converter';
 
 
 @Component({
@@ -66,11 +67,11 @@ export class CreatePatternComponent implements OnInit {
 
 
   ngOnInit() {
-    this.patternLanguageId = this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId);
+    this.patternLanguageId = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId));
     this.markdown = new MarkdownIt();
     this.markdown.use(markdownitKatex);
 
-    this.patternLanguageService.getPatternLanguageByID(this.patternLanguageId).subscribe((pl: PatternLanguage) => {
+    this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageId).subscribe((pl: PatternLanguage) => {
       this.patternLanguage = pl;
       this.sections = this.patternLanguage.patternSchema ?
         this.patternLanguage.patternSchema.patternSectionSchemas.map((schema: PatternSectionSchema) => schema.label) : [];
