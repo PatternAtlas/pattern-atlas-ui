@@ -90,15 +90,13 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
         .subscribe(res => {
           const imageModel = new ImageModel(atob(res.body.image), res.body.topicModels, id);
           this.imageModels.push(imageModel);
-          // console.log(imageModel.image);
-          // console.log(imageModel.topicModels);
           // adding svgDatabaseId to svg
           if (!imageModel.image.includes('<svg id')) {
             let resIncId = imageModel.image.substr(0, imageModel.image.indexOf('<svg ') + 5)
               + 'id=\"' + id + '\" '
               + imageModel.image.substr(imageModel.image.indexOf('<svg ') + 5, imageModel.image.length - 1);
             resIncId = resIncId.replace(new RegExp('glyph', 'g'), 'glyph' + id);
-            resIncId = resIncId.replace(new RegExp('clip', 'g'), 'clip' + id);
+            resIncId = resIncId.replace(new RegExp('clip(?!Path)', 'g'), 'clip' + id);
             this.markdownDiv.nativeElement.innerHTML += resIncId;
           } else {
             this.markdownDiv.nativeElement.innerHTML += imageModel.image;
@@ -125,15 +123,13 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
       if (result) {
         this.data = result.content;
         this.changeText(this.renderedData);
-        // console.log(this.renderedData);
-        // console.log(this.data);
       }
       this.changeContent.emit({previousValue: previousValue, currentValue: result.content});
     });
   }
 
   getNextOccurance(content: string, begin: string, end: string): number[] {
-    return [content.indexOf(begin, 0), content.indexOf(end, 0)];
+    return [content.indexOf(begin, 0), content.indexOf(end, content.indexOf(begin, 0))];
   }
 
   private getSVG() {
@@ -175,14 +171,9 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
     d3.selectAll<SVGSVGElement, unknown>('rect').on('click', (d, i, n) => {
       this.discuss(n[i]);
     });
-    // const data = this.svg.append('data-test');
-    // data.attr('name', 'test111')
-    //   .attr('test', 5);
   }
 
   public getSVGPointFromClientCoordinates(clientPoint: Point): Point {
-    // const ng = this.svg.select<SVGElement>('g.nodes');
-    // const p = this.svg.node().createSVGPoint();
     const p = d3.select(this.commentSvg).node().createSVGPoint();
     p.x = clientPoint.x;
     p.y = clientPoint.y;
@@ -310,7 +301,6 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
       if (result !== undefined) {
         if (result.isDelete) {
           const topicId = d3.select<SVGSVGElement, Node>(nElement).node().id;
-          console.log(topicId);
           const imageId = d3.select<SVGSVGElement, Node>(nElement).node().parentNode.parentElement.id;
           d3.select(nElement).remove();
           const data = new Blob([d3.select<SVGSVGElement, Node>('[id="' + imageId + '"').node().outerHTML], {type: 'image/svg+xml'});
@@ -321,7 +311,6 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
         if (result.response !== undefined) {
           const replyTo = d3.select<SVGSVGElement, Node>(nElement).node().lastElementChild.id;
           const topicId = d3.select<SVGSVGElement, Node>(nElement).node().id;
-          console.log(replyTo, topicId);
           const discussionComment = new DiscussionComment(result.response, replyTo, topicId);
           this.discussionService.addComment(discussionComment, topicId).subscribe(value => {
             d3.select(nElement).append('comment').attr('id', value.body.id).text(result.response);
@@ -342,15 +331,12 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
       circuit.importQASM(content.substring(qasmIndexes[0], qasmIndexes[1])
         .replace(new RegExp('<p>', 'g'), ' ').replace(new RegExp('</p>', 'g'), ' '));
       circuit.run();
-      // console.log(content.substring(qasmIndexes[0], qasmIndexes[1]))
       const svg = circuit.exportSVG(true);
       const quirkData = circuit.exportQuirk(true);
       const quirkURL = 'http://algassert.com/quirk#circuit=' + JSON.stringify(quirkData).replace(new RegExp('"', 'g'), '&quot;');
-      console.log(quirkURL);
       this.markdownDiv.nativeElement.innerHTML = this.markdownDiv.nativeElement.innerHTML.replace(content.substring(qasmIndexes[0], qasmIndexes[1] + 3),
         svg + ' ' +
         '<a href="' + quirkURL + '" target="_blank">Open Quirk</a>');
-        // this.markdown.render('[Open Quirk](' + quirkURL + ')'));
       this.renderQASM(this.markdownDiv.nativeElement.innerHTML);
     } else {
       this.checkEmptyInnerHTML();
