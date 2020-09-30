@@ -3,7 +3,7 @@
                       [secondAddButton]="true">
   <pp-toggle-renderer [graphVisible]="graphVisible" *ngIf="!isLoadingPatternData && !isLoadingLinkData"
                       (toggledRenderer)="setGraphVisible($event)"></pp-toggle-renderer>
-  <span *ngIf="isLoadingLinkData"> Loading Links... </span>
+  <span *ngIf="isLoadingLinkData"> Loading Relations... </span>
   <mat-form-field id="search-field" class="action-button-with-margin" #searchField appearance="outline"
                   *ngIf="!graphVisible" [floatLabel]="'always'">
     <mat-label>Filter</mat-label>
