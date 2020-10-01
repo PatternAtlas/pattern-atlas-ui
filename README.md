@@ -1,4 +1,4 @@
-# PatternPedia
+# PatternAtlas
 ## License
 
 Copyright (c) 2019 University of Stuttgart.
