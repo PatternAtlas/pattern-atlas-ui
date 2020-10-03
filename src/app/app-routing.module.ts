@@ -28,7 +28,8 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: globals.pathConstants.patternLanguages
+    //redirectTo: globals.pathConstants.patternLanguages
+    redirectTo: 'issue'
   },
   {
     path: globals.pathConstants.patternLanguages,
@@ -57,20 +58,20 @@ const routes: Routes = [
     path: 'user-info',
     loadChildren: () => import('./user-management/user-management.module').then(m => m.UserManagementModule),
     canActivate: [AuthGuard],
-    data: { privilege: Privilege.READ_USER }
+    data: { privilege: Privilege.USER_READ }
   },
   {
     path: 'admin',
     loadChildren: () => import('./admin-management/admin-management.module').then(m => m.AdminManagementModule),
     canActivate: [AuthGuard],
-    data: { privilege: Privilege.READ_USER_ALL }
+    data: { privilege: Privilege.USER_READ_ALL }
   },
-  {
-    path: 'developer',
-    loadChildren: () => import('./developer-management/developer-management.module').then(m => m.DeveloperManagementModule),
-    canActivate: [AuthGuard],
-    data: { privilege: Privilege.DEVELOPER }
-  },
+  // {
+  //   path: 'developer',
+  //   loadChildren: () => import('./developer-management/developer-management.module').then(m => m.DeveloperManagementModule),
+  //   canActivate: [AuthGuard],
+  //   data: { privilege: Privilege.DEVELOPER }
+  // },
   {
     path: 'oauth-callback',
     component: ProcessOauthCallbackComponent

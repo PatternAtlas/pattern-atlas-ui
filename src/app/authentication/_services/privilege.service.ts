@@ -4,14 +4,15 @@ import { PAUser } from 'src/app/core/user-management';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ToasterService } from 'angular2-toaster';
-import { AuthorModel, AuthorManagementService } from 'src/app/core/author-management';
+import { AuthorModel, AuthorManagementService, Author } from 'src/app/core/author-management';
+import { Role } from 'src/app/core/service/data/User';
 
 @Injectable()
 export class PrivilegeService {
 
   constructor(
-        private auth: AuthenticationService,
-        private toasterService: ToasterService,
+    private auth: AuthenticationService,
+    private toasterService: ToasterService,
   ) { }
 
   disabled(userId: string): Observable<boolean> {
@@ -40,6 +41,23 @@ export class PrivilegeService {
           for (var a of authors) {
             if (a.userId === _user.id) {
               return true;
+            }
+          }
+        }
+        return false;
+      }
+      ));
+  }
+
+  isMaintainerOrOwner(authors: AuthorModel[]): Observable<boolean> {
+    return this.auth.user.pipe(
+      map(_user => {
+        if (_user) {
+          for (var a of authors) {
+            if (a.userId === _user.id) {
+              if (a.authorRole === Author.OWNER || a.authorRole === Author.MAINTAINER) {
+                return true;
+              }
             }
           }
         }

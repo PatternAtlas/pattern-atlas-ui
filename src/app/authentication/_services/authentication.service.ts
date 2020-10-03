@@ -13,6 +13,7 @@ const accessTokenKey = 'access_token';
 const refreshTokenKey = 'refresh_token';
 
 const stateKey = 'state';
+const verifierKey = 'code_verifier';
 
 @Injectable()
 export class AuthenticationService {
@@ -38,7 +39,6 @@ export class AuthenticationService {
     this.regexState = /state=(\w*)/;
 
     this.initSubjectsPipe();
-
   }
 
   private initSubjectsPipe() {
@@ -70,23 +70,38 @@ export class AuthenticationService {
     })
   }
 
-  public login() {
+  base64URLEncode(str) {
+    return str.toString('base64')
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=/g, '');
+}
+
+  public async login() {
     localStorage.clear();
-    const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    // GENERATE STATE
+    const state = this.generateRandomString(32);
     localStorage.setItem(stateKey, state);
-    this.getAccesCode(state);
+    // GENERATE CODE VERIFIER
+    const code_verifier = this.generateRandomString(128)
+    const code_challenge = await this.pkceChallengeFromVerifier(code_verifier);
+    localStorage.setItem(verifierKey, code_verifier);
+    
+    this.getAccesCode(state, code_challenge);
   }
 
-  private getAccesCode(state: string) {
+  private getAccesCode(state: string, code_challenge: string) {
     const params = new HttpParams()
       .set('response_type', 'code')
-      .set('client_id', environment.clientIdPublic)
+      // .set('client_id', environment.clientIdPublic)
       .set('redirect_uri', `${window.location.origin}`)
       .set('scope', 'read+write+delete')
       .set('state', state)
-    // outcomment IF PKCE Authentaction flow is used
-    // .set('client_id', environment.clientIdPKCE)
-    // .set('code_challenge', '4cc9b165-1230-4607-873b-3a78afcf60c5')
+      // outcomment IF PKCE Authentaction flow is used
+      .set('client_id', environment.clientIdPKCE)
+      .set('code_challenge', code_challenge)
+      .set('code_challenge_method', 'S256')
+    crypto.getRandomValues
 
 
     window.open(environment.authorizeUrl + params, '_self');
@@ -107,15 +122,16 @@ export class AuthenticationService {
         localStorage.clear();
       } else {
         const code = this.regexCode.exec(url)[1];
+        const code_verifier = localStorage.getItem(verifierKey);
         const params = new HttpParams()
-          .set('client_id', `${environment.clientIdPublic}`)
+          // .set('client_id', `${environment.clientIdPublic}`)
 
           .set('code', code)
           .set('redirect_uri', `${window.location.origin}`)
           .set('grant_type', 'authorization_code')
-        // outcomment IF PKCE Authentaction flow is used
-        // .set('client_id', `${environment.clientPKCE}`)
-        // .set('code_verifier', '4cc9b165-1230-4607-873b-3a78afcf60c5')
+          // outcomment IF PKCE Authentaction flow is used
+          .set('client_id', `${environment.clientIdPKCE}`)
+          .set('code_verifier', code_verifier)
 
         this.http.post<any>(environment.tokenUrl, params).subscribe(token => {
 
@@ -127,7 +143,7 @@ export class AuthenticationService {
 
           this.accessTokenSubject.next(accessToken);
         },
-        error => console.error('Error getToken(): ', error)
+          error => console.error('Error getToken(): ', error)
         );
       }
     }
@@ -149,10 +165,10 @@ export class AuthenticationService {
 
       this.accessTokenSubject.next(accessToken);
     },
-    error => {
-      console.error('Error getToken via refreshToken: ', error)
+      error => {
+        console.error('Error getToken via refreshToken: ', error)
 
-    }
+      }
     );
   }
 
@@ -206,4 +222,37 @@ export class AuthenticationService {
   get roles(): Observable<UserRole[]> {
     return this.rolePASubject.asObservable();
   }
+
+  /** Authentication Flow Helper */
+  // Generate a secure random string using the browser crypto functions
+  generateRandomString(length: number) {
+    var array = new Uint32Array(length);
+    window.crypto.getRandomValues(array);
+    return Array.from(array, dec => ('0' + dec.toString(16)).substr(-2)).join('');
+  }
+
+  // Calculate the SHA256 hash of the input text. 
+  // Returns a promise that resolves to an ArrayBuffer
+  sha256(plain) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(plain);
+    return window.crypto.subtle.digest('SHA-256', data);
+  }
+
+  // Base64-urlencodes the input string
+  base64urlencode(str) {
+    // Convert the ArrayBuffer to string using Uint8 array to conver to what btoa accepts.
+    // btoa accepts chars only within ascii 0-255 and base64 encodes them.
+    // Then convert the base64 encoded to base64url encoded
+    //   (replace + with -, replace / with _, trim trailing =)
+    return btoa(String.fromCharCode.apply(null, new Uint8Array(str)))
+      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+
+  // Return the base64-urlencoded sha256 hash for the PKCE challenge
+  async pkceChallengeFromVerifier(verifier) {
+    const hashed = await this.sha256(verifier);
+    return this.base64urlencode(hashed);
+  }
+
 }

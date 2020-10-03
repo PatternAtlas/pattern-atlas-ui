@@ -15,11 +15,13 @@
                         <div class="spacer"></div>
                         <h5>Rating: {{issue.upVotes.length - issue.downVotes.length}}</h5>
                         <div class="spacer"></div>
-                        <button mat-icon-button color="primary" (click)="edit(issue)" [disabled]="!(p.isGroubMember(issue.authors) | async)">
-                            <mat-icon>edit</mat-icon>
-                        </button>
+                        <h5>Evidence: {{issue.evidences.length}}</h5>
+                        <div class="spacer"></div>
                         <button mat-icon-button color="primary" (click)="detail(issue)" >
                             <mat-icon>open_in_new</mat-icon>
+                        </button>
+                        <button mat-icon-button color="primary" (click)="edit(issue)" [disabled]="!(p.isGroubMember(issue.authors) | async)">
+                            <mat-icon>edit</mat-icon>
                         </button>
                     </mat-panel-description>
                 </mat-expansion-panel-header>

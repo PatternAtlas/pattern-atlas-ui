@@ -257,6 +257,10 @@ $break-large: 760px;
 
 .left {
   margin: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  
   @media screen and (max-width: $break-small) {
     width: 100%;
   }
@@ -282,7 +286,9 @@ $break-large: 760px;
     height: 100%;
   }
   @media screen and (min-width: $break-large) {
-    height: calc(100vh - 32px - 64px - 48px - 64px - 16px);
+    // border: 1px solid red;
+    min-height: 500px;
+    height: calc(100vh -  64px - 48px - 64px);
   }
 }
 

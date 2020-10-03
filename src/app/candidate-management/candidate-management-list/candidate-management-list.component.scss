@@ -4,19 +4,38 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin: 0 1em;
+  margin-right: 1em;
 }
 
 .mat-card-header {
   flex-shrink: 0;
+  margin: 0px !important;
+}
+
+mat-card-header-text {
+  margin: 0px !important;
 }
 
 .container {
   display: flex;
   flex-flow: row wrap;
+  margin: 0px;
 }
 
 .mat-card-content {
   flex-grow: 1;
   overflow: auto;
+}
+
+.mat-card-title {
+  min-height: 0rem;
+}
+
+.heading {
+  font-weight: bold;
+}
+
+.mat-card-actions {
+  display: flex;
+  justify-content: space-between;
 }

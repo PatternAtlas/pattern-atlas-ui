@@ -1,0 +1,20 @@
+<mat-card>
+  <div class="heading">
+    <div class="text">Evidence</div>
+    <button mat-flat-button color="accent" [disabled]="!(auth.user | async) || !evidenceEntity.id"
+      (click)="newEvidence()">New</button>
+  </div>
+  <div *ngFor="let evidence of evidences">
+    <div class="list-item" (click)="detail(evidence)">
+      <div class="info">
+        <span>{{evidence.title}}</span>
+        <span class="user-name">{{evidence.userName}}</span>
+      </div>
+      <pp-rating class="rating" [disabled]="false" [upVotes]="evidence.upVotes" [downVotes]="evidence.downVotes"
+        [ratingEntity]="evidenceEntity" [context]="context" [evidenceEntity]="evidence">
+      </pp-rating>
+
+    </div>
+    <div class="line"></div>
+  </div>
+</mat-card>

@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { PatternLanguageService } from 'src/app/core/service/pattern-language.service';
 import PatternLanguageModel from 'src/app/core/model/hal/pattern-language-model.model';
 import { CandidateManagementService, Candidate, CandidateManagementStore } from 'src/app/core/candidate-management';
+import { PrivilegeService } from 'src/app/authentication/_services/privilege.service';
 
 @Component({
   selector: 'pp-candidate-management-list',
@@ -20,6 +21,7 @@ export class CandidateManagementListComponent implements OnInit {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private patternLanguageService: PatternLanguageService,
+    private p: PrivilegeService,
   ) { }
 
   ngOnInit(): void {
@@ -36,7 +38,7 @@ export class CandidateManagementListComponent implements OnInit {
   getPatternLanguages() {
     this.patternLanguageService.getPatternLanguages().subscribe(result => {
       const none = new PatternLanguageModel()
-      none.name = 'NONE';
+      none.name = 'No Pattern Language assigned';
       none.id = null;
       this.patternLanguages = [none].concat(result);
       console.log(this.patternLanguages);

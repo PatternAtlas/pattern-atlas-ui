@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ToasterService } from 'angular2-toaster';
 import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { Candidate } from '../_models/candidate.model';
 import { environment } from 'src/environments/environment';
-import { PAComment } from '../../shared';
+import { PAComment, PAEvidence } from '../../shared';
 
 @Injectable()
 export class CandidateManagementService {
@@ -65,6 +65,19 @@ export class CandidateManagementService {
     );
   }
 
+  public createEvidence(candidate: Candidate, evidence: PAEvidence): Observable<PAEvidence> {
+    return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/evidences`, evidence).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Created new evidence')
+        return result
+      }),
+      catchError(e => {
+        this.toasterService.pop('error', 'Could not create new evidence: ', e.error.message)
+        return null;
+      }),
+    )
+  }
+
   /**
    * UPDATE
    */
@@ -94,6 +107,19 @@ export class CandidateManagementService {
     );
   }
 
+  public updateEvidence(candidate: Candidate, evidence: PAEvidence): Observable<PAEvidence> {
+    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/evidences/${evidence.id}`, evidence).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Updated issue evidence')
+        return result
+      }),
+      catchError(e => {
+        this.toasterService.pop('error', 'Could not update issue evidence: ', e.error.message)
+        return of(null);
+      }),
+    )
+  }
+
   /**
    * DELETE
    */
@@ -121,5 +147,18 @@ export class CandidateManagementService {
         return null;
       }),
     );
+  }
+
+  public deleteEvidence(candidate: Candidate, evidenceId: string): Observable<PAEvidence> {
+    return this.http.delete<any>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/evidences/${evidenceId}`).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Deleted issue evidence')
+        return result
+      }),
+      catchError(e => {
+        this.toasterService.pop('error', 'Could not delete issue evidence: ', e.error.message)
+        return of(null);
+      }),
+    )
   }
 }

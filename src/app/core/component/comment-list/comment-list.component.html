@@ -1,16 +1,16 @@
-<div class="container-new-comment">
+<div class="container">
     <mat-card>
-        <form (ngSubmit)="submit()" #commentForm="ngForm">
-            <mat-form-field appearance="standard">
+        <form class="container-input" [formGroup]="commentForm" (ngSubmit)="submit()">
+            <mat-form-field class="wrapper-input" appearance="standard">
                 <mat-label>Comment</mat-label>
-                <textarea matInput [(ngModel)]="commentText" name="comment" [disabled]="!commentEntity.id"
-                    required></textarea>
+                <textarea matInput formControlName="comment" name="comment"></textarea>
             </mat-form-field>
-            <div class="new-comment-buttons">
-                <button mat-flat-button mat-flat-button type="button" color="" (click)="cancelComment()"
-                    [disabled]="!(auth.user | async)"> Cancel </button>
+            <div class="wrapper-buttons">
                 <button mat-flat-button mat-flat-button type="submit" color="primary"
-                    [disabled]="!(auth.user | async) || !commentForm.form.valid"> Create
+                    [disabled]="!(auth.user | async) || !commentEntity.id"> Create
+                </button>
+                <button mat-flat-button mat-flat-button type="button" color="" (click)="setForm()"
+                    [disabled]="!(auth.user | async) || !commentEntity.id"> Cancel
                 </button>
             </div>
         </form>
@@ -24,7 +24,7 @@
             <!-- <mat-divider class="comment-divider" [inset]="true" *ngIf="!last"></mat-divider> -->
         </ng-container>
     </div>
-    <div *ngIf="!data || data.length == 0">
+    <div *ngIf="!data || data.length == 0" class="container-comment-list">
         <span>No comment yet</span>
     </div>
     <!-- </mat-card> -->

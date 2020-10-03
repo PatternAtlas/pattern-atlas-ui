@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { RatingModelRequest, RatingManagementService, RatingModel } from '../../rating-management';
 import { PrivilegeService } from 'src/app/authentication/_services/privilege.service';
 import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
-import { PAComment, Context } from '../../shared';
+import { PAComment, Context, PAEvidence } from '../../shared';
 
 @Component({
   selector: 'pp-rating',
@@ -19,6 +19,9 @@ export class RatingComponent implements OnInit {
   @Input() ratingEntity: any;
   @Input() context: number;
   @Input() commentEntity: PAComment;
+  @Input() evidenceEntity: PAEvidence;
+
+  @Output() updateRating: EventEmitter<RatingModelRequest> = new EventEmitter<RatingModelRequest>();
 
   // primary, accent, warn, ''
   colorUp = 'primary'
@@ -32,7 +35,7 @@ export class RatingComponent implements OnInit {
 
   ngOnInit(): void {
     this.auth.user.subscribe(_user => {
-      if(_user && this.upVotes && this.downVotes) {
+      if (_user && this.upVotes && this.downVotes) {
         if (this.upVotes.includes(_user.id)) this.setButtonColor(1);
         else if (this.downVotes.includes(_user.id)) this.setButtonColor(-1);
         else this.setButtonColor(0);
@@ -65,25 +68,34 @@ export class RatingComponent implements OnInit {
   click(rating: number) {
     switch (this.context) {
       case Context.ISSUE: {
-        this.commentEntity ?
+        if (this.commentEntity) {
           this.ratingService.updateRatingIssueComment(this.ratingEntity, this.commentEntity, new RatingModelRequest(rating)).subscribe(result => {
             this.update(result);
           })
-          :
+        } else if (this.evidenceEntity) {
+          this.ratingService.updateRatingIssueEvidence(this.ratingEntity, this.evidenceEntity, new RatingModelRequest(rating)).subscribe(result => {
+            this.update(result);
+          })
+        } else {
           this.ratingService.updateRatingIssue(this.ratingEntity, new RatingModelRequest(rating)).subscribe(result => {
             this.update(result);
           });
+        }
         break;
       }
       case Context.CANDIDATE: {
-        this.commentEntity ?
+        if (this.commentEntity) {
           this.ratingService.updateRatingCandidateComment(this.ratingEntity, this.commentEntity, new RatingModelRequest(rating)).subscribe(result => {
             this.update(result);
           })
-          :
-          this.ratingService.updateRatingCandidate(this.ratingEntity, new RatingModelRequest(rating)).subscribe(result => {
+        } else if (this.evidenceEntity) {
+          console.log('Update Rating Candidate Evidence!');
+          this.ratingService.updateRatingCandidateEvidence(this.ratingEntity, this.evidenceEntity, new RatingModelRequest(rating)).subscribe(result => {
             this.update(result);
           })
+        } else {
+          console.error('Rating Candidate error!');
+        }
         break;
       }
       default: {

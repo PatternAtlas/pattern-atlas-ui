@@ -79,6 +79,10 @@ import { AuthorPickerComponent } from './component/author-picker/author-picker.c
 import { MatRadioModule } from '@angular/material/radio';
 import { MatChipsModule } from '@angular/material/chips';
 import { ConfirmDialogComponent } from './component/confirm-dialog/confirm-dialog.component';
+import { EvidenceListComponent } from './component/evidence-list/evidence-list.component';
+import { EvidenceDialogComponent } from './component/evidence-dialog/evidence-dialog.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { RatingMultipleComponent } from './component/rating-multiple/rating-multiple.component';
 
 @NgModule({
   imports: [
@@ -110,6 +114,7 @@ import { ConfirmDialogComponent } from './component/confirm-dialog/confirm-dialo
     ScrollingModule,
     MatRadioModule,
     MatChipsModule,
+    MatCheckboxModule,
   ],
   exports: [
     CovalentTextEditorModule,
@@ -120,11 +125,13 @@ import { ConfirmDialogComponent } from './component/confirm-dialog/confirm-dialo
     CardRendererComponent,
     ActionButtonBarComponent,
     RatingComponent,
+    RatingMultipleComponent,
     CommentListComponent,
     ToggleRendererComponent,
     GraphDisplayComponent,
     PatternLanguagePickerComponent,
     AuthorPickerComponent,
+    EvidenceListComponent,
   ]
   ,
   providers: [
@@ -168,6 +175,9 @@ import { ConfirmDialogComponent } from './component/confirm-dialog/confirm-dialo
     PatternLanguagePickerComponent,
     AuthorPickerComponent,
     ConfirmDialogComponent,
+    EvidenceListComponent,
+    EvidenceDialogComponent,
+    RatingMultipleComponent,
   ],
   entryComponents: [
     DefaultPlRendererComponent,
@@ -181,6 +191,7 @@ import { ConfirmDialogComponent } from './component/confirm-dialog/confirm-dialo
     GraphDisplayComponent,
     CreateEditPatternLanguageComponent,
     ConfirmDialogComponent,
+    EvidenceDialogComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

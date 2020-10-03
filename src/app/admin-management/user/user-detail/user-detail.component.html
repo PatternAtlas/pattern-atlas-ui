@@ -27,12 +27,14 @@
         </mat-error>
     </mat-form-field>
 
-    <label>Pick user role</label>
+    <!-- <label>Pick user role</label> -->
     <mat-radio-group formControlName="userRole">
         <mat-radio-button *ngFor="let role of roles" color="primary" [value]="role">{{role}}</mat-radio-button>
     </mat-radio-group>
-
-    <button mat-flat-button type="button" color="warn" (click)="reset()">Reset</button>
-    <button mat-flat-button type="button" color="primary" (click)="exit()">Exit</button>
-    <button mat-flat-button type="submit" color="primary" [disabled]="!userForm.valid">Save</button>
+    <div class="buttons">
+        <button mat-flat-button type="submit" color="primary" [disabled]="!userForm.valid">Save</button>
+        <button mat-flat-button type="button" color="warn" (click)="reset()">Reset</button>
+        <button mat-flat-button type="button" color="" (click)="exit()">Cancel</button>
+        
+    </div>
 </form>

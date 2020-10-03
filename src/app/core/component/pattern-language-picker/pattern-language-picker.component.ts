@@ -9,7 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 export const patternLanguageNone = new PatternLanguageSchemaModel(
   '-1',
-  'NONE',
+  'None',
   [
     new PatternSectionSchema('Icon', 'Icon', 'any', 0),
     new PatternSectionSchema('Context', 'Context', 'any', 1),

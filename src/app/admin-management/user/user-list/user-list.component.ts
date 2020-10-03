@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserService, PAUser, UserStore } from 'src/app/core/user-management';
+import { UserService, PAUser, UserStore, UserRole } from 'src/app/core/user-management';
+import { UserDetailComponent } from '../user-detail/user-detail.component';
 
 @Component({
   selector: 'pp-user-list',
@@ -17,6 +19,7 @@ export class UserListComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private adminStore: UserStore,
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -31,15 +34,31 @@ export class UserListComponent implements OnInit {
   }
 
   newUser() {
-    console.log('New user');
-    this.adminStore.resetUser();
-    this.router.navigate(['admin/create']);
+    let confirmDialog = this.dialog.open(UserDetailComponent, {
+      data: new PAUser(UserRole.MEMBER)
+    });
+
+    confirmDialog.afterClosed().subscribe(result => {
+      console.log(result);
+      if (result) {
+        console.log(result);
+        this.getAll();
+      }
+    });
   }
 
   editUser(user: PAUser) {
-    console.log('edit user: ', user);
-    this.adminStore.addUser(user);
-    this.router.navigate(['admin/edit', user.id]);
+    let confirmDialog = this.dialog.open(UserDetailComponent, {
+      data: user
+    });
+
+    confirmDialog.afterClosed().subscribe(result => {
+      console.log(result);
+      if (result) {
+        console.log(result);
+        this.getAll();
+      }
+    });
   }
 
   deleteUser(user: PAUser) {

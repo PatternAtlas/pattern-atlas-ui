@@ -55,6 +55,9 @@ export const ADMIN_MANAGEMENT_ROUTES = [
     ReactiveFormsModule
   ],
   providers: [
+  ],
+  entryComponents: [
+    UserDetailComponent
   ]
 })
 export class AdminManagementModule { }

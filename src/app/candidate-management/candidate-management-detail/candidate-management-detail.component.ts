@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TdTextEditorComponent } from '@covalent/text-editor';
 import { Candidate, CandidateManagementService, CandidateManagementStore } from 'src/app/core/candidate-management';
@@ -12,15 +12,22 @@ import * as markdownitKatex from 'markdown-it-katex';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent, ConfirmData } from 'src/app/core/component/confirm-dialog/confirm-dialog.component';
 import { globals } from 'src/app/globals';
+import { RatingManagementService, RatingModelRequest } from 'src/app/core/rating-management';
+import { RatingType } from 'src/app/core/rating-management/_models/rating.model.request';
+import { ContentObserver } from '@angular/cdk/observers';
+import { PAEvidence } from 'src/app/core/shared';
+import { PrivilegeService } from 'src/app/authentication/_services/privilege.service';
 
 @Component({
   selector: 'pp-candidate-management-detail',
   templateUrl: './candidate-management-detail.component.html',
   styleUrls: ['./candidate-management-detail.component.scss']
 })
-export class CandidateManagementDetailComponent implements OnInit {
+export class CandidateManagementDetailComponent implements OnInit, AfterViewInit {
 
   @ViewChild('textEditor') private _textEditor: TdTextEditorComponent;
+  @ViewChild('candidateView') candidateDiv: ElementRef;
+  candidateHeight;
 
   markdown;
   value;
@@ -41,9 +48,11 @@ export class CandidateManagementDetailComponent implements OnInit {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private candidateManagementService: CandidateManagementService,
+    private ratingManagementService: RatingManagementService,
     public candidateStore: CandidateManagementStore,
     private patternService: PatternService,
     public dialog: MatDialog,
+    private p: PrivilegeService,
     private ref: ChangeDetectorRef,
   ) { }
 
@@ -54,6 +63,7 @@ export class CandidateManagementDetailComponent implements OnInit {
         this.disabled = true;
         this.candidate = _candidate;
         this.contentToMarkdown();
+        console.log(this.candidate);
 
       } else if (_candidate && this.router.url.includes('edit')) {
         this.candidate = _candidate;
@@ -77,6 +87,10 @@ export class CandidateManagementDetailComponent implements OnInit {
           + ' new pattern schema will be used'
       }
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.setCommentSectionHeight();
   }
 
   // CHANGE MARKDOWN
@@ -135,9 +149,11 @@ export class CandidateManagementDetailComponent implements OnInit {
 
     confirmDialog.afterClosed().subscribe(result => {
       if (result) {
-        const url = `http://localhost:8080/patternLanguages/${this.candidate.patternLanguageId}/patterns`;
-        this.patternService.savePattern(url, this.candidate).subscribe(result => {
-          this.router.navigate([globals.pathConstants.patternLanguages, this.candidate.patternLanguageId]);
+        this.candidateManagementService.deleteCandidate(this.candidate).subscribe(res => {
+          const url = `http://localhost:8080/patternLanguages/${this.candidate.patternLanguageId}/patterns`;
+          this.patternService.savePattern(url, this.candidate).subscribe(result => {
+            this.router.navigate([globals.pathConstants.patternLanguages, this.candidate.patternLanguageId]);
+          })
         })
       }
     });
@@ -217,6 +233,75 @@ export class CandidateManagementDetailComponent implements OnInit {
         })
       }
     });
+  }
 
+  updateRatingReadability(rating: number) {
+    this.ratingManagementService.updateRatingCandidate(this.candidate, new RatingModelRequest(rating, RatingType.READABILITY)).subscribe(res => {
+      let index = this.candidate.readability.findIndex(_rating => _rating.userId = res.userId)
+      index > -1 ?
+        this.candidate.readability = Object.assign([], this.candidate.readability, { [index]: res }) :
+        this.candidate.readability = this.candidate.readability.concat([res]);
+    });
+  }
+
+  updateRatingUnderstandability(rating: number) {
+    this.ratingManagementService.updateRatingCandidate(this.candidate, new RatingModelRequest(rating, RatingType.UNDERSTANDABILITY)).subscribe(res => {
+      let index = this.candidate.understandability.findIndex(_rating => _rating.userId = res.userId)
+      index > -1 ?
+        this.candidate.understandability = Object.assign([], this.candidate.understandability, { [index]: res }) :
+        this.candidate.understandability = this.candidate.understandability.concat([res]);
+    });
+  }
+
+  updateRatingAppropriateness(rating: number) {
+    this.ratingManagementService.updateRatingCandidate(this.candidate, new RatingModelRequest(rating, RatingType.APPROPIATENESS)).subscribe(res => {
+      let index = this.candidate.appropriateness.findIndex(_rating => _rating.userId = res.userId)
+      index > -1 ?
+        this.candidate.appropriateness = Object.assign([], this.candidate.appropriateness, { [index]: res }) :
+        this.candidate.appropriateness = this.candidate.appropriateness.concat([res]);
+    });
+  }
+
+  /** Evidence */
+  createEvidence(evidence: PAEvidence) {
+    this.candidateManagementService.createEvidence(this.candidate, evidence).subscribe(result => {
+      this.candidate.evidences.push(result);
+    });
+  }
+
+  updateEvidence(evidence: PAEvidence) {
+    this.candidateManagementService.updateEvidence(this.candidate, evidence).subscribe(result => {
+      console.log('update evidence: ', result);
+      var toUpdateEvidence = this.candidate.evidences.find(_evidence => _evidence.id = evidence.id);
+      console.log(toUpdateEvidence);
+      toUpdateEvidence = result;
+      //this.issue = result;
+    })
+  }
+
+  deleteEvidence(evidenceId: string) {
+    let confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: `Delete Evidence`,
+        text: 'Are you sure that you want to delete this evidence submission?'
+      }
+    });
+
+    confirmDialog.afterClosed().subscribe(result => {
+      if (result) {
+        this.candidateManagementService.deleteEvidence(this.candidate, evidenceId).subscribe(result => {
+          console.log('delete evidence: ', result);
+          const index = this.candidate.evidences.findIndex(evidence => evidence.id = evidenceId);
+          if (index > -1) this.candidate.evidences.splice(index, 1);
+        })
+      }
+    });
+  }
+
+  /** UI */
+
+  setCommentSectionHeight() {
+    this.candidateHeight = this.candidateDiv.nativeElement.offsetHeight;
+    this.ref.detectChanges();
   }
 }

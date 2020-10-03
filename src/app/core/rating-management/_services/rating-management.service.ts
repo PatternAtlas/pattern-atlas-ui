@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { Candidate } from '../../candidate-management';
 import { RatingModelRequest } from '../_models/rating.model.request';
-import { PAComment } from '../../shared';
+import { PAComment, PAEvidence } from '../../shared';
 import { RatingModel } from '../_models/rating.model';
 
 @Injectable()
@@ -53,6 +53,19 @@ export class RatingManagementService {
     )
   }
 
+  public updateRatingIssueEvidence(issue: Issue, evidence: PAEvidence, rating: RatingModelRequest): Observable<RatingModel> {
+    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/issues/${issue.id}/evidences/${evidence.id}`, rating).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Updated issue evidence rating')
+        return result
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Could not update issue evidence rating: ', error)
+        return null;
+      }),
+    )
+  }
+
   public updateRatingCandidate(candidate: Candidate, rating: RatingModelRequest): Observable<RatingModel> {
     return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/candidates/${candidate.id}`, rating).pipe(
       map(result => {
@@ -74,6 +87,19 @@ export class RatingManagementService {
       }),
       catchError(error => {
         this.toasterService.pop('error', 'Could not update candidate comment rating: ', error)
+        return null;
+      }),
+    )
+  }
+
+  public updateRatingCandidateEvidence(candidate: Candidate, evidence: PAEvidence, rating: RatingModelRequest): Observable<RatingModel> {
+    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/candidates/${candidate.id}/evidences/${evidence.id}`, rating).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Updated candidate evidence rating')
+        return result
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Could not update candidate evidence rating: ', error)
         return null;
       }),
     )

@@ -25,7 +25,7 @@ export class CommentListItemComponent implements OnInit {
   oldComment: PAComment;
 
   commentCtrl = new FormControl();
-  newComment = false;
+  replyComment = false;
 
   constructor(
     private issueManagementService: IssueManagementService,
@@ -46,9 +46,9 @@ export class CommentListItemComponent implements OnInit {
     this.disabled = true;
   }
 
-  addComment() {
+  reply() {
     console.log('addComment');
-    this.newComment = !this.newComment;
+    this.replyComment = !this.replyComment;
   }
 
   authorInfo() {

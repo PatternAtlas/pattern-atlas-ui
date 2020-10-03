@@ -4,16 +4,16 @@
     <mat-expansion-panel>
         <mat-expansion-panel-header>
             <mat-panel-title>
-                Candidates in Pattern Language {{language.name}}
+                <span class="heading">{{language.name}}</span>
             </mat-panel-title>
         </mat-expansion-panel-header>
         <div class="container">
             <ng-container *ngFor="let candidate of candidates">
                 <mat-card  *ngIf="(candidate.patternLanguageId == language.id)">
-                    <mat-card-header>
+                    <!-- <mat-card-header> -->
                         <mat-card-title>{{ candidate.name }}</mat-card-title>
                         <mat-card-subtitle> Language: {{candidate.patternLanguageName}}</mat-card-subtitle>
-                    </mat-card-header>
+                    <!-- </mat-card-header> -->
                     <!-- <img mat-card-image src="//via.placeholder.com/200x300" alt="Placholder image"> -->
                     <mat-card-content>
                         <p>
@@ -26,7 +26,7 @@
                             <mat-icon>launch</mat-icon>
                             Detail
                         </button>&nbsp;
-                        <button mat-flat-button color="primary" type="button" (click)="edit(candidate)"
+                        <button mat-flat-button color="accent" type="button" (click)="edit(candidate)" [disabled]="!(p.isGroubMember(candidate.authors) | async)"
                             matTooltip="Edit candidate">
                             <mat-icon>edit</mat-icon>
                             Edit

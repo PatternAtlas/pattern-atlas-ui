@@ -7,6 +7,7 @@ import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { PAComment } from '../../shared/_models/comment.model';
+import { PAEvidence } from '../../shared';
 
 @Injectable()
 export class IssueManagementService {
@@ -66,6 +67,19 @@ export class IssueManagementService {
     )
   }
 
+  public createEvidence(issue: Issue, evidence: PAEvidence): Observable<PAEvidence> {
+    return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint + `/${issue.id}/evidences`, evidence).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Created new evidence')
+        return result
+      }),
+      catchError(e => {
+        this.toasterService.pop('error', 'Could not create new evidence: ', e.error.message)
+        return null;
+      }),
+    )
+  }
+
   /**
    * UPDATE
    */
@@ -95,6 +109,19 @@ export class IssueManagementService {
     )
   }
 
+  public updateEvidence(issue: Issue, evidence: PAEvidence): Observable<PAEvidence> {
+    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${issue.id}/evidences/${evidence.id}`, evidence).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Updated issue evidence')
+        return result
+      }),
+      catchError(e => {
+        this.toasterService.pop('error', 'Could not update issue evidence: ', e.error.message)
+        return of(null);
+      }),
+    )
+  }
+
   /**
    * DELETE
    */
@@ -119,6 +146,19 @@ export class IssueManagementService {
       }),
       catchError(e => {
         this.toasterService.pop('error', 'Could not delete issue comment: ', e.error.message)
+        return of(null);
+      }),
+    )
+  }
+
+  public deleteEvidence(issue: Issue, evidenceId: string): Observable<PAEvidence> {
+    return this.http.delete<any>(this.repoEndpoint + this.serviceEndpoint + `/${issue.id}/evidences/${evidenceId}`).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Deleted issue evidence')
+        return result
+      }),
+      catchError(e => {
+        this.toasterService.pop('error', 'Could not delete issue evidence: ', e.error.message)
         return of(null);
       }),
     )

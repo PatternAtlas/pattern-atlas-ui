@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl, FormGroupDirective, NgForm, AbstractControl } from '@angular/forms';
 import { UserStore, UserService, UserRole, PAUser } from 'src/app/core/user-management';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'pp-user-detail',
@@ -16,6 +17,8 @@ export class UserDetailComponent implements OnInit {
   roles: UserRole[] = [UserRole.MEMBER, UserRole.EXPERT, UserRole.LIBRARIAN, UserRole.ADMIN];
 
   constructor(
+    public dialogRef: MatDialogRef<UserDetailComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: PAUser,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private userFormBuilder: FormBuilder,
@@ -25,14 +28,17 @@ export class UserDetailComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.userStore.user.subscribe(user => {
-      if (user) {
-        this.user = user;
-      } else {
-        this.user = new PAUser(UserRole.MEMBER)
-      }
-      this.createForm()
-    })
+    this.user = this.data;
+    this.createForm()
+
+    // this.userStore.user.subscribe(user => {
+    //   if (user) {
+    //     this.user = user;
+    //   } else {
+    //     this.user = new PAUser(UserRole.MEMBER)
+    //   }
+      
+    // })
   }
 
   createForm() {
@@ -57,10 +63,12 @@ export class UserDetailComponent implements OnInit {
     if (this.user.id) {
       this.userService.updateUser(this.user).subscribe(result => {
         console.log('updateUser: ', result);
+        this.dialogRef.close(true);
       })
     } else {
       this.userService.createUser(this.user).subscribe(result => {
         console.log('createdUser: ', result);
+        this.dialogRef.close(true);
       })
     }
   }
@@ -71,7 +79,8 @@ export class UserDetailComponent implements OnInit {
   }
 
   exit() {
-    this.router.navigateByUrl('admin');
+    //this.router.navigateByUrl('admin');
+    this.dialogRef.close();
   }
 
 }
