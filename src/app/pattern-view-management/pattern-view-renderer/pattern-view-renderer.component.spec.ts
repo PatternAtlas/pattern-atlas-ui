@@ -10,7 +10,7 @@ describe('PatternViewRendererComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ PatternViewRendererComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +19,7 @@ describe('PatternViewRendererComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  // it('should create', () => {
+  //   expect(component).toBeTruthy();
+  // });
 });

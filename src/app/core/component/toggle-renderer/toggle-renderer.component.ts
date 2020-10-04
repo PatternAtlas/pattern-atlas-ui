@@ -1,9 +1,9 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-    selector: 'pp-toggle-renderer',
-    templateUrl: './toggle-renderer.component.html',
-    styleUrls: ['./toggle-renderer.component.css']
+  selector: 'pp-toggle-renderer',
+  templateUrl: './toggle-renderer.component.html',
+  styleUrls: ['./toggle-renderer.component.css']
 })
 export class ToggleRendererComponent implements OnInit {
 
@@ -17,6 +17,6 @@ export class ToggleRendererComponent implements OnInit {
     }
 
     emitValueChange(value: any) {
-        this.toggledRenderer.emit(value);
+      this.toggledRenderer.emit(value);
     }
 }

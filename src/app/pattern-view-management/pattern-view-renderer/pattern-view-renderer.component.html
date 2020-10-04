@@ -1,70 +1,71 @@
 <pp-action-button-bar [addButtonText]="'Add patterns'" [secondAddButton]="true"
-                      [secondAddButtonText]="'Create new Link'" [displayText]="displayText"
+                      [secondAddButtonText]="'Create new Relation'" [displayText]="displayText"
                       (addClicked)="addPatternToView()" (add2Clicked)="addLink()" [firstAddButton]="!graphVisible">
-    <pp-toggle-renderer [graphVisible]="graphVisible" (toggledRenderer)="changeRenderer($event)"></pp-toggle-renderer>
-    <button class="action-button-with-margin" (click)="reloadGraph()" *ngIf="graphVisible"
-            color="accent" mat-raised-button>
-        <i class="material-icons">autorenew</i> Reformat
-    </button>
+  <pp-toggle-renderer [graphVisible]="graphVisible" (toggledRenderer)="changeRenderer($event)"></pp-toggle-renderer>
+  <button class="action-button-with-margin" (click)="reloadGraph()" *ngIf="graphVisible"
+          color="accent" mat-raised-button>
+    <i class="material-icons">autorenew</i> Reformat
+  </button>
 </pp-action-button-bar>
 
 <div class="container" *ngIf="!isLoading && !graphVisible">
 
-    <mat-card class="pattern-card" *ngFor="let pattern of this.patterns">
-        <mat-card-header>
-            <mat-card-title>{{pattern?.name}}</mat-card-title>
-            <mat-card-subtitle>{{pattern.patternLanguageName}}
+  <mat-card class="pattern-card" *ngFor="let pattern of this.patterns">
+    <mat-card-header>
+      <mat-card-title>{{pattern?.name}}</mat-card-title>
+      <mat-card-subtitle>{{pattern.patternLanguageName}}
 
 
-            </mat-card-subtitle>
+      </mat-card-subtitle>
 
-        </mat-card-header>
+    </mat-card-header>
 
-        <mat-card-content class="card-content-style">
-
-            <div class="badge-container" (click)="showIngoingEdges(pattern._links.ingoingDirectedEdges)">
-                <button mat-button class="edge-button">
-                    <mat-icon> trending_flat
-                    </mat-icon>
-                    <span class="badge-span" matBadgeOverlap="false"
-                          [matBadge]="getLinkCount(pattern._links.ingoingDirectedEdges)"
-                    >
+    <mat-card-content class="card-content-style">
+      <img mat-card-image *ngIf="pattern.iconUrl else noimage" [src]="pattern.iconUrl">
+      <ng-template #noimage><img mat-card-image src="//via.placeholder.com/350x150"></ng-template>
+      <div class="badge-container" (click)="showIngoingEdges(pattern._links.ingoingDirectedEdges)">
+        <button mat-button class="edge-button">
+          <mat-icon> trending_flat
+          </mat-icon>
+          <span class="badge-span" matBadgeOverlap="false"
+                [matBadge]="getLinkCount(pattern._links.ingoingDirectedEdges)"
+          >
                     </span>
-                </button>
-            </div>
+        </button>
+      </div>
 
-            <div class="badge-container" (click)="showOutgoingEdges(pattern._links.outgoingDirectedEdges)">
-                <button mat-button class="edge-button">
-                    <mat-icon class="flip"> trending_flat
-                    </mat-icon>
-                    <span class="badge-span" matBadgeOverlap="false"
-                          [matBadge]="getLinkCount(pattern._links.outgoingDirectedEdges)"
-                    >
+      <div class="badge-container" (click)="showOutgoingEdges(pattern._links.outgoingDirectedEdges)">
+        <button mat-button class="edge-button">
+          <mat-icon class="flip"> trending_flat
+          </mat-icon>
+          <span class="badge-span" matBadgeOverlap="false"
+                [matBadge]="getLinkCount(pattern._links.outgoingDirectedEdges)"
+          >
                 </span>
-                </button>
-            </div>
-            <div class="badge-container" (click)="showUndirectedEdges(pattern._links.undirectedEdges)">
-                <button mat-button class="edge-button">
-                    <mat-icon>compare_arrows</mat-icon>
-                    <span class="badge-span" [matBadge]="getLinkCount(pattern._links.undirectedEdges)"
-                          matBadgeOverlap="false"
-                    >
+        </button>
+      </div>
+      <div class="badge-container" (click)="showUndirectedEdges(pattern._links.undirectedEdges)">
+        <button mat-button class="edge-button">
+          <mat-icon>compare_arrows</mat-icon>
+          <span class="badge-span" [matBadge]="getLinkCount(pattern._links.undirectedEdges)"
+                matBadgeOverlap="false"
+          >
                 </span>
-                </button>
-            </div>
-        </mat-card-content>
-        <mat-card-actions
-        >
-            <button mat-button (click)="addLinks(pattern)">Add Links (incl. Pattern)
-            </button>
-        </mat-card-actions>
-    </mat-card>
+        </button>
+      </div>
+    </mat-card-content>
+    <mat-card-actions
+    >
+      <button mat-button (click)="addLinks(pattern)">Add Relations (incl. Pattern)
+      </button>
+    </mat-card-actions>
+  </mat-card>
 </div>
 
 <pp-graph-display *ngIf="!isLoading && graphVisible"
                   [data]="{
                 patterns: this.patterns, edges: this.patternLinks,
-                patternLanguage: null, patternView: this.patternViewResponse,
+                patternLanguage: null, patternContainer: this.patternViewResponse,
                 patternLanguages: this.patternLanguages
             }"
                   (addedEdge)="addedEdgeInGraphView($event)" [showPatternLanguageName]="true"></pp-graph-display>

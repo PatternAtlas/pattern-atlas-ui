@@ -13,11 +13,11 @@
  */
 
 class PatternSectionSchema {
-    id: number;
-    label: string;
-    name: string;
-    type: string;
-    position: number;
+  id: number;
+  label: string;
+  name: string;
+  type: string;
+  position: number;
 }
 
 export default PatternSectionSchema;

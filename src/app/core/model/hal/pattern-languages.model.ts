@@ -16,12 +16,12 @@ import { HalLink } from './hal-link.interface';
 import PatternLanguageModel from './pattern-language-model.model';
 
 class PatternLanguages {
-    _embedded: { patternLanguageModels: Array<PatternLanguageModel> };
-    _links: {
-        findByUri: HalLink;
-        self: HalLink;
-        patternViews: HalLink;
-    };
+  _embedded: { patternLanguageModels: Array<PatternLanguageModel> };
+  _links: {
+    findByUri: HalLink;
+    self: HalLink;
+    patternViews: HalLink;
+  };
 }
 
 export default PatternLanguages;

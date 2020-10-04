@@ -1,187 +1,195 @@
 <mat-sidenav-container [hasBackdrop]="false" class="container">
-    <mat-sidenav *ngIf="patternView" style="min-width: 300px;" [disableClose]="true" [opened]="true" fixedInViewport="false" mode="push">
-        <h3>Add Patterns</h3>
-            <mat-accordion>
-                <div cdkDropListGroup>
-                    <mat-expansion-panel *ngFor="let patternLang of patternLanguages" (afterExpand)="patternListExpanded(patternLang)">
-                        <mat-expansion-panel-header>
-                            <mat-panel-title>
-                                {{patternLang.name}}
-                            </mat-panel-title>
-                        </mat-expansion-panel-header>
-                        <mat-panel-description>
-                            <div *ngIf="allPatternsLoading; else dragAndDropContent">
-                                <mat-spinner class="drag-and-drop-spinner"></mat-spinner>
-                            </div>
-                            <ng-template #dragAndDropContent>
-                            <div cdkDropList
-                                 [cdkDropListData]="patternLang.patterns"
-                                 class="pattern-list"
-                                 cdkDropListSortingDisabled
-                                 (cdkDropListDropped)="patternDropped($event)">
-                                <div class="pattern-box" *ngFor="let pattern of patternLang.patterns" cdkDrag>
-                                    {{pattern.name}}
-                                    <mat-icon>drag_handle</mat-icon>
-                                </div>
-                            </div>
-                            </ng-template>
-                        </mat-panel-description>
-                    </mat-expansion-panel>
+  <mat-sidenav *ngIf="patternContainer" #leftSidenav style="min-width: 300px;" [disableClose]="true" [opened]="true" fixedInViewport="false"
+               mode="push">
+    <h3>Add Patterns</h3>
+    <mat-accordion>
+      <div cdkDropListGroup>
+        <mat-expansion-panel *ngFor="let patternLang of patternLanguages" (afterExpand)="patternListExpanded(patternLang)">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{patternLang.name}}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-panel-description>
+            <div *ngIf="allPatternsLoading; else dragAndDropContent">
+              <mat-spinner class="drag-and-drop-spinner"></mat-spinner>
+            </div>
+            <ng-template #dragAndDropContent>
+              <div cdkDropList
+                   [cdkDropListData]="patternLang.patterns"
+                   class="pattern-list"
+                   cdkDropListSortingDisabled
+                   (cdkDropListDropped)="patternDropped($event)">
+                <div class="pattern-box" *ngFor="let pattern of patternLang.patterns" cdkDrag>
+                  {{pattern.name}}
+                  <mat-icon>drag_handle</mat-icon>
                 </div>
-            </mat-accordion>
-    </mat-sidenav>
+              </div>
+            </ng-template>
+          </mat-panel-description>
+        </mat-expansion-panel>
+      </div>
+    </mat-accordion>
+  </mat-sidenav>
 
-    <mat-sidenav [opened]="patternClicked" position="end" fixedInViewport="true" mode="over">
-        <h4 style="margin: 1em">Relations of {{currentPattern?.name}}</h4>
-        <mat-accordion>
-            <mat-expansion-panel *ngFor="let relation of currentEdges">
-                <mat-expansion-panel-header>
-                    <mat-panel-title style="align-self: center">
-                        {{relation?.edge.type}}
-                    </mat-panel-title>
-                    <mat-panel-description class="horiz-centered">
-                        <div [ngSwitch]="relation.type">
+  <mat-sidenav [opened]="patternClicked" position="end" fixedInViewport="true" mode="over">
+    <h4 style="margin: 1em">Relations of {{currentPattern?.name}}</h4>
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let relation of currentEdges">
+        <mat-expansion-panel-header>
+          <mat-panel-title style="align-self: center">
+            {{relation?.edge.type}}
+          </mat-panel-title>
+          <mat-panel-description class="horiz-centered">
+            <div [ngSwitch]="relation.type">
 
-                            <div *ngSwitchCase="'undirectedEdges'" class="horiz-centered">
-                                {{ relation?.edge.sourcePatternName}}
-                                <i class="material-icons flip">compare_arrows</i>
-                                {{ relation?.edge.pattern1Id === this.currentPattern.id ? relation.edge.pattern1Name :
-                                relation.edge.pattern2Name}}
-                            </div>
+              <div *ngSwitchCase="'undirectedEdges'" class="horiz-centered">
+                {{ relation?.edge.sourcePatternName}}
+                <i class="material-icons flip">compare_arrows</i>
+                {{ relation?.edge.pattern1Id === this.currentPattern.id ? relation.edge.pattern1Name :
+                relation.edge.pattern2Name}}
+              </div>
 
-                            <div *ngSwitchCase="'outgoingDirectedEdges'" class="horiz-centered">
-                                <i class="material-icons">trending_flat</i>
-                                {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
-                                relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
+              <div *ngSwitchCase="'outgoingDirectedEdges'" class="horiz-centered">
+                <i class="material-icons">trending_flat</i>
+                {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
+                relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
 
-                            </div>
-                            <div *ngSwitchCase="'ingoingDirectedEdges'" class="horiz-centered">
-                                <i class="material-icons flip">trending_flat</i>
-                                {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
-                                relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
-                            </div>
+              </div>
+              <div *ngSwitchCase="'ingoingDirectedEdges'" class="horiz-centered">
+                <i class="material-icons flip">trending_flat</i>
+                {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
+                relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
+              </div>
 
-                        </div>
-                    </mat-panel-description>
-                </mat-expansion-panel-header>
-                <i>{{relation?.edge.description ? ': ' + relation?.edge.description : ''}}</i>
-            </mat-expansion-panel>
-        </mat-accordion>
+            </div>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <i>{{relation?.edge.description ? ': ' + relation?.edge.description : ''}}</i>
+      </mat-expansion-panel>
+    </mat-accordion>
 
-    </mat-sidenav>
-    <mat-progress-spinner *ngIf="isLoading"></mat-progress-spinner>
-    <mat-sidenav-content>
-        <network-graph #graphWrapper
-                       (onAddedEdge)="edgeAdded($event)"
-                       (onClickedBackground)="backgroundClicked()"
-                       (onClickedNode)="nodeClicked($event)"
-                       (onNodePositionChange)="saveGraph()"
-                       [ppGraphEventEmmiter]
-                       classes=" highlighted-edge low-opacity-node low-opacity-edge"
-                       mode="layout"
-                       style="width: 100%; height: 100%"
-                       zoom="both">
-            <style slot="style">
-                svg {
-                    width: 1000px;
-                    height: 700px;
-                }
-            </style>
-            <svg #svg slot="graph">
-                <!-- TODO: Move style to scss file -->
-                <style>
-                    .node {
-                        fill: aliceblue;
-                        opacity: 0.95;
-                    }
+  </mat-sidenav>
+  <mat-progress-spinner *ngIf="isLoading"></mat-progress-spinner>
+  <mat-sidenav-content>
+    <network-graph #graphWrapper
+                   (onAddedEdge)="edgeAdded($event)"
+                   (onClickedBackground)="backgroundClicked()"
+                   (onClickedNode)="nodeClicked($event)"
+                   (onNodePositionChange)="saveGraph()"
+                   [ppGraphEventEmmiter]
+                   classes=" highlighted-edge low-opacity-node low-opacity-edge"
+                   mode="layout"
+                   style="width: 100%; height: 100%"
+                   zoom="both">
+      <style slot="style">
+        svg {
+          width: 1000px;
+          height: 700px;
+        }
+      </style>
+      <svg #svg slot="graph" [class.left-sidenav-open]="!!patternContainer">
+        <!-- TODO: Move style to scss file -->
+        <style>
+          .node {
+            fill: aliceblue;
+            opacity: 0.95;
+          }
 
-                    svg {
-                        background-color: white;
-                    }
+          svg {
+            background-color: white;
+          }
 
-                    .link-handle {
-                        display: none;
+          .link-handle {
+            display: none;
 
-                        fill: black;
-                        opacity: 0.1;
-                        transition: opacity 0.25s ease-out;
-                    }
+            fill: black;
+            opacity: 0.1;
+            transition: opacity 0.25s ease-out;
+          }
 
-                    .node.hovered {
-                        fill: rgb(63, 81, 181);
-                        opacity: 0.9;
-                        color: white;
-                    }
+          .node.hovered {
+            fill: rgb(63, 81, 181);
+            opacity: 0.9;
+            color: white;
+          }
 
-                    .edge-group .link-handle {
-                        display: initial;
-                    }
+          .edge-group .link-handle {
+            display: initial;
+          }
 
-                    .low-opacity-edge {
-                        stroke: grey;
-                    }
+          .low-opacity-edge {
+            stroke: grey;
+          }
 
-                    .link-handle:hover {
-                        opacity: 0.7;
-                    }
+          .link-handle:hover {
+            opacity: 0.7;
+          }
 
-                    .hovered .link-handle {
-                        display: initial;
-                    }
+          .hovered .link-handle {
+            display: initial;
+          }
 
-                    .text {
-                        fill: black;
-                        font-size: 6pt;
-                        text-overflow: ellipsis;
-                        word-break: break-word
-                    }
+          .text {
+            fill: black;
+            font-size: 6pt;
+            text-overflow: ellipsis;
+            word-break: break-word;
 
-                    .cursive {
-                        font-style: italic;
-                    }
+          }
 
-                    .low-opacity-node {
-                        opacity: 0.1;
-                    }
+          .patternlanguage-name {
+            font-size: 5pt;
 
-                    .low-opacity-edge {
-                        opacity: 0.1;
-                    }
-                </style>
-                <defs>
+          }
 
-                    <g data-template-type="node" id="default">
+          .cursive {
+            font-style: italic;
+          }
 
-                        <rect data-click="nodeclick" data-link-handles="edges" height="50" rx="5" ry="5"
-                              style="stroke:black;stroke-width:1;"
-                              width="170"
-                              x="-60" y="-25">
-                        </rect>
-                        <image width="40" x="-55" y="-20" data-click="iconUrl" data-href="iconUrl"></image>
-                        <image data-click="info" data-content="patternLanguageId" width="10" x="95"
-                               xlink:href="assets/Info_Simple_bw.svg"
-                               y="-20"/>
-                        <text class="text" data-click="title" data-content="title" dominant-baseline="middle"
-                              height="50" text-anchor="middle"
-                              width="120"
-                              x="45"
-                              y="0">
-                        </text>
-                        <text class="text cursive" data-click="patternLanguageName" *ngIf="showPatternLanguageName"
-                              data-content="patternLanguageName"
-                              dominant-baseline="middle"
-                              height="50" text-anchor="middle"
-                              width="120"
-                              x="45"
-                              y="10">
-                        </text>
-                    </g>
+          .low-opacity-node {
+            opacity: 0.1;
+          }
 
-                    <g data-line-attachement-point="-9 0" data-template-type="marker" id="arrow">
-                        <path d="M -9 -4 L 0 0 L -9 4 z"/>
-                    </g>
-                </defs>
-            </svg>
-        </network-graph>
-    </mat-sidenav-content>
+          .low-opacity-edge {
+            opacity: 0.1;
+          }
+        </style>
+        <defs>
+
+          <g data-template-type="node" id="default">
+            <!-- x and y values describe the position of the upper left corner -->
+            <rect data-click="nodeclick" data-link-handles="edges" height="50" rx="5" ry="5"
+                  style="stroke:black;stroke-width:1;"
+                  width="170"
+                  x="-60" y="-25">
+            </rect>
+            <!-- set both height and width values to define a maximum value for them -->
+            <image height="35" width="35" x="-55" y="-17.5" data-click="iconUrl" data-href="iconUrl"></image>
+            <image data-click="info" data-content="patternLanguageId" width="10" x="95"
+                   xlink:href="assets/Info_Simple_bw.svg"
+                   y="-20"/>
+            <text class="text" data-click="title" data-content="title" dominant-baseline="middle"
+                  height="50" text-anchor="middle" style="font-weight: bold"
+                  width="120"
+                  x="45"
+                  y="0">
+            </text>
+            <text class="text cursive" data-click="patternLanguageName" *ngIf="showPatternLanguageName"
+                  data-content="patternLanguageName"
+                  dominant-baseline="middle"
+                  height="50" text-anchor="middle"
+                  width="120"
+                  x="45"
+                  y="10">
+            </text>
+          </g>
+
+          <g data-line-attachement-point="-9 0" data-template-type="marker" id="arrow">
+            <path d="M -9 -4 L 0 0 L -9 4 z"/>
+          </g>
+        </defs>
+      </svg>
+    </network-graph>
+  </mat-sidenav-content>
 </mat-sidenav-container>

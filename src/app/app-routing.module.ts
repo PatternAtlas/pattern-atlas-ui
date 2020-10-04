@@ -1,9 +1,12 @@
-import {PatternLanguageGraphComponent} from './pattern-language-management/pattern-language-graph/pattern-language-graph.component';
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {PageNotFoundComponent} from './page-not-found.component';
 import {ProcessOauthCallbackComponent} from './core/component/process-oauth-callback/process-oauth-callback.component';
 import {ToasterModule} from 'angular2-toaster';
+import {PageNotFoundComponent} from './core/component/page-not-found/page-not-found.component';
+import {AuthGuardService as AuthGuard} from './authentication/_services/auth-guard.service';
+import {PatternLanguageManagementResolverService} from './pattern-language-management/pattern-language-management/pattern-language-management-resolver.service'; // eslint-disable-line max-len
+import {UserRole} from './core/user-management';
+import {globals} from './globals';
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -19,27 +22,65 @@ import {ToasterModule} from 'angular2-toaster';
  */
 
 const routes: Routes = [
-    {
-        path: 'oauth-callback',
-        component: ProcessOauthCallbackComponent
-    }, {
-        path: '',
-        redirectTo: 'patternlanguages',
-        pathMatch: 'full'
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: globals.pathConstants.patternLanguages
+  },
+  {
+    path: globals.pathConstants.patternLanguages,
+    resolve: {
+      patternlanguages: PatternLanguageManagementResolverService,
     },
-    {
-        path: 'graph',
-        component: PatternLanguageGraphComponent
-    },
-    {
-        path: '**',
-        component: PageNotFoundComponent
-    }
+    loadChildren: () => import('./pattern-language-management/pattern-language-management.module').then(m => m.PatternLanguageManagementModule),
+  },
+  {
+    path: globals.pathConstants.patternViews,
+    loadChildren: () => import('./pattern-view-management/pattern-view-management.module').then(m => m.PatternViewManagementModule),
+  },
+  {
+    path: globals.pathConstants.designModels,
+    loadChildren: () => import('./design-model-module/design-model.module').then(m => m.DesignModelModule),
+  },
+  {
+    path: 'candidate',
+    loadChildren: () => import('./candidate-management/candidate-management.module').then(m => m.CandidateManagementModule),
+  },
+  {
+    path: 'issue',
+    loadChildren: () => import('./issue-management/issue-management.module').then(m => m.IssueManagementModule),
+  },
+  {
+    path: 'user',
+    loadChildren: () => import('./user-management/user-management.module').then(m => m.UserManagementModule),
+    canActivate: [AuthGuard],
+    data: {role: UserRole.MEMBER}
+  },
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin-management/admin-management.module').then(m => m.AdminManagementModule),
+    canActivate: [AuthGuard],
+    data: {role: UserRole.ADMIN}
+  },
+  {
+    path: 'developer',
+    loadChildren: () => import('./developer-management/developer-management.module').then(m => m.DeveloperManagementModule),
+    canActivate: [AuthGuard],
+    data: {role: UserRole.ADMIN}
+  },
+  {
+    path: 'oauth-callback',
+    component: ProcessOauthCallbackComponent
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent
+  }
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes, {useHash: false, onSameUrlNavigation: 'reload'}), ToasterModule.forRoot()],
-    exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes, {useHash: false, onSameUrlNavigation: 'reload'}), ToasterModule.forRoot()],
+  exports: [RouterModule]
 })
 export class AppRoutingModule {
 }

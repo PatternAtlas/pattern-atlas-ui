@@ -13,9 +13,9 @@
  */
 
 class UriEntity {
-    id: string;
-    uri: string;
-    name: string;
+  id: string;
+  uri: string;
+  name: string;
 }
 
 export default UriEntity;

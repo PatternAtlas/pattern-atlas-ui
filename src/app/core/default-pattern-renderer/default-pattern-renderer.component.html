@@ -1,66 +1,66 @@
 <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
 <mat-card class="pattern-card mat-elevation-z5">
+  <mat-card-header>
+    <pp-action-button-bar [displayText]="pattern?.name" [firstAddButton]="false">
+    </pp-action-button-bar>
+  </mat-card-header>
+  <div>
+    <ng-template ppPatternProperty></ng-template>
+  </div>
+  <mat-card *ngIf="!isLoading" class="section-card">
     <mat-card-header>
-        <pp-action-button-bar [displayText]="pattern?.name" [firstAddButton]="false">
-        </pp-action-button-bar>
-    </mat-card-header>
-    <div>
-        <ng-template ppPatternProperty></ng-template>
-    </div>
-    <mat-card *ngIf="!isLoading" class="section-card">
-        <mat-card-header>
-            <mat-card-subtitle style="display: flex;
+      <mat-card-subtitle style="display: flex;
      align-items: flex-start;"><b>Relations to other Patterns</b></mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-            <div *ngIf="directedPatternRelations?.length > 0">
-                <ng-container *ngFor="let relation of directedPatternRelations">
-                    <p class="horiz-centered">
-                        <a [routerLink]="['..',relation.sourcePatternId]">{{ relation?.sourcePatternName}}</a>
-                        <span *ngIf="relation?.type" class="horiz-centered">
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngIf="directedPatternRelations?.length > 0">
+        <ng-container *ngFor="let relation of directedPatternRelations">
+          <p class="horiz-centered">
+            <a [routerLink]="['..',relation.sourcePatternId]">{{ relation?.sourcePatternName}}</a>
+            <span *ngIf="relation?.type" class="horiz-centered">
                             <i class="material-icons">remove</i>{{relation?.type}}
                         </span>
-                        <i class="material-icons">trending_flat</i>
-                        <a [routerLink]="['..', relation.targetPatternId]">{{ relation?.targetPatternName}}</a>
-                        <i>{{relation?.description ? ': ' + relation?.description : ''}}</i>
-                    </p>
-                    <br/>
-                </ng-container>
-            </div>
-            <div *ngIf="undirectedPatternRelations?.length > 0">
-                <ng-container *ngFor="let relation of undirectedPatternRelations">
-                    <p class="horiz-centered">
-                        <a [routerLink]="['..', relation.pattern1Id]">{{ relation?.pattern1Name}}</a>
-                        <span *ngIf="!relation?.type"><i class="material-icons">compare_arrows</i></span>
-                        <span *ngIf="relation?.type" class="horiz-centered"><i
-                                class="material-icons flip">trending_flat</i>{{relation?.type}}
-                            <i class="material-icons">trending_flat</i></span>
-                        <a [routerLink]="['..',relation.pattern2Id]">{{ relation?.pattern2Name}}</a>
-                        <i>{{relation?.description ? ': ' + relation?.description : ''}}</i>
-                    </p>
-                    <br/>
-                </ng-container>
-            </div>
-            <div *ngIf="undirectedPatternRelations?.length === 0 && directedPatternRelations?.length === 0">
-                <p> No links found for this pattern.</p>
-            </div>
-            <mat-card-actions>
-                <div style="display: flex; align-items: center;">
-                    <button (click)="addLink()"
-                            *ngIf="isEditingEnabled"
-                            color="primary"
-                            mat-stroked-button
-                            matTooltip="Add Link"
-                            style="margin-left: 5px">
-                        <i class="material-icons">trending_flat</i>
-                        <i class="material-icons" style="height: 2em;
+            <i class="material-icons">trending_flat</i>
+            <a [routerLink]="['..', relation.targetPatternId]">{{ relation?.targetPatternName}}</a>
+            <i>{{relation?.description ? ': ' + relation?.description : ''}}</i>
+          </p>
+          <br/>
+        </ng-container>
+      </div>
+      <div *ngIf="undirectedPatternRelations?.length > 0">
+        <ng-container *ngFor="let relation of undirectedPatternRelations">
+          <p class="horiz-centered">
+            <a [routerLink]="['..', relation.pattern1Id]">{{ relation?.pattern1Name}}</a>
+            <span *ngIf="!relation?.type"><i class="material-icons">compare_arrows</i></span>
+            <span *ngIf="relation?.type" class="horiz-centered"><i
+              class="material-icons flip">trending_flat</i>{{relation?.type}}
+              <i class="material-icons">trending_flat</i></span>
+            <a [routerLink]="['..',relation.pattern2Id]">{{ relation?.pattern2Name}}</a>
+            <i>{{relation?.description ? ': ' + relation?.description : ''}}</i>
+          </p>
+          <br/>
+        </ng-container>
+      </div>
+      <div *ngIf="undirectedPatternRelations?.length === 0 && directedPatternRelations?.length === 0">
+        <p> No links found for this pattern.</p>
+      </div>
+      <mat-card-actions>
+        <div style="display: flex; align-items: center;">
+          <button (click)="addLink()"
+                  *ngIf="isEditingEnabled"
+                  color="primary"
+                  mat-stroked-button
+                  matTooltip="Add Relation"
+                  style="margin-left: 5px">
+            <i class="material-icons">trending_flat</i>
+            <i class="material-icons" style="height: 2em;
     font-size: smaller;  ">add</i>
-                    </button>
-                </div>
-            </mat-card-actions>
-        </mat-card-content>
+          </button>
+        </div>
+      </mat-card-actions>
+    </mat-card-content>
 
-    </mat-card>
+  </mat-card>
 
 </mat-card>
 <pp-creative-license-footer *ngIf="pattern && patternLanguage"

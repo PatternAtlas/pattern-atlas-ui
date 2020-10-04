@@ -1,0 +1,26 @@
+.container-row {
+  border-style: groove;
+  width: 100%;
+  display: flex; /* or inline-flex */
+  flex-direction: row;
+  justify-content: center;
+  align-items: baseline;
+
+  .rating {
+    padding: 0 16px;
+  }
+}
+
+.container-column {
+  border-style: groove;
+  width: 100%;
+  display: flex; /* or inline-flex */
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+
+  .rating {
+    padding: 8px 0;
+    text-align: center;
+  }
+}

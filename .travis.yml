@@ -1,13 +1,19 @@
 language: node_js
 node_js:
   - '10'
+dist: focal
+addons:
+  chrome: stable
 cache:
   directories:
     - node_modules
-script: yarn travis
+script:
+  - yarn lint-ci
+  - yarn test-ci
+  - yarn travis
 deploy:
   provider: pages
   skip-cleanup: true
   github_token: $github_token
   keep-history: true
-  local-dir: dist/pattern-pedia
+  local-dir: dist/pattern-atlas

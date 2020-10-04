@@ -13,16 +13,42 @@
  */
 
 import { Component } from '@angular/core';
+import { AuthenticationService } from './authentication/_services/authentication.service';
+import { PAUser } from './core/user-management';
+import { globals } from './globals';
+
 
 @Component({
-    selector: 'pp-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
+  selector: 'pp-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
 
-    constructor() {
-    }
+  readonly featureToggles = globals.featureToggles;
+  loginButton = 'Login';
+  welcomeText = '';
+  user: PAUser;
+  readonly pathConstants = globals.pathConstants;
 
 
+  constructor(public auth: AuthenticationService) {
+    this.auth.userSubject.subscribe(_user => {
+      if (_user) {
+        console.log('User is Logged in: ', _user);
+        this.user = _user;
+        this.loginButton = 'Logout';
+        this.welcomeText = `Welcome ${_user.name}`;
+      } else {
+        console.log('No user logged in: ', _user);
+        this.user = null;
+        this.loginButton = 'Login';
+        this.welcomeText = '';
+      }
+    });
+  }
+
+  loginOAuth() {
+    this.user ? this.auth.logout() : this.auth.login();
+  }
 }

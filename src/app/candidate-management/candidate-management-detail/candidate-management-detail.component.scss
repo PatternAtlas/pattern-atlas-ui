@@ -1,0 +1,37 @@
+.container {
+  border-style: groove;
+  width: 100%;
+  display: flex; /* or inline-flex */
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+
+  .container-candidate {
+    display: flex; /* or inline-flex */
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    .language-select {
+      flex: 1;
+    }
+
+    .language-button {
+      padding-left: 8px;
+    }
+  }
+
+  .container-rating {
+    width: 100%;
+    border-style: groove;
+    padding-top: 16px;
+  }
+
+  .container-button {
+    border-style: groove;
+    padding-top: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+}
