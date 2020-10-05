@@ -1,4 +1,3 @@
-import { PatternLanguageGraphComponent } from './pattern-language-management/pattern-language-graph/pattern-language-graph.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProcessOauthCallbackComponent } from './core/component/process-oauth-callback/process-oauth-callback.component';
@@ -77,17 +76,13 @@ const routes: Routes = [
     component: ProcessOauthCallbackComponent
   },
   {
-    path: 'graph',
-    component: PatternLanguageGraphComponent
-  },
-  {
     path: '**',
     component: PageNotFoundComponent
   },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: false, onSameUrlNavigation: 'reload' }), ToasterModule.forRoot()],
+  imports: [RouterModule.forRoot(routes, {useHash: false, onSameUrlNavigation: 'reload'}), ToasterModule.forRoot()],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

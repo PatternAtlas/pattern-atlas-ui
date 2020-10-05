@@ -134,7 +134,13 @@
             fill: black;
             font-size: 6pt;
             text-overflow: ellipsis;
-            word-break: break-word
+            word-break: break-word;
+
+          }
+
+          .patternlanguage-name {
+            font-size: 5pt;
+
           }
 
           .cursive {
@@ -152,18 +158,19 @@
         <defs>
 
           <g data-template-type="node" id="default">
-
+            <!-- x and y values describe the position of the upper left corner -->
             <rect data-click="nodeclick" data-link-handles="edges" height="50" rx="5" ry="5"
                   style="stroke:black;stroke-width:1;"
                   width="170"
                   x="-60" y="-25">
             </rect>
-            <image width="40" x="-55" y="-20" data-click="iconUrl" data-href="iconUrl"></image>
+            <!-- set both height and width values to define a maximum value for them -->
+            <image height="35" width="35" x="-55" y="-17.5" data-click="iconUrl" data-href="iconUrl"></image>
             <image data-click="info" data-content="patternLanguageId" width="10" x="95"
                    xlink:href="assets/Info_Simple_bw.svg"
                    y="-20"/>
             <text class="text" data-click="title" data-content="title" dominant-baseline="middle"
-                  height="50" text-anchor="middle"
+                  height="50" text-anchor="middle" style="font-weight: bold"
                   width="120"
                   x="45"
                   y="0">
