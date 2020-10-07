@@ -5,7 +5,6 @@ import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ToasterService } from 'angular2-toaster';
 import { AuthorModel, AuthorManagementService, Author } from 'src/app/core/author-management';
-import { Role } from 'src/app/core/service/data/User';
 
 @Injectable()
 export class PrivilegeService {
@@ -34,10 +33,11 @@ export class PrivilegeService {
     )
   }
 
-  isGroubMember(authors: AuthorModel[]): Observable<boolean> {
+  isGroubMember(authors: AuthorModel[], privilege?: string): Observable<boolean> {
     return this.auth.user.pipe(
       map(_user => {
         if (_user) {
+          if (privilege && _user.privileges.includes(privilege)) return true;
           for (var a of authors) {
             if (a.userId === _user.id) {
               return true;
@@ -49,10 +49,11 @@ export class PrivilegeService {
       ));
   }
 
-  isMaintainerOrOwner(authors: AuthorModel[]): Observable<boolean> {
+  isMaintainerOrOwner(authors: AuthorModel[], privilege?: string): Observable<boolean> {
     return this.auth.user.pipe(
       map(_user => {
         if (_user) {
+          if (privilege && _user.privileges.includes(privilege)) return true;
           for (var a of authors) {
             if (a.userId === _user.id) {
               if (a.authorRole === Author.OWNER || a.authorRole === Author.MAINTAINER) {

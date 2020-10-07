@@ -26,7 +26,7 @@
                             <mat-icon>launch</mat-icon>
                             Detail
                         </button>&nbsp;
-                        <button mat-flat-button color="accent" type="button" (click)="edit(candidate)" [disabled]="!(p.isGroubMember(candidate.authors) | async)"
+                        <button mat-flat-button color="accent" type="button" (click)="edit(candidate)" [disabled]="!(p.isGroubMember(candidate.authors, 'PATTERN_CANDIDATE_EDIT_ALL') | async)"
                             matTooltip="Edit candidate">
                             <mat-icon>edit</mat-icon>
                             Edit

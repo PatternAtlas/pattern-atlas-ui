@@ -20,7 +20,7 @@
                         <button mat-icon-button color="primary" (click)="detail(issue)" >
                             <mat-icon>open_in_new</mat-icon>
                         </button>
-                        <button mat-icon-button color="primary" (click)="edit(issue)" [disabled]="!(p.isGroubMember(issue.authors) | async)">
+                        <button mat-icon-button color="primary" (click)="edit(issue)" [disabled]="!(p.isGroubMember(issue.authors, 'ISSUE_EDIT_ALL') | async)">
                             <mat-icon>edit</mat-icon>
                         </button>
                     </mat-panel-description>

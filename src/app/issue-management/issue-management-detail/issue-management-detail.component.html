@@ -2,7 +2,7 @@
     <button mat-raised-button color="primary" (click)="exit()"><i class="material-icons">keyboard_backspace</i></button>
 </mat-toolbar>
 <div class="container-double container">
-    <div #issueView class="left">
+    <div #issueView class="left scrollable-double">
         <mat-card *ngIf="issue">
             <form (ngSubmit)="submit()" #issueForm="ngForm">
                 <mat-form-field appearance="standard">
@@ -37,9 +37,9 @@
                 <!-- DETAIL BUTTONS-->
                 <div class="detail-component buttons" *ngIf="disabled && !candidate">
                     <button mat-flat-button type="button" color="accent" (click)="edit()"
-                        [disabled]="!(p.isGroubMember(issue.authors) | async)">Edit</button>
+                        [disabled]="!(p.isGroubMember(issue.authors, 'ISSUE_EDIT_ALL') | async)">Edit</button>
                     <button mat-flat-button type="button" color="warn" (click)="delete()"
-                        [disabled]="!(p.isMaintainerOrOwner(issue.authors) | async)">Delete</button>
+                        [disabled]="!(p.isMaintainerOrOwner(issue.authors, 'ISSUE_DELETE_ALL') | async)">Delete</button>
                     <button mat-flat-button type="button" color="accent" (click)="selectLanguage()"
                         [disabled]="!(p.isMaintainerOrOwner(issue.authors) | async) || treshold">To Candidate</button>
                 </div>

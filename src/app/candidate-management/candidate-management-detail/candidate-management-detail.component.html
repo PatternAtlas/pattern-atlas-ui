@@ -34,9 +34,9 @@
             <!-- DETAIL BUTTONS-->
             <div class="detail-component buttons" *ngIf="disabled && !pattern">
                 <button mat-flat-button type="button" color="accent" (click)="edit()"
-                    [disabled]="!(p.isGroubMember(candidate.authors) | async)">Edit</button>
+                    [disabled]="!(p.isGroubMember(candidate.authors, 'PATTERN_CANDIDATE_EDIT_ALL') | async)">Edit</button>
                 <button mat-flat-button type="button" color="warn" (click)="delete()"
-                    [disabled]="!(p.isMaintainerOrOwner(candidate.authors) | async)">Delete</button>
+                    [disabled]="!(p.isMaintainerOrOwner(candidate.authors, 'PATTERN_CANDIDATE_DELETE_ALL') | async)">Delete</button>
                 <button mat-flat-button type="button" color="accent" (click)="confirmPattern()"
                     [disabled]="!(p.isMaintainerOrOwner(candidate.authors) | async)">Candidate To
                     Pattern</button>
