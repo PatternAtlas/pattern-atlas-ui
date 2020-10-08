@@ -71,7 +71,6 @@ import { IssueManagementStore } from './issue-management/_store/issue-management
 import { CandidateManagementService } from './candidate-management/_services/candidate-management.service';
 import { CandidateManagementStore } from './candidate-management';
 import { AuthorManagementService } from './author-management';
-import { RatingManagementService } from './rating-management';
 import { CommentListItemComponent } from './component/comment-list-item/comment-list-item.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { PatternLanguagePickerComponent } from './component/pattern-language-picker/pattern-language-picker.component';
@@ -149,7 +148,6 @@ import { RatingMultipleComponent } from './component/rating-multiple/rating-mult
     CandidateManagementStore,
     // SHARED
     AuthorManagementService,
-    RatingManagementService
   ],
   declarations: [
     DefaultPlRendererComponent,

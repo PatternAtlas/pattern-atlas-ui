@@ -1,7 +1,7 @@
 import { PAComment } from '../../shared/_models/comment.model';
 import { AuthorModel } from '../../author-management';
-import { RatingModel } from '../../rating-management';
 import { PAEvidence } from '../../shared/_models/evidence.model';
+import { RatingModel } from '../../shared';
 
 export class Candidate {
   authors: AuthorModel[];
@@ -14,6 +14,9 @@ export class Candidate {
   name: string;
   patternLanguageId: string;
   patternLanguageName: string;
+  ratingReadability: number;
+  ratingUnderstandability: number;
+  ratingAppropriateness: number;
   readability: RatingModel[];
   understandability: RatingModel[];
   appropriateness: RatingModel[]

@@ -12,11 +12,10 @@ import * as markdownitKatex from 'markdown-it-katex';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent, ConfirmData } from 'src/app/core/component/confirm-dialog/confirm-dialog.component';
 import { globals } from 'src/app/globals';
-import { RatingManagementService, RatingModelRequest } from 'src/app/core/rating-management';
-import { RatingType } from 'src/app/core/rating-management/_models/rating.model.request';
 import { ContentObserver } from '@angular/cdk/observers';
-import { PAEvidence } from 'src/app/core/shared';
+import { PAComment, PAEvidence, RatingEventModel, RatingModelRequest, RatingType } from 'src/app/core/shared';
 import { PrivilegeService } from 'src/app/authentication/_services/privilege.service';
+import { AuthorModel } from 'src/app/core/author-management';
 
 @Component({
   selector: 'pp-candidate-management-detail',
@@ -42,13 +41,14 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
 
   disabled = true;
   pattern = false;
+  treshhold = true;
+  treshholdSetting = 4.0;
   confirmDialog: ConfirmData;
 
   constructor(
     private router: Router,
     private activeRoute: ActivatedRoute,
     private candidateManagementService: CandidateManagementService,
-    private ratingManagementService: RatingManagementService,
     public candidateStore: CandidateManagementStore,
     private patternService: PatternService,
     public dialog: MatDialog,
@@ -63,18 +63,19 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
         this.disabled = true;
         this.candidate = _candidate;
         this.contentToMarkdown();
-        console.log(this.candidate);
+        this.checkTreshhold();
 
       } else if (_candidate && this.router.url.includes('edit')) {
         this.candidate = _candidate;
         this.contentToMarkdown();
         this.edit();
+        this.checkTreshhold();
 
       } else if (!_candidate && window.history.state.data) {
         this.candidate = window.history.state.data as Candidate
-        console.log(this.candidate);
         this.contentToMarkdown();
         this.edit();
+        this.checkTreshhold();
 
       } else {
         this.disabled = false;
@@ -122,7 +123,6 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
 
   /** Pattern Language */
   patternLanguageSelectedChange(patternLanguage: PatternLanguageSchemaModel) {
-    console.log(patternLanguage);
     this.candidate.patternLanguageId = patternLanguage.patternLanguageId;
     this.candidate.patternLanguageName = patternLanguage.patternLanguageName;
     const content: { [key: string]: string } = {};
@@ -136,7 +136,6 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
   /** Pattern */
   confirmPattern() {
     this.pattern = !this.pattern;
-    console.log(this.candidate.patternLanguageId);
   }
 
   createPattern() {
@@ -157,7 +156,6 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
         })
       }
     });
-
   }
 
   cancelPattern() {
@@ -170,7 +168,6 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
     const textEditorValue = marked.lexer(this._textEditor.value);
     const content: { [key: string]: string } = {};
     var currentKey;
-    console.log(textEditorValue);
     for (let line of textEditorValue) {
       // NAME
       if (line.type == 'heading' && line.depth == 1) {
@@ -193,6 +190,9 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
     this.candidate.content = content;
     return true;
   }
+
+  /** SERVICE */
+  /** Pattern Candidate */
 
   submit() {
     if (this.createContent()) {
@@ -236,46 +236,74 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
   }
 
   updateRatingReadability(rating: number) {
-    this.ratingManagementService.updateRatingCandidate(this.candidate, new RatingModelRequest(rating, RatingType.READABILITY)).subscribe(res => {
-      let index = this.candidate.readability.findIndex(_rating => _rating.userId = res.userId)
-      index > -1 ?
-        this.candidate.readability = Object.assign([], this.candidate.readability, { [index]: res }) :
-        this.candidate.readability = this.candidate.readability.concat([res]);
+    this.candidateManagementService.updateRatingCandidate(this.candidate, new RatingModelRequest(rating, RatingType.READABILITY)).subscribe(result => {
+      this.candidate = result;
+      this.checkTreshhold();
     });
   }
 
   updateRatingUnderstandability(rating: number) {
-    this.ratingManagementService.updateRatingCandidate(this.candidate, new RatingModelRequest(rating, RatingType.UNDERSTANDABILITY)).subscribe(res => {
-      let index = this.candidate.understandability.findIndex(_rating => _rating.userId = res.userId)
-      index > -1 ?
-        this.candidate.understandability = Object.assign([], this.candidate.understandability, { [index]: res }) :
-        this.candidate.understandability = this.candidate.understandability.concat([res]);
+    this.candidateManagementService.updateRatingCandidate(this.candidate, new RatingModelRequest(rating, RatingType.UNDERSTANDABILITY)).subscribe(result => {
+      this.candidate = result;
+      this.checkTreshhold();
     });
   }
 
   updateRatingAppropriateness(rating: number) {
-    this.ratingManagementService.updateRatingCandidate(this.candidate, new RatingModelRequest(rating, RatingType.APPROPIATENESS)).subscribe(res => {
-      let index = this.candidate.appropriateness.findIndex(_rating => _rating.userId = res.userId)
-      index > -1 ?
-        this.candidate.appropriateness = Object.assign([], this.candidate.appropriateness, { [index]: res }) :
-        this.candidate.appropriateness = this.candidate.appropriateness.concat([res]);
+    this.candidateManagementService.updateRatingCandidate(this.candidate, new RatingModelRequest(rating, RatingType.APPROPIATENESS)).subscribe(result => {
+      this.candidate = result;
+      this.checkTreshhold();
     });
+  }
+
+  /** Author */
+  updateAuthor(author: AuthorModel) {
+    this.candidateManagementService.updateAuthorsCandidate(this.candidate, author).subscribe(result => {
+      this.candidate = result;
+    });
+  }
+
+  deleteAuthor(author: AuthorModel) {
+    this.candidateManagementService.deleteAuthorCandidate(author, this.candidate).subscribe(result => {
+      this.candidate = result;
+    });
+  }
+
+  /** Comment */
+  createComment(comment: PAComment) {
+    this.candidateManagementService.createComment(this.candidate, comment).subscribe(result => {
+      this.candidate = result;
+    });
+  }
+
+  updateComment(comment: PAComment) {
+    this.candidateManagementService.updateComment(this.candidate, comment).subscribe(result => {
+      this.candidate = result;
+    });
+  }
+
+  deleteComment(comment: PAComment) {
+    this.candidateManagementService.deleteComment(this.candidate, comment).subscribe(result => {
+      this.candidate = result;
+    });
+  }
+
+  updateRatingComment(ratingRequest: RatingEventModel) {
+    this.candidateManagementService.updateRatingCandidateComment(this.candidate, ratingRequest.entity, ratingRequest.rating).subscribe(result => {
+      this.candidate = result;
+    })
   }
 
   /** Evidence */
   createEvidence(evidence: PAEvidence) {
     this.candidateManagementService.createEvidence(this.candidate, evidence).subscribe(result => {
-      this.candidate.evidences.push(result);
+      this.candidate = result;
     });
   }
 
   updateEvidence(evidence: PAEvidence) {
     this.candidateManagementService.updateEvidence(this.candidate, evidence).subscribe(result => {
-      console.log('update evidence: ', result);
-      var toUpdateEvidence = this.candidate.evidences.find(_evidence => _evidence.id = evidence.id);
-      console.log(toUpdateEvidence);
-      toUpdateEvidence = result;
-      //this.issue = result;
+      this.candidate = result;
     })
   }
 
@@ -289,16 +317,33 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
 
     confirmDialog.afterClosed().subscribe(result => {
       if (result) {
-        this.candidateManagementService.deleteEvidence(this.candidate, evidenceId).subscribe(result => {
-          console.log('delete evidence: ', result);
-          const index = this.candidate.evidences.findIndex(evidence => evidence.id = evidenceId);
-          if (index > -1) this.candidate.evidences.splice(index, 1);
+        this.candidateManagementService.deleteEvidence(this.candidate, evidenceId).subscribe(res => {
+          this.candidate = result;
         })
       }
     });
   }
 
+  updateRatingEvidence(ratingRequest: RatingEventModel) {
+    this.candidateManagementService.updateRatingCandidateEvidence(this.candidate, ratingRequest.entity, ratingRequest.rating).subscribe(result => {
+      this.candidate = result;
+    })
+  }
+
   /** UI */
+
+  checkTreshhold() {
+    var supportEvidences = 0;
+    this.candidate.evidences.forEach(evidence => {
+      if (evidence.supporting) supportEvidences += 1;
+    })
+    if (this.candidate.ratingReadability < this.treshholdSetting || this.candidate.ratingUnderstandability < this.treshholdSetting
+      || this.candidate.ratingAppropriateness < this.treshholdSetting || supportEvidences < 2) {
+      this.treshhold = true;
+      return;
+    }
+    this.treshhold = false;
+  }
 
   setCommentSectionHeight() {
     this.candidateHeight = this.candidateDiv.nativeElement.offsetHeight;

@@ -1,6 +1,7 @@
 export class PAComment {
   id: string;
   text: string;
+  rating: number;
   upVotes: string[];
   downVotes: string[];
   userId: string;

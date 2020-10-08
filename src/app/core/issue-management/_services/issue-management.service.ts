@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ToasterService } from 'angular2-toaster';
-import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
 import { Issue } from '../_models/issue.model';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { PAComment } from '../../shared/_models/comment.model';
-import { PAEvidence } from '../../shared';
+import { PAEvidence, RatingModelRequest } from '../../shared';
+import { AuthorModel } from '../../author-management';
 
 @Injectable()
 export class IssueManagementService {
@@ -54,7 +54,7 @@ export class IssueManagementService {
     )
   }
 
-  public createComment(issue: Issue, comment: PAComment): Observable<PAComment> {
+  public createComment(issue: Issue, comment: PAComment): Observable<Issue> {
     return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint + `/${issue.id}/comments`, comment).pipe(
       map(result => {
         this.toasterService.pop('success', 'Created new comment')
@@ -67,7 +67,7 @@ export class IssueManagementService {
     )
   }
 
-  public createEvidence(issue: Issue, evidence: PAEvidence): Observable<PAEvidence> {
+  public createEvidence(issue: Issue, evidence: PAEvidence): Observable<Issue> {
     return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint + `/${issue.id}/evidences`, evidence).pipe(
       map(result => {
         this.toasterService.pop('success', 'Created new evidence')
@@ -96,7 +96,33 @@ export class IssueManagementService {
     )
   }
 
-  public updateComment(issue: Issue, comment: PAComment): Observable<PAComment> {
+  public updateRatingIssue(issue: Issue, rating: RatingModelRequest): Observable<Issue> {
+    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${issue.id}/ratings`, rating).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Updated issue rating')
+        return result
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Could not update issue rating: ', error)
+        return null;
+      }),
+    )
+  }
+
+  public updateAuthorsIssue(issue: Issue, authorModel: AuthorModel): Observable<Issue> {
+      return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${issue.id}/authors`, authorModel).pipe(
+        map(result => {
+          this.toasterService.pop('success', 'Updated issue authors')
+          return result
+        }),
+        catchError(error => {
+          this.toasterService.pop('error', 'Could not update issue authors: ', error)
+          return null;
+        }),
+      )
+    }
+
+  public updateComment(issue: Issue, comment: PAComment): Observable<Issue> {
     return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${issue.id}/comments/${comment.id}`, comment).pipe(
       map(result => {
         this.toasterService.pop('success', 'Updated issue comment')
@@ -109,7 +135,20 @@ export class IssueManagementService {
     )
   }
 
-  public updateEvidence(issue: Issue, evidence: PAEvidence): Observable<PAEvidence> {
+  public updateRatingIssueComment(issue: Issue, comment: PAComment, rating: RatingModelRequest): Observable<Issue> {
+    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${issue.id}/comments/${comment.id}/ratings`, rating).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Updated issue comment rating')
+        return result
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Could not update issue comment rating: ', error)
+        return null;
+      }),
+    )
+  }
+
+  public updateEvidence(issue: Issue, evidence: PAEvidence): Observable<Issue> {
     return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${issue.id}/evidences/${evidence.id}`, evidence).pipe(
       map(result => {
         this.toasterService.pop('success', 'Updated issue evidence')
@@ -121,6 +160,20 @@ export class IssueManagementService {
       }),
     )
   }
+
+  public updateRatingIssueEvidence(issue: Issue, evidence: PAEvidence, rating: RatingModelRequest): Observable<Issue> {
+    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${issue.id}/evidences/${evidence.id}/ratings`, rating).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Updated issue evidence rating')
+        return result
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Could not update issue evidence rating: ', error)
+        return null;
+      }),
+    )
+  }
+
 
   /**
    * DELETE
@@ -138,7 +191,20 @@ export class IssueManagementService {
     )
   }
 
-  public deleteComment(issue: Issue, comment: PAComment): Observable<PAComment> {
+  public deleteAuthorIssue(authorModel: AuthorModel, issue: Issue): Observable<Issue> {
+    return this.http.delete<any>(this.repoEndpoint + this.serviceEndpoint + `/${issue.id}/authors/${authorModel.userId}`).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Deleted issue author')
+        return result
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Could not delete issue author: ', error)
+        return null;
+      }),
+    )
+  }
+
+  public deleteComment(issue: Issue, comment: PAComment): Observable<Issue> {
     return this.http.delete<any>(this.repoEndpoint + this.serviceEndpoint + `/${issue.id}/comments/${comment.id}`).pipe(
       map(result => {
         this.toasterService.pop('success', 'Deleted issue comment')
@@ -151,7 +217,7 @@ export class IssueManagementService {
     )
   }
 
-  public deleteEvidence(issue: Issue, evidenceId: string): Observable<PAEvidence> {
+  public deleteEvidence(issue: Issue, evidenceId: string): Observable<Issue> {
     return this.http.delete<any>(this.repoEndpoint + this.serviceEndpoint + `/${issue.id}/evidences/${evidenceId}`).pipe(
       map(result => {
         this.toasterService.pop('success', 'Deleted issue evidence')

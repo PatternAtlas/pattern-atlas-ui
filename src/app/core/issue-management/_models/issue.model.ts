@@ -9,6 +9,7 @@ export class Issue {
     description: string;
     id: string;
     name: string;
+    rating: number;
     upVotes: string[];
     downVotes: string[];
     uri: string;

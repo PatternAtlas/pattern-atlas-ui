@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IssueManagementService, Issue, IssueManagementStore } from 'src/app/core/issue-management';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PrivilegeService } from 'src/app/authentication/_services/privilege.service';
-import { Context } from 'src/app/core/shared';
+import { PAComment, RatingEventModel, RatingModelRequest } from 'src/app/core/shared';
 
 @Component({
   selector: 'pp-issue-management-list',
@@ -15,11 +15,12 @@ export class IssueManagementListComponent implements OnInit {
   activeIssue: Issue = new Issue();
 
   constructor(
-    private issueManagmentService: IssueManagementService,
+    private issueManagementService: IssueManagementService,
     public issueManagementStore: IssueManagementStore,
     private router: Router,
     private activeRoute: ActivatedRoute,
     private p: PrivilegeService,
+    public cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
@@ -27,8 +28,7 @@ export class IssueManagementListComponent implements OnInit {
   }
 
   getAll() {
-    this.issueManagmentService.getAllIssues().subscribe(result => {
-      console.log(result);
+    this.issueManagementService.getAllIssues().subscribe(result => {
       this.data = result;
     })
   }
@@ -56,5 +56,44 @@ export class IssueManagementListComponent implements OnInit {
   edit(issue: Issue) {
     this.issueManagementStore.addIssue(issue);
     this.router.navigate(['./edit', issue.name], { relativeTo: this.activeRoute.parent });
+  }
+
+  /** BACK-END*/
+  // RATING
+  updateRating(ratingRequest: RatingModelRequest) {
+    this.issueManagementService.updateRatingIssue(this.activeIssue, ratingRequest).subscribe(result => {
+      this.updateData(result);
+    });
+  }
+
+  // COMMENTS
+  createComment(comment: PAComment) {
+    this.issueManagementService.createComment(this.activeIssue, comment).subscribe(result => {
+      this.updateData(result);
+    });
+  }
+
+  updateComment(comment: PAComment) {
+    this.issueManagementService.updateComment(this.activeIssue, comment).subscribe(result => {
+      this.updateData(result);
+    });
+  }
+
+  deleteComment(comment: PAComment) {
+    this.issueManagementService.deleteComment(this.activeIssue, comment).subscribe(result => {
+      this.updateData(result);
+    });
+  }
+
+  updateRatingComment(ratingRequest: RatingEventModel) {
+    this.issueManagementService.updateRatingIssueComment(this.activeIssue, ratingRequest.entity, ratingRequest.rating).subscribe(result => {
+      this.updateData(result);
+    })
+  }
+
+  /** HELPER */
+  updateData(issue: Issue) {
+    let index = this.data.findIndex(_issue => _issue.id === issue.id);
+    if (index > -1) this.data[index] = issue;
   }
 }

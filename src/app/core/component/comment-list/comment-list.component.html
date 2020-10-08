@@ -7,10 +7,10 @@
             </mat-form-field>
             <div class="wrapper-buttons">
                 <button mat-flat-button mat-flat-button type="submit" color="primary"
-                    [disabled]="!(auth.user | async) || !commentEntity.id"> Create
+                    [disabled]="!(auth.user | async) || disabled"> Create
                 </button>
                 <button mat-flat-button mat-flat-button type="button" color="" (click)="setForm()"
-                    [disabled]="!(auth.user | async) || !commentEntity.id"> Cancel
+                    [disabled]="!(auth.user | async) || disabled"> Cancel
                 </button>
             </div>
         </form>
@@ -19,8 +19,9 @@
     <div *ngIf="data" class="container-comment-list">
         <!-- <mat-divider></mat-divider> -->
         <ng-container *ngFor="let comment of data; last as last">
-            <pp-comment-list-item [comment]="comment" [commentEntity]="commentEntity" [context]="context"
-                (deleteComment)=deleteComment($event)></pp-comment-list-item>
+            <pp-comment-list-item [comment]="comment"
+                (updateCommentEvent)="update($event)" (deleteCommentEvent)=delete($event)
+                (ratingEvent)="updateRating($event)"></pp-comment-list-item>
             <!-- <mat-divider class="comment-divider" [inset]="true" *ngIf="!last"></mat-divider> -->
         </ng-container>
     </div>

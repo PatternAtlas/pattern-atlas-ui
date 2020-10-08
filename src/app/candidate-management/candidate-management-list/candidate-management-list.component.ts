@@ -41,7 +41,6 @@ export class CandidateManagementListComponent implements OnInit {
       none.name = 'No Pattern Language assigned';
       none.id = null;
       this.patternLanguages = [none].concat(result);
-      console.log(this.patternLanguages);
     })
   }
 

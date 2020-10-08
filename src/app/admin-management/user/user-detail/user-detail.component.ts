@@ -55,26 +55,22 @@ export class UserDetailComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('submit');
     this.user.name = this.userForm.get('name').value;
     this.user.email = this.userForm.get('email').value;
     this.user.role = this.userForm.get('userRole').value;
     this.user.password = this.userForm.get('password').value;
     if (this.user.id) {
       this.userService.updateUser(this.user).subscribe(result => {
-        console.log('updateUser: ', result);
         this.dialogRef.close(true);
       })
     } else {
       this.userService.createUser(this.user).subscribe(result => {
-        console.log('createdUser: ', result);
         this.dialogRef.close(true);
       })
     }
   }
 
   reset() {
-    console.log('resetForm');
     this.createForm()
   }
 

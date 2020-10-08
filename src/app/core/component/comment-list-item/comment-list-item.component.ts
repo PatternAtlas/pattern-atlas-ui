@@ -1,12 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { RatingModelRequest, RatingManagementService } from '../../rating-management';
-import { PAComment, Context } from '../../shared';
-import { IssueManagementService, Issue } from '../../issue-management';
-import { CandidateManagementService, Candidate } from '../../candidate-management';
-import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
+import { PAComment, RatingEventModel, RatingModelRequest } from '../../shared';
 import { PrivilegeService } from 'src/app/authentication/_services/privilege.service';
 import { FormControl } from '@angular/forms';
-import { Content } from '@angular/compiler/src/render3/r3_ast';
 
 @Component({
   selector: 'pp-comment-list-item',
@@ -16,9 +11,9 @@ import { Content } from '@angular/compiler/src/render3/r3_ast';
 export class CommentListItemComponent implements OnInit {
 
   @Input() comment: PAComment;
-  @Input() commentEntity: any;
-  @Input() context: number;
-  @Output() deleteComment: EventEmitter<PAComment> = new EventEmitter<PAComment>();
+  @Output() updateCommentEvent: EventEmitter<PAComment> = new EventEmitter<PAComment>();
+  @Output() deleteCommentEvent: EventEmitter<PAComment> = new EventEmitter<PAComment>();
+  @Output() ratingEvent: EventEmitter<RatingEventModel> = new EventEmitter<RatingEventModel>();
 
   disabled = true;
   isAuthor = false;
@@ -28,8 +23,6 @@ export class CommentListItemComponent implements OnInit {
   replyComment = false;
 
   constructor(
-    private issueManagementService: IssueManagementService,
-    private canididateManagementService: CandidateManagementService,
     public p: PrivilegeService,
   ) { }
 
@@ -47,38 +40,21 @@ export class CommentListItemComponent implements OnInit {
   }
 
   reply() {
-    console.log('addComment');
     this.replyComment = !this.replyComment;
   }
 
   authorInfo() {
-    console.log('User wrote this: ', this.comment.userId);
+  }
+
+  updateRating(ratingRequest: RatingModelRequest) {
+    this.ratingEvent.next(new RatingEventModel(ratingRequest, this.comment));
   }
 
   update() {
-    switch (this.context) {
-      case Context.ISSUE: {
-        this.issueManagementService.updateComment(this.commentEntity, this.comment).subscribe(result => {
-          if (result) this.comment = result;
-          this.disabled = true;
-        });
-        break;
-      }
-      case Context.CANDIDATE: {
-        this.canididateManagementService.updateComment(this.commentEntity, this.comment).subscribe(result => {
-          if (result) this.comment = result;
-          this.disabled = true;
-        });
-        break;
-      }
-      default: {
-        console.log('Pattern comment');
-        break;
-      }
-    }
+    this.updateCommentEvent.emit(this.comment);
   }
 
   delete() {
-    this.deleteComment.emit(this.comment);
+    this.deleteCommentEvent.emit(this.comment);
   }
 }

@@ -28,7 +28,7 @@ const routes: Routes = [
     path: '',
     pathMatch: 'full',
     //redirectTo: globals.pathConstants.patternLanguages
-    redirectTo: 'issue'
+    redirectTo: 'candidate'
   },
   {
     path: globals.pathConstants.patternLanguages,

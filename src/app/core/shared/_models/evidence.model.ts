@@ -5,6 +5,7 @@ export class PAEvidence {
   type: string;
   supporting: boolean;
   source: string;
+  rating: number;
   upVotes: string[];
   downVotes: string[];
   userId: string;

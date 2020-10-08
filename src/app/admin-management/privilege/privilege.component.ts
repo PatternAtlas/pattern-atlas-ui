@@ -38,9 +38,7 @@ export class PrivilegeComponent implements OnInit {
   }
 
   change(checkbox: MatCheckboxChange, privilege: PrivilegeModel, role: RoleModel) {
-    // console.log(checkbox.checked, privilege, role);
     this.userService.updateUserRole(role, privilege, new RoleModelRequest(checkbox.checked)).subscribe(result => {
-      console.log(result);
       if (result) {
         const index = this.roles.indexOf(role);
         if (index > -1) this.roles.splice(index, 1, result);

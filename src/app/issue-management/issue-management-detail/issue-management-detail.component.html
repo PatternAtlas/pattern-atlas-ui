@@ -23,7 +23,7 @@
                 </mat-form-field>
 
                 <pp-author-picker class="detail-component" [authors]="issue.authors" [disabled]="disabled"
-                    [authorEntity]="issue" [context]="0">
+                    (updateAuthorEvent)="updateAuthor($event)" (deleteAuthorEvent)="deleteAuthor($event)">
                 </pp-author-picker>
 
                 <pp-pattern-language-picker class="detail-component" *ngIf="candidate" [disabled]="!candidate"
@@ -32,7 +32,7 @@
                 </pp-pattern-language-picker>
 
                 <pp-rating [disabled]="!issue.id" [upVotes]="issue.upVotes" [downVotes]="issue.downVotes"
-                    [ratingEntity]="issue" [context]="0"></pp-rating>
+                    [total]="issue.rating" (ratingEvent)="updateRating($event)"></pp-rating>
 
                 <!-- DETAIL BUTTONS-->
                 <div class="detail-component buttons" *ngIf="disabled && !candidate">
@@ -57,17 +57,15 @@
                         (click)="createCandidate()">Create Candidate</button>
                     <button mat-flat-button type="button" color="warn" (click)="cancelCandidate()">Cancel</button>
                 </div>
-
-
             </form>
         </mat-card>
-        <pp-evidence-list [evidences]="issue.evidences" [evidenceEntity]="issue" [context]="0" (createEvidenceEvent)="createEvidence($event)"
-        (updateEvidenceEvent)="updateEvidence($event)" (deleteEvidenceEvent)="deleteEvidence($event)">
-
+        <pp-evidence-list [evidences]="issue.evidences" [disabled]="!issue.id" (createEvidenceEvent)="createEvidence($event)"
+            (updateEvidenceEvent)="updateEvidence($event)" (deleteEvidenceEvent)="deleteEvidence($event)"
+            (ratingEvent)="updateRatingEvidence($event)">
         </pp-evidence-list>
     </div>
     <pp-comment-list *ngIf="issueHeight" class="right" [style.height.px]="issueHeight" [data]="issue.comments"
-        [commentEntity]="issue" [context]="0">
+        [disabled]="!issue.id" (createCommentEvent)="createComment($event)" (updateCommentEvent)="updateComment($event)"
+        (deleteCommentEvent)="deleteComment($event)" (ratingEvent)="updateRatingComment($event)">
     </pp-comment-list>
-
 </div>

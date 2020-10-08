@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
 import { PrivilegeService } from 'src/app/authentication/_services/privilege.service';
-import { RatingModel } from '../../rating-management';
+import { RatingModel } from '../../shared';
 
 @Component({
   selector: 'pp-rating-multiple',
@@ -13,9 +13,9 @@ export class RatingMultipleComponent implements OnInit, OnChanges {
 
   @Input() rating: RatingModel[];
   @Input() title: string;
+  @Input() total: number;
   @Output() changeRatingEmitter: EventEmitter<number> = new EventEmitter<number>();
 
-  total: number;
   userRating: string;
 
   constructor(
@@ -27,19 +27,14 @@ export class RatingMultipleComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.rating && this.rating) {
-      this.total = 0;
+    if (this.rating) {
       this.auth.user.subscribe(_user => {
         this.rating.forEach(rating => {
-          this.total = this.total + rating.rating;
           if (_user.id === rating.userId) {
             this.userRating = `${rating.rating}`;
           }
         })
-        
-        this.total = this.total / this.rating.length;
-      })
-      
+      });
     }
   }
 

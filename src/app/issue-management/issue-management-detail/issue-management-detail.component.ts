@@ -5,14 +5,14 @@ import { PatternLanguageService } from 'src/app/core/service/pattern-language.se
 import PatternLanguageModel from 'src/app/core/model/hal/pattern-language-model.model';
 import { Issue, IssueManagementService } from 'src/app/core/issue-management';
 import { Candidate, CandidateManagementStore } from 'src/app/core/candidate-management';
-import { RatingModelRequest, RatingManagementService } from 'src/app/core/rating-management';
 import { AuthorManagementService, AuthorModelRequest, AuthorModel, Author } from 'src/app/core/author-management';
 import { PrivilegeService } from 'src/app/authentication/_services/privilege.service';
 import PatternLanguageSchemaModel from 'src/app/core/model/pattern-language-schema.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/core/component/confirm-dialog/confirm-dialog.component';
 import { patternLanguageNone } from 'src/app/core/component/pattern-language-picker/pattern-language-picker.component';
-import { PAEvidence } from 'src/app/core/shared';
+import { PAComment, PAEvidence, RatingEventModel, RatingModelRequest } from 'src/app/core/shared';
+import { AuthorEventModel } from 'src/app/core/shared/_models/autor-event.model';
 
 @Component({
   selector: 'pp-issue-management-detail',
@@ -39,7 +39,7 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit {
     private p: PrivilegeService,
     private router: Router,
     public dialog: MatDialog,
-    private cdRef : ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
@@ -48,24 +48,21 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit {
       if (_issue && this.router.url.includes('detail')) {
         this.disabled = true;
         this.issue = _issue;
-        this.treshold = !(this.issue.upVotes.length - this.issue.downVotes.length >= 1);
-        console.log(this.treshold);
 
       } else if (_issue && this.router.url.includes('edit')) {
         this.issue = _issue;
         this.edit();
-        this.treshold = !(this.issue.upVotes.length - this.issue.downVotes.length >= 1);
 
       } else if (!_issue && window.history.state.data) {
         this.issue = window.history.state.data as Issue;
-        this.treshold = !(this.issue.upVotes.length - this.issue.downVotes.length >= 1);
       } else {
         this.disabled = false;
         this.issue = new Issue();
       }
+      this.treshold = !(this.issue.rating >= 3);
     });
 
-    
+
   }
 
   ngAfterViewInit(): void {
@@ -125,7 +122,6 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit {
   /** SERVICE */
   /** ISSUE */
   submit() {
-    console.log('submit');
     this.issue.uri = `/issues/${this.issue.name}`
     this.issue.id ? this.update() : this.create();
   }
@@ -161,20 +157,60 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit {
     });
   }
 
+  updateRating(ratingRequest: RatingModelRequest) {
+    this.issueManagementService.updateRatingIssue(this.issue, ratingRequest).subscribe(result => {
+      this.issue = result;
+    });
+  }
+
+  /** Author */
+  updateAuthor(author: AuthorModel) {
+    this.issueManagementService.updateAuthorsIssue(this.issue, author).subscribe(result => {
+      this.issue = result;
+    });
+  }
+
+  deleteAuthor(author: AuthorModel) {
+    this.issueManagementService.deleteAuthorIssue(author, this.issue).subscribe(result => {
+      this.issue = result;
+    });
+  }
+
+  /** Comment */
+  createComment(comment: PAComment) {
+    this.issueManagementService.createComment(this.issue, comment).subscribe(result => {
+      this.issue = result;
+    });
+  }
+
+  updateComment(comment: PAComment) {
+    this.issueManagementService.updateComment(this.issue, comment).subscribe(result => {
+      this.issue = result;
+    });
+  }
+
+  deleteComment(comment: PAComment) {
+    this.issueManagementService.deleteComment(this.issue, comment).subscribe(result => {
+      this.issue = result;
+    });
+  }
+
+  updateRatingComment(ratingRequest: RatingEventModel) {
+    this.issueManagementService.updateRatingIssueComment(this.issue, ratingRequest.entity, ratingRequest.rating).subscribe(result => {
+      this.issue = result;
+    })
+  }
+
   /** Evidence */
   createEvidence(evidence: PAEvidence) {
     this.issueManagementService.createEvidence(this.issue, evidence).subscribe(result => {
-      this.issue.evidences.push(result);
+      this.issue = result;
     });
   }
 
   updateEvidence(evidence: PAEvidence) {
     this.issueManagementService.updateEvidence(this.issue, evidence).subscribe(result => {
-      console.log('update evidence: ', result);
-      var toUpdateEvidence = this.issue.evidences.find(_evidence => _evidence.id = evidence.id);
-      console.log(toUpdateEvidence);
-      toUpdateEvidence = result;
-      //this.issue = result;
+      this.issue = result;
     })
   }
 
@@ -189,12 +225,16 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit {
     confirmDialog.afterClosed().subscribe(result => {
       if (result) {
         this.issueManagementService.deleteEvidence(this.issue, evidenceId).subscribe(result => {
-          console.log('delete evidence: ', result);
-          const index = this.issue.evidences.findIndex(evidence => evidence.id = evidenceId);
-          if (index > -1) this.issue.evidences.splice(index, 1);
+          this.issue = result;
         })
       }
     });
+  }
+
+  updateRatingEvidence(ratingRequest: RatingEventModel) {
+    this.issueManagementService.updateRatingIssueEvidence(this.issue, ratingRequest.entity, ratingRequest.rating).subscribe(result => {
+      this.issue = result;
+    })
   }
 
   /** UI */

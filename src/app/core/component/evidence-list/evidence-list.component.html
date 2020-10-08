@@ -1,7 +1,7 @@
 <mat-card>
   <div class="heading">
     <div class="text">Evidence</div>
-    <button mat-flat-button color="accent" [disabled]="!(auth.user | async) || !evidenceEntity.id"
+    <button mat-flat-button color="accent" [disabled]="!(auth.user | async) || disabled"
       (click)="newEvidence()">New</button>
   </div>
   <div *ngFor="let evidence of evidences">
@@ -11,7 +11,7 @@
         <span class="user-name">{{evidence.userName}}</span>
       </div>
       <pp-rating class="rating" [disabled]="false" [upVotes]="evidence.upVotes" [downVotes]="evidence.downVotes"
-        [ratingEntity]="evidenceEntity" [context]="context" [evidenceEntity]="evidence">
+        [total]="evidence.rating" (ratingEvent)="updateRating($event, evidence)">
       </pp-rating>
 
     </div>

@@ -28,7 +28,6 @@ export class UserListComponent implements OnInit {
 
   getAll() {
     this.userService.getAllUsers().subscribe(result => {
-      console.log(result);
       this.dataSource = result;
     })
   }
@@ -39,9 +38,7 @@ export class UserListComponent implements OnInit {
     });
 
     confirmDialog.afterClosed().subscribe(result => {
-      console.log(result);
       if (result) {
-        console.log(result);
         this.getAll();
       }
     });
@@ -53,18 +50,14 @@ export class UserListComponent implements OnInit {
     });
 
     confirmDialog.afterClosed().subscribe(result => {
-      console.log(result);
       if (result) {
-        console.log(result);
         this.getAll();
       }
     });
   }
 
   deleteUser(user: PAUser) {
-    console.log('delete user: ', user);
     this.userService.deleteUser(user).subscribe(result => {
-      console.log(result);
     })
   }
 

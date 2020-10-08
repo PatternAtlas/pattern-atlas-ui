@@ -1,5 +1,5 @@
 <mat-form-field>
-    <mat-chip-list #chipList aria-label="Fruit selection" [disabled]="disabled || !authorEntity.id">
+    <mat-chip-list #chipList aria-label="Fruit selection" [disabled]="disabled || !(p.isMaintainerOrOwner(authors) | async)">
         <mat-chip *ngFor="let author of authors" [selectable]="true" [removable]="true" (removed)="delete(author)">
             {{author.name}} ({{author.authorRole}})
             <mat-icon matChipRemove>cancel</mat-icon>
@@ -11,7 +11,7 @@
         <mat-option class="item" *ngFor="let selectAuthor of allAuthors">
             <span class="name">{{selectAuthor.name}}</span>
             <mat-radio-group [ngModel]="isChecked(selectAuthor)">
-                <mat-radio-button *ngFor="let role of roles" [value]="role" (change)="submit($event, selectAuthor)"
+                <mat-radio-button *ngFor="let role of roles" [value]="role" (change)="update($event, selectAuthor)"
                     (click)="$event.stopPropagation()">
                     {{role}}</mat-radio-button>
             </mat-radio-group>

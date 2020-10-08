@@ -44,7 +44,6 @@ export class UserInfoComponent implements OnInit {
     this.auth.user.subscribe(_user => {
       if (_user) {
         this.userManagementService.getUser(_user.id).subscribe(result => {
-          console.log(result);
           this.user = result;
         })
       } else {
@@ -72,7 +71,6 @@ export class UserInfoComponent implements OnInit {
   /** USER INFO */
 
   submit() {
-    console.log('submit');
     this.userManagementService.updateUser(this.user).subscribe(result => {
       this.user = result;
       this.disabled = true;

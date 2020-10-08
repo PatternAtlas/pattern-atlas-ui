@@ -6,7 +6,8 @@ import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { Candidate } from '../_models/candidate.model';
 import { environment } from 'src/environments/environment';
-import { PAComment, PAEvidence } from '../../shared';
+import { PAComment, PAEvidence, RatingModelRequest } from '../../shared';
+import { AuthorModel } from '../../author-management';
 
 @Injectable()
 export class CandidateManagementService {
@@ -52,7 +53,7 @@ export class CandidateManagementService {
     );
   }
 
-  public createComment(candidate: Candidate, comment: PAComment): Observable<PAComment> {
+  public createComment(candidate: Candidate, comment: PAComment): Observable<Candidate> {
     return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/comments`, comment).pipe(
       map(result => {
         this.toasterService.pop('success', 'Created new comment')
@@ -65,7 +66,7 @@ export class CandidateManagementService {
     );
   }
 
-  public createEvidence(candidate: Candidate, evidence: PAEvidence): Observable<PAEvidence> {
+  public createEvidence(candidate: Candidate, evidence: PAEvidence): Observable<Candidate> {
     return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/evidences`, evidence).pipe(
       map(result => {
         this.toasterService.pop('success', 'Created new evidence')
@@ -94,7 +95,33 @@ export class CandidateManagementService {
     );
   }
 
-  public updateComment(candidate: Candidate, comment: PAComment): Observable<PAComment> {
+  public updateRatingCandidate(candidate: Candidate, rating: RatingModelRequest): Observable<Candidate> {
+    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/ratings`, rating).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Updated candidate rating')
+        return result
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Could not update candidate rating: ', error)
+        return null;
+      }),
+    )
+  }
+
+  public updateAuthorsCandidate(candidate: Candidate, authorModel: AuthorModel): Observable<Candidate> {
+    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/authors`, authorModel).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Updated candidate author')
+        return result
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Could not candidate issue author: ', error)
+        return null;
+      }),
+    )
+  }
+
+  public updateComment(candidate: Candidate, comment: PAComment): Observable<Candidate> {
     return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/comments/${comment.id}`, comment).pipe(
       map(result => {
         this.toasterService.pop('success', 'Updated candidate comment')
@@ -107,7 +134,20 @@ export class CandidateManagementService {
     );
   }
 
-  public updateEvidence(candidate: Candidate, evidence: PAEvidence): Observable<PAEvidence> {
+  public updateRatingCandidateComment(candidate: Candidate, comment: PAComment, rating: RatingModelRequest): Observable<Candidate> {
+    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/comments/${comment.id}/ratings`, rating).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Updated candidate comment rating')
+        return result
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Could not update candidate comment rating: ', error)
+        return null;
+      }),
+    )
+  }
+
+  public updateEvidence(candidate: Candidate, evidence: PAEvidence): Observable<Candidate> {
     return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/evidences/${evidence.id}`, evidence).pipe(
       map(result => {
         this.toasterService.pop('success', 'Updated issue evidence')
@@ -116,6 +156,19 @@ export class CandidateManagementService {
       catchError(e => {
         this.toasterService.pop('error', 'Could not update issue evidence: ', e.error.message)
         return of(null);
+      }),
+    )
+  }
+
+  public updateRatingCandidateEvidence(candidate: Candidate, evidence: PAEvidence, rating: RatingModelRequest): Observable<Candidate> {
+    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/evidences/${evidence.id}/ratings`, rating).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Updated candidate evidence rating')
+        return result
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Could not update candidate evidence rating: ', error)
+        return null;
       }),
     )
   }
@@ -136,6 +189,19 @@ export class CandidateManagementService {
     );
   }
 
+  public deleteAuthorCandidate(authorModel: AuthorModel, candidate: Candidate): Observable<Candidate> {
+    return this.http.delete<any>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/authors/${authorModel.userId}`).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Deleted candidate author')
+        return result
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Could not delete candidate author: ', error)
+        return null;
+      }),
+    )
+  }
+
   public deleteComment(candidate: Candidate, comment: PAComment): Observable<Candidate> {
     return this.http.delete<any>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/comments/${comment.id}`).pipe(
       map(result => {
@@ -149,7 +215,7 @@ export class CandidateManagementService {
     );
   }
 
-  public deleteEvidence(candidate: Candidate, evidenceId: string): Observable<PAEvidence> {
+  public deleteEvidence(candidate: Candidate, evidenceId: string): Observable<Candidate> {
     return this.http.delete<any>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/evidences/${evidenceId}`).pipe(
       map(result => {
         this.toasterService.pop('success', 'Deleted issue evidence')

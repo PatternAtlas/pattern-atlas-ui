@@ -6,7 +6,6 @@
         <mat-form-field class="wrapper-input" appearance="standard">
             <textarea matInput [disabled]="disabled" [(ngModel)]="comment.text" name="comment" required></textarea>
         </mat-form-field>
-
          <div class="wrapper-buttons">
             <button *ngIf="!disabled" mat-flat-button type="submit" color="primary"
                 [disabled]="!commentForm.form.valid">
@@ -17,12 +16,9 @@
                 [disabled]="p.disabled(comment.userId) | async"> Edit </button>
             <button *ngIf="disabled" mat-flat-button type="button" color="warn" (click)="delete()"
                 [disabled]="p.disabled(comment.userId) | async"> Delete </button>
-            <!-- <button *ngIf="disabled && !comment.comments" mat-flat-button type="button" color="accent" (click)="reply()"
-                [disabled]="p.disabled(comment.userId) | async"> Reply </button> -->
         </div>
-
         <pp-rating class="wrapper-rating" [row]="false" [upVotes]="comment.upVotes" [downVotes]="comment.downVotes"
-        [ratingEntity]="commentEntity" [context]="context" [commentEntity]="comment"></pp-rating>
+        [total]="comment.rating" (ratingEvent)="updateRating($event)"></pp-rating>
     </form>
 </mat-card>
 

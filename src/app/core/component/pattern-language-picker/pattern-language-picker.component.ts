@@ -54,7 +54,6 @@ export class PatternLanguagePickerComponent implements OnInit {
 
   ngOnInit(): void {
     this.patternLanguageService.getPatternLanguagesSchemas().subscribe(result => {
-      console.log(result);
       this.patternLanguages = result;
       this.patternLanguages.push(patternLanguageNone);
       if (this._patternLanguageSelected) {

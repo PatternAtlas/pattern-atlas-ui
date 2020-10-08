@@ -1,14 +1,14 @@
-<pp-action-button-bar [addButtonText]="'Add'" [goBackButton]="false" [reloadButton]="true"
-    (addClicked)="new()" (reloadClicked)="getAll()"></pp-action-button-bar>
+<pp-action-button-bar [addButtonText]="'Add'" [goBackButton]="false" [reloadButton]="true" (addClicked)="new()"
+    (reloadClicked)="getAll()"></pp-action-button-bar>
 <div class="container-double">
     <div class="left scrollable-double issue-list">
         <!-- <button class="button-new" mat-raised-button color="accent" (click)="new()">New Issue</button> -->
-        <mat-accordion  multi="false" *ngFor="let issue of data">
+        <mat-accordion multi="false" *ngFor="let issue of data">
             <mat-expansion-panel [expanded]="issue.id === activeIssue.id" (opened)="opened(issue)"
                 (closed)="closed(issue)">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <h3>{{issue.name}}  </h3>
+                        <h3>{{issue.name}} </h3>
                     </mat-panel-title>
                     <mat-panel-description>
                         <h5>Comments: {{issue.comments.length}}</h5>
@@ -17,10 +17,11 @@
                         <div class="spacer"></div>
                         <h5>Evidence: {{issue.evidences.length}}</h5>
                         <div class="spacer"></div>
-                        <button mat-icon-button color="primary" (click)="detail(issue)" >
+                        <button mat-icon-button color="primary" (click)="detail(issue)">
                             <mat-icon>open_in_new</mat-icon>
                         </button>
-                        <button mat-icon-button color="primary" (click)="edit(issue)" [disabled]="!(p.isGroubMember(issue.authors, 'ISSUE_EDIT_ALL') | async)">
+                        <button mat-icon-button color="primary" (click)="edit(issue)"
+                            [disabled]="!(p.isGroubMember(issue.authors, 'ISSUE_EDIT_ALL') | async)">
                             <mat-icon>edit</mat-icon>
                         </button>
                     </mat-panel-description>
@@ -30,12 +31,14 @@
                         {{issue.description}}
                     </div>
                     <div class="spacer"></div>
-                    <pp-rating class="container-rating" [row]="false"[upVotes]="issue.upVotes" [downVotes]="issue.downVotes" [ratingEntity]="activeIssue" [context]="0"></pp-rating>
+                    <pp-rating class="container-rating" [row]="false" [upVotes]="issue.upVotes"
+                        [downVotes]="issue.downVotes" [total]="issue.rating" (ratingEvent)="updateRating($event)"></pp-rating>
                 </div>
             </mat-expansion-panel>
         </mat-accordion>
     </div>
     <div class="right scrollable-double" *ngIf="activeIssue.id">
-        <pp-comment-list [data]="activeIssue.comments" [commentEntity]="activeIssue" [context]="0"></pp-comment-list>
+        <pp-comment-list [data]="activeIssue.comments" [disabled]="!activeIssue.id" (createCommentEvent)="createComment($event)"
+            (updateCommentEvent)="updateComment($event)" (deleteCommentEvent)="deleteComment($event)" (ratingEvent)="updateRatingComment($event)"></pp-comment-list>
     </div>
 </div>

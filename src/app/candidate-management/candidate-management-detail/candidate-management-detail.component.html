@@ -12,7 +12,7 @@
             <div *ngIf="disabled" class="spacer"></div>
 
             <pp-author-picker class="detail-component" [authors]="candidate.authors" [disabled]="disabled"
-                [authorEntity]="candidate" [context]="1">
+                (updateAuthorEvent)="updateAuthor($event)" (deleteAuthorEvent)="deleteAuthor($event)">
             </pp-author-picker>
 
             <pp-pattern-language-picker class="detail-component" [disabled]="disabled"
@@ -23,12 +23,15 @@
             <!-- [downVotes]="candidate.downVotes" [ratingEntity]="candidate" [context]="1"></pp-rating> -->
 
             <pp-rating-multiple class="detail-component" [title]="'Readability'" [rating]="candidate.readability"
-                (changeRatingEmitter)="updateRatingReadability($event)"></pp-rating-multiple>
+                [total]="candidate.ratingReadability" (changeRatingEmitter)="updateRatingReadability($event)">
+            </pp-rating-multiple>
             <pp-rating-multiple class="detail-component" [title]="'Understandability'"
-                [rating]="candidate.understandability" (changeRatingEmitter)="updateRatingUnderstandability($event)">
+                [rating]="candidate.understandability" [total]="candidate.ratingUnderstandability"
+                (changeRatingEmitter)="updateRatingUnderstandability($event)">
             </pp-rating-multiple>
             <pp-rating-multiple class="detail-component" [title]="'Appropriateness'"
-                [rating]="candidate.appropriateness" (changeRatingEmitter)="updateRatingAppropriateness($event)">
+                [rating]="candidate.appropriateness" [total]="candidate.ratingAppropriateness"
+                (changeRatingEmitter)="updateRatingAppropriateness($event)">
             </pp-rating-multiple>
 
             <!-- DETAIL BUTTONS-->
@@ -50,17 +53,20 @@
 
             <!-- CANDIDATE BUTTONS-->
             <div class="detail-component buttons" *ngIf="pattern">
-                <button mat-flat-button type="button" color="accent" [disabled]="!candidate.patternLanguageId"
-                    (click)="createPattern()">To Approved Pattern</button>
+                <button mat-flat-button type="button" color="accent"
+                    [disabled]="!candidate.patternLanguageId || treshhold" (click)="createPattern()">To Approved
+                    Pattern</button>
                 <button mat-flat-button type="button" color="warn" (click)="cancelPattern()">Cancel</button>
             </div>
         </mat-card>
-        <pp-evidence-list [evidences]="candidate.evidences" [evidenceEntity]="candidate" [context]="1"
+        <pp-evidence-list [evidences]="candidate.evidences" [disabled]="!candidate.id"
             (createEvidenceEvent)="createEvidence($event)" (updateEvidenceEvent)="updateEvidence($event)"
-            (deleteEvidenceEvent)="deleteEvidence($event)">
+            (deleteEvidenceEvent)="deleteEvidence($event)" (ratingEvent)="updateRatingEvidence($event)">
         </pp-evidence-list>
     </div>
     <pp-comment-list *ngIf="candidateHeight" class="right" [style.height.px]="candidateHeight"
-        [data]="candidate.comments" [commentEntity]="candidate" [context]="1">
+        [data]="candidate.comments" [disabled]="!candidate.id" (createCommentEvent)="createComment($event)"
+        (updateCommentEvent)="updateComment($event)" (deleteCommentEvent)="deleteComment($event)"
+        (ratingEvent)="updateRatingComment($event)">
     </pp-comment-list>
 </div>

@@ -1,3 +1,5 @@
+import { RatingType } from "../_enums/rating-type.enum";
+
 export class RatingModelRequest {
     rating: number;
     ratingType: RatingType;
@@ -7,9 +9,3 @@ export class RatingModelRequest {
       this.ratingType = _ratingType
     }
 }
-
-export enum RatingType {
-  READABILITY = 'READABILITY',
-  UNDERSTANDABILITY = 'UNDERSTANDABILITY',
-  APPROPIATENESS = 'APPROPIATENESS'
-};
