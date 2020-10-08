@@ -101,9 +101,6 @@ export class AuthenticationService {
       .set('client_id', environment.clientIdPKCE)
       .set('code_challenge', code_challenge)
       .set('code_challenge_method', 'S256')
-    crypto.getRandomValues
-
-
     window.open(environment.authorizeUrl + params, '_self');
   }
 
