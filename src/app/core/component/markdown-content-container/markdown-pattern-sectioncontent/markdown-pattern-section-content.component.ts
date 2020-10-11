@@ -36,7 +36,7 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
   data: string;
   renderedData: string;
   title = '';
-  imageModels = new Array<ImageModel>();
+  imageModels : ImageModel[] = [];
   svg: Selection<SVGSVGElement, any, any, any>;
   svgCommentMouseDownCoordinate;
   svgCommentMouseUpCoordinate;
@@ -146,6 +146,7 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
       }
       return this;
     });
+
     this.imageModels.forEach(model => {
       if (d3.select('[id="' + model.imageId + '"').select('g[id=comments]').node() === null) {
         d3.select('[id="' + model.imageId + '"').append('g').attr('id', 'comments');
@@ -167,6 +168,8 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
         });
       }
     });
+
+
 
     d3.selectAll<SVGSVGElement, unknown>('rect').on('click', (d, i, n) => {
       this.discuss(n[i]);
