@@ -108,6 +108,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     RouterModule,
     MatSortModule,
     FormsModule,
+    MatSnackBarModule,
   ],
   exports: [
     CovalentTextEditorModule,
@@ -134,7 +135,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     IssueManagementStore,
     // CANDIDATE
     CandidateManagementService,
-    CandidateManagementStore
+    CandidateManagementStore,
+    // IMAGE & DISCUSSION
+    ImageService,
+    DiscussionService
   ],
   declarations: [
     DefaultPlRendererComponent,
@@ -155,7 +159,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     CommentListComponent,
     ToggleRendererComponent,
     DeletePatternRelationComponent,
-    CreativeLicenseFooterComponent
+    CreativeLicenseFooterComponent,
+    CommentDialogComponent,
+    DiscussDialogComponent
   ],
   entryComponents: [
     DefaultPlRendererComponent,
@@ -167,85 +173,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MarkdownPatternSectionContentComponent,
     CardRendererComponent,
     GraphDisplayComponent,
-    CreateEditPatternLanguageComponent
+    CreateEditPatternLanguageComponent,
+    CommentDialogComponent,
+    DiscussDialogComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    imports: [
-        CommonModule,
-        DragDropModule,
-        PrettyJsonModule,
-        MatButtonModule,
-        TextFieldModule,
-        CovalentTextEditorModule,
-        MatCardModule,
-        FlexLayoutModule,
-        MatProgressSpinnerModule,
-        MatListModule,
-        MatDatepickerModule, MatInputModule,
-        ReactiveFormsModule,
-        MatTooltipModule,
-        MatSelectModule,
-        MatDialogModule, MatGridListModule, MatSidenavModule,
-        MatAutocompleteModule,
-        MatIconModule, MatToolbarModule, MatBadgeModule, MatExpansionModule, MatSnackBarModule,
-        MatButtonToggleModule,
-        NgxMdModule.forRoot(), MatNativeDateModule, RouterModule, FormsModule
-    ],
-    exports: [
-        CovalentTextEditorModule,
-        EmitEventOnKeyupDirective,
-        EmitEventOnAddedEdgeDirective,
-        MatProgressSpinnerModule,
-        NavigateBackComponent,
-        CardRendererComponent,
-        ActionButtonBarComponent,
-        ToggleRendererComponent,
-        GraphDisplayComponent
-    ]
-    ,
-    providers: [
-        PatternLanguageService,
-        PatternService,
-        PatternViewService,
-        ImageService,
-        DiscussionService
-    ],
-    declarations: [
-        DefaultPlRendererComponent,
-        DefaultPatternRendererComponent,
-        MdEditorComponent,
-        EmitEventOnKeyupDirective,
-        EmitEventOnAddedEdgeDirective,
-        NavigateBackComponent,
-        PatternPropertyDirective,
-        DividerComponent,
-        CreatePatternRelationComponent,
-        MarkdownPatternSectionContentComponent,
-        GraphDisplayComponent,
-        CardRendererComponent,
-        CreateEditPatternLanguageComponent,
-        ActionButtonBarComponent,
-        ToggleRendererComponent,
-        DeletePatternRelationComponent,
-        CreativeLicenseFooterComponent,
-        CommentDialogComponent,
-        DiscussDialogComponent,
-    ],
-    entryComponents: [
-        DefaultPlRendererComponent,
-        DefaultPatternRendererComponent,
-        MdEditorComponent,
-        DividerComponent,
-        CreatePatternRelationComponent,
-        DeletePatternRelationComponent,
-        MarkdownPatternSectionContentComponent,
-        CardRendererComponent,
-        GraphDisplayComponent,
-        CreateEditPatternLanguageComponent,
-        CommentDialogComponent,
-        DiscussDialogComponent
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class CoreModule {
   constructor(private cr: ComponentRegistryService) {

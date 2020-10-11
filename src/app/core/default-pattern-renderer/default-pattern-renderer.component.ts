@@ -120,10 +120,13 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
   }
 
   private createSectionComponent(section: string) {
-    if (!this.pattern.renderedContent) {
-      return;
+    let renderedContent = null;
+    if (!this.pattern.renderedContent [ section ]) {
+      renderedContent = this.pattern.content[ section ];
+    }else {
+      renderedContent = this.pattern.renderedContent[ section ];
     }
-    const renderedContent = this.pattern.renderedContent[ section ];
+
     const content = this.pattern.content[ section ];
 
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MarkdownPatternSectionContentComponent);
