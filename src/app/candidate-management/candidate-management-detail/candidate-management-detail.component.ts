@@ -16,6 +16,7 @@ import { ContentObserver } from '@angular/cdk/observers';
 import { PAComment, PAEvidence, RatingEventModel, RatingModelRequest, RatingType } from 'src/app/core/shared';
 import { PrivilegeService } from 'src/app/authentication/_services/privilege.service';
 import { AuthorModel } from 'src/app/core/author-management';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'pp-candidate-management-detail',
@@ -149,7 +150,7 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
     confirmDialog.afterClosed().subscribe(result => {
       if (result) {
         this.candidateManagementService.deleteCandidate(this.candidate).subscribe(res => {
-          const url = `http://localhost:8080/patternLanguages/${this.candidate.patternLanguageId}/patterns`;
+          const url = `${environment.repositoryUrl}/patternLanguages/${this.candidate.patternLanguageId}/patterns`;
           this.patternService.savePattern(url, this.candidate).subscribe(result => {
             this.router.navigate([globals.pathConstants.patternLanguages, this.candidate.patternLanguageId]);
           })
