@@ -17,7 +17,7 @@ export const globals = {
   iriPatternRepoInstance: 'https://purl.org/patternpedia#LinkedOpenPatterns',
   urlGithubAPI: 'https://api.github.com/repos/PatternPedia/patternpediacontent/contents',
   loadOntologyLocally: true,
-  repoEndpoint: 'http://patternpedia/localhost:8080',
+  repoEndpoint: 'http://localhost:8080/patternpedia',
   featureToggles: {
     designModel: false,
     patternCandidate: true,
