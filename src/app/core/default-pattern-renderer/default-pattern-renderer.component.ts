@@ -1,4 +1,11 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ComponentFactoryResolver,
+  OnDestroy,
+  ViewChild
+} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ToasterService} from 'angular2-toaster';
 import {PatternPropertyDirective} from '../component/markdown-content-container/pattern-property.directive';
@@ -26,7 +33,7 @@ import {globals} from '../../globals';
   templateUrl: './default-pattern-renderer.component.html',
   styleUrls: ['./default-pattern-renderer.component.scss']
 })
-export class DefaultPatternRendererComponent implements AfterViewInit {
+export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy {
   @ViewChild(PatternPropertyDirective) ppPatternProperty: PatternPropertyDirective;
   isLoading = true;
   isLoadingLinks = true;
@@ -119,7 +126,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
   }
 
   private createSectionComponent(section: string) {
-    let renderedContent = this.pattern.renderedContent ? this.pattern.renderedContent[section] : this.pattern.content[section];
+    let renderedContent = this.pattern.renderedContent ? this.pattern.renderedContent[section] : '';
 
     const content = this.pattern.content[section];
 
@@ -164,8 +171,8 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
   private savePattern(section: string, previousContent: any, instance: MarkdownPatternSectionContentComponent) {
     this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe(
       data => {
-        const test = data.body.renderedContent[section];
-        this.pattern.renderedContent[section] = test;
+        const text = data.body.renderedContent[section];
+        this.pattern.renderedContent[section] = text;
         instance.changeText(this.pattern.renderedContent[section]);
         this.toasterService.pop('success', 'Saved pattern');
       },
@@ -219,5 +226,9 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
   private insertEdge(edge): Observable<any> {
     return this.patternRelationDescriptorService.addRelationToPL(this.patternLanguage, edge).pipe(
       tap((res) => res ? this.getPatternByLink(edge, res) : EMPTY));
+  }
+
+  ngOnDestroy() {
+    this.cdr.detach(); // cancel the changes triggered by this.cdr.detectChanges()
   }
 }

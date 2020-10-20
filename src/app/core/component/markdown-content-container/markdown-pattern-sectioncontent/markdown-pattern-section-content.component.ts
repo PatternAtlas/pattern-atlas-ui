@@ -4,17 +4,16 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  HostListener,
   Input,
+  OnDestroy,
   ViewChild
 } from '@angular/core';
-import { DataChange, DataRenderingComponent } from '../interfaces/DataRenderingComponent.interface';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogData, MdEditorComponent } from '../../md-editor/md-editor.component';
+import {DataChange, DataRenderingComponent} from '../interfaces/DataRenderingComponent.interface';
+import {MatDialog} from '@angular/material/dialog';
+import {DialogData, MdEditorComponent} from '../../md-editor/md-editor.component';
 import * as MarkdownIt from 'markdown-it';
 import * as markdownitKatex from 'markdown-it-katex';
-import { ImageService } from '../../../service/image.service';
-import * as d3 from 'd3';
+import {ImageService} from '../../../service/image.service';
 
 
 @Component({
@@ -22,7 +21,7 @@ import * as d3 from 'd3';
   templateUrl: './markdown-pattern-section-content.component.html',
   styleUrls: ['./markdown-pattern-section-content.component.scss']
 })
-export class MarkdownPatternSectionContentComponent extends DataRenderingComponent implements AfterViewInit {
+export class MarkdownPatternSectionContentComponent extends DataRenderingComponent implements AfterViewInit, OnDestroy {
 
   data: string;
   renderedData: string;
@@ -48,7 +47,7 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
   ngAfterViewInit() {
     this.markdown = new MarkdownIt();
     this.markdown.use(markdownitKatex);
-    this.changeText(this.renderedData);
+    this.changeText(this.renderedData ? this.renderedData : this.data);
   }
 
   changeText(value: string): void {
@@ -59,9 +58,12 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
   }
 
   renderSVGTags(data: string): void {
-    let editData =  data;
+    let editData = data;
+    if (!data) {
+      return;
+    }
     const svgIndexes: number[] = this.getNextOccurance(editData, '<SVG>', '</SVG>');
-    if (svgIndexes[0] !== -1 && svgIndexes[1] !== -1) {
+    if (svgIndexes.length > 0 && svgIndexes[0] !== -1 && svgIndexes[1] !== -1) {
       // render elements before svg imgage link
       this.markdownDiv.nativeElement.innerHTML += this.markdown.render(editData.substring(0, svgIndexes[0] - 1));
       // get id for img on database
@@ -90,14 +92,21 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
 
       if (result) {
         this.data = result.content;
-        this.changeText(this.renderedData);
+        this.changeText(this.data);
       }
       this.changeContent.emit({ previousValue: previousValue, currentValue: result.content });
     });
   }
 
   getNextOccurance(content: string, begin: string, end: string): number[] {
+    if (!content) {
+      return [];
+    }
     return [content.indexOf(begin, 0), content.indexOf(end, 0)];
+  }
+
+  ngOnDestroy() {
+    this.cdr.detach(); // cancel the changes triggered by this.cdr.detectChanges()
   }
 
 
