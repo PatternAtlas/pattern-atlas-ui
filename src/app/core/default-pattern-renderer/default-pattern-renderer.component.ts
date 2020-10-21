@@ -1,4 +1,11 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ComponentFactoryResolver,
+  OnDestroy,
+  ViewChild
+} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ToasterService} from 'angular2-toaster';
 import {PatternPropertyDirective} from '../component/markdown-content-container/pattern-property.directive';
@@ -12,7 +19,7 @@ import {MarkdownPatternSectionContentComponent} from '../component/markdown-cont
 import {DataChange} from '../component/markdown-content-container/interfaces/DataRenderingComponent.interface';
 import PatternSectionSchema from '../model/hal/pattern-section-schema.model';
 import {map, switchMap, tap} from 'rxjs/operators';
-import {EMPTY, forkJoin, Observable} from 'rxjs';
+import {EMPTY, forkJoin, Observable, Subscription} from 'rxjs';
 import {PatternRelationDescriptorService} from '../service/pattern-relation-descriptor.service';
 import {DirectedEdgeModel} from '../model/hal/directed-edge.model';
 import {Embedded} from '../model/hal/embedded';
@@ -26,7 +33,7 @@ import {globals} from '../../globals';
   templateUrl: './default-pattern-renderer.component.html',
   styleUrls: ['./default-pattern-renderer.component.scss']
 })
-export class DefaultPatternRendererComponent implements AfterViewInit {
+export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy {
   @ViewChild(PatternPropertyDirective) ppPatternProperty: PatternPropertyDirective;
   isLoading = true;
   isLoadingLinks = true;
@@ -39,6 +46,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
   private viewContainerRef;
   private patternLanguageId: string;
   private patternId: string;
+  subscriptions: Subscription = new Subscription();
 
   constructor(private activatedRoute: ActivatedRoute,
               private toasterService: ToasterService,
@@ -62,11 +70,12 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
 
   addLink() {
     if (!this.patterns || this.patterns.length === 0) {
-      this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href).subscribe((patterns) => {
+      let patternSubscription = this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href).subscribe((patterns) => {
         this.patterns = patterns;
         this.patterns.sort((p1, p2) => p1.name.localeCompare(p2.name));
         this.showAndHandleLinkDialog();
       });
+      this.subscriptions.add(patternSubscription);
     } else {
       this.showAndHandleLinkDialog();
     }
@@ -108,18 +117,23 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
 
   getPatternByLink(edge: DirectedEdgeModel | UndirectedEdgeModel, res: any) {
     const url = res.url + '/' + res.body.id;
-    this.patternRelationDescriptorService.getEdgeByUrl(url, edge)
-      .subscribe(
-        edgeResult => {
-          edge instanceof DirectedEdgeModel ?
-            this.directedPatternRelations.push(edgeResult as DirectedEdgeModel) :
-            this.undirectedPatternRelations.push(edgeResult as UndirectedEdgeModel);
-        }
-      );
+    let relationSubscription = this.patternRelationDescriptorService.getEdgeByUrl(url, edge).subscribe(
+      edgeResult => {
+        edge instanceof DirectedEdgeModel ?
+          this.directedPatternRelations.push(edgeResult as DirectedEdgeModel) :
+          this.undirectedPatternRelations.push(edgeResult as UndirectedEdgeModel);
+      }
+    );
+    this.subscriptions.add(relationSubscription);
   }
 
   private createSectionComponent(section: string) {
-    let renderedContent = this.pattern.renderedContent ? this.pattern.renderedContent[section] : this.pattern.content[section];
+    let renderedContent = null;
+    if (!this.pattern.renderedContent [section]) {
+      renderedContent = this.pattern.content[section];
+    } else {
+      renderedContent = this.pattern.renderedContent[section];
+    }
 
     const content = this.pattern.content[section];
 
@@ -130,12 +144,12 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
     instance.data = content;
     instance.title = section;
     instance.isEditingEnabled = this.isEditingEnabled;
-    instance.changeContent.subscribe((dataChange: DataChange) => {
+    const changeSubscription = instance.changeContent.subscribe((dataChange: DataChange) => {
       this.pattern.content[section] = dataChange.currentValue;
       this.cdr.detectChanges();
       this.savePattern(section, dataChange.previousValue, instance);
-      this.cdr.detectChanges();
     });
+    this.subscriptions.add(changeSubscription);
   }
 
   private getDirectedEdges(): Observable<Embedded<DirectedEdesResponse>> {
@@ -162,7 +176,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
   }
 
   private savePattern(section: string, previousContent: any, instance: MarkdownPatternSectionContentComponent) {
-    this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe(
+    const updateSubscription = this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe(
       data => {
         const test = data.body.renderedContent[section];
         this.pattern.renderedContent[section] = test;
@@ -176,16 +190,18 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
         instance.changeText(previousContent);
         this.cdr.detectChanges();
       });
+    this.subscriptions.add(updateSubscription);
   }
 
   private getData(): void {
     // get pattern language object with all the hal links that we need
-    this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageId).pipe(
+    const dataSubscription = this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageId).pipe(
       tap((patternLanguage) => this.patternLanguage = patternLanguage),
       // get our individual pattern
       switchMap(() => this.fillPatternSectionData()),
       switchMap(() => this.getPatternLanguageLinks())).subscribe(() =>
       this.cdr.detectChanges());
+    this.subscriptions.add(dataSubscription);
   }
 
   private fillPatternSectionData() {
@@ -202,7 +218,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
     const dialogRef = this.dialog.open(CreatePatternRelationComponent,
       {data: {firstPattern: this.pattern, patterns: this.patterns}}
     );
-    dialogRef.afterClosed().pipe(
+    const dialogSubscription = dialogRef.afterClosed().pipe(
       switchMap(result => {
         return result ? this.addContentInfoToPattern(result) : EMPTY;
       }),
@@ -214,10 +230,16 @@ export class DefaultPatternRendererComponent implements AfterViewInit {
           this.toasterService.pop('success', 'Created new Relation');
         }
       );
+    this.subscriptions.add(dialogSubscription);
   }
 
   private insertEdge(edge): Observable<any> {
     return this.patternRelationDescriptorService.addRelationToPL(this.patternLanguage, edge).pipe(
       tap((res) => res ? this.getPatternByLink(edge, res) : EMPTY));
+  }
+
+  ngOnDestroy(): void {
+    this.cdr.detach();
+    this.subscriptions.unsubscribe();
   }
 }

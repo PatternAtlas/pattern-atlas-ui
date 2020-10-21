@@ -3,38 +3,39 @@ import {
   Component,
   ComponentFactoryResolver,
   ElementRef,
+  OnDestroy,
   OnInit,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { UriConverter } from '../util/uri-converter';
-import { MatDialog } from '@angular/material/dialog';
-import { PatternLanguageService } from '../service/pattern-language.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {UriConverter} from '../util/uri-converter';
+import {MatDialog} from '@angular/material/dialog';
+import {PatternLanguageService} from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
-import { D3Service } from '../../graph/service/d3.service';
-import { GraphDisplayComponent } from '../component/graph-display/graph-display.component';
-import { EMPTY, forkJoin, Observable } from 'rxjs';
-import { Embedded } from '../model/hal/embedded';
-import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
-import { switchMap, tap } from 'rxjs/operators';
-import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
-import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
-import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
-import { CreatePatternRelationComponent } from '../component/create-pattern-relation/create-pattern-relation.component';
-import { PatternRelationDescriptorService } from '../service/pattern-relation-descriptor.service';
-import { ToasterService } from 'angular2-toaster';
-import { PatternService } from '../service/pattern.service';
+import {D3Service} from '../../graph/service/d3.service';
+import {GraphDisplayComponent} from '../component/graph-display/graph-display.component';
+import {EMPTY, forkJoin, Observable, Subscription} from 'rxjs';
+import {Embedded} from '../model/hal/embedded';
+import {DirectedEdesResponse} from '../model/hal/directed-edes-response.interface';
+import {switchMap, tap} from 'rxjs/operators';
+import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
+import {DirectedEdgeModel} from '../model/hal/directed-edge.model';
+import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
+import {CreatePatternRelationComponent} from '../component/create-pattern-relation/create-pattern-relation.component';
+import {PatternRelationDescriptorService} from '../service/pattern-relation-descriptor.service';
+import {ToasterService} from 'angular2-toaster';
+import {PatternService} from '../service/pattern.service';
 import Pattern from '../model/hal/pattern.model';
-import { FormControl } from '@angular/forms';
-import { globals } from '../../globals';
+import {FormControl} from '@angular/forms';
+import {globals} from '../../globals';
 
 @Component({
   selector: 'pp-default-pl-renderer',
   templateUrl: './default-pl-renderer.component.html',
   styleUrls: ['./default-pl-renderer.component.scss']
 })
-export class DefaultPlRendererComponent implements OnInit {
+export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   patterns: Array<Pattern> = [];
   patternsForCardsView: Array<Pattern> = [];
   patternLanguage: PatternLanguage;
@@ -42,8 +43,8 @@ export class DefaultPlRendererComponent implements OnInit {
   @ViewChild('graphWrapper') graph: ElementRef;
   @ViewChild('cardsView') cardsView: ElementRef;
   @ViewChild('searchField') searchField: ElementRef;
-  @ViewChild(GraphDisplayComponent, { static: false }) graphDisplayComponent: GraphDisplayComponent;
-  @ViewChild('displayPLContainer', { read: ViewContainerRef }) loadRenderer;
+  @ViewChild(GraphDisplayComponent, {static: false}) graphDisplayComponent: GraphDisplayComponent;
+  @ViewChild('displayPLContainer', {read: ViewContainerRef}) loadRenderer;
   graphVisible = false;
   isLoadingPatternData = true;
   isLoadingLinkData = true;
@@ -52,6 +53,7 @@ export class DefaultPlRendererComponent implements OnInit {
   private directedPatternRelations: Array<DirectedEdgeModel> = [];
   private undirectedPatternRelations: Array<UndirectedEdgeModel> = [];
   private patternLinks: Array<UndirectedEdgeModel | DirectedEdgeModel>;
+  subscriptions = new Subscription();
 
   constructor(private activatedRoute: ActivatedRoute,
               private cdr: ChangeDetectorRef,
@@ -68,12 +70,13 @@ export class DefaultPlRendererComponent implements OnInit {
   ngOnInit() {
     this.loadData();
     this.filter = new FormControl('');
-    this.filter.valueChanges.subscribe((filterText: string) => {
+    const filterSubscription = this.filter.valueChanges.subscribe((filterText: string) => {
       if (this.graphVisible || !this.patterns || this.patterns.length === 0) {
         return;
       }
       this.patternsForCardsView = this.patterns.filter(pattern => pattern.name.toLowerCase().includes(filterText.toLowerCase()));
     });
+    this.subscriptions.add(filterSubscription);
   }
 
   detectChanges() {
@@ -92,7 +95,7 @@ export class DefaultPlRendererComponent implements OnInit {
   }
 
   public addPattern(): void {
-    this.router.navigate(['create-patterns'], { relativeTo: this.activatedRoute });
+    this.router.navigate(['create-patterns'], {relativeTo: this.activatedRoute});
   }
 
   public addLink() {
@@ -103,7 +106,7 @@ export class DefaultPlRendererComponent implements OnInit {
         patternlanguage: this.patternLanguage
       }
     });
-    dialogRef.afterClosed().pipe(
+    const diaglogSubscription = dialogRef.afterClosed().pipe(
       switchMap((edge) => {
         return edge ? this.insertEdge(edge) : EMPTY;
       })).subscribe(res => {
@@ -112,6 +115,7 @@ export class DefaultPlRendererComponent implements OnInit {
         this.detectChanges();
       }
     });
+    this.subscriptions.add(diaglogSubscription);
   }
 
   insertEdge(edge): Observable<any> {
@@ -121,20 +125,22 @@ export class DefaultPlRendererComponent implements OnInit {
 
   getPatternByLink(edge: DirectedEdgeModel | UndirectedEdgeModel, res: any) {
     const url = res.url + '/' + res.body.id;
-    this.patternRelationDescriptorService.getEdgeByUrl(url, edge)
+    const relationSubscription = this.patternRelationDescriptorService.getEdgeByUrl(url, edge)
       .subscribe(
         edgeResult => {
           this.patternLinks.push(edgeResult);
         }
       );
+    this.subscriptions.add(relationSubscription);
   }
 
   linkAddedInGraphEditor(edge) {
-    this.insertEdge(edge).subscribe(res => {
+    const insertionSubscription = this.insertEdge(edge).subscribe(res => {
       this.toasterService.pop('success', 'Added Relation');
       this.graphDisplayComponent.updateSideMenu();
       this.detectChanges();
     });
+    this.subscriptions.add(insertionSubscription);
   }
 
   reloadGraph() {
@@ -154,7 +160,7 @@ export class DefaultPlRendererComponent implements OnInit {
     this.isLoadingPatternData = true;
     this.patternLanguageId = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId));
     if (this.patternLanguageId) {
-      this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageId)
+      const loadDataSubscrition = this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageId)
         .pipe(
           tap(patternlanguage => this.patternLanguage = patternlanguage),
           switchMap(() => this.loadPatterns()),
@@ -164,6 +170,7 @@ export class DefaultPlRendererComponent implements OnInit {
           this.isLoadingLinkData = false;
           this.detectChanges();
         });
+      this.subscriptions.add(loadDataSubscrition);
     }
   }
 
@@ -195,4 +202,11 @@ export class DefaultPlRendererComponent implements OnInit {
         this.isLoadingPatternData = false;
       }));
   }
+
+  ngOnDestroy(): void {
+    this.cdr.detach()
+    this.subscriptions.unsubscribe();
+  }
 }
+
+

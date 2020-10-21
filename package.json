@@ -31,15 +31,18 @@
     "@ustutt/grapheditor-webcomponent": "0.3.1",
     "angular2-prettyjson": "3.0.1",
     "angular2-toaster": "8.0.0",
+    "antlr4": "^4.8.0",
     "core-js": "2.6.3",
     "d3": "^5.9.2",
     "lodash": "^4.17.19",
     "madr": "2.1.2",
     "markdown-it": "10.0.0",
-    "markdown-it-katex": "2.0.3",
+    "markdown-it-katex": "github:MicroDroid/markdown-it-katex",
+    "mathjs": "^7.0.2",
     "ngx-cookie-service": "2.1.0",
     "ngx-md": "8.1.6",
     "parse-uri": "1.0.0",
+    "quantum-circuit": "^0.9.153",
     "rxjs": "6.5.5",
     "simplemde": "1.11.2",
     "tslib": "^1.10.0",
@@ -71,11 +74,13 @@
     "karma-coverage-istanbul-reporter": "~2.0.4",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "1.4.0",
-    "katex": "^0.11.1",
     "protractor": "~5.4.2",
     "stylelint": "^13.5.0",
     "stylelint-config-sass-guidelines": "^7.0.0",
     "ts-node": "~8.0.1",
     "typescript": "~3.6.4"
+  },
+  "browser": {
+    "fs": false
   }
 }

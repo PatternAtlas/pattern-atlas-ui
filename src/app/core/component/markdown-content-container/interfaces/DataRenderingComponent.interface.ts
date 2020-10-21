@@ -7,6 +7,7 @@ export class DataRenderingComponent {
 
   changeContent: EventEmitter<DataChange>;
   isEditingEnabled = false;
+  isCommentingEnabled = false;
 
   constructor() {
   }
