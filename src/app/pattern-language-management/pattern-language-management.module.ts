@@ -32,9 +32,9 @@ import {MatListModule} from '@angular/material/list';
 import {MatRippleModule} from '@angular/material/core';
 import {RouterModule, Routes} from '@angular/router';
 import {GraphDataService} from '../core/service/graph-data.service';
-import {DesignModelService} from '../design-model-module/service/design-model.service';
 import {globals} from '../globals';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {PatternLanguageService} from "../core/service/pattern-language.service";
 
 
 /*
@@ -110,7 +110,7 @@ export const PL_ROUTES: Routes = [
     ProcessOauthCallbackComponent
   ],
   providers: [
-    {provide: GraphDataService, useClass: DesignModelService}
+    {provide: GraphDataService, useClass: PatternLanguageService}
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
