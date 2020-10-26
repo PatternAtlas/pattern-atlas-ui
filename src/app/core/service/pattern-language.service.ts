@@ -25,13 +25,17 @@ import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.inte
 import {GraphNode} from '../component/graph-display/graph-display.component';
 import PatternLanguageModel from '../model/hal/pattern-language-model.model';
 import {GraphDataService} from "./graph-data.service";
+import {PatternContainer} from "../model/hal/pattern-container.model";
+import {PatternService} from "./pattern.service";
+import {PatternContainerResponse} from "../model/hal/pattern-container-response.interface";
+import Pattern from "../model/hal/pattern.model";
 
 @Injectable()
 export class PatternLanguageService implements GraphDataService {
 
   private repoEndpoint = globals.repoEndpoint;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private patternService: PatternService) {
   }
 
   public getPatternLanguages(): Observable<Array<PatternLanguageModel>> {
@@ -81,5 +85,17 @@ export class PatternLanguageService implements GraphDataService {
   getPatternLanguageByID(patternLanguageId: string): Observable<PatternLanguage> {
     const url = this.repoEndpoint + '/patternLanguages/' + patternLanguageId;
     return this.http.get<PatternLanguage>(url);
+  }
+
+  addPatterns(url: string, patterns: Pattern[]): Observable<PatternContainerResponse> {
+    return this.patternService.savePattern(url, patterns);
+  }
+
+  getPatternContainer(url: string): Observable<PatternContainer> {
+    return this.getPatternLanguageByUrl(url);
+  }
+
+  getPatternContainerByUri(uri: string): Observable<PatternContainer> {
+    return this.getPatternLanguageByEncodedUri(uri);
   }
 }

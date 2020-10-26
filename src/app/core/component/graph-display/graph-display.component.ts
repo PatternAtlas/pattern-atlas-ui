@@ -79,6 +79,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
               private patternRelationDescriptionService: PatternRelationDescriptorService,
               private toastService: ToasterService,
               private patternService: PatternService,
+              // use the implementation of GraphDataService that is provided in the module:
               private graphDataService: GraphDataService,
               private activatedRoute: ActivatedRoute,
               private router: Router) {
