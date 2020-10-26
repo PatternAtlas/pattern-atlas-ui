@@ -12,13 +12,13 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import UriEntity from './uri-entity.model';
 import PatternSchema from './pattern-schema.model';
-import { PatternLanguageResource } from './hal-resources.interface';
+import {PatternLanguageResource} from './hal-resources.interface';
 import Pattern from './pattern.model';
+import {PatternContainer} from "./pattern-container.model";
 
-class PatternLanguage extends UriEntity {
-  patterns?: Array<Pattern>;
+class PatternLanguage extends PatternContainer {
+  patterns: Array<Pattern>;
   logo: string;
   patternSchema: PatternSchema;
   _links: PatternLanguageResource;
