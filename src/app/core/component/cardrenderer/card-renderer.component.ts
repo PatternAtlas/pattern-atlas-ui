@@ -27,7 +27,7 @@ export class CardRendererComponent {
 
   navigate(pattern: UriEntity): void {
     this.zone.run(() => {
-      this.router.navigate([UriConverter.doubleEncodeUri(pattern.id)], { relativeTo: this.activatedRoute });
+      this.router.navigate([UriConverter.doubleEncodeUri(pattern.uri)], { relativeTo: this.activatedRoute });
     });
   }
 
@@ -110,7 +110,7 @@ export class CardRendererComponent {
    * @param pattern: The pattern which is deleted.
    */
   private handlePatternDelete(pattern: Pattern): void {
-    this.uriEntities = this.uriEntities.filter(value => value.id !== pattern.id);
+    this.uriEntities = this.uriEntities.filter(value => value.uri !== pattern.uri);
     let allEdgesToRemove: HalLink[];
     const allEdgesToRemoveHref: String[] = [];
     allEdgesToRemove = this.collectAllEdgesOfPattern(pattern);
