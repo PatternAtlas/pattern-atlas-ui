@@ -15,7 +15,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { globals } from '../../globals';
-import { EMPTY, forkJoin, Observable, of } from 'rxjs';
+import { BehaviorSubject, EMPTY, forkJoin, Observable, of } from 'rxjs';
 import Pattern from '../../core/model/hal/pattern.model';
 import { PatternContainer } from '../../core/model/hal/pattern-container.model';
 import { DirectedEdgeModel } from '../../core/model/hal/directed-edge.model';
@@ -42,6 +42,7 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
   private readonly repoEndpoint = globals.repoEndpoint;
   private readonly designModelsEndpoint = this.repoEndpoint + '/design-models';
   private designModelLinks;
+  private edgeTypes = new BehaviorSubject<string[]>([]);
 
 
   constructor(private httpClient: HttpClient) {
@@ -125,8 +126,13 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
 
 
   getEdgeTypes(): Observable<string[]> {
-    // TODO: This should be loaded from the backend
-    return of(['hostedOn', 'messageChannel']);
+    if (!this.edgeTypes.getValue().length) {
+      this.httpClient.get<string[]>(this.designModelsEndpoint + '/edge-types').subscribe(
+        response => this.edgeTypes.next(response)
+      );
+    }
+
+    return this.edgeTypes.asObservable();
   }
 
 

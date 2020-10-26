@@ -55,8 +55,8 @@ export class CreatePatternRelationComponent implements OnInit {
     }
 
     this.relationForm = this.fb.group({
-      firstPattern: [this.data.firstPattern, [Validators.required]],
-      secondPattern: [this.data.secondPattern, [Validators.required]],
+      firstPattern: [this.data.firstPattern.name, [Validators.required]],
+      secondPattern: [this.data.secondPattern.name, [Validators.required]],
       direction: [preselectedEdgeDirection, [Validators.required]],
       relationType: ['', [Validators.required]],
       description: ['', []],
