@@ -24,15 +24,12 @@ export class ConcreteSolutionService {
 
   private readonly repoEndpoint = globals.repoEndpoint + '/design-models';
 
-
   constructor(private httpClient: HttpClient) {
   }
-
 
   getConcreteSolutionSet(uuid: string) {
     return this.httpClient.get(this.repoEndpoint + '/' + uuid + '/concrete-solutions');
   }
-
 
   aggregateDesignModel(uuid: string, query: {}) {
     this.httpClient.post(this.repoEndpoint + '/' + uuid + '/aggregate', query).subscribe((files: FileDTO[]) => {

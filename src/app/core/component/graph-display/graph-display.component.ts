@@ -92,7 +92,6 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   private manualAssignments: { [ key: string ]: string } = {};
   private aggregationAssignments: { [ key: string ]: string } = {};
 
-
   constructor(private cdr: ChangeDetectorRef,
               private d3Service: D3Service,
               private matDialog: MatDialog,
@@ -196,7 +195,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     }
   }
 
-  edgeAdded(event) {
+  handleEdgeAddedEvent(event) {
     if (!event.cancelable) {
       // Skip event on initial graph composition
       return;
@@ -226,7 +225,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     });
   }
 
-  edgeRemoved(event: CustomEvent) {
+  handleEdgeRemovedEvent(event: CustomEvent) {
     if (event.type === 'edgeremove' && event.cancelable) {
       this.removedEdge.emit(event.detail.edge);
     }
@@ -254,7 +253,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
       );
   }
 
-  nodeClicked(event) {
+  handleNodeClickedEvent(event) {
     const node = event[ 'detail' ][ 'node' ];
     if (event[ 'detail' ][ 'key' ] === 'info') {
       this.router.navigate([UriConverter.doubleEncodeUri(node.uri)], { relativeTo: this.activatedRoute });
@@ -267,7 +266,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     this.showInfoForClickedNode(node);
   }
 
-  nodePositionChanged(event) {
+  handleNodePositionChangedEvent(event) {
     const movedNode = event.detail.node;
     try {
       (this.graphDataService as GraphDataSavePatternService)
@@ -314,7 +313,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     }
   }
 
-  patternListExpanded(patternLang: PatternLanguage) {
+  handlePatternListExpandEvent(patternLang: PatternLanguage) {
     if (patternLang.patterns) {
       return;
     }
@@ -456,7 +455,6 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     this.initGraphData(graph);
   }
 
-
   /**
    * Extend the design model graph with a dynamic number of concrete solutions per pattern instance.
    * As the currently used graph implementation does not support dynamic extension with svg elements,
@@ -497,7 +495,6 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     });
   }
 
-
   /**
    * Construct SVG group element with an rectangle and a text, representing a concrete solution.
    * @param concreteSolutionsContainerElement
@@ -519,7 +516,6 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     const color = this.aggregationAssignments[ patternId ] === concreteSolutionId ? '#00c' : concreteSolution.fulfills ? '#000' : '#ccc';
     const border = this.manualAssignments[ patternId ] === concreteSolutionId ? '4' : '0';
 
-
     const clickHandler = (event) => {
       if (this.manualAssignments[ patternId ] !== concreteSolutionId) {
         this.manualAssignments[ patternId ] = concreteSolutionId;
@@ -532,7 +528,6 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
       this.patchGraphWithConcreteSolutions();
       event.stopImmediatePropagation();
     };
-
 
     const csSvgGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     csSvgGroup.setAttribute('transform', 'translate(0,' + (index * 26 + 1) + ')');

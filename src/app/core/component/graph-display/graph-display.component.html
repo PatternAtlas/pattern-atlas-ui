@@ -4,7 +4,7 @@
     <h3>Add Patterns</h3>
     <mat-accordion>
       <div cdkDropListGroup>
-        <mat-expansion-panel *ngFor="let patternLang of patternLanguages" (afterExpand)="patternListExpanded(patternLang)">
+        <mat-expansion-panel *ngFor="let patternLang of patternLanguages" (afterExpand)="handlePatternListExpandEvent(patternLang)">
           <mat-expansion-panel-header>
             <mat-panel-title>
               {{patternLang.name}}
@@ -73,11 +73,11 @@
   <mat-progress-spinner *ngIf="isLoading"></mat-progress-spinner>
   <mat-sidenav-content>
     <network-graph #graphWrapper
-                   (onAddedEdge)="edgeAdded($event)"
-                   (onRemovedEdge)="edgeRemoved($event)"
+                   (onAddedEdge)="handleEdgeAddedEvent($event)"
+                   (onRemovedEdge)="handleEdgeRemovedEvent($event)"
                    (onClickedBackground)="backgroundClicked()"
-                   (onClickedNode)="nodeClicked($event)"
-                   (onNodePositionChange)="nodePositionChanged($event)"
+                   (onClickedNode)="handleNodeClickedEvent($event)"
+                   (onNodePositionChange)="handleNodePositionChangedEvent($event)"
                    [ppGraphEventEmmiter]
                    classes=" highlighted-edge low-opacity-node low-opacity-edge"
                    mode="layout"

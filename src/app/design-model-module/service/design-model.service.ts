@@ -44,15 +44,12 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
   private designModelLinks;
   private edgeTypes = new BehaviorSubject<string[]>([]);
 
-
   constructor(private httpClient: HttpClient) {
   }
-
 
   getDesignModels(): Observable<DesignModelResponse> {
     return this.httpClient.get<DesignModelResponse>(this.designModelsEndpoint);
   }
-
 
   saveDesignModel(url: string, view: PatternContainer) {
     return this.httpClient.post<DesignModelResponse>(url, view, { observe: 'response' });
@@ -124,7 +121,6 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
     return this.httpClient.get<DesignModel>(this.designModelsEndpoint + '/' + uuid + '/patterns');
   }
 
-
   getEdgeTypes(): Observable<string[]> {
     if (!this.edgeTypes.getValue().length) {
       this.httpClient.get<string[]>(this.designModelsEndpoint + '/edge-types').subscribe(
@@ -134,7 +130,6 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
 
     return this.edgeTypes.asObservable();
   }
-
 
   getEdges(): Observable<DirectedEdgeModel[] | UndirectedEdgeModel[]> {
     return this.httpClient.get<any[]>(this.designModelLinks.edges.href)
@@ -156,7 +151,6 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
       );
   }
 
-
   addEdge(edge: DirectedEdgeModel | UndirectedEdgeModel): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       console.debug('Add edge', this.designModelLinks.edges.href, edge);
@@ -172,14 +166,12 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
     });
   }
 
-
   deleteEdge(edge: { source: string, target: string }): void {
     console.debug('Delete edge', this.designModelLinks.edges.href, edge);
     this.httpClient.delete(this.designModelLinks.edges.href + '/' + edge.source + '/' + edge.target).subscribe(response => {
       console.debug('Delete edge response', response);
     });
   }
-
 
   createLink(
     url,
@@ -205,7 +197,6 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
       );
     return observables.length > 0 ? forkJoin(observables) : EMPTY;
   }
-
 
   deleteLink(patternLink: any): Observable<any> {
     return this.httpClient.delete(patternLink);
