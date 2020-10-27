@@ -20,8 +20,8 @@ export const globals = {
   repoEndpoint: 'http://localhost:8080/patternpedia',
   featureToggles: {
     designModel: false,
-    patternCandidate: false,
-    issue: false,
+    patternCandidate: true,
+    issue: true,
   },
   pathConstants: {
     patternLanguages: 'pattern-languages',
