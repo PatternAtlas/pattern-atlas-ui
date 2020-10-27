@@ -141,7 +141,7 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
       .pipe(
         map(edges => {
           return edges.map(edge => {
-            edge.texts = [<TextComponent>{
+            edge.texts = [{
               value: edge.type,
               width: 100,
               positionOnLine: 0.5,
@@ -149,7 +149,7 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
               offsetY: -2,
               clickEventKey: 'edge-type',
               template: 'edge-label'
-            }];
+            } as TextComponent];
             return edge;
           });
         })

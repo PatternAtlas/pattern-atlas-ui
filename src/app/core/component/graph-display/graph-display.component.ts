@@ -110,7 +110,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
       return [];
     }
     const edges: any = [];
-    for (let currentLink of links) {
+    for (const currentLink of links) {
 
       const edge: any = {
         id: currentLink.id,
@@ -164,7 +164,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     this.graphNativeElement.setNodeClass = (className, node) => {
       if (this.highlightedNodeIds.length > 0) {
         if (className === 'low-opacity-node') {
-          return !this.highlightedNodeIds.includes(<string>node.id);
+          return !this.highlightedNodeIds.includes(node.id as string);
         }
       }
       return false;
@@ -176,7 +176,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
       }
       if (className === 'low-opacity-edge' && this.highlightedNodeIds.length > 0) {
         const id = edge.id ? edge.id : edgeId(edge);
-        return !this.highlightedEdgeIds.includes(<string>id);
+        return !this.highlightedEdgeIds.includes(id as string);
       }
       return false;
     };
@@ -270,7 +270,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   nodePositionChanged(event) {
     const movedNode = event.detail.node;
     try {
-      (<GraphDataSavePatternService>this.graphDataService)
+      (this.graphDataService as GraphDataSavePatternService)
         .savePattern(this.patternLanguage ? this.patternLanguage : this.patternContainer, movedNode)
         .subscribe(() => console.debug('Pattern saved', movedNode));
     } catch (e) {
