@@ -192,7 +192,11 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
 
     const observables = items
       .map(item => item.type === 'directed' ?
-        this.httpClient.post(patternContainer._links.directedEdges.href, new AddDirectedEdgeToViewRequest(<DirectedEdgeModel>item.edge), { observe: 'response' }) :
+        this.httpClient.post(
+          patternContainer._links.directedEdges.href,
+          new AddDirectedEdgeToViewRequest(<DirectedEdgeModel>item.edge),
+          { observe: 'response' }
+        ) :
         this.httpClient.post(
           patternContainer._links.undirectedEdges.href,
           new AddUndirectedEdgeToViewRequest(<UndirectedEdgeModel>item.edge),

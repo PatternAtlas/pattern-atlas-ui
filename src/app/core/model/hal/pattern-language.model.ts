@@ -13,9 +13,9 @@
  */
 
 import PatternSchema from './pattern-schema.model';
-import {PatternLanguageResource} from './hal-resources.interface';
+import { PatternLanguageResource } from './hal-resources.interface';
 import Pattern from './pattern.model';
-import {PatternContainer} from "./pattern-container.model";
+import { PatternContainer } from './pattern-container.model';
 
 class PatternLanguage extends PatternContainer {
   patterns: Array<Pattern>;

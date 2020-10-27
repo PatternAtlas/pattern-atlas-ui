@@ -5,7 +5,6 @@ import { PatternLanguageService } from '../../../core/service/pattern-language.s
 import { GraphInputData } from '../../../core/model/graph-input-data.interface';
 import { ConcreteSolutionService } from '../../service/concrete-solution.service';
 import { MatDialog } from '@angular/material/dialog';
-import { TechnologySelectorComponent } from '../technology-selector/technology-selector.component';
 import { FormControl } from '@angular/forms';
 import { Pattern } from '../../../graph/model';
 
@@ -43,6 +42,17 @@ export class DesignModelRendererComponent implements OnInit {
 
   private designModelId: string;
   private designModelPatterns: Pattern[];
+
+
+  static concreteSolutionFulfills(concreteSolutionProperties: any, userQuery: string): boolean {
+    if (!userQuery.length) {
+      return true;
+    }
+
+    const result = Function('"use strict"; return ((cs) => { return ' + userQuery + '})')()(concreteSolutionProperties);
+    console.debug(userQuery, result, !!result, concreteSolutionProperties);
+    return !!result;
+  }
 
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -161,24 +171,8 @@ export class DesignModelRendererComponent implements OnInit {
   }
 
 
-  selectTechnology(): Promise<{}> {
-    console.warn('#', Object.keys(this.aggregationAssignments).length, this.aggregationAssignments);
-
-    return new Promise<{}>(resolve => {
-      const response = this.concreteSolutionService.getConcreteSolutionSet(this.designModelId);
-
-      const dialogRef = this.dialog.open(TechnologySelectorComponent, { data: { options: response } });
-
-      dialogRef.componentInstance.getSelectedTechnology().subscribe(technology => {
-        dialogRef.close();
-        resolve(technology);
-      });
-    });
-  }
-
-
   aggregateConcreteSolutions(): void {
-      this.concreteSolutionService.aggregateDesignModel(this.designModelId, this.aggregationAssignments);
+    this.concreteSolutionService.aggregateDesignModel(this.designModelId, this.aggregationAssignments);
   }
 
 
@@ -197,16 +191,5 @@ export class DesignModelRendererComponent implements OnInit {
     } catch (e) {
       this.userQueryInput.setErrors({ invalidSyntax: true });
     }
-  }
-
-
-  static concreteSolutionFulfills(concreteSolutionProperties: any, userQuery: string): boolean {
-    if (!userQuery.length) {
-      return true;
-    }
-
-    const result = Function('"use strict"; return ((cs) => { return ' + userQuery + '})')()(concreteSolutionProperties); // TODO replace by properties or capabilities
-    console.debug(userQuery, result, !!result, concreteSolutionProperties);
-    return !!result;
   }
 }

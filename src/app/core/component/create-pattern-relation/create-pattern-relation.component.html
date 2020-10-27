@@ -1,8 +1,7 @@
 <h1 mat-dialog-title>Add a relation to another pattern</h1>
 <div mat-dialog-content [formGroup]="relationForm">
   <mat-form-field *ngIf="data.firstPattern; else chooseFirstPattern">
-    <input type="text" formControlName="firstPattern"
-           matInput [value]="data.firstPattern.name" readonly>
+    <input type="text" matInput [value]="data.firstPattern.name" readonly/>
   </mat-form-field>
   <ng-template #chooseFirstPattern>
     <mat-form-field>
@@ -40,8 +39,7 @@
   </mat-autocomplete>
 
   <mat-form-field *ngIf="data.secondPattern; else chooseSecondPattern">
-    <input type="text" formControlName="secondPattern"
-           matInput [value]="data.secondPattern.name" readonly>
+    <input type="text" matInput [value]="data.secondPattern.name" readonly/>
   </mat-form-field>
   <ng-template #chooseSecondPattern>
     <mat-form-field>

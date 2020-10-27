@@ -12,23 +12,23 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import PatternLanguage from '../model/hal/pattern-language.model';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {globals} from '../../globals';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { globals } from '../../globals';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import PatternLanguages from '../model/hal/pattern-languages.model';
-import {DirectedEdesResponse} from '../model/hal/directed-edes-response.interface';
-import {Embedded} from '../model/hal/embedded';
-import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
-import {GraphNode} from '../component/graph-display/graph-display.component';
+import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
+import { Embedded } from '../model/hal/embedded';
+import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
+import { GraphNode } from '../component/graph-display/graph-display.component';
 import PatternLanguageModel from '../model/hal/pattern-language-model.model';
-import {GraphDataService} from "./graph-data.service";
-import {PatternContainer} from "../model/hal/pattern-container.model";
-import {PatternService} from "./pattern.service";
-import {PatternContainerResponse} from "../model/hal/pattern-container-response.interface";
-import Pattern from "../model/hal/pattern.model";
+import { GraphDataService } from './graph-data/graph-data.service';
+import { PatternContainer } from '../model/hal/pattern-container.model';
+import { PatternService } from './pattern.service';
+import { PatternContainerResponse } from '../model/hal/pattern-container-response.interface';
+import Pattern from '../model/hal/pattern.model';
 
 @Injectable()
 export class PatternLanguageService implements GraphDataService {
@@ -63,7 +63,7 @@ export class PatternLanguageService implements GraphDataService {
   }
 
   public savePatternLanguage(patternLanguage: PatternLanguage): Observable<HttpResponse<any>> {
-    return this.http.post<HttpResponse<any>>(this.repoEndpoint + '/patternLanguages', patternLanguage, {observe: 'response'});
+    return this.http.post<HttpResponse<any>>(this.repoEndpoint + '/patternLanguages', patternLanguage, { observe: 'response' });
   }
 
   public getDirectedEdges(patternLanguage: PatternLanguage): Observable<Embedded<DirectedEdesResponse>> {
@@ -75,7 +75,7 @@ export class PatternLanguageService implements GraphDataService {
   }
 
   saveGraph(patternLanguage: PatternLanguage, nodes: Array<any>) {
-    return this.http.post<any>(patternLanguage._links.graph.href, nodes, {observe: 'response'});
+    return this.http.post<any>(patternLanguage._links.graph.href, nodes, { observe: 'response' });
   }
 
   getGraph(patternLanguage: PatternLanguage) {
@@ -97,5 +97,9 @@ export class PatternLanguageService implements GraphDataService {
 
   getPatternContainerByUri(uri: string): Observable<PatternContainer> {
     return this.getPatternLanguageByEncodedUri(uri);
+  }
+
+  getEdgeTypes(): Observable<string[]> {
+    return of([]);
   }
 }

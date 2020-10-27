@@ -12,8 +12,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import {QueriedData} from '../service/data/QueriedData.interface';
-import {globals} from '../../globals';
+import { QueriedData } from '../service/data/QueriedData.interface';
+import { globals } from '../../globals';
 
 export class UriConverter {
 

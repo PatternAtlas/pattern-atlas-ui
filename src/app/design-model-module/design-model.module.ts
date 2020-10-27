@@ -17,7 +17,6 @@ import { DesignModelService } from './service/design-model.service';
 import { DesignModelRendererComponent } from './component/design-model-renderer/design-model-renderer.component';
 import { GraphDataService } from '../core/service/graph-data/graph-data.service';
 import { ConcreteSolutionService } from './service/concrete-solution.service';
-import { TechnologySelectorComponent } from './component/technology-selector/technology-selector.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -27,8 +26,7 @@ import { MatInputModule } from '@angular/material/input';
 @NgModule({
   declarations: [
     DesignModelManagementComponent,
-    DesignModelRendererComponent,
-    TechnologySelectorComponent
+    DesignModelRendererComponent
   ],
   imports: [
     CommonModule,

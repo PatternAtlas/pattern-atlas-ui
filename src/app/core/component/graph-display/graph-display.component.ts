@@ -32,7 +32,7 @@ import { GraphDataService } from '../../service/graph-data/graph-data.service';
 import { globals } from '../../../globals';
 import { GraphDataSavePatternService } from '../../service/graph-data/graph-data-save-pattern.service';
 import { PatternRelationDescriptorDirection } from '../../model/pattern-relation-descriptor-direction.enum';
-import {UriConverter} from '../../util/uri-converter';
+import { UriConverter } from '../../util/uri-converter';
 
 
 export class GraphNode {
@@ -63,8 +63,8 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
 
   @Input() data: GraphInputData;
   @Input() showPatternLanguageName: boolean;
-  @Input() enableDeletePattern: boolean = false;
-  @Input() showConcreteSolutions: boolean = false;
+  @Input() enableDeletePattern = false;
+  @Input() showConcreteSolutions = false;
   @Input() concreteSolutions = [];
 
   @Output() addedEdge = new EventEmitter<any>();
@@ -106,7 +106,6 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   }
 
   static mapPatternLinksToEdges(links: any[]): NetworkLink[] {
-    const edges: any = [];
     if (!links.length) {
       return [];
     }
@@ -148,7 +147,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
           y: 5 * offsetIndex,
           patternLanguageId: patterns[ i ].patternLanguageId,
           patternLanguageName: patterns[ i ].patternLanguageName,
-          uri: patterns[i].uri
+          uri: patterns[ i ].uri
         };
         nodes.push(node);
       }
@@ -258,7 +257,12 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   nodeClicked(event) {
     const node = event[ 'detail' ][ 'node' ];
     if (event[ 'detail' ][ 'key' ] === 'info') {
-      this.router.navigate([UriConverter.doubleEncodeUri(node.uri)], {relativeTo: this.activatedRoute});
+      this.router.navigate([UriConverter.doubleEncodeUri(node.uri)], { relativeTo: this.activatedRoute });
+      return;
+    }
+    if (event[ 'detail' ][ 'key' ] === 'delete') {
+      this.deletePatternEvent.emit(node.id);
+      return;
     }
     this.showInfoForClickedNode(node);
   }

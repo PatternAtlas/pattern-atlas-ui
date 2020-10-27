@@ -1,12 +1,12 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {ProcessOauthCallbackComponent} from './core/component/process-oauth-callback/process-oauth-callback.component';
-import {ToasterModule} from 'angular2-toaster';
-import {PageNotFoundComponent} from './core/component/page-not-found/page-not-found.component';
-import {AuthGuardService as AuthGuard} from './authentication/_services/auth-guard.service';
-import {PatternLanguageManagementResolverService} from './pattern-language-management/pattern-language-management/pattern-language-management-resolver.service'; // eslint-disable-line max-len
-import {UserRole} from './core/user-management';
-import {globals} from './globals';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ProcessOauthCallbackComponent } from './core/component/process-oauth-callback/process-oauth-callback.component';
+import { ToasterModule } from 'angular2-toaster';
+import { PageNotFoundComponent } from './core/component/page-not-found/page-not-found.component';
+import { AuthGuardService as AuthGuard } from './authentication/_services/auth-guard.service';
+import { PatternLanguageManagementResolverService } from './pattern-language-management/pattern-language-management/pattern-language-management-resolver.service'; // eslint-disable-line max-len
+import { UserRole } from './core/user-management';
+import { globals } from './globals';
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -54,19 +54,19 @@ const routes: Routes = [
     path: 'user',
     loadChildren: () => import('./user-management/user-management.module').then(m => m.UserManagementModule),
     canActivate: [AuthGuard],
-    data: {role: UserRole.MEMBER}
+    data: { role: UserRole.MEMBER }
   },
   {
     path: 'admin',
     loadChildren: () => import('./admin-management/admin-management.module').then(m => m.AdminManagementModule),
     canActivate: [AuthGuard],
-    data: {role: UserRole.ADMIN}
+    data: { role: UserRole.ADMIN }
   },
   {
     path: 'developer',
     loadChildren: () => import('./developer-management/developer-management.module').then(m => m.DeveloperManagementModule),
     canActivate: [AuthGuard],
-    data: {role: UserRole.ADMIN}
+    data: { role: UserRole.ADMIN }
   },
   {
     path: 'oauth-callback',
@@ -79,7 +79,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {useHash: false, onSameUrlNavigation: 'reload'}), ToasterModule.forRoot()],
+  imports: [RouterModule.forRoot(routes, { useHash: false, onSameUrlNavigation: 'reload' }), ToasterModule.forRoot()],
   exports: [RouterModule]
 })
 export class AppRoutingModule {
