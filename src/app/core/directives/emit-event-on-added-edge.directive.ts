@@ -7,6 +7,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 })
 export class EmitEventOnAddedEdgeDirective implements OnInit, OnDestroy {
   @Output('onAddedEdge') edgeAddedEventEmitter = new EventEmitter<any>(); // eslint-disable-line @angular-eslint/no-output-rename
+  @Output('onRemovedEdge') edgeRemovedEventEmitter = new EventEmitter<any>(); // eslint-disable-line @angular-eslint/no-output-rename
   @Output('onClickedNode') nodeClickedEventEmitter = new EventEmitter<any>(); // eslint-disable-line @angular-eslint/no-output-rename
   @Output('onClickedBackground') backgroundClickedEventEmitter = new EventEmitter<any>(); // eslint-disable-line @angular-eslint/no-output-rename
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
@@ -33,8 +34,12 @@ export class EmitEventOnAddedEdgeDirective implements OnInit, OnDestroy {
     this.edgeAddedEventEmitter.emit($event);
   }
 
+  @HostListener('edgeremove', ['$event']) onEdgeRemove($event) {
+    this.edgeRemovedEventEmitter.emit($event);
+  }
+
   @HostListener('nodeclick', ['$event']) onNodeClick($event) {
-    console.log('click-event');
+    console.log('click-event', $event);
     if ($event.details && $event.details.key === 'image-clicked') {
       console.log('image');
       // $event.preventDefault();

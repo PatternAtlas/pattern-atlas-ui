@@ -1538,10 +1538,10 @@
     semver "^7.3.2"
     tsutils "^3.17.1"
 
-"@ustutt/grapheditor-webcomponent@0.3.1":
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/@ustutt/grapheditor-webcomponent/-/grapheditor-webcomponent-0.3.1.tgz#33a1ebc870b4141553142cf31d975aa4ae556d29"
-  integrity sha512-C53ykrk/z6wvAnG/hQIhtHK6vHsspvyQGov6qXBmbI88VqH/00NwlGxX1Tj2mMlrimH1eFrE6o1EIP6CW/c39w==
+"@ustutt/grapheditor-webcomponent@0.5.4":
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/@ustutt/grapheditor-webcomponent/-/grapheditor-webcomponent-0.5.4.tgz#cf5ca222737b2b387cb661eae19205d8c68e6231"
+  integrity sha512-GxSc2U4HLG6Bk1/KF5/dYuEllsY8GvrsNHgusHAOH+ThoUKt0YIDPvYyAoNyHAxc4TAjtrG8eYIt18SM594NGg==
   dependencies:
     d3-drag "^1.2.5"
     d3-selection "^1.4.1"

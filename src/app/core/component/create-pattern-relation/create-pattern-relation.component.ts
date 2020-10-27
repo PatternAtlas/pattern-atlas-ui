@@ -7,6 +7,7 @@ import { DirectedEdgeModel } from '../../model/hal/directed-edge.model';
 import { UndirectedEdgeModel } from '../../model/hal/undirected-edge.model';
 import { PatternContainer } from '../../model/hal/pattern-container.model';
 import PatternLanguage from '../../model/hal/pattern-language.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'pp-create-pattern-relation',
@@ -22,35 +23,53 @@ export class CreatePatternRelationComponent implements OnInit {
 
   directionEnum = PatternRelationDescriptorDirection;
   patterns: Pattern[];
-  types = [{ name: PatternRelationDescriptorDirection.DirectedRight, icon: 'trending_flat' },
-    { name: PatternRelationDescriptorDirection.DirectedLeft, icon: 'trending_flat' }, {
-      name: PatternRelationDescriptorDirection.UnDirected,
-      icon: 'compare_arrows'
-    }];
+  directionTypes = [
+    { name: PatternRelationDescriptorDirection.DirectedRight, icon: 'trending_flat' },
+    { name: PatternRelationDescriptorDirection.DirectedLeft, icon: 'trending_flat' },
+    { name: PatternRelationDescriptorDirection.UnDirected, icon: 'sync_alt' }
+  ];
   relationForm: FormGroup;
-  relationTypes = ['isRelatedTo', 'isUsedBefore', 'isUsedAfter', 'dependsOn', 'canBeUsedWith',
-    'cannotBeUsedWith', 'consistsOf', 'uses', 'usedIn', 'isAlternativeTo', 'isVariationOf'];
+  relationTypes = [
+    // Fallback values, can be overwritten by providing an Observable as data.relationTypes
+    'isRelatedTo',
+    'isUsedBefore',
+    'isUsedAfter',
+    'dependsOn',
+    'canBeUsedWith',
+    'cannotBeUsedWith',
+    'consistsOf',
+    'uses',
+    'usedIn',
+    'isAlternativeTo',
+    'isVariationOf'
+  ];
+
+  private subscriptionRefs = [];
 
 
   ngOnInit() {
+    let preselectedEdgeDirection;
+    try {
+      preselectedEdgeDirection = this.directionTypes.filter(type => type.name === this.data.preselectedEdgeDirection)[ 0 ];
+    } catch (e) {
+    }
+
     this.relationForm = this.fb.group({
-      firstPattern: ['', [Validators.required]],
-      secondPattern: ['', [Validators.required]],
-      direction: ['', [Validators.required]],
+      firstPattern: [this.data.firstPattern, [Validators.required]],
+      secondPattern: [this.data.secondPattern, [Validators.required]],
+      direction: [preselectedEdgeDirection, [Validators.required]],
       relationType: ['', [Validators.required]],
       description: ['', []],
     });
 
-    if (this.data.firstPattern) {
-      this.relationForm.get('firstPattern').setValue(this.data.firstPattern);
-    }
-    if (this.data.secondPattern) {
-      this.relationForm.get('secondPattern').setValue(this.data.secondPattern);
+    if (this.data.relationTypes) {
+      this.subscriptionRefs.push(this.data.relationTypes.subscribe(relationTypes => this.relationTypes = relationTypes));
     }
   }
 
   close(): void {
     this.dialogRef.close();
+    this.subscriptionRefs.forEach(subscription => subscription.unsubscribe());
   }
 
   // adds a relation created by the dialog to the local data and returns whether this was successful (or not, e.g. when simply closing the dialog)
@@ -80,9 +99,11 @@ export class CreatePatternRelationComponent implements OnInit {
 export interface DialogData {
   firstPattern?: Pattern;
   secondPattern?: Pattern;
+  preselectedEdgeDirection?: PatternRelationDescriptorDirection;
   patterns: Pattern[];
   patternLanguage: PatternLanguage;
   patternContainer: PatternContainer;
+  relationTypes?: Observable<string[]>;
 }
 
 export interface PatternRelationDirection {
@@ -97,5 +118,3 @@ export interface DialogDataResult {
   secondPattern: Pattern;
   description?: string;
 }
-
-

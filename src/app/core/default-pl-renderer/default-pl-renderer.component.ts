@@ -8,27 +8,27 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {UriConverter} from '../util/uri-converter';
-import {MatDialog} from '@angular/material/dialog';
-import {PatternLanguageService} from '../service/pattern-language.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UriConverter } from '../util/uri-converter';
+import { MatDialog } from '@angular/material/dialog';
+import { PatternLanguageService } from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
-import {D3Service} from '../../graph/service/d3.service';
-import {GraphDisplayComponent} from '../component/graph-display/graph-display.component';
-import {EMPTY, forkJoin, Observable, Subscription} from 'rxjs';
-import {Embedded} from '../model/hal/embedded';
-import {DirectedEdesResponse} from '../model/hal/directed-edes-response.interface';
-import {switchMap, tap} from 'rxjs/operators';
-import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
-import {DirectedEdgeModel} from '../model/hal/directed-edge.model';
-import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
-import {CreatePatternRelationComponent} from '../component/create-pattern-relation/create-pattern-relation.component';
-import {PatternRelationDescriptorService} from '../service/pattern-relation-descriptor.service';
-import {ToasterService} from 'angular2-toaster';
-import {PatternService} from '../service/pattern.service';
+import { D3Service } from '../../graph/service/d3.service';
+import { GraphDisplayComponent } from '../component/graph-display/graph-display.component';
+import { EMPTY, forkJoin, Observable, Subscription } from 'rxjs';
+import { Embedded } from '../model/hal/embedded';
+import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
+import { switchMap, tap } from 'rxjs/operators';
+import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
+import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
+import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
+import { CreatePatternRelationComponent } from '../component/create-pattern-relation/create-pattern-relation.component';
+import { PatternRelationDescriptorService } from '../service/pattern-relation-descriptor.service';
+import { ToasterService } from 'angular2-toaster';
+import { PatternService } from '../service/pattern.service';
 import Pattern from '../model/hal/pattern.model';
-import {FormControl} from '@angular/forms';
-import {globals} from '../../globals';
+import { FormControl } from '@angular/forms';
+import { globals } from '../../globals';
 
 @Component({
   selector: 'pp-default-pl-renderer',
@@ -43,8 +43,8 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   @ViewChild('graphWrapper') graph: ElementRef;
   @ViewChild('cardsView') cardsView: ElementRef;
   @ViewChild('searchField') searchField: ElementRef;
-  @ViewChild(GraphDisplayComponent, {static: false}) graphDisplayComponent: GraphDisplayComponent;
-  @ViewChild('displayPLContainer', {read: ViewContainerRef}) loadRenderer;
+  @ViewChild(GraphDisplayComponent, { static: false }) graphDisplayComponent: GraphDisplayComponent;
+  @ViewChild('displayPLContainer', { read: ViewContainerRef }) loadRenderer;
   graphVisible = false;
   isLoadingPatternData = true;
   isLoadingLinkData = true;
@@ -95,7 +95,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   }
 
   public addPattern(): void {
-    this.router.navigate(['create-patterns'], {relativeTo: this.activatedRoute});
+    this.router.navigate(['create-patterns'], { relativeTo: this.activatedRoute });
   }
 
   public addLink() {

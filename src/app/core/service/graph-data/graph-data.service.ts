@@ -13,12 +13,12 @@
  */
 
 import { Observable } from 'rxjs';
-import Pattern from '../model/hal/pattern.model';
-import { PatternContainer } from '../model/hal/pattern-container.model';
-import { GraphNode } from '../component/graph-display/graph-display.component';
-import { PatternContainerResponse } from '../model/hal/pattern-container-response.interface';
+import Pattern from '../../model/hal/pattern.model';
+import { PatternContainer } from '../../model/hal/pattern-container.model';
+import { GraphNode } from '../../component/graph-display/graph-display.component';
+import { PatternContainerResponse } from '../../model/hal/pattern-container-response.interface';
 import { Injectable } from '@angular/core';
-import PatternLanguage from '../model/hal/pattern-language.model';
+import PatternLanguage from '../../model/hal/pattern-language.model';
 
 
 @Injectable()
@@ -32,5 +32,7 @@ export abstract class GraphDataService {
 
   abstract saveGraph(patternContainer: PatternContainer | PatternLanguage, nodeList: any[]): Observable<any>;
 
-  abstract getGraph(patternContainer: PatternContainer): Observable<{ graph: Array<GraphNode> }>;
+  abstract getGraph(patternContainer: PatternContainer | PatternLanguage): Observable<{ graph: Array<GraphNode> }>;
+
+  abstract getEdgeTypes(): Observable<string[]>;
 }

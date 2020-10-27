@@ -14,7 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTreeModule } from '@angular/material/tree';
 import { Routes, RouterModule } from '@angular/router';
-import { GraphDataService } from '../core/service/graph-data.service';
+import { GraphDataService } from '../core/service/graph-data/graph-data.service';
 import { PatternViewService } from '../core/service/pattern-view.service';
 
 

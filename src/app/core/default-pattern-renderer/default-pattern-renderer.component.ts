@@ -6,27 +6,27 @@ import {
   OnDestroy,
   ViewChild
 } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ToasterService} from 'angular2-toaster';
-import {PatternPropertyDirective} from '../component/markdown-content-container/pattern-property.directive';
-import {MatDialog} from '@angular/material/dialog';
-import {CreatePatternRelationComponent} from '../component/create-pattern-relation/create-pattern-relation.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToasterService } from 'angular2-toaster';
+import { PatternPropertyDirective } from '../component/markdown-content-container/pattern-property.directive';
+import { MatDialog } from '@angular/material/dialog';
+import { CreatePatternRelationComponent } from '../component/create-pattern-relation/create-pattern-relation.component';
 import Pattern from '../model/hal/pattern.model';
-import {PatternLanguageService} from '../service/pattern-language.service';
+import { PatternLanguageService } from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
-import {PatternService} from '../service/pattern.service';
-import {MarkdownPatternSectionContentComponent} from '../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-section-content.component'; // eslint-disable-line max-len
-import {DataChange} from '../component/markdown-content-container/interfaces/DataRenderingComponent.interface';
+import { PatternService } from '../service/pattern.service';
+import { MarkdownPatternSectionContentComponent } from '../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-section-content.component'; // eslint-disable-line max-len
+import { DataChange } from '../component/markdown-content-container/interfaces/DataRenderingComponent.interface';
 import PatternSectionSchema from '../model/hal/pattern-section-schema.model';
-import {map, switchMap, tap} from 'rxjs/operators';
-import {EMPTY, forkJoin, Observable, Subscription} from 'rxjs';
-import {PatternRelationDescriptorService} from '../service/pattern-relation-descriptor.service';
-import {DirectedEdgeModel} from '../model/hal/directed-edge.model';
-import {Embedded} from '../model/hal/embedded';
-import {DirectedEdesResponse} from '../model/hal/directed-edes-response.interface';
-import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
-import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
-import {globals} from '../../globals';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { EMPTY, forkJoin, Observable, Subscription } from 'rxjs';
+import { PatternRelationDescriptorService } from '../service/pattern-relation-descriptor.service';
+import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
+import { Embedded } from '../model/hal/embedded';
+import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
+import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
+import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
+import { globals } from '../../globals';
 
 @Component({
   selector: 'pp-default-pattern-renderer',
@@ -216,7 +216,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
 
   private showAndHandleLinkDialog() {
     const dialogRef = this.dialog.open(CreatePatternRelationComponent,
-      {data: {firstPattern: this.pattern, patterns: this.patterns}}
+      { data: { firstPattern: this.pattern, patterns: this.patterns } }
     );
     const dialogSubscription = dialogRef.afterClosed().pipe(
       switchMap(result => {
