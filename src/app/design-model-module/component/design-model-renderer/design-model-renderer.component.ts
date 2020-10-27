@@ -128,7 +128,7 @@ export class DesignModelRendererComponent implements OnInit {
   addedEdgeInGraphView(event) {
     this.designModelService.addEdge(event).then(
       () => this.reloadGraph()
-    );
+    ).catch(reason => console.error(reason));
   }
 
 
