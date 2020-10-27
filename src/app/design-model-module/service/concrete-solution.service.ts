@@ -16,6 +16,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { globals } from '../../globals';
 import { tap } from 'rxjs/operators';
+import { FileDTO } from '../model/file-dto';
 
 
 @Injectable()
@@ -34,7 +35,7 @@ export class ConcreteSolutionService {
 
 
   aggregateDesignModel(uuid: string, query: {}) {
-    this.httpClient.post(this.repoEndpoint + '/' + uuid + '/aggregate', query).subscribe((files: any) => {
+    this.httpClient.post(this.repoEndpoint + '/' + uuid + '/aggregate', query).subscribe((files: FileDTO[]) => {
       try {
         console.debug('Aggregation response is', files);
         files.forEach(file => {

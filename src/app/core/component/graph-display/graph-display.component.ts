@@ -29,11 +29,11 @@ import { PatternResponse } from '../../model/hal/pattern-response.interface';
 import { EMPTY, Observable } from 'rxjs';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { GraphDataService } from '../../service/graph-data/graph-data.service';
-import { globals } from '../../../globals';
 import { GraphDataSavePatternService } from '../../service/graph-data/graph-data-save-pattern.service';
 import { PatternRelationDescriptorDirection } from '../../model/pattern-relation-descriptor-direction.enum';
 import { UriConverter } from '../../util/uri-converter';
 
+// file deepcode ignore no-any: out of scope, this should be done another time
 
 export class GraphNode {
   id: string;
@@ -77,18 +77,18 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   patternClicked = false;
   allPatternsLoading = true;
   currentPattern: Pattern;
-  currentEdges: Array<EdgeWithType>;
-  patternLanguages: Array<PatternLanguage>;
+  currentEdges: EdgeWithType[];
+  patternLanguages: PatternLanguage[];
   patternContainer: PatternContainer;
-  private edges: Array<NetworkLink>;
-  private nodes: Array<GraphNode>;
-  private copyOfLinks: Array<NetworkLink>;
-  private patterns: Array<Pattern>;
+  private edges: NetworkLink[];
+  private nodes: GraphNode[];
+  private copyOfLinks: NetworkLink[];
+  private patterns: Pattern[];
   private patternLanguage: PatternLanguage;
   private currentEdge: any;
-  private highlightedNodeIds: Array<string> = [];
+  private highlightedNodeIds: string[] = [];
   private clickedNodeId: string = null;
-  private highlightedEdgeIds: Array<string> = [];
+  private highlightedEdgeIds: string[] = [];
   private manualAssignments: { [ key: string ]: string } = {};
   private aggregationAssignments: { [ key: string ]: string } = {};
 
@@ -134,8 +134,8 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     return edges;
   }
 
-  static mapPatternsToNodes(patterns: Array<Pattern>, offsetIndex: number = 0): Array<GraphNode> {
-    const nodes: Array<any> = [];
+  static mapPatternsToNodes(patterns: Array<Pattern>, offsetIndex: number = 0): GraphNode[] {
+    const nodes: any[] = [];
     if (patterns) {
       for (let i = 0; i < patterns.length; i++) {
         const node = {
@@ -209,7 +209,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
         firstPattern: patterns.find((pat) => event.detail.edge.source === pat.id),
         secondPattern: patterns.find((pat) => event.detail.edge.target === pat.id),
         preselectedEdgeDirection: PatternRelationDescriptorDirection.DirectedRight,
-        patterns: patterns,
+        patterns,
         patternLanguage: this.patternLanguage,
         patternContainer: this.patternContainer,
         relationTypes: this.graphDataService.getEdgeTypes()
@@ -320,7 +320,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     }
     this.allPatternsLoading = true;
     this.patternService.getPatternsByUrl(patternLang._links.patterns.href).subscribe(
-      (data: Array<Pattern>) => {
+      (data: Pattern[]) => {
         patternLang.patterns = data.sort((a, b) => a.name.localeCompare(b.name));
         this.allPatternsLoading = false;
       }
@@ -397,7 +397,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     }
 
     this.graphDataService.getGraph(!!this.patternContainer ? this.patternContainer : this.patternLanguage)
-      .subscribe((res: { graph: Array<GraphNode> }) => {
+      .subscribe((res: { graph: GraphNode[] }) => {
         this.prepareGraph(res.graph, this.patternContainer);
       });
   }
@@ -433,7 +433,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     this.triggerRerendering();
   }
 
-  private initGraphData(graphData: Array<GraphNode>) {
+  private initGraphData(graphData: GraphNode[]) {
     if (!this.graphNativeElement) {
       return;
     }
@@ -447,7 +447,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     this.isLoading = false;
   }
 
-  private prepareGraph(graph: Array<GraphNode>, patternGraphData: PatternContainer | PatternLanguage) {
+  private prepareGraph(graph: GraphNode[], patternGraphData: PatternContainer | PatternLanguage) {
     if ((!graph && Array.isArray(this.patternGraphData.patterns)) ||
       Array.isArray(this.patternGraphData.patterns) && (this.patternGraphData.patterns.length > graph.length)) {
       this.startSimulation();

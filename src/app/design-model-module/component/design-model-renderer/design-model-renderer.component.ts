@@ -44,7 +44,7 @@ export class DesignModelRendererComponent implements OnInit {
   private designModelPatterns: Pattern[];
 
 
-  static concreteSolutionFulfills(concreteSolutionProperties: any, userQuery: string): boolean {
+  static concreteSolutionFulfills(concreteSolutionProperties, userQuery: string): boolean {
     if (!userQuery.length) {
       return true;
     }
@@ -66,7 +66,7 @@ export class DesignModelRendererComponent implements OnInit {
   ngOnInit(): void {
     this.patternLanguageService.getPatternLanguages().subscribe(patternLanguages => {
       this.patchGraphData({
-        patternLanguages: patternLanguages
+        patternLanguages
       });
 
       this.isLoading = false;
@@ -116,9 +116,9 @@ export class DesignModelRendererComponent implements OnInit {
 
       this.designModelPatterns = patternContainer.patterns;
 
-      this.patchGraphData({ patternContainer: patternContainer, patterns: patternContainer });
+      this.patchGraphData({ patternContainer, patterns: patternContainer });
 
-      this.designModelService.getEdges().subscribe(edges => this.patchGraphData({ edges: edges }));
+      this.designModelService.getEdges().subscribe(edges => this.patchGraphData({ edges }));
     });
 
     this.loadConcreteSolutions();
