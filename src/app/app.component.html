@@ -18,7 +18,8 @@
   <span class="spacer"></span>
   {{welcomeText}}
   <div class="log-button">
-    <button mat-stroked-button (click)="loginOAuth()"> {{ loginButton }}</button>
+    <button mat-stroked-button *ngIf="featureToggles.patternCandidate && featureToggles.issue"
+            (click)="loginOAuth()"> {{ loginButton }}</button>
   </div>
 </mat-toolbar>
 <nav mat-tab-nav-bar>
