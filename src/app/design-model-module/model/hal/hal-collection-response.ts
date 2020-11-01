@@ -1,10 +1,9 @@
 import { HalLink } from '../../../core/model/hal/hal-link.interface';
-import { DesignModel } from './design-model';
 
 
-export interface DesignModelResponse {
+export interface HalCollectionResponse {
   _embedded: {
-    designModels: DesignModel[]
+    [ content: string ]: any
   };
   _links: {
     self: HalLink;
