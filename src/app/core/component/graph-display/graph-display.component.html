@@ -1,10 +1,12 @@
 <mat-sidenav-container [hasBackdrop]="false" class="container">
-  <mat-sidenav *ngIf="patternContainer" #leftSidenav style="min-width: 300px;" [disableClose]="true" [opened]="true" fixedInViewport="false"
+  <mat-sidenav *ngIf="patternContainer" #leftSidenav style="min-width: 300px;" [disableClose]="true" [opened]="true"
+               fixedInViewport="false"
                mode="push">
     <h3>Add Patterns</h3>
     <mat-accordion>
       <div cdkDropListGroup>
-        <mat-expansion-panel *ngFor="let patternLang of patternLanguages" (afterExpand)="handlePatternListExpandEvent(patternLang)">
+        <mat-expansion-panel *ngFor="let patternLang of patternLanguages"
+                             (afterExpand)="handlePatternListExpandEvent(patternLang)">
           <mat-expansion-panel-header>
             <mat-panel-title>
               {{patternLang.name}}
@@ -169,7 +171,7 @@
             <image *ngIf="enableDeletePattern" data-click="delete" data-content="patternLanguageId" class="node-action"
                    width="10" x="80" y="-20" xlink:href="assets/delete.svg"/>
             <image data-click="info" data-content="patternLanguageId" width="10" x="95"
-                   xlink:href="assets/Info_Simple_bw.svg"
+                   xlink:href="assets/Info_Simple_bw.svg" class="node-action"
                    y="-20"/>
             <text class="text" data-click="title" data-content="title" dominant-baseline="middle"
                   height="50" text-anchor="middle" style="font-weight: bold"
