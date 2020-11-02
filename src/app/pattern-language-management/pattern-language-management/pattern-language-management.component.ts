@@ -12,22 +12,21 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
 import PatternLanguage from '../../core/model/hal/pattern-language.model';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { CookieService } from 'ngx-cookie-service';
-import { ToasterService } from 'angular2-toaster';
-import { PatternLanguageService } from '../../core/service/pattern-language.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
+import {CookieService} from 'ngx-cookie-service';
+import {ToasterService} from 'angular2-toaster';
+import {PatternLanguageService} from '../../core/service/pattern-language.service';
 import {
   CreateEditComponentDialogType,
   CreateEditPatternLanguageComponent
 } from '../../core/component/create-edit-pattern-language/create-edit-pattern-language.component';
-import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
-import { map } from 'rxjs/operators';
+import {DialogPatternLanguageResult} from '../data/DialogPatternLanguageResult.interface';
+import {map} from 'rxjs/operators';
 import PatternLanguageModel from '../../core/model/hal/pattern-language-model.model';
 import UriEntity from '../../core/model/hal/uri-entity.model';
-import { UriConverter } from '../../core/util/uri-converter';
 
 @Component({
   selector: 'pp-pattern-language-management',
@@ -81,11 +80,11 @@ export class PatternLanguageManagementComponent implements OnInit {
       this.cdr.detectChanges();
     }
 
-    navigateToPL(pl: UriEntity): void {
-      this.zone.run(() => {
-        this.router.navigate([UriConverter.doubleEncodeUri(pl.uri)], { relativeTo: this.activatedRoute });
-      });
-    }
+  navigateToPL(pl: UriEntity): void {
+    this.zone.run(() => {
+      this.router.navigate([pl.id], {relativeTo: this.activatedRoute});
+    });
+  }
 
     goToPatternLanguageCreation(): void {
       const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent, { data: { componentDialogType: CreateEditComponentDialogType.PATTERN_LANGUAGE } });
