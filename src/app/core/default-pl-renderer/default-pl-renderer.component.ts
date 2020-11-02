@@ -159,19 +159,35 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   private loadData(): void {
     this.isLoadingPatternData = true;
     this.patternLanguageId = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId));
-    if (this.patternLanguageId) {
-      const loadDataSubscrition = this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageId)
+    if (!this.patternLanguageId) {
+      return;
+    }
+
+    let loadDataObservable;
+    // check if patternlanguage is specified via UUIID or URI and load it accordingly
+    if (UriConverter.isUUID(this.patternLanguageId)) {
+      loadDataObservable = this.patternLanguageService.getPatternLanguageByID(this.patternLanguageId)
         .pipe(
           tap(patternlanguage => this.patternLanguage = patternlanguage),
-          switchMap(() => this.loadPatterns()),
-          switchMap(() => this.getPatternLinks())
-        )
-        .subscribe(() => {
-          this.isLoadingLinkData = false;
-          this.detectChanges();
-        });
-      this.subscriptions.add(loadDataSubscrition);
+          switchMap(() => this.loadPatternsAndLinks())
+        );
+    } else {
+      loadDataObservable = this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageId)
+        .pipe(
+          tap(patternlanguage => this.patternLanguage = patternlanguage),
+          switchMap(() => this.loadPatternsAndLinks())
+        );
     }
+    const loadDataSubscrition = loadDataObservable.subscribe(() => {
+      this.isLoadingLinkData = false;
+      this.detectChanges();
+    });
+    this.subscriptions.add(loadDataSubscrition);
+
+  }
+
+  loadPatternsAndLinks(): Observable<any> {
+    return forkJoin([this.loadPatterns(), this.getPatternLinks()]);
   }
 
   private getDirectedEdges(): Observable<Embedded<DirectedEdesResponse>> {
@@ -200,6 +216,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
         this.patterns = patterns;
         this.patternsForCardsView = this.patterns;
         this.isLoadingPatternData = false;
+        this.detectChanges();
       }));
   }
 

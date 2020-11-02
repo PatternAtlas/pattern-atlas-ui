@@ -6,27 +6,28 @@ import {
   OnDestroy,
   ViewChild
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ToasterService } from 'angular2-toaster';
-import { PatternPropertyDirective } from '../component/markdown-content-container/pattern-property.directive';
-import { MatDialog } from '@angular/material/dialog';
-import { CreatePatternRelationComponent } from '../component/create-pattern-relation/create-pattern-relation.component';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ToasterService} from 'angular2-toaster';
+import {PatternPropertyDirective} from '../component/markdown-content-container/pattern-property.directive';
+import {MatDialog} from '@angular/material/dialog';
+import {CreatePatternRelationComponent} from '../component/create-pattern-relation/create-pattern-relation.component';
 import Pattern from '../model/hal/pattern.model';
-import { PatternLanguageService } from '../service/pattern-language.service';
+import {PatternLanguageService} from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
-import { PatternService } from '../service/pattern.service';
-import { MarkdownPatternSectionContentComponent } from '../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-section-content.component'; // eslint-disable-line max-len
-import { DataChange } from '../component/markdown-content-container/interfaces/DataRenderingComponent.interface';
+import {PatternService} from '../service/pattern.service';
+import {MarkdownPatternSectionContentComponent} from '../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-section-content.component'; // eslint-disable-line max-len
+import {DataChange} from '../component/markdown-content-container/interfaces/DataRenderingComponent.interface';
 import PatternSectionSchema from '../model/hal/pattern-section-schema.model';
-import { map, switchMap, tap } from 'rxjs/operators';
-import { EMPTY, forkJoin, Observable, Subscription } from 'rxjs';
-import { PatternRelationDescriptorService } from '../service/pattern-relation-descriptor.service';
-import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
-import { Embedded } from '../model/hal/embedded';
-import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
-import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
-import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
-import { globals } from '../../globals';
+import {map, switchMap, tap} from 'rxjs/operators';
+import {EMPTY, forkJoin, Observable, Subscription} from 'rxjs';
+import {PatternRelationDescriptorService} from '../service/pattern-relation-descriptor.service';
+import {DirectedEdgeModel} from '../model/hal/directed-edge.model';
+import {Embedded} from '../model/hal/embedded';
+import {DirectedEdesResponse} from '../model/hal/directed-edes-response.interface';
+import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
+import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
+import {globals} from '../../globals';
+import {UriConverter} from '../util/uri-converter';
 
 @Component({
   selector: 'pp-default-pattern-renderer',
@@ -91,18 +92,27 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
       }));
   }
 
-  getPatternInfos(): Observable<Pattern> {
+  getPatternData(): Observable<Pattern> {
     if (!this.patternLanguage) {
       console.log('tried to get patterns before the pattern language object with the url was instanciated');
       return EMPTY;
     }
-    return this.patternService.getPatternByEncodedUri(this.patternId).pipe(
-      tap(pattern => this.pattern = pattern),
-      switchMap((pat) => {
-        const content = this.patternService.getPatternContentByPattern(this.pattern);
-        const renderedContent = this.patternService.getPatternRenderedContentByPattern(this.pattern);
-        return forkJoin([content, renderedContent]);
-      }),
+    // check if pattern is specified via UUIID or URI and load it accordingly
+    if (UriConverter.isUUID(this.patternId)) {
+      return this.patternService.getPatternById(this.patternLanguage, this.patternId).pipe(
+        tap(pattern => this.pattern = pattern),
+        switchMap(() => this.getPatternSectionContent()));
+    } else {
+      return this.patternService.getPatternByEncodedUri(this.patternId).pipe(
+        tap(pattern => this.pattern = pattern),
+        switchMap(() => this.getPatternSectionContent()));
+    }
+  }
+
+  getPatternSectionContent(): Observable<Pattern> {
+    const content = this.patternService.getPatternContentByPattern(this.pattern);
+    const renderedContent = this.patternService.getPatternRenderedContentByPattern(this.pattern);
+    return forkJoin([content, renderedContent]).pipe(
       map((patternContent) => {
         this.pattern.renderedContent = patternContent[1].renderedContent;
         return this.pattern.content = patternContent[0].content;
@@ -195,17 +205,25 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
 
   private getData(): void {
     // get pattern language object with all the hal links that we need
-    const dataSubscription = this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageId).pipe(
-      tap((patternLanguage) => this.patternLanguage = patternLanguage),
-      // get our individual pattern
-      switchMap(() => this.fillPatternSectionData()),
-      switchMap(() => this.getPatternLanguageLinks())).subscribe(() =>
+    let dataObservable;
+    if (UriConverter.isUUID(this.patternLanguageId)) {
+      dataObservable = this.patternLanguageService.getPatternLanguageByID(this.patternLanguageId).pipe(
+        tap((patternLanguage) => this.patternLanguage = patternLanguage),
+        // get our individual pattern and the links in parallel
+        switchMap(() => forkJoin([this.fillPatternSectionData(), this.getPatternLanguageLinks()])));
+    } else {
+      this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageId).pipe(
+        tap((patternLanguage) => this.patternLanguage = patternLanguage),
+        // get our individual pattern and the links in parallel
+        switchMap(() => forkJoin([this.fillPatternSectionData(), this.getPatternLanguageLinks()])));
+    }
+    const dataSubscription = dataObservable.subscribe(() =>
       this.cdr.detectChanges());
     this.subscriptions.add(dataSubscription);
   }
 
   private fillPatternSectionData() {
-    return this.getPatternInfos().pipe(
+    return this.getPatternData().pipe(
       tap(() => {
         this.patternLanguage.patternSchema.patternSectionSchemas.forEach((sec: PatternSectionSchema) => {
           this.createSectionComponent(sec.name);
@@ -216,7 +234,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
 
   private showAndHandleLinkDialog() {
     const dialogRef = this.dialog.open(CreatePatternRelationComponent,
-      { data: { firstPattern: this.pattern, patterns: this.patterns } }
+      {data: {firstPattern: this.pattern, patterns: this.patterns}}
     );
     const dialogSubscription = dialogRef.afterClosed().pipe(
       switchMap(result => {
