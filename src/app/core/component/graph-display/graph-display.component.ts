@@ -31,6 +31,7 @@ import {CdkDragDrop} from '@angular/cdk/drag-drop';
 import {GraphDataService} from '../../service/graph-data/graph-data.service';
 import {GraphDataSavePatternService} from '../../service/graph-data/graph-data-save-pattern.service';
 import {PatternRelationDescriptorDirection} from '../../model/pattern-relation-descriptor-direction.enum';
+import {Edge} from '../../model/hal/edge.model';
 
 // file deepcode ignore no-any: out of scope, this should be done another time
 
@@ -64,6 +65,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   @Input() showPatternLanguageName: boolean;
   @Input() enableDeletePattern = false;
   @Input() showConcreteSolutions = false;
+  @Input() showViewRelations = false;
   @Input() concreteSolutions = [];
 
   @Output() addedEdge = new EventEmitter<any>();
@@ -90,6 +92,8 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   private highlightedEdgeIds: string[] = [];
   private manualAssignments: { [key: string]: string } = {};
   private aggregationAssignments: { [key: string]: string } = {};
+  private relations: Edge[];
+  viewRelationsOfPattern: Edge[];
 
   constructor(private cdr: ChangeDetectorRef,
               private d3Service: D3Service,
@@ -255,7 +259,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   handleNodeClickedEvent(event) {
     const node = event['detail']['node'];
     if (event['detail']['key'] === 'info') {
-      this.router.navigate(['./..', node.patternLanguageId, node.id], {relativeTo: this.activatedRoute});
+      this.router.navigate(['./../..', 'pattern-languages', node.patternLanguageId, node.id], {relativeTo: this.activatedRoute});
       return;
     }
     if (event['detail']['key'] === 'delete') {
@@ -340,6 +344,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     this.patternGraphData = this.data;
     if (this.patternGraphData) {
       this.edges = GraphDisplayComponent.mapPatternLinksToEdges(this.patternGraphData.edges);
+      this.relations = this.patternGraphData.edges;
       this.copyOfLinks = GraphDisplayComponent.mapPatternLinksToEdges(this.patternGraphData.edges);
       this.patterns = this.patternGraphData.patterns;
       this.patternLanguage = this.patternGraphData.patternLanguage;
@@ -384,6 +389,9 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
       }))
       .subscribe(edges => {
         this.currentEdges = edges;
+        if (this.showViewRelations) {
+          this.viewRelationsOfPattern = this.relations.filter(edge => this.highlightedEdgeIds.includes(edge.id));
+        }
         this.cdr.detectChanges();
       });
   }
