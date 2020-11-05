@@ -15,8 +15,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { globals } from '../../globals';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { FileDTO } from '../model/file-dto';
+import { HalCollectionResponse } from '../model/hal/hal-collection-response';
 
 
 @Injectable()
@@ -28,7 +29,9 @@ export class ConcreteSolutionService {
   }
 
   getConcreteSolutionSet(uuid: string) {
-    return this.httpClient.get(this.repoEndpoint + '/' + uuid + '/concrete-solutions');
+    return this.httpClient.get<HalCollectionResponse>(this.repoEndpoint + '/' + uuid + '/concrete-solutions').pipe(
+      map(response => response._embedded.concreteSolutions)
+    );
   }
 
   aggregateDesignModel(uuid: string, query: {}) {

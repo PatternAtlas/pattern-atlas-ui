@@ -34,6 +34,8 @@ import { map, tap } from 'rxjs/operators';
 import { GraphDataSavePatternService } from '../../core/service/graph-data/graph-data-save-pattern.service';
 import { HalLink } from '../../core/model/hal/hal-link.interface';
 import { TextComponent } from '@ustutt/grapheditor-webcomponent/lib/edge';
+import { HalCollectionResponse } from '../model/hal/hal-collection-response';
+import { HalEntityResponse } from '../model/hal/hal-entity-response';
 
 
 @Injectable()
@@ -123,8 +125,8 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
 
   getEdgeTypes(): Observable<string[]> {
     if (!this.edgeTypes.getValue().length) {
-      this.httpClient.get<string[]>(this.designModelsEndpoint + '/edge-types').subscribe(
-        response => this.edgeTypes.next(response)
+      this.httpClient.get<HalEntityResponse>(this.designModelsEndpoint + '/edge-types').subscribe(
+        response => this.edgeTypes.next(response.content.edgeTypes)
       );
     }
 
@@ -132,10 +134,10 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
   }
 
   getEdges(): Observable<DirectedEdgeModel[] | UndirectedEdgeModel[]> {
-    return this.httpClient.get<any[]>(this.designModelLinks.edges.href)
+    return this.httpClient.get<HalCollectionResponse>(this.designModelLinks.edges.href)
       .pipe(
         map(edges => {
-          return edges.map(edge => {
+          return edges._embedded.edges.map(edge => {
             edge.texts = [{
               value: edge.type,
               width: 100,
