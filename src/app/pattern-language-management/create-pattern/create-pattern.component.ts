@@ -27,7 +27,7 @@ export class CreatePatternComponent implements OnInit {
 
   iconForm: FormGroup;
   patterns: Array<Pattern>;
-  patternLanguageUri: string;
+  patternLanguageId: string;
   iconPreviewVisible = false;
   wasSaveButtonClicked = false;
   patternValuesFormGroup: FormGroup;
@@ -67,11 +67,11 @@ export class CreatePatternComponent implements OnInit {
 
 
   ngOnInit() {
-    this.patternLanguageUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId));
+    this.patternLanguageId = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId));
     this.markdown = new MarkdownIt();
     this.markdown.use(markdownitKatex);
 
-    this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageUri).subscribe((pl: PatternLanguage) => {
+    this.patternLanguageService.getPatternLanguageById(this.patternLanguageId).subscribe((pl: PatternLanguage) => {
       this.patternLanguage = pl;
       this.sections = this.patternLanguage.patternSchema ?
         this.patternLanguage.patternSchema.patternSectionSchemas.map((schema: PatternSectionSchema) => schema.label) : [];

@@ -62,6 +62,11 @@ export class PatternLanguageService implements GraphDataService {
     return this.http.get<PatternLanguage>(url);
   }
 
+  public getPatternLanguageById(id: string): Observable<PatternLanguage> {
+    const url = this.repoEndpoint + '/patternLanguages/' + id;
+    return this.http.get<PatternLanguage>(url);
+  }
+
   public savePatternLanguage(patternLanguage: PatternLanguage): Observable<HttpResponse<any>> {
     return this.http.post<HttpResponse<any>>(this.repoEndpoint + '/patternLanguages', patternLanguage, { observe: 'response' });
   }
