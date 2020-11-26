@@ -105,6 +105,6 @@ export class PatternLanguageService implements GraphDataService {
   }
 
   getEdgeTypes(): Observable<string[]> {
-    return of([]);
+    return of();
   }
 }

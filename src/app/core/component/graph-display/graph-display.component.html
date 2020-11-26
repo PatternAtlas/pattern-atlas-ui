@@ -34,32 +34,35 @@
     </mat-accordion>
   </mat-sidenav>
 
+  <!-- Sidepanel for Pattern View Relations -->
   <mat-sidenav [opened]="patternClicked" position="end" fixedInViewport="true" mode="over">
     <h4 style="margin: 1em">{{showViewRelations ? 'View ' : ''}}Relations of {{currentPattern?.name}}</h4>
     <mat-accordion>
-      <mat-expansion-panel *ngFor="let relation of viewRelationsOfPattern">
-        <mat-expansion-panel-header>
-          <mat-panel-title style="align-self: center">
-            <b>{{relation?.type}}</b>
-          </mat-panel-title>
-          <mat-panel-description class="horiz-centered">
-            <div class="horiz-centered" *ngIf="relation['sourcePatternId']">
-              <i class="material-icons" *ngIf="relation['sourcePatternId'] === this.currentPattern.id">trending_flat</i>
-              <i class="material-icons flip" *ngIf="relation['sourcePatternId'] !== this.currentPattern.id">trending_flat</i>
-              {{ relation['sourcePatternId'] === this.currentPattern.id ?
-              relation['targetPatternName'] : relation['sourcePatternName']}}
-            </div>
-            <div *ngIf="relation['pattern1Id']" class="horiz-centered">
-              {{ relation['sourcePatternName']}}
-              <i class="material-icons flip">compare_arrows</i>
-              {{ relation['pattern1Id'] === this.currentPattern.id ? relation['pattern1Name'] :
-              relation['pattern2Name']}}
-            </div>
+       <mat-expansion-panel *ngFor="let relation of viewRelationsOfPattern">
+         <mat-expansion-panel-header>
+           <mat-panel-title style="align-self: center">
+             {{relation?.type}}
+           </mat-panel-title>
+           <mat-panel-description class="horiz-centered">
+             <div class="horiz-centered" *ngIf="relation['sourcePatternId']">
+               <i class="material-icons" *ngIf="relation['sourcePatternId'] === this.currentPattern.id">trending_flat</i>
+               <i class="material-icons flip" *ngIf="relation['sourcePatternId'] !== this.currentPattern.id">trending_flat</i>
+               {{ relation['sourcePatternId'] === this.currentPattern.id ?
+               relation['targetPatternName'] : relation['sourcePatternName']}}
+             </div>
+             <div *ngIf="relation['pattern1Id']" class="horiz-centered">
+               {{ relation['sourcePatternName']}}
+               <i class="material-icons flip">compare_arrows</i>
+             {{ relation['pattern1Id'] === this.currentPattern.id ? relation['pattern2Name'] :
+               relation['pattern1Name']}}
+             </div>
 
-          </mat-panel-description>
-        </mat-expansion-panel-header>
+           </mat-panel-description>
+         </mat-expansion-panel-header>
         <i>{{relation.description ? '' + relation.description : ''}}</i>
       </mat-expansion-panel>
+
+      <!-- Sidepanel for Pattern Language Relations -->
       <h4 style="margin: 1em" *ngIf="showViewRelations">Pattern Language Relations</h4>
       <mat-expansion-panel *ngFor="let relation of currentEdges">
         <mat-expansion-panel-header>
@@ -72,8 +75,8 @@
               <div *ngSwitchCase="'undirectedEdges'" class="horiz-centered">
                 {{ relation?.edge.sourcePatternName}}
                 <i class="material-icons flip">compare_arrows</i>
-                {{ relation?.edge.pattern1Id === this.currentPattern.id ? relation.edge.pattern1Name :
-                relation.edge.pattern2Name}}
+                {{ relation?.edge.pattern1Id === this.currentPattern.id ? relation.edge.pattern2Name :
+                relation.edge.pattern1Name}}
               </div>
 
               <div *ngSwitchCase="'outgoingDirectedEdges'" class="horiz-centered">
@@ -91,7 +94,7 @@
             </div>
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <i>{{relation?.edge.description ? ': ' + relation?.edge.description : ''}}</i>
+        <i>{{relation?.edge.description ?  relation?.edge.description : ''}}</i>
       </mat-expansion-panel>
     </mat-accordion>
 
