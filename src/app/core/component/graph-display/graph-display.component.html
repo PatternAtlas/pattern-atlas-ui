@@ -35,7 +35,7 @@
   </mat-sidenav>
 
   <!-- Sidepanel for Pattern View Relations -->
-  <mat-sidenav [opened]="patternClicked" position="end" fixedInViewport="true" mode="over">
+  <mat-sidenav [opened]="patternClicked" position="end" fixedInViewport="true" mode="over" class="sidemenu">
     <h4 style="margin: 1em">{{showViewRelations ? 'View ' : ''}}Relations of {{currentPattern?.name}}</h4>
     <mat-accordion>
        <mat-expansion-panel *ngFor="let relation of viewRelationsOfPattern">
