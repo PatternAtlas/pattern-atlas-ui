@@ -29,6 +29,7 @@ import { PatternService } from '../service/pattern.service';
 import Pattern from '../model/hal/pattern.model';
 import { FormControl } from '@angular/forms';
 import { globals } from '../../globals';
+import {Edge} from "../model/hal/edge.model";
 
 @Component({
   selector: 'pp-default-pl-renderer',
@@ -108,10 +109,18 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
     });
     const diaglogSubscription = dialogRef.afterClosed().pipe(
       switchMap((edge) => {
+        let edgeAdd;
+        if(edge.pattern1Id != null){
+          edgeAdd = {source: edge.pattern1Id, target: edge.pattern2Id, markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0}, markerStart: {template: 'arrow', scale: 0.5, relativeRotation: 0}}
+        } else {
+          edgeAdd = {source: edge.sourcePatternId, target: edge.targetPatternId, markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0}};
+        }
+        this.graphDisplayComponent.graphNativeElement.addEdge(edgeAdd, true);
         return edge ? this.insertEdge(edge) : EMPTY;
       })).subscribe(res => {
       if (res) {
         this.toasterService.pop('success', 'Added Relation');
+
         this.detectChanges();
       }
     });

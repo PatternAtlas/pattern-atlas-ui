@@ -221,6 +221,16 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     dialogRef.afterClosed().subscribe((edge) => {
       if (edge) { // inform parent component that new edge was added
         this.addedEdge.emit(edge);
+        this.graphNativeElement.removeEdge(this.currentEdge);
+        let edgeAdd;
+        if(edge.pattern1Id != null){
+          edgeAdd = {source: edge.pattern1Id, target: edge.pattern2Id, markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0}, markerStart: {template: 'arrow', scale: 0.5, relativeRotation: 0}}
+        } else {
+          edgeAdd = {source: edge.sourcePatternId, target: edge.targetPatternId, markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0}};
+        }
+        this.graphNativeElement.addEdge(edgeAdd, true);
+
+
       } else {
         this.graphNativeElement.removeEdge(this.currentEdge);
         this.triggerRerendering();
