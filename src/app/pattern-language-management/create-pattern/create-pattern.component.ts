@@ -119,7 +119,9 @@ export class CreatePatternComponent implements OnInit {
   }
 
   parseMarkdownText(): TokensList {
-    return marked.lexer(this._textEditor.value);
+    const editorValue = this._textEditor.value.replace(new RegExp('<!--.*-->', 'g'), ' ')
+      .replace(new RegExp('\{#sec:.*}', 'g'), ' ');
+    return marked.lexer(editorValue);
   }
 
   onChangeMarkdownText(): void {
@@ -128,7 +130,9 @@ export class CreatePatternComponent implements OnInit {
       // TODO
     }
     if (this.markdown) {
-      document.getElementById('preview').innerHTML = this.markdown.render(this._textEditor.value);
+      const editorValue = this._textEditor.value.replace(new RegExp('<!--.*-->', 'g'), ' ')
+        .replace(new RegExp('\{#sec:.*}', 'g'), ' ');
+      document.getElementById('preview').innerHTML = this.markdown.render(editorValue);
     }
   }
 
