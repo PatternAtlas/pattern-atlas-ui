@@ -118,21 +118,25 @@ export class CreatePatternComponent implements OnInit {
 
   }
 
+  //Format Input text so MAP Patterns can be directly copied into Pattern Atlas
+  formatForMAP(text: string){
+    return text.replace(new RegExp('<!--.*-->', 'g'), ' ')
+      .replace(new RegExp('\{#sec:.*}', 'g'), ' ')
+      .replace(new RegExp('#{3,}', 'g'), '##');
+}
+
   parseMarkdownText(): TokensList {
-    const editorValue = this._textEditor.value.replace(new RegExp('<!--.*-->', 'g'), ' ')
-      .replace(new RegExp('\{#sec:.*}', 'g'), ' ');
-    return marked.lexer(editorValue);
+    return marked.lexer(this.formatForMAP(this._textEditor.value));
   }
 
   onChangeMarkdownText(): void {
+    this.parsePatternInput();
     const currentText = this.parseMarkdownText();
     if (this.invalidTextEdit(currentText)) {
       // TODO
     }
     if (this.markdown) {
-      const editorValue = this._textEditor.value.replace(new RegExp('<!--.*-->', 'g'), ' ')
-        .replace(new RegExp('\{#sec:.*}', 'g'), ' ');
-      document.getElementById('preview').innerHTML = this.markdown.render(editorValue);
+      document.getElementById('preview').innerHTML = this.markdown.render(this.formatForMAP(this._textEditor.value));
     }
   }
 
@@ -196,13 +200,18 @@ export class CreatePatternComponent implements OnInit {
       if (sectionIndex !== -1) {
         const sectionContent = [];
         for (let i = sectionIndex + 1; i < lines.length; i++) {
+          console.log(lines[ i ])
           if (lines[ i ].type === 'heading') {
             break;
           }
+          if (lines[ i ].type === 'space') {
+            sectionContent.push('\n');
+          }
           if (lines[ i ][ 'text' ]) {
             // if a list item was parsed before, add it to the text
-            sectionContent.push(i > 0 && CreatePatternComponent.isListItem(i, sectionIndex, lines) ? '* ' + lines[ i ][ 'text' ] : lines[ i ][ 'text' ]);
+            sectionContent.push(i > 0 && CreatePatternComponent.isListItem(i, sectionIndex, lines) ? '* ' + lines[ i ][ 'text' ] : lines[ i ][ 'text' ] );
           }
+          console.log("sectioncontent:"+sectionContent)
         }
         if (this.patternValuesFormGroup) {
           if (this.patternValuesFormGroup.controls[ sectionName ]) {
