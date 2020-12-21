@@ -77,6 +77,8 @@ import { CandidateManagementService } from './candidate-management/_services/can
 import { CandidateManagementStore } from './candidate-management';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { DeleteConfirmationDialogComponent } from './component/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { EditUrlDialogComponent } from './component/edit-url-dialog/edit-url-dialog.component';
 
 
 @NgModule({
@@ -161,7 +163,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     DeletePatternRelationComponent,
     CreativeLicenseFooterComponent,
     CommentDialogComponent,
-    DiscussDialogComponent
+    DiscussDialogComponent,
+    DeleteConfirmationDialogComponent,
+    EditUrlDialogComponent
   ],
   entryComponents: [
     DefaultPlRendererComponent,

@@ -32,6 +32,10 @@ import {GraphDataService} from '../../service/graph-data/graph-data.service';
 import {GraphDataSavePatternService} from '../../service/graph-data/graph-data-save-pattern.service';
 import {PatternRelationDescriptorDirection} from '../../model/pattern-relation-descriptor-direction.enum';
 import {Edge} from '../../model/hal/edge.model';
+import * as d3 from 'd3';
+import {CommentDialogComponent} from "../markdown-content-container/comment-dialog/comment-dialog.component";
+import {DeleteConfirmationDialogComponent} from "../delete-confirmation-dialog/delete-confirmation-dialog.component";
+import {PatternViewService} from "../../service/pattern-view.service";
 
 // file deepcode ignore no-any: out of scope, this should be done another time
 
@@ -86,7 +90,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   private copyOfLinks: NetworkLink[];
   private patterns: Pattern[];
   private patternLanguage: PatternLanguage;
-  private currentEdge: any;
+   currentEdge: any;
   private highlightedNodeIds: string[] = [];
   private clickedNodeId: string = null;
   private highlightedEdgeIds: string[] = [];
@@ -94,6 +98,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   private aggregationAssignments: { [key: string]: string } = {};
   private relations: Edge[];
   viewRelationsOfPattern: Edge[];
+  private preventDelete = true;
 
   constructor(private cdr: ChangeDetectorRef,
               private d3Service: D3Service,
@@ -101,6 +106,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
               private patternRelationDescriptionService: PatternRelationDescriptorService,
               private toastService: ToasterService,
               private patternService: PatternService,
+              private patternViewService: PatternViewService,
               // use the implementation of GraphDataService that is provided in the module:
               private graphDataService: GraphDataService,
               private activatedRoute: ActivatedRoute,
@@ -203,7 +209,6 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
       // Skip event on initial graph composition
       return;
     }
-
     this.currentEdge = event.detail.edge;
     const patterns = Array.isArray(this.patterns) ? this.patterns : this.patternContainer.patterns;
     const dialogRef = this.matDialog.open(CreatePatternRelationComponent, {
@@ -221,27 +226,65 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     dialogRef.afterClosed().subscribe((edge) => {
       if (edge) { // inform parent component that new edge was added
         this.addedEdge.emit(edge);
+        this.preventDelete = false;
         this.graphNativeElement.removeEdge(this.currentEdge);
-        let edgeAdd;
-        if(edge.pattern1Id != null){
-          edgeAdd = {source: edge.pattern1Id, target: edge.pattern2Id, markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0}, markerStart: {template: 'arrow', scale: 0.5, relativeRotation: 0}}
-        } else {
-          edgeAdd = {source: edge.sourcePatternId, target: edge.targetPatternId, markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0}};
-        }
-        this.graphNativeElement.addEdge(edgeAdd, true);
+        // TODO: Overthink & Adjust parent child component relation and adapt both classes to it. Code below this comment had to be moved to parent so the nodeid can be added to node cause the call with the id in the subscription is in parent
+        // let edgeAdd;
+        // if (edge.pattern1Id != null) {
+        //   edgeAdd = {
+        //     source: edge.pattern1Id,
+        //     target: edge.pattern2Id,
+        //     markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0},
+        //     markerStart: {template: 'arrow', scale: 0.5, relativeRotation: 0}
+        //   }
+        // } else {
+        //   edgeAdd = {
+        //     source: edge.sourcePatternId,
+        //     target: edge.targetPatternId,
+        //     markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0}
+        //   };
+        // }
+        // this.graphNativeElement.addEdge(edgeAdd, true);
 
 
       } else {
+        this.preventDelete = false;
         this.graphNativeElement.removeEdge(this.currentEdge);
         this.triggerRerendering();
       }
     });
   }
 
+
   handleEdgeRemovedEvent(event: CustomEvent) {
-    if (event.type === 'edgeremove' && event.cancelable) {
-      this.removedEdge.emit(event.detail.edge);
+    if(this.preventDelete){
+      event.preventDefault();
+      const dialogRef = this.matDialog.open(DeleteConfirmationDialogComponent, {
+        width: '250px',
+        data: ''
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result !== undefined) {
+          this.preventDelete = false;
+
+          this.graphNativeElement.removeEdge( event.detail.edge, true);
+          this.removedEdge.emit(event.detail.edge.id);
+          if(event.detail.edge.markerStart != undefined){
+            this.patternViewService.deleteUnDirectedEdge(this.patternLanguage.id, event.detail.edge.id).subscribe();
+          } else {
+            this.patternViewService.deleteDirectedEdge(this.patternLanguage.id, event.detail.edge.id).subscribe();
+          }
+        } else {
+          // ABORT
+        }
+      });
+    } else{
+      this.preventDelete = true;
     }
+
+
+
+
   }
 
   patternDropped(event: CdkDragDrop<any[]>) {
@@ -324,6 +367,9 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     if (this.graphNativeElement) {
       this.graphNativeElement.completeRender(forceUpdateTemplates);
     }
+    var graph = document.querySelector('network-graph');
+
+    this.addXtoDelete();
   }
 
   handlePatternListExpandEvent(patternLang: PatternLanguage) {
@@ -365,6 +411,23 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
         this.allPatternsLoading = false;
       }
     }
+  }
+
+  addXtoDelete() {
+    // console.log("add x");
+    // console.log(d3.select('.edges').selectAll(".link-handle")
+    // .attr('data-template', null)
+    //   .on('mousedown', (d, i, n) => {
+    //   this.removeClickedEdge(n[i]);
+    // })
+    // .append("text")
+    // .attr('alignment-baseline', 'central')
+    // .attr('text-anchor', 'middle')
+    // .attr('fill', 'red')
+    // .attr('dy', 3.6)
+    // .attr('font-size', 10)
+    // .text('×'));
+
   }
 
   private startSimulation() {
@@ -425,6 +488,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     }
     this.triggerRerendering();
     this.graphNativeElement.zoomToBoundingBox(true);
+
   }
 
   private addNewPatternNodeToGraph(pat: Pattern, index: number) {

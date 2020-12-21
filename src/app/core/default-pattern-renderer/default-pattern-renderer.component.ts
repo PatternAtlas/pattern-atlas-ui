@@ -28,6 +28,7 @@ import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.inte
 import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
 import {globals} from '../../globals';
 import {UriConverter} from '../util/uri-converter';
+import {EditUrlDialogComponent} from "../component/edit-url-dialog/edit-url-dialog.component";
 
 @Component({
   selector: 'pp-default-pattern-renderer',
@@ -48,6 +49,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   private patternLanguageId: string;
   private patternId: string;
   subscriptions: Subscription = new Subscription();
+
 
   constructor(private activatedRoute: ActivatedRoute,
               private toasterService: ToasterService,
@@ -259,5 +261,19 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   ngOnDestroy(): void {
     this.cdr.detach();
     this.subscriptions.unsubscribe();
+  }
+
+  editIcon() {
+    const dialogRef = this.dialog.open(EditUrlDialogComponent, {
+      width: '50%',
+      data: {pattern: this.pattern, icon: this.pattern.iconUrl}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        console.log(result)
+        this.pattern.iconUrl = result.icon;
+        this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe();
+      }
+    });
   }
 }

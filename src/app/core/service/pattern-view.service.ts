@@ -94,6 +94,18 @@ export class PatternViewService implements GraphDataService {
     return this.http.delete(patternLink);
   }
 
+
+  deleteUnDirectedEdge(patternLanguageId: string, directedEdgeId: string): Observable<any> {
+    console.log("deleteLink " + this.repoEndpoint + "/patternLanguages/" + patternLanguageId +"/undirectedEdges/"+ directedEdgeId);
+    return this.http.delete(this.repoEndpoint + "/patternLanguages/" + patternLanguageId +"/undirectedEdges/"+ directedEdgeId);
+  }
+
+  deleteDirectedEdge(patternLanguageId: string, directedEdgeId: string): Observable<any> {
+    console.log("deleteLink " + this.repoEndpoint + "/patternLanguages/" + patternLanguageId +"/directedEdges/"+ directedEdgeId);
+    return this.http.delete(this.repoEndpoint + "/patternLanguages/" + patternLanguageId +"/directedEdges/"+ directedEdgeId);
+  }
+
+
   saveGraph(patternView: PatternContainer, nodeList: any[]) {
     return this.http.post<any>(patternView._links.graph.href, nodeList, { observe: 'response' });
   }

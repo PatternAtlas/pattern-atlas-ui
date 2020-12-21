@@ -3,6 +3,9 @@
   <mat-card-header>
     <pp-action-button-bar [displayText]="pattern?.name" [firstAddButton]="false">
     </pp-action-button-bar>
+    <div></div>
+    <img mat-card-image (click)=editIcon() *ngIf="pattern?.iconUrl else  noimage" [src]="pattern.iconUrl">
+    <ng-template #noimage><img mat-card-image (click)=editIcon() src="//via.placeholder.com/50x50"></ng-template>
   </mat-card-header>
   <div>
     <ng-template ppPatternProperty></ng-template>

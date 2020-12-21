@@ -145,7 +145,27 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
 
   linkAddedInGraphEditor(edge) {
     const insertionSubscription = this.insertEdge(edge).subscribe(res => {
-      this.toasterService.pop('success', 'Added Relation');
+      let edgeAdd;
+      if (edge.pattern1Id != null) {
+        edgeAdd = {
+          source: edge.pattern1Id,
+          target: edge.pattern2Id,
+          markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0},
+          markerStart: {template: 'arrow', scale: 0.5, relativeRotation: 0},
+          id: res.body.id
+        }
+      } else {
+        edgeAdd = {
+          source: edge.sourcePatternId,
+          target: edge.targetPatternId,
+          markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0},
+          id: res.body.id
+        };
+      }
+      this.graphDisplayComponent.graphNativeElement.addEdge(edgeAdd, true);
+      console.log(res)
+      this.graphDisplayComponent.currentEdge.id = res.body.id;
+      this.toasterService.pop('success', 'Added Relation test' +res.body.id);
       this.graphDisplayComponent.updateSideMenu();
       this.detectChanges();
     });
