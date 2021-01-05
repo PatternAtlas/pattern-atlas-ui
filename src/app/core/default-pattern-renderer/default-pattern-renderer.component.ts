@@ -171,8 +171,8 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
     return this.patternLanguageService.getDirectedEdges(this.patternLanguage).pipe(
       tap((edges) => {
         this.directedPatternRelations = edges && edges._embedded ?
-          edges._embedded.directedEdgeModels.filter(edge => edge.sourcePatternId === this.pattern.id ||
-            edge.targetPatternId === this.pattern.id) : [];
+          edges._embedded.directedEdgeModels.filter(edge => edge.sourcePatternId === this.patternId ||
+            edge.targetPatternId === this.patternId) : [];
       }));
   }
 
@@ -183,7 +183,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
     return this.patternLanguageService.getUndirectedEdges(this.patternLanguage).pipe(
       tap((edges) => {
         this.undirectedPatternRelations = edges && edges._embedded ?
-          edges._embedded.undirectedEdgeModels.filter(edge => edge.pattern1Id === this.pattern.id || edge.pattern2Id === this.pattern.id) : [];
+          edges._embedded.undirectedEdgeModels.filter(edge => edge.pattern1Id === this.patternId || edge.pattern2Id === this.patternId) : [];
       }));
   }
 
