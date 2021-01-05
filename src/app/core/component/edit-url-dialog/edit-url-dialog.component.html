@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Adjust icon-url for {{data.pattern.name}}</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Adjust icon-url</mat-label>
+    <input matInput placeholder={{data.pattern.iconUrl}} [(ngModel)]="data.icon" >
+  </mat-form-field>
+</div>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onNoClick()">Cancle</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</mat-dialog-actions>
