@@ -49,6 +49,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   private patternLanguageId: string;
   private patternId: string;
   subscriptions: Subscription = new Subscription();
+  showActionButtons: boolean;
 
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -266,12 +267,13 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   editIcon() {
     const dialogRef = this.dialog.open(EditUrlDialogComponent, {
       width: '50%',
-      data: {pattern: this.pattern, icon: this.pattern.iconUrl}
+      data: {pattern: this.pattern, icon: this.pattern.iconUrl, name:this.pattern.name}
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
         console.log(result)
         this.pattern.iconUrl = result.icon;
+        this.pattern.name = result.name;
         this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe();
       }
     });

@@ -1,12 +1,11 @@
 <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
 <mat-card class="pattern-card mat-elevation-z5">
-  <mat-card-header>
-    <pp-action-button-bar [displayText]="pattern?.name" [firstAddButton]="false">
+  <mat-card-header (mouseenter)="showActionButtons = true" (mouseleave)="showActionButtons = false">
+    <pp-action-button-bar [displayText]="pattern?.name" [firstAddButton]="false" [iconEdit]="true" [icon]="pattern?.iconUrl" (iconEditClicked)="editIcon()">
     </pp-action-button-bar>
-    <div></div>
-    <img mat-card-image (click)=editIcon() *ngIf="pattern?.iconUrl else  noimage" [src]="pattern.iconUrl">
-    <ng-template #noimage><img mat-card-image (click)=editIcon() src="//via.placeholder.com/50x50"></ng-template>
-  </mat-card-header>
+    <span> <button  mat-stroked-button style="margin-left: 5px" color="primary" *ngIf="showActionButtons"  (click)="editIcon()" matTooltip="Edit"><i class="material-icons">mode_edit</i></button>
+  </span>
+   </mat-card-header>
   <div>
     <ng-template ppPatternProperty></ng-template>
   </div>

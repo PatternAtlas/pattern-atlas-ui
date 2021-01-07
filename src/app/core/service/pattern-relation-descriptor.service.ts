@@ -27,6 +27,12 @@ export class PatternRelationDescriptorService {
       this.http.post(patternLanguage._links.undirectedEdges.href, new CreateUndirectedEdgeRequest(relation), { observe: 'response' });
   }
 
+  removeRelationFromPL(patternLanguage: PatternLanguage, relation: any):void {
+     relation.markerStart === undefined?
+      this.http.delete(patternLanguage._links.directedEdges.href + '/' + relation.id).subscribe():
+      this.http.delete(patternLanguage._links.undirectedEdges.href + '/' + relation.id).subscribe();
+  }
+
   getDirectedEdgeByUrl(url: string): Observable<DirectedEdgeModel> {
     return this.http.get<DirectedEdgeModel>(url);
   }

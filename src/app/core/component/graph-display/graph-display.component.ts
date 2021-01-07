@@ -90,7 +90,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   private copyOfLinks: NetworkLink[];
   private patterns: Pattern[];
   private patternLanguage: PatternLanguage;
-   currentEdge: any;
+  currentEdge = null;
   private highlightedNodeIds: string[] = [];
   private clickedNodeId: string = null;
   private highlightedEdgeIds: string[] = [];
@@ -99,6 +99,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   private relations: Edge[];
   viewRelationsOfPattern: Edge[];
   private preventDelete = true;
+  selectedPattern: Pattern;
 
   constructor(private cdr: ChangeDetectorRef,
               private d3Service: D3Service,
@@ -204,10 +205,18 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     }
   }
 
+  /**
+   * Create Edge from event --> open Dialog --> close Dialog
+   * --> forward information to parent and delete edge -->
+   * @param event
+   */
   handleEdgeAddedEvent(event) {
     if (!event.cancelable) {
       // Skip event on initial graph composition
       return;
+    }
+    if(event.detail.edge.source === event.detail.edge.target){
+      event.preventDefault()
     }
     this.currentEdge = event.detail.edge;
     const patterns = Array.isArray(this.patterns) ? this.patterns : this.patternContainer.patterns;
@@ -228,25 +237,6 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
         this.addedEdge.emit(edge);
         this.preventDelete = false;
         this.graphNativeElement.removeEdge(this.currentEdge);
-        // TODO: Overthink & Adjust parent child component relation and adapt both classes to it. Code below this comment had to be moved to parent so the nodeid can be added to node cause the call with the id in the subscription is in parent
-        // let edgeAdd;
-        // if (edge.pattern1Id != null) {
-        //   edgeAdd = {
-        //     source: edge.pattern1Id,
-        //     target: edge.pattern2Id,
-        //     markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0},
-        //     markerStart: {template: 'arrow', scale: 0.5, relativeRotation: 0}
-        //   }
-        // } else {
-        //   edgeAdd = {
-        //     source: edge.sourcePatternId,
-        //     target: edge.targetPatternId,
-        //     markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0}
-        //   };
-        // }
-        // this.graphNativeElement.addEdge(edgeAdd, true);
-
-
       } else {
         this.preventDelete = false;
         this.graphNativeElement.removeEdge(this.currentEdge);
@@ -257,7 +247,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
 
 
   handleEdgeRemovedEvent(event: CustomEvent) {
-    if(this.preventDelete){
+    if (this.preventDelete) {
       event.preventDefault();
       const dialogRef = this.matDialog.open(DeleteConfirmationDialogComponent, {
         width: '250px',
@@ -266,23 +256,16 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
       dialogRef.afterClosed().subscribe(result => {
         if (result !== undefined) {
           this.preventDelete = false;
-
-          this.graphNativeElement.removeEdge( event.detail.edge, true);
-          this.removedEdge.emit(event.detail.edge.id);
-          if(event.detail.edge.markerStart != undefined){
-            this.patternViewService.deleteUnDirectedEdge(this.patternLanguage.id, event.detail.edge.id).subscribe();
-          } else {
-            this.patternViewService.deleteDirectedEdge(this.patternLanguage.id, event.detail.edge.id).subscribe();
-          }
+          this.graphNativeElement.removeEdge(event.detail.edge, true);
+          this.triggerRerendering();
+          this.removedEdge.emit(event.detail.edge);
         } else {
           // ABORT
         }
       });
-    } else{
+    } else {
       this.preventDelete = true;
     }
-
-
 
 
   }
@@ -353,6 +336,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     this.highlightedNodeIds = [];
     this.highlightedEdgeIds = [];
     this.clickedNodeId = null;
+    this.selectedPattern = null;
     this.graphNativeElement.completeRender();
     this.patternClicked = false;
   }
@@ -368,8 +352,6 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
       this.graphNativeElement.completeRender(forceUpdateTemplates);
     }
     var graph = document.querySelector('network-graph');
-
-    this.addXtoDelete();
   }
 
   handlePatternListExpandEvent(patternLang: PatternLanguage) {
@@ -414,20 +396,16 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   }
 
   addXtoDelete() {
-    // console.log("add x");
-    // console.log(d3.select('.edges').selectAll(".link-handle")
-    // .attr('data-template', null)
-    //   .on('mousedown', (d, i, n) => {
-    //   this.removeClickedEdge(n[i]);
-    // })
-    // .append("text")
-    // .attr('alignment-baseline', 'central')
-    // .attr('text-anchor', 'middle')
-    // .attr('fill', 'red')
-    // .attr('dy', 3.6)
-    // .attr('font-size', 10)
-    // .text('×'));
-
+    console.log("add x");
+    console.log(d3.select('.edges').selectAll(".link-handle")
+    .attr('data-template', null)
+    .append("text")
+    .attr('alignment-baseline', 'central')
+    .attr('text-anchor', 'middle')
+    .attr('fill', 'red')
+    .attr('dy', 3.6)
+    .attr('font-size', 10)
+    .text('×'));
   }
 
   private startSimulation() {
@@ -496,6 +474,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   }
 
   private showInfoForClickedNode(node): void {
+
     this.clickedNodeId = node.id;
     const outgoingLinks = Array.from(this.graph.nativeElement.getEdgesByTarget(node.id));
     const ingoingLinks = Array.from(this.graph.nativeElement.getEdgesBySource(node.id));
@@ -508,6 +487,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     this.highlightedNodeIds = outgoingNodeIds.concat(ingoingNodeIds);
     this.highlightedNodeIds.push(node.id);
     this.currentPattern = this.patterns.find(pat => pat.id === node.id);
+    this.selectedPattern = this.currentPattern;
     this.getEdgesForPattern();
     this.patternClicked = true;
     this.triggerRerendering();

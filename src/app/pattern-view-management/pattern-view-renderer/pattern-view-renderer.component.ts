@@ -93,7 +93,9 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
   }
 
   addLink() {
-    const dialogRef = this.matDialog.open(CreatePatternRelationComponent, { data: { patterns: this.patterns, patternview: this.patternViewResponse } });
+    const dialogRef = this.matDialog.open(CreatePatternRelationComponent, {
+      data: { patterns: this.patterns, patternview: this.patternViewResponse }
+    });
     dialogRef.afterClosed().pipe(
       switchMap((edge) => {
         return edge ? this.createLink(edge) : EMPTY;
@@ -174,12 +176,36 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     this.graphVisible = isGraphVisible;
   }
 
-  addedEdgeInGraphView(edge: any) {
-    if (edge) {
-      this.createLink(edge).subscribe(() => {
-        this.toasterService.pop('success', 'Link added');
-        this.cdr.detectChanges();
-      });
+  linkAddedInGraphEditor(edge: any) {
+    this.createLink(edge).subscribe(res => {
+      let edgeAdd;
+      if (edge.pattern1Id != null) {
+        edgeAdd = {
+          source: edge.pattern1Id,
+          target: edge.pattern2Id,
+          markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0},
+          markerStart: {template: 'arrow', scale: 0.5, relativeRotation: 0},
+          id: res.body.id
+        }
+      } else {
+        edgeAdd = {
+          source: edge.sourcePatternId,
+          target: edge.targetPatternId,
+          markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0},
+          id: res.body.id
+        };
+      }
+      this.graphDisplayComponent.graphNativeElement.addEdge(edgeAdd, true);
+      this.toasterService.pop('success', 'Added Relation' + res.body.id);
+      this.graphDisplayComponent.updateSideMenu();
+      this.detectChanges();
+    });
+  }
+
+  linkRemovedInGraphEditor(edge) {
+    this.patternViewService.removeLinksFromView(this.patternViewResponse, edge);
+    for(let i = 0; i < this.patternLinks.length; i++ ) {
+      this.patternLinks[i].id === edge.id ? this.patternLinks.splice(i,1) : null;
     }
   }
 

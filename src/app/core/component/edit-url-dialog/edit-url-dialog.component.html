@@ -1,7 +1,11 @@
-<h1 mat-dialog-title>Adjust icon-url for {{data.pattern.name}}</h1>
+<h1 mat-dialog-title>Edit Title or Icon for {{data.pattern.name}}</h1>
 <div mat-dialog-content>
   <mat-form-field>
-    <mat-label>Adjust icon-url</mat-label>
+    <mat-label>Adjust Pattern Name</mat-label>
+    <input matInput placeholder={{data.pattern.name}} [(ngModel)]="data.name" >
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Adjust Icon URL</mat-label>
     <input matInput placeholder={{data.pattern.iconUrl}} [(ngModel)]="data.icon" >
   </mat-form-field>
 </div>

@@ -8,27 +8,27 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { UriConverter } from '../util/uri-converter';
-import { MatDialog } from '@angular/material/dialog';
-import { PatternLanguageService } from '../service/pattern-language.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {UriConverter} from '../util/uri-converter';
+import {MatDialog} from '@angular/material/dialog';
+import {PatternLanguageService} from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
-import { D3Service } from '../../graph/service/d3.service';
-import { GraphDisplayComponent } from '../component/graph-display/graph-display.component';
-import { EMPTY, forkJoin, Observable, Subscription } from 'rxjs';
-import { Embedded } from '../model/hal/embedded';
-import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
-import { switchMap, tap } from 'rxjs/operators';
-import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
-import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
-import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
-import { CreatePatternRelationComponent } from '../component/create-pattern-relation/create-pattern-relation.component';
-import { PatternRelationDescriptorService } from '../service/pattern-relation-descriptor.service';
-import { ToasterService } from 'angular2-toaster';
-import { PatternService } from '../service/pattern.service';
+import {D3Service} from '../../graph/service/d3.service';
+import {GraphDisplayComponent} from '../component/graph-display/graph-display.component';
+import {EMPTY, forkJoin, Observable, Subscription} from 'rxjs';
+import {Embedded} from '../model/hal/embedded';
+import {DirectedEdesResponse} from '../model/hal/directed-edes-response.interface';
+import {switchMap, tap} from 'rxjs/operators';
+import {UndirectedEdesResponse} from '../model/hal/undirected-edes-response.interface';
+import {DirectedEdgeModel} from '../model/hal/directed-edge.model';
+import {UndirectedEdgeModel} from '../model/hal/undirected-edge.model';
+import {CreatePatternRelationComponent} from '../component/create-pattern-relation/create-pattern-relation.component';
+import {PatternRelationDescriptorService} from '../service/pattern-relation-descriptor.service';
+import {ToasterService} from 'angular2-toaster';
+import {PatternService} from '../service/pattern.service';
 import Pattern from '../model/hal/pattern.model';
-import { FormControl } from '@angular/forms';
-import { globals } from '../../globals';
+import {FormControl} from '@angular/forms';
+import {globals} from '../../globals';
 import {Edge} from "../model/hal/edge.model";
 
 @Component({
@@ -44,8 +44,8 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   @ViewChild('graphWrapper') graph: ElementRef;
   @ViewChild('cardsView') cardsView: ElementRef;
   @ViewChild('searchField') searchField: ElementRef;
-  @ViewChild(GraphDisplayComponent, { static: false }) graphDisplayComponent: GraphDisplayComponent;
-  @ViewChild('displayPLContainer', { read: ViewContainerRef }) loadRenderer;
+  @ViewChild(GraphDisplayComponent, {static: false}) graphDisplayComponent: GraphDisplayComponent;
+  @ViewChild('displayPLContainer', {read: ViewContainerRef}) loadRenderer;
   graphVisible = false;
   isLoadingPatternData = true;
   isLoadingLinkData = true;
@@ -96,35 +96,41 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   }
 
   public addPattern(): void {
-    this.router.navigate(['create-patterns'], { relativeTo: this.activatedRoute });
+    this.router.navigate(['create-patterns'], {relativeTo: this.activatedRoute});
+  }
+
+  private openCreateDialog() {
+    if (this.graphDisplayComponent === undefined) {
+      return this.dialog.open(CreatePatternRelationComponent, {
+        data: {
+          patterns: this.patterns,
+          patternlanguage: this.patternLanguage
+        }
+      });
+
+    } else {
+      return this.dialog.open(CreatePatternRelationComponent, {
+        data: {
+          firstPattern: this.graphDisplayComponent.selectedPattern,
+          patterns: this.patterns,
+          patternlanguage: this.patternLanguage
+        }
+      });
+    }
   }
 
   public addLink() {
-    // Todo: Make patternlanguage camelcase
-    const dialogRef = this.dialog.open(CreatePatternRelationComponent, {
-      data: {
-        patterns: this.patterns,
-        patternlanguage: this.patternLanguage
-      }
-    });
-    const diaglogSubscription = dialogRef.afterClosed().pipe(
-      switchMap((edge) => {
-        let edgeAdd;
-        if(edge.pattern1Id != null){
-          edgeAdd = {source: edge.pattern1Id, target: edge.pattern2Id, markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0}, markerStart: {template: 'arrow', scale: 0.5, relativeRotation: 0}}
+    this.openCreateDialog().afterClosed().subscribe((edge) => {
+      if (edge != undefined) {
+        if(this.graphDisplayComponent != undefined){
+          this.linkAddedInGraphEditor(edge);
         } else {
-          edgeAdd = {source: edge.sourcePatternId, target: edge.targetPatternId, markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0}};
+          const insertionSubscription = this.insertEdge(edge).subscribe()
+          this.subscriptions.add(insertionSubscription);
         }
-        this.graphDisplayComponent.graphNativeElement.addEdge(edgeAdd, true);
-        return edge ? this.insertEdge(edge) : EMPTY;
-      })).subscribe(res => {
-      if (res) {
-        this.toasterService.pop('success', 'Added Relation');
 
-        this.detectChanges();
       }
     });
-    this.subscriptions.add(diaglogSubscription);
   }
 
   insertEdge(edge): Observable<any> {
@@ -143,6 +149,13 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
     this.subscriptions.add(relationSubscription);
   }
 
+  /**
+   * Gets called when Graphview child emits that an edge got added
+   * The Edge is missing the Id that is getting assigned from the backend so it got deleted before calling this method
+   * --> Edge needs to be saved in the backend & added into the graph again.
+   *
+   * @param edge
+   */
   linkAddedInGraphEditor(edge) {
     const insertionSubscription = this.insertEdge(edge).subscribe(res => {
       let edgeAdd;
@@ -163,13 +176,18 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
         };
       }
       this.graphDisplayComponent.graphNativeElement.addEdge(edgeAdd, true);
-      console.log(res)
-      this.graphDisplayComponent.currentEdge.id = res.body.id;
-      this.toasterService.pop('success', 'Added Relation test' +res.body.id);
+      this.toasterService.pop('success', 'Added Relation' + res.body.id);
       this.graphDisplayComponent.updateSideMenu();
       this.detectChanges();
     });
     this.subscriptions.add(insertionSubscription);
+  }
+
+  linkRemovedInGraphEditor(edge) {
+    this.patternRelationDescriptorService.removeRelationFromPL(this.patternLanguage, edge);
+    for(let i = 0; i < this.patternLinks.length; i++ ) {
+        this.patternLinks[i].id === edge.id ? this.patternLinks.splice(i,1) : null;
+    }
   }
 
   reloadGraph() {

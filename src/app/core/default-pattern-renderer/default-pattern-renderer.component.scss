@@ -9,7 +9,11 @@
 }
 
 .mat-card-image {
-  width: 50px;
-  height: auto;
+  width: auto;
+  height: 50px;
   cursor: pointer;
+}
+
+.mat-stroked-button{
+  margin-top: 12px;
 }

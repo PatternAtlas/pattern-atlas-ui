@@ -29,6 +29,7 @@ import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.in
 import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
 import { GraphNode } from '../component/graph-display/graph-display.component';
 import { GraphDataService } from './graph-data/graph-data.service';
+import PatternLanguage from "../model/hal/pattern-language.model";
 
 
 @Injectable()
@@ -82,6 +83,12 @@ export class PatternViewService implements GraphDataService {
     return observables.length > 0 ? forkJoin(observables) : EMPTY;
   }
 
+  removeLinksFromView(patternContainer: PatternContainer, relation: any):void {
+    relation.markerStart === undefined?
+      this.http.delete(patternContainer._links.directedEdges.href + '/' + relation.id).subscribe():
+      this.http.delete(patternContainer._links.undirectedEdges.href + '/' + relation.id).subscribe();
+  }
+
   getDirectedEdges(patternContainer: PatternContainer): Observable<Embedded<DirectedEdesResponse>> {
     return this.http.get<Embedded<DirectedEdesResponse>>(patternContainer._links.directedEdges.href);
   }
@@ -93,18 +100,6 @@ export class PatternViewService implements GraphDataService {
   deleteLink(patternLink: any): Observable<any> {
     return this.http.delete(patternLink);
   }
-
-
-  deleteUnDirectedEdge(patternLanguageId: string, directedEdgeId: string): Observable<any> {
-    console.log("deleteLink " + this.repoEndpoint + "/patternLanguages/" + patternLanguageId +"/undirectedEdges/"+ directedEdgeId);
-    return this.http.delete(this.repoEndpoint + "/patternLanguages/" + patternLanguageId +"/undirectedEdges/"+ directedEdgeId);
-  }
-
-  deleteDirectedEdge(patternLanguageId: string, directedEdgeId: string): Observable<any> {
-    console.log("deleteLink " + this.repoEndpoint + "/patternLanguages/" + patternLanguageId +"/directedEdges/"+ directedEdgeId);
-    return this.http.delete(this.repoEndpoint + "/patternLanguages/" + patternLanguageId +"/directedEdges/"+ directedEdgeId);
-  }
-
 
   saveGraph(patternView: PatternContainer, nodeList: any[]) {
     return this.http.post<any>(patternView._links.graph.href, nodeList, { observe: 'response' });

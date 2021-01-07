@@ -21,10 +21,11 @@
   <pp-card-renderer *ngIf="!graphVisible && patterns && patternsForCardsView"
                     [uriEntities]="this.patternsForCardsView"
                     [showLinks]="false"></pp-card-renderer>
+  <!-- setup graph child including emit methods -->
   <pp-graph-display *ngIf="graphVisible && patterns && !isLoadingLinkData" [data]="{
                 patterns: this.patterns, edges: this.patternLinks,
                 patternLanguage: this.patternLanguage, patternContainer: null
-            }" (addedEdge)="linkAddedInGraphEditor($event)" [showPatternLanguageName]="false">
+            }" (addedEdge)="linkAddedInGraphEditor($event)" (removedEdge)="linkRemovedInGraphEditor($event)" [showPatternLanguageName]="false">
   </pp-graph-display>
 
 </div>
