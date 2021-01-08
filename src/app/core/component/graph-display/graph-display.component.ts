@@ -351,7 +351,6 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     if (this.graphNativeElement) {
       this.graphNativeElement.completeRender(forceUpdateTemplates);
     }
-    var graph = document.querySelector('network-graph');
   }
 
   handlePatternListExpandEvent(patternLang: PatternLanguage) {

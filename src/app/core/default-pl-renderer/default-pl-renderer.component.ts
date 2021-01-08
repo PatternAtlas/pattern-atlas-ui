@@ -29,7 +29,6 @@ import {PatternService} from '../service/pattern.service';
 import Pattern from '../model/hal/pattern.model';
 import {FormControl} from '@angular/forms';
 import {globals} from '../../globals';
-import {Edge} from "../model/hal/edge.model";
 
 @Component({
   selector: 'pp-default-pl-renderer',
@@ -121,8 +120,8 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
 
   public addLink() {
     this.openCreateDialog().afterClosed().subscribe((edge) => {
-      if (edge != undefined) {
-        if(this.graphDisplayComponent != undefined){
+      if (edge !== undefined) {
+        if(this.graphDisplayComponent !== undefined){
           this.linkAddedInGraphEditor(edge);
         } else {
           const insertionSubscription = this.insertEdge(edge).subscribe()

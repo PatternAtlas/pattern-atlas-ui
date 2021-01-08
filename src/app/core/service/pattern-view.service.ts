@@ -29,8 +29,6 @@ import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.in
 import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
 import { GraphNode } from '../component/graph-display/graph-display.component';
 import { GraphDataService } from './graph-data/graph-data.service';
-import PatternLanguage from "../model/hal/pattern-language.model";
-
 
 @Injectable()
 export class PatternViewService implements GraphDataService {
