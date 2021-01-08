@@ -56,7 +56,7 @@
              {{ relation['pattern1Id'] === this.currentPattern.id ? relation['pattern2Name'] :
                relation['pattern1Name']}}
              </div>
-
+             <i (click)="openEditView(relation)" class="material-icons edit-icon" >mode_edit</i>
            </mat-panel-description>
          </mat-expansion-panel-header>
         <i>{{relation.description ? '' + relation.description : ''}}</i>
@@ -90,8 +90,8 @@
                 {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
                 relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
               </div>
-
             </div>
+            <i *ngIf="!patternContainer" (click)="openEditPL(relation)" class="material-icons edit-icon">mode_edit</i>
           </mat-panel-description>
         </mat-expansion-panel-header>
         <i>{{relation?.edge.description ?  relation?.edge.description : ''}}</i>

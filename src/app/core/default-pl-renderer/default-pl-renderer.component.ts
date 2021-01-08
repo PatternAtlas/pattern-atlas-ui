@@ -29,6 +29,8 @@ import {PatternService} from '../service/pattern.service';
 import Pattern from '../model/hal/pattern.model';
 import {FormControl} from '@angular/forms';
 import {globals} from '../../globals';
+import {PatternRelationDescriptorDirection} from "../model/pattern-relation-descriptor-direction.enum";
+
 
 @Component({
   selector: 'pp-default-pl-renderer',
@@ -121,7 +123,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   public addLink() {
     this.openCreateDialog().afterClosed().subscribe((edge) => {
       if (edge !== undefined) {
-        if(this.graphDisplayComponent !== undefined){
+        if (this.graphDisplayComponent !== undefined) {
           this.linkAddedInGraphEditor(edge);
         } else {
           const insertionSubscription = this.insertEdge(edge).subscribe()
@@ -156,6 +158,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
    * @param edge
    */
   linkAddedInGraphEditor(edge) {
+
     const insertionSubscription = this.insertEdge(edge).subscribe(res => {
       let edgeAdd;
       if (edge.pattern1Id != null) {
@@ -183,9 +186,57 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   }
 
   linkRemovedInGraphEditor(edge) {
+    this.patternRelationDescriptorService.getAnyEdgeByUrl((edge.markerStart === undefined && edge.pattern1Id === undefined ?
+      this.patternLanguage._links.directedEdges.href : this.patternLanguage._links.undirectedEdges.href) + '/' + edge.id).subscribe(res => {
+      const patterns = Array.isArray(this.patterns) ? this.patterns : this.graphDisplayComponent.patternContainer.patterns;
+      let pattern1, pattern2, direction;
+
+      if (res.pattern1Id !== undefined) {
+        pattern1 = res.pattern1Id;
+        pattern2 = res.pattern2Id;
+        direction = PatternRelationDescriptorDirection.UnDirected
+      } else {
+        pattern1 = res.sourcePatternId;
+        pattern2 = res.targetPatternId;
+        direction = PatternRelationDescriptorDirection.DirectedRight;
+      }
+      const dialogRef = this.dialog.open(CreatePatternRelationComponent, {
+        data: {
+          firstPattern: patterns.find((pat) => pattern1 === pat.id),
+          secondPattern: patterns.find((pat) => pattern2 === pat.id),
+          preselectedEdgeDirection: direction,
+          patterns,
+          patternLanguage: this.patternLanguage,
+          patternContainer: this.graphDisplayComponent.patternContainer,
+          relationTypes: this.graphDisplayComponent.getGraphDataService().getEdgeTypes(),
+          description: res.description,
+          relationType: res.type,
+          isDelete: true,
+        }
+      });
+      dialogRef.afterClosed().subscribe((dialogResult) => {
+        if (dialogResult !== undefined && dialogResult.deleteLink === undefined) { //edit edge
+          this.deleteEdge(this.graphDisplayComponent.currentEdge);
+          this.linkAddedInGraphEditor(dialogResult);
+        } else if (dialogResult !== undefined && dialogResult.deleteLink === true) { // delete Edge
+          this.deleteEdge(edge);
+        } else { //abort
+        }
+      });
+    })
+  }
+
+
+  deleteEdge(edge) {
+    this.graphDisplayComponent.graphNativeElement.removeEdge(edge, true);
+    this.graphDisplayComponent.triggerRerendering();
     this.patternRelationDescriptorService.removeRelationFromPL(this.patternLanguage, edge);
-    for(let i = 0; i < this.patternLinks.length; i++ ) {
-        this.patternLinks[i].id === edge.id ? this.patternLinks.splice(i,1) : null;
+    this.removeEdgeFromPatternLinkList(edge)
+  }
+
+  removeEdgeFromPatternLinkList(edge) {
+    for (let i = 0; i < this.patternLinks.length; i++) {
+      this.patternLinks[i].id === edge.id ? this.patternLinks.splice(i, 1) : null;
     }
   }
 

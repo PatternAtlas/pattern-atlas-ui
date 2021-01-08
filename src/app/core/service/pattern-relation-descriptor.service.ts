@@ -33,6 +33,14 @@ export class PatternRelationDescriptorService {
       this.http.delete(patternLanguage._links.undirectedEdges.href + '/' + relation.id).subscribe();
   }
 
+  getAnyEdgeByUrl(url: string): Observable<any> {
+    if(url.includes("undirectedEdges")){
+      return this.http.get<UndirectedEdgeModel>(url);
+    }
+    return this.http.get<DirectedEdgeModel>(url);
+  }
+
+
   getDirectedEdgeByUrl(url: string): Observable<DirectedEdgeModel> {
     return this.http.get<DirectedEdgeModel>(url);
   }

@@ -32,9 +32,6 @@ import {GraphDataService} from '../../service/graph-data/graph-data.service';
 import {GraphDataSavePatternService} from '../../service/graph-data/graph-data-save-pattern.service';
 import {PatternRelationDescriptorDirection} from '../../model/pattern-relation-descriptor-direction.enum';
 import {Edge} from '../../model/hal/edge.model';
-import * as d3 from 'd3';
-import {CommentDialogComponent} from "../markdown-content-container/comment-dialog/comment-dialog.component";
-import {DeleteConfirmationDialogComponent} from "../delete-confirmation-dialog/delete-confirmation-dialog.component";
 import {PatternViewService} from "../../service/pattern-view.service";
 
 // file deepcode ignore no-any: out of scope, this should be done another time
@@ -98,7 +95,6 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   private aggregationAssignments: { [key: string]: string } = {};
   private relations: Edge[];
   viewRelationsOfPattern: Edge[];
-  private preventDelete = true;
   selectedPattern: Pattern;
 
   constructor(private cdr: ChangeDetectorRef,
@@ -228,46 +224,29 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
         patterns,
         patternLanguage: this.patternLanguage,
         patternContainer: this.patternContainer,
-        relationTypes: this.graphDataService.getEdgeTypes()
+        relationTypes: this.graphDataService.getEdgeTypes(),
+        description: '',
       }
     });
 
     dialogRef.afterClosed().subscribe((edge) => {
       if (edge) { // inform parent component that new edge was added
         this.addedEdge.emit(edge);
-        this.preventDelete = false;
         this.graphNativeElement.removeEdge(this.currentEdge);
       } else {
-        this.preventDelete = false;
         this.graphNativeElement.removeEdge(this.currentEdge);
         this.triggerRerendering();
       }
     });
   }
 
-
   handleEdgeRemovedEvent(event: CustomEvent) {
-    if (this.preventDelete) {
+    console.log(event)
+    if(event.detail.eventSource === 'USER_INTERACTION'){
       event.preventDefault();
-      const dialogRef = this.matDialog.open(DeleteConfirmationDialogComponent, {
-        width: '250px',
-        data: ''
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        if (result !== undefined) {
-          this.preventDelete = false;
-          this.graphNativeElement.removeEdge(event.detail.edge, true);
-          this.triggerRerendering();
-          this.removedEdge.emit(event.detail.edge);
-        } else {
-          // ABORT
-        }
-      });
-    } else {
-      this.preventDelete = true;
+      this.currentEdge = event.detail.edge;
+      this.removedEdge.emit(event.detail.edge);
     }
-
-
   }
 
   patternDropped(event: CdkDragDrop<any[]>) {
@@ -392,19 +371,6 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
         this.allPatternsLoading = false;
       }
     }
-  }
-
-  addXtoDelete() {
-    console.log("add x");
-    console.log(d3.select('.edges').selectAll(".link-handle")
-    .attr('data-template', null)
-    .append("text")
-    .attr('alignment-baseline', 'central')
-    .attr('text-anchor', 'middle')
-    .attr('fill', 'red')
-    .attr('dy', 3.6)
-    .attr('font-size', 10)
-    .text('×'));
   }
 
   private startSimulation() {
@@ -615,5 +581,20 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     csSvgGroup.appendChild(csSvgText);
 
     concreteSolutionsContainerElement.appendChild(csSvgGroup);
+  }
+
+  getGraphDataService(){
+    return this.graphDataService
+  }
+
+  openEditPL(relation: EdgeWithType) {
+    console.log(relation)
+    this.currentEdge = relation.edge;
+    this.removedEdge.emit(relation.edge);
+  }
+
+  openEditView(relation: Edge) {
+    this.currentEdge = relation;
+    this.removedEdge.emit(relation);
   }
 }

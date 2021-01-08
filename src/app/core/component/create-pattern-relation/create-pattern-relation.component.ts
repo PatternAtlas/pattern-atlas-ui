@@ -21,6 +21,7 @@ export class CreatePatternRelationComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<CreatePatternRelationComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private fb: FormBuilder) {
   }
 
+  isDelete;
   directionEnum = PatternRelationDescriptorDirection;
   patterns: Pattern[];
   directionTypes = [
@@ -54,14 +55,17 @@ export class CreatePatternRelationComponent implements OnInit {
     } catch (e) {
     }
 
+    if(this.data.description === undefined){
+      this.data.description = '';
+    }
+    this.isDelete =this.data.isDelete;
     this.relationForm = this.fb.group({
       firstPattern: [this.data.firstPattern, [Validators.required]],
       secondPattern: [this.data.secondPattern, [Validators.required]],
       direction: [preselectedEdgeDirection, [Validators.required]],
-      relationType: ['', [Validators.required]],
-      description: ['', []],
+      relationType: [this.data.relationType, [Validators.required]],
+      description: [this.data.description, []],
     });
-
     if (this.data.relationTypes) {
       this.subscriptionRefs.push(this.data.relationTypes.subscribe(relationTypes => this.relationTypes = relationTypes));
     }
@@ -94,9 +98,14 @@ export class CreatePatternRelationComponent implements OnInit {
 
   }
 
+  deleteLink() {
+    this.data.deleteLink = true;
+  }
 }
 
 export interface DialogData {
+  relationType: string;
+  description: string;
   firstPattern?: Pattern;
   secondPattern?: Pattern;
   preselectedEdgeDirection?: PatternRelationDescriptorDirection;
@@ -104,6 +113,8 @@ export interface DialogData {
   patternLanguage: PatternLanguage;
   patternContainer: PatternContainer;
   relationTypes?: Observable<string[]>;
+  isDelete: boolean;   // delete button toggle
+  deleteLink: boolean; // set true if delete button pressed
 }
 
 export interface PatternRelationDirection {

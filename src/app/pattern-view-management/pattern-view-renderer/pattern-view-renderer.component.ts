@@ -24,6 +24,7 @@ import { DirectedEdesResponse } from '../../core/model/hal/directed-edes-respons
 import { GraphDisplayComponent } from '../../core/component/graph-display/graph-display.component';
 import { DeletePatternRelationComponent } from '../../core/component/delete-pattern-relation/delete-pattern-relation.component';
 import { PatternRelationDescriptorService } from '../../core/service/pattern-relation-descriptor.service';
+import {PatternRelationDescriptorDirection} from "../../core/model/pattern-relation-descriptor-direction.enum";
 
 @Component({
   selector: 'pp-pattern-view-renderer',
@@ -108,7 +109,6 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
 
   detectChanges() {
     this.cdr.detectChanges();
-    console.log('detected');
   }
 
   getLinkCount(directedEdges: HalLink[] | HalLink) {
@@ -203,9 +203,60 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
   }
 
   linkRemovedInGraphEditor(edge) {
-    this.patternViewService.removeLinksFromView(this.patternViewResponse, edge);
-    for(let i = 0; i < this.patternLinks.length; i++ ) {
-      this.patternLinks[i].id === edge.id ? this.patternLinks.splice(i,1) : null;
+    this.patternRLDescriptorService.getAnyEdgeByUrl((edge.markerStart === undefined && edge.pattern1Id === undefined ?
+      this.patternViewResponse._links.directedEdges.href : this.patternViewResponse._links.undirectedEdges.href) + '/' + edge.id).subscribe(res => {
+      const patterns = Array.isArray(this.patterns) ? this.patterns : this.graphDisplayComponent.patternContainer.patterns;
+      let pattern1, pattern2, direction;
+
+      if (res.pattern1Id !== undefined) {
+        pattern1 = res.pattern1Id;
+        pattern2 = res.pattern2Id;
+        direction = PatternRelationDescriptorDirection.UnDirected
+      } else {
+        pattern1 = res.sourcePatternId;
+        pattern2 = res.targetPatternId;
+        direction = PatternRelationDescriptorDirection.DirectedRight;
+      }
+      const dialogRef = this.matDialog.open(CreatePatternRelationComponent, {
+        data: {
+          firstPattern: patterns.find((pat) => pattern1 === pat.id),
+          secondPattern: patterns.find((pat) => pattern2 === pat.id),
+          preselectedEdgeDirection: direction,
+          patterns,
+          patternLanguage: null,
+          patternContainer: this.graphDisplayComponent.patternContainer,
+          relationTypes: this.graphDisplayComponent.getGraphDataService().getEdgeTypes(),
+          description: res.description,
+          relationType: res.type,
+          isDelete: true,
+        }
+      });
+      dialogRef.afterClosed().subscribe((dialogResult) => {
+        if (dialogResult !== undefined && dialogResult.deleteLink === undefined) { //edit edge
+          this.deleteEdge(this.graphDisplayComponent.currentEdge);
+          this.linkAddedInGraphEditor(dialogResult);
+        } else if (dialogResult !== undefined && dialogResult.deleteLink === true) { // delete Edge
+          this.deleteEdge(edge);
+        } else { //abort
+        }
+      });
+    })
+    // this.patternViewService.removeLinksFromView(this.patternViewResponse, edge);
+    // for(let i = 0; i < this.patternLinks.length; i++ ) {
+    //   this.patternLinks[i].id === edge.id ? this.patternLinks.splice(i,1) : null;
+    // }
+  }
+
+  deleteEdge(edge) {
+    this.graphDisplayComponent.graphNativeElement.removeEdge(edge, true);
+    this.graphDisplayComponent.triggerRerendering();
+    this.patternViewService.removeRelationFromView(this.patternViewResponse, edge);
+    this.removeEdgeFromPatternLinkList(edge)
+  }
+
+  removeEdgeFromPatternLinkList(edge) {
+    for (let i = 0; i < this.patternLinks.length; i++) {
+      this.patternLinks[i].id === edge.id ? this.patternLinks.splice(i, 1) : null;
     }
   }
 
@@ -243,7 +294,9 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
       new AddDirectedEdgeToViewRequest(<DirectedEdgeModel>edge) :
       new AddUndirectedEdgeToViewRequest(<UndirectedEdgeModel>edge)
     ).pipe(
-      tap((res) => res ? this.getEdgeByUrl(edge, res) : EMPTY));
+      tap((res) => {
+        res ? this.getEdgeByUrl(edge, res) : EMPTY;
+      }));
   }
 
   private getEdgeByUrl(edge: DirectedEdgeModel | UndirectedEdgeModel, res: any): void {
@@ -354,7 +407,6 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().pipe(
       tap(res => {
         nodesToAdd = res;
-        console.log(res);
       }),
       switchMap((res) => {
         return forkJoin([this.patternViewService.addPatterns(this.patternViewResponse._links.patterns.href, this.mapDialogResultToPatterns(res)),

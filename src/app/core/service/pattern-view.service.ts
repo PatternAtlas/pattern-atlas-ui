@@ -30,6 +30,7 @@ import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interf
 import { GraphNode } from '../component/graph-display/graph-display.component';
 import { GraphDataService } from './graph-data/graph-data.service';
 
+
 @Injectable()
 export class PatternViewService implements GraphDataService {
 
@@ -81,11 +82,6 @@ export class PatternViewService implements GraphDataService {
     return observables.length > 0 ? forkJoin(observables) : EMPTY;
   }
 
-  removeLinksFromView(patternContainer: PatternContainer, relation: any):void {
-    relation.markerStart === undefined?
-      this.http.delete(patternContainer._links.directedEdges.href + '/' + relation.id).subscribe():
-      this.http.delete(patternContainer._links.undirectedEdges.href + '/' + relation.id).subscribe();
-  }
 
   getDirectedEdges(patternContainer: PatternContainer): Observable<Embedded<DirectedEdesResponse>> {
     return this.http.get<Embedded<DirectedEdesResponse>>(patternContainer._links.directedEdges.href);
@@ -110,4 +106,11 @@ export class PatternViewService implements GraphDataService {
   getEdgeTypes(): Observable<string[]> {
     return of();
   }
+
+  removeRelationFromView(patternContainer: PatternContainer, relation: any):void {
+    relation.markerStart === undefined?
+      this.http.delete(patternContainer._links.directedEdges.href + '/' + relation.id).subscribe():
+      this.http.delete(patternContainer._links.undirectedEdges.href + '/' + relation.id).subscribe();
+  }
+
 }
