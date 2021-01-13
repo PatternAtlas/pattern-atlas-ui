@@ -15,13 +15,18 @@ import { Observable } from 'rxjs';
   styleUrls: ['./create-pattern-relation.component.scss']
 })
 
-
+/**
+ * This dialog is getting used to
+ *    1. Create new relations
+ *    2. Edit existing relations (isDelete = true)
+ *    3. Delete existing relations (isDelete = true)
+ */
 export class CreatePatternRelationComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<CreatePatternRelationComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private fb: FormBuilder) {
   }
 
-  isDelete;
+  isDelete: boolean;
   directionEnum = PatternRelationDescriptorDirection;
   patterns: Pattern[];
   directionTypes = [
@@ -58,7 +63,7 @@ export class CreatePatternRelationComponent implements OnInit {
     if(this.data.description === undefined){
       this.data.description = '';
     }
-    this.isDelete =this.data.isDelete;
+    this.isDelete =this.data.isDelete; // set view to delete/edit instead of create
     this.relationForm = this.fb.group({
       firstPattern: [this.data.firstPattern, [Validators.required]],
       secondPattern: [this.data.secondPattern, [Validators.required]],
@@ -98,6 +103,9 @@ export class CreatePatternRelationComponent implements OnInit {
 
   }
 
+  /**
+   * called when delete button is pressed --> delete Link
+   */
   deleteLink() {
     this.data.deleteLink = true;
   }

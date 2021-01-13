@@ -100,6 +100,13 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
     this.router.navigate(['create-patterns'], {relativeTo: this.activatedRoute});
   }
 
+
+  /**
+   * Opens a different Dialog when clicking the "Create Relation button"
+   * It differentiates between the user having or not having the graph component opened
+   * If the graph component is open when clicking "create relation" a selected pattern gets automatically filled in
+   *    as the first Pattern of the relation in the create dialog
+   */
   private openCreateDialog() {
     if (this.graphDisplayComponent === undefined) {
       return this.dialog.open(CreatePatternRelationComponent, {
@@ -120,6 +127,13 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Method getting called when pressing the Add-Relation button
+   * If executed while having the graphview opened the button gets treated equally to
+   *    an add-relation opertion inside of the graph
+   * If executed from the patternlanguage view the graph does not need to be updated and the edge just
+   *    gets added to the database and the PatterLinklist
+   */
   public addLink() {
     this.openCreateDialog().afterClosed().subscribe((edge) => {
       if (edge !== undefined) {
@@ -152,8 +166,9 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
 
   /**
    * Gets called when Graphview child emits that an edge got added
-   * The Edge is missing the Id that is getting assigned from the backend so it got deleted before calling this method
-   * --> Edge needs to be saved in the backend & added into the graph again.
+   * The graphview created edge is missing the Id that is getting assigned from the backend
+   *  --->  it got deleted before calling this method
+   *  ---> Edge needs to be saved in the backend & added into the graph again.
    *
    * @param edge
    */
@@ -162,7 +177,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
     const insertionSubscription = this.insertEdge(edge).subscribe(res => {
       let edgeAdd;
       if (edge.pattern1Id != null) {
-        edgeAdd = {
+        edgeAdd = {     //undirected Edge
           source: edge.pattern1Id,
           target: edge.pattern2Id,
           markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0},
@@ -170,7 +185,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
           id: res.body.id
         }
       } else {
-        edgeAdd = {
+        edgeAdd = {   //directed Edge
           source: edge.sourcePatternId,
           target: edge.targetPatternId,
           markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0},
@@ -185,6 +200,13 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
     this.subscriptions.add(insertionSubscription);
   }
 
+  /**
+   * Gets called when Graphview child emits that an edge got removed.
+   * This is the case for Delete AND Update operations for edges
+   * --->
+   *
+   * @param edge
+   */
   linkRemovedInGraphEditor(edge) {
     this.patternRelationDescriptorService.getAnyEdgeByUrl((edge.markerStart === undefined && edge.pattern1Id === undefined ?
       this.patternLanguage._links.directedEdges.href : this.patternLanguage._links.undirectedEdges.href) + '/' + edge.id).subscribe(res => {
@@ -211,7 +233,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
           relationTypes: this.graphDisplayComponent.getGraphDataService().getEdgeTypes(),
           description: res.description,
           relationType: res.type,
-          isDelete: true,
+          isDelete: true,  //indicates that the dialog is called from the linked removedRemoved method --> not create, but a delete / edit operation
         }
       });
       dialogRef.afterClosed().subscribe((dialogResult) => {
@@ -220,19 +242,23 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
           this.linkAddedInGraphEditor(dialogResult);
         } else if (dialogResult !== undefined && dialogResult.deleteLink === true) { // delete Edge
           this.deleteEdge(edge);
-        } else { //abort
         }
       });
     })
   }
 
 
+  /**
+   * Delete edge in graph, delete it in database and remove it from the Linklist getting used for graphrendering
+   * @param edge
+   */
   deleteEdge(edge) {
     this.graphDisplayComponent.graphNativeElement.removeEdge(edge, true);
     this.graphDisplayComponent.triggerRerendering();
     this.patternRelationDescriptorService.removeRelationFromPL(this.patternLanguage, edge);
     this.removeEdgeFromPatternLinkList(edge)
   }
+
 
   removeEdgeFromPatternLinkList(edge) {
     for (let i = 0; i < this.patternLinks.length; i++) {

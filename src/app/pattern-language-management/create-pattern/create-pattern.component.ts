@@ -119,14 +119,14 @@ export class CreatePatternComponent implements OnInit {
   }
 
   //Format Input text so MAP Patterns can be directly copied into Pattern Atlas
-  formatForMAP(text: string){
+  reformatMapPatternInput(text: string){
     return text.replace(new RegExp('<!--.*-->', 'g'), ' ')
       .replace(new RegExp('\{#sec:.*}', 'g'), ' ')
       .replace(new RegExp('#{3,}', 'g'), '##');
 }
 
   parseMarkdownText(): TokensList {
-    return marked.lexer(this.formatForMAP(this._textEditor.value));
+    return marked.lexer(this.reformatMapPatternInput(this._textEditor.value));
   }
 
   onChangeMarkdownText(): void {
@@ -136,7 +136,7 @@ export class CreatePatternComponent implements OnInit {
       // TODO
     }
     if (this.markdown) {
-      document.getElementById('preview').innerHTML = this.markdown.render(this.formatForMAP(this._textEditor.value));
+      document.getElementById('preview').innerHTML = this.markdown.render(this.reformatMapPatternInput(this._textEditor.value));
     }
   }
 
@@ -200,7 +200,6 @@ export class CreatePatternComponent implements OnInit {
       if (sectionIndex !== -1) {
         const sectionContent = [];
         for (let i = sectionIndex + 1; i < lines.length; i++) {
-          console.log(lines[ i ])
           if (lines[ i ].type === 'heading') {
             break;
           }

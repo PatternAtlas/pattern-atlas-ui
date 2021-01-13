@@ -19,7 +19,7 @@ export class ActionButtonBarComponent implements OnInit {
   @Input() firstAddButton = true;
   @Input() secondAddButtonText: string;
   @Input() iconEdit = false;
-  @Input() icon: string;
+  @Input() iconUrl: string;
 
   @Input() displayText: string;
 

@@ -66,7 +66,6 @@ export class PatternLanguageManagementComponent implements OnInit {
       .sort(PatternLanguageManagementComponent.sortPatternLanguages);
   }
 
-  // reload the current data from https://purl.org/patternpedia that contains all patternlangauges
   async reloadPatternRepo() {
     this.patternLanguageService.getPatternLanguages()
       .pipe(

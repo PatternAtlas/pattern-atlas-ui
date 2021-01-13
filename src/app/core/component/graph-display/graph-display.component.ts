@@ -240,6 +240,13 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     });
   }
 
+  /**
+   * If called through API --> delete Edge
+   * If called by User clicking the "delete"-button on an edge
+   *    --> prevent delete, set edge as current edge and call call parent that opens a Userdialog
+   *        that determines what should be done
+   * @param event
+   */
   handleEdgeRemovedEvent(event: CustomEvent) {
     console.log(event)
     if(event.detail.eventSource === 'USER_INTERACTION'){

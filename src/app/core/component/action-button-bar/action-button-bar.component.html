@@ -2,7 +2,7 @@
   <pp-navigate-back *ngIf="goBackButton"></pp-navigate-back>
 
   <span></span>
-  <img class="image-with-margin" mat-card-image (click)=iconEditButtonClicked() *ngIf="icon" [src]="icon">
+  <img class="image-with-margin" mat-card-image (click)=iconEditButtonClicked() *ngIf="iconUrl" [src]="iconUrl">
 
   <span class="action-button-with-margin"><b>{{this.displayText}}</b></span>
 
