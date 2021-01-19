@@ -138,7 +138,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
     this.openCreateDialog().afterClosed().subscribe((edge) => {
       if (edge !== undefined) {
         if (this.graphDisplayComponent !== undefined) {
-          this.linkAddedInGraphEditor(edge);
+          this.handleLinkAddedInGraphEditor(edge);
         } else {
           const insertionSubscription = this.insertEdge(edge).subscribe()
           this.subscriptions.add(insertionSubscription);
@@ -172,7 +172,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
    *
    * @param edge
    */
-  linkAddedInGraphEditor(edge) {
+  handleLinkAddedInGraphEditor(edge) {
 
     const insertionSubscription = this.insertEdge(edge).subscribe(res => {
       let edgeAdd;
@@ -207,7 +207,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
    *
    * @param edge
    */
-  linkRemovedInGraphEditor(edge) {
+  handleLinkRemovedInGraphEditor(edge) {
     this.patternRelationDescriptorService.getAnyEdgeByUrl((edge.markerStart === undefined && edge.pattern1Id === undefined ?
       this.patternLanguage._links.directedEdges.href : this.patternLanguage._links.undirectedEdges.href) + '/' + edge.id).subscribe(res => {
       const patterns = Array.isArray(this.patterns) ? this.patterns : this.graphDisplayComponent.patternContainer.patterns;
@@ -239,7 +239,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
       dialogRef.afterClosed().subscribe((dialogResult) => {
         if (dialogResult !== undefined && dialogResult.deleteLink === undefined) { //edit edge
           this.deleteEdge(this.graphDisplayComponent.currentEdge);
-          this.linkAddedInGraphEditor(dialogResult);
+          this.handleLinkAddedInGraphEditor(dialogResult);
         } else if (dialogResult !== undefined && dialogResult.deleteLink === true) { // delete Edge
           this.deleteEdge(edge);
         }

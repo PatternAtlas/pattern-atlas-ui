@@ -104,7 +104,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     this.openCreateDialog().afterClosed().subscribe((edge) => {
       if (edge !== undefined) {
         if (this.graphDisplayComponent !== undefined) {
-          this.linkAddedInGraphEditor(edge);
+          this.handleLinkAddedInGraphEditor(edge);
         } else {
           this.createLink(edge).subscribe((res) => {
             this.toasterService.pop('success', 'Relation added');
@@ -218,7 +218,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
    *
    * @param edge
    */
-  linkAddedInGraphEditor(edge: any) {
+  handleLinkAddedInGraphEditor(edge: any) {
     this.createLink(edge).subscribe(res => {
       let edgeAdd;
       if (edge.pattern1Id != null) {  //undirected Edge
@@ -251,7 +251,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
    *
    * @param edge
    */
-  linkRemovedInGraphEditor(edge) {
+  handleLinkRemovedInGraphEditor(edge) {
     this.patternRLDescriptorService.getAnyEdgeByUrl((edge.markerStart === undefined && edge.pattern1Id === undefined ?
       this.patternViewResponse._links.directedEdges.href : this.patternViewResponse._links.undirectedEdges.href) + '/' + edge.id).subscribe(res => {
       const patterns = Array.isArray(this.patterns) ? this.patterns : this.graphDisplayComponent.patternContainer.patterns;
@@ -283,7 +283,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
       dialogRef.afterClosed().subscribe((dialogResult) => {
         if (dialogResult !== undefined && dialogResult.deleteLink === undefined) { //edit edge
           this.deleteEdge(this.graphDisplayComponent.currentEdge);
-          this.linkAddedInGraphEditor(dialogResult);
+          this.handleLinkAddedInGraphEditor(dialogResult);
         } else if (dialogResult !== undefined && dialogResult.deleteLink === true) { // delete Edge
           this.deleteEdge(edge);
         }
