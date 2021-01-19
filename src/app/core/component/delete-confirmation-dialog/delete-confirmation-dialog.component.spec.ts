@@ -10,7 +10,7 @@ describe('DeleteConfirmationDialogComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ DeleteConfirmationDialogComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

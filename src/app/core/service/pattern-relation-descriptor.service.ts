@@ -16,8 +16,6 @@ import { PatternResponse } from '../model/hal/pattern-response.interface';
 })
 export class PatternRelationDescriptorService {
 
-  private repoEndpoint = globals.repoEndpoint;
-
   constructor(private http: HttpClient) {
   }
 
@@ -27,14 +25,14 @@ export class PatternRelationDescriptorService {
       this.http.post(patternLanguage._links.undirectedEdges.href, new CreateUndirectedEdgeRequest(relation), { observe: 'response' });
   }
 
-  removeRelationFromPL(patternLanguage: PatternLanguage, relation: any):void {
-     relation.markerStart === undefined?
-      this.http.delete(patternLanguage._links.directedEdges.href + '/' + relation.id).subscribe():
+  removeRelationFromPL(patternLanguage: PatternLanguage, relation: any): void {
+    relation.markerStart === undefined ?
+      this.http.delete(patternLanguage._links.directedEdges.href + '/' + relation.id).subscribe() :
       this.http.delete(patternLanguage._links.undirectedEdges.href + '/' + relation.id).subscribe();
   }
 
   getAnyEdgeByUrl(url: string): Observable<any> {
-    if(url.includes("undirectedEdges")){
+    if (url.includes('undirectedEdges')) {
       return this.http.get<UndirectedEdgeModel>(url);
     }
     return this.http.get<DirectedEdgeModel>(url);
@@ -61,7 +59,7 @@ export class PatternRelationDescriptorService {
     const observables = [];
     const edgeLinks = ['undirectedEdges', 'outgoingDirectedEdges', 'ingoingDirectedEdges'];
     edgeLinks.forEach((edgeType: string) => {
-      const edgeLink = pattern._links[ edgeType ];
+      const edgeLink = pattern._links[edgeType];
       if (edgeLink) {
         const halLinks = Array.isArray(edgeLink) ? <HalLink[]>edgeLink : [edgeLink];
         observables.push(...halLinks.map(link =>

@@ -10,7 +10,7 @@ describe('EditUrlDialogComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ EditUrlDialogComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

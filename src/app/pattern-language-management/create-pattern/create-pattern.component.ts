@@ -123,7 +123,7 @@ export class CreatePatternComponent implements OnInit {
     return text.replace(new RegExp('<!--.*-->', 'g'), ' ')
       .replace(new RegExp('\{#sec:.*}', 'g'), ' ')
       .replace(new RegExp('#{3,}', 'g'), '##');
-}
+  }
 
   parseMarkdownText(): TokensList {
     return marked.lexer(this.reformatMapPatternInput(this._textEditor.value));
@@ -210,7 +210,7 @@ export class CreatePatternComponent implements OnInit {
             // if a list item was parsed before, add it to the text
             sectionContent.push(i > 0 && CreatePatternComponent.isListItem(i, sectionIndex, lines) ? '* ' + lines[ i ][ 'text' ] : lines[ i ][ 'text' ] );
           }
-          console.log("sectioncontent:"+sectionContent)
+          console.log('sectioncontent:'+sectionContent)
         }
         if (this.patternValuesFormGroup) {
           if (this.patternValuesFormGroup.controls[ sectionName ]) {

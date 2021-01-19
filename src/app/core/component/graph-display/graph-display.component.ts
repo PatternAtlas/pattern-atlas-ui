@@ -10,29 +10,29 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import {D3Service} from '../../../graph/service/d3.service';
-import {NetworkLink} from '../../model/network-link.interface';
-import {MatDialog} from '@angular/material/dialog';
-import {CreatePatternRelationComponent} from '../create-pattern-relation/create-pattern-relation.component';
-import {PatternContainer} from '../../model/hal/pattern-container.model';
+import { D3Service } from '../../../graph/service/d3.service';
+import { NetworkLink } from '../../model/network-link.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { CreatePatternRelationComponent } from '../create-pattern-relation/create-pattern-relation.component';
+import { PatternContainer } from '../../model/hal/pattern-container.model';
 import PatternLanguage from '../../model/hal/pattern-language.model';
-import {EdgeWithType, PatternRelationDescriptorService} from '../../service/pattern-relation-descriptor.service';
-import {ToasterService} from 'angular2-toaster';
+import { EdgeWithType, PatternRelationDescriptorService } from '../../service/pattern-relation-descriptor.service';
+import { ToasterService } from 'angular2-toaster';
 import GraphEditor from '@ustutt/grapheditor-webcomponent/lib/grapheditor';
-import {DraggedEdge, edgeId} from '@ustutt/grapheditor-webcomponent/lib/edge';
+import { DraggedEdge, edgeId } from '@ustutt/grapheditor-webcomponent/lib/edge';
 import Pattern from '../../model/hal/pattern.model';
-import {GraphInputData} from '../../model/graph-input-data.interface';
-import {PatternService} from '../../service/pattern.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {switchMap, tap} from 'rxjs/operators';
-import {PatternResponse} from '../../model/hal/pattern-response.interface';
-import {EMPTY, Observable} from 'rxjs';
-import {CdkDragDrop} from '@angular/cdk/drag-drop';
-import {GraphDataService} from '../../service/graph-data/graph-data.service';
-import {GraphDataSavePatternService} from '../../service/graph-data/graph-data-save-pattern.service';
-import {PatternRelationDescriptorDirection} from '../../model/pattern-relation-descriptor-direction.enum';
-import {Edge} from '../../model/hal/edge.model';
-import {PatternViewService} from "../../service/pattern-view.service";
+import { GraphInputData } from '../../model/graph-input-data.interface';
+import { PatternService } from '../../service/pattern.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { switchMap, tap } from 'rxjs/operators';
+import { PatternResponse } from '../../model/hal/pattern-response.interface';
+import { EMPTY, Observable } from 'rxjs';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { GraphDataService } from '../../service/graph-data/graph-data.service';
+import { GraphDataSavePatternService } from '../../service/graph-data/graph-data-save-pattern.service';
+import { PatternRelationDescriptorDirection } from '../../model/pattern-relation-descriptor-direction.enum';
+import { Edge } from '../../model/hal/edge.model';
+import { PatternViewService } from '../../service/pattern-view.service';
 
 // file deepcode ignore no-any: out of scope, this should be done another time
 
@@ -53,7 +53,7 @@ export class GraphNode {
 })
 export class GraphDisplayComponent implements AfterContentInit, OnChanges {
 
-  @ViewChild('graphWrapper', {static: true})
+  @ViewChild('graphWrapper', { static: true })
   graph: ElementRef;
 
   @ViewChild('svg')
@@ -119,7 +119,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
 
       const edge: any = {
         id: currentLink.id,
-        markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0},
+        markerEnd: { template: 'arrow', scale: 0.5, relativeRotation: 0 },
         texts: currentLink.texts || []
       };
 
@@ -131,7 +131,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
         // undirected link
         edge.source = currentLink.pattern1Id;
         edge.target = currentLink.pattern2Id;
-        edge.markerStart = {template: 'arrow', scale: 0.5, relativeRotation: 0};
+        edge.markerStart = { template: 'arrow', scale: 0.5, relativeRotation: 0 };
       }
 
       edges.push(edge);
@@ -211,7 +211,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
       // Skip event on initial graph composition
       return;
     }
-    if(event.detail.edge.source === event.detail.edge.target){
+    if (event.detail.edge.source === event.detail.edge.target) {
       event.preventDefault()
     }
     this.currentEdge = event.detail.edge;
@@ -248,8 +248,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
    * @param event
    */
   handleEdgeRemovedEvent(event: CustomEvent) {
-    console.log(event)
-    if(event.detail.eventSource === 'USER_INTERACTION'){
+    if (event.detail.eventSource === 'USER_INTERACTION') {
       event.preventDefault();
       this.currentEdge = event.detail.edge;
       this.removedEdge.emit(event.detail.edge);
@@ -281,7 +280,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   handleNodeClickedEvent(event) {
     const node = event['detail']['node'];
     if (event['detail']['key'] === 'info') {
-      this.router.navigate(['./../..', 'pattern-languages', node.patternLanguageId, node.id], {relativeTo: this.activatedRoute});
+      this.router.navigate(['./../..', 'pattern-languages', node.patternLanguageId, node.id], { relativeTo: this.activatedRoute });
       return;
     }
     if (event['detail']['key'] === 'delete') {
@@ -532,7 +531,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
    * Construct SVG group element with an rectangle and a text, representing a concrete solution.
    * @param concreteSolutionsContainerElement
    * @param index
-   * @param text
+   * @param concreteSolution
    */
   private addConcreteSolutionSvgElement(concreteSolutionsContainerElement: SVGGElement, index: number, concreteSolution: any): void {
 
@@ -590,12 +589,11 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     concreteSolutionsContainerElement.appendChild(csSvgGroup);
   }
 
-  getGraphDataService(){
+  getGraphDataService() {
     return this.graphDataService
   }
 
   openEditPL(relation: EdgeWithType) {
-    console.log(relation)
     this.currentEdge = relation.edge;
     this.removedEdge.emit(relation.edge);
   }

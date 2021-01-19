@@ -24,12 +24,12 @@ import { DirectedEdesResponse } from '../../core/model/hal/directed-edes-respons
 import { GraphDisplayComponent } from '../../core/component/graph-display/graph-display.component';
 import { DeletePatternRelationComponent } from '../../core/component/delete-pattern-relation/delete-pattern-relation.component';
 import { PatternRelationDescriptorService } from '../../core/service/pattern-relation-descriptor.service';
-import {PatternRelationDescriptorDirection} from "../../core/model/pattern-relation-descriptor-direction.enum";
+import { PatternRelationDescriptorDirection } from '../../core/model/pattern-relation-descriptor-direction.enum';
 
 @Component({
   selector: 'pp-pattern-view-renderer',
   templateUrl: './pattern-view-renderer.component.html',
-  styleUrls: ['./pattern-view-renderer.component.scss']
+  styleUrls: [ './pattern-view-renderer.component.scss' ]
 })
 export class PatternViewRendererComponent implements OnInit, AfterViewInit {
 
@@ -89,7 +89,13 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
 
   addLinks(pattern: Pattern) {
     const dialogRef = this.matDialog.open(AddToViewComponent,
-      { data: { links: this.mapPatternLinksToTreeNode(pattern), title: 'Add related Patterns', patternId: pattern.id } });
+      {
+        data: {
+          links: this.mapPatternLinksToTreeNode(pattern),
+          title: 'Add related Patterns',
+          patternId: pattern.id
+        }
+      });
     this.subscribeToLinkDialogResult(dialogRef);
   }
 
@@ -106,7 +112,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
         if (this.graphDisplayComponent !== undefined) {
           this.handleLinkAddedInGraphEditor(edge);
         } else {
-          this.createLink(edge).subscribe((res) => {
+          this.createLink(edge).subscribe(() => {
             this.toasterService.pop('success', 'Relation added');
           })
         }
@@ -225,15 +231,15 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
         edgeAdd = {
           source: edge.pattern1Id,
           target: edge.pattern2Id,
-          markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0},
-          markerStart: {template: 'arrow', scale: 0.5, relativeRotation: 0},
+          markerEnd: { template: 'arrow', scale: 0.5, relativeRotation: 0 },
+          markerStart: { template: 'arrow', scale: 0.5, relativeRotation: 0 },
           id: res.body.id
         }
       } else {
         edgeAdd = {  //directed Edge
           source: edge.sourcePatternId,
           target: edge.targetPatternId,
-          markerEnd: {template: 'arrow', scale: 0.5, relativeRotation: 0},
+          markerEnd: { template: 'arrow', scale: 0.5, relativeRotation: 0 },
           id: res.body.id
         };
       }
@@ -365,7 +371,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     if (!pattern1._links.undirectedEdges) {
       pattern1._links.undirectedEdges = edge._links.self;
     } else if (!Array.isArray(pattern1._links.undirectedEdges)) {
-      pattern1._links.undirectedEdges = [pattern1._links.undirectedEdges, edge._links.self];
+      pattern1._links.undirectedEdges = [ pattern1._links.undirectedEdges, edge._links.self ];
     } else {
       pattern1._links.undirectedEdges.push(edge._links.self);
     }
@@ -375,7 +381,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
       pattern2._links.undirectedEdges = edge._links.self;
       return;
     } else if (!Array.isArray(pattern2._links.undirectedEdges)) {
-      pattern2._links.undirectedEdges = <HalLink[]>[pattern2._links.undirectedEdges, edge._links.self];
+      pattern2._links.undirectedEdges = <HalLink[]>[ pattern2._links.undirectedEdges, edge._links.self ];
     } else {
       pattern2._links.undirectedEdges.push(edge._links.self);
     }
@@ -386,7 +392,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     if (!srcPattern._links.outgoingDirectedEdges) {
       srcPattern._links.outgoingDirectedEdges = edge._links.self;
     } else if (!Array.isArray(srcPattern._links.outgoingDirectedEdges)) {
-      srcPattern._links.outgoingDirectedEdges = [srcPattern._links.outgoingDirectedEdges, edge._links.self];
+      srcPattern._links.outgoingDirectedEdges = [ srcPattern._links.outgoingDirectedEdges, edge._links.self ];
     } else {
       srcPattern._links.outgoingDirectedEdges.push(edge._links.self);
     }
@@ -396,7 +402,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
       targetPattern._links.ingoingDirectedEdges = edge._links.self;
       return;
     } else if (!Array.isArray(targetPattern._links.ingoingDirectedEdges)) {
-      targetPattern._links.ingoingDirectedEdges = [targetPattern._links.ingoingDirectedEdges, edge._links.self];
+      targetPattern._links.ingoingDirectedEdges = [ targetPattern._links.ingoingDirectedEdges, edge._links.self ];
     } else {
       targetPattern._links.ingoingDirectedEdges.push(edge._links.self);
     }
@@ -423,13 +429,13 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
   private getData(): Observable<any> {
     const $getPatternLanguages = this.getPatternLanguages();
     const $getCurrentPatternView = this.getCurrentPatternViewAndPatterns();
-    return forkJoin([$getPatternLanguages, $getCurrentPatternView]); // , $getDirectedEdges]);
+    return forkJoin([ $getPatternLanguages, $getCurrentPatternView ]); // , $getDirectedEdges]);
   }
 
   private getLinks(): Observable<any> {
     const $getUndirectedEdges = this.getUndirectedEdges();
     const $getDirectedEdges = this.getDirectedEdges();
-    return forkJoin([$getUndirectedEdges, $getDirectedEdges]).pipe(tap(() => {
+    return forkJoin([ $getUndirectedEdges, $getDirectedEdges ]).pipe(tap(() => {
       this.patternLinks = [];
       this.patternLinks.push(...this.directedPatternRelations);
       this.patternLinks.push(...this.undirectedPatternRelations);
@@ -458,8 +464,8 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
         nodesToAdd = res;
       }),
       switchMap((res) => {
-        return forkJoin([this.patternViewService.addPatterns(this.patternViewResponse._links.patterns.href, this.mapDialogResultToPatterns(res)),
-          this.patternViewService.addLinks(this.patternViewResponse, res && Array.isArray(res) ? res.map(it => it.item) : [])]);
+        return forkJoin([ this.patternViewService.addPatterns(this.patternViewResponse._links.patterns.href, this.mapDialogResultToPatterns(res)),
+          this.patternViewService.addLinks(this.patternViewResponse, res && Array.isArray(res) ? res.map(it => it.item) : []) ]);
       }),
       switchMap(result => result ? this.getCurrentPatternViewAndPatterns() : EMPTY)
     ).subscribe((res) => {
@@ -473,14 +479,24 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
   private mapPatternLinksToTreeNode(pattern: Pattern): LinksToOtherPattern[] {
     const types: LinksToOtherPattern[] = [];
     const possibleEdgeTypes = [
-      { link: pattern._links.ingoingDirectedEdgesFromPatternLanguage, type: 'directed', displayName: 'Ingoing directed edges' },
-      { link: pattern._links.outgoingDirectedEdgesFromPatternLanguage, type: 'directed', displayName: 'Outgoing directed edges' },
+      {
+        link: pattern._links.ingoingDirectedEdgesFromPatternLanguage,
+        type: 'directed',
+        displayName: 'Ingoing directed edges'
+      },
+      {
+        link: pattern._links.outgoingDirectedEdgesFromPatternLanguage,
+        type: 'directed',
+        displayName: 'Outgoing directed edges'
+      },
       { link: pattern._links.undirectedEdgesFromPatternLanguage, type: 'undirected', displayName: 'Undirected edges' }
     ];
     possibleEdgeTypes.forEach((edgeType: { link: HalLink | HalLink[], displayName: string, type: string }, index) => {
       if (edgeType.link) {
         types.push({
-          name: edgeType.displayName, links: Array.isArray(edgeType.link) ? edgeType.link : [edgeType.link], id: index.toString(),
+          name: edgeType.displayName,
+          links: Array.isArray(edgeType.link) ? edgeType.link : [ edgeType.link ],
+          id: index.toString(),
           type: edgeType.type
         });
       }
