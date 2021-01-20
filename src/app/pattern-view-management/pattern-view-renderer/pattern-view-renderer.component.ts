@@ -293,7 +293,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
         } else if (dialogResult !== undefined && dialogResult.deleteLink === true) { // delete Edge
           this.deleteEdge(edge);
         }
-      });
+      })
     })
   }
 
@@ -305,8 +305,8 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
   deleteEdge(edge) {
     this.graphDisplayComponent.graphNativeElement.removeEdge(edge, true);
     this.graphDisplayComponent.triggerRerendering();
-    this.patternViewService.removeRelationFromView(this.patternViewResponse, edge);
-    this.removeEdgeFromPatternLinkList(edge)
+    !(edge.markerStart === undefined) ? this.removeUndirectedEdgeFromPattern(edge) : this.removeDirectedEdgeFromPattern(edge);
+    this.removeEdgeFromPatternLinkList(edge);
   }
 
   removeEdgeFromPatternLinkList(edge) {
@@ -365,6 +365,58 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
         }
       );
   }
+
+
+  /**
+   * Removes Undirected Edge from the Href lists of the related patterns so they dont get shown in the card view after getting deleted
+   * After removing the edge from the href lists, call to backend to delete edge
+   * @param edge
+   */
+  private removeUndirectedEdgeFromPattern(edge): void {
+    const pattern1 = this.patterns.find(x => x.id === edge.source);
+    const pattern2 = this.patterns.find(x => x.id === edge.target);
+
+    const subscription = this.patternViewService.getUndirectedEdgeById(this.patternViewResponse.id, edge.id).pipe(tap(deleteEdge => {
+      if (Array.isArray(pattern1._links.undirectedEdges)) {
+        pattern1._links.undirectedEdges.splice(pattern1._links.undirectedEdges.indexOf(deleteEdge._links.self), 1);
+      } else {
+        pattern1._links.undirectedEdges = undefined;
+      }
+
+      if (Array.isArray(pattern2._links.undirectedEdges)) {
+        pattern2._links.undirectedEdges.splice(pattern2._links.undirectedEdges.indexOf(deleteEdge._links.self), 1);
+      } else {
+        pattern2._links.undirectedEdges = undefined;
+      }
+    }));
+    subscription.subscribe(() => this.patternViewService.removeRelationFromView(this.patternViewResponse, edge));
+  }
+
+  /**
+   * Removes Directed Edge from the Href lists of the related patterns so they dont get shown in the card view after getting deleted
+   * After removing the edge from the href lists, call to backend to delete edge
+   * @param edge
+   */
+  private removeDirectedEdgeFromPattern(edge): void {
+    const pattern1 = this.patterns.find(x => x.id === edge.source);
+    const pattern2 = this.patterns.find(x => x.id === edge.target);
+
+    const subscription = this.patternViewService.getDirectedEdgeById(this.patternViewResponse.id, edge.id).pipe(tap(deleteEdge => {
+      if (Array.isArray(pattern1._links.outgoingDirectedEdges)) {
+        pattern1._links.outgoingDirectedEdges.splice(pattern1._links.outgoingDirectedEdges.indexOf(deleteEdge._links.self), 1);
+      } else {
+        pattern1._links.outgoingDirectedEdges = undefined;
+      }
+
+      if (Array.isArray(pattern2._links.ingoingDirectedEdges)) {
+        pattern2._links.ingoingDirectedEdges.splice(pattern2._links.ingoingDirectedEdges.indexOf(deleteEdge._links.self), 1);
+      } else {
+        pattern2._links.ingoingDirectedEdges = undefined;
+      }
+    }));
+    subscription.subscribe(() => this.patternViewService.removeRelationFromView(this.patternViewResponse, edge));
+  }
+
 
   private addUndirectedEdgeToPattern(edge: UndirectedEdgeModel): void {
     const pattern1 = this.patterns.find(x => x.id === edge.pattern1Id);

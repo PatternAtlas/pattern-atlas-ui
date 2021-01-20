@@ -91,6 +91,15 @@ export class PatternViewService implements GraphDataService {
     return this.http.get<Embedded<UndirectedEdgesResponse>>(patternContainer._links.undirectedEdges.href);
   }
 
+  getDirectedEdgeById(patternViewId, edgeId: string) : Observable<DirectedEdgeModel>{
+    return this.http.get<DirectedEdgeModel>(this.repoEndpoint + /patternViews/+ patternViewId + /directedEdges/ + edgeId)
+  }
+
+
+  getUndirectedEdgeById(patternViewId, edgeId: string) : Observable<UndirectedEdgeModel>{
+    return this.http.get<UndirectedEdgeModel>(this.repoEndpoint + /patternViews/+ patternViewId + /undirectedEdges/ + edgeId)
+  }
+
   deleteLink(patternLink: any): Observable<any> {
     return this.http.delete(patternLink);
   }
