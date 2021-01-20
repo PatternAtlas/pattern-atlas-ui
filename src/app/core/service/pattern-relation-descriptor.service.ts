@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { globals } from '../../globals';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { forkJoin, Observable, of } from 'rxjs';
 import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
 import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';

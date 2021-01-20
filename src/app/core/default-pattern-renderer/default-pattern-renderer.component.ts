@@ -24,7 +24,7 @@ import { PatternRelationDescriptorService } from '../service/pattern-relation-de
 import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
 import { Embedded } from '../model/hal/embedded';
 import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
-import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
+import { UndirectedEdgesResponse } from '../model/hal/undirected-edes-response.interface';
 import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
 import { globals } from '../../globals';
 import { UriConverter } from '../util/uri-converter';
@@ -33,7 +33,7 @@ import { EditUrlDialogComponent } from '../component/edit-url-dialog/edit-url-di
 @Component({
   selector: 'pp-default-pattern-renderer',
   templateUrl: './default-pattern-renderer.component.html',
-  styleUrls: ['./default-pattern-renderer.component.scss']
+  styleUrls: [ './default-pattern-renderer.component.scss' ]
 })
 export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy {
   @ViewChild(PatternPropertyDirective) ppPatternProperty: PatternPropertyDirective;
@@ -115,7 +115,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   getPatternSectionContent(): Observable<Pattern> {
     const content = this.patternService.getPatternContentByPattern(this.pattern);
     const renderedContent = this.patternService.getPatternRenderedContentByPattern(this.pattern);
-    return forkJoin([content, renderedContent]).pipe(
+    return forkJoin([ content, renderedContent ]).pipe(
       map((patternContent) => {
         this.pattern.renderedContent = patternContent[1].renderedContent;
         return this.pattern.content = patternContent[0].content;
@@ -125,7 +125,9 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   getPatternLanguageLinks(): Observable<any> {
     const $getDirectedEdges = this.getDirectedEdges();
     const $getUndirectedEdges = this.getUndirectedEdges();
-    return forkJoin([$getDirectedEdges, $getUndirectedEdges]).pipe(tap(() => this.isLoadingLinks = false));
+    console.log($getDirectedEdges)
+    console.log($getUndirectedEdges)
+    return forkJoin([ $getDirectedEdges, $getUndirectedEdges ]).pipe(tap(() => this.isLoadingLinks = false));
   }
 
   getPatternByLink(edge: DirectedEdgeModel | UndirectedEdgeModel, res: any) {
@@ -166,25 +168,26 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   }
 
   private getDirectedEdges(): Observable<Embedded<DirectedEdesResponse>> {
+    console.log(this.pattern.id)
     if (!this.patternLanguage) {
       return EMPTY;
     }
     return this.patternLanguageService.getDirectedEdges(this.patternLanguage).pipe(
       tap((edges) => {
         this.directedPatternRelations = edges && edges._embedded ?
-          edges._embedded.directedEdgeModels.filter(edge => edge.sourcePatternId === this.patternId ||
-            edge.targetPatternId === this.patternId) : [];
+          edges._embedded.directedEdgeModels.filter(edge => edge.sourcePatternId === this.pattern.id ||
+            edge.targetPatternId === this.pattern.id) : [];
       }));
   }
 
-  private getUndirectedEdges(): Observable<Embedded<UndirectedEdesResponse>> {
+  private getUndirectedEdges(): Observable<Embedded<UndirectedEdgesResponse>> {
     if (!this.patternLanguage) {
       return EMPTY;
     }
     return this.patternLanguageService.getUndirectedEdges(this.patternLanguage).pipe(
       tap((edges) => {
         this.undirectedPatternRelations = edges && edges._embedded ?
-          edges._embedded.undirectedEdgeModels.filter(edge => edge.pattern1Id === this.patternId || edge.pattern2Id === this.patternId) : [];
+          edges._embedded.undirectedEdgeModels.filter(edge => edge.pattern1Id === this.pattern.id || edge.pattern2Id === this.pattern.id) : [];
       }));
   }
 
@@ -206,22 +209,33 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   }
 
   private getData(): void {
+    //initialize pattern to get ID etc for future requests
+    let getPatternObservable;
+    if (UriConverter.isUUID(this.patternId)) {
+      getPatternObservable = this.patternService.getPatternById(this.patternLanguage, this.patternId).pipe(
+        tap(pattern => this.pattern = pattern));
+    } else {
+      getPatternObservable = this.patternService.getPatternByEncodedUri(this.patternId).pipe(tap(pattern => this.pattern = pattern));
+    }
     // get pattern language object with all the hal links that we need
     let dataObservable;
     if (UriConverter.isUUID(this.patternLanguageId)) {
       dataObservable = this.patternLanguageService.getPatternLanguageByID(this.patternLanguageId).pipe(
         tap((patternLanguage) => this.patternLanguage = patternLanguage),
         // get our individual pattern and the links in parallel
-        switchMap(() => forkJoin([this.fillPatternSectionData(), this.getPatternLanguageLinks()])));
+        switchMap(() => forkJoin([ this.fillPatternSectionData(), this.getPatternLanguageLinks() ])));
     } else {
       this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageId).pipe(
         tap((patternLanguage) => this.patternLanguage = patternLanguage),
         // get our individual pattern and the links in parallel
-        switchMap(() => forkJoin([this.fillPatternSectionData(), this.getPatternLanguageLinks()])));
+        switchMap(() => forkJoin([ this.fillPatternSectionData(), this.getPatternLanguageLinks() ])));
     }
-    const dataSubscription = dataObservable.subscribe(() =>
-      this.cdr.detectChanges());
+    const dataSubscription = getPatternObservable.subscribe(() => dataObservable.subscribe(() =>
+      this.cdr.detectChanges()));
     this.subscriptions.add(dataSubscription);
+
+
+
   }
 
   private fillPatternSectionData() {
@@ -266,7 +280,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   editIcon() {
     const dialogRef = this.dialog.open(EditUrlDialogComponent, {
       width: '50%',
-      data: { pattern: this.pattern, icon: this.pattern.iconUrl, name:this.pattern.name }
+      data: { pattern: this.pattern, icon: this.pattern.iconUrl, name: this.pattern.name }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {

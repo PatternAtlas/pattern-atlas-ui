@@ -21,7 +21,7 @@ import { map } from 'rxjs/operators';
 import PatternLanguages from '../model/hal/pattern-languages.model';
 import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
 import { Embedded } from '../model/hal/embedded';
-import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
+import { UndirectedEdgesResponse } from '../model/hal/undirected-edes-response.interface';
 import { GraphNode } from '../component/graph-display/graph-display.component';
 import PatternLanguageModel from '../model/hal/pattern-language-model.model';
 import { GraphDataService } from './graph-data/graph-data.service';
@@ -75,8 +75,8 @@ export class PatternLanguageService implements GraphDataService {
     return this.http.get<Embedded<DirectedEdesResponse>>(patternLanguage._links.directedEdges.href);
   }
 
-  getUndirectedEdges(patternLanguage: PatternLanguage): Observable<Embedded<UndirectedEdesResponse>> {
-    return this.http.get<Embedded<UndirectedEdesResponse>>(patternLanguage._links.undirectedEdges.href);
+  getUndirectedEdges(patternLanguage: PatternLanguage): Observable<Embedded<UndirectedEdgesResponse>> {
+    return this.http.get<Embedded<UndirectedEdgesResponse>>(patternLanguage._links.undirectedEdges.href);
   }
 
   saveGraph(patternLanguage: PatternLanguage, nodes: Array<any>) {

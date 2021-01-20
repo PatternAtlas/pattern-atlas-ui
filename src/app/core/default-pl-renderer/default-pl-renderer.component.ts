@@ -19,7 +19,7 @@ import { EMPTY, forkJoin, Observable, Subscription } from 'rxjs';
 import { Embedded } from '../model/hal/embedded';
 import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
 import { switchMap, tap } from 'rxjs/operators';
-import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
+import { UndirectedEdgesResponse } from '../model/hal/undirected-edes-response.interface';
 import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
 import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
 import { CreatePatternRelationComponent } from '../component/create-pattern-relation/create-pattern-relation.component';
@@ -213,6 +213,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
       const patterns = Array.isArray(this.patterns) ? this.patterns : this.graphDisplayComponent.patternContainer.patterns;
       let pattern1, pattern2, direction;
 
+
       if (res.pattern1Id !== undefined) {
         pattern1 = res.pattern1Id;
         pattern2 = res.pattern2Id;
@@ -323,7 +324,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
       }));
   }
 
-  private getUndirectedEdges(): Observable<Embedded<UndirectedEdesResponse>> {
+  private getUndirectedEdges(): Observable<Embedded<UndirectedEdgesResponse>> {
     if (!this.patternLanguage) {
       return EMPTY;
     }

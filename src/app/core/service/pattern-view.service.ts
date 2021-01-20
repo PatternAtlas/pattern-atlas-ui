@@ -25,7 +25,7 @@ import { LinksToOtherPattern } from '../../pattern-view-management/add-to-view/a
 import { AddDirectedEdgeToViewRequest } from '../model/hal/add-directed-edge-to-view-request';
 import { AddUndirectedEdgeToViewRequest } from '../model/hal/add-undirected-edge-to-view-request';
 import { Embedded } from '../model/hal/embedded';
-import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
+import { UndirectedEdgesResponse } from '../model/hal/undirected-edes-response.interface';
 import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
 import { GraphNode } from '../component/graph-display/graph-display.component';
 import { GraphDataService } from './graph-data/graph-data.service';
@@ -49,7 +49,7 @@ export class PatternViewService implements GraphDataService {
     return this.http.post<PatternContainerResponse>(url, view, { observe: 'response' });
   }
 
-  addPatterns(url: string, patterns: Pattern[]): Observable<any> {
+  addPatterns(url: string, patterns: Pattern[]): Observable<PatternContainerResponse> {
     const observables = patterns.map(pat => this.http.post<PatternContainerResponse>(url, pat, { observe: 'response' }));
     return observables.length > 0 ? forkJoin(observables) : of(null);
   }
@@ -87,8 +87,8 @@ export class PatternViewService implements GraphDataService {
     return this.http.get<Embedded<DirectedEdesResponse>>(patternContainer._links.directedEdges.href);
   }
 
-  getUndirectedEdges(patternContainer: PatternContainer): Observable<Embedded<UndirectedEdesResponse>> {
-    return this.http.get<Embedded<UndirectedEdesResponse>>(patternContainer._links.undirectedEdges.href);
+  getUndirectedEdges(patternContainer: PatternContainer): Observable<Embedded<UndirectedEdgesResponse>> {
+    return this.http.get<Embedded<UndirectedEdgesResponse>>(patternContainer._links.undirectedEdges.href);
   }
 
   deleteLink(patternLink: any): Observable<any> {
