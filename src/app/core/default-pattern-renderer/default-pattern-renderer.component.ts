@@ -85,16 +85,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
     }
   }
 
-  addContentInfoToPattern(edge: DirectedEdgeModel | UndirectedEdgeModel): Observable<DirectedEdgeModel | UndirectedEdgeModel> {
-    const toPattern = edge instanceof DirectedEdgeModel ? edge.targetPatternId : edge.pattern2Id;
-    return this.patternService.getPatternContentByPattern(this.patterns.find(it => it.id === toPattern)).pipe(
-      map((patterncontent) => {
-        // const targetPatternContent = patterncontent.content;
-        // edge instanceof DirectedEdgeModel ? edge.content = targetPatternContent : edge.p2.content = targetPatternContent;
-        return edge;
-      }));
-  }
-
   getPatternData(): Observable<Pattern> {
     if (!this.patternLanguage) {
       console.log('tried to get patterns before the pattern language object with the url was instanciated');
@@ -125,8 +115,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   getPatternLanguageLinks(): Observable<any> {
     const $getDirectedEdges = this.getDirectedEdges();
     const $getUndirectedEdges = this.getUndirectedEdges();
-    console.log($getDirectedEdges)
-    console.log($getUndirectedEdges)
     return forkJoin([ $getDirectedEdges, $getUndirectedEdges ]).pipe(tap(() => this.isLoadingLinks = false));
   }
 
@@ -168,7 +156,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   }
 
   private getDirectedEdges(): Observable<Embedded<DirectedEdesResponse>> {
-    console.log(this.pattern.id)
     if (!this.patternLanguage) {
       return EMPTY;
     }
@@ -230,8 +217,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
         // get our individual pattern and the links in parallel
         switchMap(() => forkJoin([ this.fillPatternSectionData(), this.getPatternLanguageLinks() ])));
     }
-    const dataSubscription = getPatternObservable.subscribe(() => dataObservable.subscribe(() =>
-      this.cdr.detectChanges()));
+    const dataSubscription = forkJoin([getPatternObservable, dataObservable]).subscribe(() => this.cdr.detectChanges());
     this.subscriptions.add(dataSubscription);
 
 
@@ -253,9 +239,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
       { data: { firstPattern: this.pattern, patterns: this.patterns } }
     );
     const dialogSubscription = dialogRef.afterClosed().pipe(
-      switchMap(result => {
-        return result ? this.addContentInfoToPattern(result) : EMPTY;
-      }),
       switchMap((edge) => {
         return edge ? this.insertEdge(edge) : EMPTY;
       }))
