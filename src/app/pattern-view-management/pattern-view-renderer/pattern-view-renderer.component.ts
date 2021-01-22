@@ -97,6 +97,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
         }
       });
     this.subscribeToLinkDialogResult(dialogRef);
+
   }
 
   /**
@@ -178,11 +179,11 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
   showIngoingEdges(ingoingEdges: HalLink[]) {
     if (ingoingEdges) {
       const dialogRef = this.matDialog.open(DeletePatternRelationComponent, {
-        data: { edges: ingoingEdges, type: 'ingoing' },
+        data: { edges: ingoingEdges, type: 'ingoing'},
         width: '600px',
         panelClass: 'delete-relation-dialog'
       });
-      dialogRef.afterClosed().subscribe(() => {
+      dialogRef.afterClosed().subscribe(data => {
         // reload patterns since ng for pattern loop doesnt get updated else
         this.getData().subscribe(
           () => {
@@ -196,11 +197,11 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
   showOutgoingEdges(outgoingEdges: HalLink[]) {
     if (outgoingEdges) {
       const dialogRef = this.matDialog.open(DeletePatternRelationComponent, {
-        data: { edges: outgoingEdges, type: 'outgoing' },
+        data: { edges: outgoingEdges, type: 'outgoing'},
         width: '600px',
         panelClass: 'delete-relation-dialog'
       });
-      dialogRef.afterClosed().subscribe(() => {
+      dialogRef.afterClosed().subscribe(data => {
         // reload patterns since ng for pattern loop doesnt get updated else
         this.getData().subscribe(
           () => {
@@ -255,7 +256,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
    * This is the case for Delete AND Update operations for edges
    * --->
    *
-   * @param edge
+   * @param edge  (in graph format)
    */
   handleLinkRemovedInGraphEditor(edge) {
     this.patternRLDescriptorService.getAnyEdgeByUrl((edge.markerStart === undefined && edge.pattern1Id === undefined ?
@@ -300,7 +301,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
 
   /**
    * Delete edge in graph, delete it in database and remove it from the Linklist getting used for graphrendering
-   * @param edge
+   * @param edge (in graph format)
    */
   deleteEdge(edge) {
     this.graphDisplayComponent.graphNativeElement.removeEdge(edge, true);
@@ -378,15 +379,17 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
 
     const subscription = this.patternViewService.getUndirectedEdgeById(this.patternViewResponse.id, edge.id).pipe(tap(deleteEdge => {
       if (Array.isArray(pattern1._links.undirectedEdges)) {
-        pattern1._links.undirectedEdges.splice(pattern1._links.undirectedEdges.indexOf(deleteEdge._links.self), 1);
+        pattern1._links.undirectedEdges.splice(this.getIndexOfHref(pattern1._links.undirectedEdges,deleteEdge._links.self.href), 1);
+        this.patterns.find(x => x.id === edge.source)._links.undirectedEdges = pattern1._links.undirectedEdges;
       } else {
-        pattern1._links.undirectedEdges = undefined;
+        this.patterns.find(x => x.id === edge.source)._links.undirectedEdges = undefined;
       }
 
       if (Array.isArray(pattern2._links.undirectedEdges)) {
-        pattern2._links.undirectedEdges.splice(pattern2._links.undirectedEdges.indexOf(deleteEdge._links.self), 1);
+        pattern2._links.undirectedEdges.splice(this.getIndexOfHref(pattern2._links.undirectedEdges,deleteEdge._links.self.href), 1);
+        this.patterns.find(x => x.id === edge.target)._links.undirectedEdges = pattern2._links.undirectedEdges;
       } else {
-        pattern2._links.undirectedEdges = undefined;
+        this.patterns.find(x => x.id === edge.target)._links.undirectedEdges = undefined;
       }
     }));
     subscription.subscribe(() => this.patternViewService.removeRelationFromView(this.patternViewResponse, edge));
@@ -403,20 +406,29 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
 
     const subscription = this.patternViewService.getDirectedEdgeById(this.patternViewResponse.id, edge.id).pipe(tap(deleteEdge => {
       if (Array.isArray(pattern1._links.outgoingDirectedEdges)) {
-        pattern1._links.outgoingDirectedEdges.splice(pattern1._links.outgoingDirectedEdges.indexOf(deleteEdge._links.self), 1);
+        pattern1._links.outgoingDirectedEdges.splice(this.getIndexOfHref(pattern1._links.outgoingDirectedEdges, deleteEdge._links.self.href), 1);
+        this.patterns.find(x => x.id === edge.source)._links.outgoingDirectedEdges = pattern1._links.outgoingDirectedEdges;
       } else {
-        pattern1._links.outgoingDirectedEdges = undefined;
+        this.patterns.find(x => x.id === edge.source)._links.outgoingDirectedEdges = undefined;
       }
 
       if (Array.isArray(pattern2._links.ingoingDirectedEdges)) {
-        pattern2._links.ingoingDirectedEdges.splice(pattern2._links.ingoingDirectedEdges.indexOf(deleteEdge._links.self), 1);
+        pattern2._links.ingoingDirectedEdges.splice(this.getIndexOfHref(pattern2._links.ingoingDirectedEdges, deleteEdge._links.self.href), 1);
+        this.patterns.find(x => x.id === edge.target)._links.ingoingDirectedEdges = pattern2._links.ingoingDirectedEdges;
       } else {
-        pattern2._links.ingoingDirectedEdges = undefined;
+        this.patterns.find(x => x.id === edge.target)._links.ingoingDirectedEdges = undefined;
       }
     }));
     subscription.subscribe(() => this.patternViewService.removeRelationFromView(this.patternViewResponse, edge));
   }
 
+  getIndexOfHref(halLinkArray: HalLink[], href: string): number{
+    let index = -1;
+    for (let i = 0; i < halLinkArray.length; i++ ){
+     halLinkArray[i].href ===  href ? index = i : null;
+    }
+    return index;
+  }
 
   private addUndirectedEdgeToPattern(edge: UndirectedEdgeModel): void {
     const pattern1 = this.patterns.find(x => x.id === edge.pattern1Id);
@@ -516,11 +528,13 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
         nodesToAdd = res;
       }),
       switchMap((res) => {
-        return forkJoin([ this.patternViewService.addPatterns(this.patternViewResponse._links.patterns.href, this.mapDialogResultToPatterns(res)),
+        return forkJoin([
+          this.patternViewService.addPatterns(this.patternViewResponse._links.patterns.href, this.mapDialogResultToPatterns(res)),
           this.patternViewService.addLinks(this.patternViewResponse, res && Array.isArray(res) ? res.map(it => it.item) : []) ]);
       }),
-      switchMap(result => result ? this.getCurrentPatternViewAndPatterns() : EMPTY)
-    ).subscribe((res) => {
+      switchMap(result => result ? forkJoin([this.getCurrentPatternViewAndPatterns(), this.getLinks()])
+        : EMPTY)
+    ).subscribe( res => {
       if (res) {
         this.toasterService.pop('success', 'Data added');
         this.cdr.detectChanges();

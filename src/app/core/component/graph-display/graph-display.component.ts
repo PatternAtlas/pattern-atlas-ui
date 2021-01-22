@@ -280,7 +280,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   handleNodeClickedEvent(event) {
     const node = event['detail']['node'];
     if (event['detail']['key'] === 'info') {
-      this.router.navigate(['./../..', 'pattern-languages', node.patternLanguageId, node.id], { relativeTo: this.activatedRoute });
+      this.router.navigate(['./../..', 'pattern-languages', node.patternLanguageId, node.uri], { relativeTo: this.activatedRoute });
       return;
     }
     if (event['detail']['key'] === 'delete') {
