@@ -24,14 +24,16 @@ import { PatternRelationDescriptorService } from '../service/pattern-relation-de
 import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
 import { Embedded } from '../model/hal/embedded';
 import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
-import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
+import { UndirectedEdgesResponse } from '../model/hal/undirected-edes-response.interface';
 import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
 import { globals } from '../../globals';
+import { UriConverter } from '../util/uri-converter';
+import { EditUrlDialogComponent } from '../component/edit-url-dialog/edit-url-dialog.component';
 
 @Component({
   selector: 'pp-default-pattern-renderer',
   templateUrl: './default-pattern-renderer.component.html',
-  styleUrls: ['./default-pattern-renderer.component.scss']
+  styleUrls: [ './default-pattern-renderer.component.scss' ]
 })
 export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy {
   @ViewChild(PatternPropertyDirective) ppPatternProperty: PatternPropertyDirective;
@@ -47,6 +49,8 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   private patternLanguageId: string;
   private patternId: string;
   subscriptions: Subscription = new Subscription();
+  showActionButtons: boolean;
+
 
   constructor(private activatedRoute: ActivatedRoute,
               private toasterService: ToasterService,
@@ -81,28 +85,27 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
     }
   }
 
-  addContentInfoToPattern(edge: DirectedEdgeModel | UndirectedEdgeModel): Observable<DirectedEdgeModel | UndirectedEdgeModel> {
-    const toPattern = edge instanceof DirectedEdgeModel ? edge.targetPatternId : edge.pattern2Id;
-    return this.patternService.getPatternContentByPattern(this.patterns.find(it => it.id === toPattern)).pipe(
-      map((patterncontent) => {
-        const targetPatternContent = patterncontent.content;
-        // edge instanceof DirectedEdgeModel ? edge.content = targetPatternContent : edge.p2.content = targetPatternContent;
-        return edge;
-      }));
-  }
-
-  getPatternInfos(): Observable<Pattern> {
+  getPatternData(): Observable<Pattern> {
     if (!this.patternLanguage) {
       console.log('tried to get patterns before the pattern language object with the url was instanciated');
       return EMPTY;
     }
-    return this.patternService.getPatternByEncodedUri(this.patternId).pipe(
-      tap(pattern => this.pattern = pattern),
-      switchMap((pat) => {
-        const content = this.patternService.getPatternContentByPattern(this.pattern);
-        const renderedContent = this.patternService.getPatternRenderedContentByPattern(this.pattern);
-        return forkJoin([content, renderedContent]);
-      }),
+    // check if pattern is specified via UUIID or URI and load it accordingly
+    if (UriConverter.isUUID(this.patternId)) {
+      return this.patternService.getPatternById(this.patternLanguage, this.patternId).pipe(
+        tap(pattern => this.pattern = pattern),
+        switchMap(() => this.getPatternSectionContent()));
+    } else {
+      return this.patternService.getPatternByEncodedUri(this.patternId).pipe(
+        tap(pattern => this.pattern = pattern),
+        switchMap(() => this.getPatternSectionContent()));
+    }
+  }
+
+  getPatternSectionContent(): Observable<Pattern> {
+    const content = this.patternService.getPatternContentByPattern(this.pattern);
+    const renderedContent = this.patternService.getPatternRenderedContentByPattern(this.pattern);
+    return forkJoin([ content, renderedContent ]).pipe(
       map((patternContent) => {
         this.pattern.renderedContent = patternContent[1].renderedContent;
         return this.pattern.content = patternContent[0].content;
@@ -112,7 +115,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   getPatternLanguageLinks(): Observable<any> {
     const $getDirectedEdges = this.getDirectedEdges();
     const $getUndirectedEdges = this.getUndirectedEdges();
-    return forkJoin([$getDirectedEdges, $getUndirectedEdges]).pipe(tap(() => this.isLoadingLinks = false));
+    return forkJoin([ $getDirectedEdges, $getUndirectedEdges ]).pipe(tap(() => this.isLoadingLinks = false));
   }
 
   getPatternByLink(edge: DirectedEdgeModel | UndirectedEdgeModel, res: any) {
@@ -128,7 +131,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   }
 
   private createSectionComponent(section: string) {
-    let renderedContent = null;
+    let renderedContent;
     if (!this.pattern.renderedContent [section]) {
       renderedContent = this.pattern.content[section];
     } else {
@@ -164,7 +167,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
       }));
   }
 
-  private getUndirectedEdges(): Observable<Embedded<UndirectedEdesResponse>> {
+  private getUndirectedEdges(): Observable<Embedded<UndirectedEdgesResponse>> {
     if (!this.patternLanguage) {
       return EMPTY;
     }
@@ -178,8 +181,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   private savePattern(section: string, previousContent: any, instance: MarkdownPatternSectionContentComponent) {
     const updateSubscription = this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe(
       data => {
-        const test = data.body.renderedContent[section];
-        this.pattern.renderedContent[section] = test;
+        this.pattern.renderedContent[section] = data.body.renderedContent[section];
         instance.changeText(this.pattern.renderedContent[section]);
         this.toasterService.pop('success', 'Saved pattern');
       },
@@ -194,18 +196,36 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   }
 
   private getData(): void {
+    //initialize pattern to get ID etc for future requests
+    let getPatternObservable;
+    if (UriConverter.isUUID(this.patternId)) {
+      getPatternObservable = this.patternService.getPatternById(this.patternLanguage, this.patternId).pipe(
+        tap(pattern => this.pattern = pattern));
+    } else {
+      getPatternObservable = this.patternService.getPatternByEncodedUri(this.patternId).pipe(tap(pattern => this.pattern = pattern));
+    }
     // get pattern language object with all the hal links that we need
-    const dataSubscription = this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageId).pipe(
-      tap((patternLanguage) => this.patternLanguage = patternLanguage),
-      // get our individual pattern
-      switchMap(() => this.fillPatternSectionData()),
-      switchMap(() => this.getPatternLanguageLinks())).subscribe(() =>
-      this.cdr.detectChanges());
+    let dataObservable;
+    if (UriConverter.isUUID(this.patternLanguageId)) {
+      dataObservable = this.patternLanguageService.getPatternLanguageByID(this.patternLanguageId).pipe(
+        tap((patternLanguage) => this.patternLanguage = patternLanguage),
+        // get our individual pattern and the links in parallel
+        switchMap(() => forkJoin([ this.fillPatternSectionData(), this.getPatternLanguageLinks() ])));
+    } else {
+      this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageId).pipe(
+        tap((patternLanguage) => this.patternLanguage = patternLanguage),
+        // get our individual pattern and the links in parallel
+        switchMap(() => forkJoin([ this.fillPatternSectionData(), this.getPatternLanguageLinks() ])));
+    }
+    const dataSubscription = forkJoin([getPatternObservable, dataObservable]).subscribe(() => this.cdr.detectChanges());
     this.subscriptions.add(dataSubscription);
+
+
+
   }
 
   private fillPatternSectionData() {
-    return this.getPatternInfos().pipe(
+    return this.getPatternData().pipe(
       tap(() => {
         this.patternLanguage.patternSchema.patternSectionSchemas.forEach((sec: PatternSectionSchema) => {
           this.createSectionComponent(sec.name);
@@ -219,9 +239,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
       { data: { firstPattern: this.pattern, patterns: this.patterns } }
     );
     const dialogSubscription = dialogRef.afterClosed().pipe(
-      switchMap(result => {
-        return result ? this.addContentInfoToPattern(result) : EMPTY;
-      }),
       switchMap((edge) => {
         return edge ? this.insertEdge(edge) : EMPTY;
       }))
@@ -241,5 +258,19 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   ngOnDestroy(): void {
     this.cdr.detach();
     this.subscriptions.unsubscribe();
+  }
+
+  editIcon() {
+    const dialogRef = this.dialog.open(EditUrlDialogComponent, {
+      width: '50%',
+      data: { pattern: this.pattern, icon: this.pattern.iconUrl, name: this.pattern.name }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.pattern.iconUrl = result.icon;
+        this.pattern.name = result.name;
+        this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe();
+      }
+    });
   }
 }

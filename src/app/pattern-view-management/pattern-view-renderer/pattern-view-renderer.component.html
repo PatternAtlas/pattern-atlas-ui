@@ -56,7 +56,7 @@
     </mat-card-content>
     <mat-card-actions
     >
-      <button mat-button (click)="addLinks(pattern)">Add Relations (incl. Pattern)
+      <button mat-raised-button  (click)="addLinks(pattern)">Add Relations (incl. Pattern)
       </button>
     </mat-card-actions>
   </mat-card>
@@ -68,6 +68,7 @@
                 patternLanguage: null, patternContainer: this.patternViewResponse,
                 patternLanguages: this.patternLanguages
             }"
-                  (addedEdge)="addedEdgeInGraphView($event)" [showPatternLanguageName]="true"></pp-graph-display>
+                  (addedEdge)="handleLinkAddedInGraphEditor($event)" (removedEdge)="handleLinkRemovedInGraphEditor($event)" [showPatternLanguageName]="true"
+                  [showViewRelations]="true"></pp-graph-display>
 
 
