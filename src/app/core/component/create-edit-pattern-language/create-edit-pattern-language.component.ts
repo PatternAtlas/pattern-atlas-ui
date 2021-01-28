@@ -94,7 +94,8 @@ export class CreateEditPatternLanguageComponent implements OnInit {
 
           this.saveClicked.emit({
             dialogResult: {
-              name: this.name.value
+              name: this.name.value,
+              logo:  this.iconUrl.value,
             }
           });
           this.dialogRef.close();

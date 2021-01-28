@@ -107,4 +107,9 @@ export class PatternLanguageService implements GraphDataService {
   getEdgeTypes(): Observable<string[]> {
     return of();
   }
+
+  deletePatternLanguage(patternLanguageId: string){
+    const url =  this.repoEndpoint + '/patternLanguages/' + patternLanguageId;
+    return this.http.delete(url);
+  }
 }
