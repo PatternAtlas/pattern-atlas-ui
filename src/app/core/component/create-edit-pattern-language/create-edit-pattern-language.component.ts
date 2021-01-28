@@ -90,7 +90,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     if (this.patternLanguageForm.valid) {
 
       switch (this.componentDialogType) {
-        case CreateEditComponentDialogType.PATTERN_VIEW:
+        case CreateEditComponentDialogType.PATTERN_VIEW :  case CreateEditComponentDialogType.DESIGN_MODEL:
 
           this.saveClicked.emit({
             dialogResult: {
@@ -121,17 +121,6 @@ export class CreateEditPatternLanguageComponent implements OnInit {
           patternLanguage.patternSchema = patternSchema;
           this.saveClicked.emit({
             dialogResult: patternLanguage
-          });
-          this.dialogRef.close();
-          break;
-
-        case CreateEditComponentDialogType.DESIGN_MODEL:
-
-          this.saveClicked.emit({
-            dialogResult: {
-              name: this.name.value,
-              logo: this.iconUrl.value
-            }
           });
           this.dialogRef.close();
           break;
