@@ -65,6 +65,7 @@ export class PatternLanguageManagementComponent implements OnInit {
   ngOnInit() {
     this.patternLanguages = Array.from<PatternLanguageModel>(this.activatedRoute.snapshot.data.patternlanguages.values())
       .sort(PatternLanguageManagementComponent.sortPatternLanguages);
+    this.reloadPatternRepo();
   }
 
   async reloadPatternRepo() {
@@ -73,14 +74,13 @@ export class PatternLanguageManagementComponent implements OnInit {
         map(result => result.sort(PatternLanguageManagementComponent.sortPatternLanguages)))
       .subscribe(result => {
         this.patternLanguages = result;
-        this._toasterService.pop('success', 'Reloaded Pattern Languages');
         this.cdr.detectChanges();
         return result;
       });
     this.cdr.detectChanges();
   }
 
-  navigateToPL(pl: UriEntity): void {
+  navigateToPL(pl: PatternLanguageModel): void {
     this.zone.run(() => {
       this.router.navigate([pl.id], { relativeTo: this.activatedRoute });
     });
