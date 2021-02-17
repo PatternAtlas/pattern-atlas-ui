@@ -1,11 +1,28 @@
 <pp-action-button-bar [goBackButton]="false" [addButtonText]="'Add View'"
                       (addClicked)="createView()"></pp-action-button-bar>
-<div style="display: flex; flex-wrap: wrap; padding: 0.25em;">
-  <mat-card class="card box"
-            *ngFor="let entity of patternViewResponse?._embedded?.patternViews"
-            (click)="navigate(entity)"
-  >
-    <span>{{entity.name}}</span>
-  </mat-card>
 
+<div class="container">
+  <mat-card *ngFor="let patternView of patternViewResponse?._embedded?.patternViews"
+             class="landing-card">
+
+    <mat-card-header (click)="navigate(patternView)">
+      <img mat-card-avatar [src]="patternView?.logo || '//via.placeholder.com/50x50'" alt=""/>
+
+      <mat-card-title>
+        {{patternView.name}}
+      </mat-card-title>
+    </mat-card-header>
+
+    <img (click)="navigate(patternView)" mat-card-image [src]="patternView?.logo || '//via.placeholder.com/200x300'" alt=""/>
+
+    <mat-card-actions>
+      <div style="text-align: center">
+        <button (click)="navigate(patternView)" mat-stroked-button color="primary"><i class="material-icons">pageview</i> View
+        </button>
+        <button (click)="deletePatternView(patternView)" class="pattern-button" mat-stroked-button style="margin-left: 25px" color="warn">
+          <i class="material-icons">delete</i>
+        </button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
 </div>

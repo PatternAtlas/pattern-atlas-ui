@@ -232,4 +232,8 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
 
     return of({ graph: graphNodes });
   }
+
+  deleteDesignModel(designModel: DesignModel){
+    return this.httpClient.delete(designModel._links.self.href);
+  }
 }

@@ -91,13 +91,13 @@ export class PatternViewService implements GraphDataService {
     return this.http.get<Embedded<UndirectedEdgesResponse>>(patternContainer._links.undirectedEdges.href);
   }
 
-  getDirectedEdgeById(patternViewId, edgeId: string) : Observable<DirectedEdgeModel>{
-    return this.http.get<DirectedEdgeModel>(this.repoEndpoint + /patternViews/+ patternViewId + /directedEdges/ + edgeId)
+  getDirectedEdgeById(patternViewId, edgeId: string): Observable<DirectedEdgeModel> {
+    return this.http.get<DirectedEdgeModel>(this.repoEndpoint + /patternViews/ + patternViewId + /directedEdges/ + edgeId)
   }
 
 
-  getUndirectedEdgeById(patternViewId, edgeId: string) : Observable<UndirectedEdgeModel>{
-    return this.http.get<UndirectedEdgeModel>(this.repoEndpoint + /patternViews/+ patternViewId + /undirectedEdges/ + edgeId)
+  getUndirectedEdgeById(patternViewId, edgeId: string): Observable<UndirectedEdgeModel> {
+    return this.http.get<UndirectedEdgeModel>(this.repoEndpoint + /patternViews/ + patternViewId + /undirectedEdges/ + edgeId)
   }
 
   deleteLink(patternLink: any): Observable<any> {
@@ -116,10 +116,14 @@ export class PatternViewService implements GraphDataService {
     return of();
   }
 
-  removeRelationFromView(patternContainer: PatternContainer, relation: any):void {
-    relation.markerStart === undefined?
-      this.http.delete(patternContainer._links.directedEdges.href + '/' + relation.id).subscribe():
+  removeRelationFromView(patternContainer: PatternContainer, relation: any): void {
+    relation.markerStart === undefined ?
+      this.http.delete(patternContainer._links.directedEdges.href + '/' + relation.id).subscribe() :
       this.http.delete(patternContainer._links.undirectedEdges.href + '/' + relation.id).subscribe();
+  }
+
+  deletePatternView(patternViewId: PatternContainer) {
+    return this.http.delete(patternViewId._links.self.href);
   }
 
 }

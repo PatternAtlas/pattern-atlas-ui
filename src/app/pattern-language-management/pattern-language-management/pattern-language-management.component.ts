@@ -27,6 +27,7 @@ import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult
 import { map } from 'rxjs/operators';
 import PatternLanguageModel from '../../core/model/hal/pattern-language-model.model';
 import UriEntity from '../../core/model/hal/uri-entity.model';
+import { DeleteConfirmationDialogComponent } from "../../core/component/delete-confirmation-dialog/delete-confirmation-dialog.component";
 
 @Component({
   selector: 'pp-pattern-language-management',
@@ -64,6 +65,7 @@ export class PatternLanguageManagementComponent implements OnInit {
   ngOnInit() {
     this.patternLanguages = Array.from<PatternLanguageModel>(this.activatedRoute.snapshot.data.patternlanguages.values())
       .sort(PatternLanguageManagementComponent.sortPatternLanguages);
+    this.reloadPatternRepo();
   }
 
   async reloadPatternRepo() {
@@ -72,14 +74,13 @@ export class PatternLanguageManagementComponent implements OnInit {
         map(result => result.sort(PatternLanguageManagementComponent.sortPatternLanguages)))
       .subscribe(result => {
         this.patternLanguages = result;
-        this._toasterService.pop('success', 'Reloaded Pattern Languages');
         this.cdr.detectChanges();
         return result;
       });
     this.cdr.detectChanges();
   }
 
-  navigateToPL(pl: UriEntity): void {
+  navigateToPL(pl: PatternLanguageModel): void {
     this.zone.run(() => {
       this.router.navigate([pl.id], { relativeTo: this.activatedRoute });
     });
@@ -106,5 +107,25 @@ export class PatternLanguageManagementComponent implements OnInit {
             this._toasterService.pop('error', 'Error occurred', JSON.stringify(err));
           });
       });
+  }
+
+  delete(patternLanguage: PatternLanguageModel) {
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+      data: {
+        name: patternLanguage.name,
+      }
+    }).afterClosed().subscribe(dialogAnswer => {
+      if(dialogAnswer){
+        this.patternLanguageService.deletePatternLanguage(patternLanguage.id).subscribe((response) =>{
+         this.patternLanguages.splice(this.patternLanguages.indexOf(patternLanguage),1);
+         this._toasterService.pop('success', 'Pattern Language deleted!');
+       },(error) => {
+          this._toasterService.pop('error', 'Pattern Language could not be deleted!', 'A Pattern Language can only be deleted if it does not contain any patterns.');
+        });
+
+
+      }
+    })
+
   }
 }

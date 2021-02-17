@@ -6,23 +6,28 @@
 
 <div class="container">
   <mat-card *ngFor="let designModel of designModelResponse?._embedded?.designModels"
-            [routerLink]="[designModel.id]" class="landing-card">
-
+            class="landing-card">
     <mat-card-header>
-      <img mat-card-avatar [src]="designModel?.logo || '//via.placeholder.com/50x50'" alt=""/>
+      <img mat-card-avatar (click)="navigate(designModel)" [src]="designModel?.logo || '//via.placeholder.com/50x50'"
+           alt=""/>
 
-      <mat-card-title>
+      <mat-card-title (click)="navigate(designModel)">
         {{designModel.name}}
       </mat-card-title>
     </mat-card-header>
-
-    <img mat-card-image [src]="designModel?.logo || '//via.placeholder.com/200x300'" alt=""/>
+    <img mat-card-image (click)="navigate(designModel)" [src]="designModel?.logo || '//via.placeholder.com/200x300'"
+         alt=""/>
 
     <mat-card-actions>
-      <button mat-stroked-button color="primary">
-        <mat-icon>pageview</mat-icon>
-        View
-      </button>
+      <div style="text-align: center">
+        <button mat-stroked-button color="primary"
+                (click)="navigate(designModel)"><i class="material-icons">pageview</i> View
+        </button>
+        <button (click)="delete(designModel)" class="pattern-button" mat-stroked-button style="margin-left: 25px"
+                color="warn">
+          <i class="material-icons">delete</i>
+        </button>
+      </div>
     </mat-card-actions>
   </mat-card>
 </div>
