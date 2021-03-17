@@ -569,4 +569,8 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     });
     return types;
   }
+
+  addPatternFromGraphToView(patternList: any) {
+    this.patterns = patternList
+  }
 }
