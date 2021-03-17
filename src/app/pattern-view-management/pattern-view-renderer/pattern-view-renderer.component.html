@@ -68,7 +68,9 @@
                 patternLanguage: null, patternContainer: this.patternViewResponse,
                 patternLanguages: this.patternLanguages
             }"
-                  (addedEdge)="handleLinkAddedInGraphEditor($event)" (removedEdge)="handleLinkRemovedInGraphEditor($event)" [showPatternLanguageName]="true"
+                  (addedEdge)="handleLinkAddedInGraphEditor($event)" (removedEdge)="handleLinkRemovedInGraphEditor($event)"
+                  (updatedGraphEvent)="addPatternFromGraphToView($event)"
+                  [showPatternLanguageName]="true"
                   [showViewRelations]="true"></pp-graph-display>
 
 

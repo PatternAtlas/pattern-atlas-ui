@@ -71,7 +71,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
 
   @Output() addedEdge = new EventEmitter<any>();
   @Output() removedEdge = new EventEmitter<any>();
-  @Output() updatedGraphEvent = new EventEmitter<void>();
+  @Output() updatedGraphEvent = new EventEmitter<any>();
   @Output() deletePatternEvent = new EventEmitter<string>();
   @Output() aggregationAssignmentsUpdate = new EventEmitter<{ [key: string]: string }>();
 
@@ -268,7 +268,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
       switchMap(result => result ? this.getCurrentPatternViewAndPatterns() : EMPTY))
       .subscribe(
         (res) => {
-          this.updatedGraphEvent.emit();
+          this.updatedGraphEvent.emit(res);
           if (res) {
             this.reformatGraph();
             this.toastService.pop('success', 'Pattern added');
