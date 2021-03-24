@@ -104,7 +104,10 @@ export class CreatePatternComponent implements OnInit {
     this.markdown = new MarkdownIt();
     this.markdown.use(markdownitKatex);
 
-    this.patternLanguageService.getPatternLanguageById(this.patternLanguageId).subscribe((pl: PatternLanguage) => {
+    const patternLanguageObservable = UriConverter.isUUID(this.patternLanguageId) ?
+      this.patternLanguageService.getPatternLanguageById(this.patternLanguageId)
+      : this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageId);
+    patternLanguageObservable.subscribe((pl) => {
       this.patternLanguage = pl;
       this.sections = this.patternLanguage.patternSchema ?
         this.patternLanguage.patternSchema.patternSectionSchemas.map((schema: PatternSectionSchema) => schema.label) : [];
