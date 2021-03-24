@@ -1,21 +1,24 @@
-import { ChangeDetectorRef, Component, NgZone, OnInit, ViewChild } from '@angular/core';
-import { TdTextEditorComponent } from '@covalent/text-editor';
-import { ActivatedRoute, Router } from '@angular/router';
+import {ChangeDetectorRef, Component, NgZone, OnInit, ViewChild} from '@angular/core';
+import {TdTextEditorComponent} from '@covalent/text-editor';
+import {ActivatedRoute, Router} from '@angular/router';
 import * as marked from 'marked';
-import { TokensList } from 'marked';
-import Pattern from '../../core/model/pattern.model';
-import { ToasterService } from 'angular2-toaster';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { ValidationService } from '../../core/service/validation.service';
-import { PatternLanguageService } from '../../core/service/pattern-language.service';
+import {TokensList} from 'marked';
+import {ToasterService} from 'angular2-toaster';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {ValidationService} from '../../core/service/validation.service';
+import {PatternLanguageService} from '../../core/service/pattern-language.service';
 import PatternLanguage from '../../core/model/hal/pattern-language.model';
 import PatternSectionSchema from '../../core/model/hal/pattern-section-schema.model';
 import * as MarkdownIt from 'markdown-it';
 import * as markdownitKatex from 'markdown-it-katex';
-import { PatternService } from '../../core/service/pattern.service';
-import { debounceTime, distinctUntilChanged } from 'rxjs/internal/operators';
-import { globals } from '../../globals';
-import { UriConverter } from '../../core/util/uri-converter';
+import {PatternService} from '../../core/service/pattern.service';
+import {debounceTime, distinctUntilChanged, tap} from 'rxjs/internal/operators';
+import {globals} from '../../globals';
+import {UriConverter} from '../../core/util/uri-converter';
+import {SelectPatternDialogComponent} from '../../core/component/select-pattern-dialog/select-pattern-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
+import {of} from 'rxjs';
+import Pattern from '../../core/model/hal/pattern.model';
 
 
 @Component({
@@ -50,7 +53,7 @@ export class CreatePatternComponent implements OnInit {
         }, {
         name: 'pattern-link',
         action: (editor) => {
-          // TODO: after chosing a pattern in the dialog, insert a link to the chosen pattern in markdown syntax
+          this.addPatternReference(editor);
         },
         className: 'fa fab fa-product-hunt',
         title: 'Reference Pattern',
@@ -77,7 +80,8 @@ export class CreatePatternComponent implements OnInit {
               private patternService: PatternService,
               private router: Router,
               private zone: NgZone,
-              private _fb: FormBuilder) {
+              private _fb: FormBuilder,
+              private matDialog: MatDialog) {
   }
 
   get iconUrl(): AbstractControl {
@@ -178,7 +182,7 @@ export class CreatePatternComponent implements OnInit {
       () => {
         this.toastService.pop('success', 'Pattern successfully created');
         this.zone.run(() => {
-          this.router.navigate(['..'], { relativeTo: this.activatedRoute });
+          this.router.navigate(['..'], {relativeTo: this.activatedRoute});
         });
       },
       (error) => this.toastService.pop('error', 'Could not create Pattern', error.message)
@@ -218,10 +222,10 @@ export class CreatePatternComponent implements OnInit {
     }
     this.errorMessages = [];
     Object.keys(this.patternValuesFormGroup.controls).forEach(key => {
-      const controlErrors: ValidationErrors = this.patternValuesFormGroup.controls[ key ].errors;
+      const controlErrors: ValidationErrors = this.patternValuesFormGroup.controls[key].errors;
       if (controlErrors != null) {
         Object.keys(controlErrors).forEach(keyError => {
-          this.errorMessages.push(ValidationService.getMessageForError(key, keyError, controlErrors[ keyError ]));
+          this.errorMessages.push(ValidationService.getMessageForError(key, keyError, controlErrors[keyError]));
         });
       }
     });
@@ -252,7 +256,7 @@ export class CreatePatternComponent implements OnInit {
   private parsePatternInput(): void {
     const lines = this.parseMarkdownText();
     const patternNameIndex = lines.findIndex((it) => it.type === 'heading' && it.depth === 1);
-    this.patternName = patternNameIndex !== -1 ? lines[ patternNameIndex ][ 'text' ] : '';
+    this.patternName = patternNameIndex !== -1 ? lines[patternNameIndex]['text'] : '';
     this.patternLanguage.patternSchema.patternSectionSchemas.forEach((schema: PatternSectionSchema) => {
       const sectionName = schema.name;
       const sectionIndex = lines.findIndex((sec) => sec.type === 'heading' && sec.depth === 2 &&
@@ -260,17 +264,17 @@ export class CreatePatternComponent implements OnInit {
       if (sectionIndex !== -1) {
         const sectionContent = [];
         for (let i = sectionIndex + 1; i < lines.length; i++) {
-          if (lines[ i ].type === 'heading') {
+          if (lines[i].type === 'heading') {
             break;
           }
-          if (lines[ i ][ 'text' ]) {
+          if (lines[i]['text']) {
             // if a list item was parsed before, add it to the text
-            sectionContent.push(i > 0 && CreatePatternComponent.isListItem(i, sectionIndex, lines) ? '* ' + lines[ i ][ 'text' ] : lines[ i ][ 'text' ]);
+            sectionContent.push(i > 0 && CreatePatternComponent.isListItem(i, sectionIndex, lines) ? '* ' + lines[i]['text'] : lines[i]['text']);
           }
         }
         if (this.patternValuesFormGroup) {
-          if (this.patternValuesFormGroup.controls[ sectionName ]) {
-            this.patternValuesFormGroup.controls[ sectionName ].setValue(sectionContent.join('\n'));
+          if (this.patternValuesFormGroup.controls[sectionName]) {
+            this.patternValuesFormGroup.controls[sectionName].setValue(sectionContent.join('\n'));
           } else {
             console.log('missing formcontrol:');
             console.log(sectionName);
@@ -299,5 +303,33 @@ export class CreatePatternComponent implements OnInit {
     }
     this._textEditor.value = this.previousTextEditorValue;
     this.onChangeMarkdownText();
+  }
+
+  private addPatternReference(editor: any) {
+    // get patterns to select from
+    let patternsObservable = !this.patterns ?
+      this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href) : of(this.patterns);
+    patternsObservable.pipe(tap((res) => {
+      this.patterns = res;
+      // let the user choose which pattern to reference
+      this.showAndHandlePatternSelectionDialog(this.patterns, editor);
+    })).subscribe((res) => {
+      console.log('show dialog for pattern selection')
+    });
+  }
+
+  private showAndHandlePatternSelectionDialog(patterns: Array<Pattern>, editor: any) {
+    const dialogRef = this.matDialog.open(SelectPatternDialogComponent, {
+      data: {
+        patterns: this.patterns
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((selectedPattern) => {
+      const patternReferenceUrl = `pattern-languages/${this.patternLanguage.id}/${selectedPattern.id}`;
+      if (selectedPattern) { // if user did not cancel
+        this.insertTextAtCursor(editor, `[${selectedPattern.name}](${patternReferenceUrl})`, '');
+      }
+    });
   }
 }

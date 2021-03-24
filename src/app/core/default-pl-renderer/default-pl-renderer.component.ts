@@ -39,7 +39,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   patterns: Array<Pattern> = [];
   patternsForCardsView: Array<Pattern> = [];
   patternLanguage: PatternLanguage;
-  patternLanguageId: string;
+  patternLanguageIdOrUri: string;
   @ViewChild('graphWrapper') graph: ElementRef;
   @ViewChild('cardsView') cardsView: ElementRef;
   @ViewChild('searchField') searchField: ElementRef;
@@ -158,19 +158,21 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
 
   private loadData(): void {
     this.isLoadingPatternData = true;
-    this.patternLanguageId = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId));
-    if (this.patternLanguageId) {
-      const loadDataSubscrition = this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageId)
-        .pipe(
+    this.patternLanguageIdOrUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId));
+    if (this.patternLanguageIdOrUri) {
+      // load pattern language data by either URI or ID
+      const loadDataObservable = UriConverter.isURI(this.patternLanguageIdOrUri) ?
+        this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageIdOrUri) :
+        this.patternLanguageService.getPatternLanguageByID(this.patternLanguageIdOrUri).pipe(
           tap(patternlanguage => this.patternLanguage = patternlanguage),
           switchMap(() => this.loadPatterns()),
           switchMap(() => this.getPatternLinks())
-        )
-        .subscribe(() => {
-          this.isLoadingLinkData = false;
-          this.detectChanges();
-        });
-      this.subscriptions.add(loadDataSubscrition);
+        );
+      let subscription = loadDataObservable.subscribe(() => {
+        this.isLoadingLinkData = false;
+        this.detectChanges();
+      });
+      this.subscriptions.add(subscription);
     }
   }
 
