@@ -51,5 +51,14 @@ export class UriConverter {
     });
   }
 
+  // this function checks if a given urlParam is a UUID (otherwise the entity is specified via its URI)
+  static isUUID(urlParam) {
+    const s = '' + urlParam;
+
+    const match = s.match('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$');
+    return match !== null;
+
+  }
+
 
 }

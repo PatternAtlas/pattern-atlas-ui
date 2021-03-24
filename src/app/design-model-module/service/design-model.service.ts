@@ -23,16 +23,12 @@ import { UndirectedEdgeModel } from '../../core/model/hal/undirected-edge.model'
 import { LinksToOtherPattern } from '../../pattern-view-management/add-to-view/add-to-view.component'; // TODO
 import { AddDirectedEdgeToViewRequest } from '../../core/model/hal/add-directed-edge-to-view-request';
 import { AddUndirectedEdgeToViewRequest } from '../../core/model/hal/add-undirected-edge-to-view-request';
-import { Embedded } from '../../core/model/hal/embedded';
-import { UndirectedEdesResponse } from '../../core/model/hal/undirected-edes-response.interface';
-import { DirectedEdesResponse } from '../../core/model/hal/directed-edes-response.interface';
 import { GraphNode } from '../../core/component/graph-display/graph-display.component';
 import { DesignModel } from '../model/hal/design-model';
 import { DesignModelResponse } from '../model/hal/design-model-response';
 import { GraphDataService } from '../../core/service/graph-data/graph-data.service';
 import { map, tap } from 'rxjs/operators';
 import { GraphDataSavePatternService } from '../../core/service/graph-data/graph-data-save-pattern.service';
-import { HalLink } from '../../core/model/hal/hal-link.interface';
 import { TextComponent } from '@ustutt/grapheditor-webcomponent/lib/edge';
 import { HalCollectionResponse } from '../model/hal/hal-collection-response';
 import { HalEntityResponse } from '../model/hal/hal-entity-response';
@@ -235,5 +231,9 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
     });
 
     return of({ graph: graphNodes });
+  }
+
+  deleteDesignModel(designModel: DesignModel){
+    return this.httpClient.delete(designModel._links.self.href);
   }
 }

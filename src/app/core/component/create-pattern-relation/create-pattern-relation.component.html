@@ -1,9 +1,22 @@
-<h1 mat-dialog-title>Add a relation to another pattern</h1>
+<h1 *ngIf="isDelete" mat-dialog-title>Edit or Delete the selected Relation</h1>
+<h1 *ngIf="!isDelete" mat-dialog-title>Add a Relation to another Pattern</h1>
 <div mat-dialog-content [formGroup]="relationForm">
   <mat-form-field *ngIf="data.firstPattern; else chooseFirstPattern">
     <input type="text" matInput [value]="data.firstPattern.name" readonly/>
   </mat-form-field>
   <ng-template #chooseFirstPattern>
+    <mat-form-field *ngIf="relationForm.get('secondPattern').value != null; else chooseFirstPatternWithEmptyForm">
+      <mat-select formControlName="firstPattern">
+        <div *ngFor="let pattern of data.patterns">
+          <mat-option *ngIf="pattern.name != relationForm.get('secondPattern').value.name "
+                      [value]="pattern">
+            {{pattern.name}}
+          </mat-option>
+        </div>
+      </mat-select>
+    </mat-form-field>
+  </ng-template>
+  <ng-template #chooseFirstPatternWithEmptyForm>
     <mat-form-field>
       <mat-select formControlName="firstPattern">
         <mat-option *ngFor="let pattern of data.patterns"
@@ -42,6 +55,18 @@
     <input type="text" matInput [value]="data.secondPattern.name" readonly/>
   </mat-form-field>
   <ng-template #chooseSecondPattern>
+    <mat-form-field *ngIf="relationForm.get('firstPattern').value != null; else chooseSecondPatternWithEmptyForm">
+      <mat-select formControlName="secondPattern">
+        <div *ngFor="let pattern of data.patterns">
+          <mat-option *ngIf=" pattern.name != relationForm.get('firstPattern').value.name"
+                      [value]="pattern">
+            {{pattern.name}}
+          </mat-option>
+        </div>
+      </mat-select>
+    </mat-form-field>
+  </ng-template>
+  <ng-template #chooseSecondPatternWithEmptyForm>
     <mat-form-field>
       <mat-select formControlName="secondPattern">
         <mat-option *ngFor="let pattern of data.patterns"
@@ -56,8 +81,13 @@
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="null">Close</button>
-  <button mat-button [mat-dialog-close]="mapDialogDataToEdge(relationForm.value)" [disabled]="!relationForm?.valid">
-    Save
+  <button mat-raised-button [mat-dialog-close]="null">Close</button>
+  <button *ngIf="isDelete" (click)="deleteLink()" [mat-dialog-close]="data" class="pattern-button" mat-raised-button color="warn">
+    <i class="material-icons">delete</i> Delete
+  </button>
+
+  <button mat-raised-button style="margin-left: auto; margin-right: 0;" color="primary"
+          [mat-dialog-close]="mapDialogDataToEdge(relationForm.value)" [disabled]="!relationForm?.valid"><i
+    class="material-icons">save</i> Save
   </button>
 </div>

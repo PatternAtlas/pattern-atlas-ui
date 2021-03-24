@@ -1,0 +1,9 @@
+<h1 mat-dialog-title *ngIf="data?.name">Do you really want to delete {{data.name}}?</h1>
+<h1 mat-dialog-title *ngIf="!data?.name">Do you really want to delete this item?</h1>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancle</button>
+  <button [mat-dialog-close]="data" class="pattern-button"  style="margin-left: auto;
+          margin-right: 0;" mat-raised-button color="warn">
+    <i class="material-icons">delete</i>
+  </button>
+</div>

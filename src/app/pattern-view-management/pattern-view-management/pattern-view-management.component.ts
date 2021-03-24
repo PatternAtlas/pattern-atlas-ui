@@ -16,11 +16,12 @@ import { ToasterService } from 'angular2-toaster';
 import { UriConverter } from '../../core/util/uri-converter';
 import UriEntity from '../../core/model/hal/uri-entity.model';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DeleteConfirmationDialogComponent } from "../../core/component/delete-confirmation-dialog/delete-confirmation-dialog.component";
 
 @Component({
   selector: 'pp-solution-language-management',
   templateUrl: './pattern-view-management.component.html',
-  styleUrls: ['./pattern-view-management.component.scss']
+  styleUrls: [ './pattern-view-management.component.scss' ]
 })
 export class PatternViewManagementComponent implements OnInit {
   public patternViewResponse;
@@ -46,7 +47,7 @@ export class PatternViewManagementComponent implements OnInit {
 
   navigate(view: UriEntity): void {
     this.zone.run(() => {
-      this.router.navigate([UriConverter.doubleEncodeUri(view.uri)], { relativeTo: this.activatedRoute });
+      this.router.navigate([ UriConverter.doubleEncodeUri(view.uri) ], { relativeTo: this.activatedRoute });
     });
   }
 
@@ -58,6 +59,7 @@ export class PatternViewManagementComponent implements OnInit {
       .saveClicked
       .pipe(
         tap((result: DialogPatternLanguageResult) => {
+          console.log(result.dialogResult);
           view = <PatternContainer>result.dialogResult;
         }),
         switchMap(() => this.patternViewService.savePatternView(this.patternViewResponse._links.patternViews.href, view)),
@@ -70,4 +72,24 @@ export class PatternViewManagementComponent implements OnInit {
       });
   }
 
+  deletePatternView(patternView: PatternContainer) {
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+      data: {
+        name: patternView.name,
+      }
+    }).afterClosed().subscribe(dialogAnswer => {
+        if (dialogAnswer) {
+          this.patternViewService.deletePatternView(patternView).subscribe((response) => {
+              for (let i = 0; i < this.patternViewResponse._embedded.patternViews.length; i++) {
+                this.patternViewResponse._embedded.patternViews[i].id === patternView.id ? this.patternViewResponse._embedded.patternViews.splice(i, 1) : null;
+              }
+              this.toastService.pop('success', 'Pattern View deleted!');
+            },
+            (error) => {
+              this.toastService.pop('error', 'Pattern View could not be deleted!');
+            }
+          );
+        }
+      })
+  }
 }

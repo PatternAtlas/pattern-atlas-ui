@@ -1,10 +1,12 @@
 <mat-sidenav-container [hasBackdrop]="false" class="container">
-  <mat-sidenav *ngIf="patternContainer" #leftSidenav style="min-width: 300px;" [disableClose]="true" [opened]="true" fixedInViewport="false"
+  <mat-sidenav *ngIf="patternContainer" #leftSidenav style="min-width: 300px;" [disableClose]="true" [opened]="true"
+               fixedInViewport="false"
                mode="push">
     <h3>Add Patterns</h3>
     <mat-accordion>
       <div cdkDropListGroup>
-        <mat-expansion-panel *ngFor="let patternLang of patternLanguages" (afterExpand)="handlePatternListExpandEvent(patternLang)">
+        <mat-expansion-panel *ngFor="let patternLang of patternLanguages"
+                             (afterExpand)="handlePatternListExpandEvent(patternLang)">
           <mat-expansion-panel-header>
             <mat-panel-title>
               {{patternLang.name}}
@@ -32,9 +34,36 @@
     </mat-accordion>
   </mat-sidenav>
 
-  <mat-sidenav [opened]="patternClicked" position="end" fixedInViewport="true" mode="over">
-    <h4 style="margin: 1em">Relations of {{currentPattern?.name}}</h4>
+  <!-- Sidepanel for Pattern View Relations -->
+  <mat-sidenav [opened]="patternClicked" position="end" fixedInViewport="true" mode="over" class="sidemenu">
+    <h4 style="margin: 1em">{{showViewRelations ? 'View ' : ''}}Relations of {{currentPattern?.name}}</h4>
     <mat-accordion>
+       <mat-expansion-panel *ngFor="let relation of viewRelationsOfPattern">
+         <mat-expansion-panel-header>
+           <mat-panel-title style="align-self: center">
+             {{relation?.type}}
+           </mat-panel-title>
+           <mat-panel-description class="horiz-centered">
+             <div class="horiz-centered" *ngIf="relation['sourcePatternId']">
+               <i class="material-icons" *ngIf="relation['sourcePatternId'] === this.currentPattern.id">trending_flat</i>
+               <i class="material-icons flip" *ngIf="relation['sourcePatternId'] !== this.currentPattern.id">trending_flat</i>
+               {{ relation['sourcePatternId'] === this.currentPattern.id ?
+               relation['targetPatternName'] : relation['sourcePatternName']}}
+             </div>
+             <div *ngIf="relation['pattern1Id']" class="horiz-centered">
+               {{ relation['sourcePatternName']}}
+               <i class="material-icons flip">compare_arrows</i>
+             {{ relation['pattern1Id'] === this.currentPattern.id ? relation['pattern2Name'] :
+               relation['pattern1Name']}}
+             </div>
+             <i (click)="openEditView(relation)" class="material-icons edit-icon" >mode_edit</i>
+           </mat-panel-description>
+         </mat-expansion-panel-header>
+        <i>{{relation.description ? '' + relation.description : ''}}</i>
+      </mat-expansion-panel>
+
+      <!-- Sidepanel for Pattern Language Relations -->
+      <h4 style="margin: 1em" *ngIf="showViewRelations">Pattern Language Relations</h4>
       <mat-expansion-panel *ngFor="let relation of currentEdges">
         <mat-expansion-panel-header>
           <mat-panel-title style="align-self: center">
@@ -46,8 +75,8 @@
               <div *ngSwitchCase="'undirectedEdges'" class="horiz-centered">
                 {{ relation?.edge.sourcePatternName}}
                 <i class="material-icons flip">compare_arrows</i>
-                {{ relation?.edge.pattern1Id === this.currentPattern.id ? relation.edge.pattern1Name :
-                relation.edge.pattern2Name}}
+                {{ relation?.edge.pattern1Id === this.currentPattern.id ? relation.edge.pattern2Name :
+                relation.edge.pattern1Name}}
               </div>
 
               <div *ngSwitchCase="'outgoingDirectedEdges'" class="horiz-centered">
@@ -61,11 +90,11 @@
                 {{ relation?.edge.sourcePatternId === this.currentPattern.id ?
                 relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
               </div>
-
             </div>
+            <i *ngIf="!patternContainer" (click)="openEditPL(relation)" class="material-icons edit-icon">mode_edit</i>
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <i>{{relation?.edge.description ? ': ' + relation?.edge.description : ''}}</i>
+        <i>{{relation?.edge.description ?  relation?.edge.description : ''}}</i>
       </mat-expansion-panel>
     </mat-accordion>
 
@@ -84,7 +113,6 @@
                    style="width: 100%; height: 100%"
                    zoom="both">
       <svg #svg slot="graph" [class.left-sidenav-open]="!!patternContainer">
-        <!-- TODO: Move style to scss file -->
         <style>
           .node {
             fill: aliceblue;
@@ -104,7 +132,7 @@
             display: none;
             cursor: pointer;
             fill: black;
-            opacity: 0.1;
+            opacity: 0.15;
             transition: opacity 0.25s ease-out;
           }
 
@@ -185,11 +213,10 @@
                   x="45"
                   y="10">
             </text>
-
             <g class="concrete-solutions-container" transform="translate(-60,25)"></g>
           </g>
 
-          <g data-line-attachement-point="-9 0" data-template-type="marker" id="arrow">
+          <g data-line-attachement-point="-9 0" data-template-type="marker" data-link-handles="none" id="arrow">
             <path d="M -9 -4 L 0 0 L -9 4 z"/>
           </g>
         </defs>
@@ -197,3 +224,5 @@
     </network-graph>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+

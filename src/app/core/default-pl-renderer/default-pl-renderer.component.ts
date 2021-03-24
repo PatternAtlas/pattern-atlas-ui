@@ -19,7 +19,7 @@ import { EMPTY, forkJoin, Observable, Subscription } from 'rxjs';
 import { Embedded } from '../model/hal/embedded';
 import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
 import { switchMap, tap } from 'rxjs/operators';
-import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
+import { UndirectedEdgesResponse } from '../model/hal/undirected-edes-response.interface';
 import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
 import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
 import { CreatePatternRelationComponent } from '../component/create-pattern-relation/create-pattern-relation.component';
@@ -29,6 +29,8 @@ import { PatternService } from '../service/pattern.service';
 import Pattern from '../model/hal/pattern.model';
 import { FormControl } from '@angular/forms';
 import { globals } from '../../globals';
+import { PatternRelationDescriptorDirection } from '../model/pattern-relation-descriptor-direction.enum';
+
 
 @Component({
   selector: 'pp-default-pl-renderer',
@@ -39,7 +41,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   patterns: Array<Pattern> = [];
   patternsForCardsView: Array<Pattern> = [];
   patternLanguage: PatternLanguage;
-  patternLanguageIdOrUri: string;
+  patternLanguageId: string;
   @ViewChild('graphWrapper') graph: ElementRef;
   @ViewChild('cardsView') cardsView: ElementRef;
   @ViewChild('searchField') searchField: ElementRef;
@@ -98,24 +100,52 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
     this.router.navigate(['create-patterns'], { relativeTo: this.activatedRoute });
   }
 
+
+  /**
+   * Opens a different Dialog when clicking the "Create Relation button"
+   * It differentiates between the user having or not having the graph component opened
+   * If the graph component is open when clicking "create relation" a selected pattern gets automatically filled in
+   *    as the first Pattern of the relation in the create dialog
+   */
+  private openCreateDialog() {
+    if (this.graphDisplayComponent === undefined) {
+      return this.dialog.open(CreatePatternRelationComponent, {
+        data: {
+          patterns: this.patterns,
+          patternlanguage: this.patternLanguage
+        }
+      });
+
+    } else {
+      return this.dialog.open(CreatePatternRelationComponent, {
+        data: {
+          firstPattern: this.graphDisplayComponent.selectedPattern,
+          patterns: this.patterns,
+          patternlanguage: this.patternLanguage
+        }
+      });
+    }
+  }
+
+  /**
+   * Method getting called when pressing the Add-Relation button
+   * If executed while having the graphview opened the button gets treated equally to
+   *    an add-relation opertion inside of the graph
+   * If executed from the patternlanguage view the graph does not need to be updated and the edge just
+   *    gets added to the database and the PatterLinklist
+   */
   public addLink() {
-    // Todo: Make patternlanguage camelcase
-    const dialogRef = this.dialog.open(CreatePatternRelationComponent, {
-      data: {
-        patterns: this.patterns,
-        patternlanguage: this.patternLanguage
+    this.openCreateDialog().afterClosed().subscribe((edge) => {
+      if (edge !== undefined) {
+        if (this.graphDisplayComponent !== undefined) {
+          this.handleLinkAddedInGraphEditor(edge);
+        } else {
+          const insertionSubscription = this.insertEdge(edge).subscribe();
+          this.subscriptions.add(insertionSubscription);
+        }
+
       }
     });
-    const diaglogSubscription = dialogRef.afterClosed().pipe(
-      switchMap((edge) => {
-        return edge ? this.insertEdge(edge) : EMPTY;
-      })).subscribe(res => {
-      if (res) {
-        this.toasterService.pop('success', 'Added Relation');
-        this.detectChanges();
-      }
-    });
-    this.subscriptions.add(diaglogSubscription);
   }
 
   insertEdge(edge): Observable<any> {
@@ -134,13 +164,107 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
     this.subscriptions.add(relationSubscription);
   }
 
-  linkAddedInGraphEditor(edge) {
+  /**
+   * Gets called when Graphview child emits that an edge got added
+   * The graphview created edge is missing the Id that is getting assigned from the backend
+   *  --->  it got deleted before calling this method
+   *  ---> Edge needs to be saved in the backend & added into the graph again.
+   *
+   * @param edge
+   */
+  handleLinkAddedInGraphEditor(edge) {
+
     const insertionSubscription = this.insertEdge(edge).subscribe(res => {
-      this.toasterService.pop('success', 'Added Relation');
+      let edgeAdd;
+      if (edge.pattern1Id != null) {
+        edgeAdd = {     //undirected Edge
+          source: edge.pattern1Id,
+          target: edge.pattern2Id,
+          markerEnd: { template: 'arrow', scale: 0.5, relativeRotation: 0 },
+          markerStart: { template: 'arrow', scale: 0.5, relativeRotation: 0 },
+          id: res.body.id
+        }
+      } else {
+        edgeAdd = {   //directed Edge
+          source: edge.sourcePatternId,
+          target: edge.targetPatternId,
+          markerEnd: { template: 'arrow', scale: 0.5, relativeRotation: 0 },
+          id: res.body.id
+        };
+      }
+      this.graphDisplayComponent.graphNativeElement.addEdge(edgeAdd, true);
+      this.toasterService.pop('success', 'Added Relation' + res.body.id);
       this.graphDisplayComponent.updateSideMenu();
       this.detectChanges();
     });
     this.subscriptions.add(insertionSubscription);
+  }
+
+  /**
+   * Gets called when Graphview child emits that an edge got removed.
+   * This is the case for Delete AND Update operations for edges
+   * --->
+   *
+   * @param edge
+   */
+  handleLinkRemovedInGraphEditor(edge) {
+    this.patternRelationDescriptorService.getAnyEdgeByUrl((edge.markerStart === undefined && edge.pattern1Id === undefined ?
+      this.patternLanguage._links.directedEdges.href : this.patternLanguage._links.undirectedEdges.href) + '/' + edge.id).subscribe(res => {
+      const patterns = Array.isArray(this.patterns) ? this.patterns : this.graphDisplayComponent.patternContainer.patterns;
+      let pattern1, pattern2, direction;
+
+
+      if (res.pattern1Id !== undefined) {
+        pattern1 = res.pattern1Id;
+        pattern2 = res.pattern2Id;
+        direction = PatternRelationDescriptorDirection.UnDirected
+      } else {
+        pattern1 = res.sourcePatternId;
+        pattern2 = res.targetPatternId;
+        direction = PatternRelationDescriptorDirection.DirectedRight;
+      }
+      const dialogRef = this.dialog.open(CreatePatternRelationComponent, {
+        data: {
+          firstPattern: patterns.find((pat) => pattern1 === pat.id),
+          secondPattern: patterns.find((pat) => pattern2 === pat.id),
+          preselectedEdgeDirection: direction,
+          patterns,
+          patternLanguage: this.patternLanguage,
+          patternContainer: this.graphDisplayComponent.patternContainer,
+          relationTypes: this.graphDisplayComponent.getGraphDataService().getEdgeTypes(),
+          description: res.description,
+          relationType: res.type,
+          isDelete: true,  //indicates that the dialog is called from the linked removedRemoved method --> not create, but a delete / edit operation
+        }
+      });
+      dialogRef.afterClosed().subscribe((dialogResult) => {
+        if (dialogResult !== undefined && dialogResult.deleteLink === undefined) { //edit edge
+          this.deleteEdge(this.graphDisplayComponent.currentEdge);
+          this.handleLinkAddedInGraphEditor(dialogResult);
+        } else if (dialogResult !== undefined && dialogResult.deleteLink === true) { // delete Edge
+          this.deleteEdge(edge);
+        }
+      });
+    })
+  }
+
+
+  /**
+   * Delete edge in graph, delete it in database and remove it from the Linklist getting used for graphrendering
+   * @param edge
+   */
+  deleteEdge(edge) {
+    this.graphDisplayComponent.graphNativeElement.removeEdge(edge, true);
+    this.graphDisplayComponent.triggerRerendering();
+    this.patternRelationDescriptorService.removeRelationFromPL(this.patternLanguage, edge);
+    this.removeEdgeFromPatternLinkList(edge)
+  }
+
+
+  removeEdgeFromPatternLinkList(edge) {
+    for (let i = 0; i < this.patternLinks.length; i++) {
+      this.patternLinks[i].id === edge.id ? this.patternLinks.splice(i, 1) : null;
+    }
   }
 
   reloadGraph() {
@@ -158,22 +282,36 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
 
   private loadData(): void {
     this.isLoadingPatternData = true;
-    this.patternLanguageIdOrUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId));
-    if (this.patternLanguageIdOrUri) {
-      // load pattern language data by either URI or ID
-      const loadDataObservable = UriConverter.isURI(this.patternLanguageIdOrUri) ?
-        this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageIdOrUri) :
-        this.patternLanguageService.getPatternLanguageByID(this.patternLanguageIdOrUri).pipe(
-          tap(patternlanguage => this.patternLanguage = patternlanguage),
-          switchMap(() => this.loadPatterns()),
-          switchMap(() => this.getPatternLinks())
-        );
-      let subscription = loadDataObservable.subscribe(() => {
-        this.isLoadingLinkData = false;
-        this.detectChanges();
-      });
-      this.subscriptions.add(subscription);
+    this.patternLanguageId = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId));
+    if (!this.patternLanguageId) {
+      return;
     }
+
+    let loadDataObservable;
+    // check if patternlanguage is specified via UUIID or URI and load it accordingly
+    if (UriConverter.isUUID(this.patternLanguageId)) {
+      loadDataObservable = this.patternLanguageService.getPatternLanguageByID(this.patternLanguageId)
+        .pipe(
+          tap(patternlanguage => this.patternLanguage = patternlanguage),
+          switchMap(() => this.loadPatternsAndLinks())
+        );
+    } else {
+      loadDataObservable = this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageId)
+        .pipe(
+          tap(patternlanguage => this.patternLanguage = patternlanguage),
+          switchMap(() => this.loadPatternsAndLinks())
+        );
+    }
+    const loadDataSubscrition = loadDataObservable.subscribe(() => {
+          this.isLoadingLinkData = false;
+          this.detectChanges();
+        });
+    this.subscriptions.add(loadDataSubscrition);
+
+  }
+
+  loadPatternsAndLinks(): Observable<any> {
+    return forkJoin([this.loadPatterns(), this.getPatternLinks()]);
   }
 
   private getDirectedEdges(): Observable<Embedded<DirectedEdesResponse>> {
@@ -186,7 +324,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
       }));
   }
 
-  private getUndirectedEdges(): Observable<Embedded<UndirectedEdesResponse>> {
+  private getUndirectedEdges(): Observable<Embedded<UndirectedEdgesResponse>> {
     if (!this.patternLanguage) {
       return EMPTY;
     }
@@ -202,11 +340,12 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
         this.patterns = patterns;
         this.patternsForCardsView = this.patterns;
         this.isLoadingPatternData = false;
+        this.detectChanges();
       }));
   }
 
   ngOnDestroy(): void {
-    this.cdr.detach()
+    this.cdr.detach();
     this.subscriptions.unsubscribe();
   }
 }

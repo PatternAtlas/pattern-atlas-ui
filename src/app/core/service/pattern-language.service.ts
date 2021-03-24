@@ -21,7 +21,7 @@ import { map } from 'rxjs/operators';
 import PatternLanguages from '../model/hal/pattern-languages.model';
 import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
 import { Embedded } from '../model/hal/embedded';
-import { UndirectedEdesResponse } from '../model/hal/undirected-edes-response.interface';
+import { UndirectedEdgesResponse } from '../model/hal/undirected-edes-response.interface';
 import { GraphNode } from '../component/graph-display/graph-display.component';
 import PatternLanguageModel from '../model/hal/pattern-language-model.model';
 import { GraphDataService } from './graph-data/graph-data.service';
@@ -38,7 +38,7 @@ export class PatternLanguageService implements GraphDataService {
   constructor(private http: HttpClient, private patternService: PatternService) {
   }
 
-  public getPatternLanguages(): Observable<Array<PatternLanguageModel>> {
+  getPatternLanguages(): Observable<Array<PatternLanguageModel>> {
     return this.getPatternLanguageResult()
       .pipe(
         map((result: PatternLanguages) => {
@@ -47,31 +47,36 @@ export class PatternLanguageService implements GraphDataService {
       );
   }
 
-  public getPatternLanguageResult(): Observable<PatternLanguages> {
+  getPatternLanguageResult(): Observable<PatternLanguages> {
     return this.http.get<PatternLanguages>(this.repoEndpoint + '/patternLanguages');
   }
 
-  public getPatternLanguageByUrl(url: string): Observable<PatternLanguage> {
+  getPatternLanguageByUrl(url: string): Observable<PatternLanguage> {
     return this.http.get(url).pipe(
       map(res => <PatternLanguage>res)
     );
   }
 
-  public getPatternLanguageByEncodedUri(encodedUri: string): Observable<PatternLanguage> {
+  getPatternLanguageByEncodedUri(encodedUri: string): Observable<PatternLanguage> {
     const url = this.repoEndpoint + '/patternLanguages/findByUri?encodedUri=' + encodedUri;
     return this.http.get<PatternLanguage>(url);
   }
 
-  public savePatternLanguage(patternLanguage: PatternLanguage): Observable<HttpResponse<any>> {
+  getPatternLanguageById(id: string): Observable<PatternLanguage> {
+    const url = this.repoEndpoint + '/patternLanguages/' + id;
+    return this.http.get<PatternLanguage>(url);
+  }
+
+  savePatternLanguage(patternLanguage: PatternLanguage): Observable<HttpResponse<any>> {
     return this.http.post<HttpResponse<any>>(this.repoEndpoint + '/patternLanguages', patternLanguage, { observe: 'response' });
   }
 
-  public getDirectedEdges(patternLanguage: PatternLanguage): Observable<Embedded<DirectedEdesResponse>> {
+  getDirectedEdges(patternLanguage: PatternLanguage): Observable<Embedded<DirectedEdesResponse>> {
     return this.http.get<Embedded<DirectedEdesResponse>>(patternLanguage._links.directedEdges.href);
   }
 
-  public getUndirectedEdges(patternLanguage: PatternLanguage): Observable<Embedded<UndirectedEdesResponse>> {
-    return this.http.get<Embedded<UndirectedEdesResponse>>(patternLanguage._links.undirectedEdges.href);
+  getUndirectedEdges(patternLanguage: PatternLanguage): Observable<Embedded<UndirectedEdgesResponse>> {
+    return this.http.get<Embedded<UndirectedEdgesResponse>>(patternLanguage._links.undirectedEdges.href);
   }
 
   saveGraph(patternLanguage: PatternLanguage, nodes: Array<any>) {
@@ -100,6 +105,11 @@ export class PatternLanguageService implements GraphDataService {
   }
 
   getEdgeTypes(): Observable<string[]> {
-    return of([]);
+    return of();
+  }
+
+  deletePatternLanguage(patternLanguageId: string){
+    const url =  this.repoEndpoint + '/patternLanguages/' + patternLanguageId;
+    return this.http.delete(url);
   }
 }
