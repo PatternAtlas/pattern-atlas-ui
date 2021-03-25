@@ -108,7 +108,6 @@ export class CreatePatternComponent implements OnInit {
       : this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageId);
     patternLanguageObservable.subscribe((pl) => {
       this.patternLanguage = pl;
-      console.log(this.patternLanguage)
       this.sections = this.patternLanguage.patternSchema ?
         this.patternLanguage.patternSchema.patternSectionSchemas.map((schema: PatternSectionSchema) => schema.label) : [];
       this.initTextEditor();
@@ -125,6 +124,8 @@ export class CreatePatternComponent implements OnInit {
     });
   }
 
+  // this method is based on the private function _replaceSelection(cm, active, startEnd, url)
+  // of simpleMDE (see simplemde.debug.js) which our markdowneditor is based on
   insertTextAtCursor(editor: any, textBeforeCursor, textAfterCursor): void {
     var cm = editor.codemirror;
     var stat = editor.getState(cm);
