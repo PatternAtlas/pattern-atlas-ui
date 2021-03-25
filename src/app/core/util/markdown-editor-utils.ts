@@ -23,7 +23,7 @@ export class MarkdownEditorUtils {
     '|',  // Separator
     'code']
 
-  public static helpButton = {
+  static helpButton = {
     name: 'guide',
     action: 'https://pattern-atlas-readthedocs.readthedocs.io/en/latest/user_guide/patterns/#pattern-creation',
     className: 'fa fa-question-circle',
@@ -31,7 +31,7 @@ export class MarkdownEditorUtils {
 
   // this method is based on the private function _replaceSelection(cm, active, startEnd, url)
   // of simpleMDE (see simplemde.debug.js) which our markdowneditor is based on
-  public static insertTextAtCursor(editor: any, textBeforeCursor, textAfterCursor): void {
+  static insertTextAtCursor(editor: any, textBeforeCursor, textAfterCursor): void {
     var cm = editor.codemirror;
     var stat = editor.getState(cm);
     var options = editor.options;
@@ -71,7 +71,7 @@ export class MarkdownEditorUtils {
     cm.focus();
   }
 
-  public static getPatternHrefMarkdown(patternLanguageId: string, pattern: Pattern): string {
+  static getPatternHrefMarkdown(patternLanguageId: string, pattern: Pattern): string {
     const patternReferenceUrl = `pattern-languages/${patternLanguageId}/${pattern.id}`;
     return `[${pattern.name}](${patternReferenceUrl})`;
   }
