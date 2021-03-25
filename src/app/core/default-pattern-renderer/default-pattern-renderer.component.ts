@@ -146,6 +146,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
     instance.renderedData = renderedContent;
     instance.data = content;
     instance.title = section;
+    instance.patternLanguageId = this.patternLanguageId;
     instance.isEditingEnabled = this.isEditingEnabled;
     const changeSubscription = instance.changeContent.subscribe((dataChange: DataChange) => {
       this.pattern.content[section] = dataChange.currentValue;

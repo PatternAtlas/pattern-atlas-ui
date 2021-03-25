@@ -13,6 +13,8 @@
  */
 
 
+import Pattern from '../model/hal/pattern.model';
+
 export class MarkdownEditorUtils {
 
   public static standardMarkdownEditiorButtons = ['bold', 'italic', 'heading', '|', 'quote', 'unordered-list', 'ordered-list',
@@ -69,4 +71,8 @@ export class MarkdownEditorUtils {
     cm.focus();
   }
 
+  public static getPatternHrefMarkdown(patternLanguageId: string, pattern: Pattern): string {
+    const patternReferenceUrl = `pattern-languages/${patternLanguageId}/${pattern.id}`;
+    return `[${pattern.name}](${patternReferenceUrl})`;
+  }
 }

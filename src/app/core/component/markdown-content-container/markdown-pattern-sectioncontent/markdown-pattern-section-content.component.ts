@@ -1,20 +1,20 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, ViewChild } from '@angular/core';
-import { DataChange, DataRenderingComponent } from '../interfaces/DataRenderingComponent.interface';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogData, MdEditorComponent } from '../../md-editor/md-editor.component';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, ViewChild} from '@angular/core';
+import {DataChange, DataRenderingComponent} from '../interfaces/DataRenderingComponent.interface';
+import {MatDialog} from '@angular/material/dialog';
+import {DialogData, MdEditorComponent} from '../../md-editor/md-editor.component';
 import * as MarkdownIt from 'markdown-it';
 import * as markdownitKatex from 'markdown-it-katex';
-import { ImageService } from '../../../service/image.service';
+import {ImageService} from '../../../service/image.service';
 import * as d3 from 'd3';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { event, Selection } from 'd3-selection';
-import { Point } from '../../../model/svg-objects.interface';
-import { CommentDialogComponent } from '../comment-dialog/comment-dialog.component';
-import { DiscussDialogComponent } from '../discuss-dialog/discuss-dialog.component';
-import { DiscussionTopic } from '../../../model/discussion-topic';
-import { DiscussionService } from '../../../service/discussion.service';
-import { DiscussionComment } from '../../../model/discussion-comment';
-import { ImageModel } from '../../../model/image-model';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {event, Selection} from 'd3-selection';
+import {Point} from '../../../model/svg-objects.interface';
+import {CommentDialogComponent} from '../comment-dialog/comment-dialog.component';
+import {DiscussDialogComponent} from '../discuss-dialog/discuss-dialog.component';
+import {DiscussionTopic} from '../../../model/discussion-topic';
+import {DiscussionService} from '../../../service/discussion.service';
+import {DiscussionComment} from '../../../model/discussion-comment';
+import {ImageModel} from '../../../model/image-model';
 import * as QuantumCircuit from 'quantum-circuit';
 
 
@@ -26,6 +26,7 @@ import * as QuantumCircuit from 'quantum-circuit';
 export class MarkdownPatternSectionContentComponent extends DataRenderingComponent implements AfterViewInit {
   data: string;
   renderedData: string;
+  patternLanguageId: string;
   title = '';
   imageModels: ImageModel[] = [];
   svg: Selection<SVGSVGElement, any, any, any>;
@@ -107,7 +108,7 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
 
   openEditor(): void {
     const dialogRef = this.dialog.open(MdEditorComponent,
-      { data: { content: this.data, field: this.title } });
+      {data: {content: this.data, field: this.title, patternLanguageId: this.patternLanguageId}});
     dialogRef.afterClosed().subscribe(async (result: DialogData) => {
       const previousValue = this.data;
 
@@ -115,7 +116,7 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
         this.data = result.content;
         this.changeText(this.renderedData);
       }
-      this.changeContent.emit({ previousValue: previousValue, currentValue: result.content });
+      this.changeContent.emit({previousValue: previousValue, currentValue: result.content});
     });
   }
 
@@ -174,7 +175,7 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
   }
 
   commentSVG() {
-    const snackBarInstruction = this.snackBar.open('Mark area to comment in Picture', null, { duration: 3000 });
+    const snackBarInstruction = this.snackBar.open('Mark area to comment in Picture', null, {duration: 3000});
     this.isCommentingEnabled = true;
 
 
@@ -182,7 +183,7 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
       this.commentSvg = n[i];
       const x = event.x;
       const y = event.y;
-      const point = { x, y };
+      const point = {x, y};
       this.svgCommentMouseDownCoordinate = this.getSVGPointFromClientCoordinates(point);
     });
 
@@ -190,10 +191,10 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
       if (this.isCommentingEnabled === true) {
         const x = event.x;
         const y = event.y;
-        const point = { x, y };
+        const point = {x, y};
         this.svgCommentMouseUpCoordinate = this.getSVGPointFromClientCoordinates(point);
         if (this.svgCommentMouseDownCoordinate !== null && this.svgCommentMouseUpCoordinate !== null) {
-          const startCoordinates = { x, y };
+          const startCoordinates = {x, y};
           if (this.svgCommentMouseDownCoordinate.x < this.svgCommentMouseUpCoordinate.x) {
             startCoordinates.x = this.svgCommentMouseDownCoordinate.x;
             this.svgCommentWidth = this.svgCommentMouseUpCoordinate.x - this.svgCommentMouseDownCoordinate.x;
@@ -262,8 +263,8 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
           children[i].id = value.body.id;
         }
       }
-      const data = new Blob([d3.select(this.commentSvg).node().outerHTML], { type: 'image/svg+xml' });
-      const image = { id, data };
+      const data = new Blob([d3.select(this.commentSvg).node().outerHTML], {type: 'image/svg+xml'});
+      const image = {id, data};
       this.imageService.updateImage(image).subscribe();
     });
 
@@ -296,8 +297,8 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
           const topicId = d3.select<SVGSVGElement, Node>(nElement).node().id;
           const imageId = d3.select<SVGSVGElement, Node>(nElement).node().parentNode.parentElement.id;
           d3.select(nElement).remove();
-          const data = new Blob([d3.select<SVGSVGElement, Node>('[id="' + imageId + '"').node().outerHTML], { type: 'image/svg+xml' });
-          const image = { id: imageId, data };
+          const data = new Blob([d3.select<SVGSVGElement, Node>('[id="' + imageId + '"').node().outerHTML], {type: 'image/svg+xml'});
+          const image = {id: imageId, data};
           this.imageService.updateImage(image).subscribe();
           this.discussionService.deleteTopicById(topicId).subscribe();
         }
@@ -308,8 +309,8 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
           this.discussionService.addComment(discussionComment, topicId).subscribe(value => {
             d3.select(nElement).append('comment').attr('id', value.body.id).text(result.response);
             const id = d3.select<SVGSVGElement, Node>(nElement).node().parentNode.parentElement.id;
-            const data = new Blob([d3.select<SVGSVGElement, Node>(nElement).node().parentNode.parentElement.outerHTML], { type: 'image/svg+xml' });
-            const image = { id, data };
+            const data = new Blob([d3.select<SVGSVGElement, Node>(nElement).node().parentNode.parentElement.outerHTML], {type: 'image/svg+xml'});
+            const image = {id, data};
             this.imageService.updateImage(image).subscribe();
           });
         }

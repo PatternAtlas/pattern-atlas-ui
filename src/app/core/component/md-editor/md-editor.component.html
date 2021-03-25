@@ -4,8 +4,20 @@
     <i class="material-icons">close</i>
   </button>
 </div>
-<div mat-dialog-content>
-  <td-text-editor #mdEditor [value]="data.content"></td-text-editor>
+<div mat-dialog-content [formGroup]="selectedPatternForm">
+  <mat-form-field appearance="fill">
+    <mat-label>Pattern</mat-label>
+    <mat-select formControlName="selectedPattern">
+      <mat-option *ngFor="let pattern of patterns" [value]="pattern">
+        {{pattern.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-raised-button color="primary" [disabled]="!selectedPatternForm.controls['selectedPattern'].value"
+          (click)="addReference()" matTooltip=" Add Reference to another Pattern">
+    Add Reference
+  </button>
+  <td-text-editor #mdEditor [value]="data.content" [options]="options"></td-text-editor>
 </div>
 <div mat-dialog-actions>
   <button mat-raised-button color="warn"
