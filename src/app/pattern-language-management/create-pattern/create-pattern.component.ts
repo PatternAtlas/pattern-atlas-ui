@@ -19,6 +19,7 @@ import {SelectPatternDialogComponent} from '../../core/component/select-pattern-
 import {MatDialog} from '@angular/material/dialog';
 import {of} from 'rxjs';
 import Pattern from '../../core/model/hal/pattern.model';
+import {MarkdownEditorUtils} from '../../core/util/markdown-editor-utils';
 
 
 @Component({
@@ -38,15 +39,11 @@ export class CreatePatternComponent implements OnInit {
   options: any = {
     autoDownloadFontAwesome: true,
     toolbar:
-      ['bold', 'italic', 'heading', '|', 'quote', 'unordered-list', 'ordered-list',
-        '|', // Separator
-        'link', 'image',
-        '|',  // Separator
-        'code',
+      [...MarkdownEditorUtils.standardMarkdownEditiorButtons,
         {
           name: 'alert',
           action: (editor) => {
-            this.insertTextAtCursor(editor, '$', '$');
+            MarkdownEditorUtils.insertTextAtCursor(editor, '$', '$');
           },
           className: 'fa fa-subscript',
           title: 'Add Formula',
@@ -59,11 +56,7 @@ export class CreatePatternComponent implements OnInit {
         title: 'Reference Pattern',
       },
         '|', // Separator
-        {
-          name: 'guide',
-          action: 'https://pattern-atlas-readthedocs.readthedocs.io/en/latest/user_guide/patterns/#pattern-creation',
-          className: 'fa fa-question-circle',
-        },
+        MarkdownEditorUtils.helpButton
       ],
   };
   errorMessages: Array<string>;
@@ -122,48 +115,6 @@ export class CreatePatternComponent implements OnInit {
     this.iconUrl.valueChanges.pipe(debounceTime(1000), distinctUntilChanged()).subscribe((urlValue) => {
       this.iconPreviewVisible = urlValue && (urlValue.startsWith('https://') || urlValue.startsWith('http://'));
     });
-  }
-
-  // this method is based on the private function _replaceSelection(cm, active, startEnd, url)
-  // of simpleMDE (see simplemde.debug.js) which our markdowneditor is based on
-  insertTextAtCursor(editor: any, textBeforeCursor, textAfterCursor): void {
-    var cm = editor.codemirror;
-    var stat = editor.getState(cm);
-    var options = editor.options;
-    var url = 'http://';
-    if (options.promptURLs) {
-      url = prompt(options.promptTexts.image);
-      if (!url) {
-        return;
-      }
-    }
-    var text;
-    var start = textBeforeCursor; // text to insert before cursor
-    var end = textAfterCursor; // text to insert after cursor
-    var startPoint = cm.getCursor('start');
-    var endPoint = cm.getCursor('end');
-    if (url) {
-      end = end.replace('#url#', url);
-    }
-    if (stat.link) {
-      text = cm.getLine(startPoint.line);
-      start = text.slice(0, startPoint.ch);
-      end = text.slice(startPoint.ch);
-      cm.replaceRange(start + end, {
-        line: startPoint.line,
-        ch: 0
-      });
-    } else {
-      text = cm.getSelection();
-      cm.replaceSelection(start + text + end);
-
-      startPoint.ch += start.length;
-      if (startPoint !== endPoint) {
-        endPoint.ch += start.length;
-      }
-    }
-    cm.setSelection(startPoint, endPoint);
-    cm.focus();
   }
 
   save(): void {
@@ -346,7 +297,7 @@ export class CreatePatternComponent implements OnInit {
     dialogRef.afterClosed().subscribe((selectedPattern) => {
       const patternReferenceUrl = `pattern-languages/${this.patternLanguage.id}/${selectedPattern.id}`;
       if (selectedPattern) { // if user did not cancel
-        this.insertTextAtCursor(editor, `[${selectedPattern.name}](${patternReferenceUrl})`, '');
+        MarkdownEditorUtils.insertTextAtCursor(editor, `[${selectedPattern.name}](${patternReferenceUrl})`, '');
         this.onChangeMarkdownText();
       }
     });
