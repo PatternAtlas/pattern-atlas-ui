@@ -85,7 +85,7 @@ export class MdEditorComponent {
 
 
   addReference() {
-    let pattern = this.selectedPatternForm.controls['selectedPattern'].value;
+    const pattern = this.selectedPatternForm.controls['selectedPattern'].value;
     MarkdownEditorUtils.insertTextAtCursor(this._textEditor.simpleMDE, MarkdownEditorUtils.getPatternHrefMarkdown(this.data.patternLanguageId, pattern), '');
   }
 }

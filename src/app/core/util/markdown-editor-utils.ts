@@ -17,7 +17,7 @@ import Pattern from '../model/hal/pattern.model';
 
 export class MarkdownEditorUtils {
 
-  public static standardMarkdownEditiorButtons = ['bold', 'italic', 'heading', '|', 'quote', 'unordered-list', 'ordered-list',
+  static standardMarkdownEditiorButtons = ['bold', 'italic', 'heading', '|', 'quote', 'unordered-list', 'ordered-list',
     '|', // Separator
     'link', 'image',
     '|',  // Separator
