@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import {
   CreateEditComponentDialogType,
   CreateEditPatternLanguageComponent
@@ -12,12 +12,15 @@ import { ToasterService } from 'angular2-toaster';
 import { Observable } from 'rxjs';
 import { DesignModelService } from '../../service/design-model.service';
 import { DesignModelResponse } from '../../model/hal/design-model-response';
+import { ActivatedRoute, Router } from "@angular/router";
+import { DesignModel } from "../../model/hal/design-model";
+import { DeleteConfirmationDialogComponent } from "../../../core/component/delete-confirmation-dialog/delete-confirmation-dialog.component";
 
 
 @Component({
   selector: 'pp-design-model-management',
   templateUrl: './design-model-management.component.html',
-  styleUrls: ['./design-model-management.component.scss']
+  styleUrls: [ './design-model-management.component.scss' ]
 })
 export class DesignModelManagementComponent implements OnInit {
 
@@ -27,7 +30,10 @@ export class DesignModelManagementComponent implements OnInit {
   constructor(private designModelService: DesignModelService,
               private dialog: MatDialog,
               private patternLanguageService: PatternLanguageService,
-              private toastService: ToasterService) {
+              private toastService: ToasterService,
+              private activatedRoute: ActivatedRoute,
+              private router: Router,
+              private zone: NgZone) {
   }
 
 
@@ -66,5 +72,30 @@ export class DesignModelManagementComponent implements OnInit {
           }
         }
       );
+  }
+
+  navigate(model: DesignModel): void {
+    this.zone.run(() => {
+      this.router.navigate([ model.id ], { relativeTo: this.activatedRoute });
+    })
+  }
+
+  delete(designModel: DesignModel) {
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+      data: {
+        name: designModel.name,
+      }
+    }).afterClosed().subscribe(dialogAnswer => {
+      if (dialogAnswer) {
+        this.designModelService.deleteDesignModel(designModel).subscribe((respone) => {
+          for (let i = 0; i < this.designModelResponse._embedded.designModels.length; i++) {
+            this.designModelResponse._embedded.designModels[i].id === designModel.id ? this.designModelResponse._embedded.designModels.splice(i, 1) : null;
+          }
+          this.toastService.pop('success', 'Design Model deleted!');
+        },(error) => {
+          this.toastService.pop('error', 'Design Model could not be deleted!');
+        });
+      }
+    })
   }
 }

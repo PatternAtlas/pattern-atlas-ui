@@ -31,7 +31,8 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { GraphDataService } from '../../service/graph-data/graph-data.service';
 import { GraphDataSavePatternService } from '../../service/graph-data/graph-data-save-pattern.service';
 import { PatternRelationDescriptorDirection } from '../../model/pattern-relation-descriptor-direction.enum';
-import { UriConverter } from '../../util/uri-converter';
+import { Edge } from '../../model/hal/edge.model';
+import { PatternViewService } from '../../service/pattern-view.service';
 
 // file deepcode ignore no-any: out of scope, this should be done another time
 
@@ -65,13 +66,14 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   @Input() showPatternLanguageName: boolean;
   @Input() enableDeletePattern = false;
   @Input() showConcreteSolutions = false;
+  @Input() showViewRelations = false;
   @Input() concreteSolutions = [];
 
   @Output() addedEdge = new EventEmitter<any>();
   @Output() removedEdge = new EventEmitter<any>();
-  @Output() updatedGraphEvent = new EventEmitter<void>();
+  @Output() updatedGraphEvent = new EventEmitter<any>();
   @Output() deletePatternEvent = new EventEmitter<string>();
-  @Output() aggregationAssignmentsUpdate = new EventEmitter<{ [ key: string ]: string }>();
+  @Output() aggregationAssignmentsUpdate = new EventEmitter<{ [key: string]: string }>();
 
   isLoading = true;
   patternClicked = false;
@@ -85,12 +87,15 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   private copyOfLinks: NetworkLink[];
   private patterns: Pattern[];
   private patternLanguage: PatternLanguage;
-  private currentEdge: any;
+  currentEdge = null;
   private highlightedNodeIds: string[] = [];
   private clickedNodeId: string = null;
   private highlightedEdgeIds: string[] = [];
-  private manualAssignments: { [ key: string ]: string } = {};
-  private aggregationAssignments: { [ key: string ]: string } = {};
+  private manualAssignments: { [key: string]: string } = {};
+  private aggregationAssignments: { [key: string]: string } = {};
+  private relations: Edge[];
+  viewRelationsOfPattern: Edge[];
+  selectedPattern: Pattern;
 
   constructor(private cdr: ChangeDetectorRef,
               private d3Service: D3Service,
@@ -98,6 +103,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
               private patternRelationDescriptionService: PatternRelationDescriptorService,
               private toastService: ToasterService,
               private patternService: PatternService,
+              private patternViewService: PatternViewService,
               // use the implementation of GraphDataService that is provided in the module:
               private graphDataService: GraphDataService,
               private activatedRoute: ActivatedRoute,
@@ -138,15 +144,15 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     if (patterns) {
       for (let i = 0; i < patterns.length; i++) {
         const node = {
-          id: patterns[ i ].id,
-          iconUrl: patterns[ i ].iconUrl,
-          title: patterns[ i ].name,
+          id: patterns[i].id,
+          iconUrl: patterns[i].iconUrl,
+          title: patterns[i].name,
           type: 'default',
           x: 5 * offsetIndex,
           y: 5 * offsetIndex,
-          patternLanguageId: patterns[ i ].patternLanguageId,
-          patternLanguageName: patterns[ i ].patternLanguageName,
-          uri: patterns[ i ].uri
+          patternLanguageId: patterns[i].patternLanguageId,
+          patternLanguageName: patterns[i].patternLanguageName,
+          uri: patterns[i].uri
         };
         nodes.push(node);
       }
@@ -195,12 +201,19 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     }
   }
 
+  /**
+   * Create Edge from event --> open Dialog --> close Dialog
+   * --> forward information to parent and delete edge -->
+   * @param event
+   */
   handleEdgeAddedEvent(event) {
     if (!event.cancelable) {
       // Skip event on initial graph composition
       return;
     }
-
+    if (event.detail.edge.source === event.detail.edge.target) {
+      event.preventDefault()
+    }
     this.currentEdge = event.detail.edge;
     const patterns = Array.isArray(this.patterns) ? this.patterns : this.patternContainer.patterns;
     const dialogRef = this.matDialog.open(CreatePatternRelationComponent, {
@@ -211,13 +224,15 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
         patterns,
         patternLanguage: this.patternLanguage,
         patternContainer: this.patternContainer,
-        relationTypes: this.graphDataService.getEdgeTypes()
+        relationTypes: this.graphDataService.getEdgeTypes(),
+        description: '',
       }
     });
 
     dialogRef.afterClosed().subscribe((edge) => {
       if (edge) { // inform parent component that new edge was added
         this.addedEdge.emit(edge);
+        this.graphNativeElement.removeEdge(this.currentEdge);
       } else {
         this.graphNativeElement.removeEdge(this.currentEdge);
         this.triggerRerendering();
@@ -225,8 +240,17 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     });
   }
 
+  /**
+   * If called through API --> delete Edge
+   * If called by User clicking the "delete"-button on an edge
+   *    --> prevent delete, set edge as current edge and call call parent that opens a Userdialog
+   *        that determines what should be done
+   * @param event
+   */
   handleEdgeRemovedEvent(event: CustomEvent) {
-    if (event.type === 'edgeremove' && event.cancelable) {
+    if (event.detail.eventSource === 'USER_INTERACTION') {
+      event.preventDefault();
+      this.currentEdge = event.detail.edge;
       this.removedEdge.emit(event.detail.edge);
     }
   }
@@ -235,7 +259,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     if (event.isPointerOverContainer) {
       return;
     }
-    const patternDropped: Pattern = event.container.data[ event.previousIndex ];
+    const patternDropped: Pattern = event.container.data[event.previousIndex];
     this.addPatternToGraph(patternDropped);
   }
 
@@ -244,7 +268,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
       switchMap(result => result ? this.getCurrentPatternViewAndPatterns() : EMPTY))
       .subscribe(
         (res) => {
-          this.updatedGraphEvent.emit();
+          this.updatedGraphEvent.emit(res);
           if (res) {
             this.reformatGraph();
             this.toastService.pop('success', 'Pattern added');
@@ -254,12 +278,12 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   }
 
   handleNodeClickedEvent(event) {
-    const node = event[ 'detail' ][ 'node' ];
-    if (event[ 'detail' ][ 'key' ] === 'info') {
-      this.router.navigate([UriConverter.doubleEncodeUri(node.uri)], { relativeTo: this.activatedRoute });
+    const node = event['detail']['node'];
+    if (event['detail']['key'] === 'info') {
+      this.router.navigate(['./../..', 'pattern-languages', node.patternLanguageId, node.uri], { relativeTo: this.activatedRoute });
       return;
     }
-    if (event[ 'detail' ][ 'key' ] === 'delete') {
+    if (event['detail']['key'] === 'delete') {
       this.deletePatternEvent.emit(node.id);
       return;
     }
@@ -297,6 +321,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     this.highlightedNodeIds = [];
     this.highlightedEdgeIds = [];
     this.clickedNodeId = null;
+    this.selectedPattern = null;
     this.graphNativeElement.completeRender();
     this.patternClicked = false;
   }
@@ -341,6 +366,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     this.patternGraphData = this.data;
     if (this.patternGraphData) {
       this.edges = GraphDisplayComponent.mapPatternLinksToEdges(this.patternGraphData.edges);
+      this.relations = this.patternGraphData.edges;
       this.copyOfLinks = GraphDisplayComponent.mapPatternLinksToEdges(this.patternGraphData.edges);
       this.patterns = this.patternGraphData.patterns;
       this.patternLanguage = this.patternGraphData.patternLanguage;
@@ -385,6 +411,9 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
       }))
       .subscribe(edges => {
         this.currentEdges = edges;
+        if (this.showViewRelations) {
+          this.viewRelationsOfPattern = this.relations.filter(edge => this.highlightedEdgeIds.includes(edge.id));
+        }
         this.cdr.detectChanges();
       });
   }
@@ -408,25 +437,28 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     }
     this.triggerRerendering();
     this.graphNativeElement.zoomToBoundingBox(true);
+
   }
 
   private addNewPatternNodeToGraph(pat: Pattern, index: number) {
-    this.graphNativeElement.addNode(GraphDisplayComponent.mapPatternsToNodes([pat], index)[ 0 ]);
+    this.graphNativeElement.addNode(GraphDisplayComponent.mapPatternsToNodes([pat], index)[0]);
   }
 
   private showInfoForClickedNode(node): void {
+
     this.clickedNodeId = node.id;
     const outgoingLinks = Array.from(this.graph.nativeElement.getEdgesByTarget(node.id));
     const ingoingLinks = Array.from(this.graph.nativeElement.getEdgesBySource(node.id));
 
     this.highlightedEdgeIds = [].concat(outgoingLinks).concat(ingoingLinks).map((edge) => edge.id ? edge.id : edgeId(edge));
-    const outgoingNodeIds: string[] = outgoingLinks.map(it => it[ 'source' ]);
-    const ingoingNodeIds: string[] = ingoingLinks.map(it => it[ 'target' ]);
+    const outgoingNodeIds: string[] = outgoingLinks.map(it => it['source']);
+    const ingoingNodeIds: string[] = ingoingLinks.map(it => it['target']);
 
     this.highlightedNodeIds = [];
     this.highlightedNodeIds = outgoingNodeIds.concat(ingoingNodeIds);
     this.highlightedNodeIds.push(node.id);
     this.currentPattern = this.patterns.find(pat => pat.id === node.id);
+    this.selectedPattern = this.currentPattern;
     this.getEdgesForPattern();
     this.patternClicked = true;
     this.triggerRerendering();
@@ -476,8 +508,8 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
           if (!elementId) {
             return;
           }
-          const patternInstanceId = elementId[ 1 ];
-          const patternInstance = this.patternContainer.patterns.filter(patternInstance => patternInstance.id === patternInstanceId)[ 0 ];
+          const patternInstanceId = elementId[1];
+          const patternInstance = this.patternContainer.patterns.filter(patternInstance => patternInstance.id === patternInstanceId)[0];
           const concreteSolutions = this.concreteSolutions.filter(cs => cs.patternUri === patternInstance.uri).sort((a, b) => {
             return a.aggregatorType.localeCompare(b.aggregatorType);
           });
@@ -499,29 +531,29 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
    * Construct SVG group element with an rectangle and a text, representing a concrete solution.
    * @param concreteSolutionsContainerElement
    * @param index
-   * @param text
+   * @param concreteSolution
    */
   private addConcreteSolutionSvgElement(concreteSolutionsContainerElement: SVGGElement, index: number, concreteSolution: any): void {
 
-    const patternId = (<HTMLElement>concreteSolutionsContainerElement.parentNode).id.match(/node-(.+)/)[ 1 ];
+    const patternId = (<HTMLElement>concreteSolutionsContainerElement.parentNode).id.match(/node-(.+)/)[1];
     const concreteSolutionId = concreteSolution.id;
 
-    if (this.manualAssignments[ patternId ]) {
-      this.aggregationAssignments[ patternId ] = this.manualAssignments[ patternId ];
+    if (this.manualAssignments[patternId]) {
+      this.aggregationAssignments[patternId] = this.manualAssignments[patternId];
     }
-    if (!this.aggregationAssignments[ patternId ] && concreteSolution.fulfills) {
-      this.aggregationAssignments[ patternId ] = concreteSolutionId;
+    if (!this.aggregationAssignments[patternId] && concreteSolution.fulfills) {
+      this.aggregationAssignments[patternId] = concreteSolutionId;
     }
 
-    const color = this.aggregationAssignments[ patternId ] === concreteSolutionId ? '#00c' : concreteSolution.fulfills ? '#000' : '#ccc';
-    const border = this.manualAssignments[ patternId ] === concreteSolutionId ? '4' : '0';
+    const color = this.aggregationAssignments[patternId] === concreteSolutionId ? '#00c' : concreteSolution.fulfills ? '#000' : '#ccc';
+    const border = this.manualAssignments[patternId] === concreteSolutionId ? '4' : '0';
 
     const clickHandler = (event) => {
-      if (this.manualAssignments[ patternId ] !== concreteSolutionId) {
-        this.manualAssignments[ patternId ] = concreteSolutionId;
+      if (this.manualAssignments[patternId] !== concreteSolutionId) {
+        this.manualAssignments[patternId] = concreteSolutionId;
       } else {
-        delete this.manualAssignments[ patternId ];
-        delete this.aggregationAssignments[ patternId ];
+        delete this.manualAssignments[patternId];
+        delete this.aggregationAssignments[patternId];
       }
       console.debug('Manual selected', this.manualAssignments);
       this.triggerRerendering(true);
@@ -555,5 +587,19 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     csSvgGroup.appendChild(csSvgText);
 
     concreteSolutionsContainerElement.appendChild(csSvgGroup);
+  }
+
+  getGraphDataService() {
+    return this.graphDataService
+  }
+
+  openEditPL(relation: EdgeWithType) {
+    this.currentEdge = relation.edge;
+    this.removedEdge.emit(relation.edge);
+  }
+
+  openEditView(relation: Edge) {
+    this.currentEdge = relation;
+    this.removedEdge.emit(relation);
   }
 }

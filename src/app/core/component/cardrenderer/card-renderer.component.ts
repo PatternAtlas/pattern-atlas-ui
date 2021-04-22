@@ -6,11 +6,13 @@ import Pattern from '../../model/hal/pattern.model';
 import { HalLink } from '../../model/hal/hal-link.interface';
 import { PatternService } from '../../service/pattern.service';
 import { ToasterService } from 'angular2-toaster';
+import { MatDialog } from "@angular/material/dialog";
+import { DeleteConfirmationDialogComponent } from "../delete-confirmation-dialog/delete-confirmation-dialog.component";
 
 @Component({
   selector: 'pp-card-renderer',
   templateUrl: './card-renderer.component.html',
-  styleUrls: ['./card-renderer.component.scss']
+  styleUrls: [ './card-renderer.component.scss' ]
 })
 export class CardRendererComponent {
 
@@ -22,23 +24,37 @@ export class CardRendererComponent {
               private router: Router,
               private activatedRoute: ActivatedRoute,
               private patternService: PatternService,
-              private toasterService: ToasterService) {
+              private toasterService: ToasterService,
+              private dialog: MatDialog) {
   }
 
   navigate(pattern: UriEntity): void {
     this.zone.run(() => {
-      this.router.navigate([UriConverter.doubleEncodeUri(pattern.uri)], { relativeTo: this.activatedRoute });
+      this.router.navigate([ UriConverter.doubleEncodeUri(pattern.uri) ], { relativeTo: this.activatedRoute });
     });
   }
 
   delete(pattern: Pattern): void {
-    this.patternService.deletePattern(pattern._links.self.href)
-      .subscribe(
-        value => this.handlePatternDelete(pattern),
-        error => {
-          this.toasterService.pop('error', 'Could not delete pattern!');
-        }
-      );
+    this.dialog.open(DeleteConfirmationDialogComponent, {
+      data: {
+        name: pattern.name,
+      }
+    })
+      .afterClosed().subscribe(dialoganswer => {
+      if (dialoganswer) {
+        this.patternService.deletePattern(pattern._links.self.href)
+          .subscribe(
+            value => {
+              this.handlePatternDelete(pattern);
+              this.toasterService.pop('success', 'Pattern deleted!');
+            },
+            error => {
+              this.toasterService.pop('error', 'Could not delete pattern!', "A Pattern can only be deleted if it is not a part of any Pattern Views");
+            }
+          );
+      }
+    });
+
   }
 
   getLinkCount(directedEdges: HalLink[] | HalLink): number {
@@ -51,15 +67,15 @@ export class CardRendererComponent {
   private collectAllEdgesOfPattern(pattern: Pattern): HalLink[] {
     let collectedEdges: HalLink[] = [];
     if (pattern._links.outgoingDirectedEdges) {
-      Array.isArray(pattern._links.outgoingDirectedEdges) ? collectedEdges = [...collectedEdges, ...pattern._links.outgoingDirectedEdges] :
+      Array.isArray(pattern._links.outgoingDirectedEdges) ? collectedEdges = [ ...collectedEdges, ...pattern._links.outgoingDirectedEdges ] :
         collectedEdges.push(pattern._links.outgoingDirectedEdges);
     }
     if (pattern._links.ingoingDirectedEdges) {
-      Array.isArray(pattern._links.ingoingDirectedEdges) ? collectedEdges = [...collectedEdges, ...pattern._links.ingoingDirectedEdges] :
+      Array.isArray(pattern._links.ingoingDirectedEdges) ? collectedEdges = [ ...collectedEdges, ...pattern._links.ingoingDirectedEdges ] :
         collectedEdges.push(pattern._links.ingoingDirectedEdges);
     }
     if (pattern._links.undirectedEdges) {
-      Array.isArray(pattern._links.undirectedEdges) ? collectedEdges = [...collectedEdges, ...pattern._links.undirectedEdges] :
+      Array.isArray(pattern._links.undirectedEdges) ? collectedEdges = [ ...collectedEdges, ...pattern._links.undirectedEdges ] :
         collectedEdges.push(pattern._links.undirectedEdges);
     }
     return collectedEdges;

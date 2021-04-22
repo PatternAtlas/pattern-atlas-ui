@@ -27,7 +27,7 @@ export class CreatePatternComponent implements OnInit {
 
   iconForm: FormGroup;
   patterns: Array<Pattern>;
-  patternLanguageUri: string;
+  patternLanguageId: string;
   iconPreviewVisible = false;
   wasSaveButtonClicked = false;
   patternValuesFormGroup: FormGroup;
@@ -95,11 +95,11 @@ export class CreatePatternComponent implements OnInit {
 
 
   ngOnInit() {
-    this.patternLanguageUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId));
+    this.patternLanguageId = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId));
     this.markdown = new MarkdownIt();
     this.markdown.use(markdownitKatex);
 
-    this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageUri).subscribe((pl: PatternLanguage) => {
+    this.patternLanguageService.getPatternLanguageById(this.patternLanguageId).subscribe((pl: PatternLanguage) => {
       this.patternLanguage = pl;
       this.sections = this.patternLanguage.patternSchema ?
         this.patternLanguage.patternSchema.patternSectionSchemas.map((schema: PatternSectionSchema) => schema.label) : [];
@@ -186,17 +186,25 @@ export class CreatePatternComponent implements OnInit {
 
   }
 
+  //Format Input text so MAP Patterns can be directly copied into Pattern Atlas
+  reformatMapPatternInput(text: string){
+    return text.replace(new RegExp('<!--.*-->', 'g'), ' ')
+      .replace(new RegExp('\{#sec:.*}', 'g'), ' ')
+      .replace(new RegExp('#{3,}', 'g'), '##');
+  }
+
   parseMarkdownText(): TokensList {
-    return marked.lexer(this._textEditor.value);
+    return marked.lexer(this.reformatMapPatternInput(this._textEditor.value));
   }
 
   onChangeMarkdownText(): void {
+    this.parsePatternInput();
     const currentText = this.parseMarkdownText();
     if (this.invalidTextEdit(currentText)) {
       // TODO
     }
     if (this.markdown) {
-      document.getElementById('preview').innerHTML = this.markdown.render(this._textEditor.value);
+      document.getElementById('preview').innerHTML = this.markdown.render(this.reformatMapPatternInput(this._textEditor.value));
     }
   }
 
@@ -263,10 +271,14 @@ export class CreatePatternComponent implements OnInit {
           if (lines[ i ].type === 'heading') {
             break;
           }
+          if (lines[ i ].type === 'space') {
+            sectionContent.push('\n');
+          }
           if (lines[ i ][ 'text' ]) {
             // if a list item was parsed before, add it to the text
-            sectionContent.push(i > 0 && CreatePatternComponent.isListItem(i, sectionIndex, lines) ? '* ' + lines[ i ][ 'text' ] : lines[ i ][ 'text' ]);
+            sectionContent.push(i > 0 && CreatePatternComponent.isListItem(i, sectionIndex, lines) ? '* ' + lines[ i ][ 'text' ] : lines[ i ][ 'text' ] );
           }
+          console.log('sectioncontent:'+sectionContent)
         }
         if (this.patternValuesFormGroup) {
           if (this.patternValuesFormGroup.controls[ sectionName ]) {

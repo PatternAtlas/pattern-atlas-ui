@@ -1,5 +1,7 @@
 <button class="close" mat-button (click)="close()">X</button>
-<h1 mat-dialog-title>Delete a relation</h1>
+<h1 mat-dialog-title *ngIf="this.data.type == 'ingoing'" >View incoming Edges</h1>
+<h1 mat-dialog-title *ngIf="this.data.type == 'outgoing'" >View outgoing Edges</h1>
+<h1 mat-dialog-title *ngIf="this.data.type !== 'ingoing' && this.data.type !== 'outgoing'" >View undirected Edges</h1>
 <div mat-dialog-content>
     <div *ngIf="this.data.type == 'ingoing' || this.data.type == 'outgoing'; then directedEdgeModel else undirectedEdgeModel"></div>
     <ng-template #directedEdgeModel>
@@ -14,12 +16,9 @@
                     <b>Source Pattern:</b> {{edge.edge.sourcePatternName}}<br/>
                     <b>Relation Type:</b> {{edge.edge.type}} <br/>
                     <b>Target Pattern:</b> {{edge.edge.targetPatternName}}
-                    <div *ngIf="edge.description"><b>Description:</b> {{edge.description}}</div>
+                    <div *ngIf="edge.edge.description"><b>Description:</b> {{edge.edge.description}}</div>
                     <br/>
                 </div>
-                <button class="delete-icon" mat-button (click)="deleteEdge(edge)">
-                    <mat-icon (click)="deleteEdge(edge)" [inline]="true">delete</mat-icon>
-                </button>
             </mat-expansion-panel>
         </mat-accordion>
     </ng-template>
@@ -35,12 +34,9 @@
                     <b>Pattern 1:</b> {{edge.edge.pattern1Name}}<br/>
                     <b>Relation Type:</b> {{edge.edge.type}} <br/>
                     <b>Pattern 2:</b> {{edge.edge.pattern2Name}}
-                    <div *ngIf="edge.description"><b>Description:</b> {{edge.description}}</div>
+                    <div *ngIf="edge.edge.description"><b>Description:</b> {{edge.edge.description}}</div>
                     <br/>
                 </div>
-                    <button class="delete-icon" mat-button (click)="deleteEdge(edge)">
-                        <mat-icon (click)="deleteEdge(edge)" [inline]="true">delete</mat-icon>
-                    </button>
             </mat-expansion-panel>
         </mat-accordion>
     </ng-template>
