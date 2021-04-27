@@ -77,9 +77,9 @@ import {CandidateManagementService} from './candidate-management/_services/candi
 import {CandidateManagementStore} from './candidate-management';
 import {MatTreeModule} from '@angular/material/tree';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {FeatureToggelingComponent} from './component/feature-toggeling/feature-toggeling.component';
 import {DeleteConfirmationDialogComponent} from './component/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import {EditUrlDialogComponent} from './component/edit-url-dialog/edit-url-dialog.component';
+import {FeatureToggleDialogComponent} from './component/feature-toggle-dialog/feature-toggle-dialog.component';
 
 
 @NgModule({
@@ -165,9 +165,9 @@ import {EditUrlDialogComponent} from './component/edit-url-dialog/edit-url-dialo
     CreativeLicenseFooterComponent,
     CommentDialogComponent,
     DiscussDialogComponent,
-    FeatureToggelingComponent,
     DeleteConfirmationDialogComponent,
-    EditUrlDialogComponent
+    EditUrlDialogComponent,
+    FeatureToggleDialogComponent
   ],
   entryComponents: [
     DefaultPlRendererComponent,
@@ -181,7 +181,8 @@ import {EditUrlDialogComponent} from './component/edit-url-dialog/edit-url-dialo
     GraphDisplayComponent,
     CreateEditPatternLanguageComponent,
     CommentDialogComponent,
-    DiscussDialogComponent
+    DiscussDialogComponent,
+    FeatureToggleDialogComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

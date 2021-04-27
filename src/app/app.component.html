@@ -17,9 +17,18 @@
   <span style="margin-left: 1rem">Pattern Atlas</span>
   <span class="spacer"></span>
   {{welcomeText}}
+  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Button with a menu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="openFeatureToggleDialog()">
+      <span>Feature Toggles</span>
+    </button>
+  </mat-menu>
   <div class="log-button">
     <button mat-stroked-button *ngIf="featureToggles.patternCandidate && featureToggles.issue"
             (click)="loginOAuth()"> {{ loginButton }}</button>
+
   </div>
 </mat-toolbar>
 <mat-spinner *ngIf="loading; else loadedConfig"></mat-spinner>

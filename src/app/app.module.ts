@@ -44,6 +44,7 @@ import {PageNotFoundComponent} from './core/component/page-not-found/page-not-fo
 import {AuthenticationModule} from './authentication/authentication.module';
 import {DesignModelModule} from './design-model-module/design-model.module';
 import {PatternAtlasUiFeatureToggleModule} from './core/directives/pattern-atlas-ui-feature-toggle.module';
+import {MatMenuModule} from '@angular/material/menu';
 
 
 @NgModule({
@@ -66,6 +67,7 @@ import {PatternAtlasUiFeatureToggleModule} from './core/directives/pattern-atlas
     MatButtonModule,
     MatIconModule,
     MatTabsModule,
+    MatMenuModule,
     NgxMdModule,
     CovalentTextEditorModule,
     CoreModule,

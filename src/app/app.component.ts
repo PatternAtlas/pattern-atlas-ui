@@ -19,6 +19,8 @@ import {globals} from './globals';
 import {PatternAtlasUiRepositoryConfigurationService} from './core/directives/pattern-atlas-ui-repository-configuration.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ToasterService} from 'angular2-toaster';
+import {MatDialog} from '@angular/material/dialog';
+import {FeatureToggleDialogComponent} from './core/component/feature-toggle-dialog/feature-toggle-dialog.component';
 
 
 @Component({
@@ -38,7 +40,8 @@ export class AppComponent implements OnInit {
 
   constructor(public auth: AuthenticationService,
               private toasterService: ToasterService,
-              private configService: PatternAtlasUiRepositoryConfigurationService) {
+              private configService: PatternAtlasUiRepositoryConfigurationService,
+              private dialog: MatDialog,) {
     this.auth.userSubject.subscribe(_user => {
       if (_user) {
         console.log('User is Logged in: ', _user);
@@ -64,8 +67,12 @@ export class AppComponent implements OnInit {
       (error: HttpErrorResponse) => {
         this.loading = false;
         this.toasterService.pop(
-          'Error while loading config from config server!' + error.message);
+          'error', 'Error while loading config from config server!' + error.message);
       }
     );
+  }
+
+  openFeatureToggleDialog() {
+    this.dialog.open(FeatureToggleDialogComponent);
   }
 }

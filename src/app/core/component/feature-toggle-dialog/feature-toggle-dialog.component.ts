@@ -1,20 +1,19 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {
   PatternAtlasUiConfiguration,
   PatternAtlasUiRepositoryConfigurationService,
   UiFeatures
 } from '../../directives/pattern-atlas-ui-repository-configuration.service';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {ToasterService} from 'angular2-toaster';
+import {MatDialogRef} from '@angular/material/dialog';
 
 @Component({
-  selector: 'pp-feature-toggeling',
-  templateUrl: './feature-toggeling.component.html',
-  styleUrls: ['./feature-toggeling.component.scss']
+  selector: 'pp-feature-toggle-dialog',
+  templateUrl: './feature-toggle-dialog.component.html',
+  styleUrls: ['./feature-toggle-dialog.component.scss']
 })
-export class FeatureToggelingComponent implements OnInit {
-
-  // links: BreadcrumbLink[] = [{ heading: '', subHeading: '' }];
+export class FeatureToggleDialogComponent implements OnInit {
 
   readonly UiFeatures = UiFeatures;
   config: PatternAtlasUiConfiguration;
@@ -22,25 +21,26 @@ export class FeatureToggelingComponent implements OnInit {
   constructor(
     private http: HttpClient, private toasterService: ToasterService,
     private configService: PatternAtlasUiRepositoryConfigurationService,
+    public dialogRef: MatDialogRef<FeatureToggleDialogComponent>
   ) {
   }
 
   ngOnInit(): void {
     this.config = this.configService.configuration;
-
-    // this.links[0] = {
-    //   heading: 'Feature Selection',
-    //   subHeading: 'Set the visibility of supported features',
-    // };
   }
 
   toggleFeature(feature: UiFeatures, event: Event): void {
     this.configService.applyConfig(feature, event.target['checked']).subscribe(
-      () => this.toasterService.pop('Successfully saved config!'),
+      () => this.toasterService.pop('success', 'Successfully updated the config!'),
       (error: HttpErrorResponse) =>
         this.toasterService.pop(
-          'Error while saving config!' + error.message
+          'error', 'Error while saving config!'
         )
     );
   }
+
+  onCancelClick(): void {
+    this.dialogRef.close();
+  }
+
 }

@@ -7,7 +7,6 @@ import {AuthGuardService as AuthGuard} from './authentication/_services/auth-gua
 import {PatternLanguageManagementResolverService} from './pattern-language-management/pattern-language-management/pattern-language-management-resolver.service'; // eslint-disable-line max-len
 import {UserRole} from './core/user-management';
 import {globals} from './globals';
-import {FeatureToggelingComponent} from './core/component/feature-toggeling/feature-toggeling.component';
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -72,10 +71,6 @@ const routes: Routes = [
   {
     path: 'oauth-callback',
     component: ProcessOauthCallbackComponent
-  },
-  {
-    path: 'feature-toggling',
-    component: FeatureToggelingComponent
   },
   {
     path: '**',
