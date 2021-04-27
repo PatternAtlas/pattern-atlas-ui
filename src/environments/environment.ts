@@ -17,8 +17,16 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  repositoryUrl: 'http://localhost:8080/patternpedia',
+  PRODUCTION: window['env']['production'] || false,
+  API_URL:
+    window['env']['PATTERN_ATLAS_API_HOST_NAME'] && window['env']['PATTERN_ATLAS_API_PORT']
+      ? `http://${window['env']['PATTERN_ATLAS_API_HOST_NAME']}:${window['env']['PATTERN_ATLAS_API_PORT']}/atlas`
+      : 'http://localhost:8080/patternpedia',
+  LATEX_RENDERER_API_URL:
+    window['env']['LATEX_RENDERER_HOST_NAME'] &&
+    window['env']['LATEX_RENDERER_PORT']
+      ? `http://${window['env']['LATEX_RENDERER_HOST_NAME']}:${window['env']['LATEX_RENDERER_PORT']}`
+      : 'http://localhost:8083',
   authorizeUrl: 'http://localhost:8081/oauth/authorize?',
   tokenUrl: 'http://localhost:8081/oauth/token',
   tokenRevokeUrl: 'http://localhost:8081/oauth/revoke_token',
@@ -28,6 +36,11 @@ export const environment = {
   clientSecret: 'pattern-pedia-secret',
   clientIdPublic: 'pattern-pedia-public',
   clientIdPKCE: 'pattern-pedia-pkce',
+  CONFIG_SEVER_URL:
+    window['env']['CONFIG_SERVER_HOST_NAME'] &&
+    window['env']['CONFIG_SERVER_PORT']
+      ? `http://${window['env']['CONFIG_SERVER_HOST_NAME']}:${window['env']['CONFIG_SERVER_PORT']}/v2/keys`
+      : 'http://localhost:2379/v2/keys'
 };
 
 /*

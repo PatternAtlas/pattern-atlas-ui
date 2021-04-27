@@ -1,0 +1,8 @@
+{
+  "features": {
+    "designModel": false,
+    "patternCandidate": false,
+    "patternViews": false,
+    "issue": false
+  }
+}

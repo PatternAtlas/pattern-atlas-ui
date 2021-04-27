@@ -12,10 +12,13 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { Component } from '@angular/core';
-import { AuthenticationService } from './authentication/_services/authentication.service';
-import { PAUser } from './core/user-management';
-import { globals } from './globals';
+import {Component, OnInit} from '@angular/core';
+import {AuthenticationService} from './authentication/_services/authentication.service';
+import {PAUser} from './core/user-management';
+import {globals} from './globals';
+import {PatternAtlasUiRepositoryConfigurationService} from './core/directives/pattern-atlas-ui-repository-configuration.service';
+import {HttpErrorResponse} from '@angular/common/http';
+import {ToasterService} from 'angular2-toaster';
 
 
 @Component({
@@ -23,16 +26,19 @@ import { globals } from './globals';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   readonly featureToggles = globals.featureToggles;
   loginButton = 'Login';
   welcomeText = '';
   user: PAUser;
   readonly pathConstants = globals.pathConstants;
+  loading = true;
 
 
-  constructor(public auth: AuthenticationService) {
+  constructor(public auth: AuthenticationService,
+              private toasterService: ToasterService,
+              private configService: PatternAtlasUiRepositoryConfigurationService) {
     this.auth.userSubject.subscribe(_user => {
       if (_user) {
         console.log('User is Logged in: ', _user);
@@ -50,5 +56,16 @@ export class AppComponent {
 
   loginOAuth() {
     this.user ? this.auth.logout() : this.auth.login();
+  }
+
+  ngOnInit(): void {
+    this.configService.getConfigurationFromBackend().subscribe(
+      () => (this.loading = false),
+      (error: HttpErrorResponse) => {
+        this.loading = false;
+        this.toasterService.pop(
+          'Error while loading config from config server!' + error.message);
+      }
+    );
   }
 }

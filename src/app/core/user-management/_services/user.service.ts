@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { ToasterService } from 'angular2-toaster';
-import { Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import { PAUser } from '../_models/user.model';
-import { environment } from 'src/environments/environment';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {ToasterService} from 'angular2-toaster';
+import {Observable} from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
+import {PAUser} from '../_models/user.model';
+import {environment} from 'src/environments/environment';
 
 @Injectable()
 export class UserService {
@@ -17,14 +17,14 @@ export class UserService {
     private http: HttpClient,
     private toasterService: ToasterService
   ) {
-    this.repoEndpoint = environment.repositoryUrl;
+    this.repoEndpoint = environment.API_URL;
     this.userInfoEndpoint = environment.userInfoUrl;
     this.serviceEndpoint = '/users';
   }
 
   /**
-  * GET
-  */
+   * GET
+   */
   public getAllUsers(): Observable<PAUser[]> {
     return this.http.get<PAUser>(this.repoEndpoint + this.serviceEndpoint).pipe(
       map(result => {
@@ -51,10 +51,10 @@ export class UserService {
   }
 
   /**
-  * CREATE
-  */
+   * CREATE
+   */
   public createUser(user: PAUser): Observable<PAUser> {
-    
+
     return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint, user).pipe(
       map(result => {
         this.toasterService.pop('success', 'Created new user')
@@ -68,7 +68,7 @@ export class UserService {
   }
 
   public updateUser(user: PAUser): Observable<PAUser> {
-    
+
     return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${user.id}`, user).pipe(
       map(result => {
         this.toasterService.pop('success', 'Updated user')
@@ -82,7 +82,7 @@ export class UserService {
   }
 
   public deleteUser(user: PAUser): Observable<PAUser> {
-    
+
     return this.http.delete<any>(this.repoEndpoint + this.serviceEndpoint + `/${user.id}`).pipe(
       map(result => {
         this.toasterService.pop('success', 'Deleted user')
