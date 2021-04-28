@@ -51,7 +51,7 @@ import {MatMenuModule} from '@angular/material/menu';
   declarations: [
     AppComponent,
     PageNotFoundComponent,
-    LandingPageComponent,
+    LandingPageComponent
   ],
   imports: [
     AppRoutingModule,

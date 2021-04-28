@@ -39,7 +39,7 @@ export class FeatureToggleDialogComponent implements OnInit {
     );
   }
 
-  onCancelClick(): void {
+  onCloseDialogClick(): void {
     this.dialogRef.close();
   }
 

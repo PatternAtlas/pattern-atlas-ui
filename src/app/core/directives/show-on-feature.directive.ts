@@ -3,10 +3,11 @@ import {PatternAtlasUiRepositoryConfigurationService} from './pattern-atlas-ui-r
 
 @Directive({
   exportAs: 'patternAtlasUiShowOnFeature',
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: 'patternAtlasUiShowOnFeature, [patternAtlasUiShowOnFeature]',
 })
 export class ShowOnFeatureDirective implements OnInit {
-  @Input('qcAtlasUiShowOnFeature') public featuresToShow: string | string[];
+  @Input('patternAtlasUiShowOnFeature') public featuresToShow: string | string[];
 
   constructor(
     private templateRef: TemplateRef<any>,
@@ -38,4 +39,5 @@ export class ShowOnFeatureDirective implements OnInit {
       }
     }
   }
+
 }
