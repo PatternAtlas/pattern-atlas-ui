@@ -30,13 +30,19 @@ export class FeatureToggleDialogComponent implements OnInit {
   }
 
   toggleFeature(feature: UiFeatures, event: Event): void {
-    this.configService.applyConfig(feature, event.target['checked']).subscribe(
-      () => this.toasterService.pop('success', 'Successfully updated the config!'),
-      (error: HttpErrorResponse) =>
-        this.toasterService.pop(
-          'error', 'Error while saving config!'
-        )
-    );
+    if (this.config.features.showSettings) {
+      this.configService.applyConfig(feature, event.target['checked']).subscribe(
+        () => this.toasterService.pop('success', 'Successfully updated the config!'),
+        (error: HttpErrorResponse) =>
+          this.toasterService.pop(
+            'error', 'Error while saving config!'
+          )
+      );
+    } else {
+      this.toasterService.pop('error',
+        'Adjustments are not allowed and will not be saved!'
+      );
+    }
   }
 
   onCloseDialogClick(): void {

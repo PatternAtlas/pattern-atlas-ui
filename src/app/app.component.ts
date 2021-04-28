@@ -34,7 +34,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class AppComponent implements OnInit {
 
-  readonly featureToggles = globals.featureToggles;
   readonly UiFeatures = UiFeatures;
   loginButton = 'Login';
   welcomeText = '';

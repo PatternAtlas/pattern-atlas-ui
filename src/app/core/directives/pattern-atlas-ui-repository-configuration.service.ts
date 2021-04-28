@@ -9,6 +9,7 @@ export enum UiFeatures {
   PATTERNCANDIDATE = 'patternCandidate',
   PATTERNVIEWS = 'patternViews',
   ISSUE = 'issue',
+  SHOW_SETTINGS = 'showSettings'
 }
 
 export interface PatternAtlasUiConfiguration {
@@ -17,6 +18,7 @@ export interface PatternAtlasUiConfiguration {
     patternCandidate: boolean,
     patternViews: boolean,
     issue: boolean,
+    showSettings: boolean
   };
 }
 
@@ -39,7 +41,8 @@ const initialValues: PatternAtlasUiConfiguration = {
     designModel: false,
     patternCandidate: false,
     patternViews: false,
-    issue: false
+    issue: false,
+    showSettings: false
   },
 };
 

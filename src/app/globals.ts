@@ -18,11 +18,6 @@ export const globals = {
   urlGithubAPI: 'https://api.github.com/repos/PatternPedia/patternpediacontent/contents',
   loadOntologyLocally: true,
   repoEndpoint: 'http://localhost:8080/patternpedia',
-  featureToggles: {
-    designModel: false,
-    patternCandidate: false,
-    issue: false,
-  },
   pathConstants: {
     patternLanguages: 'pattern-languages',
     patternLanguageId: 'pattern-language-id',
