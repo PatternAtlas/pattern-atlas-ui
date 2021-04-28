@@ -1,5 +1,5 @@
-import {Directive, Input, OnInit, TemplateRef, ViewContainerRef} from '@angular/core';
-import {PatternAtlasUiRepositoryConfigurationService} from './pattern-atlas-ui-repository-configuration.service';
+import { Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
+import { PatternAtlasUiRepositoryConfigurationService } from './pattern-atlas-ui-repository-configuration.service';
 
 @Directive({
   exportAs: 'patternAtlasUiShowOnFeature',

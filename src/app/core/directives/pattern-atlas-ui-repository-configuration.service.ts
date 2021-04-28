@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {environment} from '../../../environments/environment';
-import {map} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { map } from 'rxjs/operators';
 
 export enum UiFeatures {
   DESIGN_MODEL = 'designModel',
@@ -78,7 +78,7 @@ export class PatternAtlasUiRepositoryConfigurationService {
     return this.http.put<string>(
       url,
       {},
-      {params: {value: String(checked)}}
+      { params: { value: String(checked) } }
     );
   }
 

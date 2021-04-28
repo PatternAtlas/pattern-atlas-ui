@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {ToasterService} from 'angular2-toaster';
-import {Observable} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
-import {PAUser} from '../_models/user.model';
-import {environment} from 'src/environments/environment';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ToasterService } from 'angular2-toaster';
+import { Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { PAUser } from '../_models/user.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class UserService {

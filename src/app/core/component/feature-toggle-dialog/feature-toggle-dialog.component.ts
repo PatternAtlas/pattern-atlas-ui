@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   PatternAtlasUiConfiguration,
   PatternAtlasUiRepositoryConfigurationService,
   UiFeatures
 } from '../../directives/pattern-atlas-ui-repository-configuration.service';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {ToasterService} from 'angular2-toaster';
-import {MatDialogRef} from '@angular/material/dialog';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { ToasterService } from 'angular2-toaster';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'pp-feature-toggle-dialog',
