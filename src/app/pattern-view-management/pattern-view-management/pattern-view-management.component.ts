@@ -16,7 +16,7 @@ import { ToasterService } from 'angular2-toaster';
 import { UriConverter } from '../../core/util/uri-converter';
 import UriEntity from '../../core/model/hal/uri-entity.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DeleteConfirmationDialogComponent } from "../../core/component/delete-confirmation-dialog/delete-confirmation-dialog.component";
+import { DeleteConfirmationDialogComponent } from '../../core/component/delete-confirmation-dialog/delete-confirmation-dialog.component';
 
 @Component({
   selector: 'pp-solution-language-management',
@@ -78,18 +78,18 @@ export class PatternViewManagementComponent implements OnInit {
         name: patternView.name,
       }
     }).afterClosed().subscribe(dialogAnswer => {
-        if (dialogAnswer) {
-          this.patternViewService.deletePatternView(patternView).subscribe((response) => {
-              for (let i = 0; i < this.patternViewResponse._embedded.patternViews.length; i++) {
-                this.patternViewResponse._embedded.patternViews[i].id === patternView.id ? this.patternViewResponse._embedded.patternViews.splice(i, 1) : null;
-              }
-              this.toastService.pop('success', 'Pattern View deleted!');
-            },
-            (error) => {
-              this.toastService.pop('error', 'Pattern View could not be deleted!');
-            }
-          );
+      if (dialogAnswer) {
+        this.patternViewService.deletePatternView(patternView).subscribe((response) => {
+          for (let i = 0; i < this.patternViewResponse._embedded.patternViews.length; i++) {
+            this.patternViewResponse._embedded.patternViews[i].id === patternView.id ? this.patternViewResponse._embedded.patternViews.splice(i, 1) : null;
+          }
+          this.toastService.pop('success', 'Pattern View deleted!');
+        },
+        (error) => {
+          this.toastService.pop('error', 'Pattern View could not be deleted!');
         }
-      })
+        );
+      }
+    })
   }
 }

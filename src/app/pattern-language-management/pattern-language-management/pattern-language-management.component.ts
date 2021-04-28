@@ -27,7 +27,7 @@ import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult
 import { map } from 'rxjs/operators';
 import PatternLanguageModel from '../../core/model/hal/pattern-language-model.model';
 import UriEntity from '../../core/model/hal/uri-entity.model';
-import { DeleteConfirmationDialogComponent } from "../../core/component/delete-confirmation-dialog/delete-confirmation-dialog.component";
+import { DeleteConfirmationDialogComponent } from '../../core/component/delete-confirmation-dialog/delete-confirmation-dialog.component';
 
 @Component({
   selector: 'pp-pattern-language-management',
@@ -117,9 +117,9 @@ export class PatternLanguageManagementComponent implements OnInit {
     }).afterClosed().subscribe(dialogAnswer => {
       if(dialogAnswer){
         this.patternLanguageService.deletePatternLanguage(patternLanguage.id).subscribe((response) =>{
-         this.patternLanguages.splice(this.patternLanguages.indexOf(patternLanguage),1);
-         this._toasterService.pop('success', 'Pattern Language deleted!');
-       },(error) => {
+          this.patternLanguages.splice(this.patternLanguages.indexOf(patternLanguage),1);
+          this._toasterService.pop('success', 'Pattern Language deleted!');
+        },(error) => {
           this._toasterService.pop('error', 'Pattern Language could not be deleted!', 'A Pattern Language can only be deleted if it does not contain any patterns.');
         });
 

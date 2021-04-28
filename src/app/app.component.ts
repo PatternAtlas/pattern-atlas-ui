@@ -12,19 +12,19 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {AuthenticationService} from './authentication/_services/authentication.service';
-import {PAUser} from './core/user-management';
-import {globals} from './globals';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AuthenticationService } from './authentication/_services/authentication.service';
+import { PAUser } from './core/user-management';
+import { globals } from './globals';
 import {
   PatternAtlasUiRepositoryConfigurationService,
   UiFeatures
 } from './core/directives/pattern-atlas-ui-repository-configuration.service';
-import {HttpErrorResponse} from '@angular/common/http';
-import {ToasterService} from 'angular2-toaster';
-import {MatDialog} from '@angular/material/dialog';
-import {FeatureToggleDialogComponent} from './core/component/feature-toggle-dialog/feature-toggle-dialog.component';
-import {ActivatedRoute, Router} from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ToasterService } from 'angular2-toaster';
+import { MatDialog } from '@angular/material/dialog';
+import { FeatureToggleDialogComponent } from './core/component/feature-toggle-dialog/feature-toggle-dialog.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({

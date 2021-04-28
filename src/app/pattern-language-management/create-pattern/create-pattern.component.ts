@@ -48,13 +48,13 @@ export class CreatePatternComponent implements OnInit {
           className: 'fa fa-subscript',
           title: 'Add Formula',
         }, {
-        name: 'pattern-link',
-        action: (editor) => {
+          name: 'pattern-link',
+          action: (editor) => {
           // TODO: after chosing a pattern in the dialog, insert a link to the chosen pattern in markdown syntax
+          },
+          className: 'fa fab fa-product-hunt',
+          title: 'Reference Pattern',
         },
-        className: 'fa fab fa-product-hunt',
-        title: 'Reference Pattern',
-      },
         '|', // Separator
         {
           name: 'guide',

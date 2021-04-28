@@ -179,7 +179,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
   showIngoingEdges(ingoingEdges: HalLink[]) {
     if (ingoingEdges) {
       const dialogRef = this.matDialog.open(DeletePatternRelationComponent, {
-        data: { edges: ingoingEdges, type: 'ingoing'},
+        data: { edges: ingoingEdges, type: 'ingoing' },
         width: '600px',
         panelClass: 'delete-relation-dialog'
       });
@@ -197,7 +197,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
   showOutgoingEdges(outgoingEdges: HalLink[]) {
     if (outgoingEdges) {
       const dialogRef = this.matDialog.open(DeletePatternRelationComponent, {
-        data: { edges: outgoingEdges, type: 'outgoing'},
+        data: { edges: outgoingEdges, type: 'outgoing' },
         width: '600px',
         panelClass: 'delete-relation-dialog'
       });
@@ -425,7 +425,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
   getIndexOfHref(halLinkArray: HalLink[], href: string): number{
     let index = -1;
     for (let i = 0; i < halLinkArray.length; i++ ){
-     halLinkArray[i].href ===  href ? index = i : null;
+      halLinkArray[i].href ===  href ? index = i : null;
     }
     return index;
   }

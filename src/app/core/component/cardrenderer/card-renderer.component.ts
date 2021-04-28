@@ -6,8 +6,8 @@ import Pattern from '../../model/hal/pattern.model';
 import { HalLink } from '../../model/hal/hal-link.interface';
 import { PatternService } from '../../service/pattern.service';
 import { ToasterService } from 'angular2-toaster';
-import { MatDialog } from "@angular/material/dialog";
-import { DeleteConfirmationDialogComponent } from "../delete-confirmation-dialog/delete-confirmation-dialog.component";
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteConfirmationDialogComponent } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
 
 @Component({
   selector: 'pp-card-renderer',
@@ -41,19 +41,19 @@ export class CardRendererComponent {
       }
     })
       .afterClosed().subscribe(dialoganswer => {
-      if (dialoganswer) {
-        this.patternService.deletePattern(pattern._links.self.href)
-          .subscribe(
-            value => {
-              this.handlePatternDelete(pattern);
-              this.toasterService.pop('success', 'Pattern deleted!');
-            },
-            error => {
-              this.toasterService.pop('error', 'Could not delete pattern!', "A Pattern can only be deleted if it is not a part of any Pattern Views");
-            }
-          );
-      }
-    });
+        if (dialoganswer) {
+          this.patternService.deletePattern(pattern._links.self.href)
+            .subscribe(
+              value => {
+                this.handlePatternDelete(pattern);
+                this.toasterService.pop('success', 'Pattern deleted!');
+              },
+              error => {
+                this.toasterService.pop('error', 'Could not delete pattern!', 'A Pattern can only be deleted if it is not a part of any Pattern Views');
+              }
+            );
+        }
+      });
 
   }
 

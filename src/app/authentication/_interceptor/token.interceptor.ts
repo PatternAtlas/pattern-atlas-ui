@@ -1,7 +1,7 @@
-import {HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {AuthenticationService} from '../_services/authentication.service';
-import {environment} from 'src/environments/environment';
+import { HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { AuthenticationService } from '../_services/authentication.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -29,7 +29,7 @@ export class TokenInterceptor implements HttpInterceptor {
     if (token == null) {
       return request;
     } else {
-      return request.clone({setHeaders: {Authorization: `Bearer ${token}`}});
+      return request.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
     }
   }
 }
