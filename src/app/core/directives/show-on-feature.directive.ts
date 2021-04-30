@@ -7,7 +7,7 @@ import { PatternAtlasUiRepositoryConfigurationService } from './pattern-atlas-ui
   selector: 'patternAtlasUiShowOnFeature, [patternAtlasUiShowOnFeature]',
 })
 export class ShowOnFeatureDirective implements OnInit {
-  @Input('patternAtlasUiShowOnFeature') public featuresToShow: string | string[];
+  @Input() public patternAtlasUiShowOnFeature: string | string[];
 
   constructor(
     private templateRef: TemplateRef<any>,
@@ -17,9 +17,9 @@ export class ShowOnFeatureDirective implements OnInit {
   }
 
   ngOnInit(): void {
-    if (Array.isArray(this.featuresToShow)) {
+    if (Array.isArray(this.patternAtlasUiShowOnFeature)) {
       let found = false;
-      for (const feature of this.featuresToShow) {
+      for (const feature of this.patternAtlasUiShowOnFeature) {
         if (this.configurationService.configuration.features[feature]) {
           found = true;
         }
@@ -29,9 +29,9 @@ export class ShowOnFeatureDirective implements OnInit {
       } else {
         this.viewContainerRef.createEmbeddedView(this.templateRef);
       }
-    } else if (typeof this.featuresToShow === 'string') {
+    } else if (typeof this.patternAtlasUiShowOnFeature === 'string') {
       if (
-        this.configurationService.configuration.features[this.featuresToShow]
+        this.configurationService.configuration.features[this.patternAtlasUiShowOnFeature]
       ) {
         this.viewContainerRef.createEmbeddedView(this.templateRef);
       } else {

@@ -9,7 +9,8 @@ export enum UiFeatures {
   PATTERNCANDIDATE = 'patternCandidate',
   PATTERNVIEWS = 'patternViews',
   ISSUE = 'issue',
-  SHOW_SETTINGS = 'showSettings'
+  SHOW_SETTINGS = 'showSettings',
+  EDITING = 'editing'
 }
 
 export interface PatternAtlasUiConfiguration {
@@ -18,7 +19,8 @@ export interface PatternAtlasUiConfiguration {
     patternCandidate: boolean,
     patternViews: boolean,
     issue: boolean,
-    showSettings: boolean
+    showSettings: boolean,
+    editing: boolean
   };
 }
 
@@ -42,11 +44,12 @@ const initialValues: PatternAtlasUiConfiguration = {
     patternCandidate: false,
     patternViews: false,
     issue: false,
-    showSettings: false
+    showSettings: false,
+    editing: true
   },
 };
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class PatternAtlasUiRepositoryConfigurationService {
   configuration: PatternAtlasUiConfiguration;
 
@@ -66,6 +69,7 @@ export class PatternAtlasUiRepositoryConfigurationService {
       .pipe(
         map((response: EtcdResponse) => {
           this.configuration = initialValues;
+          console.log(this.configuration);
           this.parseNode(response.node, this.configuration);
           return this.configuration;
         })

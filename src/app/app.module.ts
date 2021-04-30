@@ -45,6 +45,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
 import { DesignModelModule } from './design-model-module/design-model.module';
 import { PatternAtlasUiFeatureToggleModule } from './core/directives/pattern-atlas-ui-feature-toggle.module';
 import { MatMenuModule } from '@angular/material/menu';
+import { PatternAtlasUiRepositoryConfigurationService } from './core/directives/pattern-atlas-ui-repository-configuration.service';
 
 
 @NgModule({
@@ -61,6 +62,7 @@ import { MatMenuModule } from '@angular/material/menu';
     PatternLanguageManagementModule,
     PatternViewManagementModule,
     DesignModelModule,
+    PatternAtlasUiFeatureToggleModule,
     MatToolbarModule,
     MatIconModule,
     MatCardModule,
@@ -80,11 +82,10 @@ import { MatMenuModule } from '@angular/material/menu';
     ReactiveFormsModule,
     JwtModule,
     MatSidenavModule,
-    MatListModule,
-    PatternAtlasUiFeatureToggleModule
+    MatListModule
   ],
   providers: [
-    CookieService,
+    CookieService, PatternAtlasUiRepositoryConfigurationService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

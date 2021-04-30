@@ -24,6 +24,12 @@
          [disabled]="!config.features.showSettings"
          (change)="toggleFeature(UiFeatures.PATTERNVIEWS, $event)">
   <label for="patternViews">Pattern Views</label>
+  <br>
+  <input type="checkbox" [(ngModel)]="config.features.editing" id="editing" name="editing"
+         [checked]="config.features.editing"
+         [disabled]="!config.features.showSettings"
+         (change)="toggleFeature(UiFeatures.EDITING, $event)">
+  <label for="patternViews">Editing</label>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onCloseDialogClick()">Close</button>

@@ -80,6 +80,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { DeleteConfirmationDialogComponent } from './component/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { EditUrlDialogComponent } from './component/edit-url-dialog/edit-url-dialog.component';
 import { FeatureToggleDialogComponent } from './component/feature-toggle-dialog/feature-toggle-dialog.component';
+import { PatternAtlasUiFeatureToggleModule } from './directives/pattern-atlas-ui-feature-toggle.module';
 
 
 @NgModule({
@@ -111,7 +112,7 @@ import { FeatureToggleDialogComponent } from './component/feature-toggle-dialog/
     RouterModule,
     MatSortModule,
     FormsModule,
-    MatSnackBarModule,
+    MatSnackBarModule, PatternAtlasUiFeatureToggleModule
   ],
   exports: [
     CovalentTextEditorModule,

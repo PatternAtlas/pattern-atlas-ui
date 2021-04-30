@@ -12,27 +12,29 @@
   ~ SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
   -->
 
-<mat-toolbar color="primary">
-  <mat-icon>library_books</mat-icon>
-  <span style="margin-left: 1rem">Pattern Atlas</span>
-  <span class="spacer"></span>
-  {{welcomeText}}
-  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Button with a menu">
-    <mat-icon>more_vert</mat-icon>
-  </button>
-  <mat-menu #menu="matMenu">
-    <button mat-menu-item (click)="openFeatureToggleDialog()">
-      <span>Feature Toggles</span>
-    </button>
-  </mat-menu>
-  <div class="log-button">
-    <button mat-stroked-button *patternAtlasUiShowOnFeature="[UiFeatures.PATTERNCANDIDATE, UiFeatures.ISSUE]"
-            (click)="loginOAuth()"> {{ loginButton }}</button>
 
-  </div>
-</mat-toolbar>
 <mat-spinner *ngIf="loading; else loadedConfig"></mat-spinner>
 <ng-template #loadedConfig>
+  <mat-toolbar color="primary">
+    <mat-icon>library_books</mat-icon>
+    <span style="margin-left: 1rem">Pattern Atlas</span>
+    <span class="spacer"></span>
+    {{welcomeText}}
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Button with a menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="openFeatureToggleDialog()">
+        <span>Feature Toggles</span>
+      </button>
+    </mat-menu>
+    <div class="log-button">
+      <button mat-stroked-button
+              (click)="loginOAuth()"
+              *patternAtlasUiShowOnFeature="[UiFeatures.ISSUE,UiFeatures.PATTERNCANDIDATE]"> {{ loginButton }}</button>
+
+    </div>
+  </mat-toolbar>
   <nav mat-tab-nav-bar>
     <a mat-tab-link [routerLink]="'/' + pathConstants.patternLanguages"
        routerLinkActive #rla1="routerLinkActive" [active]="rla1.isActive">
@@ -69,8 +71,8 @@
       Developer
     </a>
   </nav>
+  <router-outlet></router-outlet>
 </ng-template>
 
 
-<router-outlet></router-outlet>
 <toaster-container></toaster-container>
