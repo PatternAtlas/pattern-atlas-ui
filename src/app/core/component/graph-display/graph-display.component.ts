@@ -325,7 +325,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
 
   reformatGraph() {
     this.nodes = GraphDisplayComponent.mapPatternsToNodes(this.patterns);
-    this.startSimulation();
+    this.startSimulation(this.configuration.features.editing);
   }
 
   backgroundClicked() {
@@ -390,7 +390,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     }
   }
 
-  private startSimulation() {
+  private startSimulation(saveGraph: boolean) {
     const networkGraph = this.d3Service.getNetworkGraph(this.nodes, this.edges, {
       width: 1000,
       height: 500
@@ -411,7 +411,9 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
 
       this.isLoading = false;
       this.cdr.detectChanges();
-      this.saveGraph();
+      if (saveGraph) {
+        this.saveGraph();
+      }
     });
   }
 
@@ -492,7 +494,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   private prepareGraph(graph: GraphNode[], patternGraphData: PatternContainer | PatternLanguage) {
     if ((!graph && Array.isArray(this.patternGraphData.patterns)) ||
       Array.isArray(this.patternGraphData.patterns) && (this.patternGraphData.patterns.length > graph.length)) {
-      this.startSimulation();
+      this.startSimulation(true);
       return;
     }
     this.initGraphData(graph);

@@ -1,38 +1,40 @@
 <mat-sidenav-container [hasBackdrop]="false" class="container">
-  <mat-sidenav *ngIf="patternContainer" #leftSidenav style="min-width: 300px;" [disableClose]="true" [opened]="true"
-               fixedInViewport="false"
-               mode="push">
-    <h3>Add Patterns</h3>
-    <mat-accordion>
-      <div cdkDropListGroup>
-        <mat-expansion-panel *ngFor="let patternLang of patternLanguages"
-                             (afterExpand)="handlePatternListExpandEvent(patternLang)">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              {{patternLang.name}}
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <mat-panel-description>
-            <div *ngIf="allPatternsLoading; else dragAndDropContent">
-              <mat-spinner class="drag-and-drop-spinner"></mat-spinner>
-            </div>
-            <ng-template #dragAndDropContent>
-              <div cdkDropList
-                   [cdkDropListData]="patternLang.patterns"
-                   class="pattern-list"
-                   cdkDropListSortingDisabled
-                   (cdkDropListDropped)="patternDropped($event)">
-                <div class="pattern-box" *ngFor="let pattern of patternLang.patterns" cdkDrag>
-                  {{pattern.name}}
-                  <mat-icon>drag_handle</mat-icon>
-                </div>
+  <ng-container *patternAtlasUiShowOnFeature="UiFeatures.EDITING">
+    <mat-sidenav *ngIf="patternContainer" #leftSidenav style="min-width: 300px;" [disableClose]="true" [opened]="true"
+                 fixedInViewport="false"
+                 mode="push">
+      <h3>Add Patterns</h3>
+      <mat-accordion>
+        <div cdkDropListGroup>
+          <mat-expansion-panel *ngFor="let patternLang of patternLanguages"
+                               (afterExpand)="handlePatternListExpandEvent(patternLang)">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{patternLang.name}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-panel-description>
+              <div *ngIf="allPatternsLoading; else dragAndDropContent">
+                <mat-spinner class="drag-and-drop-spinner"></mat-spinner>
               </div>
-            </ng-template>
-          </mat-panel-description>
-        </mat-expansion-panel>
-      </div>
-    </mat-accordion>
-  </mat-sidenav>
+              <ng-template #dragAndDropContent>
+                <div cdkDropList
+                     [cdkDropListData]="patternLang.patterns"
+                     class="pattern-list"
+                     cdkDropListSortingDisabled
+                     (cdkDropListDropped)="patternDropped($event)">
+                  <div class="pattern-box" *ngFor="let pattern of patternLang.patterns" cdkDrag>
+                    {{pattern.name}}
+                    <mat-icon>drag_handle</mat-icon>
+                  </div>
+                </div>
+              </ng-template>
+            </mat-panel-description>
+          </mat-expansion-panel>
+        </div>
+      </mat-accordion>
+    </mat-sidenav>
+  </ng-container>
 
   <!-- Sidepanel for Pattern View Relations -->
   <mat-sidenav [opened]="patternClicked" position="end" fixedInViewport="true" mode="over" class="sidemenu">
