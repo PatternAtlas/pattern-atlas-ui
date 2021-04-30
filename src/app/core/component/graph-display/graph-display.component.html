@@ -38,27 +38,30 @@
   <mat-sidenav [opened]="patternClicked" position="end" fixedInViewport="true" mode="over" class="sidemenu">
     <h4 style="margin: 1em">{{showViewRelations ? 'View ' : ''}}Relations of {{currentPattern?.name}}</h4>
     <mat-accordion>
-       <mat-expansion-panel *ngFor="let relation of viewRelationsOfPattern">
-         <mat-expansion-panel-header>
-           <mat-panel-title style="align-self: center">
-             {{relation?.type}}
-           </mat-panel-title>
-           <mat-panel-description class="horiz-centered">
-             <div class="horiz-centered" *ngIf="relation['sourcePatternId']">
-               <i class="material-icons" *ngIf="relation['sourcePatternId'] === this.currentPattern.id">trending_flat</i>
-               <i class="material-icons flip" *ngIf="relation['sourcePatternId'] !== this.currentPattern.id">trending_flat</i>
-               {{ relation['sourcePatternId'] === this.currentPattern.id ?
-               relation['targetPatternName'] : relation['sourcePatternName']}}
-             </div>
-             <div *ngIf="relation['pattern1Id']" class="horiz-centered">
-               {{ relation['sourcePatternName']}}
-               <i class="material-icons flip">compare_arrows</i>
-             {{ relation['pattern1Id'] === this.currentPattern.id ? relation['pattern2Name'] :
-               relation['pattern1Name']}}
-             </div>
-             <i (click)="openEditView(relation)" class="material-icons edit-icon" >mode_edit</i>
-           </mat-panel-description>
-         </mat-expansion-panel-header>
+      <mat-expansion-panel *ngFor="let relation of viewRelationsOfPattern">
+        <mat-expansion-panel-header>
+          <mat-panel-title style="align-self: center">
+            {{relation?.type}}
+          </mat-panel-title>
+          <mat-panel-description class="horiz-centered">
+            <div class="horiz-centered" *ngIf="relation['sourcePatternId']">
+              <i class="material-icons" *ngIf="relation['sourcePatternId'] === this.currentPattern.id">trending_flat</i>
+              <i class="material-icons flip" *ngIf="relation['sourcePatternId'] !== this.currentPattern.id">trending_flat</i>
+              {{ relation['sourcePatternId'] === this.currentPattern.id ?
+              relation['targetPatternName'] : relation['sourcePatternName']}}
+            </div>
+            <div *ngIf="relation['pattern1Id']" class="horiz-centered">
+              {{ relation['sourcePatternName']}}
+              <i class="material-icons flip">compare_arrows</i>
+              {{ relation['pattern1Id'] === this.currentPattern.id ? relation['pattern2Name'] :
+              relation['pattern1Name']}}
+            </div>
+            <ng-container *patternAtlasUiShowOnFeature="UiFeatures.EDITING">
+              <i (click)="openEditView(relation)" class="material-icons edit-icon"
+              >mode_edit</i>
+            </ng-container>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
         <i>{{relation.description ? '' + relation.description : ''}}</i>
       </mat-expansion-panel>
 
@@ -91,10 +94,12 @@
                 relation?.edge.targetPatternName : relation?.edge.sourcePatternName}}
               </div>
             </div>
-            <i *ngIf="!patternContainer" (click)="openEditPL(relation)" class="material-icons edit-icon">mode_edit</i>
+            <ng-container *patternAtlasUiShowOnFeature="UiFeatures.EDITING">
+              <i *ngIf="!patternContainer" (click)="openEditPL(relation)" class="material-icons edit-icon">mode_edit</i>
+            </ng-container>
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <i>{{relation?.edge.description ?  relation?.edge.description : ''}}</i>
+        <i>{{relation?.edge.description ? relation?.edge.description : ''}}</i>
       </mat-expansion-panel>
     </mat-accordion>
 
@@ -109,7 +114,7 @@
                    (onNodePositionChange)="handleNodePositionChangedEvent($event)"
                    [ppGraphEventEmmiter]
                    classes=" highlighted-edge low-opacity-node low-opacity-edge"
-                   mode="layout"
+                   [mode]="configuration.features.editing ? 'layout' : 'display'"
                    style="width: 100%; height: 100%"
                    zoom="both">
       <svg #svg slot="graph" [class.left-sidenav-open]="!!patternContainer">
@@ -216,7 +221,8 @@
             <g class="concrete-solutions-container" transform="translate(-60,25)"></g>
           </g>
 
-          <g data-line-attachement-point="-9 0" data-template-type="marker" data-link-handles="none" id="arrow">
+          <g data-line-attachement-point="-9 0" data-template-type="marker"
+             data-link-handles="none" id="arrow">
             <path d="M -9 -4 L 0 0 L -9 4 z"/>
           </g>
         </defs>

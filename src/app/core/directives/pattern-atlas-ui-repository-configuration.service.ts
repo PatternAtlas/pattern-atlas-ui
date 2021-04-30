@@ -51,9 +51,14 @@ const initialValues: PatternAtlasUiConfiguration = {
 
 @Injectable({ providedIn: 'root' })
 export class PatternAtlasUiRepositoryConfigurationService {
-  configuration: PatternAtlasUiConfiguration;
+
+  private _configuration: PatternAtlasUiConfiguration;
 
   constructor(private http: HttpClient) {
+  }
+
+  get configuration(): PatternAtlasUiConfiguration {
+    return this._configuration;
   }
 
   /**
@@ -68,10 +73,10 @@ export class PatternAtlasUiRepositoryConfigurationService {
       )
       .pipe(
         map((response: EtcdResponse) => {
-          this.configuration = initialValues;
-          console.log(this.configuration);
-          this.parseNode(response.node, this.configuration);
-          return this.configuration;
+          this._configuration = initialValues;
+          console.log(this._configuration);
+          this.parseNode(response.node, this._configuration);
+          return this._configuration;
         })
       );
   }

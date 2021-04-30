@@ -112,7 +112,8 @@ import { PatternAtlasUiFeatureToggleModule } from './directives/pattern-atlas-ui
     RouterModule,
     MatSortModule,
     FormsModule,
-    MatSnackBarModule, PatternAtlasUiFeatureToggleModule
+    MatSnackBarModule,
+    PatternAtlasUiFeatureToggleModule
   ],
   exports: [
     CovalentTextEditorModule,

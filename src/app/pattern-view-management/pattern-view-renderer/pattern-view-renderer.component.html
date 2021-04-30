@@ -56,7 +56,8 @@
     </mat-card-content>
     <mat-card-actions
     >
-      <button mat-raised-button  (click)="addLinks(pattern)">Add Relations (incl. Pattern)
+      <button mat-raised-button *patternAtlasUiShowOnFeature="UiFeatures.EDITING" (click)="addLinks(pattern)">Add
+        Relations (incl. Pattern)
       </button>
     </mat-card-actions>
   </mat-card>
@@ -68,7 +69,8 @@
                 patternLanguage: null, patternContainer: this.patternViewResponse,
                 patternLanguages: this.patternLanguages
             }"
-                  (addedEdge)="handleLinkAddedInGraphEditor($event)" (removedEdge)="handleLinkRemovedInGraphEditor($event)"
+                  (addedEdge)="handleLinkAddedInGraphEditor($event)"
+                  (removedEdge)="handleLinkRemovedInGraphEditor($event)"
                   (updatedGraphEvent)="addPatternFromGraphToView($event)"
                   [showPatternLanguageName]="true"
                   [showViewRelations]="true"></pp-graph-display>
