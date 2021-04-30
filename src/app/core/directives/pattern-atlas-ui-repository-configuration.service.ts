@@ -55,6 +55,7 @@ export class PatternAtlasUiRepositoryConfigurationService {
   private _configuration: PatternAtlasUiConfiguration;
 
   constructor(private http: HttpClient) {
+    this._configuration = initialValues;
   }
 
   get configuration(): PatternAtlasUiConfiguration {
@@ -73,8 +74,6 @@ export class PatternAtlasUiRepositoryConfigurationService {
       )
       .pipe(
         map((response: EtcdResponse) => {
-          this._configuration = initialValues;
-          console.log(this._configuration);
           this.parseNode(response.node, this._configuration);
           return this._configuration;
         })

@@ -72,7 +72,7 @@ export class AppComponent implements OnInit {
       (error: HttpErrorResponse) => {
         this.loading = false;
         this.toasterService.pop(
-          'error', 'Error while loading config from config server!' + error.message);
+          'error', 'Error while loading config from config server, using default values instead' + error.message);
       }
     );
   }
