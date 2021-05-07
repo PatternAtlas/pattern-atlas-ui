@@ -3,6 +3,8 @@
     "designModel": false,
     "patternCandidate": false,
     "patternViews": false,
-    "issue": false
+    "issue": false,
+    "editing": true,
+    "showSettings": false
   }
 }
