@@ -17,7 +17,6 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/internal/operators';
 import { globals } from '../../globals';
 import { UriConverter } from '../../core/util/uri-converter';
 
-
 @Component({
   selector: 'pp-create-pattern',
   templateUrl: './create-pattern.component.html',
@@ -93,7 +92,6 @@ export class CreatePatternComponent implements OnInit {
     return false;
   }
 
-
   ngOnInit() {
     this.patternLanguageId = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId));
     this.markdown = new MarkdownIt();
@@ -122,17 +120,18 @@ export class CreatePatternComponent implements OnInit {
     var stat = editor.getState(cm);
     var options = editor.options;
     var url = 'http://';
+    var text;
+    var start = textBeforeCursor; // text to insert before cursor
+    var end = textAfterCursor; // text to insert after cursor
+    var startPoint = cm.getCursor('start');
+    var endPoint = cm.getCursor('end');
+
     if (options.promptURLs) {
       url = prompt(options.promptTexts.image);
       if (!url) {
         return;
       }
     }
-    var text;
-    var start = textBeforeCursor; // text to insert before cursor
-    var end = textAfterCursor; // text to insert after cursor
-    var startPoint = cm.getCursor('start');
-    var endPoint = cm.getCursor('end');
     if (url) {
       end = end.replace('#url#', url);
     }
