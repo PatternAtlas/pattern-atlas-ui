@@ -103,7 +103,7 @@ export class PatternAtlasUiRepositoryConfigurationService {
    * @param obj the object to store the parsed values in.
    * @private
    */
-  //  deepcode file PrototypePollutionFunctionParams: <since we parse an untyped object, typechecking should be omitted>
+// file deepcode ignore PrototypePollutionFunctionParams: <since we parse an untyped object, typechecking should be omitted>
   private parseNode(node: EtcdNode, obj: any): void {
     const slashIndex = node.key.lastIndexOf('/');
     const key = node.key.substr(slashIndex + 1);
