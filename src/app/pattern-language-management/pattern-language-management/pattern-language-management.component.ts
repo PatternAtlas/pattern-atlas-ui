@@ -20,8 +20,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { ToasterService } from 'angular2-toaster';
 import { PatternLanguageService } from '../../core/service/pattern-language.service';
 import {
-  CreateEditComponentDialogType,
-  CreateEditPatternLanguageComponent
+  CreateEditComponentDialogType, CreateEditPatternLanguageComponent
 } from '../../core/component/create-edit-pattern-language/create-edit-pattern-language.component';
 import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
 import { map } from 'rxjs/operators';
@@ -34,7 +33,6 @@ import { UiFeatures } from '../../core/directives/pattern-atlas-ui-repository-co
   templateUrl: './pattern-language-management.component.html',
   styleUrls: ['./pattern-language-management.component.scss']
 })
-
 
 export class PatternLanguageManagementComponent implements OnInit {
 
@@ -121,9 +119,9 @@ export class PatternLanguageManagementComponent implements OnInit {
           this.patternLanguages.splice(this.patternLanguages.indexOf(patternLanguage), 1);
           this._toasterService.pop('success', 'Pattern Language deleted!');
         }, (error) => {
-          this._toasterService.pop('error', 'Pattern Language could not be deleted!', 'A Pattern Language can only be deleted if it does not contain any patterns.');
+          this._toasterService.pop('error', 'Pattern Language could not be deleted!',
+            'A Pattern Language can only be deleted if it does not contain any patterns.');
         });
-
 
       }
     })
