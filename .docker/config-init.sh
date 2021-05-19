@@ -9,6 +9,6 @@ if [ ! -f "/opt/configComplete" ]; then
       /usr/bin/wait-for-it $CONFIG_SERVER:$CONFIG_SERVER_PORT -s -t 10 -- curl http://$CONFIG_SERVER:$CONFIG_SERVER_PORT/v2/keys/$topic/$key -XPUT -d value="$myVal" > /dev/null 2>&1
       done
   done
-  touch /opt/configComplete
+  touch /opt/configComplete 
   echo "executed config-init script..."
 fi
