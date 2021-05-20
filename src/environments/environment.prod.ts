@@ -25,7 +25,7 @@ export const environment = {
   clientIdPublic: 'pattern-pedia-public',
   clientIdPKCE: 'pattern-pedia-pkce',
   CONFIG_SEVER_URL:
-    window['env']['CONFIG_SERVER_HOST_NAME'] &&
+    window['env'] && window['env']['CONFIG_SERVER_HOST_NAME'] &&
     window['env']['CONFIG_SERVER_PORT']
       ? `http://${window['env']['CONFIG_SERVER_HOST_NAME']}:${window['env']['CONFIG_SERVER_PORT']}/v2/keys`
       : 'http://localhost:2379/v2/keys'
