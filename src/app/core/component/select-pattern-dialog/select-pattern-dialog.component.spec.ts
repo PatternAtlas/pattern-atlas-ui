@@ -1,6 +1,6 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {SelectPatternDialogComponent} from './select-pattern-dialog.component';
+import { SelectPatternDialogComponent } from './select-pattern-dialog.component';
 
 describe('SelectPatternDialogComponent', () => {
   let component: SelectPatternDialogComponent;

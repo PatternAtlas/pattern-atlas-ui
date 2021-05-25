@@ -1,25 +1,25 @@
-import {ChangeDetectorRef, Component, NgZone, OnInit, ViewChild} from '@angular/core';
-import {TdTextEditorComponent} from '@covalent/text-editor';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ChangeDetectorRef, Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { TdTextEditorComponent } from '@covalent/text-editor';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as marked from 'marked';
-import {TokensList} from 'marked';
-import {ToasterService} from 'angular2-toaster';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
-import {ValidationService} from '../../core/service/validation.service';
-import {PatternLanguageService} from '../../core/service/pattern-language.service';
+import { TokensList } from 'marked';
+import { ToasterService } from 'angular2-toaster';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { ValidationService } from '../../core/service/validation.service';
+import { PatternLanguageService } from '../../core/service/pattern-language.service';
 import PatternLanguage from '../../core/model/hal/pattern-language.model';
 import PatternSectionSchema from '../../core/model/hal/pattern-section-schema.model';
 import * as MarkdownIt from 'markdown-it';
 import * as markdownitKatex from 'markdown-it-katex';
-import {PatternService} from '../../core/service/pattern.service';
-import {debounceTime, distinctUntilChanged, tap} from 'rxjs/internal/operators';
-import {globals} from '../../globals';
-import {UriConverter} from '../../core/util/uri-converter';
-import {SelectPatternDialogComponent} from '../../core/component/select-pattern-dialog/select-pattern-dialog.component';
-import {MatDialog} from '@angular/material/dialog';
-import {of} from 'rxjs';
+import { PatternService } from '../../core/service/pattern.service';
+import { debounceTime, distinctUntilChanged, tap } from 'rxjs/internal/operators';
+import { globals } from '../../globals';
+import { UriConverter } from '../../core/util/uri-converter';
+import { SelectPatternDialogComponent } from '../../core/component/select-pattern-dialog/select-pattern-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { of } from 'rxjs';
 import Pattern from '../../core/model/hal/pattern.model';
-import {MarkdownEditorUtils} from '../../core/util/markdown-editor-utils';
+import { MarkdownEditorUtils } from '../../core/util/markdown-editor-utils';
 
 
 @Component({
@@ -48,13 +48,13 @@ export class CreatePatternComponent implements OnInit {
           className: 'fa fa-subscript',
           title: 'Add Formula',
         }, {
-        name: 'pattern-link',
-        action: (editor) => {
-          this.addPatternReference(editor);
+          name: 'pattern-link',
+          action: (editor) => {
+            this.addPatternReference(editor);
+          },
+          className: 'fa fab fa-product-hunt',
+          title: 'Reference Pattern',
         },
-        className: 'fa fab fa-product-hunt',
-        title: 'Reference Pattern',
-      },
         '|', // Separator
         MarkdownEditorUtils.helpButton
       ],
@@ -138,7 +138,7 @@ export class CreatePatternComponent implements OnInit {
       () => {
         this.toastService.pop('success', 'Pattern successfully created');
         this.zone.run(() => {
-          this.router.navigate(['..'], {relativeTo: this.activatedRoute});
+          this.router.navigate(['..'], { relativeTo: this.activatedRoute });
         });
       },
       (error) => this.toastService.pop('error', 'Could not create Pattern', error.message)
