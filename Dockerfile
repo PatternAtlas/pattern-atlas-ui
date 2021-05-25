@@ -19,6 +19,7 @@ WORKDIR /app
 
 ADD .docker/features.json /opt/init-config.d/features.json
 ADD .docker/config-init.sh config-init.sh
+COPY .docker/nginx.conf /etc/nginx/nginx.conf
 
 RUN apk add --no-cache jq bash \
     && mkdir -p /opt/init-config.d \
