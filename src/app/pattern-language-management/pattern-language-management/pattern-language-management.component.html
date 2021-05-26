@@ -17,11 +17,14 @@
 <div class="container">
   <mat-card class="landing-card" *ngFor="let patternLanguage of patternLanguages">
     <mat-card-header>
-      <img *ngIf="patternLanguage?.logo && patternLanguage?.logo !== ''; else noImageAvatar" mat-card-avatar  (click)="navigateToPL(patternLanguage)"
+      <img *ngIf="patternLanguage?.logo && patternLanguage?.logo !== ''; else noImageAvatar" mat-card-avatar
+           (click)="navigateToPL(patternLanguage)"
            [src]="patternLanguage.logo">
-      <ng-template #noImageAvatar><img mat-card-avatar [src]="'//via.placeholder.com/50x50'" (click)="navigateToPL(patternLanguage)"></ng-template>
+      <ng-template #noImageAvatar><img mat-card-avatar [src]="'//via.placeholder.com/50x50'"
+                                       (click)="navigateToPL(patternLanguage)"></ng-template>
 
-      <mat-card-title *ngIf="patternLanguage?.name && '' !== patternLanguage.name; else noPLName" (click)="navigateToPL(patternLanguage)"
+      <mat-card-title *ngIf="patternLanguage?.name && '' !== patternLanguage.name; else noPLName"
+                      (click)="navigateToPL(patternLanguage)"
                       style="width: 10rem; word-break: break-word;">
         {{patternLanguage.name}}
       </mat-card-title>
@@ -31,15 +34,19 @@
         </mat-card-title>
       </ng-template>
     </mat-card-header>
-    <img mat-card-image (click)="navigateToPL(patternLanguage)" *ngIf="patternLanguage?.logo && patternLanguage?.logo !== ''; else noImage"
+    <img mat-card-image (click)="navigateToPL(patternLanguage)"
+         *ngIf="patternLanguage?.logo && patternLanguage?.logo !== ''; else noImage"
          [src]="patternLanguage.logo">
-    <ng-template #noImage><img mat-card-image (click)="navigateToPL(patternLanguage)" [src]="'//via.placeholder.com/200x300'"></ng-template>
+    <ng-template #noImage><img mat-card-image (click)="navigateToPL(patternLanguage)"
+                               [src]="'//via.placeholder.com/200x300'"></ng-template>
     <mat-card-actions>
       <div style="text-align: center">
         <button matBadge="{{patternLanguage?.patternCount}}" mat-stroked-button color="primary"
                 (click)="navigateToPL(patternLanguage)"><i class="material-icons">pageview</i> View
         </button>
-        <button (click)="delete(patternLanguage)" class="pattern-button" mat-stroked-button style="margin-left: 25px" color="warn">
+        <button *patternAtlasUiShowOnFeature="UiFeatures.EDITING" (click)="delete(patternLanguage)"
+                class="pattern-button"
+                mat-stroked-button style="margin-left: 25px" color="warn">
           <i class="material-icons">delete</i>
         </button>
       </div>

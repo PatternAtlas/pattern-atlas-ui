@@ -17,7 +17,6 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/internal/operators';
 import { globals } from '../../globals';
 import { UriConverter } from '../../core/util/uri-converter';
 
-
 @Component({
   selector: 'pp-create-pattern',
   templateUrl: './create-pattern.component.html',
@@ -33,7 +32,35 @@ export class CreatePatternComponent implements OnInit {
   patternValuesFormGroup: FormGroup;
   previousTextEditorValue = '# Pattern name';
   options: any = {
-    // todo: hide the preview button because it forces fullscreen mode (and destroys our page layout)
+    autoDownloadFontAwesome: true,
+    toolbar:
+      ['bold', 'italic', 'heading', '|', 'quote', 'unordered-list', 'ordered-list',
+        '|', // Separator
+        'link', 'image',
+        '|',  // Separator
+        'code',
+        {
+          name: 'alert',
+          action: (editor) => {
+            this.insertTextAtCursor(editor, '$', '$');
+          },
+          className: 'fa fa-subscript',
+          title: 'Add Formula',
+        }, {
+          name: 'pattern-link',
+          action: (editor) => {
+          // TODO: after chosing a pattern in the dialog, insert a link to the chosen pattern in markdown syntax
+          },
+          className: 'fa fab fa-product-hunt',
+          title: 'Reference Pattern',
+        },
+        '|', // Separator
+        {
+          name: 'guide',
+          action: 'https://pattern-atlas-readthedocs.readthedocs.io/en/latest/user_guide/patterns/#pattern-creation',
+          className: 'fa fa-question-circle',
+        },
+      ],
   };
   errorMessages: Array<string>;
   patternLanguage: PatternLanguage;
@@ -58,13 +85,12 @@ export class CreatePatternComponent implements OnInit {
 
   static isListItem(i: number, sectionIndex: number, lines: marked.TokensList): boolean {
     for (let index = sectionIndex + 1; index < i; index++) {
-      if (lines[ index ].type === 'list_item_start') {
+      if (lines[index].type === 'list_item_start') {
         return true;
       }
     }
     return false;
   }
-
 
   ngOnInit() {
     this.patternLanguageId = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId));
@@ -87,6 +113,47 @@ export class CreatePatternComponent implements OnInit {
     this.iconUrl.valueChanges.pipe(debounceTime(1000), distinctUntilChanged()).subscribe((urlValue) => {
       this.iconPreviewVisible = urlValue && (urlValue.startsWith('https://') || urlValue.startsWith('http://'));
     });
+  }
+
+  insertTextAtCursor(editor: any, textBeforeCursor, textAfterCursor): void {
+    var cm = editor.codemirror;
+    var stat = editor.getState(cm);
+    var options = editor.options;
+    var url = 'http://';
+    var text;
+    var start = textBeforeCursor; // text to insert before cursor
+    var end = textAfterCursor; // text to insert after cursor
+    var startPoint = cm.getCursor('start');
+    var endPoint = cm.getCursor('end');
+
+    if (options.promptURLs) {
+      url = prompt(options.promptTexts.image);
+      if (!url) {
+        return;
+      }
+    }
+    if (url) {
+      end = end.replace('#url#', url);
+    }
+    if (stat.link) {
+      text = cm.getLine(startPoint.line);
+      start = text.slice(0, startPoint.ch);
+      end = text.slice(startPoint.ch);
+      cm.replaceRange(start + end, {
+        line: startPoint.line,
+        ch: 0
+      });
+    } else {
+      text = cm.getSelection();
+      cm.replaceSelection(start + text + end);
+
+      startPoint.ch += start.length;
+      if (startPoint !== endPoint) {
+        endPoint.ch += start.length;
+      }
+    }
+    cm.setSelection(startPoint, endPoint);
+    cm.focus();
   }
 
   save(): void {

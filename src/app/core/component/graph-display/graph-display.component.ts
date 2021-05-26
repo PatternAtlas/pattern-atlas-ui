@@ -33,6 +33,10 @@ import { GraphDataSavePatternService } from '../../service/graph-data/graph-data
 import { PatternRelationDescriptorDirection } from '../../model/pattern-relation-descriptor-direction.enum';
 import { Edge } from '../../model/hal/edge.model';
 import { PatternViewService } from '../../service/pattern-view.service';
+import {
+  PatternAtlasUiRepositoryConfigurationService,
+  UiFeatures
+} from '../../directives/pattern-atlas-ui-repository-configuration.service';
 
 // file deepcode ignore no-any: out of scope, this should be done another time
 
@@ -74,6 +78,8 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   @Output() updatedGraphEvent = new EventEmitter<any>();
   @Output() deletePatternEvent = new EventEmitter<string>();
   @Output() aggregationAssignmentsUpdate = new EventEmitter<{ [key: string]: string }>();
+  readonly UiFeatures = UiFeatures;
+  configuration = this.configService.configuration;
 
   isLoading = true;
   patternClicked = false;
@@ -107,6 +113,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
               // use the implementation of GraphDataService that is provided in the module:
               private graphDataService: GraphDataService,
               private activatedRoute: ActivatedRoute,
+              private configService: PatternAtlasUiRepositoryConfigurationService,
               private router: Router) {
   }
 
@@ -303,7 +310,11 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
 
   saveGraph() {
     if (!this.nodes) {
-      console.error('No nodes to save');
+      console.error('No nodes to save or editing the graph disabled');
+      return;
+    }
+    if (!this.configuration.features.editing) {
+      console.log('Not saving the graph since editing not enabled');
       return;
     }
     console.debug('Save graph', this.patternLanguage ? this.patternLanguage : this.patternContainer, this.graphNativeElement.nodeList);
@@ -314,7 +325,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
 
   reformatGraph() {
     this.nodes = GraphDisplayComponent.mapPatternsToNodes(this.patterns);
-    this.startSimulation();
+    this.startSimulation(this.configuration.features.editing);
   }
 
   backgroundClicked() {
@@ -379,7 +390,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     }
   }
 
-  private startSimulation() {
+  private startSimulation(saveGraph: boolean) {
     const networkGraph = this.d3Service.getNetworkGraph(this.nodes, this.edges, {
       width: 1000,
       height: 500
@@ -400,7 +411,9 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
 
       this.isLoading = false;
       this.cdr.detectChanges();
-      this.saveGraph();
+      if (saveGraph) {
+        this.saveGraph();
+      }
     });
   }
 
@@ -481,7 +494,7 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   private prepareGraph(graph: GraphNode[], patternGraphData: PatternContainer | PatternLanguage) {
     if ((!graph && Array.isArray(this.patternGraphData.patterns)) ||
       Array.isArray(this.patternGraphData.patterns) && (this.patternGraphData.patterns.length > graph.length)) {
-      this.startSimulation();
+      this.startSimulation(true);
       return;
     }
     this.initGraphData(graph);

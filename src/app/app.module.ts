@@ -20,7 +20,7 @@ import { AppComponent } from './app.component';
 import { PatternLanguageManagementModule } from './pattern-language-management/pattern-language-management.module';
 import { CoreModule } from './core/core.module';
 
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -43,13 +43,16 @@ import { LandingPageComponent } from './core/component/landing-page/landing-page
 import { PageNotFoundComponent } from './core/component/page-not-found/page-not-found.component';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { DesignModelModule } from './design-model-module/design-model.module';
+import { PatternAtlasUiFeatureToggleModule } from './core/directives/pattern-atlas-ui-feature-toggle.module';
+import { MatMenuModule } from '@angular/material/menu';
+import { PatternAtlasUiRepositoryConfigurationService } from './core/directives/pattern-atlas-ui-repository-configuration.service';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     PageNotFoundComponent,
-    LandingPageComponent,
+    LandingPageComponent
   ],
   imports: [
     AppRoutingModule,
@@ -59,12 +62,14 @@ import { DesignModelModule } from './design-model-module/design-model.module';
     PatternLanguageManagementModule,
     PatternViewManagementModule,
     DesignModelModule,
+    PatternAtlasUiFeatureToggleModule,
     MatToolbarModule,
     MatIconModule,
     MatCardModule,
     MatButtonModule,
     MatIconModule,
     MatTabsModule,
+    MatMenuModule,
     NgxMdModule,
     CovalentTextEditorModule,
     CoreModule,
@@ -77,10 +82,10 @@ import { DesignModelModule } from './design-model-module/design-model.module';
     ReactiveFormsModule,
     JwtModule,
     MatSidenavModule,
-    MatListModule,
+    MatListModule
   ],
   providers: [
-    CookieService,
+    CookieService, PatternAtlasUiRepositoryConfigurationService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

@@ -20,14 +20,13 @@ import { CookieService } from 'ngx-cookie-service';
 import { ToasterService } from 'angular2-toaster';
 import { PatternLanguageService } from '../../core/service/pattern-language.service';
 import {
-  CreateEditComponentDialogType,
-  CreateEditPatternLanguageComponent
+  CreateEditComponentDialogType, CreateEditPatternLanguageComponent
 } from '../../core/component/create-edit-pattern-language/create-edit-pattern-language.component';
 import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult.interface';
 import { map } from 'rxjs/operators';
 import PatternLanguageModel from '../../core/model/hal/pattern-language-model.model';
-import UriEntity from '../../core/model/hal/uri-entity.model';
-import { DeleteConfirmationDialogComponent } from "../../core/component/delete-confirmation-dialog/delete-confirmation-dialog.component";
+import { DeleteConfirmationDialogComponent } from '../../core/component/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { UiFeatures } from '../../core/directives/pattern-atlas-ui-repository-configuration.service';
 
 @Component({
   selector: 'pp-pattern-language-management',
@@ -35,10 +34,10 @@ import { DeleteConfirmationDialogComponent } from "../../core/component/delete-c
   styleUrls: ['./pattern-language-management.component.scss']
 })
 
-
 export class PatternLanguageManagementComponent implements OnInit {
 
   patternLanguages: Array<PatternLanguageModel>;
+  readonly UiFeatures = UiFeatures;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -115,14 +114,14 @@ export class PatternLanguageManagementComponent implements OnInit {
         name: patternLanguage.name,
       }
     }).afterClosed().subscribe(dialogAnswer => {
-      if(dialogAnswer){
-        this.patternLanguageService.deletePatternLanguage(patternLanguage.id).subscribe((response) =>{
-         this.patternLanguages.splice(this.patternLanguages.indexOf(patternLanguage),1);
-         this._toasterService.pop('success', 'Pattern Language deleted!');
-       },(error) => {
-          this._toasterService.pop('error', 'Pattern Language could not be deleted!', 'A Pattern Language can only be deleted if it does not contain any patterns.');
+      if (dialogAnswer) {
+        this.patternLanguageService.deletePatternLanguage(patternLanguage.id).subscribe((response) => {
+          this.patternLanguages.splice(this.patternLanguages.indexOf(patternLanguage), 1);
+          this._toasterService.pop('success', 'Pattern Language deleted!');
+        }, (error) => {
+          this._toasterService.pop('error', 'Pattern Language could not be deleted!',
+            'A Pattern Language can only be deleted if it does not contain any patterns.');
         });
-
 
       }
     })

@@ -13,9 +13,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTreeModule } from '@angular/material/tree';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { GraphDataService } from '../core/service/graph-data/graph-data.service';
 import { PatternViewService } from '../core/service/pattern-view.service';
+import { PatternAtlasUiFeatureToggleModule } from '../core/directives/pattern-atlas-ui-feature-toggle.module';
 
 
 const PATTERN_VIEW_MANAGMENT_ROUTE: Routes = [
@@ -48,6 +49,7 @@ const PATTERN_VIEW_MANAGMENT_ROUTE: Routes = [
     MatIconModule,
     MatCheckboxModule,
     RouterModule.forChild(PATTERN_VIEW_MANAGMENT_ROUTE),
+    PatternAtlasUiFeatureToggleModule
   ],
   providers: [
     { provide: GraphDataService, useClass: PatternViewService },

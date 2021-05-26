@@ -1,9 +1,12 @@
-<pp-action-button-bar [goBackButton]="false" [addButtonText]="'Add View'"
-                      (addClicked)="createView()"></pp-action-button-bar>
+<ng-container *patternAtlasUiShowOnFeature="UiFeatures.EDITING">
+  <pp-action-button-bar [goBackButton]="false"
+                        [addButtonText]="'Add View'"
+                        (addClicked)="createView()"></pp-action-button-bar>
+</ng-container>
 
 <div class="container">
   <mat-card *ngFor="let patternView of patternViewResponse?._embedded?.patternViews"
-             class="landing-card">
+            class="landing-card">
 
     <mat-card-header (click)="navigate(patternView)">
       <img mat-card-avatar [src]="patternView?.logo || '//via.placeholder.com/50x50'" alt=""/>
@@ -13,13 +16,15 @@
       </mat-card-title>
     </mat-card-header>
 
-    <img (click)="navigate(patternView)" mat-card-image [src]="patternView?.logo || '//via.placeholder.com/200x300'" alt=""/>
-
+    <img (click)="navigate(patternView)" mat-card-image [src]="patternView?.logo || '//via.placeholder.com/200x300'"
+         alt=""/>
     <mat-card-actions>
       <div style="text-align: center">
-        <button (click)="navigate(patternView)" mat-stroked-button color="primary"><i class="material-icons">pageview</i> View
+        <button (click)="navigate(patternView)" mat-stroked-button color="primary"><i
+          class="material-icons">pageview</i> View
         </button>
-        <button (click)="deletePatternView(patternView)" class="pattern-button" mat-stroked-button style="margin-left: 25px" color="warn">
+        <button (click)="deletePatternView(patternView)" *patternAtlasUiShowOnFeature="UiFeatures.EDITING"
+                class="pattern-button" mat-stroked-button style="margin-left: 25px" color="warn">
           <i class="material-icons">delete</i>
         </button>
       </div>

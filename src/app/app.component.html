@@ -12,50 +12,67 @@
   ~ SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
   -->
 
-<mat-toolbar color="primary">
-  <mat-icon>library_books</mat-icon>
-  <span style="margin-left: 1rem">Pattern Atlas</span>
-  <span class="spacer"></span>
-  {{welcomeText}}
-  <div class="log-button">
-    <button mat-stroked-button *ngIf="featureToggles.patternCandidate && featureToggles.issue"
-            (click)="loginOAuth()"> {{ loginButton }}</button>
-  </div>
-</mat-toolbar>
-<nav mat-tab-nav-bar>
-  <a mat-tab-link [routerLink]="'/' + pathConstants.patternLanguages"
-     routerLinkActive #rla1="routerLinkActive" [active]="rla1.isActive">
-    Pattern Languages
-  </a>
-  <a mat-tab-link [routerLink]="'/' + pathConstants.patternViews"
-     routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive">
-    Pattern Views
-  </a>
-  <a mat-tab-link [routerLink]="'/' + pathConstants.designModels" *ngIf="featureToggles.designModel"
-     routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive">
-    Design Models
-  </a>
-  <a mat-tab-link [routerLink]="'/candidate'" *ngIf="featureToggles.patternCandidate"
-     routerLinkActive #rla4="routerLinkActive" [active]="rla4.isActive">
-    Pattern Candidate
-  </a>
-  <a mat-tab-link [routerLink]="'/issue'" *ngIf="featureToggles.issue"
-     routerLinkActive #rla5="routerLinkActive" [active]="rla5.isActive">
-    Issue
-  </a>
-  <a mat-tab-link [routerLink]="'/user'" *ngIf="(auth.hasRole('MEMBER') | async)"
-     routerLinkActive #rla6="routerLinkActive" [active]="rla6.isActive">
-    Personal
-  </a>
-  <a mat-tab-link [routerLink]="'/admin'" *ngIf="(auth.hasRole('ADMIN') | async)"
-     routerLinkActive #rla7="routerLinkActive" [active]="rla7.isActive">
-    Admin
-  </a>
-  <a mat-tab-link [routerLink]="'/developer'" *ngIf="(auth.hasRole('ADMIN') | async)"
-     routerLinkActive #rla8="routerLinkActive" [active]="rla8.isActive">
-    Developer
-  </a>
-</nav>
 
-<router-outlet></router-outlet>
+<mat-spinner *ngIf="loading; else loadedConfig"></mat-spinner>
+<ng-template #loadedConfig>
+  <mat-toolbar color="primary">
+    <mat-icon>library_books</mat-icon>
+    <span style="margin-left: 1rem">Pattern Atlas</span>
+    <span class="spacer"></span>
+    {{welcomeText}}
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Button with a menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="openFeatureToggleDialog()">
+        <span>Feature Toggles</span>
+      </button>
+    </mat-menu>
+    <div class="log-button">
+      <button mat-stroked-button
+              (click)="loginOAuth()"
+              *patternAtlasUiShowOnFeature="[UiFeatures.ISSUE,UiFeatures.PATTERNCANDIDATE]"> {{ loginButton }}</button>
+
+    </div>
+  </mat-toolbar>
+  <nav mat-tab-nav-bar>
+    <a mat-tab-link [routerLink]="'/' + pathConstants.patternLanguages"
+       routerLinkActive #rla1="routerLinkActive" [active]="rla1.isActive">
+      Pattern Languages
+    </a>
+    <a mat-tab-link [routerLink]="'/' + pathConstants.patternViews"
+       *patternAtlasUiShowOnFeature="UiFeatures.PATTERNVIEWS"
+       routerLinkActive #rla2="routerLinkActive" [active]="rla2.isActive">
+      Pattern Views
+    </a>
+    <a mat-tab-link [routerLink]="'/' + pathConstants.designModels"
+       *patternAtlasUiShowOnFeature="UiFeatures.DESIGN_MODEL"
+       routerLinkActive #rla3="routerLinkActive" [active]="rla3.isActive">
+      Design Models
+    </a>
+    <a mat-tab-link [routerLink]="'/candidate'" *patternAtlasUiShowOnFeature="UiFeatures.PATTERNCANDIDATE"
+       routerLinkActive #rla4="routerLinkActive" [active]="rla4.isActive">
+      Pattern Candidate
+    </a>
+    <a mat-tab-link [routerLink]="'/issue'" *patternAtlasUiShowOnFeature="UiFeatures.ISSUE"
+       routerLinkActive #rla5="routerLinkActive" [active]="rla5.isActive">
+      Issue
+    </a>
+    <a mat-tab-link [routerLink]="'/user'" *ngIf="(auth.hasRole('MEMBER') | async)"
+       routerLinkActive #rla6="routerLinkActive" [active]="rla6.isActive">
+      Personal
+    </a>
+    <a mat-tab-link [routerLink]="'/admin'" *ngIf="(auth.hasRole('ADMIN') | async)"
+       routerLinkActive #rla7="routerLinkActive" [active]="rla7.isActive">
+      Admin
+    </a>
+    <a mat-tab-link [routerLink]="'/developer'" *ngIf="(auth.hasRole('ADMIN') | async)"
+       routerLinkActive #rla8="routerLinkActive" [active]="rla8.isActive">
+      Developer
+    </a>
+  </nav>
+  <router-outlet></router-outlet>
+</ng-template>
+
+
 <toaster-container></toaster-container>
