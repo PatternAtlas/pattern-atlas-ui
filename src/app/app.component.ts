@@ -17,15 +17,13 @@ import { AuthenticationService } from './authentication/_services/authentication
 import { PAUser } from './core/user-management';
 import { globals } from './globals';
 import {
-  PatternAtlasUiRepositoryConfigurationService,
-  UiFeatures
+  PatternAtlasUiRepositoryConfigurationService, UiFeatures
 } from './core/directives/pattern-atlas-ui-repository-configuration.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToasterService } from 'angular2-toaster';
 import { MatDialog } from '@angular/material/dialog';
 import { FeatureToggleDialogComponent } from './core/component/feature-toggle-dialog/feature-toggle-dialog.component';
 import { ActivatedRoute, Router } from '@angular/router';
-
 
 @Component({
   selector: 'pp-root',
@@ -40,7 +38,6 @@ export class AppComponent implements OnInit {
   user: PAUser;
   readonly pathConstants = globals.pathConstants;
   loading = true;
-
 
   constructor(public auth: AuthenticationService,
               private toasterService: ToasterService,
@@ -71,8 +68,10 @@ export class AppComponent implements OnInit {
       () => (this.loading = false),
       (error: HttpErrorResponse) => {
         this.loading = false;
-        this.toasterService.pop(
-          'error', 'Error while loading config from config server, using default values instead' + error.message);
+        this.toasterService.popAsync(
+          'error', 'Error while loading config from config server, using default values instead' + error.message).subscribe(
+          () => console.log('default values applied')
+        )
       }
     );
   }

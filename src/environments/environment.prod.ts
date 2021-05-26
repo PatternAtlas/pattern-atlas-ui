@@ -24,7 +24,7 @@ export const environment = {
   clientSecret: '',
   clientIdPublic: 'pattern-pedia-public',
   clientIdPKCE: 'pattern-pedia-pkce',
-  CONFIG_SEVER_URL:
+  CONFIG_SERVER_URL:
     window['env'] && window['env']['CONFIG_SERVER_HOST_NAME'] &&
     window['env']['CONFIG_SERVER_PORT']
       ? `http://${window['env']['CONFIG_SERVER_HOST_NAME']}:${window['env']['CONFIG_SERVER_PORT']}/v2/keys`

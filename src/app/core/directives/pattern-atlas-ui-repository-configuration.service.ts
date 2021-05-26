@@ -70,10 +70,12 @@ export class PatternAtlasUiRepositoryConfigurationService {
   getConfigurationFromBackend(): Observable<PatternAtlasUiConfiguration> {
     return this.http
       .get<EtcdResponse>(
-        environment.CONFIG_SEVER_URL + '/features?recursive=true'
+        environment.CONFIG_SERVER_URL + '/features?recursive=true'
       )
       .pipe(
         map((response: EtcdResponse) => {
+
+          this._configuration = initialValues;
           this.parseNode(response.node, this._configuration);
           return this._configuration;
         })
@@ -81,7 +83,7 @@ export class PatternAtlasUiRepositoryConfigurationService {
   }
 
   applyConfig(feature: UiFeatures, checked: boolean): Observable<string> {
-    const url = environment.CONFIG_SEVER_URL + '/features/' + feature;
+    const url = environment.CONFIG_SERVER_URL + '/features/' + feature;
 
     return this.http.put<string>(
       url,
@@ -103,7 +105,8 @@ export class PatternAtlasUiRepositoryConfigurationService {
    * @param obj the object to store the parsed values in.
    * @private
    */
-  // file deepcode ignore PrototypePollutionFunctionParams: <since we parse an untyped object, typechecking should be omitted>
+  // file deepcode ignore PrototypePollutionFunctionParams: <since we parse an untyped object, typechecking should be
+  // omitted>
   private parseNode(node: EtcdNode, obj: any): void {
     const slashIndex = node.key.lastIndexOf('/');
     const key = node.key.substr(slashIndex + 1);
