@@ -36,6 +36,7 @@ import { GraphDataService } from '../core/service/graph-data/graph-data.service'
 import { globals } from '../globals';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { PatternLanguageService } from '../core/service/pattern-language.service';
+import { PatternAtlasUiFeatureToggleModule } from '../core/directives/pattern-atlas-ui-feature-toggle.module';
 
 
 /*
@@ -98,7 +99,7 @@ export const PL_ROUTES: Routes = [
     MatListModule,
     MatRippleModule,
     RouterModule.forChild(PL_ROUTES),
-    // PatternLanguageManagementRoutingModule,
+    PatternAtlasUiFeatureToggleModule
 
   ],
   declarations: [

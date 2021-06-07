@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ToasterService } from 'angular2-toaster';
 import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
 import { Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Rating } from '../../model/rating.enum';
 import { Candidate } from '../_models/candidate.model';
 import { CandidateComment } from '../_models/candidate-comment.model';
@@ -20,7 +20,7 @@ export class CandidateManagementService {
     private toasterService: ToasterService,
     private auth: AuthenticationService,
   ) {
-    this.repoEndpoint = environment.repositoryUrl;
+    this.repoEndpoint = environment.API_URL;
     this.serviceEndpoint = '/candidates';
   }
 

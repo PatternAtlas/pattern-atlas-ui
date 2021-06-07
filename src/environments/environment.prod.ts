@@ -13,8 +13,8 @@
  */
 
 export const environment = {
-  production: true,
-  repositoryUrl: 'http://localhost:8080',
+  PRODUCTION: true,
+  API_URL: 'http://localhost:8080',
   authorizeUrl: 'http://localhost:8081/oauth/authorize?',
   tokenUrl: 'http://localhost:8081/oauth/token',
   tokenRevokeUrl: 'http://localhost:8081/oauth/revoke_token',
@@ -24,4 +24,9 @@ export const environment = {
   clientSecret: '',
   clientIdPublic: 'pattern-pedia-public',
   clientIdPKCE: 'pattern-pedia-pkce',
+  CONFIG_SERVER_URL:
+    window['env'] && window['env']['CONFIG_SERVER_HOST_NAME'] &&
+    window['env']['CONFIG_SERVER_PORT']
+      ? `http://${window['env']['CONFIG_SERVER_HOST_NAME']}:${window['env']['CONFIG_SERVER_PORT']}/v2/keys`
+      : 'http://localhost:2379/v2/keys'
 };

@@ -12,9 +12,9 @@ import { ToasterService } from 'angular2-toaster';
 import { Observable } from 'rxjs';
 import { DesignModelService } from '../../service/design-model.service';
 import { DesignModelResponse } from '../../model/hal/design-model-response';
-import { ActivatedRoute, Router } from "@angular/router";
-import { DesignModel } from "../../model/hal/design-model";
-import { DeleteConfirmationDialogComponent } from "../../../core/component/delete-confirmation-dialog/delete-confirmation-dialog.component";
+import { ActivatedRoute, Router } from '@angular/router';
+import { DesignModel } from '../../model/hal/design-model';
+import { DeleteConfirmationDialogComponent } from '../../../core/component/delete-confirmation-dialog/delete-confirmation-dialog.component';
 
 
 @Component({

@@ -20,7 +20,7 @@ export class IssueManagementService {
     private toasterService: ToasterService,
     private auth: AuthenticationService,
   ) {
-    this.repoEndpoint = environment.repositoryUrl;
+    this.repoEndpoint = environment.API_URL;
     this.serviceEndpoint = '/issues';
   }
 
@@ -46,7 +46,7 @@ export class IssueManagementService {
     issue.rating = 0;
     issue.uri = issue.name;
     issue.version = '1.0'
-    
+
     return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint, issue).pipe(
       map(result => {
         this.toasterService.pop('success', 'Created new issue')

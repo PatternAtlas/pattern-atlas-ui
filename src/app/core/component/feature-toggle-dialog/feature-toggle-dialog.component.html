@@ -1,0 +1,37 @@
+<h1 mat-dialog-title>Enable or Disable Feature: </h1>
+<div mat-card-content>
+  <input type="checkbox" [(ngModel)]="config.features.designModel" id="designModel" name="designModel"
+         [checked]="config.features.designModel" (change)="toggleFeature(UiFeatures.DESIGN_MODEL, $event)"
+         [disabled]="!config.features.showSettings">
+  <label for="designModel">Design Model</label>
+  <br>
+  <input type="checkbox" [(ngModel)]="config.features.issue"
+         id="issue" name="issue"
+         [checked]="config.features.issue"
+         [disabled]="!config.features.showSettings"
+         (change)="toggleFeature(UiFeatures.ISSUE, $event)">
+  <label for="issue">Issue</label>
+  <br>
+  <input type="checkbox" [(ngModel)]="config.features.patternCandidate" id="patternCandidate"
+         name="patternCandidate"
+         [checked]="config.features.patternCandidate"
+         [disabled]="!config.features.showSettings"
+         (change)="toggleFeature(UiFeatures.PATTERNCANDIDATE, $event)">
+  <label for="patternCandidate">Pattern Candidate</label>
+  <br>
+  <input type="checkbox" [(ngModel)]="config.features.patternViews" id="patternViews" name="patternViews"
+         [checked]="config.features.patternViews"
+         [disabled]="!config.features.showSettings"
+         (change)="toggleFeature(UiFeatures.PATTERNVIEWS, $event)">
+  <label for="patternViews">Pattern Views</label>
+  <br>
+  <input type="checkbox" [(ngModel)]="config.features.editing" id="editing" name="editing"
+         [checked]="config.features.editing"
+         [disabled]="!config.features.showSettings"
+         (change)="toggleFeature(UiFeatures.EDITING, $event)">
+  <label for="patternViews">Editing</label>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCloseDialogClick()">Close</button>
+
+</div>
