@@ -68,7 +68,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
     this.viewContainerRef = this.ppPatternProperty.viewContainerRef;
     this.patternLanguageId = this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId);
     this.patternId = this.activatedRoute.snapshot.paramMap.get('patternId');
-    console.log(this.activatedRoute.snapshot.paramMap.get('patternId'));
     this.getData();
   }
 
