@@ -21,7 +21,6 @@ import { of } from 'rxjs';
 import Pattern from '../../core/model/hal/pattern.model';
 import { MarkdownEditorUtils } from '../../core/util/markdown-editor-utils';
 
-
 @Component({
   selector: 'pp-create-pattern',
   templateUrl: './create-pattern.component.html',
@@ -90,7 +89,6 @@ export class CreatePatternComponent implements OnInit {
     return false;
   }
 
-
   ngOnInit() {
     this.patternLanguageId = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId));
     this.markdown = new MarkdownIt();
@@ -115,6 +113,47 @@ export class CreatePatternComponent implements OnInit {
     this.iconUrl.valueChanges.pipe(debounceTime(1000), distinctUntilChanged()).subscribe((urlValue) => {
       this.iconPreviewVisible = urlValue && (urlValue.startsWith('https://') || urlValue.startsWith('http://'));
     });
+  }
+
+  insertTextAtCursor(editor: any, textBeforeCursor, textAfterCursor): void {
+    var cm = editor.codemirror;
+    var stat = editor.getState(cm);
+    var options = editor.options;
+    var url = 'http://';
+    var text;
+    var start = textBeforeCursor; // text to insert before cursor
+    var end = textAfterCursor; // text to insert after cursor
+    var startPoint = cm.getCursor('start');
+    var endPoint = cm.getCursor('end');
+
+    if (options.promptURLs) {
+      url = prompt(options.promptTexts.image);
+      if (!url) {
+        return;
+      }
+    }
+    if (url) {
+      end = end.replace('#url#', url);
+    }
+    if (stat.link) {
+      text = cm.getLine(startPoint.line);
+      start = text.slice(0, startPoint.ch);
+      end = text.slice(startPoint.ch);
+      cm.replaceRange(start + end, {
+        line: startPoint.line,
+        ch: 0
+      });
+    } else {
+      text = cm.getSelection();
+      cm.replaceSelection(start + text + end);
+
+      startPoint.ch += start.length;
+      if (startPoint !== endPoint) {
+        endPoint.ch += start.length;
+      }
+    }
+    cm.setSelection(startPoint, endPoint);
+    cm.focus();
   }
 
   save(): void {

@@ -80,6 +80,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { SelectPatternDialogComponent } from './component/select-pattern-dialog/select-pattern-dialog.component';
 import { DeleteConfirmationDialogComponent } from './component/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { EditUrlDialogComponent } from './component/edit-url-dialog/edit-url-dialog.component';
+import { FeatureToggleDialogComponent } from './component/feature-toggle-dialog/feature-toggle-dialog.component';
+import { PatternAtlasUiFeatureToggleModule } from './directives/pattern-atlas-ui-feature-toggle.module';
 
 
 @NgModule({
@@ -112,6 +114,7 @@ import { EditUrlDialogComponent } from './component/edit-url-dialog/edit-url-dia
     MatSortModule,
     FormsModule,
     MatSnackBarModule,
+    PatternAtlasUiFeatureToggleModule
   ],
   exports: [
     CovalentTextEditorModule,
@@ -167,7 +170,8 @@ import { EditUrlDialogComponent } from './component/edit-url-dialog/edit-url-dia
     DiscussDialogComponent,
     SelectPatternDialogComponent,
     DeleteConfirmationDialogComponent,
-    EditUrlDialogComponent
+    EditUrlDialogComponent,
+    FeatureToggleDialogComponent
   ],
   entryComponents: [
     DefaultPlRendererComponent,
@@ -182,7 +186,7 @@ import { EditUrlDialogComponent } from './component/edit-url-dialog/edit-url-dia
     CreateEditPatternLanguageComponent,
     CommentDialogComponent,
     DiscussDialogComponent,
-    SelectPatternDialogComponent
+    FeatureToggleDialogComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

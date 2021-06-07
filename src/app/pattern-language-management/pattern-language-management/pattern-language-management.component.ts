@@ -26,6 +26,7 @@ import { DialogPatternLanguageResult } from '../data/DialogPatternLanguageResult
 import { map } from 'rxjs/operators';
 import PatternLanguageModel from '../../core/model/hal/pattern-language-model.model';
 import { DeleteConfirmationDialogComponent } from '../../core/component/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { UiFeatures } from '../../core/directives/pattern-atlas-ui-repository-configuration.service';
 
 @Component({
   selector: 'pp-pattern-language-management',
@@ -36,6 +37,7 @@ import { DeleteConfirmationDialogComponent } from '../../core/component/delete-c
 export class PatternLanguageManagementComponent implements OnInit {
 
   patternLanguages: Array<PatternLanguageModel>;
+  readonly UiFeatures = UiFeatures;
 
   constructor(
     private cdr: ChangeDetectorRef,

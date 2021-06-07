@@ -8,14 +8,16 @@ import { PatternService } from '../../service/pattern.service';
 import { ToasterService } from 'angular2-toaster';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationDialogComponent } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { UiFeatures } from '../../directives/pattern-atlas-ui-repository-configuration.service';
 
 @Component({
   selector: 'pp-card-renderer',
   templateUrl: './card-renderer.component.html',
-  styleUrls: [ './card-renderer.component.scss' ]
+  styleUrls: ['./card-renderer.component.scss']
 })
 export class CardRendererComponent {
 
+  readonly UiFeatures = UiFeatures;
   @Input() uriEntities: Array<Pattern>;
   @Input() showLinks = true;
   @Output() createEntityClicked: EventEmitter<void> = new EventEmitter<void>();
@@ -67,15 +69,15 @@ export class CardRendererComponent {
   private collectAllEdgesOfPattern(pattern: Pattern): HalLink[] {
     let collectedEdges: HalLink[] = [];
     if (pattern._links.outgoingDirectedEdges) {
-      Array.isArray(pattern._links.outgoingDirectedEdges) ? collectedEdges = [ ...collectedEdges, ...pattern._links.outgoingDirectedEdges ] :
+      Array.isArray(pattern._links.outgoingDirectedEdges) ? collectedEdges = [...collectedEdges, ...pattern._links.outgoingDirectedEdges] :
         collectedEdges.push(pattern._links.outgoingDirectedEdges);
     }
     if (pattern._links.ingoingDirectedEdges) {
-      Array.isArray(pattern._links.ingoingDirectedEdges) ? collectedEdges = [ ...collectedEdges, ...pattern._links.ingoingDirectedEdges ] :
+      Array.isArray(pattern._links.ingoingDirectedEdges) ? collectedEdges = [...collectedEdges, ...pattern._links.ingoingDirectedEdges] :
         collectedEdges.push(pattern._links.ingoingDirectedEdges);
     }
     if (pattern._links.undirectedEdges) {
-      Array.isArray(pattern._links.undirectedEdges) ? collectedEdges = [ ...collectedEdges, ...pattern._links.undirectedEdges ] :
+      Array.isArray(pattern._links.undirectedEdges) ? collectedEdges = [...collectedEdges, ...pattern._links.undirectedEdges] :
         collectedEdges.push(pattern._links.undirectedEdges);
     }
     return collectedEdges;
