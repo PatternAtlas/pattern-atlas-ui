@@ -11,7 +11,7 @@ FROM nginx:alpine
 COPY --from=builder /app/dist/* /usr/share/nginx/html/
 
 ENV LATEX_RENDERER_HOST_NAME localhost
-ENV LATEX_RENDERER_PORT 8083
+ENV LATEX_RENDERER_PORT 5030
 ENV CONFIG_SERVER config-server
 ENV CONFIG_SERVER_PORT 2379
 
