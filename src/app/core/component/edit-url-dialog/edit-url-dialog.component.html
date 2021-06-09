@@ -2,14 +2,14 @@
 <div mat-dialog-content>
   <mat-form-field>
     <mat-label>Adjust Pattern Name</mat-label>
-    <input matInput placeholder={{data.pattern.name}} [(ngModel)]="data.name" >
+    <input matInput placeholder={{data.pattern.name}} [(ngModel)]="data.name">
   </mat-form-field>
   <mat-form-field>
     <mat-label>Adjust Icon URL</mat-label>
-    <input matInput placeholder={{data.pattern.iconUrl}} [(ngModel)]="data.icon" >
+    <input matInput placeholder={{data.pattern.iconUrl}} [(ngModel)]="data.icon">
   </mat-form-field>
 </div>
 <mat-dialog-actions align="end">
-  <button mat-button (click)="onNoClick()">Cancle</button>
+  <button mat-button (click)="onNoClick()">Cancel</button>
   <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
 </mat-dialog-actions>

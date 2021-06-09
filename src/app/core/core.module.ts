@@ -77,6 +77,7 @@ import { CandidateManagementService } from './candidate-management/_services/can
 import { CandidateManagementStore } from './candidate-management';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { SelectPatternDialogComponent } from './component/select-pattern-dialog/select-pattern-dialog.component';
 import { DeleteConfirmationDialogComponent } from './component/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { EditUrlDialogComponent } from './component/edit-url-dialog/edit-url-dialog.component';
 import { FeatureToggleDialogComponent } from './component/feature-toggle-dialog/feature-toggle-dialog.component';
@@ -167,6 +168,7 @@ import { PatternAtlasUiFeatureToggleModule } from './directives/pattern-atlas-ui
     CreativeLicenseFooterComponent,
     CommentDialogComponent,
     DiscussDialogComponent,
+    SelectPatternDialogComponent,
     DeleteConfirmationDialogComponent,
     EditUrlDialogComponent,
     FeatureToggleDialogComponent

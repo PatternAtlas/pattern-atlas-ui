@@ -288,7 +288,8 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
     }
 
     let loadDataObservable;
-    // check if patternlanguage is specified via UUIID or URI and load it accordingly
+    console.log(this.patternLanguageId)
+    // check if patternlanguage is specified via UUID or URI and load it accordingly
     if (UriConverter.isUUID(this.patternLanguageId)) {
       loadDataObservable = this.patternLanguageService.getPatternLanguageByID(this.patternLanguageId)
         .pipe(

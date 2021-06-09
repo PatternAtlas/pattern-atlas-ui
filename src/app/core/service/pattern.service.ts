@@ -71,6 +71,13 @@ export class PatternService {
     return this.http.get <Pattern>(this.repoEndpoint + '/patternLanguages/' + patternLanguage.id + '/patterns/' + patternId);
   }
 
+  getPatternsById(patternLanguageId: string): Observable<Array<Pattern>> {
+    return this.http.get <PatternResponse>(this.repoEndpoint + '/patternLanguages/' + patternLanguageId + '/patterns/').pipe(
+      map(result => {
+        return <Array<Pattern>>(result && result._embedded ? result._embedded.patternModels : [])
+      }));
+  }
+
   getPatternByUrl(href: string): Observable<PatternResponse> {
     return this.http.get<PatternResponse>(href);
   }

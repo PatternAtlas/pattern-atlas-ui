@@ -30,7 +30,7 @@ import { UiFeatures } from '../../core/directives/pattern-atlas-ui-repository-co
 @Component({
   selector: 'pp-pattern-view-renderer',
   templateUrl: './pattern-view-renderer.component.html',
-  styleUrls: ['./pattern-view-renderer.component.scss']
+  styleUrls: [ './pattern-view-renderer.component.scss' ]
 })
 export class PatternViewRendererComponent implements OnInit, AfterViewInit {
 

@@ -32,7 +32,7 @@ export class CardRendererComponent {
 
   navigate(pattern: UriEntity): void {
     this.zone.run(() => {
-      this.router.navigate([UriConverter.doubleEncodeUri(pattern.uri)], { relativeTo: this.activatedRoute });
+      this.router.navigate([pattern.id], { relativeTo: this.activatedRoute });
     });
   }
 

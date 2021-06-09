@@ -3,7 +3,6 @@ import { TdTextEditorComponent } from '@covalent/text-editor';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as marked from 'marked';
 import { TokensList } from 'marked';
-import Pattern from '../../core/model/pattern.model';
 import { ToasterService } from 'angular2-toaster';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ValidationService } from '../../core/service/validation.service';
@@ -13,9 +12,14 @@ import PatternSectionSchema from '../../core/model/hal/pattern-section-schema.mo
 import * as MarkdownIt from 'markdown-it';
 import * as markdownitKatex from 'markdown-it-katex';
 import { PatternService } from '../../core/service/pattern.service';
-import { debounceTime, distinctUntilChanged } from 'rxjs/internal/operators';
+import { debounceTime, distinctUntilChanged, tap } from 'rxjs/internal/operators';
 import { globals } from '../../globals';
 import { UriConverter } from '../../core/util/uri-converter';
+import { SelectPatternDialogComponent } from '../../core/component/select-pattern-dialog/select-pattern-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { of } from 'rxjs';
+import Pattern from '../../core/model/hal/pattern.model';
+import { MarkdownEditorUtils } from '../../core/util/markdown-editor-utils';
 
 @Component({
   selector: 'pp-create-pattern',
@@ -34,32 +38,24 @@ export class CreatePatternComponent implements OnInit {
   options: any = {
     autoDownloadFontAwesome: true,
     toolbar:
-      ['bold', 'italic', 'heading', '|', 'quote', 'unordered-list', 'ordered-list',
-        '|', // Separator
-        'link', 'image',
-        '|',  // Separator
-        'code',
+      [...MarkdownEditorUtils.standardMarkdownEditiorButtons,
         {
           name: 'alert',
           action: (editor) => {
-            this.insertTextAtCursor(editor, '$', '$');
+            MarkdownEditorUtils.insertTextAtCursor(editor, '$', '$');
           },
           className: 'fa fa-subscript',
           title: 'Add Formula',
         }, {
           name: 'pattern-link',
           action: (editor) => {
-          // TODO: after chosing a pattern in the dialog, insert a link to the chosen pattern in markdown syntax
+            this.addPatternReference(editor);
           },
           className: 'fa fab fa-product-hunt',
           title: 'Reference Pattern',
         },
         '|', // Separator
-        {
-          name: 'guide',
-          action: 'https://pattern-atlas-readthedocs.readthedocs.io/en/latest/user_guide/patterns/#pattern-creation',
-          className: 'fa fa-question-circle',
-        },
+        MarkdownEditorUtils.helpButton
       ],
   };
   errorMessages: Array<string>;
@@ -76,7 +72,8 @@ export class CreatePatternComponent implements OnInit {
               private patternService: PatternService,
               private router: Router,
               private zone: NgZone,
-              private _fb: FormBuilder) {
+              private _fb: FormBuilder,
+              private matDialog: MatDialog) {
   }
 
   get iconUrl(): AbstractControl {
@@ -97,7 +94,10 @@ export class CreatePatternComponent implements OnInit {
     this.markdown = new MarkdownIt();
     this.markdown.use(markdownitKatex);
 
-    this.patternLanguageService.getPatternLanguageById(this.patternLanguageId).subscribe((pl: PatternLanguage) => {
+    const patternLanguageObservable = UriConverter.isUUID(this.patternLanguageId) ?
+      this.patternLanguageService.getPatternLanguageById(this.patternLanguageId)
+      : this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageId);
+    patternLanguageObservable.subscribe((pl) => {
       this.patternLanguage = pl;
       this.sections = this.patternLanguage.patternSchema ?
         this.patternLanguage.patternSchema.patternSectionSchemas.map((schema: PatternSectionSchema) => schema.label) : [];
@@ -186,7 +186,7 @@ export class CreatePatternComponent implements OnInit {
   }
 
   //Format Input text so MAP Patterns can be directly copied into Pattern Atlas
-  reformatMapPatternInput(text: string){
+  reformatMapPatternInput(text: string) {
     return text.replace(new RegExp('<!--.*-->', 'g'), ' ')
       .replace(new RegExp('\{#sec:.*}', 'g'), ' ')
       .replace(new RegExp('#{3,}', 'g'), '##');
@@ -225,10 +225,10 @@ export class CreatePatternComponent implements OnInit {
     }
     this.errorMessages = [];
     Object.keys(this.patternValuesFormGroup.controls).forEach(key => {
-      const controlErrors: ValidationErrors = this.patternValuesFormGroup.controls[ key ].errors;
+      const controlErrors: ValidationErrors = this.patternValuesFormGroup.controls[key].errors;
       if (controlErrors != null) {
         Object.keys(controlErrors).forEach(keyError => {
-          this.errorMessages.push(ValidationService.getMessageForError(key, keyError, controlErrors[ keyError ]));
+          this.errorMessages.push(ValidationService.getMessageForError(key, keyError, controlErrors[keyError]));
         });
       }
     });
@@ -259,7 +259,7 @@ export class CreatePatternComponent implements OnInit {
   private parsePatternInput(): void {
     const lines = this.parseMarkdownText();
     const patternNameIndex = lines.findIndex((it) => it.type === 'heading' && it.depth === 1);
-    this.patternName = patternNameIndex !== -1 ? lines[ patternNameIndex ][ 'text' ] : '';
+    this.patternName = patternNameIndex !== -1 ? lines[patternNameIndex]['text'] : '';
     this.patternLanguage.patternSchema.patternSectionSchemas.forEach((schema: PatternSectionSchema) => {
       const sectionName = schema.name;
       const sectionIndex = lines.findIndex((sec) => sec.type === 'heading' && sec.depth === 2 &&
@@ -267,21 +267,21 @@ export class CreatePatternComponent implements OnInit {
       if (sectionIndex !== -1) {
         const sectionContent = [];
         for (let i = sectionIndex + 1; i < lines.length; i++) {
-          if (lines[ i ].type === 'heading') {
+          if (lines[i].type === 'heading') {
             break;
           }
-          if (lines[ i ].type === 'space') {
+          if (lines[i].type === 'space') {
             sectionContent.push('\n');
           }
-          if (lines[ i ][ 'text' ]) {
+          if (lines[i]['text']) {
             // if a list item was parsed before, add it to the text
-            sectionContent.push(i > 0 && CreatePatternComponent.isListItem(i, sectionIndex, lines) ? '* ' + lines[ i ][ 'text' ] : lines[ i ][ 'text' ] );
+            sectionContent.push(i > 0 && CreatePatternComponent.isListItem(i, sectionIndex, lines) ? '* ' + lines[i]['text'] : lines[i]['text']);
           }
-          console.log('sectioncontent:'+sectionContent)
+          console.log('sectioncontent:' + sectionContent)
         }
         if (this.patternValuesFormGroup) {
-          if (this.patternValuesFormGroup.controls[ sectionName ]) {
-            this.patternValuesFormGroup.controls[ sectionName ].setValue(sectionContent.join('\n'));
+          if (this.patternValuesFormGroup.controls[sectionName]) {
+            this.patternValuesFormGroup.controls[sectionName].setValue(sectionContent.join('\n'));
           } else {
             console.log('missing formcontrol:');
             console.log(sectionName);
@@ -310,5 +310,35 @@ export class CreatePatternComponent implements OnInit {
     }
     this._textEditor.value = this.previousTextEditorValue;
     this.onChangeMarkdownText();
+  }
+
+  private addPatternReference(editor: any) {
+    // get patterns to select from
+    let patternsObservable = !this.patterns ?
+      this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href) : of(this.patterns);
+    patternsObservable.pipe(
+      tap((res) => {
+        this.patterns = res;
+        // let the user choose which pattern to reference
+        this.showAndHandlePatternSelectionDialog(this.patterns, editor);
+      })).subscribe((res) => {
+      console.log('show dialog for pattern selection')
+    });
+  }
+
+  private showAndHandlePatternSelectionDialog(patterns: Array<Pattern>, editor: any) {
+    const dialogRef = this.matDialog.open(SelectPatternDialogComponent, {
+      data: {
+        patterns: this.patterns
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((selectedPattern) => {
+      const patternReferenceUrl = `pattern-languages/${this.patternLanguage.id}/${selectedPattern.id}`;
+      if (selectedPattern) { // if user did not cancel
+        MarkdownEditorUtils.insertTextAtCursor(editor, `[${selectedPattern.name}](${patternReferenceUrl})`, '');
+        this.onChangeMarkdownText();
+      }
+    });
   }
 }

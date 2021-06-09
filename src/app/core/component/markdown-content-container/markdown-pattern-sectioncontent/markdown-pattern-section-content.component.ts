@@ -26,6 +26,7 @@ import * as QuantumCircuit from 'quantum-circuit';
 export class MarkdownPatternSectionContentComponent extends DataRenderingComponent implements AfterViewInit {
   data: string;
   renderedData: string;
+  patternLanguageId: string;
   title = '';
   imageModels: ImageModel[] = [];
   svg: Selection<SVGSVGElement, any, any, any>;
@@ -107,7 +108,7 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
 
   openEditor(): void {
     const dialogRef = this.dialog.open(MdEditorComponent,
-      { data: { content: this.data, field: this.title } });
+      { data: { content: this.data, field: this.title, patternLanguageId: this.patternLanguageId } });
     dialogRef.afterClosed().subscribe(async (result: DialogData) => {
       const previousValue = this.data;
 
