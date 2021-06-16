@@ -8,7 +8,7 @@
 ## Project Setup
 - Clone the repository
 - Install the dependencies using `yarn` or `yarn install`
-- Start the project with `yarn start`. The application should run on http://localhost:4200
+- Start the project with `yarn start`. The application should run on http://localhost:1978
 
 ### Linting
 Use `yarn lint` to run the linter.
