@@ -8,7 +8,6 @@ export class AddDirectedEdgeToViewRequest {
   type: string;
   newEdge: boolean;
 
-
   constructor(edge: DirectedEdgeModel) {
     this.directedEdgeId = edge.id ? edge.id : null;
     this.sourcePatternId = edge.sourcePatternId;

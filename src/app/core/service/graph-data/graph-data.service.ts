@@ -20,7 +20,6 @@ import { PatternContainerResponse } from '../../model/hal/pattern-container-resp
 import { Injectable } from '@angular/core';
 import PatternLanguage from '../../model/hal/pattern-language.model';
 
-
 @Injectable()
 export abstract class GraphDataService {
 

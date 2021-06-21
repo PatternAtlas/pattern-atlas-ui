@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IssueCreateDialogComponent } from '../issue-create-dialog/issue-create-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { IssueManagementService, Issue } from 'src/app/core/issue-management';
+import { Issue, IssueManagementService } from 'src/app/core/issue-management';
 
 @Component({
   selector: 'pp-issue-management-list',
@@ -16,7 +16,8 @@ export class IssueManagementListComponent implements OnInit {
   constructor(
     private issueManagmentService: IssueManagementService,
     public dialog: MatDialog,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.getAll()

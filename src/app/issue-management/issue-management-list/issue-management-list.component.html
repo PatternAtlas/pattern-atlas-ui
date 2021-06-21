@@ -1,16 +1,16 @@
 <div class="container">
 
-    <div class="list">
+  <div class="list">
 
-        <button class="new-button" mat-raised-button color="accent" (click)="new()">New Issue</button>
-        <mat-list>
+    <button class="new-button" mat-raised-button color="accent" (click)="new()">New Issue</button>
+    <mat-list>
 
-            <mat-list-item *ngFor="let issueDetail of data" (click)="toggleDetail(issueDetail)">
-                <h3 matLine> {{issueDetail.name}} </h3>
-                <p matLine> {{issueDetail.description}} </p>
-                <p matLine> Rating {{issueDetail.rating}} </p>
-            </mat-list-item>
-        </mat-list>
-    </div>
-    <pp-issue-management-detail class="detail" [issue]="issueDetail" (changed)="change()"></pp-issue-management-detail>
+      <mat-list-item *ngFor="let issueDetail of data" (click)="toggleDetail(issueDetail)">
+        <h3 matLine> {{issueDetail.name}} </h3>
+        <p matLine> {{issueDetail.description}} </p>
+        <p matLine> Rating {{issueDetail.rating}} </p>
+      </mat-list-item>
+    </mat-list>
+  </div>
+  <pp-issue-management-detail class="detail" [issue]="issueDetail" (changed)="change()"></pp-issue-management-detail>
 </div>

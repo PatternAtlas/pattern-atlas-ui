@@ -7,16 +7,16 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class ToggleRendererComponent implements OnInit {
 
-    @Output() toggledRenderer = new EventEmitter<boolean>();
-    @Input() graphVisible: boolean;
+  @Output() toggledRenderer = new EventEmitter<boolean>();
+  @Input() graphVisible: boolean;
 
-    constructor() {
-    }
+  constructor() {
+  }
 
-    ngOnInit() {
-    }
+  ngOnInit() {
+  }
 
-    emitValueChange(value: any) {
-      this.toggledRenderer.emit(value);
-    }
+  emitValueChange(value: any) {
+    this.toggledRenderer.emit(value);
+  }
 }

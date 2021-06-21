@@ -20,10 +20,9 @@ export const USER_MANAGEMENT_ROUTES = [
     RouterModule.forChild(USER_MANAGEMENT_ROUTES),
 
   ],
-  exports: [
-  ],
-  providers: [
-  ]
+  exports: [],
+  providers: []
 
 })
-export class UserManagementModule { }
+export class UserManagementModule {
+}

@@ -8,7 +8,7 @@ describe('ToggleRendererComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ToggleRendererComponent ]
+      declarations: [ToggleRendererComponent]
     })
       .compileComponents();
   }));

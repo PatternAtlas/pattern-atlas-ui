@@ -15,10 +15,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { globals } from '../../globals';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { FileDTO } from '../model/file-dto';
 import { HalCollectionResponse } from '../model/hal/hal-collection-response';
-
 
 @Injectable()
 export class ConcreteSolutionService {

@@ -7,12 +7,12 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class CreativeLicenseFooterComponent implements OnInit {
 
-    @Input() patternLanguage;
+  @Input() patternLanguage;
 
-    constructor() {
-    }
+  constructor() {
+  }
 
-    ngOnInit() {
-    }
+  ngOnInit() {
+  }
 
 }

@@ -1,13 +1,5 @@
 import {
-  AfterContentInit,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges,
+  AfterContentInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { D3Service } from '../../../graph/service/d3.service';
@@ -34,8 +26,7 @@ import { PatternRelationDescriptorDirection } from '../../model/pattern-relation
 import { Edge } from '../../model/hal/edge.model';
 import { PatternViewService } from '../../service/pattern-view.service';
 import {
-  PatternAtlasUiRepositoryConfigurationService,
-  UiFeatures
+  PatternAtlasUiRepositoryConfigurationService, UiFeatures
 } from '../../directives/pattern-atlas-ui-repository-configuration.service';
 
 // file deepcode ignore no-any: out of scope, this should be done another time
@@ -444,7 +435,8 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   }
 
   private initGraphEdges() {
-    // we need to use a hard-copy of the links, because get changed (by d3?) and the webcomponent can't handle them anymore
+    // we need to use a hard-copy of the links, because get changed (by d3?) and the webcomponent can't handle them
+    // anymore
     if (this.copyOfLinks.length > 0) {
       this.graphNativeElement.setEdges(this.copyOfLinks, false);
     }

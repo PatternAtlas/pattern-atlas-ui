@@ -24,7 +24,7 @@ export class ComponentRegistryService {
    */
   getPLRenderingComponents(id: string, index: number = 0): RenderingComponent {
     const componentList = this.dictionary.get(id.toLowerCase());
-    return componentList ? componentList[ index ] : null;
+    return componentList ? componentList[index] : null;
   }
 
   /**

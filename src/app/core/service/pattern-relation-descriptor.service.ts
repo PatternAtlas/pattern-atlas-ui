@@ -37,7 +37,6 @@ export class PatternRelationDescriptorService {
     return this.http.get<DirectedEdgeModel>(url);
   }
 
-
   getDirectedEdgeByUrl(url: string): Observable<DirectedEdgeModel> {
     return this.http.get<DirectedEdgeModel>(url);
   }

@@ -21,7 +21,9 @@ import { PatternContainer } from '../model/hal/pattern-container.model';
 import { PatternContainerResponse } from '../model/hal/pattern-container-response.interface';
 import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
 import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
-import { LinksToOtherPattern } from '../../pattern-view-management/add-to-view/add-to-view.component'; // TODO move this to a model class
+import { LinksToOtherPattern } from '../../pattern-view-management/add-to-view/add-to-view.component'; // TODO move
+// this to a
+// model class
 import { AddDirectedEdgeToViewRequest } from '../model/hal/add-directed-edge-to-view-request';
 import { AddUndirectedEdgeToViewRequest } from '../model/hal/add-undirected-edge-to-view-request';
 import { Embedded } from '../model/hal/embedded';
@@ -29,7 +31,6 @@ import { UndirectedEdgesResponse } from '../model/hal/undirected-edes-response.i
 import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
 import { GraphNode } from '../component/graph-display/graph-display.component';
 import { GraphDataService } from './graph-data/graph-data.service';
-
 
 @Injectable()
 export class PatternViewService implements GraphDataService {
@@ -39,11 +40,9 @@ export class PatternViewService implements GraphDataService {
   constructor(private http: HttpClient) {
   }
 
-
   getPatternViews(): Observable<PatternContainerResponse> {
     return this.http.get<PatternContainerResponse>(this.repoEndpoint + '/patternViews');
   }
-
 
   savePatternView(url: string, view: PatternContainer): Observable<HttpResponse<PatternContainerResponse>> {
     return this.http.post<PatternContainerResponse>(url, view, { observe: 'response' });
@@ -82,7 +81,6 @@ export class PatternViewService implements GraphDataService {
     return observables.length > 0 ? forkJoin(observables) : EMPTY;
   }
 
-
   getDirectedEdges(patternContainer: PatternContainer): Observable<Embedded<DirectedEdesResponse>> {
     return this.http.get<Embedded<DirectedEdesResponse>>(patternContainer._links.directedEdges.href);
   }
@@ -94,7 +92,6 @@ export class PatternViewService implements GraphDataService {
   getDirectedEdgeById(patternViewId, edgeId: string): Observable<DirectedEdgeModel> {
     return this.http.get<DirectedEdgeModel>(this.repoEndpoint + /patternViews/ + patternViewId + /directedEdges/ + edgeId)
   }
-
 
   getUndirectedEdgeById(patternViewId, edgeId: string): Observable<UndirectedEdgeModel> {
     return this.http.get<UndirectedEdgeModel>(this.repoEndpoint + /patternViews/ + patternViewId + /undirectedEdges/ + edgeId)

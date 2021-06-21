@@ -21,7 +21,7 @@ export const environment = {
   API_URL:
     window['env'] && window['env']['PATTERN_ATLAS_API_HOST_NAME'] && window['env']['PATTERN_ATLAS_API_PORT']
       ? `http://${window['env']['PATTERN_ATLAS_API_HOST_NAME']}:${window['env']['PATTERN_ATLAS_API_PORT']}/atlas`
-      : 'http://localhost:1977/patternpedia',
+      : 'http://localhost:1977/patternatlas',
   LATEX_RENDERER_API_URL:
     window['env'] && window['env']['LATEX_RENDERER_HOST_NAME'] &&
     window['env']['LATEX_RENDERER_PORT']

@@ -3,8 +3,7 @@ import { PatternViewService } from '../../core/service/pattern-view.service';
 import { PatternContainer } from '../../core/model/hal/pattern-container.model';
 import { MatDialog } from '@angular/material/dialog';
 import {
-  CreateEditComponentDialogType,
-  CreateEditPatternLanguageComponent
+  CreateEditComponentDialogType, CreateEditPatternLanguageComponent
 } from '../../core/component/create-edit-pattern-language/create-edit-pattern-language.component';
 import { DialogPatternLanguageResult } from '../../pattern-language-management/data/DialogPatternLanguageResult.interface';
 import { PatternLanguageService } from '../../core/service/pattern-language.service';
@@ -41,7 +40,6 @@ export class PatternViewManagementComponent implements OnInit {
     return this.patternViewService.getPatternViews().pipe(tap((views) => {
       this.patternViewResponse = views;
     }));
-
 
   }
 
@@ -80,14 +78,14 @@ export class PatternViewManagementComponent implements OnInit {
     }).afterClosed().subscribe(dialogAnswer => {
       if (dialogAnswer) {
         this.patternViewService.deletePatternView(patternView).subscribe((response) => {
-          for (let i = 0; i < this.patternViewResponse._embedded.patternViews.length; i++) {
-            this.patternViewResponse._embedded.patternViews[i].id === patternView.id ? this.patternViewResponse._embedded.patternViews.splice(i, 1) : null;
+            for (let i = 0; i < this.patternViewResponse._embedded.patternViews.length; i++) {
+              this.patternViewResponse._embedded.patternViews[i].id === patternView.id ? this.patternViewResponse._embedded.patternViews.splice(i, 1) : null;
+            }
+            this.toastService.pop('success', 'Pattern View deleted!');
+          },
+          (error) => {
+            this.toastService.pop('error', 'Pattern View could not be deleted!');
           }
-          this.toastService.pop('success', 'Pattern View deleted!');
-        },
-        (error) => {
-          this.toastService.pop('error', 'Pattern View could not be deleted!');
-        }
         );
       }
     })

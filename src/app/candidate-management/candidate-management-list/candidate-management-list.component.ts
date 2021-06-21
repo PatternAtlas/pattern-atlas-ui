@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PatternLanguageService } from 'src/app/core/service/pattern-language.service';
 import PatternLanguageModel from 'src/app/core/model/hal/pattern-language-model.model';
-import { CandidateManagementService, Candidate } from 'src/app/core/candidate-management';
+import { Candidate, CandidateManagementService } from 'src/app/core/candidate-management';
 
 @Component({
   selector: 'pp-candidate-management-list',
@@ -18,7 +18,8 @@ export class CandidateManagementListComponent implements OnInit {
     private candidateService: CandidateManagementService,
     private router: Router,
     private patternLanguageService: PatternLanguageService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.getAll();
@@ -45,7 +46,7 @@ export class CandidateManagementListComponent implements OnInit {
 
   candidateDetail(candidate) {
     console.log(candidate);
-    this.router.navigate(['candidate/edit',  candidate.name], { state: { data: candidate } });
+    this.router.navigate(['candidate/edit', candidate.name], { state: { data: candidate } });
   }
 
   createCandidate() {

@@ -12,7 +12,6 @@ export class DataRenderingComponent {
   constructor() {
   }
 
-
 }
 
 export class DataChange {

@@ -8,7 +8,7 @@ describe('NavigateBackComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NavigateBackComponent ]
+      declarations: [NavigateBackComponent]
     })
       .compileComponents();
   }));

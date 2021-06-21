@@ -11,5 +11,4 @@ export class ImageModel {
   topicModels: DiscussionTopicModel[];
   imageId: string;
 
-
 }

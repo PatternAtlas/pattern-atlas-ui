@@ -18,7 +18,6 @@ import { GraphDataService } from '../core/service/graph-data/graph-data.service'
 import { PatternViewService } from '../core/service/pattern-view.service';
 import { PatternAtlasUiFeatureToggleModule } from '../core/directives/pattern-atlas-ui-feature-toggle.module';
 
-
 const PATTERN_VIEW_MANAGMENT_ROUTE: Routes = [
   {
     path: '',
@@ -29,7 +28,6 @@ const PATTERN_VIEW_MANAGMENT_ROUTE: Routes = [
     component: PatternViewRendererComponent
   },
 ];
-
 
 @NgModule({
   declarations: [
