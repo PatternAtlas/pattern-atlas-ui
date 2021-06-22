@@ -225,7 +225,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
           description: res.description,
           relationType: res.type,
           isDelete: true,  //indicates that the dialog is called from the linked removedRemoved method --> not create,
-                           // but a delete / edit operation
+          // but a delete / edit operation
         }
       });
       dialogRef.afterClosed().subscribe((dialogResult) => {

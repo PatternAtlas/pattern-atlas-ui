@@ -47,13 +47,13 @@ export class CreatePatternComponent implements OnInit {
           className: 'fa fa-subscript',
           title: 'Add Formula',
         }, {
-        name: 'pattern-link',
-        action: (editor) => {
-          this.addPatternReference(editor);
+          name: 'pattern-link',
+          action: (editor) => {
+            this.addPatternReference(editor);
+          },
+          className: 'fa fab fa-product-hunt',
+          title: 'Reference Pattern',
         },
-        className: 'fa fab fa-product-hunt',
-        title: 'Reference Pattern',
-      },
         '|', // Separator
         MarkdownEditorUtils.helpButton
       ],

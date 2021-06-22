@@ -78,14 +78,14 @@ export class PatternViewManagementComponent implements OnInit {
     }).afterClosed().subscribe(dialogAnswer => {
       if (dialogAnswer) {
         this.patternViewService.deletePatternView(patternView).subscribe((response) => {
-            for (let i = 0; i < this.patternViewResponse._embedded.patternViews.length; i++) {
-              this.patternViewResponse._embedded.patternViews[i].id === patternView.id ? this.patternViewResponse._embedded.patternViews.splice(i, 1) : null;
-            }
-            this.toastService.pop('success', 'Pattern View deleted!');
-          },
-          (error) => {
-            this.toastService.pop('error', 'Pattern View could not be deleted!');
+          for (let i = 0; i < this.patternViewResponse._embedded.patternViews.length; i++) {
+            this.patternViewResponse._embedded.patternViews[i].id === patternView.id ? this.patternViewResponse._embedded.patternViews.splice(i, 1) : null;
           }
+          this.toastService.pop('success', 'Pattern View deleted!');
+        },
+        (error) => {
+          this.toastService.pop('error', 'Pattern View could not be deleted!');
+        }
         );
       }
     })

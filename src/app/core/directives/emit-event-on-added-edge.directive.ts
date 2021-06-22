@@ -7,16 +7,16 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 })
 export class EmitEventOnAddedEdgeDirective implements OnInit, OnDestroy {
   @Output('onAddedEdge') edgeAddedEventEmitter = new EventEmitter<any>(); // eslint-disable-line
-                                                                          // @angular-eslint/no-output-rename
+  // @angular-eslint/no-output-rename
   @Output('onRemovedEdge') edgeRemovedEventEmitter = new EventEmitter<any>(); // eslint-disable-line
-                                                                              // @angular-eslint/no-output-rename
+  // @angular-eslint/no-output-rename
   @Output('onClickedNode') nodeClickedEventEmitter = new EventEmitter<any>(); // eslint-disable-line
-                                                                              // @angular-eslint/no-output-rename
+  // @angular-eslint/no-output-rename
   @Output('onClickedBackground') backgroundClickedEventEmitter = new EventEmitter<any>(); // eslint-disable-line
-                                                                                          // @angular-eslint/no-output-rename
+  // @angular-eslint/no-output-rename
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
   @Output('onNodePositionChange') onNodePositionChangeEventEmitter = new EventEmitter<any>(); // eslint-disable-line
-                                                                                              // @angular-eslint/no-output-rename
+  // @angular-eslint/no-output-rename
 
   constructor() {
   }
