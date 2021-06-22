@@ -39,15 +39,15 @@ export class AdminManagementDetailComponent implements OnInit {
 
   createForm() {
     this.userForm = this.userFormBuilder.group({
-        name: [this.user.name, Validators.required],
-        email: [this.user.email, [Validators.required, Validators.email]],
-        userRoles: [this.user.roles],
-        password: ['', Validators.required],
-        confirmPassword: ['']
-      },
-      {
-        validator: ValidatePassword
-      });
+      name: [this.user.name, Validators.required],
+      email: [this.user.email, [Validators.required, Validators.email]],
+      userRoles: [this.user.roles],
+      password: ['', Validators.required],
+      confirmPassword: ['']
+    },
+    {
+      validator: ValidatePassword
+    });
   }
 
   checkPasswords(control: AbstractControl) {

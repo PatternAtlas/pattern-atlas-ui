@@ -11,7 +11,7 @@ export class EmitEventOnKeyupDirective implements OnInit, OnDestroy {
   }
 
   @Output('onKeyup') keyUpEventEmitter = new EventEmitter<any>(); // eslint-disable-line
-                                                                  // @angular-eslint/no-output-rename
+  // @angular-eslint/no-output-rename
 
   private clicks = new Subject();
 

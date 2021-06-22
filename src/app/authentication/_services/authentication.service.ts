@@ -115,15 +115,15 @@ export class AuthenticationService {
 
         this.http.post<any>(environment.tokenUrl, params).subscribe(token => {
 
-            const accessToken = token[accessTokenKey];
-            const refreshToken = token[refreshTokenKey];
+          const accessToken = token[accessTokenKey];
+          const refreshToken = token[refreshTokenKey];
 
-            localStorage.setItem(accessTokenKey, accessToken);
-            localStorage.setItem(refreshTokenKey, refreshToken);
+          localStorage.setItem(accessTokenKey, accessToken);
+          localStorage.setItem(refreshTokenKey, refreshToken);
 
-            this.accessTokenSubject.next(accessToken);
-          },
-          error => console.error('Error getToken(): ', error)
+          this.accessTokenSubject.next(accessToken);
+        },
+        error => console.error('Error getToken(): ', error)
         );
       }
     }
@@ -137,33 +137,33 @@ export class AuthenticationService {
       .set('refresh_token', `${this.getRefreshToken()}`)
     this.http.post<any>('http://localhost:8081/oauth/token', params).subscribe(token => {
 
-        const accessToken = token[accessTokenKey];
-        const refreshToken = token[refreshTokenKey];
+      const accessToken = token[accessTokenKey];
+      const refreshToken = token[refreshTokenKey];
 
-        localStorage.setItem(accessTokenKey, accessToken);
-        localStorage.setItem(refreshTokenKey, refreshToken);
+      localStorage.setItem(accessTokenKey, accessToken);
+      localStorage.setItem(refreshTokenKey, refreshToken);
 
-        this.accessTokenSubject.next(accessToken);
-      },
-      error => {
-        console.error('Error getToken via refreshToken: ', error)
+      this.accessTokenSubject.next(accessToken);
+    },
+    error => {
+      console.error('Error getToken via refreshToken: ', error)
 
-      }
+    }
     );
   }
 
   getUserInfo() {
     this.http.get<PAUser>('http://localhost:8081/user_info').subscribe(user => {
 
-        console.log('UserInfo: ', user);
-        this.userSubject.next(user);
-        this.roleSubject.next(user.roles);
+      console.log('UserInfo: ', user);
+      this.userSubject.next(user);
+      this.roleSubject.next(user.roles);
 
-      },
-      error => {
-        console.error('Error getToken via refreshToken: ', error)
+    },
+    error => {
+      console.error('Error getToken via refreshToken: ', error)
 
-      }
+    }
     );
   }
 
