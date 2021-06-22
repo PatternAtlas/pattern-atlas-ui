@@ -8,7 +8,7 @@ describe('ProcessOauthCallbackComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProcessOauthCallbackComponent ]
+      declarations: [ProcessOauthCallbackComponent]
     })
       .compileComponents();
   }));

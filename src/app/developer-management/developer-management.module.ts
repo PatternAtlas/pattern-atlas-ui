@@ -21,4 +21,5 @@ export const DEVELOPER_MANAGEMENT_ROUTES = [
     RouterModule.forChild(DEVELOPER_MANAGEMENT_ROUTES),
   ]
 })
-export class DeveloperManagementModule { }
+export class DeveloperManagementModule {
+}

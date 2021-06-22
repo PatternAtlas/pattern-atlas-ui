@@ -1,12 +1,5 @@
 import {
-  ApplicationRef,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output
+  ApplicationRef, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
 import { UiFeatures } from '../../directives/pattern-atlas-ui-repository-configuration.service';
 

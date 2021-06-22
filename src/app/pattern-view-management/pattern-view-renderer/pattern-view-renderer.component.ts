@@ -30,7 +30,7 @@ import { UiFeatures } from '../../core/directives/pattern-atlas-ui-repository-co
 @Component({
   selector: 'pp-pattern-view-renderer',
   templateUrl: './pattern-view-renderer.component.html',
-  styleUrls: [ './pattern-view-renderer.component.scss' ]
+  styleUrls: ['./pattern-view-renderer.component.scss']
 })
 export class PatternViewRendererComponent implements OnInit, AfterViewInit {
 
@@ -218,7 +218,6 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     this.graphVisible = isGraphVisible;
   }
 
-
   /**
    * Gets called when Graphview child emits that an edge got added
    * The graphview created edge is missing the Id that is getting assigned from the backend
@@ -300,7 +299,6 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     })
   }
 
-
   /**
    * Delete edge in graph, delete it in database and remove it from the Linklist getting used for graphrendering
    * @param edge (in graph format)
@@ -369,10 +367,9 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
       );
   }
 
-
   /**
-   * Removes Undirected Edge from the Href lists of the related patterns so they dont get shown in the card view after getting deleted
-   * After removing the edge from the href lists, call to backend to delete edge
+   * Removes Undirected Edge from the Href lists of the related patterns so they dont get shown in the card view after
+   * getting deleted After removing the edge from the href lists, call to backend to delete edge
    * @param edge
    */
   private removeUndirectedEdgeFromPattern(edge): void {
@@ -398,8 +395,8 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Removes Directed Edge from the Href lists of the related patterns so they dont get shown in the card view after getting deleted
-   * After removing the edge from the href lists, call to backend to delete edge
+   * Removes Directed Edge from the Href lists of the related patterns so they dont get shown in the card view after
+   * getting deleted After removing the edge from the href lists, call to backend to delete edge
    * @param edge
    */
   private removeDirectedEdgeFromPattern(edge): void {

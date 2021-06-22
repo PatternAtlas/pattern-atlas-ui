@@ -8,7 +8,7 @@ describe('PatternViewRendererComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PatternViewRendererComponent ]
+      declarations: [PatternViewRendererComponent]
     })
       .compileComponents();
   }));

@@ -3,9 +3,9 @@
  */
 export default interface LinkInfo {
   // the currently selected patterns with id and name
-  currPattern: {id: string, name: string};
+  currPattern: { id: string, name: string };
   // the refered patterns with id and name
-  linkedPattern: {id: string, name: string};
+  linkedPattern: { id: string, name: string };
   // the description of the link. The reason this link exists
   descriptions: Array<string>;
   // the direction of the link

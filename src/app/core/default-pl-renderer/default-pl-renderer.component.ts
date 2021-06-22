@@ -1,12 +1,5 @@
 import {
-  ChangeDetectorRef,
-  Component,
-  ComponentFactoryResolver,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-  ViewContainerRef
+  ChangeDetectorRef, Component, ComponentFactoryResolver, ElementRef, OnDestroy, OnInit, ViewChild, ViewContainerRef
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UriConverter } from '../util/uri-converter';
@@ -30,7 +23,6 @@ import Pattern from '../model/hal/pattern.model';
 import { FormControl } from '@angular/forms';
 import { globals } from '../../globals';
 import { PatternRelationDescriptorDirection } from '../model/pattern-relation-descriptor-direction.enum';
-
 
 @Component({
   selector: 'pp-default-pl-renderer',
@@ -99,7 +91,6 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   public addPattern(): void {
     this.router.navigate(['create-patterns'], { relativeTo: this.activatedRoute });
   }
-
 
   /**
    * Opens a different Dialog when clicking the "Create Relation button"
@@ -213,7 +204,6 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
       const patterns = Array.isArray(this.patterns) ? this.patterns : this.graphDisplayComponent.patternContainer.patterns;
       let pattern1, pattern2, direction;
 
-
       if (res.pattern1Id !== undefined) {
         pattern1 = res.pattern1Id;
         pattern2 = res.pattern2Id;
@@ -234,7 +224,8 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
           relationTypes: this.graphDisplayComponent.getGraphDataService().getEdgeTypes(),
           description: res.description,
           relationType: res.type,
-          isDelete: true,  //indicates that the dialog is called from the linked removedRemoved method --> not create, but a delete / edit operation
+          isDelete: true,  //indicates that the dialog is called from the linked removedRemoved method --> not create,
+                           // but a delete / edit operation
         }
       });
       dialogRef.afterClosed().subscribe((dialogResult) => {
@@ -248,7 +239,6 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
     })
   }
 
-
   /**
    * Delete edge in graph, delete it in database and remove it from the Linklist getting used for graphrendering
    * @param edge
@@ -259,7 +249,6 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
     this.patternRelationDescriptorService.removeRelationFromPL(this.patternLanguage, edge);
     this.removeEdgeFromPatternLinkList(edge)
   }
-
 
   removeEdgeFromPatternLinkList(edge) {
     for (let i = 0; i < this.patternLinks.length; i++) {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Rating } from '../../model/rating.enum';
 
 @Component({
@@ -13,7 +13,8 @@ export class RatingComponent implements OnInit {
   @Input() userRatingPast: number;
   @Output() userRatingCurrent = new EventEmitter();
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
@@ -22,8 +23,8 @@ export class RatingComponent implements OnInit {
     this.userRatingCurrent.emit(Rating.UP);
   }
 
-  down(){
+  down() {
     this.userRatingCurrent.emit(Rating.DOWN);
-  } 
+  }
 
 }

@@ -47,7 +47,6 @@ import { PatternAtlasUiFeatureToggleModule } from './core/directives/pattern-atl
 import { MatMenuModule } from '@angular/material/menu';
 import { PatternAtlasUiRepositoryConfigurationService } from './core/directives/pattern-atlas-ui-repository-configuration.service';
 
-
 @NgModule({
   declarations: [
     AppComponent,

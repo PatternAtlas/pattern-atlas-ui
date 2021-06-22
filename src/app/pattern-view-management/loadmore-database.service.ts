@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-
 const LOAD_MORE = 'LOAD_MORE';
 
 /** Nested node */

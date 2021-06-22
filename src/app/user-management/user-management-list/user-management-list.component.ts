@@ -10,7 +10,8 @@ export class UserManagementListComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-  ) { }
+  ) {
+  }
 
   private data: any;
 

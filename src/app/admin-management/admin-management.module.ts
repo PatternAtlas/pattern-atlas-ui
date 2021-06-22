@@ -5,13 +5,12 @@ import { CoreModule } from '../core/core.module';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { AdminManagementListComponent } from './admin-management-list/admin-management-list.component';
 import { AdminManagementDetailComponent } from './admin-management-detail/admin-management-detail.component';
-
 
 export const ADMIN_MANAGEMENT_ROUTES = [
   {
@@ -28,7 +27,7 @@ export const ADMIN_MANAGEMENT_ROUTES = [
   declarations: [
     AdminManagementListComponent,
     AdminManagementDetailComponent,
-   
+
   ],
   imports: [
     CommonModule,
@@ -45,7 +44,7 @@ export const ADMIN_MANAGEMENT_ROUTES = [
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [
-  ]
+  providers: []
 })
-export class AdminManagementModule { }
+export class AdminManagementModule {
+}

@@ -8,7 +8,6 @@ export class AddUndirectedEdgeToViewRequest {
   type: string;
   newEdge: boolean;
 
-
   constructor(edge: UndirectedEdgeModel) {
     this.undirectedEdgeId = edge.id;
     this.pattern1Id = edge.pattern1Id;

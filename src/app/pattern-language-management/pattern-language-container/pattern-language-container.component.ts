@@ -24,18 +24,19 @@ import { globals } from '../../globals';
 })
 export class PatternLanguageContainerComponent implements OnInit {
 
-    // the id of the patterns language
-    plEncodedId: string;
-    // the list of registered renderer components for the language
-    renderer: Array<any>;
+  // the id of the patterns language
+  plEncodedId: string;
+  // the list of registered renderer components for the language
+  renderer: Array<any>;
 
-    constructor(private activatedRoute: ActivatedRoute,
-                private compRegistry: ComponentRegistryService) {
-    }
+  constructor(private activatedRoute: ActivatedRoute,
+              private compRegistry: ComponentRegistryService) {
+  }
 
-    ngOnInit() {
-      // Todo: We use encoded uris just for navigation. Now we can get the Uri from the patternlanguage entity. We have to add redux!
-      this.plEncodedId = this.activatedRoute.snapshot.params[globals.pathConstants.patternLanguageId];
-      this.renderer = this.compRegistry.getRenderingComponents(this.plEncodedId);
-    }
+  ngOnInit() {
+    // Todo: We use encoded uris just for navigation. Now we can get the Uri from the patternlanguage entity. We have
+    // to add redux!
+    this.plEncodedId = this.activatedRoute.snapshot.params[globals.pathConstants.patternLanguageId];
+    this.renderer = this.compRegistry.getRenderingComponents(this.plEncodedId);
+  }
 }

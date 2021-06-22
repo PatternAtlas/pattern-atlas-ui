@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  PatternAtlasUiConfiguration,
-  PatternAtlasUiRepositoryConfigurationService,
-  UiFeatures
+  PatternAtlasUiConfiguration, PatternAtlasUiRepositoryConfigurationService, UiFeatures
 } from '../../directives/pattern-atlas-ui-repository-configuration.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ToasterService } from 'angular2-toaster';

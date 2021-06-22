@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IssueCommentRatingEvent } from 'src/app/core/component/comment-list/comment-list.component';
 import { IssueManagementStore } from '../../core/issue-management/_store/issue-management-store';
 import { Router } from '@angular/router';
 import { PatternLanguageService } from 'src/app/core/service/pattern-language.service';
 import PatternLanguageModel from 'src/app/core/model/hal/pattern-language-model.model';
-import { Issue, IssueManagementService, IssueComment } from 'src/app/core/issue-management';
+import { Issue, IssueComment, IssueManagementService } from 'src/app/core/issue-management';
 import { Rating } from 'src/app/core/model/rating.enum';
 import { Candidate } from 'src/app/core/candidate-management';
 

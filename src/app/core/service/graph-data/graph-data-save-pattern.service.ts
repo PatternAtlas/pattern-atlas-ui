@@ -17,7 +17,6 @@ import { PatternContainer } from '../../model/hal/pattern-container.model';
 import PatternLanguage from '../../model/hal/pattern-language.model';
 import { GraphDataService } from './graph-data.service';
 
-
 export abstract class GraphDataSavePatternService extends GraphDataService {
 
   abstract savePattern(patternContainer: PatternContainer | PatternLanguage, node: any): Observable<any>;

@@ -1,4 +1,3 @@
-
 export class PatternRelation {
   id: string;
   sourceId: string;

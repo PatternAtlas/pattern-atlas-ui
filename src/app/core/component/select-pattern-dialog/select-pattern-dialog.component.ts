@@ -9,7 +9,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class SelectPatternDialogComponent implements OnInit {
 
-
   constructor(
     public dialogRef: MatDialogRef<SelectPatternDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private _fb: FormBuilder) {
@@ -20,7 +19,6 @@ export class SelectPatternDialogComponent implements OnInit {
   onNoClick(): void {
     this.dialogRef.close();
   }
-
 
   ngOnInit(): void {
     this.selectedPatternForm = this._fb.group({

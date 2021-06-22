@@ -4,9 +4,10 @@
     <pp-action-button-bar [displayText]="pattern?.name" [firstAddButton]="false" [iconEdit]="true"
                           [iconUrl]="pattern?.iconUrl" (iconEditClicked)="editIcon()">
     </pp-action-button-bar>
-    <span> <button  mat-stroked-button style="margin-left: 5px" color="primary" *ngIf="showActionButtons"  (click)="editIcon()" matTooltip="Edit"><i class="material-icons">mode_edit</i></button>
+    <span> <button mat-stroked-button style="margin-left: 5px" color="primary" *ngIf="showActionButtons"
+                   (click)="editIcon()" matTooltip="Edit"><i class="material-icons">mode_edit</i></button>
   </span>
-   </mat-card-header>
+  </mat-card-header>
   <div>
     <ng-template ppPatternProperty></ng-template>
   </div>
