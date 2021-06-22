@@ -9,7 +9,7 @@ import { HalLink } from '../../model/hal/hal-link.interface';
 @Component({
   selector: 'pp-delete-pattern-relation',
   templateUrl: './delete-pattern-relation.component.html',
-  styleUrls: [ './delete-pattern-relation.component.scss' ]
+  styleUrls: ['./delete-pattern-relation.component.scss']
 })
 export class DeletePatternRelationComponent implements OnInit {
 
@@ -28,7 +28,6 @@ export class DeletePatternRelationComponent implements OnInit {
   close(): void {
     this.dialogRef.close();
   }
-
 
   private getEdgesForPattern(): void {
     let links = [];

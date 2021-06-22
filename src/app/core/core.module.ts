@@ -83,7 +83,6 @@ import { EditUrlDialogComponent } from './component/edit-url-dialog/edit-url-dia
 import { FeatureToggleDialogComponent } from './component/feature-toggle-dialog/feature-toggle-dialog.component';
 import { PatternAtlasUiFeatureToggleModule } from './directives/pattern-atlas-ui-feature-toggle.module';
 
-
 @NgModule({
   imports: [
     CommonModule,

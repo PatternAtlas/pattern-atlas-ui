@@ -1,7 +1,6 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import {
-  CreateEditComponentDialogType,
-  CreateEditPatternLanguageComponent
+  CreateEditComponentDialogType, CreateEditPatternLanguageComponent
 } from '../../../core/component/create-edit-pattern-language/create-edit-pattern-language.component';
 import { switchMap, tap } from 'rxjs/operators';
 import { DialogPatternLanguageResult } from '../../../pattern-language-management/data/DialogPatternLanguageResult.interface';
@@ -16,16 +15,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DesignModel } from '../../model/hal/design-model';
 import { DeleteConfirmationDialogComponent } from '../../../core/component/delete-confirmation-dialog/delete-confirmation-dialog.component';
 
-
 @Component({
   selector: 'pp-design-model-management',
   templateUrl: './design-model-management.component.html',
-  styleUrls: [ './design-model-management.component.scss' ]
+  styleUrls: ['./design-model-management.component.scss']
 })
 export class DesignModelManagementComponent implements OnInit {
 
   public designModelResponse;
-
 
   constructor(private designModelService: DesignModelService,
               private dialog: MatDialog,
@@ -36,18 +33,15 @@ export class DesignModelManagementComponent implements OnInit {
               private zone: NgZone) {
   }
 
-
   ngOnInit() {
     this.getData().subscribe();
   }
-
 
   private getData(): Observable<DesignModelResponse> {
     return this.designModelService.getDesignModels().pipe(tap((modelResponse) => {
       this.designModelResponse = modelResponse;
     }));
   }
-
 
   addDesignModel() {
     const dialogRef = this.dialog.open(CreateEditPatternLanguageComponent, { data: { componentDialogType: CreateEditComponentDialogType.DESIGN_MODEL } });
@@ -76,7 +70,7 @@ export class DesignModelManagementComponent implements OnInit {
 
   navigate(model: DesignModel): void {
     this.zone.run(() => {
-      this.router.navigate([ model.id ], { relativeTo: this.activatedRoute });
+      this.router.navigate([model.id], { relativeTo: this.activatedRoute });
     })
   }
 
@@ -92,7 +86,7 @@ export class DesignModelManagementComponent implements OnInit {
             this.designModelResponse._embedded.designModels[i].id === designModel.id ? this.designModelResponse._embedded.designModels.splice(i, 1) : null;
           }
           this.toastService.pop('success', 'Design Model deleted!');
-        },(error) => {
+        }, (error) => {
           this.toastService.pop('error', 'Design Model could not be deleted!');
         });
       }

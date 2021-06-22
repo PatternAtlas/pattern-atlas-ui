@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { DesignModelManagementComponent } from './component/design-model-management/design-model-management.component';
 import { DesignModelRendererComponent } from './component/design-model-renderer/design-model-renderer.component';
 
-
 const routes: Routes = [
   {
     path: '',
@@ -14,7 +13,6 @@ const routes: Routes = [
     component: DesignModelRendererComponent
   },
 ];
-
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

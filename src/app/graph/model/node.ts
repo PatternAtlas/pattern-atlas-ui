@@ -1,4 +1,3 @@
-
 export class Node implements d3.SimulationNodeDatum {
   // optional - defining optional implementation properties - required for relevant typing assistance
   index?: number;

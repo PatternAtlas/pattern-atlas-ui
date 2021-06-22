@@ -33,7 +33,6 @@ import { TextComponent } from '@ustutt/grapheditor-webcomponent/lib/edge';
 import { HalCollectionResponse } from '../model/hal/hal-collection-response';
 import { HalEntityResponse } from '../model/hal/hal-entity-response';
 
-
 @Injectable()
 export class DesignModelService implements GraphDataService, GraphDataSavePatternService {
 
@@ -213,8 +212,8 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
       let y = 0;
 
       try {
-        x = pattern[ 'graphData' ][ 'x' ];
-        y = pattern[ 'graphData' ][ 'y' ];
+        x = pattern['graphData']['x'];
+        y = pattern['graphData']['y'];
       } catch (e) {
       }
 
@@ -233,7 +232,7 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
     return of({ graph: graphNodes });
   }
 
-  deleteDesignModel(designModel: DesignModel){
+  deleteDesignModel(designModel: DesignModel) {
     return this.httpClient.delete(designModel._links.self.href);
   }
 }

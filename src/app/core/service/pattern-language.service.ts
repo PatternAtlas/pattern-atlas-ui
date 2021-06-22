@@ -108,8 +108,8 @@ export class PatternLanguageService implements GraphDataService {
     return of();
   }
 
-  deletePatternLanguage(patternLanguageId: string){
-    const url =  this.repoEndpoint + '/patternLanguages/' + patternLanguageId;
+  deletePatternLanguage(patternLanguageId: string) {
+    const url = this.repoEndpoint + '/patternLanguages/' + patternLanguageId;
     return this.http.delete(url);
   }
 }

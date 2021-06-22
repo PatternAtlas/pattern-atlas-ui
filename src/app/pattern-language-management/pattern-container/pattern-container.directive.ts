@@ -1,4 +1,3 @@
-import { OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -12,8 +11,9 @@ import { OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
  *
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
-
-import { ComponentFactoryResolver, Directive, Input, OnInit, ViewContainerRef } from '@angular/core';
+import {
+  ChangeDetectorRef, ComponentFactoryResolver, Directive, Input, OnChanges, OnInit, SimpleChanges, ViewContainerRef
+} from '@angular/core';
 import { ComponentRegistryService } from '../../core/service/component-registry.service';
 import { PatternRenderingComponentInterface } from '../../core/model/pattern-rendering-component.interface';
 import { DefaultPatternRendererComponent } from '../../core/default-pattern-renderer/default-pattern-renderer.component';

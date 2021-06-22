@@ -6,13 +6,17 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
   selector: '[ppGraphEventEmmiter]'
 })
 export class EmitEventOnAddedEdgeDirective implements OnInit, OnDestroy {
-  @Output('onAddedEdge') edgeAddedEventEmitter = new EventEmitter<any>(); // eslint-disable-line @angular-eslint/no-output-rename
-  @Output('onRemovedEdge') edgeRemovedEventEmitter = new EventEmitter<any>(); // eslint-disable-line @angular-eslint/no-output-rename
-  @Output('onClickedNode') nodeClickedEventEmitter = new EventEmitter<any>(); // eslint-disable-line @angular-eslint/no-output-rename
-  @Output('onClickedBackground') backgroundClickedEventEmitter = new EventEmitter<any>(); // eslint-disable-line @angular-eslint/no-output-rename
+  @Output('onAddedEdge') edgeAddedEventEmitter = new EventEmitter<any>(); // eslint-disable-line
+                                                                          // @angular-eslint/no-output-rename
+  @Output('onRemovedEdge') edgeRemovedEventEmitter = new EventEmitter<any>(); // eslint-disable-line
+                                                                              // @angular-eslint/no-output-rename
+  @Output('onClickedNode') nodeClickedEventEmitter = new EventEmitter<any>(); // eslint-disable-line
+                                                                              // @angular-eslint/no-output-rename
+  @Output('onClickedBackground') backgroundClickedEventEmitter = new EventEmitter<any>(); // eslint-disable-line
+                                                                                          // @angular-eslint/no-output-rename
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-  @Output('onNodePositionChange') onNodePositionChangeEventEmitter = new EventEmitter<any>(); // eslint-disable-line @angular-eslint/no-output-rename
-
+  @Output('onNodePositionChange') onNodePositionChangeEventEmitter = new EventEmitter<any>(); // eslint-disable-line
+                                                                                              // @angular-eslint/no-output-rename
 
   constructor() {
   }
@@ -66,6 +70,5 @@ export class EmitEventOnAddedEdgeDirective implements OnInit, OnDestroy {
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
-
 
 }

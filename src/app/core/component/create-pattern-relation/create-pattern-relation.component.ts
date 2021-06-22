@@ -52,18 +52,17 @@ export class CreatePatternRelationComponent implements OnInit {
 
   private subscriptionRefs = [];
 
-
   ngOnInit() {
     let preselectedEdgeDirection;
     try {
-      preselectedEdgeDirection = this.directionTypes.filter(type => type.name === this.data.preselectedEdgeDirection)[ 0 ];
+      preselectedEdgeDirection = this.directionTypes.filter(type => type.name === this.data.preselectedEdgeDirection)[0];
     } catch (e) {
     }
 
-    if(this.data.description === undefined){
+    if (this.data.description === undefined) {
       this.data.description = '';
     }
-    this.isDelete =this.data.isDelete; // set view to delete/edit instead of create
+    this.isDelete = this.data.isDelete; // set view to delete/edit instead of create
     this.relationForm = this.fb.group({
       firstPattern: [this.data.firstPattern, [Validators.required]],
       secondPattern: [this.data.secondPattern, [Validators.required]],
@@ -81,7 +80,8 @@ export class CreatePatternRelationComponent implements OnInit {
     this.subscriptionRefs.forEach(subscription => subscription.unsubscribe());
   }
 
-  // adds a relation created by the dialog to the local data and returns whether this was successful (or not, e.g. when simply closing the dialog)
+  // adds a relation created by the dialog to the local data and returns whether this was successful (or not, e.g. when
+  // simply closing the dialog)
   mapDialogDataToEdge(dialogResult: DialogDataResult): DirectedEdgeModel | UndirectedEdgeModel {
     if (!dialogResult || !dialogResult.secondPattern || !dialogResult.direction) {
       return null;

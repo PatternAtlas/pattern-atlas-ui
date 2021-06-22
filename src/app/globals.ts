@@ -13,11 +13,11 @@
  */
 
 export const globals = {
-  urlPatternRepoOntology: 'https://purl.org/patternpedia',
-  iriPatternRepoInstance: 'https://purl.org/patternpedia#LinkedOpenPatterns',
-  urlGithubAPI: 'https://api.github.com/repos/PatternPedia/patternpediacontent/contents',
+  urlPatternRepoOntology: 'https://purl.org/patternatlas',
+  iriPatternRepoInstance: 'https://purl.org/patternatlas#LinkedOpenPatterns',
+  urlGithubAPI: 'https://api.github.com/repos/patternatlas/patternatlascontent/contents',
   loadOntologyLocally: true,
-  repoEndpoint: 'http://localhost:1977/patternpedia',
+  repoEndpoint: 'http://localhost:1977/patternatlas',
   pathConstants: {
     patternLanguages: 'pattern-languages',
     patternLanguageId: 'pattern-language-id',

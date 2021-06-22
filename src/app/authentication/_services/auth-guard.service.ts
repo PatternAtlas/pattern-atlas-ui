@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router, ActivatedRouteSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
 import { AuthenticationService } from './authentication.service';
 import { ToasterService } from 'angular2-toaster';
 
@@ -9,10 +9,11 @@ import { ToasterService } from 'angular2-toaster';
 export class AuthGuardService implements CanActivate {
 
   constructor(
-    public auth: AuthenticationService, 
+    public auth: AuthenticationService,
     public router: Router,
     private toaserService: ToasterService
-  ) { }
+  ) {
+  }
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
 

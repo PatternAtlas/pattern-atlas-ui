@@ -38,7 +38,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { PatternLanguageService } from '../core/service/pattern-language.service';
 import { PatternAtlasUiFeatureToggleModule } from '../core/directives/pattern-atlas-ui-feature-toggle.module';
 
-
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *

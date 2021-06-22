@@ -1,43 +1,44 @@
 <button class="close" mat-button (click)="close()">X</button>
-<h1 mat-dialog-title *ngIf="this.data.type == 'ingoing'" >View incoming Edges</h1>
-<h1 mat-dialog-title *ngIf="this.data.type == 'outgoing'" >View outgoing Edges</h1>
-<h1 mat-dialog-title *ngIf="this.data.type !== 'ingoing' && this.data.type !== 'outgoing'" >View undirected Edges</h1>
+<h1 mat-dialog-title *ngIf="this.data.type == 'ingoing'">View incoming Edges</h1>
+<h1 mat-dialog-title *ngIf="this.data.type == 'outgoing'">View outgoing Edges</h1>
+<h1 mat-dialog-title *ngIf="this.data.type !== 'ingoing' && this.data.type !== 'outgoing'">View undirected Edges</h1>
 <div mat-dialog-content>
-    <div *ngIf="this.data.type == 'ingoing' || this.data.type == 'outgoing'; then directedEdgeModel else undirectedEdgeModel"></div>
-    <ng-template #directedEdgeModel>
-        <mat-accordion style="padding: 3px">
-            <mat-expansion-panel *ngFor="let edge of this.currentEdges">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        {{edge.edge.sourcePatternName}} {{edge.edge.type}} {{edge.edge.targetPatternName}}
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <div class="badge-container">
-                    <b>Source Pattern:</b> {{edge.edge.sourcePatternName}}<br/>
-                    <b>Relation Type:</b> {{edge.edge.type}} <br/>
-                    <b>Target Pattern:</b> {{edge.edge.targetPatternName}}
-                    <div *ngIf="edge.edge.description"><b>Description:</b> {{edge.edge.description}}</div>
-                    <br/>
-                </div>
-            </mat-expansion-panel>
-        </mat-accordion>
-    </ng-template>
-    <ng-template #undirectedEdgeModel>
-        <mat-accordion style="padding: 3px;">
-            <mat-expansion-panel *ngFor="let edge of this.currentEdges">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        {{edge.edge.pattern1Name}} {{edge.edge.type}} {{edge.edge.pattern2Name}}
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <div class="badge-container">
-                    <b>Pattern 1:</b> {{edge.edge.pattern1Name}}<br/>
-                    <b>Relation Type:</b> {{edge.edge.type}} <br/>
-                    <b>Pattern 2:</b> {{edge.edge.pattern2Name}}
-                    <div *ngIf="edge.edge.description"><b>Description:</b> {{edge.edge.description}}</div>
-                    <br/>
-                </div>
-            </mat-expansion-panel>
-        </mat-accordion>
-    </ng-template>
+  <div
+    *ngIf="this.data.type == 'ingoing' || this.data.type == 'outgoing'; then directedEdgeModel else undirectedEdgeModel"></div>
+  <ng-template #directedEdgeModel>
+    <mat-accordion style="padding: 3px">
+      <mat-expansion-panel *ngFor="let edge of this.currentEdges">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{edge.edge.sourcePatternName}} {{edge.edge.type}} {{edge.edge.targetPatternName}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="badge-container">
+          <b>Source Pattern:</b> {{edge.edge.sourcePatternName}}<br/>
+          <b>Relation Type:</b> {{edge.edge.type}} <br/>
+          <b>Target Pattern:</b> {{edge.edge.targetPatternName}}
+          <div *ngIf="edge.edge.description"><b>Description:</b> {{edge.edge.description}}</div>
+          <br/>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </ng-template>
+  <ng-template #undirectedEdgeModel>
+    <mat-accordion style="padding: 3px;">
+      <mat-expansion-panel *ngFor="let edge of this.currentEdges">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{edge.edge.pattern1Name}} {{edge.edge.type}} {{edge.edge.pattern2Name}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="badge-container">
+          <b>Pattern 1:</b> {{edge.edge.pattern1Name}}<br/>
+          <b>Relation Type:</b> {{edge.edge.type}} <br/>
+          <b>Pattern 2:</b> {{edge.edge.pattern2Name}}
+          <div *ngIf="edge.edge.description"><b>Description:</b> {{edge.edge.description}}</div>
+          <br/>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </ng-template>
 </div>

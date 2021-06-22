@@ -7,7 +7,7 @@ describe('AdminManagementDetailComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminManagementDetailComponent ]
+      declarations: [AdminManagementDetailComponent]
     })
       .compileComponents();
   }));

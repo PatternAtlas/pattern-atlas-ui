@@ -8,7 +8,7 @@ describe('CardRendererComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CardRendererComponent ]
+      declarations: [CardRendererComponent]
     })
       .compileComponents();
   }));

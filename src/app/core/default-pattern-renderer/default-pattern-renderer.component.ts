@@ -1,10 +1,5 @@
 import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  ComponentFactoryResolver,
-  OnDestroy,
-  ViewChild
+  AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, OnDestroy, ViewChild
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToasterService } from 'angular2-toaster';
@@ -51,7 +46,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   subscriptions: Subscription = new Subscription();
   showActionButtons: boolean;
 
-
   constructor(private activatedRoute: ActivatedRoute,
               private toasterService: ToasterService,
               private cdr: ChangeDetectorRef,
@@ -70,7 +64,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
     this.patternId = this.activatedRoute.snapshot.paramMap.get('patternId');
     this.getData();
   }
-
 
   addLink() {
     if (!this.patterns || this.patterns.length === 0) {
@@ -208,9 +201,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
       .subscribe(res => this.cdr.detectChanges());
     this.subscriptions.add(subscription);
 
-
   }
-
 
   private fillPatternSectionData() {
     return this.getPatternData().pipe(

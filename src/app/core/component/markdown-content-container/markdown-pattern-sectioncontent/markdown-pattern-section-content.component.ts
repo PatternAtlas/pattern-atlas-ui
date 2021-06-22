@@ -17,7 +17,6 @@ import { DiscussionComment } from '../../../model/discussion-comment';
 import { ImageModel } from '../../../model/image-model';
 import * as QuantumCircuit from 'quantum-circuit';
 
-
 @Component({
   selector: 'pp-markdown-pattern-section-content',
   templateUrl: './markdown-pattern-section-content.component.html',
@@ -161,7 +160,6 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
       }
     });
 
-
     d3.selectAll<SVGSVGElement, unknown>('rect').on('click', (d, i, n) => {
       this.discuss(n[i]);
     });
@@ -177,7 +175,6 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
   commentSVG() {
     const snackBarInstruction = this.snackBar.open('Mark area to comment in Picture', null, { duration: 3000 });
     this.isCommentingEnabled = true;
-
 
     this.svg.on('mousedown', (d, i, n) => {
       this.commentSvg = n[i];

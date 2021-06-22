@@ -1,9 +1,11 @@
 /**
- * Holds all the information for a rendering component that will be used to render specific patterns languages and patterns.
+ * Holds all the information for a rendering component that will be used to render specific patterns languages and
+ * patterns.
  */
 export default interface RenderingComponent {
   /**
-   * The priority of the specified renderer. Higher priority leads to lower index in list of all renderer for the given identifier.
+   * The priority of the specified renderer. Higher priority leads to lower index in list of all renderer for the given
+   * identifier.
    */
   priority?: number;
   /**

@@ -8,7 +8,7 @@ describe('MarkdownPatternSectioncontentComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MarkdownPatternSectionContentComponent ]
+      declarations: [MarkdownPatternSectionContentComponent]
     })
       .compileComponents();
   }));

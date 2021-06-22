@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { DiscussionTopic } from '../model/discussion-topic';
 import { DiscussionComment } from '../model/discussion-comment';
 
-
 @Injectable({
   providedIn: 'root'
 })
