@@ -68,7 +68,10 @@ export class PatternService {
   }
 
   getPatternById(patternLanguage: PatternLanguage, patternId: String): Observable<Pattern> {
-    return this.http.get <Pattern>(this.repoEndpoint + '/patternLanguages/' + patternLanguage.id + '/patterns/' + patternId);
+    return this.http.get <Pattern>(
+      (patternLanguage._links.patterns ?
+        patternLanguage._links.patterns.href + '/' + patternId :
+        this.repoEndpoint + '/patternLanguages/' + patternLanguage.id + '/patterns/' + patternId));
   }
 
   getPatternsById(patternLanguageId: string): Observable<Array<Pattern>> {
