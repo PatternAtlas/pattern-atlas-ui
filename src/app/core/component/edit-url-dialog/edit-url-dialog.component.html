@@ -8,6 +8,11 @@
     <mat-label>Adjust Icon URL</mat-label>
     <input matInput placeholder={{data.pattern.iconUrl}} [(ngModel)]="data.icon">
   </mat-form-field>
+  <mat-form-field>
+    <mat-label>Adjust Paper Reference</mat-label>
+    <input matInput placeholder={{data.pattern.patternRef}} [(ngModel)]="data.paperRef">
+  </mat-form-field>
+
 </div>
 <mat-dialog-actions align="end">
   <button mat-button (click)="onNoClick()">Cancel</button>
