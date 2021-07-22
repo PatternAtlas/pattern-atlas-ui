@@ -242,12 +242,15 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   editIcon() {
     const dialogRef = this.dialog.open(EditUrlDialogComponent, {
       width: '50%',
-      data: { pattern: this.pattern, icon: this.pattern.iconUrl, name: this.pattern.name }
+      data: {
+        pattern: this.pattern, icon: this.pattern.iconUrl, name: this.pattern.name, paperRef: this.pattern.paperRef
+      }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
         this.pattern.iconUrl = result.icon;
         this.pattern.name = result.name;
+        this.pattern.paperRef = result.paperRef;
         this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe();
       }
     });

@@ -17,6 +17,7 @@ import { HalLink } from './hal-link.interface';
 
 class Pattern extends UriEntity {
   iconUrl?: string;
+  paperRef?: string;
   content: any;
   renderedContent: any;
   patternLanguageId: string;
