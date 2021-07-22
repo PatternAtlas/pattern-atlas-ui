@@ -11,6 +11,7 @@
   </mat-card-header>
 
   <span class="copyright" *ngIf="pattern?.paperRef"> <i class="material-icons">copyright</i>
+    <!--    Display either a textual reference for yet unpublished papers or a html link -->
     {{pattern?.paperRef.startsWith('http') ?
       "The original publication of this pattern can be found&nbsp;" :
       "This pattern is originally published in " + pattern?.paperRef }}
