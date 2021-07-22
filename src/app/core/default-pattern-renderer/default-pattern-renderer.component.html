@@ -13,9 +13,9 @@
   <span class="copyright" *ngIf="pattern?.paperRef"> <i class="material-icons">copyright</i>
     <!--    Display either a textual reference for yet unpublished papers or a html link -->
     {{pattern?.paperRef.startsWith('http') ?
-      "The original publication of this pattern can be found&nbsp;" :
-      "This pattern is originally published in " + pattern?.paperRef }}
-    <a *ngIf="pattern?.paperRef.startsWith('http')" href="{{pattern?.paperRef}}">here</a>.
+      "The original publication of this pattern can be found in&nbsp;" :
+      "This pattern is originally published in " + pattern?.paperRef}}
+    <a *ngIf="pattern?.paperRef.startsWith('http')" href="{{pattern?.paperRef}}">here</a>
   </span>
   <div>
     <ng-template ppPatternProperty></ng-template>
