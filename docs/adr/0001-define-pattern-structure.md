@@ -1,4 +1,4 @@
-# Define the structure of a pattern created by PatternPedia 
+# Define the structure of a pattern created by the PatternAtlas
 
 * Deciders: [Manuela Weigold, Michael Falkenthal] 
 

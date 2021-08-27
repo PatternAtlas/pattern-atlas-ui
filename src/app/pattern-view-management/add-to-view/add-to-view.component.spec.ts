@@ -8,7 +8,7 @@ describe('AddToViewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddToViewComponent ]
+      declarations: [AddToViewComponent]
     })
       .compileComponents();
   }));

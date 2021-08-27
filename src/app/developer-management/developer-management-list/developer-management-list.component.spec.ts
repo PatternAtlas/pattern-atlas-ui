@@ -8,7 +8,7 @@ describe('DeveloperManagementListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DeveloperManagementListComponent ]
+      declarations: [DeveloperManagementListComponent]
     })
       .compileComponents();
   }));

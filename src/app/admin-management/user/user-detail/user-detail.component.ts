@@ -24,7 +24,8 @@ export class UserDetailComponent implements OnInit {
     private userFormBuilder: FormBuilder,
     private userStore: UserStore,
     private userService: UserService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
 

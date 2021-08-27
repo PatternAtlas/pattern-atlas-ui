@@ -48,7 +48,7 @@ export class PatternService {
   }
 
   getPatternRenderedContentByPattern(pattern: Pattern): Observable<{ renderedContent: any }> {
-    return this.http.get<{ renderedContent: any }>(pattern._links.content.href);
+    return this.http.get<{ renderedContent: any }>(pattern._links.renderedContent.href);
   }
 
   savePattern(url: string, pattern: any): Observable<any> {
@@ -68,9 +68,17 @@ export class PatternService {
   }
 
   getPatternById(patternLanguage: PatternLanguage, patternId: String): Observable<Pattern> {
-    console.log('patternid');
-    console.log(patternId);
-    return this.http.get <Pattern>(this.repoEndpoint + '/patternLanguages/' + patternLanguage.id + '/patterns/' + patternId);
+    return this.http.get <Pattern>(
+      (patternLanguage._links.patterns ?
+        patternLanguage._links.patterns.href + '/' + patternId :
+        this.repoEndpoint + '/patternLanguages/' + patternLanguage.id + '/patterns/' + patternId));
+  }
+
+  getPatternsById(patternLanguageId: string): Observable<Array<Pattern>> {
+    return this.http.get <PatternResponse>(this.repoEndpoint + '/patternLanguages/' + patternLanguageId + '/patterns/').pipe(
+      map(result => {
+        return <Array<Pattern>>(result && result._embedded ? result._embedded.patternModels : [])
+      }));
   }
 
   getPatternByUrl(href: string): Observable<PatternResponse> {

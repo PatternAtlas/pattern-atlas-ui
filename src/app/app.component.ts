@@ -16,6 +16,14 @@ import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit } from '@
 import { AuthenticationService } from './authentication/_services/authentication.service';
 import { PrivilegeService } from './authentication/_services/privilege.service';
 import { globals } from './globals';
+import {
+  PatternAtlasUiRepositoryConfigurationService, UiFeatures
+} from './core/directives/pattern-atlas-ui-repository-configuration.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ToasterService } from 'angular2-toaster';
+import { MatDialog } from '@angular/material/dialog';
+import { FeatureToggleDialogComponent } from './core/component/feature-toggle-dialog/feature-toggle-dialog.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'pp-root',
@@ -24,20 +32,43 @@ import { globals } from './globals';
 })
 export class AppComponent implements OnInit {
 
-  readonly featureToggles = globals.featureToggles;
-  readonly pathConstants = globals.pathConstants;
   userName: string;
   loggedIn = false;
 
+  readonly UiFeatures = UiFeatures;
+  loginButton = 'Login';
+  welcomeText = '';
+  readonly pathConstants = globals.pathConstants;
+  loading = true;
 
-  constructor(
-    public auth: AuthenticationService,
-    public p: PrivilegeService,
-    private ref: ChangeDetectorRef
+  constructor(public auth: AuthenticationService,
+              public p: PrivilegeService,
+              private toasterService: ToasterService,
+              private configService: PatternAtlasUiRepositoryConfigurationService,
+              private dialog: MatDialog,
+              private cdr: ChangeDetectorRef, private router: Router, private route: ActivatedRoute
   ) {
   }
 
+  login() {
+    this.auth.login();
+  }
+
+  logout() {
+    this.auth.logout();
+  }
+
   ngOnInit(): void {
+    this.configService.getConfigurationFromBackend().subscribe(
+      () => (this.loading = false),
+      (error: HttpErrorResponse) => {
+        this.loading = false;
+        this.toasterService.popAsync(
+          'error', 'Error while loading config from config server, using default values instead' + error.message).subscribe(
+          () => console.log('default values applied')
+        )
+      }
+    );
     this.auth.user.subscribe(_user => {
       if (_user) {
         this.userName = _user.name;
@@ -49,11 +80,10 @@ export class AppComponent implements OnInit {
     })
   }
 
-  login() {
-    this.auth.login();
-  }
-
-  logout() {
-    this.auth.logout();
+  openFeatureToggleDialog() {
+    this.dialog.open(FeatureToggleDialogComponent).afterClosed().subscribe(() => {
+      // reload page to trigger ShowOnFeatureDirectives which use the ngOnInit lifecycle hook
+      window.location.reload();
+    });
   }
 }

@@ -8,7 +8,7 @@ describe('CreatePatternComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreatePatternComponent ]
+      declarations: [CreatePatternComponent]
     })
       .compileComponents();
   }));

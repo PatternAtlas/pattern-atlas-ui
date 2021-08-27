@@ -1,11 +1,13 @@
 import { Component, EventEmitter, Input, NgZone, Output } from '@angular/core';
-import { UriConverter } from '../../util/uri-converter';
 import { ActivatedRoute, Router } from '@angular/router';
 import UriEntity from '../../model/hal/uri-entity.model';
 import Pattern from '../../model/hal/pattern.model';
 import { HalLink } from '../../model/hal/hal-link.interface';
 import { PatternService } from '../../service/pattern.service';
 import { ToasterService } from 'angular2-toaster';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteConfirmationDialogComponent } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { UiFeatures } from '../../directives/pattern-atlas-ui-repository-configuration.service';
 
 @Component({
   selector: 'pp-card-renderer',
@@ -14,6 +16,7 @@ import { ToasterService } from 'angular2-toaster';
 })
 export class CardRendererComponent {
 
+  readonly UiFeatures = UiFeatures;
   @Input() uriEntities: Array<Pattern>;
   @Input() showLinks = true;
   @Output() createEntityClicked: EventEmitter<void> = new EventEmitter<void>();
@@ -22,23 +25,37 @@ export class CardRendererComponent {
               private router: Router,
               private activatedRoute: ActivatedRoute,
               private patternService: PatternService,
-              private toasterService: ToasterService) {
+              private toasterService: ToasterService,
+              private dialog: MatDialog) {
   }
 
   navigate(pattern: UriEntity): void {
     this.zone.run(() => {
-      this.router.navigate([UriConverter.doubleEncodeUri(pattern.uri)], { relativeTo: this.activatedRoute });
+      this.router.navigate([pattern.id], { relativeTo: this.activatedRoute });
     });
   }
 
   delete(pattern: Pattern): void {
-    this.patternService.deletePattern(pattern._links.self.href)
-      .subscribe(
-        value => this.handlePatternDelete(pattern),
-        error => {
-          this.toasterService.pop('error', 'Could not delete pattern!');
+    this.dialog.open(DeleteConfirmationDialogComponent, {
+      data: {
+        name: pattern.name,
+      }
+    })
+      .afterClosed().subscribe(dialoganswer => {
+        if (dialoganswer) {
+          this.patternService.deletePattern(pattern._links.self.href)
+            .subscribe(
+              value => {
+                this.handlePatternDelete(pattern);
+                this.toasterService.pop('success', 'Pattern deleted!');
+              },
+              error => {
+                this.toasterService.pop('error', 'Could not delete pattern!', 'A Pattern can only be deleted if it is not a part of any Pattern Views');
+              }
+            );
         }
-      );
+      });
+
   }
 
   getLinkCount(directedEdges: HalLink[] | HalLink): number {

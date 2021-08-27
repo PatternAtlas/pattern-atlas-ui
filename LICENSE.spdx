@@ -1,5 +1,5 @@
 SPDXVersion: SPDX-2.1
-PackageName: PatternPedia
+PackageName: PatternAtlas
 PackageOriginator: University of Stuttgart
-PackageHomePage: https://github.com/PatternPedia/pattern-pedia
+PackageHomePage: https://github.com/PatternAtlas/pattern-atlas-ui
 PackageLicenseDeclared: Apache-2.0 OR EPL-2.0

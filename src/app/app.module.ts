@@ -20,7 +20,7 @@ import { AppComponent } from './app.component';
 import { PatternLanguageManagementModule } from './pattern-language-management/pattern-language-management.module';
 import { CoreModule } from './core/core.module';
 
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -48,6 +48,8 @@ import { CandidateManagementModule } from './candidate-management/candidate-mana
 import { DesignModelModule } from './design-model-module/design-model.module';
 //import { FilterViewComponent } from './filter/component/filter-view/filter-view.component';
 
+import { PatternAtlasUiFeatureToggleModule } from './core/directives/pattern-atlas-ui-feature-toggle.module';
+import { PatternAtlasUiRepositoryConfigurationService } from './core/directives/pattern-atlas-ui-repository-configuration.service';
 
 @NgModule({
   declarations: [
@@ -61,12 +63,17 @@ import { DesignModelModule } from './design-model-module/design-model.module';
     BrowserModule,
     BrowserAnimationsModule,
     AuthenticationModule,
+    PatternLanguageManagementModule,
+    PatternViewManagementModule,
+    DesignModelModule,
+    PatternAtlasUiFeatureToggleModule,
     MatToolbarModule,
     MatIconModule,
     MatCardModule,
     MatButtonModule,
     MatIconModule,
     MatTabsModule,
+    MatMenuModule,
     NgxMdModule,
     CovalentTextEditorModule,
     CoreModule,
@@ -86,7 +93,7 @@ import { DesignModelModule } from './design-model-module/design-model.module';
     CandidateManagementModule,
   ],
   providers: [
-    CookieService,
+    CookieService, PatternAtlasUiRepositoryConfigurationService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

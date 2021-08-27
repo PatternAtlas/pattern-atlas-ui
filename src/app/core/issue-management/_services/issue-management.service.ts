@@ -19,7 +19,7 @@ export class IssueManagementService {
     private http: HttpClient,
     private toasterService: ToasterService,
   ) {
-    this.repoEndpoint = environment.repositoryUrl;
+    this.repoEndpoint = environment.API_URL;
     this.serviceEndpoint = '/issues';
   }
 

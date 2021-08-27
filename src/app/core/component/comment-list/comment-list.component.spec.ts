@@ -13,7 +13,7 @@ describe('CommentListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CommentListComponent ],
+      declarations: [CommentListComponent],
       imports: [MatFormFieldModule, MatListModule, MatInputModule, FormsModule, NoopAnimationsModule]
     })
       .compileComponents();

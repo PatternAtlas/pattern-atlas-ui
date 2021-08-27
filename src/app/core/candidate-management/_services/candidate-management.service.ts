@@ -20,7 +20,7 @@ export class CandidateManagementService {
     private toasterService: ToasterService,
     private auth: AuthenticationService,
   ) {
-    this.repoEndpoint = environment.repositoryUrl;
+    this.repoEndpoint = environment.API_URL;
     this.serviceEndpoint = '/candidates';
   }
 

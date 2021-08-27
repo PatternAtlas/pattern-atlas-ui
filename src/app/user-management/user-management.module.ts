@@ -36,10 +36,9 @@ export const USER_MANAGEMENT_ROUTES = [
     ReactiveFormsModule,
     MatButtonModule,
   ],
-  exports: [
-  ],
-  providers: [
-  ]
+  exports: [],
+  providers: []
 
 })
-export class UserManagementModule { }
+export class UserManagementModule {
+}

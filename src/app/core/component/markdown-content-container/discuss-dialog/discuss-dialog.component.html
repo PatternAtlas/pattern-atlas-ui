@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content>
+  <ul>
+    <li *ngFor="let comment of data.comments">
+      {{ comment }}
+    </li>
+  </ul>
+  <mat-form-field>
+    <mat-label>Add comment</mat-label>
+    <input matInput [(ngModel)]="data.response">
+  </mat-form-field>
+</div>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="deleteComment()">Delete comment</button>
+  <div fxFlex></div>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</mat-dialog-actions>

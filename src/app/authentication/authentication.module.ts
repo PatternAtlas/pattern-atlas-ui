@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 import { AuthenticationService } from './_services/authentication.service';
 import { PrivilegeService } from './_services/privilege.service';
 
-
-
 @NgModule({
   declarations: [],
   imports: [
@@ -15,4 +13,5 @@ import { PrivilegeService } from './_services/privilege.service';
     PrivilegeService
   ]
 })
-export class AuthenticationModule { }
+export class AuthenticationModule {
+}

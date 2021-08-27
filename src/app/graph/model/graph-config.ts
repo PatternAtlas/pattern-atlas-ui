@@ -1,4 +1,3 @@
-
 export default interface GraphConfig {
   charge: number;
   xStrength: number;

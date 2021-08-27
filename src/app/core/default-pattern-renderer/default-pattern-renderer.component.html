@@ -1,9 +1,22 @@
 <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
 <mat-card class="pattern-card mat-elevation-z5">
-  <mat-card-header>
-    <pp-action-button-bar [displayText]="pattern?.name" [firstAddButton]="false">
+  <mat-card-header (mouseenter)="showActionButtons = true" (mouseleave)="showActionButtons = false">
+    <pp-action-button-bar [displayText]="pattern?.name" [firstAddButton]="false"
+                          [iconEdit]="true"
+                          [iconUrl]="pattern?.iconUrl" (iconEditClicked)="editIcon()">
     </pp-action-button-bar>
+    <span> <button mat-stroked-button style="margin-left: 5px" color="primary" *ngIf="showActionButtons"
+                   (click)="editIcon()" matTooltip="Edit"><i class="material-icons">mode_edit</i></button>
+  </span>
   </mat-card-header>
+
+  <span class="copyright" *ngIf="pattern?.paperRef"> <i class="material-icons">copyright</i>
+    <!--    Display either a textual reference for yet unpublished papers or a html link -->
+    {{pattern?.paperRef.startsWith('http') ?
+      "The original publication of this pattern can be found in&nbsp;" :
+      "This pattern is originally published in " + pattern?.paperRef}}
+    <a *ngIf="pattern?.paperRef.startsWith('http')" href="{{pattern?.paperRef}}">here</a>
+  </span>
   <div>
     <ng-template ppPatternProperty></ng-template>
   </div>
@@ -16,12 +29,12 @@
       <div *ngIf="directedPatternRelations?.length > 0">
         <ng-container *ngFor="let relation of directedPatternRelations">
           <p class="horiz-centered">
-            <a [routerLink]="['..',relation.sourcePatternId]">{{ relation?.sourcePatternName}}</a>
+            <a [routerLink]="['..',relation.sourcePatternUri]">{{ relation?.sourcePatternName}}</a>
             <span *ngIf="relation?.type" class="horiz-centered">
                             <i class="material-icons">remove</i>{{relation?.type}}
                         </span>
             <i class="material-icons">trending_flat</i>
-            <a [routerLink]="['..', relation.targetPatternId]">{{ relation?.targetPatternName}}</a>
+            <a [routerLink]="['..', relation.targetPatternUri]">{{ relation?.targetPatternName}}</a>
             <i>{{relation?.description ? ': ' + relation?.description : ''}}</i>
           </p>
           <br/>
@@ -30,12 +43,12 @@
       <div *ngIf="undirectedPatternRelations?.length > 0">
         <ng-container *ngFor="let relation of undirectedPatternRelations">
           <p class="horiz-centered">
-            <a [routerLink]="['..', relation.pattern1Id]">{{ relation?.pattern1Name}}</a>
+            <a [routerLink]="['..', relation.pattern1Uri]">{{ relation?.pattern1Name}}</a>
             <span *ngIf="!relation?.type"><i class="material-icons">compare_arrows</i></span>
             <span *ngIf="relation?.type" class="horiz-centered"><i
               class="material-icons flip">trending_flat</i>{{relation?.type}}
               <i class="material-icons">trending_flat</i></span>
-            <a [routerLink]="['..',relation.pattern2Id]">{{ relation?.pattern2Name}}</a>
+            <a [routerLink]="['..',relation.pattern2Uri]">{{ relation?.pattern2Name}}</a>
             <i>{{relation?.description ? ': ' + relation?.description : ''}}</i>
           </p>
           <br/>

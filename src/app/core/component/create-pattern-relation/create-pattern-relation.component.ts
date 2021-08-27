@@ -7,6 +7,7 @@ import { DirectedEdgeModel } from '../../model/hal/directed-edge.model';
 import { UndirectedEdgeModel } from '../../model/hal/undirected-edge.model';
 import { PatternContainer } from '../../model/hal/pattern-container.model';
 import PatternLanguage from '../../model/hal/pattern-language.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'pp-create-pattern-relation',
@@ -14,46 +15,73 @@ import PatternLanguage from '../../model/hal/pattern-language.model';
   styleUrls: ['./create-pattern-relation.component.scss']
 })
 
-
+/**
+ * This dialog is getting used to
+ *    1. Create new relations
+ *    2. Edit existing relations (isDelete = true)
+ *    3. Delete existing relations (isDelete = true)
+ */
 export class CreatePatternRelationComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<CreatePatternRelationComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private fb: FormBuilder) {
   }
 
+  isDelete: boolean;
   directionEnum = PatternRelationDescriptorDirection;
   patterns: Pattern[];
-  types = [{ name: PatternRelationDescriptorDirection.DirectedRight, icon: 'trending_flat' },
-    { name: PatternRelationDescriptorDirection.DirectedLeft, icon: 'trending_flat' }, {
-      name: PatternRelationDescriptorDirection.UnDirected,
-      icon: 'compare_arrows'
-    }];
+  directionTypes = [
+    { name: PatternRelationDescriptorDirection.DirectedRight, icon: 'trending_flat' },
+    { name: PatternRelationDescriptorDirection.DirectedLeft, icon: 'trending_flat' },
+    { name: PatternRelationDescriptorDirection.UnDirected, icon: 'sync_alt' }
+  ];
   relationForm: FormGroup;
-  relationTypes = ['isRelatedTo', 'isUsedBefore', 'isUsedAfter', 'dependsOn', 'canBeUsedWith',
-    'cannotBeUsedWith', 'consistsOf', 'uses', 'usedIn', 'isAlternativeTo', 'isVariationOf'];
+  relationTypes = [
+    // Fallback values, can be overwritten by providing an Observable as data.relationTypes
+    'isRelatedTo',
+    'isUsedBefore',
+    'isUsedAfter',
+    'dependsOn',
+    'canBeUsedWith',
+    'cannotBeUsedWith',
+    'consistsOf',
+    'uses',
+    'usedIn',
+    'isAlternativeTo',
+    'isVariationOf'
+  ];
 
+  private subscriptionRefs = [];
 
   ngOnInit() {
-    this.relationForm = this.fb.group({
-      firstPattern: ['', [Validators.required]],
-      secondPattern: ['', [Validators.required]],
-      direction: ['', [Validators.required]],
-      relationType: ['', [Validators.required]],
-      description: ['', []],
-    });
-
-    if (this.data.firstPattern) {
-      this.relationForm.get('firstPattern').setValue(this.data.firstPattern);
+    let preselectedEdgeDirection;
+    try {
+      preselectedEdgeDirection = this.directionTypes.filter(type => type.name === this.data.preselectedEdgeDirection)[0];
+    } catch (e) {
     }
-    if (this.data.secondPattern) {
-      this.relationForm.get('secondPattern').setValue(this.data.secondPattern);
+
+    if (this.data.description === undefined) {
+      this.data.description = '';
+    }
+    this.isDelete = this.data.isDelete; // set view to delete/edit instead of create
+    this.relationForm = this.fb.group({
+      firstPattern: [this.data.firstPattern, [Validators.required]],
+      secondPattern: [this.data.secondPattern, [Validators.required]],
+      direction: [preselectedEdgeDirection, [Validators.required]],
+      relationType: [this.data.relationType, [Validators.required]],
+      description: [this.data.description, []],
+    });
+    if (this.data.relationTypes) {
+      this.subscriptionRefs.push(this.data.relationTypes.subscribe(relationTypes => this.relationTypes = relationTypes));
     }
   }
 
   close(): void {
     this.dialogRef.close();
+    this.subscriptionRefs.forEach(subscription => subscription.unsubscribe());
   }
 
-  // adds a relation created by the dialog to the local data and returns whether this was successful (or not, e.g. when simply closing the dialog)
+  // adds a relation created by the dialog to the local data and returns whether this was successful (or not, e.g. when
+  // simply closing the dialog)
   mapDialogDataToEdge(dialogResult: DialogDataResult): DirectedEdgeModel | UndirectedEdgeModel {
     if (!dialogResult || !dialogResult.secondPattern || !dialogResult.direction) {
       return null;
@@ -75,14 +103,26 @@ export class CreatePatternRelationComponent implements OnInit {
 
   }
 
+  /**
+   * called when delete button is pressed --> delete Link
+   */
+  deleteLink() {
+    this.data.deleteLink = true;
+  }
 }
 
 export interface DialogData {
+  relationType: string;
+  description: string;
   firstPattern?: Pattern;
   secondPattern?: Pattern;
+  preselectedEdgeDirection?: PatternRelationDescriptorDirection;
   patterns: Pattern[];
   patternLanguage: PatternLanguage;
   patternContainer: PatternContainer;
+  relationTypes?: Observable<string[]>;
+  isDelete: boolean;   // delete button toggle
+  deleteLink: boolean; // set true if delete button pressed
 }
 
 export interface PatternRelationDirection {
@@ -97,5 +137,3 @@ export interface DialogDataResult {
   secondPattern: Pattern;
   description?: string;
 }
-
-

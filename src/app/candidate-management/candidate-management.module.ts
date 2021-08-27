@@ -14,9 +14,6 @@ import { CandidateManagementDetailComponent } from './candidate-management-detai
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatExpansionModule } from '@angular/material/expansion';
 // Routing
-import { AuthGuardService as AuthGuard } from '../authentication/_services/auth-guard.service'
-import { UserRole } from '../core/user-management';
-
 
 export const CANDIATE_ROTUES = [
   {
@@ -31,33 +28,32 @@ export const CANDIATE_ROTUES = [
         component: CandidateManagementDetailComponent,
         // Will be used in the future
         // canActivate: [AuthGuard],
-        // data: { role: UserRole.MEMBER }  
+        // data: { role: UserRole.MEMBER }
       },
       {
         path: 'edit/:name',
         component: CandidateManagementDetailComponent,
         // Will be used in the future
         // canActivate: [AuthGuard],
-        // data: { role: UserRole.MEMBER }  
+        // data: { role: UserRole.MEMBER }
       },
       {
         path: 'create',
         component: CandidateManagementDetailComponent,
         // Will be used in the future
         // canActivate: [AuthGuard],
-        // data: { role: UserRole.MEMBER }  
+        // data: { role: UserRole.MEMBER }
       },
       {
         path: 'create/:name',
         component: CandidateManagementDetailComponent,
         // Will be used in the future
         // canActivate: [AuthGuard],
-        // data: { role: UserRole.MEMBER }  
+        // data: { role: UserRole.MEMBER }
       }
     ]
   }
 ];
-
 
 @NgModule({
   declarations: [
@@ -79,7 +75,7 @@ export const CANDIATE_ROTUES = [
     MatToolbarModule,
     MatExpansionModule
   ],
-  providers: [
-  ]
+  providers: []
 })
-export class CandidateManagementModule { }
+export class CandidateManagementModule {
+}

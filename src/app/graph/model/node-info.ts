@@ -1,4 +1,3 @@
-
 /**
  * Defines a relation between two patterns.
  */

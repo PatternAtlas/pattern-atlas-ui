@@ -11,6 +11,10 @@ svg {
   }
 }
 
+svg {
+  background-color: #fff;
+}
+
 .container {
   position: fixed;
   height: calc(100vh - 177px);
@@ -79,4 +83,15 @@ svg {
 
 .pattern-list.cdk-drop-list-dragging .pattern-box:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.sidemenu {
+  max-width: 30%;
+}
+
+.edit-icon {
+  margin-left: auto;
+  margin-right: 0;
+  color: rgb(63, 81, 181);
+  padding-left: 10px;
 }

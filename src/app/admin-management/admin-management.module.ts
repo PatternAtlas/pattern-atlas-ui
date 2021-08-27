@@ -5,7 +5,7 @@ import { CoreModule } from '../core/core.module';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -16,7 +16,6 @@ import { UserListComponent } from './user/user-list/user-list.component';
 import { UserDetailComponent } from './user/user-detail/user-detail.component';
 import { PrivilegeComponent } from './privilege/privilege.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-
 
 export const ADMIN_MANAGEMENT_ROUTES = [
   {
@@ -60,4 +59,5 @@ export const ADMIN_MANAGEMENT_ROUTES = [
     UserDetailComponent
   ]
 })
-export class AdminManagementModule { }
+export class AdminManagementModule {
+}

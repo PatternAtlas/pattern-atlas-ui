@@ -3,7 +3,6 @@ import { TdTextEditorComponent } from '@covalent/text-editor';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as marked from 'marked';
 import { TokensList } from 'marked';
-import Pattern from '../../core/model/pattern.model';
 import { ToasterService } from 'angular2-toaster';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ValidationService } from '../../core/service/validation.service';
@@ -13,10 +12,14 @@ import PatternSectionSchema from '../../core/model/hal/pattern-section-schema.mo
 import * as MarkdownIt from 'markdown-it';
 import * as markdownitKatex from 'markdown-it-katex';
 import { PatternService } from '../../core/service/pattern.service';
-import { debounceTime, distinctUntilChanged } from 'rxjs/internal/operators';
+import { debounceTime, distinctUntilChanged, tap } from 'rxjs/internal/operators';
 import { globals } from '../../globals';
 import { UriConverter } from '../../core/util/uri-converter';
-
+import { SelectPatternDialogComponent } from '../../core/component/select-pattern-dialog/select-pattern-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { of } from 'rxjs';
+import Pattern from '../../core/model/hal/pattern.model';
+import { MarkdownEditorUtils } from '../../core/util/markdown-editor-utils';
 
 @Component({
   selector: 'pp-create-pattern',
@@ -27,13 +30,33 @@ export class CreatePatternComponent implements OnInit {
 
   iconForm: FormGroup;
   patterns: Array<Pattern>;
-  patternLanguageUri: string;
+  patternLanguageId: string;
   iconPreviewVisible = false;
   wasSaveButtonClicked = false;
   patternValuesFormGroup: FormGroup;
   previousTextEditorValue = '# Pattern name';
   options: any = {
-    // todo: hide the preview button because it forces fullscreen mode (and destroys our page layout)
+    autoDownloadFontAwesome: true,
+    toolbar:
+      [...MarkdownEditorUtils.standardMarkdownEditiorButtons,
+        {
+          name: 'alert',
+          action: (editor) => {
+            MarkdownEditorUtils.insertTextAtCursor(editor, '$', '$');
+          },
+          className: 'fa fa-subscript',
+          title: 'Add Formula',
+        }, {
+          name: 'pattern-link',
+          action: (editor) => {
+            this.addPatternReference(editor);
+          },
+          className: 'fa fab fa-product-hunt',
+          title: 'Reference Pattern',
+        },
+        '|', // Separator
+        MarkdownEditorUtils.helpButton
+      ],
   };
   errorMessages: Array<string>;
   patternLanguage: PatternLanguage;
@@ -49,7 +72,8 @@ export class CreatePatternComponent implements OnInit {
               private patternService: PatternService,
               private router: Router,
               private zone: NgZone,
-              private _fb: FormBuilder) {
+              private _fb: FormBuilder,
+              private matDialog: MatDialog) {
   }
 
   get iconUrl(): AbstractControl {
@@ -58,20 +82,22 @@ export class CreatePatternComponent implements OnInit {
 
   static isListItem(i: number, sectionIndex: number, lines: marked.TokensList): boolean {
     for (let index = sectionIndex + 1; index < i; index++) {
-      if (lines[ index ].type === 'list_item_start') {
+      if (lines[index].type === 'list_item_start') {
         return true;
       }
     }
     return false;
   }
 
-
   ngOnInit() {
-    this.patternLanguageUri = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId));
+    this.patternLanguageId = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId));
     this.markdown = new MarkdownIt();
     this.markdown.use(markdownitKatex);
 
-    this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageUri).subscribe((pl: PatternLanguage) => {
+    const patternLanguageObservable = UriConverter.isUUID(this.patternLanguageId) ?
+      this.patternLanguageService.getPatternLanguageById(this.patternLanguageId)
+      : this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageId);
+    patternLanguageObservable.subscribe((pl) => {
       this.patternLanguage = pl;
       this.sections = this.patternLanguage.patternSchema ?
         this.patternLanguage.patternSchema.patternSectionSchemas.map((schema: PatternSectionSchema) => schema.label) : [];
@@ -87,6 +113,47 @@ export class CreatePatternComponent implements OnInit {
     this.iconUrl.valueChanges.pipe(debounceTime(1000), distinctUntilChanged()).subscribe((urlValue) => {
       this.iconPreviewVisible = urlValue && (urlValue.startsWith('https://') || urlValue.startsWith('http://'));
     });
+  }
+
+  insertTextAtCursor(editor: any, textBeforeCursor, textAfterCursor): void {
+    var cm = editor.codemirror;
+    var stat = editor.getState(cm);
+    var options = editor.options;
+    var url = 'http://';
+    var text;
+    var start = textBeforeCursor; // text to insert before cursor
+    var end = textAfterCursor; // text to insert after cursor
+    var startPoint = cm.getCursor('start');
+    var endPoint = cm.getCursor('end');
+
+    if (options.promptURLs) {
+      url = prompt(options.promptTexts.image);
+      if (!url) {
+        return;
+      }
+    }
+    if (url) {
+      end = end.replace('#url#', url);
+    }
+    if (stat.link) {
+      text = cm.getLine(startPoint.line);
+      start = text.slice(0, startPoint.ch);
+      end = text.slice(startPoint.ch);
+      cm.replaceRange(start + end, {
+        line: startPoint.line,
+        ch: 0
+      });
+    } else {
+      text = cm.getSelection();
+      cm.replaceSelection(start + text + end);
+
+      startPoint.ch += start.length;
+      if (startPoint !== endPoint) {
+        endPoint.ch += start.length;
+      }
+    }
+    cm.setSelection(startPoint, endPoint);
+    cm.focus();
   }
 
   save(): void {
@@ -118,17 +185,25 @@ export class CreatePatternComponent implements OnInit {
 
   }
 
+  //Format Input text so MAP Patterns can be directly copied into Pattern Atlas
+  reformatMapPatternInput(text: string) {
+    return text.replace(new RegExp('<!--.*-->', 'g'), ' ')
+      .replace(new RegExp('\{#sec:.*}', 'g'), ' ')
+      .replace(new RegExp('#{3,}', 'g'), '##');
+  }
+
   parseMarkdownText(): TokensList {
-    return marked.lexer(this._textEditor.value);
+    return marked.lexer(this.reformatMapPatternInput(this._textEditor.value));
   }
 
   onChangeMarkdownText(): void {
+    this.parsePatternInput();
     const currentText = this.parseMarkdownText();
     if (this.invalidTextEdit(currentText)) {
       // TODO
     }
     if (this.markdown) {
-      document.getElementById('preview').innerHTML = this.markdown.render(this._textEditor.value);
+      document.getElementById('preview').innerHTML = this.markdown.render(this.reformatMapPatternInput(this._textEditor.value));
     }
   }
 
@@ -150,10 +225,10 @@ export class CreatePatternComponent implements OnInit {
     }
     this.errorMessages = [];
     Object.keys(this.patternValuesFormGroup.controls).forEach(key => {
-      const controlErrors: ValidationErrors = this.patternValuesFormGroup.controls[ key ].errors;
+      const controlErrors: ValidationErrors = this.patternValuesFormGroup.controls[key].errors;
       if (controlErrors != null) {
         Object.keys(controlErrors).forEach(keyError => {
-          this.errorMessages.push(ValidationService.getMessageForError(key, keyError, controlErrors[ keyError ]));
+          this.errorMessages.push(ValidationService.getMessageForError(key, keyError, controlErrors[keyError]));
         });
       }
     });
@@ -184,7 +259,7 @@ export class CreatePatternComponent implements OnInit {
   private parsePatternInput(): void {
     const lines = this.parseMarkdownText();
     const patternNameIndex = lines.findIndex((it) => it.type === 'heading' && it.depth === 1);
-    this.patternName = patternNameIndex !== -1 ? lines[ patternNameIndex ][ 'text' ] : '';
+    this.patternName = patternNameIndex !== -1 ? lines[patternNameIndex]['text'] : '';
     this.patternLanguage.patternSchema.patternSectionSchemas.forEach((schema: PatternSectionSchema) => {
       const sectionName = schema.name;
       const sectionIndex = lines.findIndex((sec) => sec.type === 'heading' && sec.depth === 2 &&
@@ -192,17 +267,21 @@ export class CreatePatternComponent implements OnInit {
       if (sectionIndex !== -1) {
         const sectionContent = [];
         for (let i = sectionIndex + 1; i < lines.length; i++) {
-          if (lines[ i ].type === 'heading') {
+          if (lines[i].type === 'heading') {
             break;
           }
-          if (lines[ i ][ 'text' ]) {
-            // if a list item was parsed before, add it to the text
-            sectionContent.push(i > 0 && CreatePatternComponent.isListItem(i, sectionIndex, lines) ? '* ' + lines[ i ][ 'text' ] : lines[ i ][ 'text' ]);
+          if (lines[i].type === 'space') {
+            sectionContent.push('\n');
           }
+          if (lines[i]['text']) {
+            // if a list item was parsed before, add it to the text
+            sectionContent.push(i > 0 && CreatePatternComponent.isListItem(i, sectionIndex, lines) ? '* ' + lines[i]['text'] : lines[i]['text']);
+          }
+          console.log('sectioncontent:' + sectionContent)
         }
         if (this.patternValuesFormGroup) {
-          if (this.patternValuesFormGroup.controls[ sectionName ]) {
-            this.patternValuesFormGroup.controls[ sectionName ].setValue(sectionContent.join('\n'));
+          if (this.patternValuesFormGroup.controls[sectionName]) {
+            this.patternValuesFormGroup.controls[sectionName].setValue(sectionContent.join('\n'));
           } else {
             console.log('missing formcontrol:');
             console.log(sectionName);
@@ -231,5 +310,35 @@ export class CreatePatternComponent implements OnInit {
     }
     this._textEditor.value = this.previousTextEditorValue;
     this.onChangeMarkdownText();
+  }
+
+  private addPatternReference(editor: any) {
+    // get patterns to select from
+    let patternsObservable = !this.patterns ?
+      this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href) : of(this.patterns);
+    patternsObservable.pipe(
+      tap((res) => {
+        this.patterns = res;
+        // let the user choose which pattern to reference
+        this.showAndHandlePatternSelectionDialog(this.patterns, editor);
+      })).subscribe((res) => {
+      console.log('show dialog for pattern selection')
+    });
+  }
+
+  private showAndHandlePatternSelectionDialog(patterns: Array<Pattern>, editor: any) {
+    const dialogRef = this.matDialog.open(SelectPatternDialogComponent, {
+      data: {
+        patterns: this.patterns
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((selectedPattern) => {
+      const patternReferenceUrl = `pattern-languages/${this.patternLanguage.id}/${selectedPattern.id}`;
+      if (selectedPattern) { // if user did not cancel
+        MarkdownEditorUtils.insertTextAtCursor(editor, `[${selectedPattern.name}](${patternReferenceUrl})`, '');
+        this.onChangeMarkdownText();
+      }
+    });
   }
 }

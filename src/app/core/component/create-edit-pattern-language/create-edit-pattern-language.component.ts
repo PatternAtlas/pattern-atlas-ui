@@ -9,11 +9,9 @@ import PatternSchema from '../../model/hal/pattern-schema.model';
 import PatternSectionSchema from '../../model/hal/pattern-section-schema.model';
 import { ActivatedRoute } from '@angular/router';
 
-
 export enum CreateEditComponentDialogType {
   PATTERN_LANGUAGE, PATTERN_VIEW, DESIGN_MODEL
 }
-
 
 @Component({
   selector: 'pp-create-edit-pattern-language',
@@ -47,7 +45,7 @@ export class CreateEditPatternLanguageComponent implements OnInit {
 
   ngOnInit(): void {
     this.componentDialogType = this.data.componentDialogType;
-    this.dialogTitle = ['Pattern Language', 'Pattern View', 'Design Model'][ this.componentDialogType ];
+    this.dialogTitle = ['Pattern Language', 'Pattern View', 'Design Model'][this.componentDialogType];
     this.isPatternLanguageDialog = this.componentDialogType === CreateEditComponentDialogType.PATTERN_LANGUAGE;
 
     const urlRegex = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i; // eslint-disable-line max-len
@@ -90,11 +88,13 @@ export class CreateEditPatternLanguageComponent implements OnInit {
     if (this.patternLanguageForm.valid) {
 
       switch (this.componentDialogType) {
-        case CreateEditComponentDialogType.PATTERN_VIEW:
+        case CreateEditComponentDialogType.PATTERN_VIEW :
+        case CreateEditComponentDialogType.DESIGN_MODEL:
 
           this.saveClicked.emit({
             dialogResult: {
-              name: this.name.value
+              name: this.name.value,
+              logo: this.iconUrl.value,
             }
           });
           this.dialogRef.close();
@@ -108,11 +108,10 @@ export class CreateEditPatternLanguageComponent implements OnInit {
           const patternSchema = new PatternSchema();
           patternSchema.patternSectionSchemas = [];
 
-
           for (let i = 0; i < this.sections.length; i++) {
             const patternSectionSchema = new PatternSectionSchema();
-            patternSectionSchema.name = this.sections[ i ];
-            patternSectionSchema.label = this.sections[ i ];
+            patternSectionSchema.name = this.sections[i];
+            patternSectionSchema.label = this.sections[i];
             patternSectionSchema.position = i;
             patternSectionSchema.type = 'any';
             patternSchema.patternSectionSchemas.push(patternSectionSchema);
@@ -120,17 +119,6 @@ export class CreateEditPatternLanguageComponent implements OnInit {
           patternLanguage.patternSchema = patternSchema;
           this.saveClicked.emit({
             dialogResult: patternLanguage
-          });
-          this.dialogRef.close();
-          break;
-
-        case CreateEditComponentDialogType.DESIGN_MODEL:
-
-          this.saveClicked.emit({
-            dialogResult: {
-              name: this.name.value,
-              logo: this.iconUrl.value
-            }
           });
           this.dialogRef.close();
           break;

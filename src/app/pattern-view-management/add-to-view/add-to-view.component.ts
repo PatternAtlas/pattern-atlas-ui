@@ -12,8 +12,8 @@ import { HalLink } from '../../core/model/hal/hal-link.interface';
 import { DirectedEdgeModel } from '../../core/model/hal/directed-edge.model';
 import { UndirectedEdgeModel } from '../../core/model/hal/undirected-edge.model';
 
-
-// TODO the following model definitions should be moved in separate classes. As the PatternViewService using the definitions from this component.
+// TODO the following model definitions should be moved in separate classes. As the PatternViewService using the
+// definitions from this component.
 /** Nested node */
 export class LoadmoreNode {
   childrenChange = new BehaviorSubject<LoadmoreNode[]>([]);
@@ -60,14 +60,13 @@ export class LinksToOtherPattern {
       relatedPatternIsSource = edge.pattern2Id === patternId;
       this.name = relatedPatternIsSource ? edge.pattern1Name : edge.pattern2Name;
       this.id = relatedPatternIsSource ? edge.pattern1Id : edge.pattern2Id;
-      this.linkedPattern = relatedPatternIsSource ? edge._links.pattern[ 0 ] : edge._links.pattern[ 1 ];
+      this.linkedPattern = relatedPatternIsSource ? edge._links.pattern[0] : edge._links.pattern[1];
       this.type = 'undirected';
       this.edge = edge;
     }
 
   }
 }
-
 
 @Component({
   selector: 'pp-add-to-view',
@@ -85,7 +84,6 @@ export class AddToViewComponent {
   isLinkModal = false;
   patternId: string;
 
-
   constructor(@Inject(MAT_DIALOG_DATA) public data: { patternlanguages?: PatternLanguage[], links?: LinksToOtherPattern[], title: string, patternId: string },
               private patternService: PatternService, private patternRelationDescriptorService: PatternRelationDescriptorService) {
     this.isLinkModal = !!data.patternlanguages;
@@ -101,7 +99,6 @@ export class AddToViewComponent {
     this.dataSource.data = this.nodes;
 
   }
-
 
   checklistSelection = new SelectionModel<LoazyLoadedFlatNode>(true /* multiple */);
   getChildren = (node: LoadmoreNode): Observable<LoadmoreNode[]> => node.childrenChange;
@@ -124,7 +121,6 @@ export class AddToViewComponent {
 
   hasChild = (_: number, _nodeData: LoazyLoadedFlatNode) => _nodeData.level === 0;
 
-
   isLoadMore = (_: number, _nodeData: LoazyLoadedFlatNode) => _nodeData.item.id === this.LOAD_MORE; // ?
 
   /** Load more nodes from data source */
@@ -135,7 +131,7 @@ export class AddToViewComponent {
       treenode.childrenChange.next(treenode.children);
       return;
     }
-    if (node.item[ 'uri' ]) {
+    if (node.item['uri']) {
       this.getPatternsAndAddToTree(<PatternLanguage>node.item, treenode, node);
 
     } else {
@@ -160,7 +156,6 @@ export class AddToViewComponent {
       parent = this.getParentNode(parent);
     }
   }
-
 
   /** Whether part of the descendants are selected */
   descendantsPartiallySelected(node: LoazyLoadedFlatNode): boolean {
@@ -203,7 +198,7 @@ export class AddToViewComponent {
     const startIndex = this.treeControl.dataNodes.indexOf(node) - 1;
 
     for (let i = startIndex; i >= 0; i--) {
-      const currentNode = this.treeControl.dataNodes[ i ];
+      const currentNode = this.treeControl.dataNodes[i];
 
       if (currentNode.level < currentLevel) {
         return currentNode;
@@ -211,7 +206,6 @@ export class AddToViewComponent {
     }
     return null;
   }
-
 
   /** Toggle the to-do item selection. Select/deselect all the descendants node */
   todoItemSelectionToggle(node: LoazyLoadedFlatNode): void {
@@ -266,7 +260,7 @@ export class AddToViewComponent {
   }
 
   private getRelatedPatternAndAddToTree(item: LinksToOtherPattern, treenode: LoadmoreNode, node: LoazyLoadedFlatNode) {
-    const edgesObservables = node.item[ 'links' ].map(link => item.type === 'directed' ?
+    const edgesObservables = node.item['links'].map(link => item.type === 'directed' ?
       this.patternRelationDescriptorService.getDirectedEdgeByUrl(link.href) :
       this.patternRelationDescriptorService.getUndirectedEdgeByUrl(link.href));
     // @ts-ignore

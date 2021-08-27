@@ -77,4 +77,5 @@ export const ISSUE_ROTUES = [
   providers: [
   ],
 })
-export class IssueManagementModule { }
+export class IssueManagementModule {
+}

@@ -12,8 +12,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import {QueriedData} from '../service/data/QueriedData.interface';
-import {globals} from '../../globals';
+import { QueriedData } from '../service/data/QueriedData.interface';
+import { globals } from '../../globals';
 
 export class UriConverter {
 
@@ -51,5 +51,13 @@ export class UriConverter {
     });
   }
 
+  // this function checks if a given urlParam is a UUID (otherwise the entity is specified via its URI)
+  static isUUID(urlParam): boolean {
+    const s = '' + urlParam;
+
+    const match = s.match('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$');
+    return match !== null;
+
+  }
 
 }
