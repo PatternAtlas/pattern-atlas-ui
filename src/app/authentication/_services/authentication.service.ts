@@ -179,7 +179,7 @@ export class AuthenticationService {
   }
 
   private getRoles() {
-    this.http.get<any>(`${environment.repositoryUrl}/users/roles`).subscribe(roles => {
+    this.http.get<any>(`${environment.API_URL}/users/roles`).subscribe(roles => {
       this.rolePASubject.next(roles._embedded.roleModels);
     }, error => {
       console.error('Error getToken via refreshToken: ', error)

@@ -41,9 +41,9 @@ interface EtcdNode {
 const initialValues: PatternAtlasUiConfiguration = {
   features: {
     designModel: false,
-    patternCandidate: false,
-    patternViews: false,
-    issue: false,
+    patternCandidate: true,
+    patternViews: true,
+    issue: true,
     showSettings: false,
     editing: true
   },

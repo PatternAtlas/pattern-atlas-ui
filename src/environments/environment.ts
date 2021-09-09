@@ -27,7 +27,7 @@ export const environment = {
     window['env']['LATEX_RENDERER_PORT']
       ? `http://${window['env']['LATEX_RENDERER_HOST_NAME']}:${window['env']['LATEX_RENDERER_PORT']}`
       : 'http://localhost:5030',
-  repositoryUrl: 'http://localhost:1978/patternpedia',
+  repositoryUrl: 'http://localhost:1977/patternatlas',
   authorizeUrl: 'http://localhost:8081/oauth/authorize?',
   tokenUrl: 'http://localhost:8081/oauth/token',
   tokenRevokeUrl: 'http://localhost:8081/oauth/revoke_token',

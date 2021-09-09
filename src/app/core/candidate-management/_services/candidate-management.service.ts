@@ -40,7 +40,7 @@ export class CandidateManagementService {
    * CREATE
    */
   public createCandidate(candidate: Candidate): Observable<Candidate> {
-    candidate.uri = candidate.name;    
+    candidate.uri = candidate.name;
     return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint, candidate).pipe(
       map(result => {
         this.toasterService.pop('success', 'Created new candidate');
