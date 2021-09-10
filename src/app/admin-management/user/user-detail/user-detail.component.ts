@@ -32,14 +32,6 @@ export class UserDetailComponent implements OnInit {
     this.user = this.data;
     this.createForm()
 
-    // this.userStore.user.subscribe(user => {
-    //   if (user) {
-    //     this.user = user;
-    //   } else {
-    //     this.user = new PAUser(UserRole.MEMBER)
-    //   }
-      
-    // })
   }
 
   createForm() {
@@ -76,7 +68,6 @@ export class UserDetailComponent implements OnInit {
   }
 
   exit() {
-    //this.router.navigateByUrl('admin');
     this.dialogRef.close();
   }
 

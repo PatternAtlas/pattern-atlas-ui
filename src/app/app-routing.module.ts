@@ -64,6 +64,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     data: { privilege: Privilege.USER_READ_ALL }
   },
+  // for future use
   // {
   //   path: 'developer',
   //   loadChildren: () => import('./developer-management/developer-management.module').then(m => m.DeveloperManagementModule),

@@ -37,7 +37,7 @@
     "lodash": "^4.17.21",
     "madr": "2.1.2",
     "markdown-it": "10.0.0",
-    "markdown-it-katex": "github:MicroDroid/markdown-it-katex",
+    "markdown-it-katex": "^2.0.3",
     "mathjs": "^7.0.2",
     "ngx-cookie-service": "2.1.0",
     "ngx-md": "8.1.6",
