@@ -110,17 +110,17 @@ export class IssueManagementService {
   }
 
   public updateAuthorsIssue(issue: Issue, authorModel: AuthorModel): Observable<Issue> {
-      return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${issue.id}/authors`, authorModel).pipe(
-        map(result => {
-          this.toasterService.pop('success', 'Updated issue authors')
-          return result
-        }),
-        catchError(error => {
-          this.toasterService.pop('error', 'Could not update issue authors: ', error)
-          return null;
-        }),
-      )
-    }
+    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${issue.id}/authors`, authorModel).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Updated issue authors')
+        return result
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Could not update issue authors: ', error)
+        return null;
+      }),
+    )
+  }
 
   public updateComment(issue: Issue, comment: PAComment): Observable<Issue> {
     return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${issue.id}/comments/${comment.id}`, comment).pipe(

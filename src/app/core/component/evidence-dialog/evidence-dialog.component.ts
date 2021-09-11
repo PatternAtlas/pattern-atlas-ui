@@ -39,10 +39,10 @@ export class EvidenceDialogComponent implements OnInit {
     })   
 
     this.filteredOptions = this.evidenceForm.get('type').valueChanges
-    .pipe(
-      startWith(''),
-      map(value => this._filter(value))
-    );
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
   }
 
   private _filter(value: string): string[] {

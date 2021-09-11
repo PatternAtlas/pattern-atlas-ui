@@ -311,7 +311,7 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
   deleteEvidence(evidenceId: string) {
     let confirmDialog = this.dialog.open(ConfirmDialogComponent, {
       data: {
-        title: `Delete Evidence`,
+        title: 'Delete Evidence',
         text: 'Are you sure that you want to delete this evidence submission?'
       }
     });

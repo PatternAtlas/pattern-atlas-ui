@@ -1,4 +1,4 @@
-import { RatingType } from "../_enums/rating-type.enum";
+import { RatingType } from '../_enums/rating-type.enum';
 
 export class RatingModelRequest {
     rating: number;

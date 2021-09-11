@@ -36,11 +36,11 @@ export class CommentListComponent implements OnInit, OnChanges {
     this.auth.user.subscribe(_user => {
       if (_user) {
         this.commentForm = this.formBuilder.group({
-          comment: {value: null, disabled: this.disabled}
+          comment: { value: null, disabled: this.disabled }
         });
       } else {
         this.commentForm = this.formBuilder.group({
-          comment: {value: null, disabled: true}
+          comment: { value: null, disabled: true }
         });
       }
     })
@@ -51,7 +51,7 @@ export class CommentListComponent implements OnInit, OnChanges {
     if (text) {
       this.createCommentEvent.next(new PAComment(text));
     } else {
-      console.error("Empty comment");
+      console.error('Empty comment');
     }
   }
 

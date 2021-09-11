@@ -10,7 +10,7 @@ describe('EvidenceListComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ EvidenceListComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

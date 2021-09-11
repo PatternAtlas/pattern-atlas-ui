@@ -10,7 +10,7 @@ describe('EvidenceDialogComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ EvidenceDialogComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

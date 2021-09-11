@@ -72,10 +72,10 @@ export class AuthenticationService {
 
   base64URLEncode(str) {
     return str.toString('base64')
-        .replace(/\+/g, '-')
-        .replace(/\//g, '_')
-        .replace(/=/g, '');
-}
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
+  }
 
   public async login() {
     localStorage.clear();
@@ -121,7 +121,7 @@ export class AuthenticationService {
         const code = this.regexCode.exec(url)[1];
         const code_verifier = localStorage.getItem(verifierKey);
         const params = new HttpParams()
-          // .set('client_id', `${environment.clientIdPublic}`)
+        // .set('client_id', `${environment.clientIdPublic}`)
 
           .set('code', code)
           .set('redirect_uri', `${window.location.origin}`)
@@ -140,7 +140,7 @@ export class AuthenticationService {
 
           this.accessTokenSubject.next(accessToken);
         },
-          error => console.error('Error getToken(): ', error)
+        error => console.error('Error getToken(): ', error)
         );
       }
     }
@@ -162,10 +162,10 @@ export class AuthenticationService {
 
       this.accessTokenSubject.next(accessToken);
     },
-      error => {
-        console.error('Error getToken via refreshToken: ', error)
+    error => {
+      console.error('Error getToken via refreshToken: ', error)
 
-      }
+    }
     );
   }
 

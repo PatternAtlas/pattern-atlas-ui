@@ -1,4 +1,4 @@
-import { RatingModelRequest } from "..";
+import { RatingModelRequest } from '..';
 
 export class RatingEventModel {
   rating: RatingModelRequest;

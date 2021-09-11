@@ -9,17 +9,17 @@
 
 .mat-card-header {
   flex-shrink: 0;
-  margin: 0px !important;
+  margin: 0 !important;
 }
 
 mat-card-header-text {
-  margin: 0px !important;
+  margin: 0 !important;
 }
 
 .container {
   display: flex;
   flex-flow: row wrap;
-  margin: 0px;
+  margin: 0;
 }
 
 .mat-card-content {
@@ -28,7 +28,7 @@ mat-card-header-text {
 }
 
 .mat-card-title {
-  min-height: 0rem;
+  min-height: 0;
 }
 
 .heading {

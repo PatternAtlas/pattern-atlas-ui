@@ -1,4 +1,4 @@
-import { AuthorModel, AuthorModelRequest } from "../../author-management";
+import { AuthorModel, AuthorModelRequest } from '../../author-management';
 
 export class AuthorEventModel {
   author: AuthorModel;
