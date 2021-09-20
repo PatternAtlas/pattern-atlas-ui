@@ -48,23 +48,18 @@ export class AuthenticationService {
 
     this.accessTokenSubject.subscribe(token => {
       if (token === 'logout') {
-        console.log('User logout');
         this.userSubject.next(null);
-        // this.roleSubject.next(null);
         this.router.navigate(['/']);
 
       } else if (token && !this.jwtHelper.isTokenExpired(token)) {
-        console.log('Token exists && token not expired')
         this.getUserInfo();
         this.getRoles();
         this.router.navigate(['/']);
 
       } else if (token && this.getRefreshToken() && this.jwtHelper.isTokenExpired(this.getAccesToken())) {
-        console.log('Token exists && token expired');
         this.refreshToken();
 
       } else {
-        console.log('Token does not exist');
         this.getToken();
       }
     })
@@ -147,7 +142,6 @@ export class AuthenticationService {
   }
 
   refreshToken() {
-    console.log('Refresh Token');
     const params = new HttpParams()
       .set('client_id', `${environment.clientIdPublic}`)
       .set('grant_type', 'refresh_token')
@@ -171,7 +165,6 @@ export class AuthenticationService {
 
   private getUserInfo() {
     this.http.get<UserInfoModel>('http://localhost:8081/user_info').subscribe(user => {
-      console.log(user);
       this.userSubject.next(user);
     }, error => {
       console.error('Error getToken via refreshToken: ', error)
@@ -187,7 +180,6 @@ export class AuthenticationService {
   }
 
   logout() {
-    console.log('Logout');
     localStorage.clear();
     this.accessTokenSubject.next('logout');
   }

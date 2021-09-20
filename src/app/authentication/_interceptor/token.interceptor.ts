@@ -9,7 +9,6 @@ export class TokenInterceptor implements HttpInterceptor {
   private static authService: AuthenticationService = null;
 
   static init(authService: AuthenticationService) {
-    console.log('interceptor initialized');
     this.authService = authService;
   }
 
