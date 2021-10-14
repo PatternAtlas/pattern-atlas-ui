@@ -38,6 +38,8 @@ export class AppComponent implements OnInit {
   user: PAUser;
   readonly pathConstants = globals.pathConstants;
   loading = true;
+  readonly NOT_FOUND = 'Not Found';
+
 
   constructor(public auth: AuthenticationService,
               private toasterService: ToasterService,
@@ -68,10 +70,16 @@ export class AppComponent implements OnInit {
       () => (this.loading = false),
       (error: HttpErrorResponse) => {
         this.loading = false;
-        this.toasterService.popAsync(
-          'error', 'Error while loading config from config server, using default values instead' + error.message).subscribe(
-          () => console.log('default values applied')
-        )
+        if(error.statusText === this.NOT_FOUND){
+          this.configService.getDefaultConfiguration(); 
+          console.log('default values applied') 
+        }
+        else{
+          this.toasterService.popAsync(
+            'error', 'Error while loading config from config server, using default values instead' + error.message).subscribe(
+            () => console.log('default values applied')
+          )
+        }
       }
     );
   }
