@@ -92,7 +92,8 @@ export class CreatePatternComponent implements OnInit {
   ngOnInit() {
     this.patternLanguageId = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId));
     this.markdown = new MarkdownIt();
-    this.markdown.use(markdownitKatex);
+    this.markdown.set({ breaks: true });
+    this.markdown.use(markdownitKatex.default, { throwOnError: false, errorColor: ' #cc0000' });
 
     const patternLanguageObservable = UriConverter.isUUID(this.patternLanguageId) ?
       this.patternLanguageService.getPatternLanguageById(this.patternLanguageId)

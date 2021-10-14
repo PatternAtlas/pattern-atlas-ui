@@ -56,7 +56,8 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
 
   ngAfterViewInit() {
     this.markdown = new MarkdownIt();
-    this.markdown.use(markdownitKatex);
+    this.markdown.set({ breaks: true });
+    this.markdown.use(markdownitKatex.default, { throwOnError: false, errorColor: ' #cc0000' });
     this.changeText(this.renderedData);
   }
 
