@@ -38,7 +38,7 @@ export class AppComponent implements OnInit {
   user: PAUser;
   readonly pathConstants = globals.pathConstants;
   loading = true;
-  readonly NOT_FOUND = 'Not Found';
+  readonly NOT_FOUND = 404;
 
 
   constructor(public auth: AuthenticationService,
@@ -70,7 +70,7 @@ export class AppComponent implements OnInit {
       () => (this.loading = false),
       (error: HttpErrorResponse) => {
         this.loading = false;
-        if(error.statusText === this.NOT_FOUND){
+        if(error.status === this.NOT_FOUND){
           this.configService.getDefaultConfiguration(); 
           console.log('default values applied') 
         }

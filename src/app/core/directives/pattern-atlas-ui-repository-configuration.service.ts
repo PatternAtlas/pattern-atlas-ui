@@ -82,8 +82,8 @@ export class PatternAtlasUiRepositoryConfigurationService {
       );
   }
 
-  getDefaultConfiguration(){
-    return this.http.get(environment.defaultFeatures)
+  getDefaultConfiguration():Observable<PatternAtlasUiConfiguration>{
+    return this.http.get<PatternAtlasUiConfiguration>(environment.defaultFeatures);
   }
 
   applyConfig(feature: UiFeatures, checked: boolean): Observable<string> {
