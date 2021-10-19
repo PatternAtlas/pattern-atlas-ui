@@ -27,15 +27,14 @@ export class CandidateRendererComponent {
     }
   
     detail(candidate: Candidate) {
-        console.log(candidate);
-        this.candidateStore.addCandidate(candidate);
-        this.router.navigate(['./candidate/detail', candidate.name]);
+      this.candidateStore.addCandidate(candidate);
+      this.router.navigate(['./candidate/detail', candidate.name]);
     }
     
     edit(candidate: Candidate) {
-    this.candidateStore.addCandidate(candidate)
-    this.router.navigate(['./candidate/edit', candidate.name]);
+      this.candidateStore.addCandidate(candidate)
+      this.router.navigate(['./candidate/edit', candidate.name]);
     }
 
-  }
+}
   
