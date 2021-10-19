@@ -68,7 +68,7 @@ export class AppComponent implements OnInit {
       () => (this.loading = false),
       (error: HttpErrorResponse) => {
         this.loading = false;
-        if(error.status === globals.notFound){
+        if(error.status === globals.statusCodeNotFound){
           this.configService.getDefaultConfiguration(); 
           console.log('default values applied') 
         }
