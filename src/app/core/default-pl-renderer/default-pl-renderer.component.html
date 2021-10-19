@@ -18,9 +18,23 @@
 
 <mat-progress-spinner *ngIf="isLoadingPatternData" mode="indeterminate"></mat-progress-spinner>
 <div>
-  <pp-card-renderer *ngIf="!graphVisible && patterns && patternsForCardsView"
-                    [uriEntities]="this.patternsForCardsView"
-                    [showLinks]="false"></pp-card-renderer>
+  <div *patternAtlasUiHideOnFeature="UiFeatures.PATTERNCANDIDATE">
+    <pp-card-renderer *ngIf="!graphVisible && patterns && patternsForCardsView"
+                        [uriEntities]="this.patternsForCardsView"
+                        [showLinks]="false"></pp-card-renderer>
+  </div>
+  <div *patternAtlasUiShowOnFeature="UiFeatures.PATTERNCANDIDATE">
+    <mat-tab-group *ngIf="!graphVisible" mat-align-tabs="start">
+      <mat-tab label="Patterns">
+        <pp-card-renderer *ngIf="patterns && patternsForCardsView"
+                          [uriEntities]="this.patternsForCardsView"
+                          [showLinks]="false"></pp-card-renderer>
+      </mat-tab>
+      <mat-tab label="Candidates">
+        <pp-candidate-renderer [candidates]="this.candidates"></pp-candidate-renderer>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
   <!-- setup graph child including emit methods -->
   <pp-graph-display *ngIf="graphVisible && patterns && !isLoadingLinkData" [data]="{
                 patterns: this.patterns, edges: this.patternLinks,

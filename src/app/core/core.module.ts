@@ -32,6 +32,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TextFieldModule } from '@angular/cdk/text-field';
@@ -51,6 +52,7 @@ import { PatternLanguageService } from './service/pattern-language.service';
 import { PatternService } from './service/pattern.service';
 import { GraphDisplayComponent } from './component/graph-display/graph-display.component';
 import { CardRendererComponent } from './component/cardrenderer/card-renderer.component';
+import { CandidateRendererComponent } from './component/candidate-renderer/candidate-renderer.component';
 import { PatternViewService } from './service/pattern-view.service';
 import { CreateEditPatternLanguageComponent } from './component/create-edit-pattern-language/create-edit-pattern-language.component';
 import { ActionButtonBarComponent } from './component/action-button-bar/action-button-bar.component';
@@ -117,6 +119,7 @@ import { PatternAtlasUiFeatureToggleModule } from './directives/pattern-atlas-ui
     MatBadgeModule,
     MatExpansionModule,
     MatButtonToggleModule,
+    MatTabsModule,
     NgxMdModule.forRoot(),
     MatNativeDateModule,
     RouterModule,
@@ -136,6 +139,7 @@ import { PatternAtlasUiFeatureToggleModule } from './directives/pattern-atlas-ui
     MatProgressSpinnerModule,
     NavigateBackComponent,
     CardRendererComponent,
+    CandidateRendererComponent,
     ActionButtonBarComponent,
     RatingComponent,
     RatingMultipleComponent,
@@ -179,6 +183,7 @@ import { PatternAtlasUiFeatureToggleModule } from './directives/pattern-atlas-ui
     MarkdownPatternSectionContentComponent,
     GraphDisplayComponent,
     CardRendererComponent,
+    CandidateRendererComponent,
     CreateEditPatternLanguageComponent,
     ActionButtonBarComponent,
     RatingComponent,
@@ -209,6 +214,7 @@ import { PatternAtlasUiFeatureToggleModule } from './directives/pattern-atlas-ui
     DeletePatternRelationComponent,
     MarkdownPatternSectionContentComponent,
     CardRendererComponent,
+    CandidateRendererComponent,
     GraphDisplayComponent,
     CreateEditPatternLanguageComponent,
     ConfirmDialogComponent,

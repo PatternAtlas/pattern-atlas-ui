@@ -24,8 +24,11 @@ export class CandidateManagementService {
     this.serviceEndpoint = '/candidates';
   }
 
-  public getAllCandidates(): Observable<Candidate[]> {
-    return this.http.get<any>(this.repoEndpoint + this.serviceEndpoint).pipe(
+  public getAllCandidates(languageId?: string): Observable<Candidate[]> {
+    let endpoint:string = this.repoEndpoint + this.serviceEndpoint;
+    if (languageId !== undefined) endpoint += "/?lid=" + languageId;
+
+    return this.http.get<any>(endpoint).pipe(
       map(result => {
         return result._embedded ? result._embedded.candidateModels : [];
       }),

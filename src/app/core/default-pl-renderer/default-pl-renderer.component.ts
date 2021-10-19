@@ -20,9 +20,12 @@ import { PatternRelationDescriptorService } from '../service/pattern-relation-de
 import { ToasterService } from 'angular2-toaster';
 import { PatternService } from '../service/pattern.service';
 import Pattern from '../model/hal/pattern.model';
+import { CandidateManagementService } from '../candidate-management/_services/candidate-management.service';
+import { Candidate } from '../candidate-management/_models/candidate.model';
 import { FormControl } from '@angular/forms';
 import { globals } from '../../globals';
 import { PatternRelationDescriptorDirection } from '../model/pattern-relation-descriptor-direction.enum';
+import { UiFeatures } from '../directives/pattern-atlas-ui-repository-configuration.service';
 
 @Component({
   selector: 'pp-default-pl-renderer',
@@ -34,6 +37,8 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   patternsForCardsView: Array<Pattern> = [];
   patternLanguage: PatternLanguage;
   patternLanguageId: string;
+  candidates: Array<Candidate> = [];
+  readonly UiFeatures = UiFeatures;
   @ViewChild('graphWrapper') graph: ElementRef;
   @ViewChild('cardsView') cardsView: ElementRef;
   @ViewChild('searchField') searchField: ElementRef;
@@ -54,6 +59,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
               private dialog: MatDialog,
               private patternLanguageService: PatternLanguageService,
               private patternService: PatternService,
+              private candidateService: CandidateManagementService,
               private patternRelationDescriptorService: PatternRelationDescriptorService,
               private d3Service: D3Service,
               private router: Router,
@@ -282,13 +288,13 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
       loadDataObservable = this.patternLanguageService.getPatternLanguageByID(this.patternLanguageId)
         .pipe(
           tap(patternlanguage => this.patternLanguage = patternlanguage),
-          switchMap(() => this.loadPatternsAndLinks())
+          switchMap(() => this.loadPatternsCandidatesAndLinks())
         );
     } else {
       loadDataObservable = this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageId)
         .pipe(
           tap(patternlanguage => this.patternLanguage = patternlanguage),
-          switchMap(() => this.loadPatternsAndLinks())
+          switchMap(() => this.loadPatternsCandidatesAndLinks())
         );
     }
     const loadDataSubscrition = loadDataObservable.subscribe(() => {
@@ -299,8 +305,8 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
 
   }
 
-  loadPatternsAndLinks(): Observable<any> {
-    return forkJoin([this.loadPatterns(), this.getPatternLinks()]);
+  loadPatternsCandidatesAndLinks(): Observable<any> {
+    return forkJoin([this.loadPatterns(), this.loadCandidates(), this.getPatternLinks()]);
   }
 
   private getDirectedEdges(): Observable<Embedded<DirectedEdesResponse>> {
@@ -329,6 +335,14 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
         this.patterns = patterns;
         this.patternsForCardsView = this.patterns;
         this.isLoadingPatternData = false;
+        this.detectChanges();
+      }));
+  }
+
+  private loadCandidates(): Observable<any[]> {
+    return this.candidateService.getAllCandidates(this.patternLanguageId).pipe(
+      tap(candidates => {
+        this.candidates = candidates;
         this.detectChanges();
       }));
   }
