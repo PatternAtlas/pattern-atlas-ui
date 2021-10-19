@@ -25,5 +25,5 @@ export const globals = {
     patternViewURI: 'pattern-view-uri',
     designModels: 'design-models'
   },
-  notFound : 404
+  statusCodeNotFound : 404
 };
