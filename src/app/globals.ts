@@ -24,5 +24,6 @@ export const globals = {
     patternViews: 'pattern-views',
     patternViewURI: 'pattern-view-uri',
     designModels: 'design-models'
-  }
+  },
+  notFound : 404
 };

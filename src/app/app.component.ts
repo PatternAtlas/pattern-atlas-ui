@@ -38,8 +38,6 @@ export class AppComponent implements OnInit {
   user: PAUser;
   readonly pathConstants = globals.pathConstants;
   loading = true;
-  readonly NOT_FOUND = 404;
-
 
   constructor(public auth: AuthenticationService,
               private toasterService: ToasterService,
@@ -70,7 +68,7 @@ export class AppComponent implements OnInit {
       () => (this.loading = false),
       (error: HttpErrorResponse) => {
         this.loading = false;
-        if(error.status === this.NOT_FOUND){
+        if(error.status === globals.notFound){
           this.configService.getDefaultConfiguration(); 
           console.log('default values applied') 
         }
