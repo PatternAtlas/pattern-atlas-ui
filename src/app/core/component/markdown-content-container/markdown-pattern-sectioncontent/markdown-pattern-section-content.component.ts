@@ -3,7 +3,7 @@ import { DataChange, DataRenderingComponent } from '../interfaces/DataRenderingC
 import { MatDialog } from '@angular/material/dialog';
 import { DialogData, MdEditorComponent } from '../../md-editor/md-editor.component';
 import * as MarkdownIt from 'markdown-it';
-import * as markdownitKatex from 'markdown-it-katex';
+import * as markdownitKatex from 'markdown-it-katexx';
 import { ImageService } from '../../../service/image.service';
 import * as d3 from 'd3';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -56,7 +56,8 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
 
   ngAfterViewInit() {
     this.markdown = new MarkdownIt();
-    this.markdown.use(markdownitKatex);
+    this.markdown.set({ breaks: true });
+    this.markdown.use(markdownitKatex.default, { throwOnError: false, errorColor: ' #cc0000' });
     this.changeText(this.renderedData);
   }
 
