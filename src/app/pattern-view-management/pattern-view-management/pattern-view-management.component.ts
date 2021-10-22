@@ -3,12 +3,10 @@ import { PatternViewService } from '../../core/service/pattern-view.service';
 import { PatternContainer } from '../../core/model/hal/pattern-container.model';
 import { MatDialog } from '@angular/material/dialog';
 import {
-  CreateEditComponentDialogType,
-  CreateEditPatternLanguageComponent
+  CreateEditComponentDialogType, CreateEditPatternLanguageComponent
 } from '../../core/component/create-edit-pattern-language/create-edit-pattern-language.component';
 import { DialogPatternLanguageResult } from '../../pattern-language-management/data/DialogPatternLanguageResult.interface';
 import { PatternLanguageService } from '../../core/service/pattern-language.service';
-import PatternLanguage from '../../core/model/hal/pattern-language.model';
 import { switchMap, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { PatternContainerResponse } from '../../core/model/hal/pattern-container-response.interface';
@@ -16,6 +14,8 @@ import { ToasterService } from 'angular2-toaster';
 import { UriConverter } from '../../core/util/uri-converter';
 import UriEntity from '../../core/model/hal/uri-entity.model';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DeleteConfirmationDialogComponent } from '../../core/component/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { UiFeatures } from '../../core/directives/pattern-atlas-ui-repository-configuration.service';
 
 @Component({
   selector: 'pp-solution-language-management',
@@ -24,7 +24,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class PatternViewManagementComponent implements OnInit {
   public patternViewResponse;
-  private patternLanguages: PatternLanguage[];
+  readonly UiFeatures = UiFeatures;
 
   constructor(private patternViewService: PatternViewService, private dialog: MatDialog, private patternLanguageService: PatternLanguageService,
               private toastService: ToasterService, private activatedRoute: ActivatedRoute, private router: Router, private zone: NgZone) {
@@ -40,7 +40,6 @@ export class PatternViewManagementComponent implements OnInit {
     return this.patternViewService.getPatternViews().pipe(tap((views) => {
       this.patternViewResponse = views;
     }));
-
 
   }
 
@@ -58,6 +57,7 @@ export class PatternViewManagementComponent implements OnInit {
       .saveClicked
       .pipe(
         tap((result: DialogPatternLanguageResult) => {
+          console.log(result.dialogResult);
           view = <PatternContainer>result.dialogResult;
         }),
         switchMap(() => this.patternViewService.savePatternView(this.patternViewResponse._links.patternViews.href, view)),
@@ -70,4 +70,24 @@ export class PatternViewManagementComponent implements OnInit {
       });
   }
 
+  deletePatternView(patternView: PatternContainer) {
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+      data: {
+        name: patternView.name,
+      }
+    }).afterClosed().subscribe(dialogAnswer => {
+      if (dialogAnswer) {
+        this.patternViewService.deletePatternView(patternView).subscribe((response) => {
+          for (let i = 0; i < this.patternViewResponse._embedded.patternViews.length; i++) {
+            this.patternViewResponse._embedded.patternViews[i].id === patternView.id ? this.patternViewResponse._embedded.patternViews.splice(i, 1) : null;
+          }
+          this.toastService.pop('success', 'Pattern View deleted!');
+        },
+        (error) => {
+          this.toastService.pop('error', 'Pattern View could not be deleted!');
+        }
+        );
+      }
+    })
+  }
 }

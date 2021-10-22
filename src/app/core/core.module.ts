@@ -61,6 +61,11 @@ import { RouterModule } from '@angular/router';
 import { ToggleRendererComponent } from './component/toggle-renderer/toggle-renderer.component';
 import { DeletePatternRelationComponent } from './component/delete-pattern-relation/delete-pattern-relation.component';
 import { CreativeLicenseFooterComponent } from './component/creative-license-footer/creative-license-footer.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { CommentDialogComponent } from './component/markdown-content-container/comment-dialog/comment-dialog.component';
+import { DiscussDialogComponent } from './component/markdown-content-container/discuss-dialog/discuss-dialog.component';
+import { ImageService } from './service/image.service';
+import { DiscussionService } from './service/discussion.service';
 import { RatingComponent } from './component/rating/rating.component';
 import { CommentListComponent } from './component/comment-list/comment-list.component';
 import { MatSortModule } from '@angular/material/sort';
@@ -72,7 +77,11 @@ import { CandidateManagementService } from './candidate-management/_services/can
 import { CandidateManagementStore } from './candidate-management';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatFormFieldModule } from '@angular/material/form-field';
-
+import { SelectPatternDialogComponent } from './component/select-pattern-dialog/select-pattern-dialog.component';
+import { DeleteConfirmationDialogComponent } from './component/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { EditUrlDialogComponent } from './component/edit-url-dialog/edit-url-dialog.component';
+import { FeatureToggleDialogComponent } from './component/feature-toggle-dialog/feature-toggle-dialog.component';
+import { PatternAtlasUiFeatureToggleModule } from './directives/pattern-atlas-ui-feature-toggle.module';
 
 @NgModule({
   imports: [
@@ -103,6 +112,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     RouterModule,
     MatSortModule,
     FormsModule,
+    MatSnackBarModule,
+    PatternAtlasUiFeatureToggleModule
   ],
   exports: [
     CovalentTextEditorModule,
@@ -129,7 +140,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     IssueManagementStore,
     // CANDIDATE
     CandidateManagementService,
-    CandidateManagementStore
+    CandidateManagementStore,
+    // IMAGE & DISCUSSION
+    ImageService,
+    DiscussionService
   ],
   declarations: [
     DefaultPlRendererComponent,
@@ -150,7 +164,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     CommentListComponent,
     ToggleRendererComponent,
     DeletePatternRelationComponent,
-    CreativeLicenseFooterComponent
+    CreativeLicenseFooterComponent,
+    CommentDialogComponent,
+    DiscussDialogComponent,
+    SelectPatternDialogComponent,
+    DeleteConfirmationDialogComponent,
+    EditUrlDialogComponent,
+    FeatureToggleDialogComponent
   ],
   entryComponents: [
     DefaultPlRendererComponent,
@@ -162,12 +182,18 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MarkdownPatternSectionContentComponent,
     CardRendererComponent,
     GraphDisplayComponent,
-    CreateEditPatternLanguageComponent
+    CreateEditPatternLanguageComponent,
+    CommentDialogComponent,
+    DiscussDialogComponent,
+    FeatureToggleDialogComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class CoreModule {
   constructor(private cr: ComponentRegistryService) {
-    this.cr.registerComponent('default', { plcomponent: DefaultPlRendererComponent, pcomponent: DefaultPatternRendererComponent });
+    this.cr.registerComponent('default', {
+      plcomponent: DefaultPlRendererComponent,
+      pcomponent: DefaultPatternRendererComponent
+    });
   }
 }

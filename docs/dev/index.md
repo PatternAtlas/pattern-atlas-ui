@@ -3,12 +3,12 @@
 ## General Information
 - Use yarn as package management tool.
 - Routes should be kabab-case.
-- Use a [keystone](https://martinfowler.com/bliki/KeystoneInterface.html) or a [feature toggle](https://github.com/PatternPedia/pattern-pedia-views-ui/blob/a0d23ef7aab2c670e37218a3f9a493722af71348/src/app/globals.ts#L21) while a feature is in development. This enables CI and a clean UI at the same time.
+- Use a [keystone](https://martinfowler.com/bliki/KeystoneInterface.html) or a [feature toggle](https://github.com/PatternAtlas/pattern-atlas-ui/blob/a0d23ef7aab2c670e37218a3f9a493722af71348/src/app/globals.ts#L21) while a feature is in development. This enables CI and a clean UI at the same time.
 
 ## Project Setup
 - Clone the repository
 - Install the dependencies using `yarn` or `yarn install`
-- Start the project with `yarn start`. The application should run on http://localhost:4200
+- Start the project with `yarn start`. The application should run on http://localhost:1978
 
 ### Linting
 Use `yarn lint` to run the linter.

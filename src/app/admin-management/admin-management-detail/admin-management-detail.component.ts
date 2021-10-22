@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormBuilder, Validators, FormControl, FormGroupDirective, NgForm, AbstractControl } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
-import { UserStore, UserService, PAUser, UserRole } from 'src/app/core/user-management';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PAUser, UserRole, UserService, UserStore } from 'src/app/core/user-management';
 
 @Component({
   selector: 'pp-admin-management-detail',
@@ -22,7 +21,8 @@ export class AdminManagementDetailComponent implements OnInit {
     private userFormBuilder: FormBuilder,
     private userStore: UserStore,
     private userService: UserService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
 

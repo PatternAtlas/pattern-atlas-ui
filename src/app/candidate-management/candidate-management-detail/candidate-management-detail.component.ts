@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IssueManagementStore } from 'src/app/core/issue-management/_store/issue-management-store';
 import { TdTextEditorComponent } from '@covalent/text-editor';
 import { PatternLanguageService } from 'src/app/core/service/pattern-language.service';
@@ -32,7 +32,8 @@ export class CandidateManagementDetailComponent implements OnInit {
     public issueStore: IssueManagementStore,
     private candidateService: CandidateManagementService,
     private patternLanguageService: PatternLanguageService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.getPatternLanguages();
@@ -91,20 +92,20 @@ export class CandidateManagementDetailComponent implements OnInit {
   }
 
   delete() {
-   
+
   }
 
   createComment(candidateComment: Comment) {
-   
+
   }
 
   updateRating(rating: Rating) {
-   
+
   }
 
   updateCommentRating(issueCommentRatingEvent: any) {
     console.log(issueCommentRatingEvent);
-    
+
   }
 
   exit() {

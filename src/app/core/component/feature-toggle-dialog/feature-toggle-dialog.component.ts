@@ -1,0 +1,50 @@
+import { Component, OnInit } from '@angular/core';
+import {
+  PatternAtlasUiConfiguration, PatternAtlasUiRepositoryConfigurationService, UiFeatures
+} from '../../directives/pattern-atlas-ui-repository-configuration.service';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { ToasterService } from 'angular2-toaster';
+import { MatDialogRef } from '@angular/material/dialog';
+
+@Component({
+  selector: 'pp-feature-toggle-dialog',
+  templateUrl: './feature-toggle-dialog.component.html',
+  styleUrls: ['./feature-toggle-dialog.component.scss']
+})
+export class FeatureToggleDialogComponent implements OnInit {
+
+  readonly UiFeatures = UiFeatures;
+  config: PatternAtlasUiConfiguration;
+
+  constructor(
+    private http: HttpClient, private toasterService: ToasterService,
+    private configService: PatternAtlasUiRepositoryConfigurationService,
+    public dialogRef: MatDialogRef<FeatureToggleDialogComponent>
+  ) {
+  }
+
+  ngOnInit(): void {
+    this.config = this.configService.configuration;
+  }
+
+  toggleFeature(feature: UiFeatures, event: Event): void {
+    if (this.config.features.showSettings) {
+      this.configService.applyConfig(feature, event.target['checked']).subscribe(
+        () => this.toasterService.pop('success', 'Successfully updated the config!'),
+        (error: HttpErrorResponse) =>
+          this.toasterService.pop(
+            'error', 'Error while saving config!'
+          )
+      );
+    } else {
+      this.toasterService.pop('error',
+        'Adjustments are not allowed and will not be saved!'
+      );
+    }
+  }
+
+  onCloseDialogClick(): void {
+    this.dialogRef.close();
+  }
+
+}

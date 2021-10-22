@@ -1,0 +1,10 @@
+{
+    "features": {
+        "designModel": false,
+        "patternCandidate": false,
+        "patternViews": true,
+        "issue": false,
+        "editing": true,
+        "showSettings": false
+      }
+}

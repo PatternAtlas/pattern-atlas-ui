@@ -7,7 +7,8 @@ import * as d3 from 'd3';
 })
 export class D3Service {
 
-  constructor() { }
+  constructor() {
+  }
 
   getNetworkGraph(nodes: any, links: any, options: { width: number, height: number }): NetworkGraph {
     const ng = new NetworkGraph(nodes, links, options);

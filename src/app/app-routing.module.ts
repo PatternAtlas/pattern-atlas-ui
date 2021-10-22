@@ -1,4 +1,3 @@
-import { PatternLanguageGraphComponent } from './pattern-language-management/pattern-language-graph/pattern-language-graph.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProcessOauthCallbackComponent } from './core/component/process-oauth-callback/process-oauth-callback.component';
@@ -72,10 +71,6 @@ const routes: Routes = [
   {
     path: 'oauth-callback',
     component: ProcessOauthCallbackComponent
-  },
-  {
-    path: 'graph',
-    component: PatternLanguageGraphComponent
   },
   {
     path: '**',

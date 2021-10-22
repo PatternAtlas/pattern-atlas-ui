@@ -51,10 +51,10 @@ export const ISSUE_ROTUES = [
   exports: [
     IssueManagementListComponent
   ],
-  providers: [
-  ],
+  providers: [],
   entryComponents: [
     IssueCreateDialogComponent,
   ],
 })
-export class IssueManagementModule { }
+export class IssueManagementModule {
+}

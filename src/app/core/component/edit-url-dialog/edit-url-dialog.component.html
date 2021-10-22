@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>Edit Title or Icon for {{data.pattern.name}}</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Adjust Pattern Name</mat-label>
+    <input matInput placeholder={{data.pattern.name}} [(ngModel)]="data.name">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Adjust Icon URL</mat-label>
+    <input matInput placeholder={{data.pattern.iconUrl}} [(ngModel)]="data.icon">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Adjust Paper Reference</mat-label>
+    <input matInput placeholder={{data.pattern.patternRef}} [(ngModel)]="data.paperRef">
+  </mat-form-field>
+
+</div>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</mat-dialog-actions>

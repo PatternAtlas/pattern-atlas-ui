@@ -3,10 +3,16 @@
   word-break: break-word;
 }
 
-.mat-card-actions {
-  text-align: center;
+.mat-card-title {
+  width: 10rem;
+  word-break: break-word;
+  cursor: pointer;
 }
 
-.landing-card {
+.mat-card-image {
+  cursor: pointer;
+}
+
+.mat-card-avatar {
   cursor: pointer;
 }

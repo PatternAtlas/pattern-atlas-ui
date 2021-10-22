@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>Which Pattern do you want to reference? </h1>
+<div mat-dialog-content [formGroup]="selectedPatternForm">
+  <mat-form-field appearance="fill">
+    <mat-label>Pattern</mat-label>
+    <mat-select formControlName="selectedPattern">
+      <mat-option *ngFor="let pattern of data.patterns" [value]="pattern">
+        {{pattern.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="selectedPatternForm.controls['selectedPattern'].value" cdkFocusInitial>Ok
+  </button>
+</mat-dialog-actions>

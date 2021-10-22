@@ -237,6 +237,11 @@ body {
   align-items: center;
 }
 
+.horiz-aligned {
+  display: flex;
+  justify-content: space-around;
+}
+
 .action-button-with-margin {
   margin-right: 10px !important;
 }

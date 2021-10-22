@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IssueComment } from '../../issue-management';
 import { Rating } from '../../model/rating.enum';
 
@@ -17,10 +17,11 @@ export class CommentListComponent implements OnInit {
   @Input() data: IssueComment[];
   @Output() createComment: EventEmitter<IssueComment> = new EventEmitter<IssueComment>();
   @Output() commentRating: EventEmitter<IssueCommentRatingEvent> = new EventEmitter<IssueCommentRatingEvent>();
-  
+
   comment: string;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

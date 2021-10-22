@@ -8,7 +8,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class NavigateBackComponent implements OnInit {
 
-  constructor( private zone: NgZone, private activatedRoute: ActivatedRoute, private router: Router) { }
+  constructor(private zone: NgZone, private activatedRoute: ActivatedRoute, private router: Router) {
+  }
 
   ngOnInit() {
   }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserService, PAUser, UserStore } from 'src/app/core/user-management';
+import { PAUser, UserService, UserStore } from 'src/app/core/user-management';
 
 @Component({
   selector: 'pp-admin-management-list',
@@ -17,7 +17,8 @@ export class AdminManagementListComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private adminStore: UserStore,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.getAll()

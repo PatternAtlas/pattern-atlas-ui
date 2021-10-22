@@ -17,10 +17,6 @@ import { globals } from '../../globals';
 
 export class UriConverter {
 
-  static encodeUri(uri: string): string {
-    return encodeURIComponent(uri);
-  }
-
   static doubleEncodeUri(uri: string): string {
     return encodeURIComponent(encodeURIComponent(uri));
   }
@@ -37,11 +33,6 @@ export class UriConverter {
     return iri.split('#')[0];
   }
 
-  static extractIndividualNameFromIri(iri: string): string {
-    return iri.includes('#') ? iri.split('#')[1] :
-      iri.split('/')[iri.split('/').length - 1];
-  }
-
   static getURL(patternlanguageIri: string) {
     if (patternlanguageIri.indexOf(globals.pathConstants.patternLanguages) !== -1) {
       return patternlanguageIri;
@@ -54,43 +45,19 @@ export class UriConverter {
     return text.replace(/\s/g, '');
   }
 
-
   static extractDataValue(pl: QueriedData[]): string[] {
     return pl.map((graph: QueriedData) => {
       return this.getURL(graph.value);
     });
   }
 
-  static getSectionName(patternSection: string) {
-    return patternSection.split('#has')[1];
-  }
+  // this function checks if a given urlParam is a UUID (otherwise the entity is specified via its URI)
+  static isUUID(urlParam): boolean {
+    const s = '' + urlParam;
 
-  static isIri(name: string): boolean {
-    return (name.indexOf('#') >= 0) || (name.indexOf('://') >= 0) || (name.indexOf('purl.org/patternpedia') >= 0);
-  }
-
-
-  static getPatternListIriForPLIri(plIri: string): string {
-    return this.getFileName(plIri) + '/' + this.extractIndividualNameFromIri(this.getFileName(plIri)).toLowerCase() + '-Patterns';
+    const match = s.match('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$');
+    return match !== null;
 
   }
 
-  static getRelationListIriForPLIri(plIri: string): string {
-    return this.getFileName(plIri) + '/' + this.extractIndividualNameFromIri(this.getFileName(plIri)).toLowerCase() + '-Relations';
-  }
-
-  static getGithubAPIURLForURI(iri: string): string {
-    if (iri.indexOf(globals.pathConstants.patternLanguages) !== -1 || iri.indexOf(globals.pathConstants.patternViews) !== -1) {
-      const foldername = iri.indexOf(globals.pathConstants.patternLanguages) !== -1
-        ? globals.pathConstants.patternLanguages : globals.pathConstants.patternViews;
-      let relativePath = this.getFileName(iri.split(foldername + '/')[1]);
-      // is this a request for the base file of a patternlanguage add the patternlanguage identifier again (convention)
-      relativePath = relativePath.indexOf('/') !== -1 ? relativePath : `${relativePath}/${relativePath}`;
-      return `${globals.urlGithubAPI}/${foldername}/${relativePath}.ttl`;
-    }
-    if (iri.indexOf('patternatlas') !== -1) {
-      return `${globals.urlGithubAPI}/patternatlas.ttl`;
-    }
-    return iri;
-  }
 }

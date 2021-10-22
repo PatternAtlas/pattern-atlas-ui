@@ -12,27 +12,38 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AuthenticationService } from './authentication/_services/authentication.service';
 import { PAUser } from './core/user-management';
 import { globals } from './globals';
-
+import {
+  PatternAtlasUiRepositoryConfigurationService, UiFeatures
+} from './core/directives/pattern-atlas-ui-repository-configuration.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ToasterService } from 'angular2-toaster';
+import { MatDialog } from '@angular/material/dialog';
+import { FeatureToggleDialogComponent } from './core/component/feature-toggle-dialog/feature-toggle-dialog.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'pp-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
-  readonly featureToggles = globals.featureToggles;
+  readonly UiFeatures = UiFeatures;
   loginButton = 'Login';
   welcomeText = '';
   user: PAUser;
   readonly pathConstants = globals.pathConstants;
+  loading = true;
 
-
-  constructor(public auth: AuthenticationService) {
+  constructor(public auth: AuthenticationService,
+              private toasterService: ToasterService,
+              private configService: PatternAtlasUiRepositoryConfigurationService,
+              private dialog: MatDialog,
+              private cdr: ChangeDetectorRef, private router: Router, private route: ActivatedRoute) {
     this.auth.userSubject.subscribe(_user => {
       if (_user) {
         console.log('User is Logged in: ', _user);
@@ -50,5 +61,31 @@ export class AppComponent {
 
   loginOAuth() {
     this.user ? this.auth.logout() : this.auth.login();
+  }
+
+  ngOnInit(): void {
+    this.configService.getConfigurationFromBackend().subscribe(
+      () => (this.loading = false),
+      (error: HttpErrorResponse) => {
+        this.loading = false;
+        if(error.status === globals.statusCodeNotFound){
+          this.configService.getDefaultConfiguration(); 
+          console.log('default values applied') 
+        }
+        else{
+          this.toasterService.popAsync(
+            'error', 'Error while loading config from config server, using default values instead' + error.message).subscribe(
+            () => console.log('default values applied')
+          )
+        }
+      }
+    );
+  }
+
+  openFeatureToggleDialog() {
+    this.dialog.open(FeatureToggleDialogComponent).afterClosed().subscribe(() => {
+      // reload page to trigger ShowOnFeatureDirectives which use the ngOnInit lifecycle hook
+      window.location.reload();
+    });
   }
 }

@@ -5,12 +5,15 @@
     <mat-card-content>
       <img mat-card-image *ngIf="entity.iconUrl else noimage" [src]="entity.iconUrl">
       <ng-template #noimage><img mat-card-image src="//via.placeholder.com/350x150"></ng-template>
-      <button (click)="navigate(entity)" class="save-button" style="margin-bottom: 1rem" mat-raised-button color="primary">
-        <i class="material-icons">list</i>Details
-      </button>
-      <button (click)="delete(entity)" class="save-button" style="margin-bottom: 1rem" mat-raised-button color="warn">
-        <i class="material-icons">delete</i>Delete
-      </button>
+      <div class="horiz-aligned">
+        <button (click)="navigate(entity)" class="pattern-button" mat-raised-button color="primary">
+          <i class="material-icons">list</i>Details
+        </button>
+        <button (click)="delete(entity)" *patternAtlasUiShowOnFeature="UiFeatures.EDITING" class="pattern-button"
+                mat-raised-button color="warn">
+          <i class="material-icons">delete</i>
+        </button>
+      </div>
     </mat-card-content>
     <mat-card-footer *ngIf="showLinks">
             <span [matBadge]="getLinkCount(entity._links.ingoingDirectedEdges)"

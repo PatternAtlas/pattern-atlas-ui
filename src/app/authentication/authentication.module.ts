@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthenticationService } from './_services/authentication.service';
 
-
-
 @NgModule({
   declarations: [],
   imports: [
@@ -13,4 +11,5 @@ import { AuthenticationService } from './_services/authentication.service';
     AuthenticationService
   ]
 })
-export class AuthenticationModule { }
+export class AuthenticationModule {
+}

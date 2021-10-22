@@ -8,7 +8,7 @@ describe('CreativeLicenseFooterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreativeLicenseFooterComponent ]
+      declarations: [CreativeLicenseFooterComponent]
     })
       .compileComponents();
   }));

@@ -16,11 +16,11 @@
 * jOWL - a jQuery plugin for traversing and visualizing OWL-DL documents.
 * Creator - David Decraene
 * Version 1.0
-* Website: 
+* Website:
 *	http://Ontologyonline.org
-* Licensed under the MIT license 
+* Licensed under the MIT license
 *	http://www.opensource.org/licenses/mit-license.php
-* Verified with JSLint 
+* Verified with JSLint
 *	http://www.jslint.com/
 */
 
@@ -32,10 +32,10 @@ jOWL.version = "1.0";
 
 (function($){
 
-/** 
+/**
 * if no param: @return string of main namespaces
 * if 1 param: assume a documentElement, parse namespaces
-* if prefix & URI: Bind prefix to namespace URI 
+* if prefix & URI: Bind prefix to namespace URI
 */
 jOWL.NS = function(prefix, URI){
 	if(!arguments.length)
@@ -63,7 +63,7 @@ jOWL.NS = function(prefix, URI){
 		return arguments.callee.URI;
 		};
 	jOWL.NS[prefix].prefix = prefix;
-	jOWL.NS[prefix].URI = URI;	
+	jOWL.NS[prefix].URI = URI;
 };
 
 var __ = jOWL.NS;
@@ -134,20 +134,20 @@ if( document.implementation.hasFeature("XPath", "3.0") ){
 	XMLDocument.prototype.selectNodes = function(cXPathString, xNode){
 		if( !xNode ){ xNode = this;}
 		var oNSResolver = this.createNSResolver(this.documentElement);
-		var aItems = this.evaluate(cXPathString, xNode, oNSResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null); var aResult = []; for( var i = 0; i < aItems.snapshotLength; i++){ aResult[i] = aItems.snapshotItem(i);}  
-		return aResult; 
+		var aItems = this.evaluate(cXPathString, xNode, oNSResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null); var aResult = []; for( var i = 0; i < aItems.snapshotLength; i++){ aResult[i] = aItems.snapshotItem(i);}
+		return aResult;
 		};
-	Element.prototype.selectNodes = function(cXPathString){  
+	Element.prototype.selectNodes = function(cXPathString){
 		if(this.ownerDocument.selectNodes)  {  return this.ownerDocument.selectNodes(cXPathString, this);}
-		else{throw "For XML Elements Only";} 
-		}; 
+		else{throw "For XML Elements Only";}
+		};
 	XMLDocument.prototype.selectSingleNode = function(cXPathString, xNode){ if( !xNode ){ xNode = this;}
 		var xItems = this.selectNodes(cXPathString, xNode); if( xItems.length > 0 ){  return xItems[0];} else {  return null;}
 		};
 	Element.prototype.selectSingleNode = function(cXPathString){
 		if(this.ownerDocument.selectSingleNode)  {  return this.ownerDocument.selectSingleNode(cXPathString, this);}
-		else{throw "For XML Elements Only";} 
-		};  
+		else{throw "For XML Elements Only";}
+		};
 }
 
 /** @return A jQuery array of xml elements */
@@ -294,7 +294,7 @@ jOWL.Ontology.Thing.prototype = {
 		}
 		return this.name;
 	},
-	/** Binds the Ontology element to the jQuery element for visual representation 
+	/** Binds the Ontology element to the jQuery element for visual representation
 	* @return jQuery Element
 	*/
 	bind : function(jqelem){
@@ -324,7 +324,7 @@ jOWL.priv.testObjectTarget = function(target, matchtarget){
 };
 
 /** access to Individuals of the ontology*/
-jOWL.Ontology.Individual = function(jnode, owlclass){	
+jOWL.Ontology.Individual = function(jnode, owlclass){
 	this.parse(jnode);
 	if(this.type == __.owl("Thing")){
 	var t = jOWL.Xpath(__.rdf('type'), this.jnode);
@@ -396,7 +396,7 @@ jOWL.Ontology.Individual.prototype = $.extend({}, jOWL.Ontology.Thing.prototype,
 			if(propertyMatch && targetMatch){ results.pushUnique(restriction);}
 
 		});
-		if(options.inherited){ 
+		if(options.inherited){
 			var clRestrictions = this.owlClass().sourceof(property, target, options)
 				.each(function(){
 				//target can be a class, null, a duplicate individual...
@@ -446,7 +446,7 @@ jOWL.Ontology.Restriction = function(jnode){
 	{
 		jprop = jOWL.Xpath(__.owl("onProperty"), jnode);
 		prop = jprop.RDF_Resource(); if(!prop){ throw "no property found for the given owl:restriction";}
-		op = jprop.siblings(); 
+		op = jprop.siblings();
 		restrtype = op.get(0).nodeName;
 		this.property = jOWL(prop, {type: "property"});
 		this.target = null; //string only
@@ -468,7 +468,7 @@ jOWL.Ontology.Restriction = function(jnode){
 	if(this.property.isObjectProperty){
 		if(this.isCardinalityRestriction && this.property.range){ this.target = this.property.range;}
 		else if(this.isValueRestriction){
-			var t = op.RDF_Resource(); 
+			var t = op.RDF_Resource();
 			if(t == "anonymousOntologyObject"){//nested groupings, anonymous classes
 				this.cachedTarget = new jOWL.Ontology.Class(jOWL.Xpath(__.owl("Class"), op));
 			}
@@ -500,7 +500,7 @@ jOWL.Ontology.Restriction.prototype = {
 		if(!this.target){ return jOWL('Thing');}
 		if(this.cachedTarget){ return this.cachedTarget;}
 		this.cachedTarget = (this.property.isObjectProperty) ? jOWL(this.target) : new jOWL.Literal(this.target);
-		return this.cachedTarget;	
+		return this.cachedTarget;
 	},
 	equals : function(restr){
 		if(!restr.isRestriction){ return false;}
@@ -560,7 +560,7 @@ jOWL.Ontology.Datatype(__.xsd()+"nonNegativeInteger", {base: __.xsd()+"integer",
 jOWL.Ontology.Datatype(__.xsd()+"nonPositiveInteger", {base: __.xsd()+"integer", assert : function(x){ return x <= 0;} });
 jOWL.Ontology.Datatype(__.xsd()+"string");
 
-var URIPattern = /^([a-z0-9+.\-]+):(?:\/\/(?:((?:[a-z0-9-._~!$&'()*+,;=:]|%[0-9A-F]{2})*)@)?((?:[a-z0-9-._~!$&'()*+,;=]|%[0-9A-F]{2})*)(?::(\d*))?(\/(?:[a-z0-9-._~!$&'()*+,;=:@\/]|%[0-9A-F]{2})*)?|(\/?(?:[a-z0-9-._~!$&'()*+,;=:@]|%[0-9A-F]{2})+(?:[a-z0-9-._~!$&'()*+,;=:@\/]|%[0-9A-F]{2})*)?)(?:\?((?:[a-z0-9-._~!$&'()*+,;=:\/?@]|%[0-9A-F]{2})*))?(?:#((?:[a-z0-9-._~!$&'()*+,;=:\/?@]|%[0-9A-F]{2})*))?$/i;    
+var URIPattern = /^([a-z0-9+.\-]+):(?:\/\/(?:((?:[a-z0-9-._~!$&'()*+,;=:]|%[0-9A-F]{2})*)@)?((?:[a-z0-9-._~!$&'()*+,;=]|%[0-9A-F]{2})*)(?::(\d*))?(\/(?:[a-z0-9-._~!$&'()*+,;=:@\/]|%[0-9A-F]{2})*)?|(\/?(?:[a-z0-9-._~!$&'()*+,;=:@]|%[0-9A-F]{2})+(?:[a-z0-9-._~!$&'()*+,;=:@\/]|%[0-9A-F]{2})*)?)(?:\?((?:[a-z0-9-._~!$&'()*+,;=:\/?@]|%[0-9A-F]{2})*))?(?:#((?:[a-z0-9-._~!$&'()*+,;=:\/?@]|%[0-9A-F]{2})*))?$/i;
 
 jOWL.Ontology.Datatype(__.xsd()+"anyURI", {base: __.xsd()+"string", pattern : URIPattern });
 jOWL.Ontology.Datatype(__.xsd()+"boolean", {sanitize : function(x){
@@ -596,7 +596,7 @@ jOWL.Ontology.Property.prototype = $.extend({}, jOWL.Ontology.Thing.prototype,{
 		}
 		this.parse(jnode);
 		this.domain= $(this.jnode.get(0).selectSingleNode(__.rdfs('domain'))).RDF_Resource();
-		this.range = $(this.jnode.get(0).selectSingleNode(__.rdfs('range'))).RDF_Resource();	
+		this.range = $(this.jnode.get(0).selectSingleNode(__.rdfs('range'))).RDF_Resource();
 	}
 });
 
@@ -624,7 +624,7 @@ jOWL.Ontology.DatatypeProperty.prototype = $.extend({}, jOWL.Ontology.Thing.prot
 
 /** access to Object properties */
 jOWL.Ontology.ObjectProperty = function(jnode){
-	var r = this.parseProperty(jnode);	
+	var r = this.parseProperty(jnode);
 	if(r){ return r;}
 	var self = this;
 	jOWL.Xpath(__.rdf('type'), this.jnode).each(function(){
@@ -749,7 +749,7 @@ jOWL.Ontology.Class.prototype = $.extend({}, jOWL.Ontology.Thing.prototype, {
 
 		for(x in jOWL.index('ID')){
 			if(x === this.URI){ continue;}
-			var node = jOWL.index('ID')[x]; 
+			var node = jOWL.index('ID')[x];
 			if(!node.isClass){continue;}
 			var cls = jOWL.Xpath.classes(node.jnode); //direct subClasses
 			for(var i=0;i<cls.length;i++){
@@ -808,7 +808,7 @@ jOWL.Ontology.Class.prototype = $.extend({}, jOWL.Ontology.Thing.prototype, {
 			if(this.match(self.URI, cls, restr)){
 				jOWL.priv.Array.pushUnique(temp, this.URI);
 			}
-		
+
 		};
 
 		if(jOWL.options.reason){
@@ -875,7 +875,7 @@ Constructs the entire (parent) hierarchy for a class
 
 	},
 	/**
-	@param level depth to fetch children, Default 5 
+	@param level depth to fetch children, Default 5
 	@return jOWL array of classes that are descendant
 	*/
 	descendants : function(level){
@@ -948,7 +948,7 @@ Constructs the entire (parent) hierarchy for a class
 			}
 
 			if(!target){
-				if(options.transitive && this.property.isTransitive){ 
+				if(options.transitive && this.property.isTransitive){
 					var rTarget = this.getTarget();
 					var transitives = rTarget.sourceof(this.property, null, options);
 					results.concat(transitives);
@@ -957,7 +957,7 @@ Constructs the entire (parent) hierarchy for a class
 
 			if(!targetMatch && !this.target){
 				targetMatch = !options.valuesOnly;
-			} 
+			}
 
 			if(!targetMatch){
 				var targ = this.getTarget();
@@ -975,11 +975,11 @@ Constructs the entire (parent) hierarchy for a class
 
 		if(!options.inherited){ return results;}
 
-		this.parents().each(function(){ 
+		this.parents().each(function(){
 			if(this.sourceof){
 				this.sourceof(property, target, options).each(function(parentsource){
 					var ptarget = this.getTarget();
-					var containsProperty = false; 
+					var containsProperty = false;
 					var tempArray = new jOWL.Ontology.Array();
 					results.filter(function(){
 						var restr = this, keep = true;
@@ -1012,7 +1012,7 @@ jOWL.Ontology.Array = function(arr, isXML){
 	if(arr){
 		if(isXML){ $.each(arr, function(){
 			var entry = this.jOWL ? this : jOWL($(this));
-			self.items.push(entry);}); 
+			self.items.push(entry);});
 			}
 		else { this.items = arr;}
 	}
@@ -1047,10 +1047,10 @@ jOWL.Ontology.Array.prototype = {
 		var i, self = this;
 		var stop = false;
 		if(reverse){
-			for(i=this.items.length - 1; i>=0;i--){ 
+			for(i=this.items.length - 1; i>=0;i--){
 				if(stop){ break;}
 				(function(){
-					var item = self.eq(i); 
+					var item = self.eq(i);
 					if(fn.call(item, item, i) === false){ stop = true;}
 				})();
 			}
@@ -1059,9 +1059,9 @@ jOWL.Ontology.Array.prototype = {
 			for(i=0;i<this.items.length;i++){
 				if(stop){ break;}
 				(function(){
-					var item = self.eq(i); 
+					var item = self.eq(i);
 					if(fn.call(item, item, i) === false){ stop = true;}
-				})();} 
+				})();}
 		}
 		return this;
 	},
@@ -1146,7 +1146,7 @@ jOWL.index = function(type, wipe){
 		var i = jOWL.indices;
 		switch (type)
 		{
-		/**jOWL indexes all elements with rdf:ID, and first order ontology elements specified with rdf:about 
+		/**jOWL indexes all elements with rdf:ID, and first order ontology elements specified with rdf:about
 		@return Associative array with key = URI and value = jOWL object.
 		*/
 		case "ID":
@@ -1157,7 +1157,7 @@ jOWL.index = function(type, wipe){
 				var start = new Date();
 
 				var rID = jOWL.Xpath("//*[@"+__.rdf("ID")+"]").each(function(){
-					var jowl = jOWL.getResource($(this)); 
+					var jowl = jOWL.getResource($(this));
 					if(jowl){
 						i.IDs[jowl.URI] = jowl;
 						if(jowl.isThing){
@@ -1173,12 +1173,12 @@ jOWL.index = function(type, wipe){
 					if(!jowl){ return;}
 						if(jowl.isClass || jowl.isProperty || jowl.isThing){
 							if(i.IDs[jowl.URI]){ jnode.children().appendTo(i.IDs[jowl.URI].jnode); return;}
-							i.IDs[jowl.URI] = jowl; 
+							i.IDs[jowl.URI] = jowl;
 							if(jowl.isThing){
 								if(!i.T[jowl.Class]){ i.T[jowl.Class] = new jOWL.Ontology.Array();}
 								i.T[jowl.Class].push(jowl);
 							}
-							return; 
+							return;
 						}
 				});
 				console.log("Loaded in "+(new Date().getTime() - start.getTime())+"ms");
@@ -1291,8 +1291,8 @@ jOWL.parse = function(doc, options){
 	this.index('ID', true);
 	if(jOWL.options.cacheProperties){ this.index('property', true);}
 	if(jOWL.options.dictionary.create){ jOWL.index("dictionary");}
-	jOWL.Thing = new jOWL.Ontology.Thing($(jOWL.create(__.owl, "Class").attr(__.rdf, 'about', __.owl()+'Thing').node)); 
-	jOWL.Thing.type = false;	
+	jOWL.Thing = new jOWL.Ontology.Thing($(jOWL.create(__.owl, "Class").attr(__.rdf, 'about', __.owl()+'Thing').node));
+	jOWL.Thing.type = false;
 	return this;
 };
 
@@ -1326,8 +1326,8 @@ jOWL.isExternal = function(resource){
 	return r[0] != jOWL.namespace ? r : false;
 };
 
-/** 
-if a URI belongs to the loaded namespace, then strips the prefix url of, else preserves URI 
+/**
+if a URI belongs to the loaded namespace, then strips the prefix url of, else preserves URI
 also able to parse and reference html (or jquery) elements for their URI.
 */
 jOWL.resolveURI = function(URI, array){
@@ -1380,8 +1380,8 @@ jOWL.getResource = function(resource, options){
 				console.log("undeclared resource: "+resource);
 				return new jOWL.Ontology.Thing(resource);
 			}
-			console.log(resource+" not found"); 
-			return null; 
+			console.log(resource+" not found");
+			return null;
 		}
 		return match;
 	}
@@ -1390,7 +1390,7 @@ jOWL.getResource = function(resource, options){
 	return new (jj)(node);
 };
 
-/** 
+/**
 * @param node jquery or html element.
 * @return the ontology type of the object.
 */
@@ -1425,14 +1425,14 @@ jOWL.type = function(node){
 */
 jOWL.getXML = function(rdfID){
 	var node = [];
-	function fetchFromIndex(rdfID){ 
+	function fetchFromIndex(rdfID){
 		var el = jOWL.index("ID")[rdfID];
 		return el ? el : null;
 	}
 
 	if(typeof rdfID == 'string'){ var q = fetchFromIndex(rdfID); if(q){ node.push(q);} }
 	else if(jOWL.priv.Array.isArray(rdfID)){ //assume an array of string rdfIDs
-		$.each(rdfID, function(){  
+		$.each(rdfID, function(){
 			var el = fetchFromIndex(this); if(el){ node.push(el);}
 			});
 	}
@@ -1643,7 +1643,7 @@ jOWL.SPARQL_DL_Result.prototype = {
 	filter : function(param, arr){
 		if(this.head[param] === undefined){this.head[param] = arr;}
 		else {
-			var self = this; 
+			var self = this;
 			this.head[param].filter(function(){ return (arr.contains(this));});
 			arr.filter(function(){ return (self.head[param].contains(this));});
 		}
@@ -1760,7 +1760,7 @@ _Binding.prototype = {
 };
 
 /** Local Function, private access, Temp results */
-function SPARQL_DL_Array(keys){	
+function SPARQL_DL_Array(keys){
 	this.arr = [];
 	this.mappings = {};
 
@@ -1841,17 +1841,17 @@ jOWL.SPARQL_DL.prototype = {
 		var self = this;
 		this.options = $.extend(this.options, options);
 		if(this.query.error){ return this.error(this.query.error);}
-		
+
 		var resultobj = this.result;
-		var i = 0;  
+		var i = 0;
 		var loopoptions = $.extend({}, this.options);
 		loopoptions.onComplete = function(results){ i++; resultobj = results; loop(i);};
-		
+
 		if(!this.query.length){
 			resultobj.error = "no query found or query did not parse properly";
 			return self.options.onComplete(resultobj);
-			}  
-			
+			}
+
 		function loop(i){
 			if(i < self.query.length){
 				self.process(self.query[i], resultobj, loopoptions );
@@ -1865,7 +1865,7 @@ jOWL.SPARQL_DL.prototype = {
 				}
 				return self.options.onComplete(resultobj);
 			}
-		} 
+		}
 		loop(i);
 	},
 	/** results are passed in the options.onComplete function */
@@ -1884,7 +1884,7 @@ jOWL.SPARQL_DL.prototype = {
 			"SubClassOf" : [__.owl('Class'), __.owl('Class')],
 			"DirectSubClassOf" : [__.owl('Class'), __.owl('Class')]
 			};
-		
+
 		if(!sizes[q]){ return self.error("'"+q+"' queries are not implemented");}
 		if(sizes[q].length != entry[1].length){ return self.error("invalid SPARQL-DL "+q+" specifications, "+sizes[q].length+" parameters required");}
 		for(var i = 0;i<entry[1].length;i++){
@@ -1932,7 +1932,7 @@ jOWL.SPARQL_DL.prototype = {
 			},
 			"Type" : function(syntax, resultobj, options){
 				var atom = new jOWL.SPARQL_DL.DoubleAtom(syntax, resultobj.head);
-			
+
 			function addIndividual(cl){
 				if(indivs[this.URI]){ return;}
 				var b = results.push(atom.source.value, this);
@@ -1944,19 +1944,19 @@ jOWL.SPARQL_DL.prototype = {
 					var a = node.parents();
 					var found = false;
 					if(a.contains(match)){ found = true;}
-					else { 
+					else {
 						a.each(function(){
 							if(this == jOWL.Thing){ return;}
 							if(!found && traverse(this, match)){ found = true;} });
 						}
 					return found;
 				}
-				
+
 				if(atom.source.isURI() && atom.target.isURI()){//assert
 					return jOWL.SPARQL_DL.priv.assert(resultobj, function(){
 						var cl = atom.source.value.owlClass();
 						if(cl.URI == atom.target.value.URI){ return true;}
-						return traverse(cl, atom.target.value); 
+						return traverse(cl, atom.target.value);
 					}, options.onComplete);
 				}
 				else if(atom.source.getURIs() && !atom.target.getURIs()){//get class
@@ -1966,7 +1966,7 @@ jOWL.SPARQL_DL.prototype = {
 					 atom.source.getURIs().each(function(){
 						var b;
 						if(addTarget){ b = results.push(atom.target.value, this.owlClass());}
-						if(addSource){ 
+						if(addSource){
 							if(addTarget){ b.bind(atom.source.value, this);}
 							else {results.push(atom.source.value, this);}
 						}
@@ -2024,7 +2024,7 @@ jOWL.SPARQL_DL.prototype = {
 			},
 			"PropertyValue" : function(syntax, resultobj, options){
 				var atom = new jOWL.SPARQL_DL.TripleAtom(syntax, resultobj.head);
-				
+
 				if(atom.source.isURI() && atom.property.isURI() && atom.target.isURI()){//assert
 					if(resultobj.assert !== false){
 						jOWL.SPARQL_DL.priv.PropertyValuegetSourceInfo(atom.source.value, atom.property.value, atom.target.value, resultobj, { assert : true });
@@ -2053,16 +2053,16 @@ jOWL.SPARQL_DL.priv = {
 		if(resultobj.assert !== false){
 			resultobj.assert = fn();
 		}
-		onComplete(resultobj);	
+		onComplete(resultobj);
 	},
 	//reusable function
 	PropertyValuegetSourceInfo : function(jSource, property, target, resultobj, options){
 		if(!(jSource.isArray)){
 			return jOWL.SPARQL_DL.priv.PropertyValuegetSourceInfo(new jOWL.Ontology.Array([jSource]), property, target, resultobj, options);
 		}
-		
+
 		options = $.extend({}, options);
-		var results = new SPARQL_DL_Array([options.filterSource, options.filterProperty, options.filterTarget]), 
+		var results = new SPARQL_DL_Array([options.filterSource, options.filterProperty, options.filterTarget]),
 			match = false;
 		jSource.each(function(){
 			var source = this;
@@ -2107,7 +2107,7 @@ jOWL.SPARQL_DL.priv = {
 				if(match[classID]){ return true;}
 			}
 		} else if(match[classID]){  return true;}
-		return false;	
+		return false;
 	},
 	IDQuery : function(parameter, classID, resultobj, options){
 		var atom = new jOWL.SPARQL_DL.Atom(parameter, resultobj.head);
@@ -2187,7 +2187,7 @@ jOWL.SPARQL_DL.Atom.prototype = {
 };
 
 /**
-* @return Associative array of parameters in the current documents URL 
+* @return Associative array of parameters in the current documents URL
 */
 jOWL.getURLParameters = function(){
 	var href = window.location.href.split("?", 2), param = {};
@@ -2218,7 +2218,7 @@ jOWL.permalink = function(entry){
 	return false;
 };
 
-/** Convert an item into Manchester syntax, currently only for oneOf 
+/** Convert an item into Manchester syntax, currently only for oneOf
 * @return String
 */
 jOWL.Manchester = function(owlElement){

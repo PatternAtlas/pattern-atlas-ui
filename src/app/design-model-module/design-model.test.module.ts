@@ -5,7 +5,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DesignModelModule } from './design-model.module';
 import { ToasterService } from 'angular2-toaster';
 
-
 @NgModule({
   imports: [
     DesignModelModule,

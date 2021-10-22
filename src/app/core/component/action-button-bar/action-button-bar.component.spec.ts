@@ -10,7 +10,7 @@ describe('ActionButtonBarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ActionButtonBarComponent ],
+      declarations: [ActionButtonBarComponent],
       imports: [MatToolbarModule],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
 

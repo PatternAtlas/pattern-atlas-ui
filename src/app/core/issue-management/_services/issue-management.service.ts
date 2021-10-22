@@ -4,7 +4,7 @@ import { ToasterService } from 'angular2-toaster';
 import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
 import { Issue } from '../_models/issue.model';
 import { Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { IssueComment } from '../_models/issue-comment.model';
 import { Rating } from '../../model/rating.enum';
 import { environment } from 'src/environments/environment';
@@ -20,7 +20,7 @@ export class IssueManagementService {
     private toasterService: ToasterService,
     private auth: AuthenticationService,
   ) {
-    this.repoEndpoint = environment.repositoryUrl;
+    this.repoEndpoint = environment.API_URL;
     this.serviceEndpoint = '/issues';
   }
 
@@ -46,7 +46,7 @@ export class IssueManagementService {
     issue.rating = 0;
     issue.uri = issue.name;
     issue.version = '1.0'
-    
+
     return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint, issue).pipe(
       map(result => {
         this.toasterService.pop('success', 'Created new issue')
