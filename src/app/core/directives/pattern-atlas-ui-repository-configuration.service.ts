@@ -40,11 +40,11 @@ interface EtcdNode {
 
 const initialValues: PatternAtlasUiConfiguration = {
   features: {
-    designModel: false,
-    patternCandidate: false,
-    patternViews: false,
-    issue: false,
-    showSettings: false,
+    designModel: true,
+    patternCandidate: true,
+    patternViews: true,
+    issue: true,
+    showSettings: true,
     editing: true
   },
 };
@@ -80,6 +80,10 @@ export class PatternAtlasUiRepositoryConfigurationService {
           return this._configuration;
         })
       );
+  }
+
+  getDefaultConfiguration():Observable<PatternAtlasUiConfiguration>{
+    return this.http.get<PatternAtlasUiConfiguration>(environment.defaultFeatures);
   }
 
   applyConfig(feature: UiFeatures, checked: boolean): Observable<string> {

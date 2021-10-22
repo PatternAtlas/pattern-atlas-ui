@@ -10,7 +10,7 @@ import { PatternLanguageService } from '../../core/service/pattern-language.serv
 import PatternLanguage from '../../core/model/hal/pattern-language.model';
 import PatternSectionSchema from '../../core/model/hal/pattern-section-schema.model';
 import * as MarkdownIt from 'markdown-it';
-import * as markdownitKatex from 'markdown-it-katex';
+import * as markdownitKatex from 'markdown-it-katexx';
 import { PatternService } from '../../core/service/pattern.service';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/internal/operators';
 import { globals } from '../../globals';
@@ -92,7 +92,8 @@ export class CreatePatternComponent implements OnInit {
   ngOnInit() {
     this.patternLanguageId = UriConverter.doubleDecodeUri(this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId));
     this.markdown = new MarkdownIt();
-    this.markdown.use(markdownitKatex);
+    this.markdown.set({ breaks: true });
+    this.markdown.use(markdownitKatex.default, { throwOnError: false, errorColor: ' #cc0000' });
 
     const patternLanguageObservable = UriConverter.isUUID(this.patternLanguageId) ?
       this.patternLanguageService.getPatternLanguageById(this.patternLanguageId)

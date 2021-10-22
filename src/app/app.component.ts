@@ -68,10 +68,16 @@ export class AppComponent implements OnInit {
       () => (this.loading = false),
       (error: HttpErrorResponse) => {
         this.loading = false;
-        this.toasterService.popAsync(
-          'error', 'Error while loading config from config server, using default values instead' + error.message).subscribe(
-          () => console.log('default values applied')
-        )
+        if(error.status === globals.statusCodeNotFound){
+          this.configService.getDefaultConfiguration(); 
+          console.log('default values applied') 
+        }
+        else{
+          this.toasterService.popAsync(
+            'error', 'Error while loading config from config server, using default values instead' + error.message).subscribe(
+            () => console.log('default values applied')
+          )
+        }
       }
     );
   }
