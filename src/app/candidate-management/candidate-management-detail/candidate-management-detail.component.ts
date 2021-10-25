@@ -8,7 +8,7 @@ import { patternLanguageNone } from 'src/app/core/component/pattern-language-pic
 import { PatternService } from 'src/app/core/service/pattern.service';
 import * as marked from 'marked';
 import * as MarkdownIt from 'markdown-it';
-import * as markdownitKatex from 'markdown-it-katex';
+import * as markdownitKatex from 'markdown-it-katexx';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent, ConfirmData } from 'src/app/core/component/confirm-dialog/confirm-dialog.component';
 import { globals } from 'src/app/globals';
@@ -102,7 +102,8 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
       this.candidateMarkdown = this.candidateMarkdown + `## ${key}\n${this.candidate.content[key]}\n`;
     }
     this.markdown = new MarkdownIt();
-    this.markdown.use(markdownitKatex);
+    this.markdown.set({ breaks: true });
+    this.markdown.use(markdownitKatex.default, { throwOnError: false, errorColor: ' #cc0000' });
     this.value = this.markdown.render(this.candidateMarkdown);
   }
 
