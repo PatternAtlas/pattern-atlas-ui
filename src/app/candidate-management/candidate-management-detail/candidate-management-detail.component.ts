@@ -27,10 +27,10 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
 
   @ViewChild('textEditor') private _textEditor: TdTextEditorComponent;
   @ViewChild('candidateView') candidateDiv: ElementRef;
-  candidateHeight;
+  candidateHeight: number;
 
-  markdown;
-  value;
+  markdown: any;
+  value: string;
 
   candidateMarkdown = '';
   options: any = {};
@@ -169,7 +169,7 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
   createContent(): boolean {
     const textEditorValue = marked.lexer(this._textEditor.value);
     const content: { [key: string]: string } = {};
-    var currentKey;
+    var currentKey: string;
     for (let line of textEditorValue) {
       // NAME
       if (line.type == 'heading' && line.depth == 1) {
@@ -252,7 +252,7 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
   }
 
   updateRatingAppropriateness(rating: number) {
-    this.candidateManagementService.updateRatingCandidate(this.candidate, new RatingModelRequest(rating, RatingType.APPROPIATENESS)).subscribe(result => {
+    this.candidateManagementService.updateRatingCandidate(this.candidate, new RatingModelRequest(rating, RatingType.APPROPRIATENESS)).subscribe(result => {
       this.candidate = result;
       this.checkTreshhold();
     });
