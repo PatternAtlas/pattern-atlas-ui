@@ -16,6 +16,9 @@ import { DiscussionService } from '../../../service/discussion.service';
 import { DiscussionComment } from '../../../model/discussion-comment';
 import { ImageModel } from '../../../model/image-model';
 import * as QuantumCircuit from 'quantum-circuit';
+import {
+  PatternAtlasUiRepositoryConfigurationService, UiFeatures
+} from 'src/app/core/directives/pattern-atlas-ui-repository-configuration.service';
 
 @Component({
   selector: 'pp-markdown-pattern-section-content',
@@ -36,10 +39,12 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
   svgCommentHeight;
   comment;
   commentSvg: SVGSVGElement;
+  readonly UiFeatures = UiFeatures;
 
   isCommentingEnabled = false;
   showCommentButton = true;
   showActionButtons = false;
+  editingFromConfigServer = false
   @ViewChild('markdownContent') markdownDiv: ElementRef;
   @Input() content: string;
   private markdown: MarkdownIt;
@@ -48,10 +53,12 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
               private cdr: ChangeDetectorRef,
               private imageService: ImageService,
               private snackBar: MatSnackBar,
-              private discussionService: DiscussionService
+              private discussionService: DiscussionService,
+              private configurationService: PatternAtlasUiRepositoryConfigurationService
   ) {
     super();
     this.changeContent = new EventEmitter<DataChange>();
+    this.editingFromConfigServer = this.configurationService.configuration.features[UiFeatures.EDITING]
   }
 
   ngAfterViewInit() {
