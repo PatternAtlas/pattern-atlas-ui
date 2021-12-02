@@ -5,7 +5,7 @@
                           [iconEdit]="true"
                           [iconUrl]="pattern?.iconUrl" (iconEditClicked)="editIcon()">
     </pp-action-button-bar>
-    <span> <button mat-stroked-button style="margin-left: 5px" color="primary" *ngIf="showActionButtons"
+    <span> <button mat-stroked-button style="margin-left: 5px" color="primary" *ngIf="showActionButtons && editingFromConfigServer"
                    (click)="editIcon()" matTooltip="Edit"><i class="material-icons">mode_edit</i></button>
   </span>
   </mat-card-header>
