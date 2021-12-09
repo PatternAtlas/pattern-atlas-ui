@@ -60,7 +60,7 @@
       <mat-card-actions>
         <div style="display: flex; align-items: center;">
           <button (click)="addLink()"
-                  *ngIf="isEditingEnabled"
+                  *ngIf="isEditingEnabled && editingFromConfigServer"
                   color="primary"
                   mat-stroked-button
                   matTooltip="Add Relation"
