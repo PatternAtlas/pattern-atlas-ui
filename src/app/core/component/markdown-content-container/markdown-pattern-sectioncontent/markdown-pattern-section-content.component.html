@@ -9,10 +9,10 @@
       <div style="word-break: break-word" #markdownContent></div>
 
 
-      <button *ngIf="showActionButtons && isEditingEnabled" mat-stroked-button
+      <button *ngIf="showActionButtons && isEditingEnabled && editingFromConfigServer" mat-stroked-button
               style="margin-left: 5px" color="primary"
               (click)="openEditor()" matTooltip="Edit"><i class="material-icons">mode_edit</i></button>
-      <button *ngIf="showActionButtons && showCommentButton" mat-stroked-button
+      <button *ngIf="showActionButtons && showCommentButton && editingFromConfigServer" mat-stroked-button
               style="margin-left: 5px" color="primary"
               (click)="commentSVG()" matTooltip="Comment Picture"><i class="material-icons">comment</i></button>
     </div>
