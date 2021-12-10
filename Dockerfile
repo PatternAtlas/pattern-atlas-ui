@@ -4,6 +4,9 @@ WORKDIR /app
 
 COPY . .
 
+# Workaround: https://github.com/webpack/webpack/issues/14532
+ENV NODE_OPTIONS=--openssl-legacy-provider
+
 RUN yarn --network-timeout 120000 && yarn build --prod
 
 FROM nginx:alpine
