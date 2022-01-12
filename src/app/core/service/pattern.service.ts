@@ -14,18 +14,18 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { globals } from '../../globals';
 import { Observable } from 'rxjs';
 import Pattern from '../model/hal/pattern.model';
 import { map } from 'rxjs/operators';
 import { PatternResponse } from '../model/hal/pattern-response.interface';
 import PatternLanguage from '../model/hal/pattern-language.model';
 import { Edge } from '../model/hal/edge.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class PatternService {
 
-  private repoEndpoint = globals.repoEndpoint;
+  private repoEndpoint = environment.API_URL;
 
   constructor(private http: HttpClient) {
   }

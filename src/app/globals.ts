@@ -17,7 +17,6 @@ export const globals = {
   iriPatternRepoInstance: 'https://purl.org/patternatlas#LinkedOpenPatterns',
   urlGithubAPI: 'https://api.github.com/repos/patternatlas/patternatlascontent/contents',
   loadOntologyLocally: true,
-  repoEndpoint: 'http://localhost:1977/patternatlas',
   pathConstants: {
     patternLanguages: 'pattern-languages',
     patternLanguageId: 'pattern-language-id',

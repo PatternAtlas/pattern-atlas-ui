@@ -15,7 +15,6 @@
 import { Injectable } from '@angular/core';
 import PatternLanguage from '../model/hal/pattern-language.model';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { globals } from '../../globals';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import PatternLanguages from '../model/hal/pattern-languages.model';
@@ -29,11 +28,12 @@ import { PatternContainer } from '../model/hal/pattern-container.model';
 import { PatternService } from './pattern.service';
 import { PatternContainerResponse } from '../model/hal/pattern-container-response.interface';
 import Pattern from '../model/hal/pattern.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class PatternLanguageService implements GraphDataService {
 
-  private repoEndpoint = globals.repoEndpoint;
+  private repoEndpoint = environment.API_URL;
 
   constructor(private http: HttpClient, private patternService: PatternService) {
   }
