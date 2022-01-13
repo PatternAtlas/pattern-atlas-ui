@@ -14,7 +14,6 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { globals } from '../../globals';
 import { BehaviorSubject, EMPTY, forkJoin, Observable, of } from 'rxjs';
 import Pattern from '../../core/model/hal/pattern.model';
 import { PatternContainer } from '../../core/model/hal/pattern-container.model';
@@ -32,11 +31,12 @@ import { GraphDataSavePatternService } from '../../core/service/graph-data/graph
 import { TextComponent } from '@ustutt/grapheditor-webcomponent/lib/edge';
 import { HalCollectionResponse } from '../model/hal/hal-collection-response';
 import { HalEntityResponse } from '../model/hal/hal-entity-response';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class DesignModelService implements GraphDataService, GraphDataSavePatternService {
 
-  private readonly repoEndpoint = globals.repoEndpoint;
+  private readonly repoEndpoint = environment.API_URL;
   private readonly designModelsEndpoint = this.repoEndpoint + '/design-models';
   private designModelLinks;
   private edgeTypes = new BehaviorSubject<string[]>([]);

@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import { globals } from '../../globals';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DiscussionTopic } from '../model/discussion-topic';
 import { DiscussionComment } from '../model/discussion-comment';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DiscussionService {
 
-  private repoEndpoint = globals.repoEndpoint;
+  private repoEndpoint = environment.API_URL;
 
   constructor(private http: HttpClient) {
   }

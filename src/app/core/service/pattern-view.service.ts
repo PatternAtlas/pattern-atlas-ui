@@ -14,7 +14,6 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { globals } from '../../globals';
 import { EMPTY, forkJoin, Observable, of } from 'rxjs';
 import Pattern from '../model/hal/pattern.model';
 import { PatternContainer } from '../model/hal/pattern-container.model';
@@ -31,11 +30,12 @@ import { UndirectedEdgesResponse } from '../model/hal/undirected-edes-response.i
 import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
 import { GraphNode } from '../component/graph-display/graph-display.component';
 import { GraphDataService } from './graph-data/graph-data.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class PatternViewService implements GraphDataService {
 
-  private repoEndpoint = globals.repoEndpoint;
+  private repoEndpoint = environment.API_URL;
 
   constructor(private http: HttpClient) {
   }
@@ -90,11 +90,11 @@ export class PatternViewService implements GraphDataService {
   }
 
   getDirectedEdgeById(patternViewId, edgeId: string): Observable<DirectedEdgeModel> {
-    return this.http.get<DirectedEdgeModel>(this.repoEndpoint + /patternViews/ + patternViewId + /directedEdges/ + edgeId)
+    return this.http.get<DirectedEdgeModel>(this.repoEndpoint + /patternViews/ + patternViewId + /directedEdges/ + edgeId);
   }
 
   getUndirectedEdgeById(patternViewId, edgeId: string): Observable<UndirectedEdgeModel> {
-    return this.http.get<UndirectedEdgeModel>(this.repoEndpoint + /patternViews/ + patternViewId + /undirectedEdges/ + edgeId)
+    return this.http.get<UndirectedEdgeModel>(this.repoEndpoint + /patternViews/ + patternViewId + /undirectedEdges/ + edgeId);
   }
 
   deleteLink(patternLink: any): Observable<any> {

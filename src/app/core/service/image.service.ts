@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { globals } from '../../globals';
 import { Image } from '../model/image';
 import { ImageModel } from '../model/image-model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ImageService {
 
-  private repoEndpoint = globals.repoEndpoint;
+  private repoEndpoint = environment.API_URL;
 
   constructor(private http: HttpClient) {
   }
