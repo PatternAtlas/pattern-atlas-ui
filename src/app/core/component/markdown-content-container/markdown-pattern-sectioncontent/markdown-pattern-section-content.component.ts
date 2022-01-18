@@ -45,6 +45,7 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
   showCommentButton = true;
   showActionButtons = false;
   editingFromConfigServer = false
+  showSection = true
   @ViewChild('markdownContent') markdownDiv: ElementRef;
   @Input() content: string;
   private markdown: MarkdownIt;
@@ -71,6 +72,7 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
   changeText(value: string): void {
     this.markdownDiv.nativeElement.innerHTML = '';
     this.renderedData = value;
+    this.showSection = this.renderedData.length > 0
     this.renderSVGTags(value);
 
     this.cdr.detectChanges();
