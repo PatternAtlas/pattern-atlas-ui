@@ -44,8 +44,8 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
   isCommentingEnabled = false;
   showCommentButton = true;
   showActionButtons = false;
-  editingFromConfigServer = false
-  showSection = true
+  editingFromConfigServer = false;
+  showSection = true;
   @ViewChild('markdownContent') markdownDiv: ElementRef;
   @Input() content: string;
   private markdown: MarkdownIt;
