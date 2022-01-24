@@ -116,7 +116,7 @@
                    (onNodePositionChange)="handleNodePositionChangedEvent($event)"
                    [ppGraphEventEmmiter]
                    classes=" highlighted-edge low-opacity-node low-opacity-edge"
-                   [mode]="configuration.features.editing ? 'layout' : 'display'"
+                   mode="layout"
                    style="width: 100%; height: 100%"
                    zoom="both">
       <svg #svg slot="graph" [class.left-sidenav-open]="!!patternContainer">
