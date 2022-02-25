@@ -23,6 +23,7 @@
     <span style="margin-left: 1rem">Pattern Atlas</span>
     <span class="spacer"></span>
     {{welcomeText}}
+    <a mat-stroked-button href="https://platform.planqk.de/my-content">Back to the PlanQK platform</a>
     <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Button with a menu">
       <mat-icon>more_vert</mat-icon>
     </button>
@@ -38,6 +39,7 @@
 
     </div>
   </mat-toolbar>
+
   <nav mat-tab-nav-bar>
     <a mat-tab-link [routerLink]="'/' + pathConstants.patternLanguages"
        routerLinkActive #rla1="routerLinkActive" [active]="rla1.isActive">
