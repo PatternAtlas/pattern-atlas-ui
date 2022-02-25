@@ -15,8 +15,11 @@
 
 <mat-spinner *ngIf="loading; else loadedConfig"></mat-spinner>
 <ng-template #loadedConfig>
-  <mat-toolbar color="primary">
-    <mat-icon>library_books</mat-icon>
+  <mat-toolbar color="primary" id="pa_header">
+    <a href="https://platform.planqk.de/my-content">
+    <img src="https://platform.planqk.de/img/PlanQK_Logo_Weiss_Beta_Version.5b689144.svg" alt="PlanQK Logo" width="250"
+         style="max-width: 7rem; margin-top: 1rem">
+    </a>
     <span style="margin-left: 1rem">Pattern Atlas</span>
     <span class="spacer"></span>
     {{welcomeText}}

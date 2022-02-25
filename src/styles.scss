@@ -14,6 +14,87 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 @import '~angular2-toaster/toaster';
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+/* PlanQK Red based on #E12D32 */
+
+$planqkred: (
+  50 : #fbe6e6,
+  100 : #f6c0c2,
+  200 : #f09699,
+  300 : #ea6c70,
+  400 : #e64d51,
+  500 : #e12d32,
+  600 : #dd282d,
+  700 : #d92226,
+  800 : #d51c1f,
+  900 : #cd1113,
+  A100 : #fffbfb,
+  A200 : #ffc8c8,
+  A400 : #ff9596,
+  A700 : #ff7b7d,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #ffffff,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);
+
+/* PlanQK blue based on #3D78B5 */
+
+$planqkblue: (
+  50 : #e8eff6,
+  100 : #c5d7e9,
+  200 : #9ebcda,
+  300 : #77a1cb,
+  400 : #5a8cc0,
+  500 : #3d78b5,
+  600 : #3770ae,
+  700 : #2f65a5,
+  800 : #275b9d,
+  900 : #1a488d,
+  A100 : #c5daff,
+  A200 : #92baff,
+  A400 : #5f9aff,
+  A700 : #468aff,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);
+
+$planqk-palette-primary: mat-palette($planqkblue);
+$planqk-palette-accent:  mat-palette($planqkred);
+
+$planqk-theme: mat-light-theme($planqk-palette-primary, $planqk-palette-accent);
+
+@include angular-material-theme($planqk-theme);
+
 
 body {
   font-family: sans-serif;
