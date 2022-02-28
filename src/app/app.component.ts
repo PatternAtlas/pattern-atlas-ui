@@ -38,7 +38,7 @@ export class AppComponent implements OnInit {
   user: PAUser;
   readonly pathConstants = globals.pathConstants;
   loading = true;
-  editingFromConfigServer = false;
+  planqkUi = false;
 
   constructor(public auth: AuthenticationService,
               private toasterService: ToasterService,
@@ -70,7 +70,7 @@ export class AppComponent implements OnInit {
     this.configService.getConfigurationFromBackend().subscribe(
       () => {
         this.loading = false;
-        this.editingFromConfigServer = this.configService.configuration.features[UiFeatures.EDITING];
+        this.planqkUi = this.configService.configuration.features[UiFeatures.PLANQK_UI];
       },
       (error: HttpErrorResponse) => {
         this.loading = false;
