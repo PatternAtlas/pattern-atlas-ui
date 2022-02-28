@@ -38,6 +38,7 @@ export class AppComponent implements OnInit {
   user: PAUser;
   readonly pathConstants = globals.pathConstants;
   loading = true;
+  editingFromConfigServer = false;
 
   constructor(public auth: AuthenticationService,
               private toasterService: ToasterService,
@@ -57,6 +58,8 @@ export class AppComponent implements OnInit {
         this.welcomeText = '';
       }
     });
+
+
   }
 
   loginOAuth() {
@@ -65,7 +68,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.configService.getConfigurationFromBackend().subscribe(
-      () => (this.loading = false),
+      () => {
+        this.loading = false;
+        this.editingFromConfigServer = this.configService.configuration.features[UiFeatures.EDITING];
+      },
       (error: HttpErrorResponse) => {
         this.loading = false;
         if(error.status === globals.statusCodeNotFound){
