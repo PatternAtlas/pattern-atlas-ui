@@ -5,6 +5,7 @@
     "patternViews": true,
     "issue": false,
     "editing": true,
-    "showSettings": false
+    "showSettings": false,
+    "planqkUi": true
   }
 }
