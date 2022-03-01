@@ -48,7 +48,7 @@ const initialValues: PatternAtlasUiConfiguration = {
     issue: false,
     showSettings: false,
     editing: false,
-    planqkUi: true
+    planqkUi: false
   },
 };
 

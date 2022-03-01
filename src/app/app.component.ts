@@ -74,6 +74,7 @@ export class AppComponent implements OnInit {
       },
       (error: HttpErrorResponse) => {
         this.loading = false;
+        this.planqkUi = true;
         if(error.status === globals.statusCodeNotFound){
           this.configService.getDefaultConfiguration();
           console.log('default values applied')
