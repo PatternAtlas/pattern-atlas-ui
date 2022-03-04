@@ -24,12 +24,12 @@ export class PrivilegeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.userService.getAllPrivileges().subscribe(result => {
+    this.userService.getAllPlatformPrivileges().subscribe(result => {
       this.dataSource = result;
       this.ref.detectChanges();
       // this.ref.markForCheck();
     });
-    this.userService.getAllRoles().subscribe(result => {
+    this.userService.getAllPlatformRoles().subscribe(result => {
       this.roles = result;
       this.roles.forEach(role => this.displayedColumns.push(role.name));
       this.ref.detectChanges();

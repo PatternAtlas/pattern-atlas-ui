@@ -29,6 +29,7 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit {
   private oldIssue: Issue;
 
   disabled = true;
+  settingsDisabled = true;
   candidate = false;
   treshold = true;
 
@@ -38,6 +39,7 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit {
     public candidateManagementStore: CandidateManagementStore,
     private p: PrivilegeService,
     private router: Router,
+    private activeRoute: ActivatedRoute,
     public dialog: MatDialog,
     private cdRef: ChangeDetectorRef,
   ) { }
@@ -47,9 +49,11 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit {
 
       if (_issue && this.router.url.includes('detail')) {
         this.disabled = true;
+        this.settingsDisabled = false;
         this.issue = _issue;
 
       } else if (_issue && this.router.url.includes('edit')) {
+        this.settingsDisabled = false;
         this.issue = _issue;
         this.edit();
 
@@ -82,7 +86,11 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit {
   }
 
   exit() {
-    this.router.navigateByUrl('/issue')
+    this.router.navigateByUrl('/issue');
+  }
+
+  settings() {
+    this.router.navigateByUrl('/issue/authors/' + this.issue.name);
   }
 
   /** CANDIDATE */
@@ -124,6 +132,7 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit {
   submit() {
     this.issue.uri = `/issues/${this.issue.name}`
     this.issue.id ? this.update() : this.create();
+    this.router.navigate(['./issue/detail', this.issue.name]);
   }
 
   create() {

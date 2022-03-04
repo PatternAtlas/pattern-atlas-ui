@@ -1,9 +1,9 @@
 {
   "features": {
     "designModel": false,
-    "patternCandidate": false,
+    "patternCandidate": true,
     "patternViews": true,
-    "issue": false,
+    "issue": true,
     "editing": true,
     "showSettings": false
   }

@@ -72,7 +72,6 @@ export class PrivilegeService {
       map(_user => {
         if (_user) {
           if (_user.privileges.includes(privilege)) return true;
-          this.toasterService.pop('error', 'You are missing the privilege to view this source!');
           return false;
         }
         this.toasterService.pop('error', 'You are have to be logged in to view this!');

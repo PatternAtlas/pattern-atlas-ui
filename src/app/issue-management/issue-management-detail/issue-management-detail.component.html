@@ -1,5 +1,7 @@
 <mat-toolbar style="margin-bottom: 10px">
     <button mat-raised-button color="primary" (click)="exit()"><i class="material-icons">keyboard_backspace</i></button>
+    <span class="spacer"></span>
+    <button mat-raised-button color="primary" (click)="settings()" [disabled]="settingsDisabled"><i class="material-icons">settings</i></button>
 </mat-toolbar>
 <div class="container-double container">
     <div #issueView class="left scrollable-double">

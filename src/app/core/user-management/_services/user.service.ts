@@ -78,6 +78,42 @@ export class UserService {
     )
   }
 
+  public getAllPlatformRoles(): Observable<RoleModel[]> {
+    return this.http.get<any>(this.repoEndpoint + this.serviceEndpoint + '/roles/platform').pipe(
+      map(result => {
+        return result._embedded.roleModels
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Getting platform roles list', error)
+        return [];
+      }),
+    )
+  }
+
+  public getAllAuthorRoles(): Observable<RoleModel[]> {
+    return this.http.get<any>(this.repoEndpoint + this.serviceEndpoint + '/roles/authors').pipe(
+      map(result => {
+        return result._embedded.roleModels
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Getting author roles list', error)
+        return [];
+      }),
+    )
+  }
+
+  public getAllRolesFromEntity(entityId: string): Observable<RoleModel[]> {
+    return this.http.get<any>(this.repoEndpoint + this.serviceEndpoint + '/roles/' + entityId).pipe(
+      map(result => {
+        return result._embedded.roleModels
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Getting roles list from entity ' + entityId, error)
+        return [];
+      }),
+    )
+  }
+
   public getAllPrivileges(): Observable<PrivilegeModel[]> {
     return this.http.get<any>(this.repoEndpoint + this.serviceEndpoint + '/roles/privileges').pipe(
       map(result => {
@@ -85,6 +121,30 @@ export class UserService {
       }),
       catchError(error => {
         this.toasterService.pop('error', 'Getting privilege list', error)
+        return [];
+      }),
+    )
+  }
+
+  public getAllPlatformPrivileges(): Observable<PrivilegeModel[]> {
+    return this.http.get<any>(this.repoEndpoint + this.serviceEndpoint + '/roles/privileges').pipe(
+      map(result => {
+        return result._embedded.privilegeModels
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Getting platform privilege list', error)
+        return [];
+      }),
+    )
+  }
+
+  public getAllPrivilegesFromEntity(entityId: string): Observable<PrivilegeModel[]> {
+    return this.http.get<any>(this.repoEndpoint + this.serviceEndpoint + '/roles/privileges/' + entityId).pipe(
+      map(result => {
+        return result._embedded.privilegeModels
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Getting privilege list from entity ' + entityId, error)
         return [];
       }),
     )
