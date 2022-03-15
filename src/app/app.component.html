@@ -19,17 +19,7 @@
     <span style="margin-left: 1rem">PatternAtlas</span>
 
     <span class="spacer"></span>
-    <div *patternAtlasUiShowOnFeature="!(UiFeatures.PATTERNCANDIDATE || UiFeatures.ISSUE)">
-      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Button with a menu">
-        <mat-icon>more_vert</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="openFeatureToggleDialog()">
-          <span>Feature Toggles</span>
-        </button>
-      </mat-menu>
-    </div>
-    <div class="log-button" *patternAtlasUiShowOnFeature="UiFeatures.PATTERNCANDIDATE || UiFeatures.ISSUE">
+    <div class="log-button" *patternAtlasUiShowOnFeature="UiFeatures.AUTHENTICATION">
         <button *ngIf="!loggedIn" mat-button (click)="login()"> Login </button>
         <button *ngIf="loggedIn" mat-button [matMenuTriggerFor]="menu">Hello {{userName}} <mat-icon>more_vert</mat-icon></button>
         <mat-menu #menu="matMenu">

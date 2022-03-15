@@ -10,7 +10,8 @@ export enum UiFeatures {
   PATTERNVIEWS = 'patternViews',
   ISSUE = 'issue',
   SHOW_SETTINGS = 'showSettings',
-  EDITING = 'editing'
+  EDITING = 'editing',
+  AUTHENTICATION = 'authentication'
 }
 
 export interface PatternAtlasUiConfiguration {
@@ -20,7 +21,8 @@ export interface PatternAtlasUiConfiguration {
     patternViews: boolean,
     issue: boolean,
     showSettings: boolean,
-    editing: boolean
+    editing: boolean,
+    authentication: boolean
   };
 }
 
@@ -45,7 +47,8 @@ const initialValues: PatternAtlasUiConfiguration = {
     patternViews: true,
     issue: true,
     showSettings: true,
-    editing: true
+    editing: true,
+    authentication: true
   },
 };
 

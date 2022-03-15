@@ -5,6 +5,7 @@
     "patternViews": true,
     "issue": true,
     "editing": true,
-    "showSettings": false
+    "showSettings": false,
+    "authentication": true
   }
 }
