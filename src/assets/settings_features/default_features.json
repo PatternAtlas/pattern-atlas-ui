@@ -6,6 +6,7 @@
     "issue": true,
     "editing": true,
     "showSettings": false,
-    "authentication": true
+    "authentication": true,
+    "planqkUi": true
   }
 }

@@ -11,7 +11,8 @@ export enum UiFeatures {
   ISSUE = 'issue',
   SHOW_SETTINGS = 'showSettings',
   EDITING = 'editing',
-  AUTHENTICATION = 'authentication'
+  AUTHENTICATION = 'authentication',
+  PLANQK_UI = 'planqkUi'
 }
 
 export interface PatternAtlasUiConfiguration {
@@ -22,7 +23,8 @@ export interface PatternAtlasUiConfiguration {
     issue: boolean,
     showSettings: boolean,
     editing: boolean,
-    authentication: boolean
+    authentication: boolean,
+    planqkUi: boolean
   };
 }
 
@@ -48,7 +50,8 @@ const initialValues: PatternAtlasUiConfiguration = {
     issue: true,
     showSettings: true,
     editing: true,
-    authentication: true
+    authentication: true,
+    planqkUi: false
   },
 };
 

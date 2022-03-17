@@ -40,14 +40,14 @@ export class AppComponent implements OnInit {
   welcomeText = '';
   readonly pathConstants = globals.pathConstants;
   loading = true;
+  planqkUi = false;
 
   constructor(public auth: AuthenticationService,
               public p: PrivilegeService,
               private toasterService: ToasterService,
               private configService: PatternAtlasUiRepositoryConfigurationService,
               private dialog: MatDialog,
-              private cdr: ChangeDetectorRef, private router: Router, private route: ActivatedRoute
-  ) {
+              private cdr: ChangeDetectorRef, private router: Router, private route: ActivatedRoute) {
   }
 
   login() {
@@ -60,9 +60,13 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.configService.getConfigurationFromBackend().subscribe(
-      () => (this.loading = false),
+      () => {
+        this.loading = false;
+        this.planqkUi = this.configService.configuration.features[UiFeatures.PLANQK_UI];
+      },
       (error: HttpErrorResponse) => {
         this.loading = false;
+        this.planqkUi = true;
         if(error.status === globals.statusCodeNotFound){
           this.configService.getDefaultConfiguration();
           console.log('default values applied')
