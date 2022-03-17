@@ -24,6 +24,9 @@ import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
 import { globals } from '../../globals';
 import { UriConverter } from '../util/uri-converter';
 import { EditUrlDialogComponent } from '../component/edit-url-dialog/edit-url-dialog.component';
+import {
+  PatternAtlasUiRepositoryConfigurationService, UiFeatures
+} from '../directives/pattern-atlas-ui-repository-configuration.service';
 
 @Component({
   selector: 'pp-default-pattern-renderer',
@@ -45,6 +48,8 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   private patternId: string;
   subscriptions: Subscription = new Subscription();
   showActionButtons: boolean;
+  readonly UiFeatures = UiFeatures;
+  editingFromConfigServer = false
 
   constructor(private activatedRoute: ActivatedRoute,
               private toasterService: ToasterService,
@@ -54,8 +59,10 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
               private patternService: PatternService,
               private patternRelationDescriptorService: PatternRelationDescriptorService,
               private dialog: MatDialog,
-              private router: Router) {
+              private router: Router,
+              private configurationService: PatternAtlasUiRepositoryConfigurationService) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.editingFromConfigServer = this.configurationService.configuration.features[UiFeatures.EDITING]
   }
 
   ngAfterViewInit(): void {

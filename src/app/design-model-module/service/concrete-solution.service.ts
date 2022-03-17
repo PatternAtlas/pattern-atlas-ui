@@ -14,15 +14,15 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { globals } from '../../globals';
 import { map } from 'rxjs/operators';
 import { FileDTO } from '../model/file-dto';
 import { HalCollectionResponse } from '../model/hal/hal-collection-response';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class ConcreteSolutionService {
 
-  private readonly repoEndpoint = globals.repoEndpoint + '/design-models';
+  private readonly repoEndpoint = environment.API_URL + '/design-models';
 
   constructor(private httpClient: HttpClient) {
   }

@@ -1,9 +1,9 @@
 {
   "name": "pattern-pedia",
-  "version": "0.0.1",
+  "version": "1.4.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --port 1978",
     "build": "ng build",
     "test": "ng test",
     "test-docker": "ng test --browsers=ChromiumHeadlessNoSandbox",

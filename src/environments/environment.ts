@@ -16,16 +16,16 @@
 // `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+const urlScheme = `${window['env'] && window['env']['URL_SCHEME'] ? window['env']['URL_SCHEME'] : 'http'}`
 export const environment = {
   PRODUCTION: window['env'] && window['env']['production'] || false,
   API_URL:
     window['env'] && window['env']['PATTERN_ATLAS_API_HOST_NAME'] && window['env']['PATTERN_ATLAS_API_PORT']
-      ? `http://${window['env']['PATTERN_ATLAS_API_HOST_NAME']}:${window['env']['PATTERN_ATLAS_API_PORT']}/atlas`
+      ? `${urlScheme}://${window['env']['PATTERN_ATLAS_API_HOST_NAME']}:${window['env']['PATTERN_ATLAS_API_PORT']}/patternatlas`
       : 'http://localhost:1977/patternatlas',
   LATEX_RENDERER_API_URL:
-    window['env'] && window['env']['LATEX_RENDERER_HOST_NAME'] &&
-    window['env']['LATEX_RENDERER_PORT']
-      ? `http://${window['env']['LATEX_RENDERER_HOST_NAME']}:${window['env']['LATEX_RENDERER_PORT']}`
+    window['env'] && window['env']['LATEX_RENDERER_HOST_NAME'] && window['env']['LATEX_RENDERER_PORT']
+      ? `${urlScheme}://${window['env']['LATEX_RENDERER_HOST_NAME']}:${window['env']['LATEX_RENDERER_PORT']}`
       : 'http://localhost:5030',
   repositoryUrl: 'http://localhost:1977/patternatlas',
   authorizeUrl: 'http://localhost:8081/oauth/authorize?',
@@ -37,9 +37,8 @@ export const environment = {
   clientIdPublic: 'pattern-pedia-public',
   clientIdPKCE: 'pattern-pedia-pkce',
   CONFIG_SERVER_URL:
-    window['env'] && window['env']['CONFIG_SERVER_HOST_NAME'] &&
-    window['env']['CONFIG_SERVER_PORT']
-      ? `http://${window['env']['CONFIG_SERVER_HOST_NAME']}:${window['env']['CONFIG_SERVER_PORT']}/v2/keys`
+    window['env'] && window['env']['CONFIG_SERVER_HOST_NAME'] && window['env']['CONFIG_SERVER_PORT']
+      ? `${urlScheme}://${window['env']['CONFIG_SERVER_HOST_NAME']}:${window['env']['CONFIG_SERVER_PORT']}/v2/keys`
       : 'http://localhost:2379/v2/keys',
   defaultFeatures: 'assets/settings_features/default_features.json'
 };

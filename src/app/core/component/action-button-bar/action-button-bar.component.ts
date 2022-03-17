@@ -1,7 +1,9 @@
 import {
   ApplicationRef, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
-import { UiFeatures } from '../../directives/pattern-atlas-ui-repository-configuration.service';
+import {
+  PatternAtlasUiRepositoryConfigurationService, UiFeatures
+} from 'src/app/core/directives/pattern-atlas-ui-repository-configuration.service';
 
 @Component({
   selector: 'pp-action-button-bar',
@@ -31,11 +33,15 @@ export class ActionButtonBarComponent implements OnInit {
 
   @Input() displayText: string;
 
+  editingFromConfigServer = false;
+
   constructor(private cdr: ChangeDetectorRef,
-            private applicationRef: ApplicationRef) {
+              private applicationRef: ApplicationRef,
+              private configurationService: PatternAtlasUiRepositoryConfigurationService) {
   }
 
   ngOnInit() {
+    this.editingFromConfigServer = this.configurationService.configuration.features[UiFeatures.EDITING];
   }
 
   addButtonClicked() {
@@ -51,6 +57,8 @@ export class ActionButtonBarComponent implements OnInit {
   }
 
   iconEditButtonClicked() {
-    this.iconEditClicked.emit();
+    if (this.editingFromConfigServer) {
+      this.iconEditClicked.emit();
+    }
   }
 }
