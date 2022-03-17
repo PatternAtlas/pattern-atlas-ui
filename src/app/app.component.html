@@ -24,11 +24,7 @@
     <span class="spacer"></span>
     {{welcomeText}}
     <a *ngIf="planqkUi" mat-stroked-button href="https://platform.planqk.de/my-content">Back to the PlanQK platform</a>
-    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Button with a menu">
-      <mat-icon>more_vert</mat-icon>
-    </button>
 
-    <span class="spacer"></span>
     <div class="log-button" *patternAtlasUiShowOnFeature="UiFeatures.AUTHENTICATION">
         <button *ngIf="!loggedIn" mat-button (click)="login()"> Login </button>
         <button *ngIf="loggedIn" mat-button [matMenuTriggerFor]="menu">Hello {{userName}} <mat-icon>more_vert</mat-icon></button>

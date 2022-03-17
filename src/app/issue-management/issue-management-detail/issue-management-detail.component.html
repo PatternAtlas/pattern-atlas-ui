@@ -5,7 +5,7 @@
 </mat-toolbar>
 <div class="container-double container">
     <div #issueView class="left scrollable-double">
-        <mat-card *ngIf="issue">
+        <mat-card *ngIf="issue" style="min-height: auto">
             <form (ngSubmit)="submit()" #issueForm="ngForm">
                 <mat-form-field appearance="standard">
                     <mat-label for="name">Name</mat-label>
