@@ -21,7 +21,7 @@
                         id="description" required [(ngModel)]="issue.description" name="description"
                         #description="ngModel">
             </textarea>
-                    <mat-hint *ngIf="!issue.description">Pls insert a describtion</mat-hint>
+                    <mat-hint *ngIf="!issue.description">Please insert a describtion</mat-hint>
                 </mat-form-field>
 
                 <pp-author-picker class="detail-component" [authors]="issue.authors" [disabled]="disabled"

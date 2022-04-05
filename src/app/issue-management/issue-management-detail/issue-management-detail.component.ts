@@ -13,6 +13,7 @@ import { ConfirmDialogComponent } from 'src/app/core/component/confirm-dialog/co
 import { patternLanguageNone } from 'src/app/core/component/pattern-language-picker/pattern-language-picker.component';
 import { PAComment, PAEvidence, RatingEventModel, RatingModelRequest } from 'src/app/core/shared';
 import { AuthorEventModel } from 'src/app/core/shared/_models/autor-event.model';
+import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
 
 @Component({
   selector: 'pp-issue-management-detail',
@@ -42,6 +43,7 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit {
     private activeRoute: ActivatedRoute,
     public dialog: MatDialog,
     private cdRef: ChangeDetectorRef,
+    private auth: AuthenticationService
   ) { }
 
   ngOnInit(): void {
@@ -62,6 +64,10 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit {
       } else {
         this.disabled = false;
         this.issue = new Issue();
+        // Preset author
+        this.auth.user.subscribe(_user => {
+          if (_user && !this.issue.authors) this.issue.authors = [new AuthorModel(_user.id, Author.OWNER, _user.name)];
+        })
       }
       this.treshold = !(this.issue.rating >= 3);
     });
@@ -136,10 +142,28 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit {
   }
 
   create() {
+    let authorlist = this.issue.authors;
+    let first_author = null;
+    this.auth.user.subscribe(_user => {
+      if (_user) first_author = _user.id;
+    })
+
+    // create
     this.issueManagementService.createIssue(this.issue).subscribe(result => {
       this.issue = result
+
+      // call update for all additional authors
+      for(let author of authorlist) {
+        if(author.userId !== first_author) {
+          this.issueManagementService.updateAuthorsIssue(this.issue, author).subscribe(result => {
+            this.issue = result;
+          })
+        }
+      }
+
       this.disabled = true;
     });
+
   }
 
   update() {
@@ -174,15 +198,33 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit {
 
   /** Author */
   updateAuthor(author: AuthorModel) {
-    this.issueManagementService.updateAuthorsIssue(this.issue, author).subscribe(result => {
-      this.issue = result;
-    });
+    if(this.issue.id) {
+      this.issueManagementService.updateAuthorsIssue(this.issue, author).subscribe(result => {
+        this.issue = result;
+      });
+    } else {
+      // not yet created - only save locally
+      if(!this.issue.authors) {
+        this.issue.authors = []
+      }
+      this.issue.authors.push(author)
+    }
   }
 
   deleteAuthor(author: AuthorModel) {
-    this.issueManagementService.deleteAuthorIssue(author, this.issue).subscribe(result => {
-      this.issue = result;
-    });
+    if(this.issue.id) {
+      this.issueManagementService.deleteAuthorIssue(author, this.issue).subscribe(result => {
+        this.issue = result;
+      });
+    } else {
+      if(this.issue.authors) {
+        // not yet created - only save locally
+        const authorIndex = this.issue.authors.indexOf(author, 0);
+        if(authorIndex >= 0) {
+          this.issue.authors.splice(authorIndex, 1);
+        }
+      }
+    }
   }
 
   /** Comment */

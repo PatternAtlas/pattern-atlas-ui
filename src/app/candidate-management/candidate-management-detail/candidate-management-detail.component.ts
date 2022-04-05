@@ -15,8 +15,9 @@ import { globals } from 'src/app/globals';
 import { ContentObserver } from '@angular/cdk/observers';
 import { PAComment, PAEvidence, RatingEventModel, RatingModelRequest, RatingType } from 'src/app/core/shared';
 import { PrivilegeService } from 'src/app/authentication/_services/privilege.service';
-import { AuthorModel } from 'src/app/core/author-management';
+import {Author, AuthorModel} from 'src/app/core/author-management';
 import { environment } from 'src/environments/environment';
+import {AuthenticationService} from "../../authentication/_services/authentication.service";
 
 @Component({
   selector: 'pp-candidate-management-detail',
@@ -55,6 +56,7 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
     public dialog: MatDialog,
     private p: PrivilegeService,
     private ref: ChangeDetectorRef,
+    private auth: AuthenticationService
   ) { }
 
   ngOnInit(): void {
@@ -82,6 +84,10 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
         this.disabled = false;
         this.candidate = new Candidate(null, 'New Candidate', null, null);
         this.patternLanguageSelectedChange(patternLanguageNone);
+        // Preset author
+        this.auth.user.subscribe(_user => {
+          if (_user && !this.candidate.authors) this.candidate.authors = [new AuthorModel(_user.id, Author.OWNER, _user.name)];
+        })
       }
       this.confirmDialog = {
         title: `Change Pattern Language for Candidate ${this.candidate.name}`,
@@ -205,9 +211,25 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
   }
 
   create() {
+    let authorlist = this.candidate.authors;
+    let first_author = null;
+    this.auth.user.subscribe(_user => {
+      if (_user) first_author = _user.id;
+    })
+
     this.candidateManagementService.createCandidate(this.candidate).subscribe(result => {
       this.candidate = result;
       this.contentToMarkdown();
+
+      // call update for all additional authors
+      for(let author of authorlist) {
+        if(author.userId !== first_author) {
+          this.candidateManagementService.updateAuthorsCandidate(this.candidate, author).subscribe(result => {
+            this.candidate = result;
+          })
+        }
+      }
+
       this.disabled = true;
     })
   }
@@ -260,15 +282,32 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
 
   /** Author */
   updateAuthor(author: AuthorModel) {
-    this.candidateManagementService.updateAuthorsCandidate(this.candidate, author).subscribe(result => {
-      this.candidate = result;
-    });
+    if(this.candidate.id) {
+      this.candidateManagementService.updateAuthorsCandidate(this.candidate, author).subscribe(result => {
+        this.candidate = result;
+      });
+    } else {
+      // not yet created - only save locally
+      if(!this.candidate.authors) {
+        this.candidate.authors = []
+      }
+      this.candidate.authors.push(author)
+    }
   }
 
   deleteAuthor(author: AuthorModel) {
-    this.candidateManagementService.deleteAuthorCandidate(author, this.candidate).subscribe(result => {
-      this.candidate = result;
-    });
+    if(this.candidate.id) {
+      this.candidateManagementService.deleteAuthorCandidate(author, this.candidate).subscribe(result => {
+        this.candidate = result;
+      });
+    } else {
+      if(this.candidate.authors) {
+        const authorIndex = this.candidate.authors.indexOf(author, 0);
+        if(authorIndex >= 0) {
+          this.candidate.authors.splice(authorIndex, 1);
+        }
+      }
+    }
   }
 
   /** Comment */
