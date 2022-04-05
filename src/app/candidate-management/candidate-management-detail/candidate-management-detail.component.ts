@@ -15,9 +15,9 @@ import { globals } from 'src/app/globals';
 import { ContentObserver } from '@angular/cdk/observers';
 import { PAComment, PAEvidence, RatingEventModel, RatingModelRequest, RatingType } from 'src/app/core/shared';
 import { PrivilegeService } from 'src/app/authentication/_services/privilege.service';
-import {Author, AuthorModel} from 'src/app/core/author-management';
+import { Author, AuthorModel } from 'src/app/core/author-management';
 import { environment } from 'src/environments/environment';
-import {AuthenticationService} from "../../authentication/_services/authentication.service";
+import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
 
 @Component({
   selector: 'pp-candidate-management-detail',
