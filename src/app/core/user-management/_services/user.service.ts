@@ -43,7 +43,7 @@ export class UserService {
   public getUser(userId: string): Observable<PAUser> {
     return this.http.get<any>(this.repoEndpoint + this.serviceEndpoint + `/${userId}`).pipe(
       map(result => {
-        return result
+        return Object.assign(new PAUser(), result)
       }),
       catchError(error => {
         console.error(error);
