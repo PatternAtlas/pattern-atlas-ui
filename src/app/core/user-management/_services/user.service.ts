@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ToasterService } from 'angular2-toaster';
-import { Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import {forkJoin, Observable} from 'rxjs';
+import {catchError, concatMap, map, mergeMap} from 'rxjs/operators';
 import { PAUser } from '../_models/user.model';
 import { environment } from 'src/environments/environment';
 import { RoleModel } from '../_models/role.model';
@@ -31,7 +31,7 @@ export class UserService {
   public getAllUsers(): Observable<PAUser[]> {
     return this.http.get<any>(this.repoEndpoint + this.serviceEndpoint).pipe(
       map(result => {
-        return result._embedded.userModels
+        return result._embedded.userModels.map(userRet => Object.assign(new PAUser(), userRet))
       }),
       catchError(error => {
         this.toasterService.pop('error', 'Getting user list', error)
@@ -172,29 +172,31 @@ export class UserService {
   */
   public updateUser(user: PAUser): Observable<PAUser> {
 
-    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${user.id}`, user).pipe(
-      map(result => {
-        this.toasterService.pop('success', 'Updated user')
-        return result
-      }),
-      catchError(e => {
-        this.toasterService.pop('error', 'Could not update user: ', e.error.message)
-        return null;
-      }),
-    )
+    let req1 : Observable<any> = this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${user.id}`, user)
+    let req2 : Observable<any> = this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${user.id}/role`, user)
+
+    return req1
+      .pipe(
+        concatMap(resUser => req2
+          .pipe(
+            map(result => {
+              this.toasterService.pop('success', 'Updated user')
+              return result;
+            })
+          )),
+        catchError(e => {
+          this.toasterService.pop('error', 'Could not update user: ', e.error.message);
+          return null;
+        }));
   }
 
   public updateUserRole(role: RoleModel, privilege: PrivilegeModel, roleModelRequest: RoleModelRequest): Observable<RoleModel> {
-    
+
     return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/roles/${role.id}/privileges/${privilege.id}`, roleModelRequest).pipe(
       map(result => {
-        this.toasterService.pop('success', 'Updated role')
         return result
       }),
-      catchError(error => {
-        this.toasterService.pop('error', 'Could not update role: ', error)
-        return null;
-      }),
+
     )
   }
 
