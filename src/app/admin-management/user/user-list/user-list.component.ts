@@ -58,6 +58,7 @@ export class UserListComponent implements OnInit {
 
   deleteUser(user: PAUser) {
     this.userService.deleteUser(user).subscribe(result => {
+      this.getAll();
     })
   }
 
