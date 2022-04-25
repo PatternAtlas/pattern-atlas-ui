@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService, PAUser, UserStore, UserRole } from 'src/app/core/user-management';
 import { UserDetailComponent } from '../user-detail/user-detail.component';
+import { PrivilegeType } from '../../privilege/privilege.component';
 
 @Component({
   selector: 'pp-user-list',
@@ -13,6 +14,7 @@ export class UserListComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'name', 'email', 'role', 'actions'];
   dataSource: PAUser[];
+  PrivilegeTypeEnum = PrivilegeType;
 
   constructor(
     private userService: UserService,

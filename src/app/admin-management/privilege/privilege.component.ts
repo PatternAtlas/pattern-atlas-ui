@@ -1,7 +1,11 @@
-import { Component, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
-import { RoleModel, UserService, UserRole, PrivilegeModel, RoleModelRequest } from 'src/app/core/user-management';
-import { Privilege } from 'src/app/core/user-management/_models/privilege.enum';
+import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
+import { RoleModel, UserService, PrivilegeModel, RoleModelRequest } from 'src/app/core/user-management';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+
+export enum PrivilegeType {
+  platform,
+  author
+}
 
 @Component({
   selector: 'pp-privilege',
@@ -11,7 +15,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 })
 export class PrivilegeComponent implements OnInit {
 
-  privileges: string[] = [];
+  @Input() privilegeType: PrivilegeType;
 
   displayedColumns: string[] = ['PRIVILEGE'];
   dataSource: PrivilegeModel[] = [];
@@ -24,17 +28,31 @@ export class PrivilegeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.userService.getAllPlatformPrivileges().subscribe(result => {
-      this.dataSource = result;
-      this.ref.detectChanges();
-      // this.ref.markForCheck();
-    });
-    this.userService.getAllPlatformRoles().subscribe(result => {
-      this.roles = result;
-      this.roles.forEach(role => this.displayedColumns.push(role.name));
-      this.ref.detectChanges();
-      // this.ref.markForCheck();
-    });
+    if (this.privilegeType == PrivilegeType.platform) {
+      this.userService.getAllPlatformPrivileges().subscribe(result => {
+        this.dataSource = result;
+        this.ref.detectChanges();
+        // this.ref.markForCheck();
+      });
+      this.userService.getAllPlatformRoles().subscribe(result => {
+        this.roles = result;
+        this.roles.forEach(role => this.displayedColumns.push(role.name));
+        this.ref.detectChanges();
+        // this.ref.markForCheck();
+      });
+    } else if (this.privilegeType == PrivilegeType.author) {
+      this.userService.getAllDefaultAuthorPrivileges().subscribe(result => {
+        this.dataSource = result;
+        this.ref.detectChanges();
+        // this.ref.markForCheck();
+      });
+      this.userService.getAllAuthorRoles().subscribe(result => {
+        this.roles = result;
+        this.roles.forEach(role => this.displayedColumns.push(role.name));
+        this.ref.detectChanges();
+        // this.ref.markForCheck();
+      });
+    }
   }
 
   change(checkbox: MatCheckboxChange, privilege: PrivilegeModel, role: RoleModel) {

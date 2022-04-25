@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ToasterService } from 'angular2-toaster';
-import {forkJoin, Observable} from 'rxjs';
-import {catchError, concatMap, map, mergeMap} from 'rxjs/operators';
+import { forkJoin, Observable } from 'rxjs';
+import { catchError, concatMap, map, mergeMap } from 'rxjs/operators';
 import { PAUser } from '../_models/user.model';
 import { environment } from 'src/environments/environment';
 import { RoleModel } from '../_models/role.model';
@@ -133,6 +133,18 @@ export class UserService {
       }),
       catchError(error => {
         this.toasterService.pop('error', 'Getting platform privilege list', error)
+        return [];
+      }),
+    )
+  }
+
+  public getAllDefaultAuthorPrivileges(): Observable<PrivilegeModel[]> {
+    return this.http.get<any>(this.repoEndpoint + this.serviceEndpoint + '/roles/default_author_privileges').pipe(
+      map(result => {
+        return result._embedded.privilegeModels
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Getting default privilege list', error)
         return [];
       }),
     )
