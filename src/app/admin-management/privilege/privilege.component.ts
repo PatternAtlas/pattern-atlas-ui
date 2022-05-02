@@ -1,6 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
 import { RoleModel, UserService, PrivilegeModel, RoleModelRequest } from 'src/app/core/user-management';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../core/component/confirm-dialog/confirm-dialog.component';
 
 export enum PrivilegeType {
   platform,
@@ -24,7 +26,8 @@ export class PrivilegeComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    private matDialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -55,13 +58,40 @@ export class PrivilegeComponent implements OnInit {
     }
   }
 
+  updateLocalCopyOfRoles(role: RoleModel, updatedRole?: RoleModel) {
+    if (updatedRole) {
+      const index = this.roles.indexOf(role);
+      if (index > -1) this.roles.splice(index, 1, updatedRole);
+    }
+  }
+
   change(checkbox: MatCheckboxChange, privilege: PrivilegeModel, role: RoleModel) {
-    this.userService.updateUserRole(role, privilege, new RoleModelRequest(checkbox.checked)).subscribe(result => {
-      if (result) {
-        const index = this.roles.indexOf(role);
-        if (index > -1) this.roles.splice(index, 1, result);
-      }
-    })
+    if (this.privilegeType == PrivilegeType.platform) {
+      this.userService.updateUserRole(role, privilege, new RoleModelRequest(checkbox.checked)).subscribe(result => {
+        this.updateLocalCopyOfRoles(role, result)
+      })
+    } else if (this.privilegeType == PrivilegeType.author) {
+      this.matDialog.open(ConfirmDialogComponent, {
+        data: {
+          title: 'Update existing roles?',
+          text: 'Do you also want to update all existing resource specific roles and privileges for ' + role.name + ' and ' + privilege.name + '?',
+          noButton: true
+        }
+      }).afterClosed().subscribe(result => {
+        if (result) {
+          this.userService.updateUserRole(role, privilege, new RoleModelRequest(checkbox.checked)).subscribe(result => {
+            this.updateLocalCopyOfRoles(role, result)
+          })
+          this.userService.updateAllResourceSpecificUserRoles(role, privilege, new RoleModelRequest(checkbox.checked)).subscribe();
+        } else if (result == null) {
+          checkbox.source.checked = !checkbox.checked;  // revert the changed checked state
+        } else {
+          this.userService.updateUserRole(role, privilege, new RoleModelRequest(checkbox.checked)).subscribe(result => {
+            this.updateLocalCopyOfRoles(role, result)
+          })
+        }
+      });
+    }
   }
 
   trackByFn(index, item) {

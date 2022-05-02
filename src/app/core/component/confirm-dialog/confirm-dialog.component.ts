@@ -5,7 +5,7 @@ import { DialogData } from '../create-pattern-relation/create-pattern-relation.c
 export interface ConfirmData {
   title: string,
   text: string,
-  confirmButton?: string,
+  noButton?: boolean,
 }
 
 @Component({
@@ -20,7 +20,7 @@ export class ConfirmDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+
   }
 
 }
