@@ -213,7 +213,7 @@ export class UserService {
   }
 
   public updateAllResourceSpecificUserRoles(role: RoleModel, privilege: PrivilegeModel, roleModelRequest: RoleModelRequest): Observable<null> {
-    return this.http.post<any>(
+    return this.http.put<any>(
       this.repoEndpoint + this.serviceEndpoint + `/roles/${role.id}/privileges/${privilege.id}/all_resource_specific`, roleModelRequest).pipe(
       map(result => {
         return result
