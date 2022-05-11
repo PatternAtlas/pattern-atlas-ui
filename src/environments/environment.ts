@@ -28,14 +28,19 @@ export const environment = {
       ? `${urlScheme}://${window['env']['LATEX_RENDERER_HOST_NAME']}:${window['env']['LATEX_RENDERER_PORT']}`
       : 'http://localhost:5030',
   repositoryUrl: 'http://localhost:1977/patternatlas',
-  authorizeUrl: 'http://localhost:8081/oauth/authorize?',
-  tokenUrl: 'http://localhost:8081/oauth/token',
-  tokenRevokeUrl: 'http://localhost:8081/oauth/revoke_token',
-  signinUrl: 'http://localhost:8081/user/create',
-  userInfoUrl: 'http://localhost:8081/user_info',
+  authorizeUrl: 'http://localhost:8080/realms/dev/protocol/openid-connect/auth?',
+  //authorizeUrl: 'http://localhost:8081/oauth/authorize?',
+  tokenUrl: 'http://localhost:8080/realms/dev/protocol/openid-connect/token',
+  //tokenUrl: 'http://localhost:8081/oauth/token',
+  tokenRevokeUrl: 'http://localhost:8080/realms/dev/protocol/openid-connect/revoke',
+  //tokenRevokeUrl: 'http://localhost:8081/oauth/revoke_token',
+  signinUrl: 'http://localhost:8080/realms/dev/clients-registrations/openid-connect',
+  //signinUrl: 'http://localhost:8081/user/create',
+  userInfoUrl: 'http://localhost:8080/realms/dev/protocol/openid-connect/userinfo',
+  //userInfoUrl: 'http://localhost:8081/user_info',
   clientIdPrivate: 'pattern-pedia-private',
-  clientIdPublic: 'pattern-pedia-public',
-  clientIdPKCE: 'pattern-pedia-pkce',
+  clientIdPublic: 'patternatlas',
+  clientIdPKCE: 'patternatlas',
   CONFIG_SERVER_URL:
     window['env'] && window['env']['CONFIG_SERVER_HOST_NAME'] && window['env']['CONFIG_SERVER_PORT']
       ? `${urlScheme}://${window['env']['CONFIG_SERVER_HOST_NAME']}:${window['env']['CONFIG_SERVER_PORT']}/v2/keys`

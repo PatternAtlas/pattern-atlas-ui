@@ -18,9 +18,6 @@ const verifierKey = 'code_verifier';
 @Injectable()
 export class AuthenticationService {
 
-  private regexCode: RegExp;
-  private regexState: RegExp;
-
   private accessTokenSubject: BehaviorSubject<string>;
   private userSubject: BehaviorSubject<UserInfoModel>;
   private rolePASubject: BehaviorSubject<UserRole[]>;
@@ -34,9 +31,6 @@ export class AuthenticationService {
     console.log('Init Authentication Service');
     this.jwtHelper = new JwtHelperService();
     TokenInterceptor.init(this);
-
-    this.regexCode = /code=(\w*)/;
-    this.regexState = /state=(\w*)/;
 
     this.initSubjectsPipe();
   }
@@ -81,7 +75,7 @@ export class AuthenticationService {
     const code_verifier = this.generateRandomString(128)
     const code_challenge = await this.pkceChallengeFromVerifier(code_verifier);
     localStorage.setItem(verifierKey, code_verifier);
-    
+
     this.getAccesCode(state, code_challenge);
   }
 
@@ -90,7 +84,7 @@ export class AuthenticationService {
       .set('response_type', 'code')
       // .set('client_id', environment.clientIdPublic)
       .set('redirect_uri', `${window.location.origin}`)
-      .set('scope', 'read+write+delete')
+      //.set('scope', 'read+write+delete')
       .set('state', state)
       // outcomment IF PKCE Authentaction flow is used
       .set('client_id', environment.clientIdPKCE)
@@ -107,13 +101,16 @@ export class AuthenticationService {
   private getToken() {
     const url = window.location.search;
 
-    if (url.includes('code=') && url.includes('state=')) {
+    const urlParams = new URLSearchParams(url);
+
+
+    if (urlParams.has('code') && urlParams.has('state')) {
       // Checks if sended state is equal to received state, CSRF attacks
-      if (this.checkState(this.regexState.exec(url)[1])) {
+      if (this.checkState(urlParams.get('state'))) {
         console.error('Wrong State')
         localStorage.clear();
       } else {
-        const code = this.regexCode.exec(url)[1];
+        const code = urlParams.get('code');
         const code_verifier = localStorage.getItem(verifierKey);
         const params = new HttpParams()
         // .set('client_id', `${environment.clientIdPublic}`)
@@ -146,7 +143,7 @@ export class AuthenticationService {
       .set('client_id', `${environment.clientIdPublic}`)
       .set('grant_type', 'refresh_token')
       .set('refresh_token', `${this.getRefreshToken()}`)
-    this.http.post<any>('http://localhost:8081/oauth/token', params).subscribe(token => {
+    this.http.post<any>(environment.tokenUrl, params).subscribe(token => {
 
       const accessToken = token[accessTokenKey];
       const refreshToken = token[refreshTokenKey];
@@ -215,12 +212,12 @@ export class AuthenticationService {
   /** Authentication Flow Helper */
   // Generate a secure random string using the browser crypto functions
   generateRandomString(length: number) {
-    var array = new Uint32Array(length);
+    var array = new Uint32Array(length/2); // one byte is translated into two characters => divide by 2
     window.crypto.getRandomValues(array);
     return Array.from(array, dec => ('0' + dec.toString(16)).substr(-2)).join('');
   }
 
-  // Calculate the SHA256 hash of the input text. 
+  // Calculate the SHA256 hash of the input text.
   // Returns a promise that resolves to an ArrayBuffer
   sha256(plain) {
     const encoder = new TextEncoder();
