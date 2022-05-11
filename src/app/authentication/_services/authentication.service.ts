@@ -161,10 +161,10 @@ export class AuthenticationService {
   }
 
   private getUserInfo() {
-    this.http.get<UserInfoModel>('http://localhost:8081/user_info').subscribe(user => {
+    this.http.get<UserInfoModel>(environment.userInfoUrl).subscribe(user => {
       this.userSubject.next(user);
     }, error => {
-      console.error('Error getToken via refreshToken: ', error)
+      console.error('Error in user info: ', error)
     });
   }
 

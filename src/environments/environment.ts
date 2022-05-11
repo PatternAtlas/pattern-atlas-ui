@@ -36,7 +36,7 @@ export const environment = {
   //tokenRevokeUrl: 'http://localhost:8081/oauth/revoke_token',
   signinUrl: 'http://localhost:8080/realms/dev/clients-registrations/openid-connect',
   //signinUrl: 'http://localhost:8081/user/create',
-  userInfoUrl: 'http://localhost:8080/realms/dev/protocol/openid-connect/userinfo',
+  userInfoUrl: 'http://localhost:1977/patternatlas/users/userinfo',
   //userInfoUrl: 'http://localhost:8081/user_info',
   clientIdPrivate: 'pattern-pedia-private',
   clientIdPublic: 'patternatlas',
