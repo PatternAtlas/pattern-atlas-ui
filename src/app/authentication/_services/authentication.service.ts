@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 
 const accessTokenKey = 'access_token';
 const refreshTokenKey = 'refresh_token';
+const idTokenKey = 'id_token';
 
 const stateKey = 'state';
 const verifierKey = 'code_verifier';
@@ -90,6 +91,7 @@ export class AuthenticationService {
       .set('client_id', environment.clientIdPKCE)
       .set('code_challenge', code_challenge)
       .set('code_challenge_method', 'S256')
+      .set('scope', 'openid')
     window.open(environment.authorizeUrl + params, '_self');
   }
 
@@ -126,9 +128,11 @@ export class AuthenticationService {
 
           const accessToken = token[accessTokenKey];
           const refreshToken = token[refreshTokenKey];
+          const idToken = token[idTokenKey]; // used later for logout reference
 
           localStorage.setItem(accessTokenKey, accessToken);
           localStorage.setItem(refreshTokenKey, refreshToken);
+          localStorage.setItem(idTokenKey, idToken);
 
           this.accessTokenSubject.next(accessToken);
         },
@@ -147,9 +151,11 @@ export class AuthenticationService {
 
       const accessToken = token[accessTokenKey];
       const refreshToken = token[refreshTokenKey];
+      const idToken = token[idTokenKey];
 
       localStorage.setItem(accessTokenKey, accessToken);
       localStorage.setItem(refreshTokenKey, refreshToken);
+      localStorage.setItem(idTokenKey, idToken);
 
       this.accessTokenSubject.next(accessToken);
     },
@@ -177,12 +183,12 @@ export class AuthenticationService {
   }
 
   logout() {
+    const idToken = localStorage.getItem(idTokenKey)
     localStorage.clear();
     this.accessTokenSubject.next('logout');
-
-    // Send logout request to auth server
     const params = new HttpParams()
-      .set('redirect_uri', `${window.location.origin}`);
+      .set('post_logout_redirect_uri', `${window.location.origin}`)
+      .set('id_token_hint', idToken)
     window.open(environment.logoutUrl + params, '_self');
   }
 
