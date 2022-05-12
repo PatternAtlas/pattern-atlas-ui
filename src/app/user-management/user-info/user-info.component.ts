@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ValidatePassword } from 'src/app/admin-management/user/user-detail/user-detail.component';
 import { Issue } from 'src/app/core/issue-management';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'pp-user-info',
@@ -24,6 +25,8 @@ export class UserInfoComponent implements OnInit {
   passwordHide = true;
   confirmPasswordHide = true;
 
+  accountManagementUrl = null;
+
   constructor(
     private userManagementService: UserService,
     private userFormBuilder: FormBuilder,
@@ -35,7 +38,7 @@ export class UserInfoComponent implements OnInit {
     this.passwordForm = this.userFormBuilder.group({
       oldPassword: [null],
       password: [null, [Validators.required]],
-      confirmPassword: [null, [Validators.required]] 
+      confirmPassword: [null, [Validators.required]]
     }, {
       validator: ValidatePassword
     }
@@ -50,6 +53,8 @@ export class UserInfoComponent implements OnInit {
         console.error('This should not work');
       }
     })
+
+    this.accountManagementUrl = environment['accountManagementUrl']
   }
   /** PASSWORD */
   editPassword() {

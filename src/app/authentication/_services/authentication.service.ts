@@ -179,6 +179,11 @@ export class AuthenticationService {
   logout() {
     localStorage.clear();
     this.accessTokenSubject.next('logout');
+
+    // Send logout request to auth server
+    const params = new HttpParams()
+      .set('redirect_uri', `${window.location.origin}`);
+    window.open(environment.logoutUrl + params, '_self');
   }
 
   public getAccesToken(): string {

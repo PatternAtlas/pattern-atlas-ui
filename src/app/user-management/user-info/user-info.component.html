@@ -62,7 +62,7 @@
             <!-- DETAIL BUTTONS -->
             <div class="detail-component buttons" *ngIf="disabled && !password">
                 <button mat-flat-button type="button" color="accent" (click)="edit()">Edit</button>
-                <button mat-flat-button type="button" color="accent" (click)="editPassword()">Change Password</button>
+                <a mat-flat-button color="accent" *ngIf="accountManagementUrl" href="{{accountManagementUrl}}">Change Password</a>
                 <button mat-flat-button type="button" color="warn" (click)="delete()">Delete</button>
             </div>
             <!-- EDIT BUTTONS -->
