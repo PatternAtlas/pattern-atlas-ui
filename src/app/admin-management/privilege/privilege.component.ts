@@ -13,7 +13,6 @@ export enum PrivilegeType {
   selector: 'pp-privilege',
   templateUrl: './privilege.component.html',
   styleUrls: ['./privilege.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PrivilegeComponent implements OnInit {
 
@@ -35,25 +34,21 @@ export class PrivilegeComponent implements OnInit {
       this.userService.getAllPlatformPrivileges().subscribe(result => {
         this.dataSource = result;
         this.ref.detectChanges();
-        // this.ref.markForCheck();
       });
       this.userService.getAllPlatformRoles().subscribe(result => {
         this.roles = result;
         this.roles.forEach(role => this.displayedColumns.push(role.name));
         this.ref.detectChanges();
-        // this.ref.markForCheck();
       });
     } else if (this.privilegeType == PrivilegeType.author) {
       this.userService.getAllDefaultAuthorPrivileges().subscribe(result => {
         this.dataSource = result;
         this.ref.detectChanges();
-        // this.ref.markForCheck();
       });
       this.userService.getAllAuthorRoles().subscribe(result => {
         this.roles = result;
         this.roles.forEach(role => this.displayedColumns.push(role.name));
         this.ref.detectChanges();
-        // this.ref.markForCheck();
       });
     }
   }

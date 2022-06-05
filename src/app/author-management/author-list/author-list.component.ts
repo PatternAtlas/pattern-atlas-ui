@@ -33,13 +33,11 @@ export class AuthorManagementListComponent implements OnInit {
         this.userService.getAllPrivilegesFromEntity(this.issue.id).subscribe(privileges => {
           this.dataSource = privileges;
           this.ref.detectChanges();
-          // this.ref.markForCheck();
         });
         this.userService.getAllRolesFromEntity(this.issue.id).subscribe(result => {
           this.roles = result;
           this.roles.forEach(role => this.displayedColumns.push(role.name));
           this.ref.detectChanges();
-          // this.ref.markForCheck();
         });
       }
     });

@@ -46,7 +46,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { IssueManagementModule } from './issue-management/issue-management.module';
 import { CandidateManagementModule } from './candidate-management/candidate-management.module';
 import { DesignModelModule } from './design-model-module/design-model.module';
-//import { FilterViewComponent } from './filter/component/filter-view/filter-view.component';
+
 
 import { PatternAtlasUiFeatureToggleModule } from './core/directives/pattern-atlas-ui-feature-toggle.module';
 import { PatternAtlasUiRepositoryConfigurationService } from './core/directives/pattern-atlas-ui-repository-configuration.service';
@@ -55,8 +55,7 @@ import { PatternAtlasUiRepositoryConfigurationService } from './core/directives/
   declarations: [
     AppComponent,
     PageNotFoundComponent,
-    LandingPageComponent,
-    //FilterViewComponent
+    LandingPageComponent
   ],
   imports: [
     AppRoutingModule,

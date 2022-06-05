@@ -82,9 +82,7 @@ export class AuthenticationService {
   private getAccesCode(state: string, code_challenge: string) {
     const params = new HttpParams()
       .set('response_type', 'code')
-      // .set('client_id', environment.clientIdPublic)
       .set('redirect_uri', `${window.location.origin}`)
-      //.set('scope', 'read+write+delete')
       .set('state', state)
       // outcomment IF PKCE Authentaction flow is used
       .set('client_id', environment.clientIdPKCE)
@@ -113,7 +111,6 @@ export class AuthenticationService {
         const code = urlParams.get('code');
         const code_verifier = localStorage.getItem(verifierKey);
         const params = new HttpParams()
-        // .set('client_id', `${environment.clientIdPublic}`)
 
           .set('code', code)
           .set('redirect_uri', `${window.location.origin}`)
