@@ -1,5 +1,5 @@
 import {
-  AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, OnDestroy, ViewChild
+  AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToasterService } from 'angular2-toaster';
@@ -34,7 +34,7 @@ import { PrivilegeService } from '../../authentication/_services/privilege.servi
   templateUrl: './default-pattern-renderer.component.html',
   styleUrls: ['./default-pattern-renderer.component.scss']
 })
-export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy {
+export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy, OnInit {
   @ViewChild(PatternPropertyDirective) ppPatternProperty: PatternPropertyDirective;
   isLoading = true;
   isLoadingLinks = true;

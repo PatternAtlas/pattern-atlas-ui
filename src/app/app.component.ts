@@ -70,11 +70,8 @@ export class AppComponent implements OnInit {
         if(error.status === globals.statusCodeNotFound){
           this.configService.getDefaultConfiguration();
         }
-        else if (this.configService.configuration.features[UiFeatures.SHOW_SETTINGS]){
-          this.toasterService.popAsync(
-            'error', 'Error while loading config from config server, using default values instead' + error.message).subscribe(
-            () => console.log('default values applied')
-          )
+        else if (this.configService.configuration.features[UiFeatures.SHOW_SETTINGS]) {
+          console.log('default values applied');
         }
       }
     );
