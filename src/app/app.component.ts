@@ -69,7 +69,6 @@ export class AppComponent implements OnInit {
         this.planqkUi = true;
         if(error.status === globals.statusCodeNotFound){
           this.configService.getDefaultConfiguration();
-          console.log('default values applied')
         }
         else if (this.configService.configuration.features[UiFeatures.SHOW_SETTINGS]){
           this.toasterService.popAsync(
@@ -77,7 +76,6 @@ export class AppComponent implements OnInit {
             () => console.log('default values applied')
           )
         }
-        console.log('Error while loading config from config server, using default values instead' + error.message)
       }
     );
     this.auth.user.subscribe(_user => {

@@ -29,7 +29,6 @@ export class AuthenticationService {
     private http: HttpClient,
     private router: Router,
   ) {
-    console.log('Init Authentication Service');
     this.jwtHelper = new JwtHelperService();
     TokenInterceptor.init(this);
 
@@ -109,7 +108,6 @@ export class AuthenticationService {
     if (urlParams.has('code') && urlParams.has('state')) {
       // Checks if sended state is equal to received state, CSRF attacks
       if (this.checkState(urlParams.get('state'))) {
-        console.error('Wrong State')
         localStorage.clear();
       } else {
         const code = urlParams.get('code');
