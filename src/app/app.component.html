@@ -29,10 +29,10 @@
         <button *ngIf="!loggedIn" mat-button (click)="login()"> Login </button>
         <button *ngIf="loggedIn" mat-button [matMenuTriggerFor]="menu">Hello {{userName}} <mat-icon>more_vert</mat-icon></button>
         <mat-menu #menu="matMenu">
-            <button mat-menu-item routerLink="/user-info"> UserInfo </button>
+            <button *ngIf="!planqkUi" mat-menu-item routerLink="/user-info"> UserInfo </button>
             <button *ngIf="p.hidden('USER_READ_ALL') | async" mat-menu-item routerLink="/admin"> Admin </button>
             <!-- <button mat-menu-item routerLink="/developer"> Developer </button> -->
-            <button mat-menu-item (click)="openFeatureToggleDialog()">
+            <button *ngIf="!planqkUi" mat-menu-item (click)="openFeatureToggleDialog()">
               <span>Feature Toggles</span>
             </button>
             <button mat-menu-item color="warn" (click)="logout()"> Logout </button>
