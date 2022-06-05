@@ -70,6 +70,10 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit {
         })
       }
       this.treshold = !(this.issue.rating >= 3);
+      this.p.isMaintainerOrOwner(_issue.authors, 'ISSUE_DELETE_ALL')
+        .subscribe(result => {
+          this.settingsDisabled = !result;
+        })
     });
 
 

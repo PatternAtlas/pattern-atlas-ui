@@ -46,7 +46,7 @@ const initialValues: PatternAtlasUiConfiguration = {
   features: {
     designModel: false,
     patternCandidate: true,
-    patternViews: true,
+    patternViews: false,
     issue: true,
     showSettings: true,
     editing: true,

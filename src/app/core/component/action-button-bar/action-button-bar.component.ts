@@ -25,7 +25,7 @@ export class ActionButtonBarComponent implements OnInit {
   @Input() reloadButton = false;
   @Input() goBackButton = true;
   @Input() secondAddButton: boolean;
-  @Input() firstAddButton = false;
+  @Input() firstAddButton = true;
   @Input() secondAddButtonText: string;
   @Input() iconEdit = false;
   @Input() iconUrl: string;
