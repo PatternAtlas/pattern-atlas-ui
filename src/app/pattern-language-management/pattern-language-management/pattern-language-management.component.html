@@ -45,11 +45,13 @@
         <button matBadge="{{patternLanguage?.patternCount}}" mat-stroked-button color="primary"
                 (click)="navigateToPL(patternLanguage)"><i class="material-icons">pageview</i> View
         </button>
+        <span *ngIf="p.hasPrivilege('PATTERN_LANGUAGE_DELETE_ALL') | async">
         <button *patternAtlasUiShowOnFeature="UiFeatures.EDITING" (click)="delete(patternLanguage)"
                 class="pattern-button"
                 mat-stroked-button style="margin-left: 25px" color="warn">
           <i class="material-icons">delete</i>
         </button>
+        </span>
       </div>
     </mat-card-actions>
   </mat-card>

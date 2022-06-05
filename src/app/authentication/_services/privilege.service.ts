@@ -74,7 +74,6 @@ export class PrivilegeService {
           if (_user.privileges.includes(privilege)) return true;
           return false;
         }
-        this.toasterService.pop('error', 'You are have to be logged in to view this!');
         return false;
       })
     )
