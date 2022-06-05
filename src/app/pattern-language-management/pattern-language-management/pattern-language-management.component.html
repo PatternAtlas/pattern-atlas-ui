@@ -13,7 +13,8 @@
   -->
 <pp-action-button-bar [addButtonText]="'Add'" [goBackButton]="false" [reloadButton]="true"
                       (addClicked)="goToPatternLanguageCreation()"
-                      (reloadClicked)="reloadPatternRepo()"></pp-action-button-bar>
+                      (reloadClicked)="reloadPatternRepo()"
+                      [addPrivilegeName]="'PATTERN_LANGUAGE_CREATE'"></pp-action-button-bar>
 <div class="container">
   <mat-card class="landing-card" *ngFor="let patternLanguage of patternLanguages">
     <mat-card-header>

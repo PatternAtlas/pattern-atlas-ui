@@ -1,7 +1,8 @@
 <ng-container *patternAtlasUiShowOnFeature="UiFeatures.EDITING">
   <pp-action-button-bar [goBackButton]="false"
                         [addButtonText]="'Add View'"
-                        (addClicked)="createView()"></pp-action-button-bar>
+                        (addClicked)="createView()"
+                        [addPrivilegeName]="'PATTERN_VIEW_CREATE'"></pp-action-button-bar>
 </ng-container>
 
 <div class="container">

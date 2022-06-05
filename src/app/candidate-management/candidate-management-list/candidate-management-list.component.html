@@ -1,5 +1,5 @@
 <pp-action-button-bar [addButtonText]="'Add'" [goBackButton]="false" [reloadButton]="true"
-    (addClicked)="new()" (reloadClicked)="getAll()"></pp-action-button-bar>
+    (addClicked)="new()" (reloadClicked)="getAll()" [addPrivilegeName]="'PATTERN_CANDIDATE_CREATE'"></pp-action-button-bar>
 <mat-accordion multi="false" *ngFor="let language of patternLanguages">
     <mat-expansion-panel>
         <mat-expansion-panel-header>
