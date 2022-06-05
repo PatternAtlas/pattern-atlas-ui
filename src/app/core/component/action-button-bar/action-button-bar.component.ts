@@ -30,7 +30,8 @@ export class ActionButtonBarComponent implements OnInit {
   @Input() iconEdit = false;
   @Input() iconUrl: string;
   // Should the name of a privilege be given, the add button is only visible if the user has this privilege
-  @Input() addPrivilegeName: string;
+  @Input() firstAddPrivilegeName: string;
+  @Input() secondAddPrivilegeName: string;
 
   @Input() back = false;
   @Output() backClicked = new EventEmitter<void>();
@@ -47,12 +48,23 @@ export class ActionButtonBarComponent implements OnInit {
 
   ngOnInit() {
     this.editingFromConfigServer = this.configurationService.configuration.features[UiFeatures.EDITING];
-    if(this.addPrivilegeName) {
-      // Check if user privilege is present
-      this.p.hasPrivilege(this.addPrivilegeName)
-        .subscribe(value => this.firstAddButton = value);
-    } else {
-      this.firstAddButton = true
+    if(this.firstAddButton) {
+      if (this.firstAddPrivilegeName) {
+        // Check if user privilege is present
+        this.p.hasPrivilege(this.firstAddPrivilegeName)
+          .subscribe(value => this.firstAddButton = value);
+      } else {
+        this.firstAddButton = true
+      }
+    }
+    if(this.secondAddButton) {
+      if(this.secondAddPrivilegeName) {
+        // Check if user privilege is present
+        this.p.hasPrivilege(this.secondAddPrivilegeName)
+          .subscribe(value => this.secondAddButton = value);
+      } else {
+        this.secondAddButton = true
+      }
     }
   }
 

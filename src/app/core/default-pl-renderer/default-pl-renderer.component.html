@@ -1,6 +1,8 @@
 <pp-action-button-bar (add2Clicked)="addPattern()" (addClicked)="addLink()" [addButtonText]="'Add Relation'"
                       [displayText]="patternLanguage?.name" [secondAddButtonText]="'Add Pattern'"
-                      [secondAddButton]="true">
+                      [secondAddButton]="true"
+                      [firstAddPrivilegeName]="'APPROVED_PATTERN_CREATE'"
+                      [secondAddPrivilegeName]="'PATTERN_LANGUAGE_EDIT_ALL'">
   <pp-toggle-renderer [graphVisible]="graphVisible" *ngIf="!isLoadingPatternData && !isLoadingLinkData"
                       (toggledRenderer)="setGraphVisible($event)"></pp-toggle-renderer>
   <span *ngIf="isLoadingLinkData"> Loading Relations... </span>
