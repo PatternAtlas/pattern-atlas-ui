@@ -80,10 +80,6 @@ export class PrivilegeComponent implements OnInit {
           this.userService.updateAllResourceSpecificUserRoles(role, privilege, new RoleModelRequest(checkbox.checked)).subscribe();
         } else if (result == null) {
           checkbox.source.checked = !checkbox.checked;  // revert the changed checked state
-        } else {
-          this.userService.updateUserRole(role, privilege, new RoleModelRequest(checkbox.checked)).subscribe(result => {
-            this.updateLocalCopyOfRoles(role, result)
-          })
         }
       });
     }
