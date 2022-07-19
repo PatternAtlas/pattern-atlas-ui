@@ -48,7 +48,7 @@
         <span *ngIf="p.hasPrivilege('PATTERN_LANGUAGE_DELETE_ALL') | async">
         <button *patternAtlasUiShowOnFeature="UiFeatures.EDITING" (click)="delete(patternLanguage)"
                 class="pattern-button"
-                mat-stroked-button style="margin-left: 25px" color="warn">
+                mat-stroked-button style="margin-left: 25px" color="warn" aria-label="Delete">
           <i class="material-icons">delete</i>
         </button>
         </span>

@@ -15,14 +15,14 @@
 
   <ng-container *patternAtlasUiShowOnFeature="UiFeatures.EDITING">
     <button (click)="addButtonClicked()" *ngIf="firstAddButton" class="action-button-with-margin" color="accent"
-            mat-raised-button>
+            mat-raised-button aria-label="Add">
       <i class="material-icons">add</i> {{addButtonText}}
     </button>
 
     <button style="margin-left: 0;" (click)="secondAddButtonClicked()" *ngIf="secondAddButton"
             class="action-button-with-margin" color="accent"
             mat-raised-button>
-      <i class="material-icons">add</i> {{secondAddButtonText}}
+      <i class="material-icons" aria-label="Add">add</i> {{secondAddButtonText}}
     </button>
   </ng-container>
 </mat-toolbar>

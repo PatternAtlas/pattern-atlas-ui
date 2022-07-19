@@ -83,12 +83,13 @@
 <div mat-dialog-actions>
   <button mat-raised-button [mat-dialog-close]="null">Close</button>
   <button *ngIf="isDelete" (click)="deleteLink()" [mat-dialog-close]="data" class="pattern-button" mat-raised-button
-          color="warn">
+          color="warn" aria-label="Delete">
     <i class="material-icons">delete</i> Delete
   </button>
 
   <button mat-raised-button style="margin-left: auto; margin-right: 0;" color="primary"
-          [mat-dialog-close]="mapDialogDataToEdge(relationForm.value)" [disabled]="!relationForm?.valid"><i
-    class="material-icons">save</i> Save
+          [mat-dialog-close]="mapDialogDataToEdge(relationForm.value)" [disabled]="!relationForm?.valid"
+          aria-label="Save">
+    <i class="material-icons">save</i> Save
   </button>
 </div>

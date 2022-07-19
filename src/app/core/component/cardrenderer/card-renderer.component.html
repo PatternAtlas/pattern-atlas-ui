@@ -11,7 +11,7 @@
         </button>
         <span *ngIf="p.hasPrivilege('APPROVED_PATTERN_DELETE_ALL') | async">
           <button (click)="delete(entity)" *patternAtlasUiShowOnFeature="UiFeatures.EDITING" class="pattern-button"
-                  mat-raised-button color="warn">
+                  mat-raised-button color="warn" aria-label="Delete">
             <i class="material-icons">delete</i>
           </button>
         </span>

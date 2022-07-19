@@ -21,11 +21,11 @@
          alt=""/>
     <mat-card-actions>
       <div style="text-align: center">
-        <button (click)="navigate(patternView)" mat-stroked-button color="primary"><i
+        <button (click)="navigate(patternView)" mat-stroked-button color="primary" aria-label="View"><i
           class="material-icons">pageview</i> View
         </button>
         <button (click)="deletePatternView(patternView)" *patternAtlasUiShowOnFeature="UiFeatures.EDITING"
-                class="pattern-button" mat-stroked-button style="margin-left: 25px" color="warn">
+                class="pattern-button" mat-stroked-button style="margin-left: 25px" color="warn" aria-label="Delete">
           <i class="material-icons">delete</i>
         </button>
       </div>
