@@ -13,8 +13,12 @@ const accessTokenKey = 'access_token';
 const refreshTokenKey = 'refresh_token';
 const idTokenKey = 'id_token';
 
-const stateKey = 'state';
-const verifierKey = 'code_verifier';
+// Local storage keys
+const localAccessTokenKey = environment.clientIdPublic + '_' + accessTokenKey;
+const localRefreshTokenKey = environment.clientIdPublic + '_' + refreshTokenKey;
+const localIdTokenKey = environment.clientIdPublic + '_' + idTokenKey;
+const localStateKey = environment.clientIdPublic + 'state';
+const localVerifierKey = environment.clientIdPublic + 'code_verifier';
 
 @Injectable()
 export class AuthenticationService {
@@ -59,22 +63,15 @@ export class AuthenticationService {
     })
   }
 
-  base64URLEncode(str) {
-    return str.toString('base64')
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=/g, '');
-  }
-
   public async login() {
     localStorage.clear();
     // GENERATE STATE
     const state = this.generateRandomString(32);
-    localStorage.setItem(stateKey, state);
+    localStorage.setItem(localStateKey, state);
     // GENERATE CODE VERIFIER
     const code_verifier = this.generateRandomString(128)
     const code_challenge = await this.pkceChallengeFromVerifier(code_verifier);
-    localStorage.setItem(verifierKey, code_verifier);
+    localStorage.setItem(localVerifierKey, code_verifier);
 
     this.getAccesCode(state, code_challenge);
   }
@@ -93,7 +90,7 @@ export class AuthenticationService {
   }
 
   private checkState(state: string) {
-    const stateLocal = localStorage.getItem(stateKey);
+    const stateLocal = localStorage.getItem(localStateKey);
     return state !== stateLocal
   }
 
@@ -109,7 +106,7 @@ export class AuthenticationService {
         localStorage.clear();
       } else {
         const code = urlParams.get('code');
-        const code_verifier = localStorage.getItem(verifierKey);
+        const code_verifier = localStorage.getItem(localVerifierKey);
         const params = new HttpParams()
 
           .set('code', code)
@@ -125,9 +122,9 @@ export class AuthenticationService {
           const refreshToken = token[refreshTokenKey];
           const idToken = token[idTokenKey]; // used later for logout reference
 
-          localStorage.setItem(accessTokenKey, accessToken);
-          localStorage.setItem(refreshTokenKey, refreshToken);
-          localStorage.setItem(idTokenKey, idToken);
+          localStorage.setItem(localAccessTokenKey, accessToken);
+          localStorage.setItem(localRefreshTokenKey, refreshToken);
+          localStorage.setItem(localIdTokenKey, idToken);
 
           this.accessTokenSubject.next(accessToken);
         },
@@ -148,9 +145,9 @@ export class AuthenticationService {
       const refreshToken = token[refreshTokenKey];
       const idToken = token[idTokenKey];
 
-      localStorage.setItem(accessTokenKey, accessToken);
-      localStorage.setItem(refreshTokenKey, refreshToken);
-      localStorage.setItem(idTokenKey, idToken);
+      localStorage.setItem(localAccessTokenKey, accessToken);
+      localStorage.setItem(localRefreshTokenKey, refreshToken);
+      localStorage.setItem(localIdTokenKey, idToken);
 
       this.accessTokenSubject.next(accessToken);
     },
@@ -178,7 +175,7 @@ export class AuthenticationService {
   }
 
   logout() {
-    const idToken = localStorage.getItem(idTokenKey)
+    const idToken = localStorage.getItem(localIdTokenKey)
     localStorage.clear();
     this.accessTokenSubject.next('logout');
     const params = new HttpParams()
@@ -188,11 +185,11 @@ export class AuthenticationService {
   }
 
   public getAccesToken(): string {
-    return localStorage.getItem(accessTokenKey);
+    return localStorage.getItem(localAccessTokenKey);
   }
 
   private getRefreshToken(): string {
-    return localStorage.getItem(refreshTokenKey);
+    return localStorage.getItem(localRefreshTokenKey);
   }
 
   public isAuthenticated(): boolean {
