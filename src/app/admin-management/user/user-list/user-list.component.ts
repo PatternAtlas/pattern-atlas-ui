@@ -14,7 +14,6 @@ export class UserListComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'name', 'email', 'role', 'actions'];
   dataSource: PAUser[];
-  PrivilegeTypeEnum = PrivilegeType;
 
   constructor(
     private userService: UserService,

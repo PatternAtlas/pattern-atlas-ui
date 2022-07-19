@@ -4,10 +4,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../core/component/confirm-dialog/confirm-dialog.component';
 
-export enum PrivilegeType {
-  platform,
-  author
-}
+export type PrivilegeType = 'platform' | 'author';
 
 @Component({
   selector: 'pp-privilege',
@@ -30,7 +27,7 @@ export class PrivilegeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if (this.privilegeType == PrivilegeType.platform) {
+    if (this.privilegeType == 'platform') {
       this.userService.getAllPlatformPrivileges().subscribe(result => {
         this.dataSource = result;
         this.ref.detectChanges();
@@ -40,7 +37,7 @@ export class PrivilegeComponent implements OnInit {
         this.roles.forEach(role => this.displayedColumns.push(role.name));
         this.ref.detectChanges();
       });
-    } else if (this.privilegeType == PrivilegeType.author) {
+    } else if (this.privilegeType == 'author') {
       this.userService.getAllDefaultAuthorPrivileges().subscribe(result => {
         this.dataSource = result;
         this.ref.detectChanges();
@@ -61,11 +58,11 @@ export class PrivilegeComponent implements OnInit {
   }
 
   change(checkbox: MatCheckboxChange, privilege: PrivilegeModel, role: RoleModel) {
-    if (this.privilegeType == PrivilegeType.platform) {
+    if (this.privilegeType == 'platform') {
       this.userService.updateUserRole(role, privilege, new RoleModelRequest(checkbox.checked)).subscribe(result => {
         this.updateLocalCopyOfRoles(role, result)
       })
-    } else if (this.privilegeType == PrivilegeType.author) {
+    } else if (this.privilegeType == 'author') {
       this.matDialog.open(ConfirmDialogComponent, {
         data: {
           title: 'Update existing roles?',
