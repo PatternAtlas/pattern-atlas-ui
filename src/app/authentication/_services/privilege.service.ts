@@ -14,7 +14,7 @@ export class PrivilegeService {
     private toasterService: ToasterService,
   ) { }
 
-  disabled(userId: string): Observable<boolean> {
+  isNotCurrentUser(userId: string): Observable<boolean> {
     return this.auth.user.pipe(
       map(_user => {
         if (_user)
@@ -24,7 +24,7 @@ export class PrivilegeService {
     )
   }
 
-  hidden(privilege: string): Observable<boolean> {
+  userHasPrivilege(privilege: string): Observable<boolean> {
     return this.auth.user.pipe(
       map(_user => {
         if (_user) return _user.privileges.includes(privilege)

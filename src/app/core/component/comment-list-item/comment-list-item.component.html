@@ -13,9 +13,9 @@
             <button *ngIf="!disabled" mat-flat-button type="button" color="" (click)="cancel()"> Cancel
             </button>
             <button *ngIf="disabled" mat-flat-button type="button" color="primary" (click)="edit()"
-                [disabled]="p.disabled(comment.userId) | async"> Edit </button>
+                [disabled]="p.isNotCurrentUser(comment.userId) | async"> Edit </button>
             <button *ngIf="disabled" mat-flat-button type="button" color="warn" (click)="delete()"
-                [disabled]="p.disabled(comment.userId) | async"> Delete </button>
+                [disabled]="p.isNotCurrentUser(comment.userId) | async"> Delete </button>
         </div>
         <pp-rating class="wrapper-rating" [row]="false" [upVotes]="comment.upVotes" [downVotes]="comment.downVotes"
         [total]="comment.rating" (ratingEvent)="updateRating($event)"></pp-rating>
@@ -29,7 +29,7 @@
     </mat-form-field>
     <div class="">
         <button mat-flat-button type="button" color="primary" (click)="edit()"
-            [disabled]="p.disabled(comment.userId) | async"> Save </button>
+            [disabled]="p.isNotCurrentUser(comment.userId) | async"> Save </button>
         <button mat-flat-button type="button" color="" (click)="reply()"> Cancel
         </button>
     </div>

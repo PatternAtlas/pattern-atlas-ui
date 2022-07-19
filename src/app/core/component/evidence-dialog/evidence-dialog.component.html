@@ -8,7 +8,7 @@
     </mat-form-field>
     <mat-form-field appearance="standard">
       <mat-label>Context</mat-label>
-      <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="10" 
+      <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="10"
       required formControlName="context">
       </textarea>
     </mat-form-field>
@@ -31,8 +31,8 @@
     </div>
   </div>
   <div class="detail-component buttons">
-    <button mat-flat-button type="submit" color="primary" [disabled]="(p.disabled(data.userId) | async)">Save</button>
-    <button mat-flat-button type="button" color="warn" [disabled]="!data.id || (p.disabled(data.userId) | async)" [mat-dialog-close]="data.id">Delete</button>
+    <button mat-flat-button type="submit" color="primary" [disabled]="(p.isNotCurrentUser(data.userId) | async)">Save</button>
+    <button mat-flat-button type="button" color="warn" [disabled]="!data.id || (p.isNotCurrentUser(data.userId) | async)" [mat-dialog-close]="data.id">Delete</button>
     <button mat-flat-button type="button" mat-dialog-close>Close</button>
   </div>
 </form>

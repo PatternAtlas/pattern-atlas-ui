@@ -34,9 +34,9 @@ export class EvidenceDialogComponent implements OnInit {
       supporting: [this.data.supporting, Validators.required]
     });
 
-    this.p.disabled(this.data.userId).subscribe(_disabled => {
+    this.p.isNotCurrentUser(this.data.userId).subscribe(_disabled => {
       if(_disabled) this.evidenceForm.disable();
-    })   
+    })
 
     this.filteredOptions = this.evidenceForm.get('type').valueChanges
       .pipe(
