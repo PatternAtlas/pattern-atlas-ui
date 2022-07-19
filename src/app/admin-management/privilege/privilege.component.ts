@@ -30,22 +30,18 @@ export class PrivilegeComponent implements OnInit {
     if (this.privilegeType == 'platform') {
       this.userService.getAllPlatformPrivileges().subscribe(result => {
         this.dataSource = result;
-        this.ref.detectChanges();
       });
       this.userService.getAllPlatformRoles().subscribe(result => {
         this.roles = result;
         this.roles.forEach(role => this.displayedColumns.push(role.name));
-        this.ref.detectChanges();
       });
     } else if (this.privilegeType == 'author') {
       this.userService.getAllDefaultAuthorPrivileges().subscribe(result => {
         this.dataSource = result;
-        this.ref.detectChanges();
       });
       this.userService.getAllAuthorRoles().subscribe(result => {
         this.roles = result;
         this.roles.forEach(role => this.displayedColumns.push(role.name));
-        this.ref.detectChanges();
       });
     }
   }
