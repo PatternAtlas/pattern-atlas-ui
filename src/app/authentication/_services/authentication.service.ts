@@ -215,13 +215,10 @@ export class AuthenticationService {
   /** Authentication Flow Helper */
   // Generate a secure random string using the browser crypto functions
   generateRandomString(length: number) {
-    // one byte is translated into two characters => divide by 2
-    // created array is marginally larger than it needs to be in most cases
-    // to handle cases where 'length' is odd
-    var array = new Uint32Array((length+1)/2);
+    // using 4byte blocks now -> translated into 8 chars with padding
+    var array = new Uint32Array(Math.ceil(length/8));
     window.crypto.getRandomValues(array);
-    return (Array.from(array, dec => ('0' + dec.toString(16)).substr(-2)).join(''))
-      .substr(0, length);  // will be cut to make sure the correct length string is returned
+    return (Array.from(array, dec => dec.toString(16).padStart(8, '0'))).join('').substr(0, length);
   }
 
   // Calculate the SHA256 hash of the input text.
