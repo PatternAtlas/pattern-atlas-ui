@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl, FormGroupDirective, NgForm, AbstractControl } from '@angular/forms';
 import { UserStore, UserService, UserRole, PAUser } from 'src/app/core/user-management';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'pp-user-detail',
@@ -52,15 +53,17 @@ export class UserDetailComponent implements OnInit {
     this.user.email = this.userForm.get('email').value;
     this.user.role = this.userForm.get('userRole').value;
     this.user.password = this.userForm.get('password').value;
+
+    let result: Observable<unknown>;
+
     if (this.user.id) {
-      this.userService.updateUser(this.user).subscribe(result => {
-        this.dialogRef.close(true);
-      })
+      result = this.userService.updateUser(this.user);
     } else {
-      this.userService.createUser(this.user).subscribe(result => {
-        this.dialogRef.close(true);
-      })
+      result = this.userService.createUser(this.user);
     }
+    result.subscribe(result => {
+      this.dialogRef.close(true);
+    })
   }
 
   reset() {
