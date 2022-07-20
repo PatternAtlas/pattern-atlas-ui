@@ -1,9 +1,9 @@
 <mat-card>
     <form class="container" (ngSubmit)="update()" #commentForm="ngForm">
 
-        <span class="wrapper-user" (click)="authorInfo">{{comment.userName}}</span>
+        <span class="wrapper-user" >{{comment.userName}}</span>
 
-        <mat-form-field class="wrapper-input" appearance="standard">
+        <mat-form-field class="wrapper-input" appearance="standard" aria-lable="Comment text">
             <textarea matInput [disabled]="disabled" [(ngModel)]="comment.text" name="comment" required></textarea>
         </mat-form-field>
          <div class="wrapper-buttons">

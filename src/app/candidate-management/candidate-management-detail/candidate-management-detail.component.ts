@@ -74,7 +74,7 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
         this.edit();
         this.checkTreshhold();
 
-      } else if (!_candidate && window.history.state.data) {
+      } else if (!_candidate && window.history.state.data && window.history.state.data instanceof Candidate) {
         this.candidate = window.history.state.data as Candidate
         this.contentToMarkdown();
         this.edit();

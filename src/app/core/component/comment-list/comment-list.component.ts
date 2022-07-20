@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange
 import { PAComment, RatingEventModel } from '../../shared';
 import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PrivilegeService } from '../../../authentication/_services/privilege.service';
 
 @Component({
   selector: 'pp-comment-list',
@@ -21,7 +22,8 @@ export class CommentListComponent implements OnInit, OnChanges {
 
   constructor(
     public auth: AuthenticationService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private p: PrivilegeService
   ) { }
 
   ngOnInit(): void {
@@ -46,12 +48,14 @@ export class CommentListComponent implements OnInit, OnChanges {
     })
   }
 
-  submit() {
-    let text = this.commentForm.get('comment').value;
-    if (text) {
-      this.createCommentEvent.next(new PAComment(text));
-    } else {
-      console.error('Empty comment');
+  async submit() {
+    if (await this.p.hasPrivilege('ISSUE_COMMENT')) {
+      let text = this.commentForm.get('comment').value;
+      if (text) {
+        this.createCommentEvent.next(new PAComment(text));
+      } else {
+        console.error('Empty comment');
+      }
     }
   }
 

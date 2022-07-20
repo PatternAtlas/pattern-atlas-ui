@@ -1,20 +1,22 @@
 <mat-card>
   <div class="heading">
-    <div class="text">Evidence</div>
+    <h3 class="text">Evidence</h3>
     <button mat-flat-button color="accent" [disabled]="!(auth.user | async) || disabled"
-      (click)="newEvidence()">New</button>
+            (click)="newEvidence()">New</button>
   </div>
-  <div *ngFor="let evidence of evidences">
-    <div class="list-item" (click)="detail(evidence)">
-      <div class="info">
-        <span>{{evidence.title}}</span>
-        <span class="user-name">{{evidence.userName}}</span>
-      </div>
-      <pp-rating class="rating" [disabled]="false" [upVotes]="evidence.upVotes" [downVotes]="evidence.downVotes"
-        [total]="evidence.rating" (ratingEvent)="updateRating($event, evidence)">
-      </pp-rating>
+  <mat-list>
+    <mat-list-item *ngFor="let evidence of evidences" (click)="detail(evidence)" style="width:100%">
+      <div matLine>
+        <div class="info" style="float:left">
+          <span>{{evidence.title}}</span>
+          <span class="user-name">{{evidence.userName}}</span>
+        </div>
+        <pp-rating [disabled]="false" [upVotes]="evidence.upVotes" [downVotes]="evidence.downVotes"
+                   [total]="evidence.rating" (ratingEvent)="updateRating($event, evidence)" style="float:right">
+        </pp-rating>
 
-    </div>
-    <div class="line"></div>
-  </div>
+      </div>
+      <mat-divider></mat-divider>
+    </mat-list-item>
+  </mat-list>
 </mat-card>

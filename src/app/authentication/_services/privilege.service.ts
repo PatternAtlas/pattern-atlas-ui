@@ -14,14 +14,20 @@ export class PrivilegeService {
     private toasterService: ToasterService,
   ) { }
 
-  isNotCurrentUser(userId: string): Observable<boolean> {
+  isCurrentUser(userId: string): Observable<boolean> {
     return this.auth.user.pipe(
       map(_user => {
         if (_user)
-          return !(_user.id === userId);
-        return true;
+          return _user.id === userId;
+        return false;
       })
     )
+  }
+
+  isNotCurrentUser(userId: string): Observable<boolean> {
+    return this.isCurrentUser(userId).pipe(
+      map(result => !result )
+    );
   }
 
   userHasPrivilege(privilege: string): Observable<boolean> {

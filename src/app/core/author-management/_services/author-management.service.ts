@@ -109,7 +109,7 @@ export class AuthorManagementService {
    * DELETE
    */
   public deleteAuthorIssue(authorModel: AuthorModel, issue: Issue): Observable<AuthorModel> {
-    
+
     return this.http.delete<any>(this.repoEndpoint + this.serviceEndpoint + `/${authorModel.userId}/issues/${issue.id}`).pipe(
       map(result => {
         this.toasterService.pop('success', 'Deleted issue author')
@@ -123,7 +123,7 @@ export class AuthorManagementService {
   }
 
   public deleteAuthorCandidate(authorModel: AuthorModel, candidate: Candidate): Observable<AuthorModel> {
-    
+
     return this.http.delete<any>(this.repoEndpoint + this.serviceEndpoint + `/${authorModel.userId}/candidates/${candidate.id}`).pipe(
       map(result => {
         this.toasterService.pop('success', 'Deleted candidate author')

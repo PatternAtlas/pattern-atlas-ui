@@ -43,15 +43,14 @@ export class CommentListItemComponent implements OnInit {
     this.replyComment = !this.replyComment;
   }
 
-  authorInfo() {
-  }
-
   updateRating(ratingRequest: RatingModelRequest) {
     this.ratingEvent.next(new RatingEventModel(ratingRequest, this.comment));
   }
 
-  update() {
-    this.updateCommentEvent.emit(this.comment);
+  async update() {
+    if (await this.p.isCurrentUser(this.comment.userId)) {
+      this.updateCommentEvent.emit(this.comment);
+    }
   }
 
   delete() {

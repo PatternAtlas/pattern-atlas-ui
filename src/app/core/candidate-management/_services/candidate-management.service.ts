@@ -158,7 +158,7 @@ export class CandidateManagementService {
       }),
       catchError(e => {
         this.toasterService.pop('error', 'Could not update issue evidence: ', e.error.message)
-        return of(null);
+        return null;
       }),
     )
   }

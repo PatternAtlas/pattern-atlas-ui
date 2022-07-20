@@ -49,7 +49,7 @@ export class AuthorPickerComponent implements OnInit {
     })
   }
 
-  isChecked(author: AuthorModel) {
+  getSelectedAuthor(author: AuthorModel) {
     for (let a of this.authors) {
       if (a.userId === author.userId) {
         return a.authorRole;
