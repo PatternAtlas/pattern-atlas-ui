@@ -9,13 +9,13 @@ import { EvidenceDialogComponent } from '../evidence-dialog/evidence-dialog.comp
   templateUrl: './evidence-list.component.html',
   styleUrls: ['./evidence-list.component.scss']
 })
-export class EvidenceListComponent implements OnInit {
+export class EvidenceListComponent {
 
   @Input() disabled: boolean;
   @Input() evidences: PAEvidence[];
   @Output() createEvidenceEvent: EventEmitter<PAEvidence> = new EventEmitter<PAEvidence>();
   @Output() updateEvidenceEvent: EventEmitter<PAEvidence> = new EventEmitter<PAEvidence>();
-  @Output() deleteEvidenceEvent: EventEmitter<String> = new EventEmitter<String>();
+  @Output() deleteEvidenceEvent: EventEmitter<string> = new EventEmitter<string>();
   @Output() ratingEvent: EventEmitter<RatingEventModel> = new EventEmitter<RatingEventModel>();
 
   constructor(
@@ -23,8 +23,6 @@ export class EvidenceListComponent implements OnInit {
     public auth: AuthenticationService,
   ) { }
 
-  ngOnInit(): void {
-  }
 
   newEvidence() {
     this.auth.user.subscribe(_user => {
@@ -32,7 +30,7 @@ export class EvidenceListComponent implements OnInit {
         let confirmDialog = this.dialog.open(EvidenceDialogComponent, {
           data: new PAEvidence(_user.id)
         });
-    
+
         confirmDialog.afterClosed().subscribe(result => {
           if (result) {
             this.createEvidenceEvent.next(result);
