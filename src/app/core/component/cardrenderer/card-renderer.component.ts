@@ -84,7 +84,7 @@ export class CardRendererComponent {
     return collectedEdges;
   }
 
-  private deleteEdgesFromDeletedPattern(edgesToRemove: String []): void {
+  private deleteEdgesFromDeletedPattern(edgesToRemove: string []): void {
     this.uriEntities.forEach(otherPattern => {
       if (otherPattern._links.outgoingDirectedEdges) {
         if (Array.isArray(otherPattern._links.outgoingDirectedEdges)) {
@@ -131,7 +131,7 @@ export class CardRendererComponent {
   private handlePatternDelete(pattern: Pattern): void {
     this.uriEntities = this.uriEntities.filter(value => value.uri !== pattern.uri);
     let allEdgesToRemove: HalLink[];
-    const allEdgesToRemoveHref: String[] = [];
+    const allEdgesToRemoveHref: string[] = [];
     allEdgesToRemove = this.collectAllEdgesOfPattern(pattern);
     allEdgesToRemove.forEach(link => allEdgesToRemoveHref.push(link.href));
     this.deleteEdgesFromDeletedPattern(allEdgesToRemoveHref);

@@ -173,7 +173,7 @@ export class DesignModelService implements GraphDataService, GraphDataSavePatter
   createLink(
     url,
     edge: DirectedEdgeModel | UndirectedEdgeModel | AddDirectedEdgeToViewRequest | AddUndirectedEdgeToViewRequest
-  ): Observable<HttpResponse<Object>> {
+  ): Observable<HttpResponse<unknown>> {
     return this.httpClient.post(url, edge, { observe: 'response' });
   }
 

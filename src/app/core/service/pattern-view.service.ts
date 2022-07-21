@@ -64,7 +64,7 @@ export class PatternViewService implements GraphDataService {
   createLink(
     url,
     edge: DirectedEdgeModel | UndirectedEdgeModel | AddDirectedEdgeToViewRequest | AddUndirectedEdgeToViewRequest
-  ): Observable<HttpResponse<Object>> {
+  ): Observable<HttpResponse<unknown>> {
     return this.http.post(url, edge, { observe: 'response' });
   }
 
