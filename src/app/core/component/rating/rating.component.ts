@@ -2,6 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange
 import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
 import { RatingModelRequest } from '../../shared';
 
+type RatingButtonColor = 'primary' | 'accent' | 'warn' | ''
+
 @Component({
   selector: 'pp-rating',
   templateUrl: './rating.component.html',
@@ -17,9 +19,8 @@ export class RatingComponent implements OnInit, OnChanges {
 
   @Output() ratingEvent: EventEmitter<RatingModelRequest> = new EventEmitter<RatingModelRequest>();
 
-  // primary, accent, warn, ''
-  colorUp = 'primary'
-  colorDown = 'primary'
+  colorUp : RatingButtonColor = 'primary'
+  colorDown : RatingButtonColor = 'primary'
 
 
   constructor(
@@ -27,7 +28,7 @@ export class RatingComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
-    
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {

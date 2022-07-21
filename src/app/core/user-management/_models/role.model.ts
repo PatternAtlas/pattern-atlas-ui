@@ -4,5 +4,5 @@ export class RoleModel {
     id: string;
     name: string;
     // privileges: PrivilegeModel[];
-    privileges: String[];
+    privileges: string[];
 }

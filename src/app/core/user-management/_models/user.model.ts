@@ -48,12 +48,9 @@ export class PAUser {
         let i = 0;
         for (; i < this.roles.length; i++) {
           if (this.roles[i].name == currentRole) {
+            this.roles.splice(i, 1);
             break;
           }
-        }
-
-        if (i < this.roles.length) {
-          this.roles.splice(i, 1);
         }
       } else {
         this.roles = []

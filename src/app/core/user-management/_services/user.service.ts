@@ -41,7 +41,7 @@ export class UserService {
   }
 
   public getUser(userId: string): Observable<PAUser> {
-    return this.http.get<any>(this.repoEndpoint + this.serviceEndpoint + `/${userId}`).pipe(
+    return this.http.get<unknown>(this.repoEndpoint + this.serviceEndpoint + `/${userId}`).pipe(
       map(result => {
         return Object.assign(new PAUser(), result)
       }),
@@ -184,8 +184,8 @@ export class UserService {
   */
   public updateUser(user: PAUser): Observable<PAUser> {
 
-    let req1 : Observable<any> = this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${user.id}`, user)
-    let req2 : Observable<any> = this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${user.id}/role`, user)
+    const req1 : Observable<any> = this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${user.id}`, user)
+    const req2 : Observable<any> = this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${user.id}/role`, user)
 
     return req1
       .pipe(
@@ -204,21 +204,13 @@ export class UserService {
 
   public updateUserRole(role: RoleModel, privilege: PrivilegeModel, roleModelRequest: RoleModelRequest): Observable<RoleModel> {
 
-    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/roles/${role.id}/privileges/${privilege.id}`, roleModelRequest).pipe(
-      map(result => {
-        return result
-      }),
-
-    )
+    return this.http.put<any>(
+      this.repoEndpoint + this.serviceEndpoint + `/roles/${role.id}/privileges/${privilege.id}`, roleModelRequest);
   }
 
   public updateAllResourceSpecificUserRoles(role: RoleModel, privilege: PrivilegeModel, roleModelRequest: RoleModelRequest): Observable<null> {
     return this.http.put<any>(
-      this.repoEndpoint + this.serviceEndpoint + `/roles/${role.id}/privileges/${privilege.id}/all_resource_specific`, roleModelRequest).pipe(
-      map(result => {
-        return result
-      }),
-    )
+      this.repoEndpoint + this.serviceEndpoint + `/roles/${role.id}/privileges/${privilege.id}/all_resource_specific`, roleModelRequest);
   }
 
   /**

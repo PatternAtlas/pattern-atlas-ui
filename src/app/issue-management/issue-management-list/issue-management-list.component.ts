@@ -33,7 +33,7 @@ export class IssueManagementListComponent implements OnInit {
     })
   }
 
-  /** LIST */
+  /* LIST */
   opened(issue: Issue) {
     this.activeIssue = issue;
   }
@@ -43,7 +43,7 @@ export class IssueManagementListComponent implements OnInit {
     if (this.activeIssue.id === issue.id) this.activeIssue = new Issue();
   }
 
-  /** NAVIGATION */
+  /* NAVIGATION */
   new() {
     this.router.navigate(['./create'], { relativeTo: this.activeRoute.parent });
   }
@@ -58,7 +58,7 @@ export class IssueManagementListComponent implements OnInit {
     this.router.navigate(['./edit', issue.name], { relativeTo: this.activeRoute.parent });
   }
 
-  /** BACK-END*/
+  /* BACK-END*/
   // RATING
   updateRating(ratingRequest: RatingModelRequest) {
     this.issueManagementService.updateRatingIssue(this.activeIssue, ratingRequest).subscribe(result => {
@@ -91,7 +91,7 @@ export class IssueManagementListComponent implements OnInit {
     })
   }
 
-  /** HELPER */
+  /* HELPER */
   updateData(issue: Issue) {
     let index = this.data.findIndex(_issue => _issue.id === issue.id);
     if (index > -1) this.data[index] = issue;

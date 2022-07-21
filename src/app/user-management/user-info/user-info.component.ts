@@ -56,7 +56,7 @@ export class UserInfoComponent implements OnInit {
 
     this.accountManagementUrl = environment['accountManagementUrl']
   }
-  /** PASSWORD */
+  /* PASSWORD */
   editPassword() {
     this.password = !this.password;
   }
@@ -73,7 +73,7 @@ export class UserInfoComponent implements OnInit {
     this.password = !this.password;
   }
 
-  /** USER INFO */
+  /* USER INFO */
 
   submit() {
     this.userManagementService.updateUser(this.user).subscribe(result => {

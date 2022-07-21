@@ -5,10 +5,8 @@
                           [iconEdit]="true"
                           [iconUrl]="pattern?.iconUrl" (iconEditClicked)="editIcon()">
     </pp-action-button-bar>
-    <span>
       <button mat-stroked-button style="margin-left: 5px" color="primary" *ngIf="showActionButtons && isEditingEnabled"
                      (click)="editIcon()" matTooltip="Edit"><i class="material-icons">mode_edit</i></button>
-    </span>
   </mat-card-header>
 
   <span class="copyright" *ngIf="pattern?.paperRef"> <i class="material-icons">copyright</i>
@@ -61,7 +59,7 @@
       <mat-card-actions>
         <div style="display: flex; align-items: center;">
           <button (click)="addLink()"
-                  *ngIf="isEditingEnabled && isEditingEnabled"
+                  *ngIf="isEditingEnabled"
                   color="primary"
                   mat-stroked-button
                   matTooltip="Add Relation"

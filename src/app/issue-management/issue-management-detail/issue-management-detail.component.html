@@ -9,7 +9,7 @@
             <form (ngSubmit)="submit()" #issueForm="ngForm">
                 <mat-form-field appearance="standard">
                     <mat-label for="name">Name</mat-label>
-                    <input matInput [maxlength]="80" [disabled]="disabled" placeholder="Placeholder" type="text"
+                    <input matInput [maxlength]="80" [disabled]="disabled" type="text"
                         class="form-control" id="name" required [(ngModel)]="issue.name" name="name" #name="ngModel">
                     <mat-hint *ngIf="!issue.name">Insert a name</mat-hint>
                 </mat-form-field>
@@ -21,7 +21,7 @@
                         id="description" required [(ngModel)]="issue.description" name="description"
                         #description="ngModel">
             </textarea>
-                    <mat-hint *ngIf="!issue.description">Please insert a describtion</mat-hint>
+                    <mat-hint *ngIf="!issue.description">Please insert a description</mat-hint>
                 </mat-form-field>
 
                 <pp-author-picker class="detail-component" [authors]="issue.authors" [disabled]="disabled"
