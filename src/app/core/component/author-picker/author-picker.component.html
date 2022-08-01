@@ -11,8 +11,7 @@
         <mat-option class="item" *ngFor="let selectAuthor of allAuthors">
             <span class="name">{{selectAuthor.name}}</span>
             <mat-radio-group [ngModel]="getSelectedAuthor(selectAuthor)">
-                <mat-radio-button *ngFor="let role of roles" [value]="role" (change)="update($event, selectAuthor)"
-                    (click)="$event.stopPropagation()">
+                <mat-radio-button *ngFor="let role of roles" [value]="role" (change)="update($event, selectAuthor)">
                     {{role}}</mat-radio-button>
             </mat-radio-group>
             <mat-divider></mat-divider>
