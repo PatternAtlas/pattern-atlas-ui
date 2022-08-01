@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import PatternLanguageModel from '../../model/hal/pattern-language-model.model';
 import { PatternLanguageService } from '../../service/pattern-language.service';
 import PatternLanguageSchemaModel from '../../model/pattern-language-schema.model';
@@ -23,12 +23,10 @@ export const patternLanguageNone = new PatternLanguageSchemaModel(
   templateUrl: './pattern-language-picker.component.html',
   styleUrls: ['./pattern-language-picker.component.scss']
 })
-export class PatternLanguagePickerComponent implements OnInit {
+export class PatternLanguagePickerComponent implements OnInit, OnChanges {
 
-  @Input() set disabled(disabled: boolean) {
-    if (disabled) this.patternLanguageCrtl.disable();
-    if (!disabled) this.patternLanguageCrtl.enable();
-  }
+  @Input() disabled : boolean;
+
   @Input() set patternLanguageSelected(patternLanguageSelected: string) {
     if (patternLanguageSelected) {
       this._patternLanguageSelected = patternLanguageSelected;
@@ -80,6 +78,16 @@ export class PatternLanguagePickerComponent implements OnInit {
       });
     } else {
       this.patternLanguageSelectedChange.emit(this.patternLanguageCrtl.value)
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes.disabled) {
+      if(this.disabled) {
+        this.patternLanguageCrtl.disable();
+      } else {
+        this.patternLanguageCrtl.enable();
+      }
     }
   }
 

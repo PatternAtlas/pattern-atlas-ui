@@ -26,17 +26,18 @@ export class EvidenceListComponent {
 
   newEvidence() {
     this.auth.user.subscribe(_user => {
-      if (_user) {
-        let confirmDialog = this.dialog.open(EvidenceDialogComponent, {
-          data: new PAEvidence(_user.id)
-        });
-
-        confirmDialog.afterClosed().subscribe(result => {
-          if (result) {
-            this.createEvidenceEvent.next(result);
-          }
-        });
+      if (!_user) {
+        return;
       }
+      let confirmDialog = this.dialog.open(EvidenceDialogComponent, {
+        data: new PAEvidence(_user.id)
+      });
+
+      confirmDialog.afterClosed().subscribe(result => {
+        if (result) {
+          this.createEvidenceEvent.next(result);
+        }
+      });
     })
   }
 
