@@ -3,11 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { ToasterService } from 'angular2-toaster';
 import { environment } from 'src/environments/environment';
 import { Issue } from '../../issue-management';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { Candidate } from '../../candidate-management';
 import { AuthorModelRequest } from '../_models/author.model.request';
 import { AuthorModel } from '../_models/author.model';
+import { ListResponse } from '../../util/list-response';
 
 @Injectable()
 export class AuthorManagementService {
@@ -24,7 +25,7 @@ export class AuthorManagementService {
   }
 
   public getAllAuthors(): Observable<AuthorModel[]> {
-    return this.http.get<any>(this.repoEndpoint + this.serviceEndpoint).pipe(
+    return this.http.get<ListResponse<AuthorModel>>(this.repoEndpoint + this.serviceEndpoint).pipe(
       map(result => {
         return result._embedded ? result._embedded.authorModels : []
       }),
@@ -36,7 +37,7 @@ export class AuthorManagementService {
   }
 
   public getAllAuthorRoles(): Observable<string[]> {
-    return this.http.get<any>(this.repoEndpoint + this.serviceEndpoint + '/roles').pipe(
+    return this.http.get<ListResponse<string>>(this.repoEndpoint + this.serviceEndpoint + '/roles').pipe(
       map(result => {
         return result ? result : []
       }),
@@ -51,27 +52,27 @@ export class AuthorManagementService {
    * CREATE
    */
   public createAuthorsIssue(authorModel: AuthorModel, issue: Issue, authorModelRequest: AuthorModelRequest): Observable<AuthorModel> {
-    return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint + `/${authorModel.userId}/issues/${issue.id}`, authorModelRequest).pipe(
+    return this.http.post<AuthorModel>(this.repoEndpoint + this.serviceEndpoint + `/${authorModel.userId}/issues/${issue.id}`, authorModelRequest).pipe(
       map(result => {
         this.toasterService.pop('success', 'Created issue author')
         return result
       }),
       catchError(error => {
         this.toasterService.pop('error', 'Could not create issue author: ', error)
-        return null;
+        return of(null);
       }),
     )
   }
 
   public createAuthorsCandidate(authorModel: AuthorModel, candidate: Candidate, authorModelRequest: AuthorModelRequest): Observable<AuthorModel> {
-    return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint + `/${authorModel.userId}/candidates/${candidate.id}`, authorModelRequest).pipe(
+    return this.http.post<AuthorModel>(this.repoEndpoint + this.serviceEndpoint + `/${authorModel.userId}/candidates/${candidate.id}`, authorModelRequest).pipe(
       map(result => {
         this.toasterService.pop('success', 'Created candidate author')
         return result
       }),
       catchError(error => {
         this.toasterService.pop('error', 'Could not candidate issue author: ', error)
-        return null;
+        return of(null);
       }),
     )
   }
@@ -80,27 +81,27 @@ export class AuthorManagementService {
    * UPDATE
    */
   public updateAuthorsIssue(authorModel: AuthorModel, string, issue: Issue, authorModelRequest: AuthorModelRequest): Observable<AuthorModel> {
-    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${authorModel.userId}/issues/${issue.id}`, authorModelRequest).pipe(
+    return this.http.put<AuthorModel>(this.repoEndpoint + this.serviceEndpoint + `/${authorModel.userId}/issues/${issue.id}`, authorModelRequest).pipe(
       map(result => {
         this.toasterService.pop('success', 'Updated issue author')
         return result
       }),
       catchError(error => {
         this.toasterService.pop('error', 'Could not update issue author: ', error)
-        return null;
+        return of(null);
       }),
     )
   }
 
   public updateAuthorsCandidate(authorModel: AuthorModel, candidate: Candidate, authorModelRequest: AuthorModelRequest): Observable<AuthorModel> {
-    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${authorModel.userId}/candidates/${candidate.id}`, authorModelRequest).pipe(
+    return this.http.put<AuthorModel>(this.repoEndpoint + this.serviceEndpoint + `/${authorModel.userId}/candidates/${candidate.id}`, authorModelRequest).pipe(
       map(result => {
         this.toasterService.pop('success', 'Updated candidate author')
         return result
       }),
       catchError(error => {
         this.toasterService.pop('error', 'Could not candidate issue author: ', error)
-        return null;
+        return of(null);
       }),
     )
   }
@@ -110,28 +111,28 @@ export class AuthorManagementService {
    */
   public deleteAuthorIssue(authorModel: AuthorModel, issue: Issue): Observable<AuthorModel> {
 
-    return this.http.delete<any>(this.repoEndpoint + this.serviceEndpoint + `/${authorModel.userId}/issues/${issue.id}`).pipe(
+    return this.http.delete<AuthorModel>(this.repoEndpoint + this.serviceEndpoint + `/${authorModel.userId}/issues/${issue.id}`).pipe(
       map(result => {
         this.toasterService.pop('success', 'Deleted issue author')
         return result
       }),
       catchError(error => {
         this.toasterService.pop('error', 'Could not delete issue author: ', error)
-        return null;
+        return of(null);
       }),
     )
   }
 
   public deleteAuthorCandidate(authorModel: AuthorModel, candidate: Candidate): Observable<AuthorModel> {
 
-    return this.http.delete<any>(this.repoEndpoint + this.serviceEndpoint + `/${authorModel.userId}/candidates/${candidate.id}`).pipe(
+    return this.http.delete<AuthorModel>(this.repoEndpoint + this.serviceEndpoint + `/${authorModel.userId}/candidates/${candidate.id}`).pipe(
       map(result => {
         this.toasterService.pop('success', 'Deleted candidate author')
         return result
       }),
       catchError(error => {
         this.toasterService.pop('error', 'Could not delete candidate author: ', error)
-        return null;
+        return of(null);
       }),
     )
   }

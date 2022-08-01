@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { RoleModel } from '../_models/role.model';
 import { PrivilegeModel } from '../_models/privilege.model';
 import { RoleModelRequest } from '../_models/role.model.request';
+import { ListResponse } from '../../util/list-response';
 
 @Injectable()
 export class UserService {
@@ -139,7 +140,7 @@ export class UserService {
   }
 
   public getAllDefaultAuthorPrivileges(): Observable<PrivilegeModel[]> {
-    return this.http.get<any>(this.repoEndpoint + this.serviceEndpoint + '/roles/default_author_privileges').pipe(
+    return this.http.get<ListResponse<PrivilegeModel>>(this.repoEndpoint + this.serviceEndpoint + '/roles/default_author_privileges').pipe(
       map(result => {
         return result._embedded.privilegeModels
       }),
