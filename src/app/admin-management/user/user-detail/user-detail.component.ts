@@ -38,7 +38,7 @@ export class UserDetailComponent implements OnInit {
   createForm() {
     this.userForm = this.userFormBuilder.group({
       name: [this.user.name, Validators.required],
-      email: [this.user.email, [Validators.required, Validators.email]],
+      email: [this.user.email, [Validators.email]],
       userRole: [this.user.role],
       password: [null],
       confirmPassword: [null]
