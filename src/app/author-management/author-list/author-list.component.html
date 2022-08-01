@@ -1,5 +1,5 @@
 <mat-toolbar style="margin-bottom: 10px">
-    <button mat-raised-button color="primary" (click)="exit()" aria-label="Back"><i class="material-icons">keyboard_backspace</i></button>
+    <button mat-raised-button color="primary" [routerLink]="['../../detail', this.issue.name]" aria-label="Back"><i class="material-icons">keyboard_backspace</i></button>
 </mat-toolbar>
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 

@@ -41,10 +41,6 @@ export class AuthorManagementListComponent implements OnInit {
     });
   }
 
-  exit() {
-    this.router.navigate(['./detail', this.issue.name], { relativeTo: this.activeRoute.parent });
-  }
-
   change(checkbox: MatCheckboxChange, privilege: PrivilegeModel, role: RoleModel) {
     this.userService.updateUserRole(role, privilege, new RoleModelRequest(checkbox.checked)).subscribe(result => {
       if (result) {
