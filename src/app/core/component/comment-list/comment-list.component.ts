@@ -49,7 +49,8 @@ export class CommentListComponent implements OnInit, OnChanges {
   }
 
   async submit() {
-    if (await this.p.hasPrivilege('ISSUE_COMMENT')) {
+    let hasCommentPrivilege = await this.p.hasPrivilege('ISSUE_COMMENT');
+    if (hasCommentPrivilege) {
       let text = this.commentForm.get('comment').value;
       if (text) {
         this.createCommentEvent.next(new PAComment(text));

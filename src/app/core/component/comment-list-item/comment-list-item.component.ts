@@ -48,7 +48,8 @@ export class CommentListItemComponent implements OnInit {
   }
 
   async update() {
-    if (await this.p.isCurrentUser(this.comment.userId)) {
+    let isCurrentUser = await this.p.isCurrentUser(this.comment.userId);
+    if (isCurrentUser) {
       this.updateCommentEvent.emit(this.comment);
     }
   }

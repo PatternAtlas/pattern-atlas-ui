@@ -1,25 +1,31 @@
 <mat-card>
-    <form class="container" (ngSubmit)="update()" #commentForm="ngForm">
-
-        <span class="wrapper-user" >{{comment.userName}}</span>
-
-        <mat-form-field class="wrapper-input" appearance="standard" aria-lable="Comment text">
-            <textarea matInput [disabled]="disabled" [(ngModel)]="comment.text" name="comment" required></textarea>
-        </mat-form-field>
-         <div class="wrapper-buttons">
-            <button *ngIf="!disabled" mat-flat-button type="submit" color="primary"
+  <div class="container">
+    <p class="wrapper-user">From: {{comment.userName}}</p>
+    <form (ngSubmit)="update()" #commentForm="ngForm" *ngIf="!disabled">
+      <mat-form-field class="wrapper-input" appearance="standard">
+        <mat-label>Comment</mat-label>
+        <textarea matInput [disabled]="disabled" [(ngModel)]="comment.text" name="comment" required></textarea>
+      </mat-form-field>
+      <div class="wrapper-buttons">
+        <button mat-flat-button color="primary" type="submit"
                 [disabled]="!commentForm.form.valid">
-                Save </button>
-            <button *ngIf="!disabled" mat-flat-button type="button" color="" (click)="cancel()"> Cancel
-            </button>
-            <button *ngIf="disabled" mat-flat-button type="button" color="primary" (click)="edit()"
-                [disabled]="p.isNotCurrentUser(comment.userId) | async"> Edit </button>
-            <button *ngIf="disabled" mat-flat-button type="button" color="warn" (click)="delete()"
-                [disabled]="p.isNotCurrentUser(comment.userId) | async"> Delete </button>
-        </div>
-        <pp-rating class="wrapper-rating" [row]="false" [upVotes]="comment.upVotes" [downVotes]="comment.downVotes"
-        [total]="comment.rating" (ratingEvent)="updateRating($event)"></pp-rating>
+          Save </button>
+        <button mat-flat-button type="button" color="" (click)="cancel()"> Cancel
+        </button>
+      </div>
     </form>
+    <div *ngIf="disabled">
+      <p>{{comment.text}}</p>
+      <div class="wrapper-buttons">
+        <button mat-flat-button type="button" color="primary" (click)="edit()"
+                [disabled]="p.isNotCurrentUser(comment.userId) | async"> Edit </button>
+        <button  mat-flat-button type="button" color="warn" (click)="delete()"
+                [disabled]="p.isNotCurrentUser(comment.userId) | async"> Delete </button>
+      </div>
+    </div>
+    <pp-rating class="wrapper-rating" [row]="false" [upVotes]="comment.upVotes" [downVotes]="comment.downVotes"
+               [total]="comment.rating" (ratingEvent)="updateRating($event)"></pp-rating>
+  </div>
 </mat-card>
 
 <mat-card class="replyComment" *ngIf="replyComment">

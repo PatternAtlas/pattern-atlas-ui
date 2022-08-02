@@ -45,8 +45,7 @@ export class PAUser {
 
       // Find rolemodel associated with the platform wide role
       if(this.roles) {
-        let i = 0;
-        for (; i < this.roles.length; i++) {
+        for (let i = 0; i < this.roles.length; i++) {
           if (this.roles[i].name == currentRole) {
             this.roles.splice(i, 1);
             break;

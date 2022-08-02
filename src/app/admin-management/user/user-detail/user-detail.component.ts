@@ -63,7 +63,7 @@ export class UserDetailComponent implements OnInit {
     }
     result.subscribe(result => {
       this.dialogRef.close(true);
-    })
+    });
   }
 
   reset() {
