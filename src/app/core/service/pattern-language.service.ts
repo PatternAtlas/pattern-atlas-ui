@@ -23,6 +23,7 @@ import { Embedded } from '../model/hal/embedded';
 import { UndirectedEdgesResponse } from '../model/hal/undirected-edes-response.interface';
 import { GraphNode } from '../component/graph-display/graph-display.component';
 import PatternLanguageModel from '../model/hal/pattern-language-model.model';
+import PatternLanguageSchemaModel from '../model/pattern-language-schema.model';
 import { GraphDataService } from './graph-data/graph-data.service';
 import { PatternContainer } from '../model/hal/pattern-container.model';
 import { PatternService } from './pattern.service';
@@ -47,7 +48,14 @@ export class PatternLanguageService implements GraphDataService {
       );
   }
 
-  getPatternLanguageResult(): Observable<PatternLanguages> {
+  public getPatternLanguagesSchemas(): Observable<PatternLanguageSchemaModel[]> {
+    return this.http.get<any>(this.repoEndpoint + '/patternLanguages/patternSchemas').pipe(
+      map(result => result._embedded ? result._embedded.patternLanguageSchemaModels : []
+      )
+    );
+  }
+
+  public getPatternLanguageResult(): Observable<PatternLanguages> {
     return this.http.get<PatternLanguages>(this.repoEndpoint + '/patternLanguages');
   }
 

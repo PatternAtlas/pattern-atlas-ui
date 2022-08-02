@@ -13,7 +13,8 @@
   -->
 <pp-action-button-bar [addButtonText]="'Add'" [goBackButton]="false" [reloadButton]="true"
                       (addClicked)="goToPatternLanguageCreation()"
-                      (reloadClicked)="reloadPatternRepo()"></pp-action-button-bar>
+                      (reloadClicked)="reloadPatternRepo()"
+                      [firstAddPrivilegeName]="'PATTERN_LANGUAGE_CREATE'"></pp-action-button-bar>
 <div class="container">
   <mat-card class="landing-card" *ngFor="let patternLanguage of patternLanguages">
     <mat-card-header>
@@ -44,11 +45,13 @@
         <button matBadge="{{patternLanguage?.patternCount}}" mat-stroked-button color="primary"
                 (click)="navigateToPL(patternLanguage)"><i class="material-icons">pageview</i> View
         </button>
+        <ng-container *ngIf="p.hasPrivilege('PATTERN_LANGUAGE_DELETE_ALL') | async">
         <button *patternAtlasUiShowOnFeature="UiFeatures.EDITING" (click)="delete(patternLanguage)"
                 class="pattern-button"
-                mat-stroked-button style="margin-left: 25px" color="warn">
+                mat-stroked-button style="margin-left: 25px" color="warn" aria-label="Delete">
           <i class="material-icons">delete</i>
         </button>
+        </ng-container>
       </div>
     </mat-card-actions>
   </mat-card>

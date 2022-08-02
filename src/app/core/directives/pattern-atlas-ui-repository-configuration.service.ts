@@ -11,6 +11,7 @@ export enum UiFeatures {
   ISSUE = 'issue',
   SHOW_SETTINGS = 'showSettings',
   EDITING = 'editing',
+  AUTHENTICATION = 'authentication',
   PLANQK_UI = 'planqkUi'
 }
 
@@ -22,6 +23,7 @@ export interface PatternAtlasUiConfiguration {
     issue: boolean,
     showSettings: boolean,
     editing: boolean,
+    authentication: boolean,
     planqkUi: boolean
   };
 }
@@ -43,11 +45,12 @@ interface EtcdNode {
 const initialValues: PatternAtlasUiConfiguration = {
   features: {
     designModel: false,
-    patternCandidate: false,
+    patternCandidate: true,
     patternViews: false,
-    issue: false,
-    showSettings: false,
-    editing: false,
+    issue: true,
+    showSettings: true,
+    editing: true,
+    authentication: true,
     planqkUi: false
   },
 };

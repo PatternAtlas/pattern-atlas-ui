@@ -1,48 +1,74 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IssueComment } from '../../issue-management';
-import { Rating } from '../../model/rating.enum';
-
-export interface IssueCommentRatingEvent {
-  issueComment: IssueComment,
-  issueCommentRating: Rating,
-}
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
+import { PAComment, RatingEventModel } from '../../shared';
+import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PrivilegeService } from '../../../authentication/_services/privilege.service';
 
 @Component({
   selector: 'pp-comment-list',
   templateUrl: './comment-list.component.html',
   styleUrls: ['./comment-list.component.scss']
 })
-export class CommentListComponent implements OnInit {
+export class CommentListComponent implements OnInit, OnChanges {
 
-  @Input() data: IssueComment[];
-  @Output() createComment: EventEmitter<IssueComment> = new EventEmitter<IssueComment>();
-  @Output() commentRating: EventEmitter<IssueCommentRatingEvent> = new EventEmitter<IssueCommentRatingEvent>();
+  @Input() disabled: boolean;
+  @Input() data: PAComment[];
+  @Output() createCommentEvent: EventEmitter<PAComment> = new EventEmitter<PAComment>();
+  @Output() updateCommentEvent: EventEmitter<PAComment> = new EventEmitter<PAComment>();
+  @Output() deleteCommentEvent: EventEmitter<PAComment> = new EventEmitter<PAComment>();
+  @Output() ratingEvent: EventEmitter<RatingEventModel> = new EventEmitter<RatingEventModel>();
 
-  comment: string;
+  commentForm: FormGroup;
 
-  constructor() {
-  }
+  constructor(
+    public auth: AuthenticationService,
+    private formBuilder: FormBuilder,
+    private p: PrivilegeService
+  ) { }
 
   ngOnInit(): void {
+    this.setForm();
   }
 
-  cancelComment() {
-    this.comment = '';
+  ngOnChanges(changes: SimpleChanges): void {
+    this.setForm();
   }
 
-  addComment() {
-    const commentIssue = {} as IssueComment;
-    commentIssue.text = this.comment
-    this.createComment.emit(commentIssue);
-    this.comment = '';
+  setForm() {
+    this.auth.user.subscribe(_user => {
+      if (_user) {
+        this.commentForm = this.formBuilder.group({
+          comment: { value: null, disabled: this.disabled }
+        });
+      } else {
+        this.commentForm = this.formBuilder.group({
+          comment: { value: null, disabled: true }
+        });
+      }
+    })
   }
 
-  updateCommentRating(rating: Rating, comment: IssueComment) {
-    console.log('User Upvoted Comment', rating, comment);
-    const issueCommentRatingEvent = {} as IssueCommentRatingEvent;
-    issueCommentRatingEvent.issueComment = comment;
-    issueCommentRatingEvent.issueCommentRating = rating;
-    this.commentRating.emit(issueCommentRatingEvent);
+  async submit() {
+    let hasCommentPrivilege = await this.p.hasPrivilege('ISSUE_COMMENT');
+    if (hasCommentPrivilege) {
+      let text = this.commentForm.get('comment').value;
+      if (text) {
+        this.createCommentEvent.next(new PAComment(text));
+      } else {
+        console.error('Empty comment');
+      }
+    }
   }
 
+  update(comment: PAComment) {
+    this.updateCommentEvent.next(comment);
+  }
+
+  delete(comment: PAComment) {
+    this.deleteCommentEvent.next(comment);
+  }
+
+  updateRating(ratingRequest: RatingEventModel) {
+    this.ratingEvent.next(ratingRequest);
+  }
 }

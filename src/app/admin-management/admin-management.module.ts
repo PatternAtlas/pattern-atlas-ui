@@ -9,25 +9,31 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { AdminManagementListComponent } from './admin-management-list/admin-management-list.component';
-import { AdminManagementDetailComponent } from './admin-management-detail/admin-management-detail.component';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatTabsModule } from '@angular/material/tabs';
+/** Component */
+import { UserListComponent } from './user/user-list/user-list.component';
+import { UserDetailComponent } from './user/user-detail/user-detail.component';
+import { PrivilegeComponent } from './privilege/privilege.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 export const ADMIN_MANAGEMENT_ROUTES = [
   {
     path: '',
     children: [
-      { path: '', component: AdminManagementListComponent },
-      { path: 'edit/:id', component: AdminManagementDetailComponent },
-      { path: 'create', component: AdminManagementDetailComponent }
+      { path: '', component: UserListComponent },
+      { path: 'edit/:id', component: UserDetailComponent },
+      { path: 'create', component: UserDetailComponent }
     ]
   }
 ];
 
 @NgModule({
   declarations: [
-    AdminManagementListComponent,
-    AdminManagementDetailComponent,
-
+    UserListComponent,
+    UserDetailComponent,
+    PrivilegeComponent,
+   
   ],
   imports: [
     CommonModule,
@@ -40,11 +46,18 @@ export const ADMIN_MANAGEMENT_ROUTES = [
     MatFormFieldModule,
     MatInputModule,
     MatButtonToggleModule,
+    MatRadioModule,
+    MatTabsModule,
+    MatCheckboxModule,
     // Form
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: []
+  providers: [
+  ],
+  entryComponents: [
+    UserDetailComponent
+  ]
 })
 export class AdminManagementModule {
 }

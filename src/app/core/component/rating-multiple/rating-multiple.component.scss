@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 35px;
+}
+
+.title {
+  width: 160px;
+  font-weight: bold;
+}
+
+.mat-button-toggle {
+  // margin: 0 4px !important;
+  display: flex;
+  height: 30px;
+  align-items: center;
+}
+
+.mat-button-toggle-checked {
+  // border: 1px solid #c5c0c7;
+  background-color: #3f51bf; 
+}
+
+

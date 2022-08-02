@@ -11,4 +11,5 @@
   window['env']['LATEX_RENDERER_PORT'] = 5030;
   window['env']['PATTERN_ATLAS_API_PORT'] = 1977;
   window['env']['URL_SCHEME'] = 'http';
+  window['env']['AUTH_REALM_URL'] = 'http://localhost:8080/realms/patternatlas';
 })(this);

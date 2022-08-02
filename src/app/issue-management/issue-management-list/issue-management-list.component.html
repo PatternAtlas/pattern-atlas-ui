@@ -1,16 +1,44 @@
-<div class="container">
-
-  <div class="list">
-
-    <button class="new-button" mat-raised-button color="accent" (click)="new()">New Issue</button>
-    <mat-list>
-
-      <mat-list-item *ngFor="let issueDetail of data" (click)="toggleDetail(issueDetail)">
-        <h3 matLine> {{issueDetail.name}} </h3>
-        <p matLine> {{issueDetail.description}} </p>
-        <p matLine> Rating {{issueDetail.rating}} </p>
-      </mat-list-item>
-    </mat-list>
-  </div>
-  <pp-issue-management-detail class="detail" [issue]="issueDetail" (changed)="change()"></pp-issue-management-detail>
+<pp-action-button-bar [addButtonText]="'Add'" [goBackButton]="false" [reloadButton]="true" (addClicked)="new()"
+    (reloadClicked)="getAll()" [firstAddPrivilegeName]="'ISSUE_CREATE'"></pp-action-button-bar>
+<div class="container-double">
+    <div class="left scrollable-double issue-list">
+        <!-- <button class="button-new" mat-raised-button color="accent" (click)="new()">New Issue</button> -->
+        <mat-accordion multi="false" *ngFor="let issue of data">
+            <mat-expansion-panel [expanded]="issue.id === activeIssue.id" (opened)="opened(issue)"
+                (closed)="closed(issue)">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <h3>{{issue.name}} </h3>
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        <h5>Comments: {{issue.comments.length}}</h5>
+                        <div class="spacer"></div>
+                        <h5>Rating: {{issue.upVotes.length - issue.downVotes.length}}</h5>
+                        <div class="spacer"></div>
+                        <h5>Evidence: {{issue.evidences.length}}</h5>
+                        <div class="spacer"></div>
+                        <button mat-icon-button color="primary" (click)="detail(issue)">
+                            <mat-icon>open_in_new</mat-icon>
+                        </button>
+                        <button mat-icon-button color="primary" (click)="edit(issue)"
+                            [disabled]="!(p.isGroubMember(issue.authors, 'ISSUE_EDIT_ALL') | async)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="panel-content">
+                    <div class="description">
+                        {{issue.description}}
+                    </div>
+                    <div class="spacer"></div>
+                    <pp-rating class="container-rating" [row]="false" [upVotes]="issue.upVotes"
+                        [downVotes]="issue.downVotes" [total]="issue.rating" (ratingEvent)="updateRating($event)"></pp-rating>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+    <div class="right scrollable-double" *ngIf="activeIssue.id">
+        <pp-comment-list [data]="activeIssue.comments" [disabled]="!activeIssue.id" (createCommentEvent)="createComment($event)"
+            (updateCommentEvent)="updateComment($event)" (deleteCommentEvent)="deleteComment($event)" (ratingEvent)="updateRatingComment($event)"></pp-comment-list>
+    </div>
 </div>

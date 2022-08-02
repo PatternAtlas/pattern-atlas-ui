@@ -1,44 +1,17 @@
-.container {
-  border-style: groove;
-  width: 100%;
-  display: flex; /* or inline-flex */
-  flex-direction: column;
-  justify-content: center;
-  align-items: stretch;
+/*!
+ * Copyright (c) 2018 University of Stuttgart.
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0, or the Apache Software License 2.0
+ * which is available at https://www.apache.org/licenses/LICENSE-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
+ */
 
-  .container-candidate {
-    display: flex; /* or inline-flex */
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-
-    .language-select {
-      flex: 1;
-    }
-
-    .language-button {
-      padding-left: 8px;
-    }
-  }
-
-  .container-rating {
-    width: 100%;
-    border-style: groove;
-    padding-top: 16px;
-  }
-
-  .container-button {
-    border-style: groove;
-    padding-top: 16px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-  }
-}
-
-.mat-form-field {
-  padding-bottom: 8px;
-  border-style: groove;
-  width: 100%;
-  font-size: 16px;
+.spacer {
+  flex: 1 1 auto;
 }

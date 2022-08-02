@@ -13,20 +13,27 @@
  */
 
 const urlScheme = `${window['env'] && window['env']['URL_SCHEME'] ? window['env']['URL_SCHEME'] : 'http'}`;
+const authRealm = `${window['env'] && window['env']['AUTH_REALM_URL'] ? window['env']['AUTH_REALM_URL'] : ''}`;
+const apiUrl = window['env'] && window['env']['PATTERN_ATLAS_API_HOST_NAME'] && window['env']['PATTERN_ATLAS_API_PORT']
+  ? `${urlScheme}://${window['env']['PATTERN_ATLAS_API_HOST_NAME']}:${window['env']['PATTERN_ATLAS_API_PORT']}/patternatlas`
+  : 'http://localhost:1977/patternatlas'
 export const environment = {
   PRODUCTION: true,
   API_URL: window['env'] && window['env']['PATTERN_ATLAS_API_HOST_NAME'] && window['env']['PATTERN_ATLAS_API_PORT']
     ? `${urlScheme}://${window['env']['PATTERN_ATLAS_API_HOST_NAME']}:${window['env']['PATTERN_ATLAS_API_PORT']}/patternatlas`
     : 'http://localhost:1977/patternatlas',
-  authorizeUrl: 'http://localhost:8081/oauth/authorize?',
-  tokenUrl: 'http://localhost:8081/oauth/token',
-  tokenRevokeUrl: 'http://localhost:8081/oauth/revoke_token',
-  signinUrl: 'http://localhost:8081/user/create',
-  userInfoUrl: 'http://localhost:8081/user_info',
+  repositoryUrl: 'http://localhost:1977/patternatlas',
+  authorizeUrl: `${authRealm}/protocol/openid-connect/auth?`,
+  tokenUrl: `${authRealm}/protocol/openid-connect/token`,
+  tokenRevokeUrl: `${authRealm}/protocol/openid-connect/revoke`,
+  signinUrl: `${authRealm}/clients-registrations/openid-connect`,
+  userInfoUrl: `${apiUrl}/users/userinfo`,
+  logoutUrl: `${authRealm}/protocol/openid-connect/logout?`,
+  // Account management
+  accountManagementUrl: `${authRealm}/account?referrer=patternatlas`,
   clientIdPrivate: 'pattern-pedia-private',
-  clientSecret: '',
-  clientIdPublic: 'pattern-pedia-public',
-  clientIdPKCE: 'pattern-pedia-pkce',
+  clientIdPublic: 'patternatlas',
+  clientIdPKCE: 'patternatlas',
   CONFIG_SERVER_URL:
     window['env'] && window['env']['CONFIG_SERVER_HOST_NAME'] && window['env']['CONFIG_SERVER_PORT']
       ? `${urlScheme}://${window['env']['CONFIG_SERVER_HOST_NAME']}:${window['env']['CONFIG_SERVER_PORT']}/v2/keys`

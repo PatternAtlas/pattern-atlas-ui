@@ -1,0 +1,38 @@
+<form [formGroup]="evidenceForm" (ngSubmit)="onSubmit()">
+<!-- <form #evidenceForm="ngForm" name="evidenceForm"> -->
+  <h3>{{data.title}}</h3>
+  <div>
+    <mat-form-field>
+      <mat-label>Title</mat-label>
+      <input matInput required formControlName="title">
+    </mat-form-field>
+    <mat-form-field appearance="standard">
+      <mat-label>Context</mat-label>
+      <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="10"
+      required formControlName="context">
+      </textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Source</mat-label>
+      <input matInput formControlName="source">
+    </mat-form-field>
+    <div class="type">
+      <mat-form-field>
+        <mat-label>Type</mat-label>
+        <input matInput required name="type" formControlName="type" [matAutocomplete]="auto">
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <div class="spacer"></div>
+      <mat-checkbox required formControlName="supporting" name="supporting">Supporting</mat-checkbox>
+    </div>
+  </div>
+  <div class="detail-component buttons">
+    <button mat-flat-button type="submit" color="primary" [disabled]="(p.isNotCurrentUser(data.userId) | async)">Save</button>
+    <button mat-flat-button type="button" color="warn" [disabled]="!data.id || (p.isNotCurrentUser(data.userId) | async)" [mat-dialog-close]="data.id">Delete</button>
+    <button mat-flat-button type="button" mat-dialog-close>Close</button>
+  </div>
+</form>

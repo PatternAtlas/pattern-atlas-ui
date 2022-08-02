@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { PatternLanguageService } from 'src/app/core/service/pattern-language.service';
 import PatternLanguageModel from 'src/app/core/model/hal/pattern-language-model.model';
-import { Candidate, CandidateManagementService } from 'src/app/core/candidate-management';
+import { CandidateManagementService, Candidate, CandidateManagementStore } from 'src/app/core/candidate-management';
+import { PrivilegeService } from 'src/app/authentication/_services/privilege.service';
 
 @Component({
   selector: 'pp-candidate-management-list',
@@ -16,10 +17,12 @@ export class CandidateManagementListComponent implements OnInit {
 
   constructor(
     private candidateService: CandidateManagementService,
+    public candidateStore: CandidateManagementStore,
     private router: Router,
+    private activeRoute: ActivatedRoute,
     private patternLanguageService: PatternLanguageService,
-  ) {
-  }
+    private p: PrivilegeService,
+  ) { }
 
   ngOnInit(): void {
     this.getAll();
@@ -28,29 +31,32 @@ export class CandidateManagementListComponent implements OnInit {
 
   getAll() {
     this.candidateService.getAllCandidates().subscribe(result => {
-      console.log(result);
       this.candidates = result;
     })
   }
 
   getPatternLanguages() {
     this.patternLanguageService.getPatternLanguages().subscribe(result => {
-      console.log(result);
       const none = new PatternLanguageModel()
-      none.name = 'NONE';
+      none.name = 'No Pattern Language assigned';
       none.id = null;
       this.patternLanguages = [none].concat(result);
-      console.log(this.patternLanguages);
     })
   }
 
-  candidateDetail(candidate) {
-    console.log(candidate);
-    this.router.navigate(['candidate/edit', candidate.name], { state: { data: candidate } });
+  /** NAVIGATION */
+  new() {
+    this.router.navigate(['./create'], { relativeTo: this.activeRoute.parent });
   }
 
-  createCandidate() {
-    this.router.navigate(['candidate/create']);
+  detail(candidate: Candidate) {
+    this.candidateStore.addCandidate(candidate)
+    this.router.navigate(['./detail', candidate.name], { relativeTo: this.activeRoute.parent });
+  }
+
+  edit(candidate: Candidate) {
+    this.candidateStore.addCandidate(candidate)
+    this.router.navigate(['./edit', candidate.name], { relativeTo: this.activeRoute.parent });
   }
 
 }

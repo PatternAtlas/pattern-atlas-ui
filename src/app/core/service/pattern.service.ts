@@ -67,7 +67,7 @@ export class PatternService {
     return this.http.get<Array<Edge>>(url);
   }
 
-  getPatternById(patternLanguage: PatternLanguage, patternId: String): Observable<Pattern> {
+  getPatternById(patternLanguage: PatternLanguage, patternId: string): Observable<Pattern> {
     return this.http.get <Pattern>(
       (patternLanguage._links.patterns ?
         patternLanguage._links.patterns.href + '/' + patternId :

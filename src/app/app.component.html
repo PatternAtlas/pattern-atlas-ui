@@ -12,7 +12,6 @@
   ~ SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
   -->
 
-
 <mat-spinner *ngIf="loading; else loadedConfig"></mat-spinner>
 <ng-template #loadedConfig>
   <mat-toolbar color="primary" id="pa_header">
@@ -25,19 +24,19 @@
     <span class="spacer"></span>
     {{welcomeText}}
     <a *ngIf="planqkUi" mat-stroked-button href="https://platform.planqk.de/my-content">Back to the PlanQK platform</a>
-    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Button with a menu">
-      <mat-icon>more_vert</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="openFeatureToggleDialog()">
-        <span>Feature Toggles</span>
-      </button>
-    </mat-menu>
-    <div class="log-button">
-      <button mat-stroked-button
-              (click)="loginOAuth()"
-              *patternAtlasUiShowOnFeature="[UiFeatures.ISSUE,UiFeatures.PATTERNCANDIDATE]"> {{ loginButton }}</button>
 
+    <div class="log-button" *patternAtlasUiShowOnFeature="UiFeatures.AUTHENTICATION">
+        <button *ngIf="!loggedIn" mat-button (click)="login()"> Login </button>
+        <button *ngIf="loggedIn" mat-button [matMenuTriggerFor]="menu">Hello {{userName}} <mat-icon>more_vert</mat-icon></button>
+        <mat-menu #menu="matMenu">
+            <button *ngIf="!planqkUi" mat-menu-item routerLink="/user-info"> UserInfo </button>
+            <button *ngIf="p.userHasPrivilege('USER_READ_ALL') | async" mat-menu-item routerLink="/admin"> Admin </button>
+            <!-- <button mat-menu-item routerLink="/developer"> Developer </button> -->
+            <button *ngIf="!planqkUi" mat-menu-item (click)="openFeatureToggleDialog()">
+              <span>Feature Toggles</span>
+            </button>
+            <button mat-menu-item color="warn" (click)="logout()"> Logout </button>
+        </mat-menu>
     </div>
   </mat-toolbar>
 
@@ -63,18 +62,6 @@
     <a mat-tab-link [routerLink]="'/issue'" *patternAtlasUiShowOnFeature="UiFeatures.ISSUE"
        routerLinkActive #rla5="routerLinkActive" [active]="rla5.isActive">
       Issue
-    </a>
-    <a mat-tab-link [routerLink]="'/user'" *ngIf="(auth.hasRole('MEMBER') | async)"
-       routerLinkActive #rla6="routerLinkActive" [active]="rla6.isActive">
-      Personal
-    </a>
-    <a mat-tab-link [routerLink]="'/admin'" *ngIf="(auth.hasRole('ADMIN') | async)"
-       routerLinkActive #rla7="routerLinkActive" [active]="rla7.isActive">
-      Admin
-    </a>
-    <a mat-tab-link [routerLink]="'/developer'" *ngIf="(auth.hasRole('ADMIN') | async)"
-       routerLinkActive #rla8="routerLinkActive" [active]="rla8.isActive">
-      Developer
     </a>
   </nav>
   <router-outlet></router-outlet>

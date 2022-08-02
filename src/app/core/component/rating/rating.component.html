@@ -1,11 +1,9 @@
-<div *ngIf="row" class="container-row">
-  <button mat-flat-button mat-flat-button type="button" color="primary" (click)="up()">Up</button>
-  <span class="rating"> {{rating}} </span>
-  <button class="item" mat-flat-button mat-flat-button type="button" color="warn" (click)="down()">Down</button>
-</div>
-
-<div *ngIf="!row" class="container-column">
-  <button mat-flat-button mat-flat-button type="button" color="primary" (click)="up()">Up</button>
-  <span class="rating"> {{rating}} </span>
-  <button class="item" mat-flat-button mat-flat-button type="button" color="warn" (click)="down()">Down</button>
+<div [ngClass]="row ? 'container-row' : 'container-column'">
+    <button mat-flat-button type="button" [color]="colorUp" (click)="click(1); $event.stopPropagation();" [disabled]="!(auth.user | async) || disabled">
+        <mat-icon>arrow_upward</mat-icon>
+    </button>
+    <span class="rating">{{total}}</span>
+    <button mat-flat-button type="button" [color]="colorDown" (click)="click(-1); $event.stopPropagation();" [disabled]="!(auth.user | async) || disabled">
+        <mat-icon>arrow_downward</mat-icon>
+    </button>
 </div>

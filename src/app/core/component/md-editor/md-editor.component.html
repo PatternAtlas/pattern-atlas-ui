@@ -1,6 +1,6 @@
 <div style="display: flex; justify-content: space-between; align-items: baseline">
   <h1 mat-dialog-title>Edit '{{data.label}}'</h1>
-  <button mat-flat-button (click)="close()" tabindex="-1">
+  <button mat-flat-button (click)="close()" tabindex="-1" aria-label="Close">
     <i class="material-icons">close</i>
   </button>
 </div>
@@ -23,10 +23,10 @@
 </div>
 <div mat-dialog-actions>
   <button mat-raised-button color="warn"
-          (click)="revert()" matTooltip="Revert Changes">
+          (click)="revert()" matTooltip="Revert Changes" aria-label="Revert changes">
     <i class="material-icons">restore</i> Revert
   </button>
-  <button mat-raised-button color="primary" (click)="saveChanges()"><i
+  <button mat-raised-button color="primary" (click)="saveChanges()" aria-label="Save"><i
     class="material-icons">save</i> Save
   </button>
 </div>

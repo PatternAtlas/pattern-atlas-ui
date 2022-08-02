@@ -1,0 +1,174 @@
+<div class="container">
+    <mat-card class="wrapper-info" *ngIf="user">
+        <form (ngSubmit)="submit()" #userForm="ngForm">
+
+            <mat-form-field>
+                <input matInput [disabled]="disabled" placeholder="Username" type="text" id="name" required
+                    [(ngModel)]="user.name" name="name" #name="ngModel" />
+                <!-- <mat-error *ngIf="!userForm.get('name').valid">Username is required</mat-error> -->
+                <mat-hint align="start">Your username</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput [disabled]="disabled" placeholder="E-Mail" type="email" id="email" required
+                    [(ngModel)]="user.email" name="email" #email="ngModel" />
+                <!-- <mat-error *ngIf="!userForm.get('email').valid">E-Mail is required</mat-error> -->
+                <mat-hint align="start">Your e-mail address</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput placeholder="Role" type="text" id="role" required [(ngModel)]="user.role" name="role"
+                    #role="ngModel" disabled />
+            </mat-form-field>
+
+            <form *ngIf="password" [formGroup]="passwordForm" (ngSubmit)="updatePassword()">
+                <mat-form-field>
+                    <input matInput placeholder="Old password" [type]="oldPasswordHide ? 'password' : 'text'"
+                        formControlName="oldPassword">
+                    <button mat-icon-button matSuffix (click)="oldPasswordHide = !oldPasswordHide"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                        <mat-icon>{{oldPasswordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    <mat-error *ngIf="!passwordForm.get('oldPassword').valid">
+                        Please enter your old password
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput placeholder="New password" [type]="passwordHide ? 'password' : 'text'"
+                        formControlName="password">
+                    <button mat-icon-button matSuffix (click)="passwordHide = !passwordHide"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                        <mat-icon>{{passwordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    <mat-error *ngIf="!passwordForm.get('password').valid">
+                        Please enter new password
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput placeholder="Confirm password" [type]="confirmPasswordHide ? 'password' : 'text'"
+                        formControlName="confirmPassword">
+                    <button mat-icon-button matSuffix (click)="confirmPasswordHide = !confirmPasswordHide"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                        <mat-icon>{{confirmPasswordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    <mat-error *ngIf="!passwordForm.get('confirmPassword').valid">
+                        Passwords do not match
+                    </mat-error>
+                </mat-form-field>
+            </form>
+
+            <!-- DETAIL BUTTONS -->
+            <div class="detail-component buttons" *ngIf="disabled && !password">
+                <button mat-flat-button type="button" color="accent" (click)="edit()">Edit</button>
+                <a mat-flat-button color="accent" *ngIf="accountManagementUrl" href="{{accountManagementUrl}}">Change Password</a>
+                <button mat-flat-button type="button" color="warn" (click)="delete()">Delete</button>
+            </div>
+            <!-- EDIT BUTTONS -->
+            <div class="detail-component buttons" *ngIf="!disabled && !password">
+                <button mat-flat-button type="submit" color="primary" [disabled]="!userForm.valid">Save</button>
+                <button mat-flat-button type="button" color="warn" (click)="reset()">Reset</button>
+            </div>
+            <!-- PASSWORD BUTTONS -->
+            <div class="detail-component buttons" *ngIf="disabled && password">
+                <button mat-flat-button type="button" color="primary" (click)="updatePassword()"
+                    [disabled]="!passwordForm.valid">Save</button>
+                <button mat-flat-button type="button" color="" (click)="cancelPassword()">Cancel</button>
+            </div>
+        </form>
+    </mat-card>
+    <mat-card *ngIf="user" class="wrapper-issue">
+
+        <h1>Issues</h1>
+        <ng-container *ngIf="user.issues.length > 0; else elseBlock">
+            <div class="info-item" *ngFor="let issue of user.issues" (click)="detailIssue(issue)">
+                <span class="title">{{issue.name}}</span>
+            </div>
+        </ng-container>
+        <ng-template #elseBlock>Did not author any issues</ng-template>
+        <h3>Submitted Evidence</h3>
+        <ng-container *ngIf="user.issueEvidences.length > 0; else elseBlock1">
+            <div class="info-item" *ngFor="let issueEvidence of user.issueEvidences" (click)="detailIssue(issue)">
+                <span class="title">{{issueEvidence.title}}</span>
+            </div>
+        </ng-container>
+        <ng-template #elseBlock1>Did not submit any evidence on issues</ng-template>
+        <h3>Comments</h3>
+        <ng-container *ngIf="user.issues.length > 0; else elseBlock2">
+            <div class="info-item" *ngFor="let issueComment of user.issueComments" (click)="detailIssue(issue)">
+                <span class="title">{{issueComment.text}}</span>
+            </div>
+        </ng-container>
+        <ng-template #elseBlock2>Did not comment on any issues</ng-template>
+        <h3>Ratings</h3>
+        <ng-container *ngIf="user.issueRatings.length > 0; else elseBlock3">
+            <div class="info-item" *ngFor="let issueRating of user.issueRatings" (click)="detailIssue(issue)">
+                <span class="title">{{issueRating.name}}</span>
+            </div>
+        </ng-container>
+        <ng-template #elseBlock3>Did not rate any issues</ng-template>
+    </mat-card>
+    <mat-card *ngIf="user" class="wrapper-candidate">
+
+        <h1>Pattern Candidate</h1>
+        <ng-container *ngIf="user.candidates.length > 0; else elseBlock">
+            <div class="info-item" *ngFor="let candidate of user.candidates" (click)="detailIssue(issue)">
+                <span class="title">{{candidate.name}}</span>
+            </div>
+        </ng-container>
+        <ng-template #elseBlock>Did not author any pattern candidates</ng-template>
+        <h3>Submitted Evidence</h3>
+        <ng-container *ngIf="user.candidatesEvidences.length > 0; else elseBlock2">
+            <div class="info-item" *ngFor="let evidence of user.candidatesEvidences" (click)="detailIssue(issue)">
+                <span class="title">{{evidence.title}}</span>
+            </div>
+        </ng-container>
+        <ng-template #elseBlock1>Did not submit any evidence on pattern candidates</ng-template>
+        <h3>Comments</h3>
+        <ng-container *ngIf="user.candidateComments.length > 0; else elseBlock2">
+            <div class="info-item" *ngFor="let comment of user.candidateComments" (click)="detailIssue(issue)">
+                <span class="title">{{comment.text}}</span>
+            </div>
+        </ng-container>
+        <ng-template #elseBlock2>Did not comment on any pattern candidates</ng-template>
+        <h3>Ratings</h3>
+        <ng-container *ngIf="user.candidatesRatings.length > 0; else elseBlock3">
+            <div class="info-item" *ngFor="let rating of user.candidatesRatings" (click)="detailIssue(issue)">
+                <span class="title">{{rating.name}}</span>
+            </div>
+        </ng-container>
+        <ng-template #elseBlock3>Did not rate any pattern candidates</ng-template>
+    </mat-card>
+    <mat-card *ngIf="user" class="wrapper-pattern">
+
+        <h1>Approved Pattern</h1>
+        <ng-container *ngIf="user.patterns.length > 0; else elseBlock">
+            <div class="info-item" *ngFor="let pattern of user.patterns" (click)="detailIssue(issue)">
+                <span class="title">{{patterns.name}}</span>
+            </div>
+        </ng-container>
+        <ng-template #elseBlock>Did not author any approved pattern</ng-template>
+        <h3>Submitted Evidence</h3>
+        <ng-container *ngIf="user.patternEvidences.length > 0; else elseBlock2">
+            <div class="info-item" *ngFor="let evidence of user.candidatesEvidences" (click)="detailIssue(issue)">
+                <span class="title">{{evidence.title}}</span>
+            </div>
+        </ng-container>
+        <ng-template #elseBlock1>Did not submit any evidence on approved pattern</ng-template>
+        <h3>Comments</h3>
+        <ng-container *ngIf="user.patternComments.length > 0; else elseBlock2">
+            <div class="info-item" *ngFor="let comment of user.patternComments" (click)="detailIssue(issue)">
+                <span class="title">{{comment.text}}</span>
+            </div>
+        </ng-container>
+        <ng-template #elseBlock2>Did not comment on any approved pattern</ng-template>
+        <h3>Ratings</h3>
+        <ng-container *ngIf="user.patternRatings.length > 0; else elseBlock3">
+            <div class="info-item" *ngFor="let rating of user.patternRatings" (click)="detailIssue(issue)">
+                <span class="title">{{rating.name}}</span>
+            </div>
+        </ng-container>
+        <ng-template #elseBlock3>Did not rate any approved pattern</ng-template>
+    </mat-card>
+</div>

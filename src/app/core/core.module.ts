@@ -32,6 +32,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TextFieldModule } from '@angular/cdk/text-field';
@@ -51,6 +52,7 @@ import { PatternLanguageService } from './service/pattern-language.service';
 import { PatternService } from './service/pattern.service';
 import { GraphDisplayComponent } from './component/graph-display/graph-display.component';
 import { CardRendererComponent } from './component/cardrenderer/card-renderer.component';
+import { CandidateRendererComponent } from './component/candidate-renderer/candidate-renderer.component';
 import { PatternViewService } from './service/pattern-view.service';
 import { CreateEditPatternLanguageComponent } from './component/create-edit-pattern-language/create-edit-pattern-language.component';
 import { ActionButtonBarComponent } from './component/action-button-bar/action-button-bar.component';
@@ -75,6 +77,18 @@ import { IssueManagementService } from './issue-management/_services/issue-manag
 import { IssueManagementStore } from './issue-management/_store/issue-management-store';
 import { CandidateManagementService } from './candidate-management/_services/candidate-management.service';
 import { CandidateManagementStore } from './candidate-management';
+import { AuthorManagementService } from './author-management';
+import { CommentListItemComponent } from './component/comment-list-item/comment-list-item.component';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { PatternLanguagePickerComponent } from './component/pattern-language-picker/pattern-language-picker.component';
+import { AuthorPickerComponent } from './component/author-picker/author-picker.component';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatChipsModule } from '@angular/material/chips';
+import { ConfirmDialogComponent } from './component/confirm-dialog/confirm-dialog.component';
+import { EvidenceListComponent } from './component/evidence-list/evidence-list.component';
+import { EvidenceDialogComponent } from './component/evidence-dialog/evidence-dialog.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { RatingMultipleComponent } from './component/rating-multiple/rating-multiple.component';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SelectPatternDialogComponent } from './component/select-pattern-dialog/select-pattern-dialog.component';
@@ -95,7 +109,6 @@ import { PatternAtlasUiFeatureToggleModule } from './directives/pattern-atlas-ui
     FlexLayoutModule,
     MatProgressSpinnerModule,
     MatListModule,
-    MatFormFieldModule,
     MatDatepickerModule, MatInputModule,
     ReactiveFormsModule,
     MatTooltipModule,
@@ -106,12 +119,16 @@ import { PatternAtlasUiFeatureToggleModule } from './directives/pattern-atlas-ui
     MatBadgeModule,
     MatExpansionModule,
     MatButtonToggleModule,
-    MatTreeModule,
+    MatTabsModule,
     NgxMdModule.forRoot(),
     MatNativeDateModule,
     RouterModule,
     MatSortModule,
     FormsModule,
+    ScrollingModule,
+    MatRadioModule,
+    MatChipsModule,
+    MatCheckboxModule,
     MatSnackBarModule,
     PatternAtlasUiFeatureToggleModule
   ],
@@ -122,12 +139,18 @@ import { PatternAtlasUiFeatureToggleModule } from './directives/pattern-atlas-ui
     MatProgressSpinnerModule,
     NavigateBackComponent,
     CardRendererComponent,
+    CandidateRendererComponent,
     ActionButtonBarComponent,
     RatingComponent,
+    RatingMultipleComponent,
     CommentListComponent,
     ToggleRendererComponent,
-    GraphDisplayComponent
-  ],
+    GraphDisplayComponent,
+    PatternLanguagePickerComponent,
+    AuthorPickerComponent,
+    EvidenceListComponent,
+  ]
+  ,
   providers: [
     PatternLanguageService,
     PatternService,
@@ -141,6 +164,8 @@ import { PatternAtlasUiFeatureToggleModule } from './directives/pattern-atlas-ui
     // CANDIDATE
     CandidateManagementService,
     CandidateManagementStore,
+    // SHARED
+    AuthorManagementService,
     // IMAGE & DISCUSSION
     ImageService,
     DiscussionService
@@ -158,6 +183,7 @@ import { PatternAtlasUiFeatureToggleModule } from './directives/pattern-atlas-ui
     MarkdownPatternSectionContentComponent,
     GraphDisplayComponent,
     CardRendererComponent,
+    CandidateRendererComponent,
     CreateEditPatternLanguageComponent,
     ActionButtonBarComponent,
     RatingComponent,
@@ -165,6 +191,13 @@ import { PatternAtlasUiFeatureToggleModule } from './directives/pattern-atlas-ui
     ToggleRendererComponent,
     DeletePatternRelationComponent,
     CreativeLicenseFooterComponent,
+    CommentListItemComponent,
+    PatternLanguagePickerComponent,
+    AuthorPickerComponent,
+    ConfirmDialogComponent,
+    EvidenceListComponent,
+    EvidenceDialogComponent,
+    RatingMultipleComponent,
     CommentDialogComponent,
     DiscussDialogComponent,
     SelectPatternDialogComponent,
@@ -181,8 +214,11 @@ import { PatternAtlasUiFeatureToggleModule } from './directives/pattern-atlas-ui
     DeletePatternRelationComponent,
     MarkdownPatternSectionContentComponent,
     CardRendererComponent,
+    CandidateRendererComponent,
     GraphDisplayComponent,
     CreateEditPatternLanguageComponent,
+    ConfirmDialogComponent,
+    EvidenceDialogComponent,
     CommentDialogComponent,
     DiscussDialogComponent,
     FeatureToggleDialogComponent

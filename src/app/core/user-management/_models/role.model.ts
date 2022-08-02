@@ -1,7 +1,8 @@
-export enum UserRole {
-  MEMBER = 'MEMBER',
-  EXPERT = 'EXPERT',
-  AUTHOR = 'AUTHOR',
-  LIBRARIAN = 'LIBRARIAN',
-  ADMIN = 'ADMIN'
+import { PrivilegeModel } from './privilege.model';
+
+export class RoleModel {
+    id: string;
+    name: string;
+    // privileges: PrivilegeModel[];
+    privileges: string[];
 }

@@ -1,0 +1,20 @@
+<mat-form-field>
+    <mat-chip-list #chipList [disabled]="disabled || !(p.isMaintainerOrOwner(authors) | async)">
+        <mat-chip *ngFor="let author of authors" [selectable]="true" [removable]="true" (removed)="delete(author)">
+            {{author.name}} ({{author.authorRole}})
+            <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input placeholder="Authors" #authorInput [formControl]="authorCtrl" [matAutocomplete]="auto"
+            [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+    </mat-chip-list>
+    <mat-autocomplete #auto="matAutocomplete">
+        <mat-option class="item" *ngFor="let selectAuthor of allAuthors">
+            <span class="name">{{selectAuthor.name}}</span>
+            <mat-radio-group [ngModel]="getSelectedAuthor(selectAuthor)">
+                <mat-radio-button *ngFor="let role of roles" [value]="role" (change)="update($event, selectAuthor)">
+                    {{role}}</mat-radio-button>
+            </mat-radio-group>
+            <mat-divider></mat-divider>
+        </mat-option>
+    </mat-autocomplete>
+</mat-form-field>

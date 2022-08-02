@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthenticationService } from './_services/authentication.service';
+import { PrivilegeService } from './_services/privilege.service';
 
 @NgModule({
   declarations: [],
@@ -8,7 +9,8 @@ import { AuthenticationService } from './_services/authentication.service';
     CommonModule
   ],
   providers: [
-    AuthenticationService
+    AuthenticationService,
+    PrivilegeService
   ]
 })
 export class AuthenticationModule {

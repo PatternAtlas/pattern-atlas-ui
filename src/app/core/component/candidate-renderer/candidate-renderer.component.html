@@ -1,0 +1,23 @@
+<div class="candidate-card-container">
+    <mat-card  *ngFor="let candidate of candidates">
+        <mat-card-title>{{candidate.name}}</mat-card-title>
+        <mat-card-subtitle> Language: {{candidate.patternLanguageName}}</mat-card-subtitle>
+        <mat-card-content>
+            <p>
+                {{candidate.content['Context']}}
+            </p>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-flat-button color="primary" type="button" (click)="detail(candidate)"
+                matTooltip="Open candidate">
+                <mat-icon>launch</mat-icon>
+                Detail
+            </button>
+            <button mat-flat-button color="accent" type="button" (click)="edit(candidate)" [disabled]="!(p.isGroubMember(candidate.authors, 'PATTERN_CANDIDATE_EDIT_ALL') | async)"
+                matTooltip="Edit candidate">
+                <mat-icon>edit</mat-icon>
+                Edit
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</div>

@@ -1,5 +1,5 @@
 import {
-  AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, OnDestroy, ViewChild
+  AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToasterService } from 'angular2-toaster';
@@ -27,17 +27,18 @@ import { EditUrlDialogComponent } from '../component/edit-url-dialog/edit-url-di
 import {
   PatternAtlasUiRepositoryConfigurationService, UiFeatures
 } from '../directives/pattern-atlas-ui-repository-configuration.service';
+import { PrivilegeService } from '../../authentication/_services/privilege.service';
 
 @Component({
   selector: 'pp-default-pattern-renderer',
   templateUrl: './default-pattern-renderer.component.html',
   styleUrls: ['./default-pattern-renderer.component.scss']
 })
-export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy {
+export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy, OnInit {
   @ViewChild(PatternPropertyDirective) ppPatternProperty: PatternPropertyDirective;
   isLoading = true;
   isLoadingLinks = true;
-  isEditingEnabled = true;
+  isEditingEnabled = false;
   patternLanguage: PatternLanguage;
   pattern: Pattern;
   patterns: Array<Pattern>;
@@ -49,7 +50,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   subscriptions: Subscription = new Subscription();
   showActionButtons: boolean;
   readonly UiFeatures = UiFeatures;
-  editingFromConfigServer = false
 
   constructor(private activatedRoute: ActivatedRoute,
               private toasterService: ToasterService,
@@ -60,9 +60,19 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
               private patternRelationDescriptorService: PatternRelationDescriptorService,
               private dialog: MatDialog,
               private router: Router,
-              private configurationService: PatternAtlasUiRepositoryConfigurationService) {
+              private configurationService: PatternAtlasUiRepositoryConfigurationService,
+              private p: PrivilegeService) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.editingFromConfigServer = this.configurationService.configuration.features[UiFeatures.EDITING]
+    this.isEditingEnabled = this.configurationService.configuration.features[UiFeatures.EDITING]
+  }
+
+  ngOnInit() {
+    if(this.isEditingEnabled) {
+      this.p.hasPrivilege('APPROVED_PATTERN_EDIT_ALL')
+        .subscribe(res => {
+          this.isEditingEnabled = res;
+        });
+    }
   }
 
   ngAfterViewInit(): void {
@@ -148,6 +158,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
     instance.title = section;
     instance.patternLanguageId = this.patternLanguageId;
     instance.isEditingEnabled = this.isEditingEnabled;
+    instance.showCommentButton = false;
     const changeSubscription = instance.changeContent.subscribe((dataChange: DataChange) => {
       this.pattern.content[section] = dataChange.currentValue;
       this.cdr.detectChanges();

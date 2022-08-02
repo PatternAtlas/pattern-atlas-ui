@@ -1,0 +1,40 @@
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="container">
+
+    <mat-form-field>
+        <input matInput placeholder="Username" formControlName="name" />
+        <mat-error *ngIf="!userForm.get('name').valid">Username is required</mat-error>
+        <mat-hint align="start">A custom name for the user</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="E-Mail" formControlName="email" type="email" />
+        <mat-error *ngIf="!userForm.get('email').valid">E-Mail is required</mat-error>
+        <mat-hint align="start">e-mail address for the user to later login</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="New password" formControlName="password" type="password">
+        <mat-error *ngIf="!userForm.get('password').valid">
+            Please enter your new password
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="Confirm password" formControlName="confirmPassword" type="password">
+        <!-- <mat-error *ngIf="userForm.hasError('notSame')"> -->
+        <mat-error *ngIf="!userForm.get('confirmPassword').valid">
+            Passwords do not match
+        </mat-error>
+    </mat-form-field>
+
+    <!-- <label>Pick user role</label> -->
+    <mat-radio-group formControlName="userRole">
+        <mat-radio-button *ngFor="let role of roles" color="primary" [value]="role">{{role}}</mat-radio-button>
+    </mat-radio-group>
+    <div class="buttons">
+        <button mat-flat-button type="submit" color="primary" [disabled]="!userForm.valid">Save</button>
+        <button mat-flat-button type="button" color="warn" (click)="reset()">Reset</button>
+        <button mat-flat-button type="button" color="" (click)="exit()">Cancel</button>
+
+    </div>
+</form>
