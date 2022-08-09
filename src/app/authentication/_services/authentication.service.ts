@@ -42,7 +42,7 @@ export class AuthenticationService {
   private initSubjectsPipe() {
     this.userSubject = new BehaviorSubject<UserInfoModel>(null);
     this.rolePASubject = new BehaviorSubject<UserRole[]>(null);
-    this.accessTokenSubject = new BehaviorSubject<string>(this.getAccesToken());
+    this.accessTokenSubject = new BehaviorSubject<string>(this.getAccessToken());
 
     this.accessTokenSubject.subscribe(token => {
       if (token === 'logout') {
@@ -54,7 +54,7 @@ export class AuthenticationService {
         this.getRoles();
         this.router.navigate(['/']);
 
-      } else if (token && this.getRefreshToken() && this.jwtHelper.isTokenExpired(this.getAccesToken())) {
+      } else if (token && this.getRefreshToken() && this.jwtHelper.isTokenExpired(this.getAccessToken())) {
         this.refreshToken();
 
       } else {
@@ -184,7 +184,7 @@ export class AuthenticationService {
     window.open(environment.logoutUrl + params, '_self');
   }
 
-  public getAccesToken(): string {
+  public getAccessToken(): string {
     return localStorage.getItem(localAccessTokenKey);
   }
 
@@ -193,13 +193,17 @@ export class AuthenticationService {
   }
 
   public isAuthenticated(): boolean {
-    if (!this.jwtHelper.isTokenExpired(this.getAccesToken())) {
-      return true;
-    } else if (!this.jwtHelper.isTokenExpired(this.getRefreshToken())) {
-      this.refreshToken();
-      return true
+    if(this.getAccessToken() || this.getRefreshToken()) {
+      if (!this.jwtHelper.isTokenExpired(this.getAccessToken())) {
+        return true;
+      } else if (!this.jwtHelper.isTokenExpired(this.getRefreshToken())) {
+        this.refreshToken();
+        return true;
+      } else {
+        this.logout();
+        return false;
+      }
     } else {
-      this.logout();
       return false;
     }
   }
