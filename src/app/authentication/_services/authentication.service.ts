@@ -77,13 +77,13 @@ export class AuthenticationService {
   private getAccesCode(state: string) {
     const params = new HttpParams()
       .set('response_type', 'code')
-      .set('client_id', environment.clientIdPublic)
+      //.set('client_id', environment.clientIdPublic)
       .set('redirect_uri', `${window.location.origin}`)
       .set('scope', 'read+write')
       .set('state', state)
     // outcomment IF PKCE Authentaction flow is used
-    // .set('client_id', environment.clientIdPKCE)
-    // .set('code_challenge', '4cc9b165-1230-4607-873b-3a78afcf60c5')
+      .set('client_id', environment.clientIdPKCE)
+      .set('code_challenge', '4cc9b165-1230-4607-873b-3a78afcf60c5')
 
     window.open(environment.authorizeUrl + params, '_self');
   }
@@ -95,6 +95,7 @@ export class AuthenticationService {
 
   private getToken() {
     const url = window.location.search;
+    console.log(url);
 
     if (url.includes('code=') && url.includes('state=')) {
       // Checks if sended state is equal to received state, CSRF attacks
@@ -104,14 +105,14 @@ export class AuthenticationService {
       } else {
         const code = this.regexCode.exec(url)[1];
         const params = new HttpParams()
-          .set('client_id', `${environment.clientIdPublic}`)
+          //.set('client_id', `${environment.clientIdPublic}`)
 
           .set('code', code)
           .set('redirect_uri', `${window.location.origin}`)
           .set('grant_type', 'authorization_code')
         // outcomment IF PKCE Authentaction flow is used
-        // .set('client_id', `${environment.clientPKCE}`)
-        // .set('code_verifier', '4cc9b165-1230-4607-873b-3a78afcf60c5')
+           .set('client_id', `${environment.clientIdPKCE}`)
+          .set('code_verifier', '4cc9b165-1230-4607-873b-3a78afcf60c5')
 
         this.http.post<any>(environment.tokenUrl, params).subscribe(token => {
 

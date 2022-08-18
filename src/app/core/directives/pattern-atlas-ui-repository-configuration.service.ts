@@ -42,13 +42,13 @@ interface EtcdNode {
 
 const initialValues: PatternAtlasUiConfiguration = {
   features: {
-    designModel: false,
-    patternCandidate: false,
-    patternViews: false,
-    issue: false,
-    showSettings: false,
-    editing: false,
-    planqkUi: false
+    designModel: true,
+    patternCandidate: true,
+    patternViews: true,
+    issue: true,
+    showSettings: true,
+    editing: true,
+    planqkUi: true
   },
 };
 
