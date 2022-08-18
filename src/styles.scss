@@ -99,6 +99,7 @@ $planqk-theme: mat-light-theme($planqk-palette-primary, $planqk-palette-accent);
 body {
   font-family: sans-serif;
   margin: 0;
+  background-color: rgb(255, 255, 255);
 }
 
 .material-icons {
@@ -313,6 +314,10 @@ body {
   background-color: #fff;
 }
 
+.mat-form-field {
+  width: 100%;
+}
+
 .horiz-centered {
   display: inline-flex;
   align-items: center;
@@ -327,3 +332,61 @@ body {
   margin-right: 10px !important;
 }
 
+$break-small: 759px;
+$break-large: 760px;
+
+.container-double {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.left {
+  margin: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  
+  @media screen and (max-width: $break-small) {
+    width: 100%;
+  }
+  @media screen and (min-width: $break-large) {
+    max-width: 60%;
+    flex: 2 350px;
+  }
+}
+
+.right {
+  margin: 8px;
+  @media screen and (max-width: $break-small) {
+    width: 100%;
+  }
+  @media screen and (min-width: $break-large) {
+    max-width: 500px;
+    flex: 1 350px;
+  }
+}
+
+.scrollable-double {
+  @media screen and (max-width: $break-small) {
+    height: 100%;
+  }
+  @media screen and (min-width: $break-large) {
+    // border: 1px solid red;
+    min-height: 500px;
+    height: calc(100vh -  64px - 48px - 64px);
+  }
+}
+
+.detail-component {
+  height: 100%;
+  width: 100%;
+  padding: 4px 0;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}

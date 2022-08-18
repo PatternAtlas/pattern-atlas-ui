@@ -1,18 +1,21 @@
 import { BehaviorSubject } from 'rxjs';
+import { Issue } from '../_models/issue.model';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class IssueManagementStore {
-  private _issue2Candidate: BehaviorSubject<any> = new BehaviorSubject(null);
 
-  get candidateFromIssue() {
-    return this._issue2Candidate.asObservable();
-  }
+    private _issue: BehaviorSubject<any> = new BehaviorSubject(null);
+    
+    get issue() {
+      return this._issue.asObservable();
+    }
 
-  addCandidateFromIssue(issue2Candidate: any) {
-    console.log(issue2Candidate)
-    this._issue2Candidate.next(issue2Candidate);
-  }
+    addIssue(issue: Issue) {
+      this._issue.next(issue);
+    }
 
-  resetCandidateFromIssue() {
-    this._issue2Candidate.next(null);
-  }
+    resetIssue() {
+      this._issue.next(null);
+    }
 }

@@ -27,6 +27,7 @@ import { map } from 'rxjs/operators';
 import PatternLanguageModel from '../../core/model/hal/pattern-language-model.model';
 import { DeleteConfirmationDialogComponent } from '../../core/component/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { UiFeatures } from '../../core/directives/pattern-atlas-ui-repository-configuration.service';
+import { PrivilegeService } from '../../authentication/_services/privilege.service';
 
 @Component({
   selector: 'pp-pattern-language-management',
@@ -47,7 +48,8 @@ export class PatternLanguageManagementComponent implements OnInit {
     private dialog: MatDialog,
     private _cookieService: CookieService,
     private _toasterService: ToasterService,
-    private patternLanguageService: PatternLanguageService) {
+    private patternLanguageService: PatternLanguageService,
+    private p: PrivilegeService) {
   }
 
   // function used to sort the patternlanguages (by name)

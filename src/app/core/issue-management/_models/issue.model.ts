@@ -1,11 +1,17 @@
-import { IssueComment } from './issue-comment.model';
+import { AuthorModel } from '../../author-management';
+import { PAEvidence } from '../../shared';
+import { PAComment } from '../../shared/_models/comment.model';
 
-export interface Issue {
-  id: string,
-  uri: string,
-  name: string
-  description: string,
-  rating: number,
-  version: string,
-  comments: IssueComment[],
+export class Issue {
+    authors: AuthorModel[];
+    comments: PAComment[];
+    evidences: PAEvidence[];
+    description: string;
+    id: string;
+    name: string;
+    rating: number;
+    upVotes: string[];
+    downVotes: string[];
+    uri: string;
+    version: string;
 }

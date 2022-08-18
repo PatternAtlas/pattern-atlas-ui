@@ -11,10 +11,10 @@
 
       <button *ngIf="showActionButtons && isEditingEnabled && editingFromConfigServer" mat-stroked-button
               style="margin-left: 5px" color="primary"
-              (click)="openEditor()" matTooltip="Edit"><i class="material-icons">mode_edit</i></button>
+              (click)="openEditor()" matTooltip="Edit" aria-label="Edit"><i class="material-icons">mode_edit</i></button>
       <button *ngIf="showActionButtons && showCommentButton && editingFromConfigServer" mat-stroked-button
               style="margin-left: 5px" color="primary"
-              (click)="commentSVG()" matTooltip="Comment Picture"><i class="material-icons">comment</i></button>
+              (click)="commentSVG()" matTooltip="Comment Picture" aria-label="Comment"><i class="material-icons">comment</i></button>
     </div>
   </mat-card-content>
 </mat-card>

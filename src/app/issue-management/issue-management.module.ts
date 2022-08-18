@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IssueCreateDialogComponent } from './issue-create-dialog/issue-create-dialog.component';
 import { IssueManagementDetailComponent } from './issue-management-detail/issue-management-detail.component';
+import { AuthorManagementListComponent } from '../author-management/author-list/author-list.component';
 import { RouterModule } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -9,11 +9,15 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTableModule } from '@angular/material/table';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { CoreModule } from '../core/core.module';
 import { MatSelectModule } from '@angular/material/select';
 import { IssueManagementListComponent } from './issue-management-list/issue-management-list.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 export const ISSUE_ROTUES = [
   {
@@ -22,7 +26,35 @@ export const ISSUE_ROTUES = [
       {
         path: '',
         component: IssueManagementListComponent
-      }
+      },
+      {
+        path: 'create',
+        component: IssueManagementDetailComponent,
+        // Will be used in the future
+        // canActivate: [AuthGuard],
+        // data: { role: UserRole.MEMBER }  
+      },
+      {
+        path: 'detail/:name',
+        component: IssueManagementDetailComponent,
+        // Will be used in the future
+        // canActivate: [AuthGuard],
+        // data: { role: UserRole.MEMBER }  
+      },
+      {
+        path: 'edit/:name',
+        component: IssueManagementDetailComponent,
+        // Will be used in the future
+        // canActivate: [AuthGuard],
+        // data: { role: UserRole.MEMBER }  
+      },
+      {
+        path: 'authors/:name',
+        component: AuthorManagementListComponent,
+        // Will be used in the future
+        // canActivate: [AuthGuard],
+        // data: { role: UserRole.MEMBER }  
+      },
     ]
   },
 ];
@@ -30,8 +62,8 @@ export const ISSUE_ROTUES = [
 @NgModule({
   declarations: [
     IssueManagementListComponent,
-    IssueCreateDialogComponent,
-    IssueManagementDetailComponent
+    IssueManagementDetailComponent,
+    AuthorManagementListComponent
   ],
   imports: [
     CommonModule,
@@ -43,17 +75,19 @@ export const ISSUE_ROTUES = [
     MatButtonModule,
     MatDialogModule,
     MatFormFieldModule,
+    MatTableModule,
+    MatCheckboxModule,
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
     MatSelectModule,
+    MatIconModule,
+    MatToolbarModule,
   ],
   exports: [
     IssueManagementListComponent
   ],
-  providers: [],
-  entryComponents: [
-    IssueCreateDialogComponent,
+  providers: [
   ],
 })
 export class IssueManagementModule {

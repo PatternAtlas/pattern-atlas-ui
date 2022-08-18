@@ -1,33 +1,37 @@
-.container {
-  display: flex; /* or inline-flex */
+.issue-list {
+  overflow-y: scroll;
+}
+
+.h3 {
+  max-width: 50%;
+}
+
+.spacer {
+  width: 16px;
+  height: 100%;
+}
+
+.mat-expansion-panel-header-description {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.panel-content {
+  display: flex;
   flex-direction: row;
-  justify-content: left;
-  margin-top: 16px;
+  justify-content: center;
+  align-items: flex-start;
+  // border: groove;
+  width: 95%;
+  min-height: fit-content;
 
-  .list {
-    width: 45%;
-    margin: 0 16px;
-    border-style: groove;
-
-    .mat-list {
-
-      border-style: groove;
-      overflow: auto;
-      height: calc(100vh - 64px - 48px - 96px);
-
-      .new-button {
-        margin-bottom: 16px;
-        width: 100%;
-      }
-
-      .mat-list-item {
-        border-style: groove;
-      }
-    }
+  .description {
+    flex: 1;
+    height: 100%;
+    width: 100%;
   }
 
-  .detail {
-    width: 45%;
-    margin: 0 16px;
+  .container-rating {
+    width: 70px;
   }
 }

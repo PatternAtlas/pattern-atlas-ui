@@ -12,9 +12,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit } from '@angular/core';
 import { AuthenticationService } from './authentication/_services/authentication.service';
-import { PAUser } from './core/user-management';
+import { PrivilegeService } from './authentication/_services/privilege.service';
 import { globals } from './globals';
 import {
   PatternAtlasUiRepositoryConfigurationService, UiFeatures
@@ -28,42 +28,34 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'pp-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+
+  userName: string;
+  loggedIn = false;
 
   readonly UiFeatures = UiFeatures;
   loginButton = 'Login';
   welcomeText = '';
-  user: PAUser;
   readonly pathConstants = globals.pathConstants;
   loading = true;
   planqkUi = false;
 
   constructor(public auth: AuthenticationService,
+              public p: PrivilegeService,
               private toasterService: ToasterService,
               private configService: PatternAtlasUiRepositoryConfigurationService,
               private dialog: MatDialog,
               private cdr: ChangeDetectorRef, private router: Router, private route: ActivatedRoute) {
-    this.auth.userSubject.subscribe(_user => {
-      if (_user) {
-        console.log('User is Logged in: ', _user);
-        this.user = _user;
-        this.loginButton = 'Logout';
-        this.welcomeText = `Welcome ${_user.name}`;
-      } else {
-        console.log('No user logged in: ', _user);
-        this.user = null;
-        this.loginButton = 'Login';
-        this.welcomeText = '';
-      }
-    });
-
-
   }
 
-  loginOAuth() {
-    this.user ? this.auth.logout() : this.auth.login();
+  login() {
+    this.auth.login();
+  }
+
+  logout() {
+    this.auth.logout();
   }
 
   ngOnInit(): void {
@@ -77,17 +69,21 @@ export class AppComponent implements OnInit {
         this.planqkUi = true;
         if(error.status === globals.statusCodeNotFound){
           this.configService.getDefaultConfiguration();
-          console.log('default values applied')
         }
-        else if (this.configService.configuration.features[UiFeatures.SHOW_SETTINGS]){
-          this.toasterService.popAsync(
-            'error', 'Error while loading config from config server, using default values instead' + error.message).subscribe(
-            () => console.log('default values applied')
-          )
+        else if (this.configService.configuration.features[UiFeatures.SHOW_SETTINGS]) {
+          console.log('default values applied');
         }
-        console.log('Error while loading config from config server, using default values instead' + error.message)
       }
     );
+    this.auth.user.subscribe(_user => {
+      if (_user) {
+        this.userName = _user.name;
+        this.loggedIn = true;
+      } else {
+        this.userName = null;
+        this.loggedIn = false;
+      }
+    })
   }
 
   openFeatureToggleDialog() {

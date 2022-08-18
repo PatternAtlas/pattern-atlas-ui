@@ -1,0 +1,8 @@
+<mat-form-field>
+    <mat-label>Pattern Language</mat-label>
+    <mat-select placeholder="PatternLanguage" [formControl]="patternLanguageCrtl" (selectionChange)="selectionChange()" name="patternLanguage">
+        <mat-option *ngFor="let language of patternLanguages" [value]="language">
+            {{language.patternLanguageName}}
+        </mat-option>
+    </mat-select>
+</mat-form-field>

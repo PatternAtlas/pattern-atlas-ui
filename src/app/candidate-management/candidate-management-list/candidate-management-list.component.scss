@@ -1,9 +1,41 @@
-mat-grid-tile {
-  background: #add8e6;
+.mat-card {
+  min-height: 5rem !important;
+  max-width: 200px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-right: 1em;
 }
 
-.landing-card {
-  min-height: 20rem !important;
-  min-width: 13rem !important;
+.mat-card-header {
+  flex-shrink: 0;
+  margin: 0 !important;
+}
 
+mat-card-header-text {
+  margin: 0 !important;
+}
+
+.container {
+  display: flex;
+  flex-flow: row wrap;
+  margin: 0;
+}
+
+.mat-card-content {
+  flex-grow: 1;
+  overflow: auto;
+}
+
+.mat-card-title {
+  min-height: 0;
+}
+
+.heading {
+  font-weight: bold;
+}
+
+.mat-card-actions {
+  display: flex;
+  justify-content: space-between;
 }

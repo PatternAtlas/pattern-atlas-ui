@@ -1,38 +1,39 @@
 .container {
-  border-style: groove;
-  border-color: #f00;
-
-  .container-comment {
-    border-style: groove;
-    border-color: #008000;
-    width: 100%;
-    display: flex; /* or inline-flex */
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: flex-end;
-
-    .mat-form-field {
-      width: 100%;
-    }
-  }
-
-  .mat-list {
-    width: 100%;
-    overflow: auto;
-    height: calc(100vh - 64px - 48px - 96px - 440px);
-
-    .mat-list-item {
-      border-style: groove;
-      min-height: 128px;
-      display: flex; /* or inline-flex */
-      flex-direction: row;
-      width: 100%;
-      align-items: center;
-
-      .container-text {
-        flex: 1;
-      }
-    }
-  }
+  height: 100%;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 165px auto;
+  row-gap: 10px;
 }
 
+.mat-card {
+  grid-area: 1 / 1 / 1 / 1;
+  min-height: 1rem;
+  // max-height: 160px !important;
+}
+
+.container-input {
+  height: 135px;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 99px 36px;
+}
+
+.wrapper-input {
+  grid-area: 1 / 1 / 1 / 1;
+}
+
+.wrapper-buttons {
+  grid-area: 2 / 1 / 2 / 1;
+}
+
+button {
+  margin-right: 10px;
+}
+
+.container-comment-list {
+  // border: 1px solid red;
+  overflow-y: scroll;
+  grid-area: 2 / 1 / 2 / 1;
+}

@@ -1,0 +1,12 @@
+<div class="container" *ngIf="rating">
+  <div class="title">{{title}}:</div>
+  <span>{{total ? total : ' - '}}</span>
+  <mat-button-toggle-group [value]="userRating" (change)="rate($event)" [disabled]="!(auth.user | async)">
+    <mat-button-toggle color="primary" value="1">1</mat-button-toggle>
+    <mat-button-toggle color="primary" value="2">2</mat-button-toggle>
+    <mat-button-toggle color="primary" value="3">3</mat-button-toggle>
+    <mat-button-toggle color="primary" value="4">4</mat-button-toggle>
+    <mat-button-toggle color="primary" value="5">5</mat-button-toggle>
+  </mat-button-toggle-group>
+
+</div>

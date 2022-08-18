@@ -8,6 +8,7 @@ import { ToasterService } from 'angular2-toaster';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationDialogComponent } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { UiFeatures } from '../../directives/pattern-atlas-ui-repository-configuration.service';
+import { PrivilegeService } from '../../../authentication/_services/privilege.service';
 
 @Component({
   selector: 'pp-card-renderer',
@@ -26,7 +27,8 @@ export class CardRendererComponent {
               private activatedRoute: ActivatedRoute,
               private patternService: PatternService,
               private toasterService: ToasterService,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              private p: PrivilegeService) {
   }
 
   navigate(pattern: UriEntity): void {
@@ -82,7 +84,7 @@ export class CardRendererComponent {
     return collectedEdges;
   }
 
-  private deleteEdgesFromDeletedPattern(edgesToRemove: String []): void {
+  private deleteEdgesFromDeletedPattern(edgesToRemove: string []): void {
     this.uriEntities.forEach(otherPattern => {
       if (otherPattern._links.outgoingDirectedEdges) {
         if (Array.isArray(otherPattern._links.outgoingDirectedEdges)) {
@@ -129,7 +131,7 @@ export class CardRendererComponent {
   private handlePatternDelete(pattern: Pattern): void {
     this.uriEntities = this.uriEntities.filter(value => value.uri !== pattern.uri);
     let allEdgesToRemove: HalLink[];
-    const allEdgesToRemoveHref: String[] = [];
+    const allEdgesToRemoveHref: string[] = [];
     allEdgesToRemove = this.collectAllEdgesOfPattern(pattern);
     allEdgesToRemove.forEach(link => allEdgesToRemoveHref.push(link.href));
     this.deleteEdgesFromDeletedPattern(allEdgesToRemoveHref);

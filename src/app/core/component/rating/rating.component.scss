@@ -1,5 +1,6 @@
 .container-row {
-  border-style: groove;
+  // border-style: groove;
+  margin: 4px 0;
   width: 100%;
   display: flex; /* or inline-flex */
   flex-direction: row;
@@ -7,12 +8,12 @@
   align-items: baseline;
 
   .rating {
-    padding: 0 16px;
+    margin: 0 16px;
   }
 }
 
 .container-column {
-  border-style: groove;
+  // border-style: groove;
   width: 100%;
   display: flex; /* or inline-flex */
   flex-direction: column;
@@ -20,7 +21,7 @@
   align-items: stretch;
 
   .rating {
-    padding: 8px 0;
+    margin: 8px 0;
     text-align: center;
   }
 }

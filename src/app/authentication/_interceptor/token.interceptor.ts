@@ -9,7 +9,6 @@ export class TokenInterceptor implements HttpInterceptor {
   private static authService: AuthenticationService = null;
 
   static init(authService: AuthenticationService) {
-    console.log('interceptor initialized');
     this.authService = authService;
   }
 
@@ -25,11 +24,11 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private addToken(request: HttpRequest<any>): HttpRequest<any> {
-    const token = TokenInterceptor.authService.getAccesToken()
-    if (token == null) {
-      return request;
-    } else {
+    if (TokenInterceptor.authService.isAuthenticated()) {
+      const token = TokenInterceptor.authService.getAccessToken();
       return request.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
+    } else {
+      return request;
     }
   }
 }

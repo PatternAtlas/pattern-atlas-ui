@@ -1,0 +1,19 @@
+.mat-option-text {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
+  .name {
+    flex: 1;
+    width: 100%;
+  }
+
+  .mat-radio-group {
+    float: right;
+    
+    .mat-radio-button {
+      padding-left: 8px;
+    }
+  }
+}

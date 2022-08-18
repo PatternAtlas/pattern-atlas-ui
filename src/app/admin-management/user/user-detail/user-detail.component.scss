@@ -1,0 +1,17 @@
+.container {
+  display: flex; /* or inline-flex */
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.buttons {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+button {
+  margin-right: 16px;
+}

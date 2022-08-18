@@ -4,6 +4,8 @@ import {
 import {
   PatternAtlasUiRepositoryConfigurationService, UiFeatures
 } from 'src/app/core/directives/pattern-atlas-ui-repository-configuration.service';
+import { PrivilegeService } from '../../../authentication/_services/privilege.service';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'pp-action-button-bar',
@@ -27,6 +29,12 @@ export class ActionButtonBarComponent implements OnInit {
   @Input() secondAddButtonText: string;
   @Input() iconEdit = false;
   @Input() iconUrl: string;
+  // Should the name of a privilege be given, the add button is only visible if the user has this privilege
+  @Input() firstAddPrivilegeName: string;
+  @Input() secondAddPrivilegeName: string;
+
+  @Input() back = false;
+  @Output() backClicked = new EventEmitter<void>();
 
   @Input() displayText: string;
 
@@ -34,11 +42,30 @@ export class ActionButtonBarComponent implements OnInit {
 
   constructor(private cdr: ChangeDetectorRef,
               private applicationRef: ApplicationRef,
-              private configurationService: PatternAtlasUiRepositoryConfigurationService) {
+              private configurationService: PatternAtlasUiRepositoryConfigurationService,
+              private p: PrivilegeService) {
   }
 
   ngOnInit() {
     this.editingFromConfigServer = this.configurationService.configuration.features[UiFeatures.EDITING];
+    if(this.firstAddButton) {
+      if (this.firstAddPrivilegeName) {
+        // Check if user privilege is present
+        this.p.hasPrivilege(this.firstAddPrivilegeName)
+          .subscribe(value => this.firstAddButton = value);
+      } else {
+        this.firstAddButton = true
+      }
+    }
+    if(this.secondAddButton) {
+      if(this.secondAddPrivilegeName) {
+        // Check if user privilege is present
+        this.p.hasPrivilege(this.secondAddPrivilegeName)
+          .subscribe(value => this.secondAddButton = value);
+      } else {
+        this.secondAddButton = true
+      }
+    }
   }
 
   addButtonClicked() {

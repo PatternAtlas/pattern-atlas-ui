@@ -18,6 +18,8 @@ module.exports = {
       // "extends": "tslint:recommended",
 
       rules: {
+        "@typescript-eslint/ban-types": ['error'],
+
         // https://eslint.org/docs/rules/indent
         'indent': ['error', 2, {
           "FunctionDeclaration": {"parameters": "first"},

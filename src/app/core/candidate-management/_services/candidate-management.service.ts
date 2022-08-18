@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ToasterService } from 'angular2-toaster';
 import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
-import { Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { Rating } from '../../model/rating.enum';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { Candidate } from '../_models/candidate.model';
-import { CandidateComment } from '../_models/candidate-comment.model';
 import { environment } from 'src/environments/environment';
+import { PAComment, PAEvidence, RatingModelRequest } from '../../shared';
+import { AuthorModel } from '../../author-management';
+import { ListResponse } from '../../util/list-response';
 
 @Injectable()
 export class CandidateManagementService {
@@ -24,16 +25,16 @@ export class CandidateManagementService {
     this.serviceEndpoint = '/candidates';
   }
 
-  /**
-   * GET
-   */
-  public getAllCandidates(): Observable<Candidate[]> {
-    return this.http.get<any>(this.repoEndpoint + this.serviceEndpoint).pipe(
+  public getAllCandidates(languageId?: string): Observable<Candidate[]> {
+    let endpoint:string = this.repoEndpoint + this.serviceEndpoint;
+    if (languageId !== undefined) endpoint += '/?lid=' + languageId;
+
+    return this.http.get<ListResponse<Candidate>>(endpoint).pipe(
       map(result => {
         return result._embedded ? result._embedded.candidateModels : [];
       }),
-      catchError(error => {
-        this.toasterService.pop('error', 'Getting candidate list', error);
+      catchError(e => {
+        this.toasterService.pop('error', 'Getting candidate list', e.error.message)
         return [];
       }),
     );
@@ -42,96 +43,192 @@ export class CandidateManagementService {
   /**
    * CREATE
    */
-  public createCandidate(candidate: Candidate, patternLanguageId: string): Observable<Candidate> {
+  public createCandidate(candidate: Candidate): Observable<Candidate> {
     candidate.uri = candidate.name;
-
-    return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint, candidate).pipe(
+    return this.http.post<Candidate>(this.repoEndpoint + this.serviceEndpoint, candidate).pipe(
       map(result => {
         this.toasterService.pop('success', 'Created new candidate');
         return result;
       }),
-      catchError(error => {
-        this.toasterService.pop('error', 'Could not create new candidate: ', error);
-        return null;
+      catchError(e => {
+        this.toasterService.pop('error', 'Could not create new candidate: ', e.error.message)
+        return of(null);
       }),
     );
   }
 
-  public createComment(candidate: Candidate, candidateComment: CandidateComment): Observable<Candidate> {
-    const userId = this.auth.userSubject.value.id;
-
-    return this.http.post<any>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/comments/${userId}`, candidateComment).pipe(
+  public createComment(candidate: Candidate, comment: PAComment): Observable<Candidate> {
+    return this.http.post<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/comments`, comment).pipe(
       map(result => {
-        this.toasterService.pop('success', 'Created new candidate');
+        this.toasterService.pop('success', 'Created new comment');
         return result;
       }),
-      catchError(error => {
-        this.toasterService.pop('error', 'Could not create new candidate: ', error);
-        return null;
+      catchError(e => {
+        this.toasterService.pop('error', 'Could not create new comment: ', e.error.message);
+        return of(null);
       }),
     );
+  }
+
+  public createEvidence(candidate: Candidate, evidence: PAEvidence): Observable<Candidate> {
+    return this.http.post<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/evidences`, evidence).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Created new evidence');
+        return result;
+      }),
+      catchError(e => {
+        this.toasterService.pop('error', 'Could not create new evidence: ', e.error.message);
+        return of(null);
+      }),
+    )
   }
 
   /**
    * UPDATE
    */
   public updateCandidate(candidate: Candidate): Observable<Candidate> {
-
-    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}`, candidate).pipe(
+    return this.http.put<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}`, candidate).pipe(
       map(result => {
         this.toasterService.pop('success', 'Updated candidate');
         return result;
       }),
-      catchError(error => {
-        this.toasterService.pop('error', 'Could not update candidate: ', error);
-        return null;
+      catchError(e => {
+        this.toasterService.pop('error', 'Could not update candidate: ', e.error.message);
+        return of(null);
       }),
     );
   }
 
-  public updateRating(candidate: Candidate, rating: Rating): Observable<Candidate> {
-    const userId = this.auth.userSubject.value.id;
-
-    return this.http.put<any>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/users/${userId}/rating/${rating}`, candidate).pipe(
+  public updateRatingCandidate(candidate: Candidate, rating: RatingModelRequest): Observable<Candidate> {
+    return this.http.put<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/ratings`, rating).pipe(
       map(result => {
-        this.toasterService.pop('success', 'Updated candidate');
+        this.toasterService.pop('success', 'Updated candidate rating')
+        return result
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Could not update candidate rating: ', error)
+        return of(null);
+      }),
+    )
+  }
+
+  public updateAuthorsCandidate(candidate: Candidate, authorModel: AuthorModel): Observable<Candidate> {
+    return this.http.put<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/authors`, authorModel).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Updated candidate author');
         return result;
       }),
       catchError(error => {
-        this.toasterService.pop('error', 'Could not update candidate: ', error);
-        return null;
+        this.toasterService.pop('error', 'Could not candidate issue author: ', error);
+        return of(null);
       }),
-    );
+    )
   }
 
-  public updateCommentRating(candidateComment: CandidateComment, rating: Rating): Observable<Candidate> {
-    const userId = this.auth.userSubject.value.id;
-
-    const url = this.repoEndpoint + this.serviceEndpoint + `/comments/${candidateComment.id}/users/${userId}/rating/${rating}`;
-
-    return this.http.put<any>(url, candidateComment).pipe(
+  public updateComment(candidate: Candidate, comment: PAComment): Observable<Candidate> {
+    return this.http.put<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/comments/${comment.id}`, comment).pipe(
       map(result => {
         this.toasterService.pop('success', 'Updated candidate comment');
         return result;
       }),
-      catchError(error => {
-        this.toasterService.pop('error', 'Could not update candidate comment: ', error);
-        return null;
+      catchError(e => {
+        this.toasterService.pop('error', 'Could not update candidate comment: ', e.error.message);
+        return of(null);
       }),
     );
   }
 
-  public deleteCandidate(candidate: Candidate): Observable<Candidate> {
+  public updateRatingCandidateComment(candidate: Candidate, comment: PAComment, rating: RatingModelRequest): Observable<Candidate> {
+    return this.http.put<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/comments/${comment.id}/ratings`, rating).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Updated candidate comment rating');
+        return result;
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Could not update candidate comment rating: ', error);
+        return of(null);
+      }),
+    )
+  }
 
-    return this.http.delete<any>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}`).pipe(
+  public updateEvidence(candidate: Candidate, evidence: PAEvidence): Observable<Candidate> {
+    return this.http.put<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/evidences/${evidence.id}`, evidence).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Updated issue evidence');
+        return result;
+      }),
+      catchError(e => {
+        this.toasterService.pop('error', 'Could not update issue evidence: ', e.error.message);
+        return of(null);
+      }),
+    )
+  }
+
+  public updateRatingCandidateEvidence(candidate: Candidate, evidence: PAEvidence, rating: RatingModelRequest): Observable<Candidate> {
+    return this.http.put<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/evidences/${evidence.id}/ratings`, rating).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Updated candidate evidence rating');
+        return result;
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Could not update candidate evidence rating: ', error);
+        return of(null);
+      }),
+    )
+  }
+
+  /**
+   * DELETE
+   */
+  public deleteCandidate(candidate: Candidate): Observable<Candidate> {
+    return this.http.delete<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}`).pipe(
       map(result => {
         this.toasterService.pop('success', 'Deleted candidate');
         return result;
       }),
-      catchError(error => {
-        this.toasterService.pop('error', 'Could not delete candidate: ', error);
-        return null;
+      catchError(e => {
+        this.toasterService.pop('error', 'Could not delete candidate: ', e.error.message);
+        return of(null);
       }),
     );
+  }
+
+  public deleteAuthorCandidate(authorModel: AuthorModel, candidate: Candidate): Observable<Candidate> {
+    return this.http.delete<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/authors/${authorModel.userId}`).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Deleted candidate author');
+        return result;
+      }),
+      catchError(error => {
+        this.toasterService.pop('error', 'Could not delete candidate author: ', error);
+        return of(null);
+      }),
+    )
+  }
+
+  public deleteComment(candidate: Candidate, comment: PAComment): Observable<Candidate> {
+    return this.http.delete<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/comments/${comment.id}`).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Deleted candidate comment');
+        return result;
+      }),
+      catchError(e => {
+        this.toasterService.pop('error', 'Could not delete candidate comment: ', e.error.message);
+        return of(null);
+      }),
+    );
+  }
+
+  public deleteEvidence(candidate: Candidate, evidenceId: string): Observable<Candidate> {
+    return this.http.delete<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/evidences/${evidenceId}`).pipe(
+      map(result => {
+        this.toasterService.pop('success', 'Deleted issue evidence');
+        return result;
+      }),
+      catchError(e => {
+        this.toasterService.pop('error', 'Could not delete issue evidence: ', e.error.message);
+        return of(null);
+      }),
+    )
   }
 }

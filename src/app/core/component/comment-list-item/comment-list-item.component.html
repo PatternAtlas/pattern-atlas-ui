@@ -1,0 +1,42 @@
+<mat-card>
+  <div class="container">
+    <p class="wrapper-user">From: {{comment.userName}}</p>
+    <form (ngSubmit)="update()" #commentForm="ngForm" *ngIf="!disabled">
+      <mat-form-field class="wrapper-input" appearance="standard">
+        <mat-label>Comment</mat-label>
+        <textarea matInput [disabled]="disabled" [(ngModel)]="comment.text" name="comment" required></textarea>
+      </mat-form-field>
+      <div class="wrapper-buttons">
+        <button mat-flat-button color="primary" type="submit"
+                [disabled]="!commentForm.form.valid">
+          Save </button>
+        <button mat-flat-button type="button" color="" (click)="cancel()"> Cancel
+        </button>
+      </div>
+    </form>
+    <div *ngIf="disabled">
+      <p>{{comment.text}}</p>
+      <div class="wrapper-buttons">
+        <button mat-flat-button type="button" color="primary" (click)="edit()"
+                [disabled]="p.isNotCurrentUser(comment.userId) | async"> Edit </button>
+        <button  mat-flat-button type="button" color="warn" (click)="delete()"
+                [disabled]="p.isNotCurrentUser(comment.userId) | async"> Delete </button>
+      </div>
+    </div>
+    <pp-rating class="wrapper-rating" [row]="false" [upVotes]="comment.upVotes" [downVotes]="comment.downVotes"
+               [total]="comment.rating" (ratingEvent)="updateRating($event)"></pp-rating>
+  </div>
+</mat-card>
+
+<mat-card class="replyComment" *ngIf="replyComment">
+    <mat-form-field appearance="standard">
+        <mat-label>Reply</mat-label>
+        <textarea matInput [formControl]="commentCtrl"></textarea>
+    </mat-form-field>
+    <div class="">
+        <button mat-flat-button type="button" color="primary" (click)="edit()"
+            [disabled]="p.isNotCurrentUser(comment.userId) | async"> Save </button>
+        <button mat-flat-button type="button" color="" (click)="reply()"> Cancel
+        </button>
+    </div>
+</mat-card>
