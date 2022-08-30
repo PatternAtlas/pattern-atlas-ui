@@ -15,8 +15,40 @@ export class TokenInterceptor implements HttpInterceptor {
   constructor() {
   }
 
-  intercept(request: HttpRequest<any>, next: HttpHandler) {
-    if (request.url.includes(environment.API_URL) || request.url.includes(environment.userInfoUrl)) {
+  private getUrlPort(url : URL) {
+    if (url.port != '') {
+      return url.port;
+    } else {
+      if (url.protocol == 'https:') {
+        return 443;
+      }
+      if (url.protocol == 'http:') {
+        return 80;
+      }
+      return 0;
+    }
+  }
+
+  private isApiRequest(request: HttpRequest<unknown>) {
+    if(request.url.includes(environment.userInfoUrl)) {
+      return true;
+    } else {
+      let reqUrl = new URL(request.url);
+      let apiUrl = new URL(environment.API_URL);
+
+      if (apiUrl.hostname == reqUrl.hostname && apiUrl.protocol == reqUrl.protocol) {
+        let reqPort = this.getUrlPort(reqUrl);
+        let apiPort = this.getUrlPort(apiUrl);
+
+        return reqPort == apiPort;
+      }
+    }
+
+    return false;
+  }
+
+  intercept(request: HttpRequest<unknown>, next: HttpHandler) {
+    if (this.isApiRequest(request)) {
       return next.handle(this.addToken(request));
     } else {
       return next.handle(request);
