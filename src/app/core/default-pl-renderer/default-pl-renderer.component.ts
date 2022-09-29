@@ -15,7 +15,7 @@ import { switchMap, tap } from 'rxjs/operators';
 import { UndirectedEdgesResponse } from '../model/hal/undirected-edes-response.interface';
 import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
 import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
-import { CreatePatternRelationComponent } from '../component/create-pattern-relation/create-pattern-relation.component';
+import { CreatePatternRelationComponent, GroupedPatterns } from '../component/create-pattern-relation/create-pattern-relation.component';
 import { PatternRelationDescriptorService } from '../service/pattern-relation-descriptor.service';
 import { ToasterService } from 'angular2-toaster';
 import { PatternService } from '../service/pattern.service';
@@ -36,6 +36,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   patterns: Array<Pattern> = [];
   patternsForCardsView: Array<Pattern> = [];
   patternLanguage: PatternLanguage;
+  groupedPatterns: GroupedPatterns[];
   patternLanguageId: string;
   candidates: Array<Candidate> = [];
   readonly UiFeatures = UiFeatures;
@@ -77,6 +78,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
       this.patternsForCardsView = this.patterns.filter(pattern => pattern.name.toLowerCase().includes(filterText.toLowerCase()));
     });
     this.subscriptions.add(filterSubscription);
+    this.getGroupedPatterns();
   }
 
   detectChanges() {
@@ -108,8 +110,8 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
     if (this.graphDisplayComponent === undefined) {
       return this.dialog.open(CreatePatternRelationComponent, {
         data: {
-          patterns: this.patterns,
-          patternlanguage: this.patternLanguage
+          groupedPatterns: this.groupedPatterns,
+          patternLanguage: this.patternLanguage
         }
       });
 
@@ -117,11 +119,22 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
       return this.dialog.open(CreatePatternRelationComponent, {
         data: {
           firstPattern: this.graphDisplayComponent.selectedPattern,
-          patterns: this.patterns,
-          patternlanguage: this.patternLanguage
+          groupedPatterns: this.groupedPatterns,
+          patternLanguage: this.patternLanguage
         }
       });
     }
+  }
+
+  private getGroupedPatterns() {
+    this.groupedPatterns = [];
+    this.patternLanguageService.getPatternLanguages().subscribe(languages => {
+      languages.forEach(language => {
+        this.patternService.getPatternsById(language.id).subscribe(patterns => {
+          this.groupedPatterns.push({id: language.id, name: language.name, patterns: patterns});
+        })
+      })
+    })
   }
 
   /**
@@ -283,17 +296,23 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
     }
 
     let loadDataObservable;
-    // check if patternlanguage is specified via UUID or URI and load it accordingly
+    // check if patternLanguage is specified via UUID or URI and load it accordingly
     if (UriConverter.isUUID(this.patternLanguageId)) {
       loadDataObservable = this.patternLanguageService.getPatternLanguageByID(this.patternLanguageId)
         .pipe(
-          tap(patternlanguage => this.patternLanguage = patternlanguage),
+          tap(patternLanguage => {
+            this.patternLanguage = patternLanguage
+            this.patternLanguage.id = this.patternLanguageId
+          }),
           switchMap(() => this.loadPatternsCandidatesAndLinks())
         );
     } else {
       loadDataObservable = this.patternLanguageService.getPatternLanguageByEncodedUri(this.patternLanguageId)
         .pipe(
-          tap(patternlanguage => this.patternLanguage = patternlanguage),
+          tap(patternLanguage => {
+            this.patternLanguage = patternLanguage
+            this.patternLanguage.id = this.patternLanguageId
+          }),
           switchMap(() => this.loadPatternsCandidatesAndLinks())
         );
     }

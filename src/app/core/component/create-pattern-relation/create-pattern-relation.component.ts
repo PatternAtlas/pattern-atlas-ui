@@ -50,6 +50,8 @@ export class CreatePatternRelationComponent implements OnInit {
     'isVariationOf'
   ];
 
+  private firstPatternSelection: GroupedPatterns[];
+
   private subscriptionRefs = [];
 
   ngOnInit() {
@@ -62,6 +64,10 @@ export class CreatePatternRelationComponent implements OnInit {
     if (this.data.description === undefined) {
       this.data.description = '';
     }
+    if (this.data.patternLanguage != undefined) {
+      this.firstPatternSelection = this.data.groupedPatterns.filter(x => x.id === this.data.patternLanguage.id);
+    }
+    console.log(this.data)
     this.isDelete = this.data.isDelete; // set view to delete/edit instead of create
     this.relationForm = this.fb.group({
       firstPattern: [this.data.firstPattern, [Validators.required]],
@@ -86,6 +92,7 @@ export class CreatePatternRelationComponent implements OnInit {
     if (!dialogResult || !dialogResult.secondPattern || !dialogResult.direction) {
       return null;
     }
+    console.log(dialogResult);
     const type = dialogResult.relationType ? dialogResult.relationType : null;
     const description = dialogResult.description ? dialogResult.description : null;
     switch (dialogResult.direction.name) {
@@ -117,7 +124,7 @@ export interface DialogData {
   firstPattern?: Pattern;
   secondPattern?: Pattern;
   preselectedEdgeDirection?: PatternRelationDescriptorDirection;
-  patterns: Pattern[];
+  groupedPatterns: GroupedPatterns[];
   patternLanguage: PatternLanguage;
   patternContainer: PatternContainer;
   relationTypes?: Observable<string[]>;
@@ -136,4 +143,10 @@ export interface DialogDataResult {
   relationType?: string;
   secondPattern: Pattern;
   description?: string;
+}
+
+export interface GroupedPatterns {
+  name: string;
+  id: string;
+  patterns: Pattern[];
 }

@@ -5,24 +5,14 @@
     <input type="text" matInput [value]="data.firstPattern.name" readonly/>
   </mat-form-field>
   <ng-template #chooseFirstPattern>
-    <mat-form-field *ngIf="relationForm.get('secondPattern').value != null; else chooseFirstPatternWithEmptyForm">
+    <mat-form-field>
       <mat-select formControlName="firstPattern">
-        <div *ngFor="let pattern of data.patterns">
-          <mat-option *ngIf="pattern.name != relationForm.get('secondPattern').value.name "
+        <mat-optgroup *ngFor="let patternLanguage of firstPatternSelection" [label]="patternLanguage.name">
+          <mat-option *ngFor="let pattern of patternLanguage.patterns"
                       [value]="pattern">
             {{pattern.name}}
           </mat-option>
-        </div>
-      </mat-select>
-    </mat-form-field>
-  </ng-template>
-  <ng-template #chooseFirstPatternWithEmptyForm>
-    <mat-form-field>
-      <mat-select formControlName="firstPattern">
-        <mat-option *ngFor="let pattern of data.patterns"
-                    [value]="pattern">
-          {{pattern.name}}
-        </mat-option>
+        </mat-optgroup>
       </mat-select>
     </mat-form-field>
   </ng-template>
@@ -55,24 +45,14 @@
     <input type="text" matInput [value]="data.secondPattern.name" readonly/>
   </mat-form-field>
   <ng-template #chooseSecondPattern>
-    <mat-form-field *ngIf="relationForm.get('firstPattern').value != null; else chooseSecondPatternWithEmptyForm">
+    <mat-form-field>
       <mat-select formControlName="secondPattern">
-        <div *ngFor="let pattern of data.patterns">
-          <mat-option *ngIf=" pattern.name != relationForm.get('firstPattern').value.name"
+        <mat-optgroup *ngFor="let patternLanguage of data.groupedPatterns" [label]="patternLanguage.name">
+          <mat-option *ngFor="let pattern of patternLanguage.patterns"
                       [value]="pattern">
             {{pattern.name}}
           </mat-option>
-        </div>
-      </mat-select>
-    </mat-form-field>
-  </ng-template>
-  <ng-template #chooseSecondPatternWithEmptyForm>
-    <mat-form-field>
-      <mat-select formControlName="secondPattern">
-        <mat-option *ngFor="let pattern of data.patterns"
-                    [value]="pattern">
-          {{pattern.name}}
-        </mat-option>
+        </mat-optgroup>
       </mat-select>
     </mat-form-field>
   </ng-template>

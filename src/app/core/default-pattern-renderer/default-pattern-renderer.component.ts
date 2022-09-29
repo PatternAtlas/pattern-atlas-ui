@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToasterService } from 'angular2-toaster';
 import { PatternPropertyDirective } from '../component/markdown-content-container/pattern-property.directive';
 import { MatDialog } from '@angular/material/dialog';
-import { CreatePatternRelationComponent } from '../component/create-pattern-relation/create-pattern-relation.component';
+import { CreatePatternRelationComponent, GroupedPatterns } from '../component/create-pattern-relation/create-pattern-relation.component';
 import Pattern from '../model/hal/pattern.model';
 import { PatternLanguageService } from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
@@ -42,6 +42,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   patternLanguage: PatternLanguage;
   pattern: Pattern;
   patterns: Array<Pattern>;
+  groupedPatterns: GroupedPatterns[];
   private directedPatternRelations: Array<DirectedEdgeModel>;
   private undirectedPatternRelations: Array<UndirectedEdgeModel>;
   private viewContainerRef;
@@ -80,6 +81,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
     this.patternLanguageId = this.activatedRoute.snapshot.paramMap.get(globals.pathConstants.patternLanguageId);
     this.patternId = this.activatedRoute.snapshot.paramMap.get('patternId');
     this.getData();
+    this.getGroupedPatterns();
   }
 
   addLink() {
@@ -103,7 +105,10 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
     // check if pattern is specified via UUIID or URI and load it accordingly
     if (UriConverter.isUUID(this.patternId)) {
       return this.patternService.getPatternById(this.patternLanguage, this.patternId).pipe(
-        tap(pattern => this.pattern = pattern),
+        tap(pattern => {
+          this.pattern = pattern;
+          this.pattern.id = this.patternId;
+        }),
         switchMap(() => this.getPatternSectionContent()));
     } else {
       return this.patternService.getPatternByEncodedUri(this.patternId).pipe(
@@ -232,19 +237,32 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   }
 
   private showAndHandleLinkDialog() {
-    const dialogRef = this.dialog.open(CreatePatternRelationComponent,
-      { data: { firstPattern: this.pattern, patterns: this.patterns } }
-    );
-    const dialogSubscription = dialogRef.afterClosed().pipe(
-      switchMap((edge) => {
-        return edge ? this.insertEdge(edge) : EMPTY;
-      }))
-      .subscribe(
-        data => {
-          this.toasterService.pop('success', 'Created new Relation');
-        }
+    if (this.groupedPatterns != undefined) {
+      const dialogRef = this.dialog.open(CreatePatternRelationComponent,
+        { data: { firstPattern: this.pattern, groupedPatterns: this.groupedPatterns } }
       );
-    this.subscriptions.add(dialogSubscription);
+      const dialogSubscription = dialogRef.afterClosed().pipe(
+        switchMap((edge) => {
+          return edge ? this.insertEdge(edge) : EMPTY;
+        }))
+        .subscribe(
+          data => {
+            this.toasterService.pop('success', 'Created new Relation');
+          }
+        );
+      this.subscriptions.add(dialogSubscription);
+    }
+  }
+
+  private getGroupedPatterns() {
+    this.groupedPatterns = [];
+    this.patternLanguageService.getPatternLanguages().subscribe(languages => {
+      languages.forEach(language => {
+        this.patternService.getPatternsById(language.id).subscribe(patterns => {
+          this.groupedPatterns.push({id: language.id, name: language.name, patterns: patterns});
+        })
+      })
+    })
   }
 
   private insertEdge(edge): Observable<any> {
