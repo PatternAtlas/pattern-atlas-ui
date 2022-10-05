@@ -18,7 +18,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import PatternLanguages from '../model/hal/pattern-languages.model';
-import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
+import { DirectedEdgesResponse } from '../model/hal/directed-edes-response.interface';
 import { Embedded } from '../model/hal/embedded';
 import { UndirectedEdgesResponse } from '../model/hal/undirected-edes-response.interface';
 import { GraphNode } from '../component/graph-display/graph-display.component';
@@ -79,8 +79,8 @@ export class PatternLanguageService implements GraphDataService {
     return this.http.post<HttpResponse<any>>(this.repoEndpoint + '/patternLanguages', patternLanguage, { observe: 'response' });
   }
 
-  getDirectedEdges(patternLanguage: PatternLanguage): Observable<Embedded<DirectedEdesResponse>> {
-    return this.http.get<Embedded<DirectedEdesResponse>>(patternLanguage._links.directedEdges.href);
+  getDirectedEdges(patternLanguage: PatternLanguage): Observable<Embedded<DirectedEdgesResponse>> {
+    return this.http.get<Embedded<DirectedEdgesResponse>>(patternLanguage._links.directedEdges.href);
   }
 
   getUndirectedEdges(patternLanguage: PatternLanguage): Observable<Embedded<UndirectedEdgesResponse>> {

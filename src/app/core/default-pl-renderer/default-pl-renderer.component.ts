@@ -10,7 +10,7 @@ import { D3Service } from '../../graph/service/d3.service';
 import { GraphDisplayComponent } from '../component/graph-display/graph-display.component';
 import { EMPTY, forkJoin, Observable, Subscription } from 'rxjs';
 import { Embedded } from '../model/hal/embedded';
-import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
+import { DirectedEdgesResponse } from '../model/hal/directed-edes-response.interface';
 import { switchMap, tap } from 'rxjs/operators';
 import { UndirectedEdgesResponse } from '../model/hal/undirected-edes-response.interface';
 import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
@@ -328,7 +328,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
     return forkJoin([this.loadPatterns(), this.loadCandidates(), this.getPatternLinks()]);
   }
 
-  private getDirectedEdges(): Observable<Embedded<DirectedEdesResponse>> {
+  private getDirectedEdges(): Observable<Embedded<DirectedEdgesResponse>> {
     if (!this.patternLanguage) {
       return EMPTY;
     }

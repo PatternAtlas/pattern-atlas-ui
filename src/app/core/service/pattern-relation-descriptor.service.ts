@@ -9,11 +9,17 @@ import PatternLanguage from '../model/hal/pattern-language.model';
 import { CreateUndirectedEdgeRequest } from '../model/hal/create-undirected-edge-request';
 import { CreateDirectedEdgeRequest } from '../model/hal/create-directed-edge-request';
 import { PatternResponse } from '../model/hal/pattern-response.interface';
+import { Embedded } from '../model/hal/embedded';
+import { DirectedEdgesResponse } from '../model/hal/directed-edes-response.interface';
+import { environment } from 'src/environments/environment';
+import { UndirectedEdgesResponse } from '../model/hal/undirected-edes-response.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PatternRelationDescriptorService {
+
+  private repoEndpoint = environment.API_URL;
 
   constructor(private http: HttpClient) {
   }
@@ -48,6 +54,16 @@ export class PatternRelationDescriptorService {
   getEdgeByUrl(url: string, edge: DirectedEdgeModel | UndirectedEdgeModel): Observable<DirectedEdgeModel | UndirectedEdgeModel> {
     return edge instanceof DirectedEdgeModel ?
       this.getDirectedEdgeByUrl(url) : this.getUndirectedEdgeByUrl(url);
+  }
+
+  getDirectedEdgeByInvolvedPatternId(id: string): Observable<Embedded<DirectedEdgesResponse>> {
+    const url = this.repoEndpoint + '/directedEdges/' + id;
+    return this.http.get<Embedded<DirectedEdgesResponse>>(url);
+  }
+
+  getUndirectedEdgeByInvolvedPatternId(id: string): Observable<Embedded<UndirectedEdgesResponse>> {
+    const url = this.repoEndpoint + '/undirectedEdges/' + id;
+    return this.http.get<Embedded<UndirectedEdgesResponse>>(url);
   }
 
   getEdgesForPattern(pattern: PatternResponse): Observable<EdgeWithType[]> {

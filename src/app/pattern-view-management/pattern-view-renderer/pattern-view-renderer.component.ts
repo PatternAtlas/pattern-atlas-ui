@@ -20,7 +20,7 @@ import { UndirectedEdgeModel } from '../../core/model/hal/undirected-edge.model'
 import PatternLanguageModel from '../../core/model/hal/pattern-language-model.model';
 import { Embedded } from '../../core/model/hal/embedded';
 import { UndirectedEdgesResponse } from '../../core/model/hal/undirected-edes-response.interface';
-import { DirectedEdesResponse } from '../../core/model/hal/directed-edes-response.interface';
+import { DirectedEdgesResponse } from '../../core/model/hal/directed-edes-response.interface';
 import { GraphDisplayComponent } from '../../core/component/graph-display/graph-display.component';
 import { DeletePatternRelationComponent } from '../../core/component/delete-pattern-relation/delete-pattern-relation.component';
 import { PatternRelationDescriptorService } from '../../core/service/pattern-relation-descriptor.service';
@@ -320,7 +320,7 @@ export class PatternViewRendererComponent implements OnInit, AfterViewInit {
     this.graphDisplayComponent.reformatGraph();
   }
 
-  private getDirectedEdges(): Observable<Embedded<DirectedEdesResponse>> {
+  private getDirectedEdges(): Observable<Embedded<DirectedEdgesResponse>> {
     if (!this.patternViewResponse) {
       return EMPTY;
     }

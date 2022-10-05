@@ -18,7 +18,7 @@ import { EMPTY, forkJoin, Observable, Subscription } from 'rxjs';
 import { PatternRelationDescriptorService } from '../service/pattern-relation-descriptor.service';
 import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
 import { Embedded } from '../model/hal/embedded';
-import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
+import { DirectedEdgesResponse } from '../model/hal/directed-edes-response.interface';
 import { UndirectedEdgesResponse } from '../model/hal/undirected-edes-response.interface';
 import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
 import { globals } from '../../globals';
@@ -172,15 +172,13 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
     this.subscriptions.add(changeSubscription);
   }
 
-  private getDirectedEdges(): Observable<Embedded<DirectedEdesResponse>> {
+  private getDirectedEdges(): Observable<Embedded<DirectedEdgesResponse>> {
     if (!this.patternLanguage) {
       return EMPTY;
     }
-    return this.patternLanguageService.getDirectedEdges(this.patternLanguage).pipe(
+    return this.patternRelationDescriptorService.getDirectedEdgeByInvolvedPatternId(this.patternId).pipe(
       tap((edges) => {
-        this.directedPatternRelations = edges && edges._embedded ?
-          edges._embedded.directedEdgeModels.filter(edge => edge.sourcePatternId === this.patternId ||
-            edge.targetPatternId === this.patternId) : [];
+        this.directedPatternRelations = edges && edges._embedded ? edges._embedded.directedEdgeModels : [];
       }));
   }
 
@@ -188,10 +186,9 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
     if (!this.patternLanguage) {
       return EMPTY;
     }
-    return this.patternLanguageService.getUndirectedEdges(this.patternLanguage).pipe(
+    return this.patternRelationDescriptorService.getUndirectedEdgeByInvolvedPatternId(this.patternId).pipe(
       tap((edges) => {
-        this.undirectedPatternRelations = edges && edges._embedded ?
-          edges._embedded.undirectedEdgeModels.filter(edge => edge.pattern1Id === this.patternId || edge.pattern2Id === this.patternId) : [];
+        this.undirectedPatternRelations = edges && edges._embedded ? edges._embedded.undirectedEdgeModels : [];
       }));
   }
 

@@ -27,7 +27,7 @@ import { AddDirectedEdgeToViewRequest } from '../model/hal/add-directed-edge-to-
 import { AddUndirectedEdgeToViewRequest } from '../model/hal/add-undirected-edge-to-view-request';
 import { Embedded } from '../model/hal/embedded';
 import { UndirectedEdgesResponse } from '../model/hal/undirected-edes-response.interface';
-import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
+import { DirectedEdgesResponse } from '../model/hal/directed-edes-response.interface';
 import { GraphNode } from '../component/graph-display/graph-display.component';
 import { GraphDataService } from './graph-data/graph-data.service';
 import { environment } from '../../../environments/environment';
@@ -81,8 +81,8 @@ export class PatternViewService implements GraphDataService {
     return observables.length > 0 ? forkJoin(observables) : EMPTY;
   }
 
-  getDirectedEdges(patternContainer: PatternContainer): Observable<Embedded<DirectedEdesResponse>> {
-    return this.http.get<Embedded<DirectedEdesResponse>>(patternContainer._links.directedEdges.href);
+  getDirectedEdges(patternContainer: PatternContainer): Observable<Embedded<DirectedEdgesResponse>> {
+    return this.http.get<Embedded<DirectedEdgesResponse>>(patternContainer._links.directedEdges.href);
   }
 
   getUndirectedEdges(patternContainer: PatternContainer): Observable<Embedded<UndirectedEdgesResponse>> {

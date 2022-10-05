@@ -8,9 +8,11 @@ export class DirectedEdgeModel extends Edge {
   sourcePatternName: string;
   sourcePatternId: string;
   sourcePatternUri: string;
+  sourcePatternLanguageId: string;
   targetPatternName: string;
   targetPatternId: string;
   targetPatternUri: string;
+  targetPatternLanguageId: string;
 
   _links: DirectedEdgeResource;
 
@@ -19,8 +21,10 @@ export class DirectedEdgeModel extends Edge {
     this.sourcePatternId = source.id;
     this.sourcePatternName = source.name;
     this.sourcePatternUri = source.uri;
+    this.sourcePatternLanguageId = source.patternLanguageId;
     this.targetPatternId = target.id;
     this.targetPatternName = target.name;
     this.targetPatternUri = target.uri;
+    this.targetPatternLanguageId = target.patternLanguageId
   }
 }

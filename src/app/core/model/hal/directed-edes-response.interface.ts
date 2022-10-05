@@ -1,5 +1,5 @@
 import { DirectedEdgeModel } from './directed-edge.model';
 
-export interface DirectedEdesResponse {
+export interface DirectedEdgesResponse {
   directedEdgeModels: DirectedEdgeModel[];
 }

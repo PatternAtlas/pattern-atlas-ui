@@ -11,6 +11,8 @@ export class UndirectedEdgeModel extends Edge {
   pattern2Name: string;
   pattern1Uri: string;
   pattern2Uri: string;
+  pattern1PatternLanguageId: string;
+  pattern2PatternLanguageId: string;
   patternlanguage: PatternLanguage;
   _links: UndirectedEdgeResource;
   patternContainer?: PatternContainer;
@@ -23,5 +25,7 @@ export class UndirectedEdgeModel extends Edge {
     this.pattern2Id = p2.id;
     this.pattern2Name = p2.name;
     this.pattern2Uri = p2.uri;
+    this.pattern1PatternLanguageId = p1.patternLanguageId;
+    this.pattern2PatternLanguageId = p2.patternLanguageId;
   }
 }
