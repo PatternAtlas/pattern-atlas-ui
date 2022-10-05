@@ -131,7 +131,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
     this.patternLanguageService.getPatternLanguages().subscribe(languages => {
       languages.forEach(language => {
         this.patternService.getPatternsById(language.id).subscribe(patterns => {
-          this.groupedPatterns.push({id: language.id, name: language.name, patterns: patterns});
+          this.groupedPatterns.push({ id: language.id, name: language.name, patterns: patterns });
         })
       })
     })
