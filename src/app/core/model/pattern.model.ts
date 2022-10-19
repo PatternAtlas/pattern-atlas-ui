@@ -12,6 +12,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
+import PatternImplementation from './pattern-implementation.model';
+
 class Pattern {
   id: string;
   uri: string;
@@ -20,7 +22,12 @@ class Pattern {
   sectionsProperties: Map<string, string[]>;
   sectionPropertiesRendered: Map<string, string[]>;
 
-  constructor(id: string, uri: string = null, name: string = null, sectionProperties: Map<string, string[]> = null) {
+  constructor(
+    id: string, 
+    uri: string = null, 
+    name: string = null, 
+    sectionProperties: Map<string, string[]> = null) {
+
     this.name = name;
     this.uri = uri;
     this.id = id;

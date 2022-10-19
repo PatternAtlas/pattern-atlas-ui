@@ -9,6 +9,15 @@
                      (click)="editIcon()" matTooltip="Edit"><i class="material-icons">mode_edit</i></button>
   </mat-card-header>
 
+  <button class="tags" mat-stroked-button color="primary" *ngIf="isEditingEnabled && pattern && (pattern.category == undefined || pattern.category.length == 0)"
+                     (click)="editCategory()" matTooltip="Add Category"><i class="material-icons">add</i></button>
+
+  <div class="tags" *ngIf="pattern && pattern.category" (mouseenter)="showCategoryButtons = true" (mouseleave)="showCategoryButtons = false">
+    <mat-chip color="primary" selected>{{pattern.category}}</mat-chip>
+    <button mat-stroked-button style="margin-left: 5px" color="primary" *ngIf="showCategoryButtons && isEditingEnabled"
+                     (click)="editCategory()" matTooltip="Edit"><i class="material-icons">mode_edit</i></button>
+  </div>
+
   <span class="copyright" *ngIf="pattern?.paperRef"> <i class="material-icons">copyright</i>
     <!--    Display either a textual reference for yet unpublished papers or a html link -->
     {{pattern?.paperRef.startsWith('http') ?
@@ -19,6 +28,35 @@
   <div>
     <ng-template ppPatternProperty></ng-template>
   </div>
+  <mat-card *ngIf="!isLoading && (pattern.patternImplementations && pattern.patternImplementations.length > 0 || isEditingEnabled)" 
+    class="section-card" (mouseenter)="showImplementationEdit = true" (mouseleave)="showImplementationEdit = false">
+    <mat-card-header>
+      <mat-card-subtitle style="display: flex;
+     align-items: flex-start;"><b>Implementations</b></mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <ng-container *ngFor="let implementation of pattern.patternImplementations">
+        <div class="implementation-box" >
+          <div>
+            <p class="implementation-type">
+              {{implementation.type}}
+            </p>
+            <a href="{{implementation.link}}" target="_blank">
+              {{implementation.link}}
+            </a>
+          </div>
+          <button mat-stroked-button style="margin-right: 5px" color="primary" *ngIf="isEditingEnabled && showImplementationEdit"
+          (click)="editImplementation(implementation)" matTooltip="Edit"><i class="material-icons">mode_edit</i></button>
+          <button (click)="deleteImplementation(implementation)" *ngIf="isEditingEnabled && showImplementationEdit"
+          mat-raised-button color="warn" aria-label="Delete">
+            <i class="material-icons">delete</i>
+          </button>
+        </div>
+      </ng-container>
+    </mat-card-content>
+    <button mat-stroked-button color="primary" *ngIf="isEditingEnabled"
+    (click)="addImplementation()" matTooltip="Add Implementation"><i class="material-icons">add</i></button>
+  </mat-card>
   <mat-card *ngIf="!isLoading" class="section-card">
     <mat-card-header>
       <mat-card-subtitle style="display: flex;
@@ -73,6 +111,16 @@
     </mat-card-content>
 
   </mat-card>
+  <div class="tags" *ngIf="tags" (mouseenter)="showTagsButtons = true" (mouseleave)="showTagsButtons = false">
+    <mat-chip-list>
+      <mat-chip *ngFor="let tag of tags">{{tag}}</mat-chip>
+    </mat-chip-list>
+    <button mat-stroked-button style="margin-left: 5px" color="primary" *ngIf="showTagsButtons && isEditingEnabled"
+                     (click)="editTags()" matTooltip="Edit"><i class="material-icons">mode_edit</i></button>
+  </div>
+
+  <button class="tags" mat-stroked-button color="primary" *ngIf="isEditingEnabled && pattern && (pattern.tags == undefined || pattern.tags.length == 0)"
+  (click)="editTags()" matTooltip="Add Tags"><i class="material-icons">add</i></button>
 
 </mat-card>
 <pp-creative-license-footer *ngIf="pattern && patternLanguage"

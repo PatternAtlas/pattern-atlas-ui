@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>Edit or Create Implementation</h1>
+<div mat-dialog-content [formGroup]="implementationForm">
+  <mat-form-field>
+    <mat-label>Implementation Type</mat-label>
+    <input matInput formControlName="type" placeholder="Type">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>URL to Implementation Resource</mat-label>
+    <input matInput formControlName="link" placeholder="URL">
+  </mat-form-field>
+
+</div>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="implementationForm.value" [disabled]="!implementationForm?.valid"><i class="material-icons">save</i> Save</button>
+</mat-dialog-actions>

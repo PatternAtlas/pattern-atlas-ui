@@ -13,8 +13,8 @@ import { PatternService } from '../service/pattern.service';
 import { MarkdownPatternSectionContentComponent } from '../component/markdown-content-container/markdown-pattern-sectioncontent/markdown-pattern-section-content.component'; // eslint-disable-line max-len
 import { DataChange } from '../component/markdown-content-container/interfaces/DataRenderingComponent.interface';
 import PatternSectionSchema from '../model/hal/pattern-section-schema.model';
-import { map, switchMap, tap } from 'rxjs/operators';
-import { EMPTY, forkJoin, Observable, Subscription } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { EMPTY, forkJoin, Observable, of, Subscription } from 'rxjs';
 import { PatternRelationDescriptorService } from '../service/pattern-relation-descriptor.service';
 import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
 import { Embedded } from '../model/hal/embedded';
@@ -28,6 +28,11 @@ import {
   PatternAtlasUiRepositoryConfigurationService, UiFeatures
 } from '../directives/pattern-atlas-ui-repository-configuration.service';
 import { PrivilegeService } from '../../authentication/_services/privilege.service';
+import { TextfieldDialogComponent } from '../component/textfield-dialog/textfield-dialog.component';
+import { ImplementationDialogComponent } from '../component/implementation-dialog/implementation-dialog.component';
+import PatternImplementation from '../model/pattern-implementation.model';
+import { DeleteConfirmationDialogComponent } from '../../core/component/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { precisionFixed } from 'd3';
 
 @Component({
   selector: 'pp-default-pattern-renderer',
@@ -43,6 +48,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   pattern: Pattern;
   patterns: Array<Pattern>;
   groupedPatterns: GroupedPatterns[];
+  tags: string[];
   private directedPatternRelations: Array<DirectedEdgeModel>;
   private undirectedPatternRelations: Array<UndirectedEdgeModel>;
   private viewContainerRef;
@@ -108,11 +114,16 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
         tap(pattern => {
           this.pattern = pattern;
           this.pattern.id = this.patternId;
+          this.setTags();
+          console.log(this.pattern);
         }),
         switchMap(() => this.getPatternSectionContent()));
     } else {
       return this.patternService.getPatternByEncodedUri(this.patternId).pipe(
-        tap(pattern => this.pattern = pattern),
+        tap(pattern => {
+          this.pattern = pattern;
+          this.setTags();
+        }),
         switchMap(() => this.getPatternSectionContent()));
     }
   }
@@ -179,7 +190,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
     return this.patternRelationDescriptorService.getDirectedEdgeByInvolvedPatternId(this.patternId).pipe(
       tap((edges) => {
         this.directedPatternRelations = edges && edges._embedded ? edges._embedded.directedEdgeModels : [];
-      }));
+      }), catchError(err => of(err.status)));
   }
 
   private getUndirectedEdges(): Observable<Embedded<UndirectedEdgesResponse>> {
@@ -189,7 +200,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
     return this.patternRelationDescriptorService.getUndirectedEdgeByInvolvedPatternId(this.patternId).pipe(
       tap((edges) => {
         this.undirectedPatternRelations = edges && edges._embedded ? edges._embedded.undirectedEdgeModels : [];
-      }));
+      }), catchError(err => of(err.status)));
   }
 
   private savePattern(section: string, previousContent: any, instance: MarkdownPatternSectionContentComponent) {
@@ -289,10 +300,98 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
     });
   }
 
+  editCategory() {
+    const dialogRef = this.dialog.open(TextfieldDialogComponent, {
+      width: '50%',
+      data: {
+        title: 'Edit Category', textfieldLabel: 'Category', value: this.pattern.category
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.pattern.category = result.value;
+        this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe();
+      }
+    });
+  }
+
+
+  editTags() {
+    const dialogRef = this.dialog.open(TextfieldDialogComponent, {
+      width: '50%',
+      data: {
+        title: 'Edit Tags', textfieldLabel: 'Tags', value: this.pattern.tags
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        const tagValue = result.value.replace(/\s/g, '');
+        this.pattern.tags = tagValue;
+        this.setTags();
+        this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe();
+      }
+    });
+  }
+
+  setTags() {
+    this.tags = this.pattern.tags ? this.pattern.tags.split(',') : [];
+  }
+
+  addImplementation() {
+    const dialogRef = this.dialog.open(ImplementationDialogComponent, {
+      width: '50%'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.patternService.savePatternImplementation(this.pattern.id, result)
+          .subscribe(response => this.pattern.patternImplementations.push(response.body));
+      }
+    });
+  }
+
+  deleteImplementation(implementation: PatternImplementation) {
+    console.log(implementation);
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+      data: { id: implementation.id }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.patternService.deletePatternImplementation(implementation.id)
+          .subscribe(() => this.pattern.patternImplementations = this.pattern.patternImplementations.filter(imp => imp.id !== implementation.id));
+      }
+    });
+  }
+
+  editImplementation(implementation: PatternImplementation) {
+    console.log(implementation);
+    const dialogRef = this.dialog.open(ImplementationDialogComponent, {
+      data: { type: implementation.type, link: implementation.link }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        implementation.link = result.link;
+        implementation.type = result.type;
+        this.patternService.updatePatternImplementation(implementation)
+          .subscribe(response => {
+            const body = response.body;
+            this.pattern.patternImplementations.forEach(imp => {
+              if (imp.id === body.id) {
+                imp.link = body.link;
+                imp.type = body.type;
+              }
+            })
+          });
+      }
+    });
+  }
+
   private getPatternObservable(): Observable<Pattern> {
     return UriConverter.isUUID(this.patternId) ?
       this.patternService.getPatternById(this.patternLanguage, this.patternId) :
       this.patternService.getPatternByEncodedUri(this.patternId).pipe(
-        tap(pattern => this.pattern = pattern));
+        tap(pattern => {
+          this.pattern = pattern;
+          this.setTags();
+        }));
   }
 }

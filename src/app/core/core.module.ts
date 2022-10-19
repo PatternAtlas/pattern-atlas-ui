@@ -96,6 +96,8 @@ import { DeleteConfirmationDialogComponent } from './component/delete-confirmati
 import { EditUrlDialogComponent } from './component/edit-url-dialog/edit-url-dialog.component';
 import { FeatureToggleDialogComponent } from './component/feature-toggle-dialog/feature-toggle-dialog.component';
 import { PatternAtlasUiFeatureToggleModule } from './directives/pattern-atlas-ui-feature-toggle.module';
+import { TextfieldDialogComponent } from './component/textfield-dialog/textfield-dialog.component';
+import { ImplementationDialogComponent } from './component/implementation-dialog/implementation-dialog.component';
 
 @NgModule({
   imports: [
@@ -130,7 +132,8 @@ import { PatternAtlasUiFeatureToggleModule } from './directives/pattern-atlas-ui
     MatChipsModule,
     MatCheckboxModule,
     MatSnackBarModule,
-    PatternAtlasUiFeatureToggleModule
+    PatternAtlasUiFeatureToggleModule,
+    MatChipsModule
   ],
   exports: [
     CovalentTextEditorModule,
@@ -203,7 +206,9 @@ import { PatternAtlasUiFeatureToggleModule } from './directives/pattern-atlas-ui
     SelectPatternDialogComponent,
     DeleteConfirmationDialogComponent,
     EditUrlDialogComponent,
-    FeatureToggleDialogComponent
+    FeatureToggleDialogComponent,
+    TextfieldDialogComponent,
+    ImplementationDialogComponent
   ],
   entryComponents: [
     DefaultPlRendererComponent,

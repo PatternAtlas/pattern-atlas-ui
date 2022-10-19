@@ -67,7 +67,6 @@ export class CreatePatternRelationComponent implements OnInit {
     if (this.data.patternLanguage != undefined) {
       this.firstPatternSelection = this.data.groupedPatterns.filter(x => x.id === this.data.patternLanguage.id);
     }
-    console.log(this.data)
     this.isDelete = this.data.isDelete; // set view to delete/edit instead of create
     this.relationForm = this.fb.group({
       firstPattern: [this.data.firstPattern, [Validators.required]],

@@ -13,7 +13,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import Pattern from '../model/hal/pattern.model';
 import { map } from 'rxjs/operators';
@@ -21,6 +21,7 @@ import { PatternResponse } from '../model/hal/pattern-response.interface';
 import PatternLanguage from '../model/hal/pattern-language.model';
 import { Edge } from '../model/hal/edge.model';
 import { environment } from '../../../environments/environment';
+import PatternImplementation from '../model/pattern-implementation.model';
 
 @Injectable()
 export class PatternService {
@@ -83,5 +84,20 @@ export class PatternService {
 
   getPatternByUrl(href: string): Observable<PatternResponse> {
     return this.http.get<PatternResponse>(href);
+  }
+
+  savePatternImplementation(patternId: string, patternImplementation: any): Observable<HttpResponse<PatternImplementation>> {
+    const url = this.repoEndpoint + '/patterns/' + patternId + '/pattern-implementation';
+    return this.http.post<PatternImplementation>(url, patternImplementation, { observe: 'response' });
+  }
+
+  deletePatternImplementation(implementationId: string): Observable<any> {
+    const url = this.repoEndpoint + '/pattern-implementations/' + implementationId;
+    return this.http.delete<PatternImplementation>(url);
+  }
+
+  updatePatternImplementation(patternImplementation: any): Observable<HttpResponse<PatternImplementation>> {
+    const url = this.repoEndpoint + '/pattern-implementations';
+    return this.http.put<PatternImplementation>(url, patternImplementation, { observe: 'response' });
   }
 }
