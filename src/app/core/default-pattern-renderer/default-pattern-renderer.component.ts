@@ -115,7 +115,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
           this.pattern = pattern;
           this.pattern.id = this.patternId;
           this.setTags();
-          console.log(this.pattern);
         }),
         switchMap(() => this.getPatternSectionContent()));
     } else {
@@ -350,7 +349,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   }
 
   deleteImplementation(implementation: PatternImplementation) {
-    console.log(implementation);
     const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
       data: { id: implementation.id }
     });
@@ -363,7 +361,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   }
 
   editImplementation(implementation: PatternImplementation) {
-    console.log(implementation);
     const dialogRef = this.dialog.open(ImplementationDialogComponent, {
       data: { type: implementation.type, link: implementation.link }
     });

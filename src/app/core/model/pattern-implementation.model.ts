@@ -1,4 +1,5 @@
 class PatternImplementation {
+    
     id: string;
     type: string;
     link: string;
