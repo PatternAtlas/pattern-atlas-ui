@@ -39,6 +39,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   groupedPatterns: GroupedPatterns[];
   patternLanguageId: string;
   candidates: Array<Candidate> = [];
+  selectableTags: string[];
   readonly UiFeatures = UiFeatures;
   @ViewChild('graphWrapper') graph: ElementRef;
   @ViewChild('cardsView') cardsView: ElementRef;
@@ -49,6 +50,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   isLoadingPatternData = true;
   isLoadingLinkData = true;
   toggleBeforeDataLoaded = false;
+  search: FormControl;
   filter: FormControl;
   private directedPatternRelations: Array<DirectedEdgeModel> = [];
   private undirectedPatternRelations: Array<UndirectedEdgeModel> = [];
@@ -70,13 +72,31 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadData();
+    this.search = new FormControl('');
     this.filter = new FormControl('');
-    const filterSubscription = this.filter.valueChanges.subscribe((filterText: string) => {
+    const searchSubscription = this.search.valueChanges.subscribe((filterText: string) => {
       if (this.graphVisible || !this.patterns || this.patterns.length === 0) {
         return;
       }
-      this.patternsForCardsView = this.patterns.filter(pattern => pattern.name.toLowerCase().includes(filterText.toLowerCase()));
+      this.patternsForCardsView = this.patterns
+        .filter(pattern => {
+          const patternNameMatch = pattern.name.toLowerCase().includes(filterText.toLowerCase());
+          const tagsMatch =  pattern.tags ? pattern.tags.toLowerCase().includes(filterText.toLowerCase()) : false;
+          return patternNameMatch || tagsMatch;
+        });
     });
+    const filterSubscription = this.filter.valueChanges.subscribe(selectedFilter => {
+      if (this.graphVisible || !this.patterns || this.patterns.length === 0) {
+        return;
+      }
+      if (selectedFilter.length === 0) {
+        this.patternsForCardsView = this.patterns;
+      } else {
+        this.patternsForCardsView = this.patterns
+          .filter(pattern => pattern.category ? selectedFilter.includes(pattern.category) : false);
+      }
+    })
+    this.subscriptions.add(searchSubscription);
     this.subscriptions.add(filterSubscription);
     this.getGroupedPatterns();
   }
@@ -281,7 +301,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
 
   setGraphVisible(newValueGraphVisible: boolean) {
     if (newValueGraphVisible) { // reset the search field so all patterns are shown in the graph
-      this.filter.setValue('');
+      this.search.setValue('');
     }
     this.graphVisible = newValueGraphVisible;
     // if user toggled to early, we will retrigger
@@ -355,6 +375,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
         this.patternsForCardsView = this.patterns;
         this.isLoadingPatternData = false;
         this.detectChanges();
+        this.setTags();
       }));
   }
 
@@ -369,6 +390,15 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.cdr.detach();
     this.subscriptions.unsubscribe();
+  }
+
+  private setTags() {
+    const tags = this.patterns.map(pattern => pattern.category).filter(category => category != undefined && category.length > 0);
+    this.selectableTags = tags.filter(this.onlyUnique);
+  }
+
+  private onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
   }
 }
 

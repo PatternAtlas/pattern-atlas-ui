@@ -9,7 +9,7 @@
   <mat-form-field id="search-field" class="action-button-with-margin" #searchField appearance="outline"
                   *ngIf="!graphVisible" [floatLabel]="'always'">
     <mat-label>Search</mat-label>
-    <input matInput placeholder="Type to search" [formControl]="filter">
+    <input matInput placeholder="Type to search" [formControl]="search">
     <mat-icon matSuffix>filter_list</mat-icon>
   </mat-form-field>
 
@@ -17,10 +17,8 @@
   <mat-form-field id="filter-field" class="action-button-with-margin" #searchField appearance="outline"
   *ngIf="!graphVisible" [floatLabel]="'always'">
     <mat-label>Filter</mat-label>
-    <mat-select placeholder="Select filter" multiple>
-      <mat-option value="option">NIST</mat-option>
-      <mat-option value="option">Cloud</mat-option>
-      <mat-option value="option">Security</mat-option>
+    <mat-select placeholder="Select filter" multiple [formControl]="filter">
+      <mat-option value="{{tag}}" *ngFor="let tag of selectableTags">{{tag}}</mat-option>
     </mat-select>
     <mat-icon matSuffix>filter_list</mat-icon>
   </mat-form-field>
