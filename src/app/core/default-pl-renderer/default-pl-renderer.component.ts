@@ -35,6 +35,7 @@ import { UiFeatures } from '../directives/pattern-atlas-ui-repository-configurat
 export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   patterns: Array<Pattern> = [];
   patternsForCardsView: Array<Pattern> = [];
+  patternsForGraph: Array<Pattern> = [];
   patternLanguage: PatternLanguage;
   groupedPatterns: GroupedPatterns[];
   patternLanguageId: string;
@@ -98,7 +99,6 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
     })
     this.subscriptions.add(searchSubscription);
     this.subscriptions.add(filterSubscription);
-    this.getGroupedPatterns();
   }
 
   detectChanges() {
@@ -146,15 +146,15 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getGroupedPatterns() {
+  private getGroupedPatterns(): Observable<any> {
     this.groupedPatterns = [];
-    this.patternLanguageService.getPatternLanguages().subscribe(languages => {
+    return this.patternLanguageService.getPatternLanguages().pipe(tap(languages => {
       languages.forEach(language => {
         this.patternService.getPatternsById(language.id).subscribe(patterns => {
           this.groupedPatterns.push({ id: language.id, name: language.name, patterns: patterns });
         })
       })
-    })
+    }))
   }
 
   /**
@@ -345,7 +345,8 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   }
 
   loadPatternsCandidatesAndLinks(): Observable<any> {
-    return forkJoin([this.loadPatterns(), this.loadCandidates(), this.getPatternLinks()]);
+    return forkJoin([this.loadPatterns(), this.loadCandidates(), this.getPatternLinks(), this.getGroupedPatterns()])
+      .pipe(tap(() => this.addAdditionalPatternsToGraph()));
   }
 
   private getDirectedEdges(): Observable<Embedded<DirectedEdgesResponse>> {
@@ -373,6 +374,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
       tap(patterns => {
         this.patterns = patterns;
         this.patternsForCardsView = this.patterns;
+        this.patternsForGraph = this.patterns;
         this.isLoadingPatternData = false;
         this.detectChanges();
         this.setTags();
@@ -399,6 +401,36 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
 
   private onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
+  }
+
+  private addAdditionalPatternsToGraph() {
+    const allPatterns = this.groupedPatterns.map(group => group.patterns).reduce((accumulator, value) => accumulator.concat(value), []);
+    this.patternLinks.forEach(link => {
+      let idsToCheck = this.getPatternIdsOfEdge(link);
+      idsToCheck.forEach(id => {
+        const containsPattern = this.patternsForGraph.filter(pattern => pattern.id === id).length > 0;
+        if (containsPattern === false) {
+          const targetPattern = allPatterns.filter(pattern => pattern.id === id)[0];
+          console.log(targetPattern);
+          if (targetPattern != undefined) {
+            this.patternsForGraph.push(targetPattern);
+          }
+        }
+      })
+    })
+  }
+
+  private getPatternIdsOfEdge(link: any) : string[] {
+    let ids = []
+    if (link.sourcePatternId && link.targetPatternId) {
+      ids.push(link.sourcePatternId);
+      ids.push(link.targetPatternId);
+    }
+    if (link.pattern1Id && link.pattern2Id) {
+      ids.push(link.pattern1Id);
+      ids.push(link.pattern2Id);
+    }
+    return ids;
   }
 }
 

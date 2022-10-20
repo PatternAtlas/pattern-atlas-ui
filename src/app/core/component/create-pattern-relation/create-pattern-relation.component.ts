@@ -91,7 +91,6 @@ export class CreatePatternRelationComponent implements OnInit {
     if (!dialogResult || !dialogResult.secondPattern || !dialogResult.direction) {
       return null;
     }
-    console.log(dialogResult);
     const type = dialogResult.relationType ? dialogResult.relationType : null;
     const description = dialogResult.description ? dialogResult.description : null;
     switch (dialogResult.direction.name) {
