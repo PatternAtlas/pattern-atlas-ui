@@ -33,6 +33,7 @@
     "angular2-prettyjson": "3.0.1",
     "angular2-toaster": "8.0.0",
     "antlr4": "^4.8.0",
+    "clone-deep": "^4.0.1",
     "core-js": "2.6.3",
     "d3": "^5.16.0",
     "lodash": "^4.17.21",

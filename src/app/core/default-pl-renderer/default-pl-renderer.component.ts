@@ -8,7 +8,7 @@ import { PatternLanguageService } from '../service/pattern-language.service';
 import PatternLanguage from '../model/hal/pattern-language.model';
 import { D3Service } from '../../graph/service/d3.service';
 import { GraphDisplayComponent } from '../component/graph-display/graph-display.component';
-import { EMPTY, forkJoin, Observable, Subscription } from 'rxjs';
+import { EMPTY, forkJoin, merge, Observable, ObservableInput, Subscription } from 'rxjs';
 import { Embedded } from '../model/hal/embedded';
 import { DirectedEdgesResponse } from '../model/hal/directed-edes-response.interface';
 import { switchMap, tap } from 'rxjs/operators';
@@ -26,6 +26,7 @@ import { FormControl } from '@angular/forms';
 import { globals } from '../../globals';
 import { PatternRelationDescriptorDirection } from '../model/pattern-relation-descriptor-direction.enum';
 import { UiFeatures } from '../directives/pattern-atlas-ui-repository-configuration.service';
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'pp-default-pl-renderer',
@@ -149,12 +150,20 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   private getGroupedPatterns(): Observable<any> {
     this.groupedPatterns = [];
     return this.patternLanguageService.getPatternLanguages().pipe(tap(languages => {
+      let observables: ObservableInput<any>[] = [];
       languages.forEach(language => {
-        this.patternService.getPatternsById(language.id).subscribe(patterns => {
-          this.groupedPatterns.push({ id: language.id, name: language.name, patterns: patterns });
-        })
-      })
+        observables.push(this.getPatternsOfPatternLanguage(language));
+      });
+      forkJoin(observables).subscribe({
+        complete: () => this.addAdditionalPatternsToGraph(),
+      });
     }))
+  }
+
+  private getPatternsOfPatternLanguage(language: any): Observable<any> {
+    return this.patternService.getPatternsById(language.id).pipe(tap(patterns => {
+      this.groupedPatterns.push({ id: language.id, name: language.name, patterns: patterns });
+    }));
   }
 
   /**
@@ -345,8 +354,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   }
 
   loadPatternsCandidatesAndLinks(): Observable<any> {
-    return forkJoin([this.loadPatterns(), this.loadCandidates(), this.getPatternLinks(), this.getGroupedPatterns()])
-      .pipe(tap(() => this.addAdditionalPatternsToGraph()));
+    return forkJoin([this.loadPatterns(), this.loadCandidates(), this.getPatternLinks(), this.getGroupedPatterns()]);
   }
 
   private getDirectedEdges(): Observable<Embedded<DirectedEdgesResponse>> {
@@ -374,7 +382,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
       tap(patterns => {
         this.patterns = patterns;
         this.patternsForCardsView = this.patterns;
-        this.patternsForGraph = this.patterns;
+        this.patternsForGraph = cloneDeep(this.patterns);
         this.isLoadingPatternData = false;
         this.detectChanges();
         this.setTags();
@@ -411,7 +419,6 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
         const containsPattern = this.patternsForGraph.filter(pattern => pattern.id === id).length > 0;
         if (containsPattern === false) {
           const targetPattern = allPatterns.filter(pattern => pattern.id === id)[0];
-          console.log(targetPattern);
           if (targetPattern != undefined) {
             this.patternsForGraph.push(targetPattern);
           }
