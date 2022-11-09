@@ -157,7 +157,7 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
     confirmDialog.afterClosed().subscribe(result => {
       if (result) {
         this.candidateManagementService.deleteCandidate(this.candidate).subscribe(res => {
-          const url = `${environment.repositoryUrl}/patternLanguages/${this.candidate.patternLanguageId}/patterns`;
+          const url = `${environment.API_URL}/patternLanguages/${this.candidate.patternLanguageId}/patterns`;
           this.patternService.savePattern(url, this.candidate).subscribe(result => {
             this.router.navigate([globals.pathConstants.patternLanguages, this.candidate.patternLanguageId]);
           })

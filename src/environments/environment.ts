@@ -28,7 +28,6 @@ export const environment = {
     window['env'] && window['env']['LATEX_RENDERER_HOST_NAME'] && window['env']['LATEX_RENDERER_PORT']
       ? `${urlScheme}://${window['env']['LATEX_RENDERER_HOST_NAME']}:${window['env']['LATEX_RENDERER_PORT']}`
       : 'http://localhost:5030',
-  repositoryUrl: 'http://localhost:1977/patternatlas',
   authorizeUrl: `${authRealm}/protocol/openid-connect/auth?`,
   tokenUrl: `${authRealm}/protocol/openid-connect/token`,
   tokenRevokeUrl: `${authRealm}/protocol/openid-connect/revoke`,
