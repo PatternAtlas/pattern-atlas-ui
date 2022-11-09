@@ -19,7 +19,7 @@ import { IssueManagementListComponent } from './issue-management-list/issue-mana
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
-export const ISSUE_ROTUES = [
+export const ISSUE_ROUTES = [
   {
     path: '',
     children: [
@@ -28,32 +28,16 @@ export const ISSUE_ROTUES = [
         component: IssueManagementListComponent
       },
       {
-        path: 'create',
+        path: ':action',
         component: IssueManagementDetailComponent,
-        // Will be used in the future
-        // canActivate: [AuthGuard],
-        // data: { role: UserRole.MEMBER }  
       },
       {
-        path: 'detail/:name',
-        component: IssueManagementDetailComponent,
-        // Will be used in the future
-        // canActivate: [AuthGuard],
-        // data: { role: UserRole.MEMBER }  
-      },
-      {
-        path: 'edit/:name',
-        component: IssueManagementDetailComponent,
-        // Will be used in the future
-        // canActivate: [AuthGuard],
-        // data: { role: UserRole.MEMBER }  
+        path: ':action/:name',
+        component: IssueManagementDetailComponent
       },
       {
         path: 'authors/:name',
         component: AuthorManagementListComponent,
-        // Will be used in the future
-        // canActivate: [AuthGuard],
-        // data: { role: UserRole.MEMBER }  
       },
     ]
   },
@@ -68,7 +52,7 @@ export const ISSUE_ROTUES = [
   imports: [
     CommonModule,
     CoreModule,
-    RouterModule.forChild(ISSUE_ROTUES),
+    RouterModule.forChild(ISSUE_ROUTES),
     MatListModule,
     MatExpansionModule,
     MatCardModule,

@@ -1,4 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import {
+  Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit, ChangeDetectorRef, OnDestroy
+} from '@angular/core';
 import { IssueManagementStore } from '../../core/issue-management/_store/issue-management-store';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PatternLanguageService } from 'src/app/core/service/pattern-language.service';
@@ -14,13 +16,14 @@ import { patternLanguageNone } from 'src/app/core/component/pattern-language-pic
 import { PAComment, PAEvidence, RatingEventModel, RatingModelRequest } from 'src/app/core/shared';
 import { AuthorEventModel } from 'src/app/core/shared/_models/autor-event.model';
 import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'pp-issue-management-detail',
   templateUrl: './issue-management-detail.component.html',
   styleUrls: ['./issue-management-detail.component.scss']
 })
-export class IssueManagementDetailComponent implements OnInit, AfterViewInit {
+export class IssueManagementDetailComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('issueView') issueDiv: ElementRef;
   issueHeight;
@@ -33,6 +36,8 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit {
   settingsDisabled = true;
   candidate = false;
   treshold = true;
+
+  private arSubscription: Subscription = null;
 
   constructor(
     private issueManagementService: IssueManagementService,
@@ -47,39 +52,50 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
-    this.issueManagementStore.issue.subscribe(_issue => {
-
-      if (_issue && this.router.url.includes('detail')) {
-        this.disabled = true;
-        this.settingsDisabled = false;
-        this.issue = _issue;
-
-      } else if (_issue && this.router.url.includes('edit')) {
-        this.settingsDisabled = false;
-        this.issue = _issue;
-        this.edit();
-
-      } else if (!_issue && window.history.state.data) {
-        this.issue = window.history.state.data as Issue;
-      } else {
-        this.disabled = false;
-        this.issue = new Issue();
-        // Preset author
-        this.auth.user.subscribe(_user => {
-          if (_user && !this.issue.authors) this.issue.authors = [new AuthorModel(_user.id, Author.OWNER, _user.name)];
-        })
+    this.arSubscription = this.activeRoute.params.subscribe(params => {
+      let issueUri = `/issues/${params.name}`
+      switch(params.action) {
+        case 'detail': {
+          this.disabled = true;
+          this.settingsDisabled = false;
+          this.issueManagementService.getIssueByUri(issueUri).subscribe(result => {
+            this.issue = result;
+          });
+          break;
+        }
+        case 'edit': {
+          this.settingsDisabled = false;
+          this.issueManagementService.getIssueByUri(issueUri).subscribe(result => {
+            this.issue = result;
+            this.edit();
+          });
+          break;
+        }
+        case 'create': {
+          this.disabled = false;
+          this.issue = new Issue();
+          // Preset author
+          this.auth.user.subscribe(_user => {
+            if (_user && !this.issue.authors) this.issue.authors = [new AuthorModel(_user.id, Author.OWNER, _user.name)];
+          });
+          break;
+        }
+        default: {
+          console.log("unknown action");
+          break;
+        }
       }
-      this.treshold = !(this.issue.rating >= 3);
-
-      if (_issue) {
-        this.p.isMaintainerOrOwner(_issue.authors, 'ISSUE_DELETE_ALL')
+      if (this.issue) {
+        this.p.isMaintainerOrOwner(this.issue.authors, 'ISSUE_DELETE_ALL')
           .subscribe(result => {
             this.settingsDisabled = !result;
           });
       }
     });
+  }
 
-
+  ngOnDestroy() {
+    this.arSubscription.unsubscribe();
   }
 
   ngAfterViewInit(): void {
@@ -145,7 +161,6 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit {
   submit() {
     this.issue.uri = `/issues/${this.issue.name}`
     this.issue.id ? this.update() : this.create();
-    this.router.navigate(['./issue/detail', this.issue.name]);
   }
 
   create() {
@@ -157,6 +172,7 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit {
 
     // create
     this.issueManagementService.createIssue(this.issue).subscribe(result => {
+      console.log("Result reached")
       this.issue = result
 
       // call update for all additional authors
@@ -169,6 +185,7 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit {
       }
 
       this.disabled = true;
+      this.router.navigate(['./issue/detail', this.issue.name]);
     });
 
   }
@@ -177,6 +194,7 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit {
     this.issueManagementService.updateIssue(this.issue).subscribe(result => {
       this.issue = result;
       this.disabled = true;
+      this.router.navigate(['./issue/detail', this.issue.name]);
     })
   }
 

@@ -35,7 +35,31 @@ export class IssueManagementService {
       catchError(e => {
         this.toasterService.pop('error', 'Getting issue list', e.error.message)
         return [];
+      })
+    )
+  }
+
+  public getIssueById(id: string): Observable<Issue> {
+    return this.http.get<Issue>(this.repoEndpoint + this.serviceEndpoint + `/${id}`).pipe(
+      map(result => {
+        return result;
       }),
+      catchError(e => {
+        this.toasterService.pop('error', 'Could not retrieve issue: ', e.error.message )
+        throw e
+      })
+    )
+  }
+
+  public getIssueByUri(issueUri: string): Observable<Issue> {
+    return this.http.get<Issue>(this.repoEndpoint + this.serviceEndpoint + '/findByUri?uri=' + issueUri).pipe(
+      map(result => {
+        return result;
+      }),
+      catchError(e => {
+        this.toasterService.pop('error', 'Could not retrieve issue: ', e.error.message )
+        throw e
+      })
     )
   }
 
@@ -50,7 +74,7 @@ export class IssueManagementService {
       }),
       catchError(e => {
         this.toasterService.pop('error', 'Could not create new issue: ', e.error.message )
-        return of(null);
+        throw e
       }),
     )
   }
