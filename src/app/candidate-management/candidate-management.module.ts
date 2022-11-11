@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CoreModule } from '../core/core.module';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,7 +15,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatExpansionModule } from '@angular/material/expansion';
 // Routing
 
-export const CANDIATE_ROTUES = [
+export const CANDIDATE_ROUTES : Routes = [
   {
     path: '',
     children: [
@@ -24,32 +24,12 @@ export const CANDIATE_ROTUES = [
         component: CandidateManagementListComponent,
       },
       {
-        path: 'detail/:name',
+        path: ':action',
         component: CandidateManagementDetailComponent,
-        // Will be used in the future
-        // canActivate: [AuthGuard],
-        // data: { role: UserRole.MEMBER }
       },
       {
-        path: 'edit/:name',
+        path: ':action/:name',
         component: CandidateManagementDetailComponent,
-        // Will be used in the future
-        // canActivate: [AuthGuard],
-        // data: { role: UserRole.MEMBER }
-      },
-      {
-        path: 'create',
-        component: CandidateManagementDetailComponent,
-        // Will be used in the future
-        // canActivate: [AuthGuard],
-        // data: { role: UserRole.MEMBER }
-      },
-      {
-        path: 'create/:name',
-        component: CandidateManagementDetailComponent,
-        // Will be used in the future
-        // canActivate: [AuthGuard],
-        // data: { role: UserRole.MEMBER }
       }
     ]
   }
@@ -63,7 +43,7 @@ export const CANDIATE_ROTUES = [
   imports: [
     CommonModule,
     CoreModule,
-    RouterModule.forChild(CANDIATE_ROTUES),
+    RouterModule.forChild(CANDIDATE_ROUTES),
     //Material
     MatButtonModule,
     MatSelectModule,

@@ -1,20 +1,16 @@
 import {
   Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit, ChangeDetectorRef, OnDestroy
 } from '@angular/core';
-import { IssueManagementStore } from '../../core/issue-management/_store/issue-management-store';
 import { Router, ActivatedRoute } from '@angular/router';
-import { PatternLanguageService } from 'src/app/core/service/pattern-language.service';
-import PatternLanguageModel from 'src/app/core/model/hal/pattern-language-model.model';
 import { Issue, IssueManagementService } from 'src/app/core/issue-management';
 import { Candidate, CandidateManagementStore } from 'src/app/core/candidate-management';
-import { AuthorManagementService, AuthorModelRequest, AuthorModel, Author } from 'src/app/core/author-management';
+import { AuthorModel, Author } from 'src/app/core/author-management';
 import { PrivilegeService } from 'src/app/authentication/_services/privilege.service';
 import PatternLanguageSchemaModel from 'src/app/core/model/pattern-language-schema.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/core/component/confirm-dialog/confirm-dialog.component';
 import { patternLanguageNone } from 'src/app/core/component/pattern-language-picker/pattern-language-picker.component';
 import { PAComment, PAEvidence, RatingEventModel, RatingModelRequest } from 'src/app/core/shared';
-import { AuthorEventModel } from 'src/app/core/shared/_models/autor-event.model';
 import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
 import { Subscription } from 'rxjs';
 
@@ -41,7 +37,6 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit, On
 
   constructor(
     private issueManagementService: IssueManagementService,
-    public issueManagementStore: IssueManagementStore,
     public candidateManagementStore: CandidateManagementStore,
     private p: PrivilegeService,
     private router: Router,
@@ -53,7 +48,7 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit, On
 
   ngOnInit(): void {
     this.arSubscription = this.activeRoute.params.subscribe(params => {
-      let issueUri = `/issues/${params.name}`
+      let issueUri = `/issues/${params.name}`;
       switch(params.action) {
         case 'detail': {
           this.disabled = true;
@@ -173,7 +168,6 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit, On
 
     // create
     this.issueManagementService.createIssue(this.issue).subscribe(result => {
-      console.log("Result reached")
       this.issue = result
 
       // call update for all additional authors

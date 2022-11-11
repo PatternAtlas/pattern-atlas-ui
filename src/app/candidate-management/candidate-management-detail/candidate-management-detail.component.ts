@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TdTextEditorComponent } from '@covalent/text-editor';
-import { Candidate, CandidateManagementService, CandidateManagementStore } from 'src/app/core/candidate-management';
+import { Candidate, CandidateManagementService } from 'src/app/core/candidate-management';
 import PatternLanguageSchemaModel from 'src/app/core/model/pattern-language-schema.model';
 import PatternSectionSchema from 'src/app/core/model/hal/pattern-section-schema.model';
 import { patternLanguageNone } from 'src/app/core/component/pattern-language-picker/pattern-language-picker.component';
@@ -18,13 +18,14 @@ import { PrivilegeService } from 'src/app/authentication/_services/privilege.ser
 import { Author, AuthorModel } from 'src/app/core/author-management';
 import { environment } from 'src/environments/environment';
 import { AuthenticationService } from 'src/app/authentication/_services/authentication.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'pp-candidate-management-detail',
   templateUrl: './candidate-management-detail.component.html',
   styleUrls: ['./candidate-management-detail.component.scss']
 })
-export class CandidateManagementDetailComponent implements OnInit, AfterViewInit {
+export class CandidateManagementDetailComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('textEditor') private _textEditor: TdTextEditorComponent;
   @ViewChild('candidateView') candidateDiv: ElementRef;
@@ -47,11 +48,12 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
   treshholdSetting = 4.0;
   confirmDialog: ConfirmData;
 
+  private arSubscription: Subscription = null;
+
   constructor(
     private router: Router,
     private activeRoute: ActivatedRoute,
     private candidateManagementService: CandidateManagementService,
-    public candidateStore: CandidateManagementStore,
     private patternService: PatternService,
     public dialog: MatDialog,
     private p: PrivilegeService,
@@ -60,45 +62,64 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
   ) { }
 
   ngOnInit(): void {
-
-    this.candidateStore.candidate.subscribe((_candidate: Candidate) => {
-      if (_candidate && this.router.url.includes('detail')) {
-        this.disabled = true;
-        this.candidate = _candidate;
-        this.contentToMarkdown();
-        this.checkTreshhold();
-
-      } else if (_candidate && this.router.url.includes('edit')) {
-        this.candidate = _candidate;
-        this.contentToMarkdown();
-        this.edit();
-        this.checkTreshhold();
-
-      } else if (!_candidate && window.history.state.data && window.history.state.data instanceof Candidate) {
-        this.candidate = window.history.state.data as Candidate
-        this.contentToMarkdown();
-        this.edit();
-        this.checkTreshhold();
-
-      } else {
-        this.disabled = false;
-        this.candidate = new Candidate(null, 'New Candidate', null, null);
-        this.patternLanguageSelectedChange(patternLanguageNone);
-        // Preset author
-        this.auth.user.subscribe(_user => {
-          if (_user && !this.candidate.authors) this.candidate.authors = [new AuthorModel(_user.id, Author.OWNER, _user.name)];
-        })
-      }
-      this.confirmDialog = {
-        title: `Change Pattern Language for Candidate ${this.candidate.name}`,
-        text: 'If you change the language everything writen will be deleted and the'
-          + ' new pattern schema will be used'
+    this.arSubscription = this.activeRoute.params.subscribe(params => {
+      let candidateUri = `/candidates/${params.name}`;
+      switch (params.action) {
+        case 'detail': {
+          this.disabled = true;
+          this.candidateManagementService.getCandidateByUri(candidateUri).subscribe(result => {
+            this.candidate = result;
+            this.contentToMarkdown();
+            this.checkTreshhold();
+            this.setupPLChangeDialog();
+          });
+          break;
+        }
+        case 'edit': {
+          this.candidateManagementService.getCandidateByUri(candidateUri).subscribe(result => {
+            this.candidate = result;
+            this.contentToMarkdown();
+            this.edit();
+            this.checkTreshhold();
+            this.setupPLChangeDialog();
+          });
+          break;
+        }
+        case 'create': {
+          this.disabled = false;
+          let candidateName = params.name ? params.name : 'New Candidate';
+          this.candidate = new Candidate(null, candidateName, null, null);
+          this.patternLanguageSelectedChange(patternLanguageNone);
+          // Preset author
+          this.auth.user.subscribe(_user => {
+            if (_user && !this.candidate.authors) this.candidate.authors = [new AuthorModel(_user.id, Author.OWNER, _user.name)];
+          });
+          this.setupPLChangeDialog();
+          break;
+        }
+        default: {
+          // Unknown action - show candidate list
+          this.router.navigateByUrl('/candidate');
+          break;
+        }
       }
     });
   }
 
+  ngOnDestroy(): void {
+    this.arSubscription.unsubscribe();
+  }
+
   ngAfterViewInit(): void {
     this.setCommentSectionHeight();
+  }
+
+  setupPLChangeDialog() {
+    this.confirmDialog = {
+      title: `Change Pattern Language for Candidate ${this.candidate.name}`,
+      text: 'If you change the language everything writen will be deleted and the'
+        + ' new pattern schema will be used'
+    }
   }
 
   // CHANGE MARKDOWN
@@ -231,6 +252,7 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
       }
 
       this.disabled = true;
+      this.router.navigate(['./candidate/detail', this.candidate.name]);
     })
   }
 
@@ -390,4 +412,5 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
     this.candidateHeight = this.candidateDiv.nativeElement.offsetHeight;
     this.ref.detectChanges();
   }
+
 }

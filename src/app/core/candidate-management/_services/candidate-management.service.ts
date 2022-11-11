@@ -40,11 +40,22 @@ export class CandidateManagementService {
     );
   }
 
+  public getCandidateByUri(candidateUri: string): Observable<Candidate> {
+    return this.http.get<Candidate>(this.repoEndpoint + this.serviceEndpoint + '/findByUri?uri=' + candidateUri).pipe(
+      map(result => {
+        return result;
+      }),
+      catchError(e => {
+        this.toasterService.pop('error', 'Could not retrieve pattern candidate: ', e.error.message )
+        throw e
+      })
+    )
+  }
+
   /**
    * CREATE
    */
   public createCandidate(candidate: Candidate): Observable<Candidate> {
-    candidate.uri = candidate.name;
     return this.http.post<Candidate>(this.repoEndpoint + this.serviceEndpoint, candidate).pipe(
       map(result => {
         this.toasterService.pop('success', 'Created new candidate');
