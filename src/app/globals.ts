@@ -22,7 +22,9 @@ export const globals = {
     patternLanguageId: 'pattern-language-id',
     patternViews: 'pattern-views',
     patternViewURI: 'pattern-view-uri',
-    designModels: 'design-models'
+    designModels: 'design-models',
+    candidate: 'candidate',
+    issue: 'issue'
   },
   statusCodeNotFound : 404
 };

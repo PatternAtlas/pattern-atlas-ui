@@ -9,6 +9,11 @@ import { UserRole } from './core/user-management';
 import { PrintHook } from '@angular/flex-layout';
 import { Privilege } from './core/user-management/_models/privilege.enum';
 import { globals } from './globals';
+import { IssueManagementListComponent } from './issue-management/issue-management-list/issue-management-list.component';
+import {
+  IssueManagementDetailComponent
+} from './issue-management/issue-management-detail/issue-management-detail.component';
+import { AuthorManagementListComponent } from './author-management/author-list/author-list.component';
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
@@ -45,11 +50,11 @@ const routes: Routes = [
     loadChildren: () => import('./design-model-module/design-model.module').then(m => m.DesignModelModule),
   },
   {
-    path: 'candidate',
+    path: globals.pathConstants.candidate,
     loadChildren: () => import('./candidate-management/candidate-management.module').then(m => m.CandidateManagementModule),
   },
   {
-    path: 'issue',
+    path: globals.pathConstants.issue,
     loadChildren: () => import('./issue-management/issue-management.module').then(m => m.IssueManagementModule),
   },
   {
@@ -68,14 +73,11 @@ const routes: Routes = [
     path: 'oauth-callback',
     component: ProcessOauthCallbackComponent
   },
-  {
-    path: '**',
-    component: PageNotFoundComponent
-  },
+  { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: false, onSameUrlNavigation: 'reload' }), ToasterModule.forRoot()],
+  imports: [RouterModule.forRoot(routes, { useHash: false, onSameUrlNavigation: 'reload', enableTracing: true}), ToasterModule.forRoot()],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

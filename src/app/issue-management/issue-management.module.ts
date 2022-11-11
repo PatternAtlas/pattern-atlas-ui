@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IssueManagementDetailComponent } from './issue-management-detail/issue-management-detail.component';
 import { AuthorManagementListComponent } from '../author-management/author-list/author-list.component';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
@@ -19,27 +19,22 @@ import { IssueManagementListComponent } from './issue-management-list/issue-mana
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
-export const ISSUE_ROUTES = [
+export const ISSUE_ROUTES : Routes  = [
   {
     path: '',
-    children: [
-      {
-        path: '',
-        component: IssueManagementListComponent
-      },
-      {
-        path: ':action',
-        component: IssueManagementDetailComponent,
-      },
-      {
-        path: ':action/:name',
-        component: IssueManagementDetailComponent
-      },
-      {
-        path: 'authors/:name',
-        component: AuthorManagementListComponent,
-      },
-    ]
+    component: IssueManagementListComponent
+  },
+  {
+    path: ':action',
+    component: IssueManagementDetailComponent,
+  },
+  {
+    path: ':action/:name',
+    component: IssueManagementDetailComponent
+  },
+  {
+    path: 'authors/:name',
+    component: AuthorManagementListComponent,
   },
 ];
 

@@ -54,20 +54,22 @@ import { PatternAtlasUiFeatureToggleModule } from '../core/directives/pattern-at
 
 export const PL_ROUTES: Routes = [
   {
-    path: '',
-    component: PatternLanguageManagementComponent
-  }, {
-    path: ':' + globals.pathConstants.patternLanguageId,
-    component: PatternLanguageContainerComponent,
-  }, {
     path: ':' + globals.pathConstants.patternLanguageId + '/create-patterns',
     component: CreatePatternComponent,
   },
   {
     path: ':' + globals.pathConstants.patternLanguageId + '/:patternId',
     component: PatternContainerComponent
+  },
+  {
+    path: ':' + globals.pathConstants.patternLanguageId,
+    component: PatternLanguageContainerComponent,
+  },
+  {
+    path: '',
+    pathMatch: 'full',
+    component: PatternLanguageManagementComponent
   }
-
 ];
 
 @NgModule({
