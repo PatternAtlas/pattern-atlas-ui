@@ -81,7 +81,8 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit, On
           break;
         }
         default: {
-          console.log("unknown action");
+          // Unknown action - will show issue list
+          this.router.navigateByUrl('/issue');
           break;
         }
       }
