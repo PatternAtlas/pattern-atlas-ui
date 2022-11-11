@@ -22,7 +22,6 @@ export const environment = {
   API_URL: window['env'] && window['env']['PATTERN_ATLAS_API_HOST_NAME'] && window['env']['PATTERN_ATLAS_API_PORT']
     ? `${urlScheme}://${window['env']['PATTERN_ATLAS_API_HOST_NAME']}:${window['env']['PATTERN_ATLAS_API_PORT']}/patternatlas`
     : 'http://localhost:1977/patternatlas',
-  repositoryUrl: 'http://localhost:1977/patternatlas',
   authorizeUrl: `${authRealm}/protocol/openid-connect/auth?`,
   tokenUrl: `${authRealm}/protocol/openid-connect/token`,
   tokenRevokeUrl: `${authRealm}/protocol/openid-connect/revoke`,
