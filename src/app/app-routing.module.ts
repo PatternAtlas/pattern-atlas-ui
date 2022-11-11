@@ -77,7 +77,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: false, onSameUrlNavigation: 'reload', enableTracing: true}), ToasterModule.forRoot()],
+  imports: [RouterModule.forRoot(routes, { useHash: false, onSameUrlNavigation: 'reload' }), ToasterModule.forRoot()],
   exports: [RouterModule]
 })
 export class AppRoutingModule {
