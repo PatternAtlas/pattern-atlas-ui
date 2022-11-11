@@ -5,15 +5,8 @@ import { ToasterModule } from 'angular2-toaster';
 import { PageNotFoundComponent } from './core/component/page-not-found/page-not-found.component';
 import { AuthGuardService as AuthGuard } from './authentication/_services/auth-guard.service';
 import { PatternLanguageManagementResolverService } from './pattern-language-management/pattern-language-management/pattern-language-management-resolver.service'; // eslint-disable-line max-len
-import { UserRole } from './core/user-management';
-import { PrintHook } from '@angular/flex-layout';
 import { Privilege } from './core/user-management/_models/privilege.enum';
 import { globals } from './globals';
-import { IssueManagementListComponent } from './issue-management/issue-management-list/issue-management-list.component';
-import {
-  IssueManagementDetailComponent
-} from './issue-management/issue-management-detail/issue-management-detail.component';
-import { AuthorManagementListComponent } from './author-management/author-list/author-list.component';
 /*
  * Copyright (c) 2018 University of Stuttgart.
  *
