@@ -69,13 +69,9 @@ export class MarkdownPatternSectionContentComponent extends DataRenderingCompone
     this.changeText(this.renderedData);
   }
 
-  changeText(value: string | undefined): void {
+  changeText(value?: string): void {
     this.markdownDiv.nativeElement.innerHTML = '';
-    if(value === undefined) {
-      this.renderedData = '';
-    } else {
-      this.renderedData = value;
-    }
+    this.renderedData = value ?? '';
     this.showSection = this.renderedData && this.renderedData.length > 0;
     this.renderSVGTags(this.renderedData);
 

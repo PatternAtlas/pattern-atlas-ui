@@ -13,20 +13,18 @@ import { ListResponse } from '../../util/list-response';
 @Injectable()
 export class CandidateManagementService {
 
-  private repoEndpoint: string;
-  private serviceEndpoint: string;
+  private candidateEndpoint: string;
 
   constructor(
     private http: HttpClient,
     private toasterService: ToasterService,
     private auth: AuthenticationService,
   ) {
-    this.repoEndpoint = environment.API_URL;
-    this.serviceEndpoint = '/candidates';
+    this.candidateEndpoint = environment.API_URL + '/candidates';
   }
 
   public getAllCandidates(languageId?: string): Observable<Candidate[]> {
-    let endpoint:string = this.repoEndpoint + this.serviceEndpoint;
+    let endpoint:string = this.candidateEndpoint;
     if (languageId !== undefined) endpoint += '/?lid=' + languageId;
 
     return this.http.get<ListResponse<Candidate>>(endpoint).pipe(
@@ -41,10 +39,7 @@ export class CandidateManagementService {
   }
 
   public getCandidateByUri(candidateUri: string): Observable<Candidate> {
-    return this.http.get<Candidate>(this.repoEndpoint + this.serviceEndpoint + '/findByUri?uri=' + candidateUri).pipe(
-      map(result => {
-        return result;
-      }),
+    return this.http.get<Candidate>(`${this.candidateEndpoint}/findByUri?uri=${candidateUri}`).pipe(
       catchError(e => {
         this.toasterService.pop('error', 'Could not retrieve pattern candidate: ', e.error.message )
         throw e
@@ -56,7 +51,7 @@ export class CandidateManagementService {
    * CREATE
    */
   public createCandidate(candidate: Candidate): Observable<Candidate> {
-    return this.http.post<Candidate>(this.repoEndpoint + this.serviceEndpoint, candidate).pipe(
+    return this.http.post<Candidate>(this.candidateEndpoint, candidate).pipe(
       map(result => {
         this.toasterService.pop('success', 'Created new candidate');
         return result;
@@ -69,7 +64,7 @@ export class CandidateManagementService {
   }
 
   public createComment(candidate: Candidate, comment: PAComment): Observable<Candidate> {
-    return this.http.post<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/comments`, comment).pipe(
+    return this.http.post<Candidate>(`${this.candidateEndpoint}/${candidate.id}/comments`, comment).pipe(
       map(result => {
         this.toasterService.pop('success', 'Created new comment');
         return result;
@@ -82,7 +77,7 @@ export class CandidateManagementService {
   }
 
   public createEvidence(candidate: Candidate, evidence: PAEvidence): Observable<Candidate> {
-    return this.http.post<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/evidences`, evidence).pipe(
+    return this.http.post<Candidate>(`${this.candidateEndpoint}/${candidate.id}/evidences`, evidence).pipe(
       map(result => {
         this.toasterService.pop('success', 'Created new evidence');
         return result;
@@ -98,7 +93,7 @@ export class CandidateManagementService {
    * UPDATE
    */
   public updateCandidate(candidate: Candidate): Observable<Candidate> {
-    return this.http.put<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}`, candidate).pipe(
+    return this.http.put<Candidate>(`${this.candidateEndpoint}/${candidate.id}`, candidate).pipe(
       map(result => {
         this.toasterService.pop('success', 'Updated candidate');
         return result;
@@ -111,7 +106,7 @@ export class CandidateManagementService {
   }
 
   public updateRatingCandidate(candidate: Candidate, rating: RatingModelRequest): Observable<Candidate> {
-    return this.http.put<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/ratings`, rating).pipe(
+    return this.http.put<Candidate>(`${this.candidateEndpoint}/${candidate.id}/ratings`, rating).pipe(
       map(result => {
         this.toasterService.pop('success', 'Updated candidate rating')
         return result
@@ -124,7 +119,7 @@ export class CandidateManagementService {
   }
 
   public updateAuthorsCandidate(candidate: Candidate, authorModel: AuthorModel): Observable<Candidate> {
-    return this.http.put<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/authors`, authorModel).pipe(
+    return this.http.put<Candidate>(`${this.candidateEndpoint}/${candidate.id}/authors`, authorModel).pipe(
       map(result => {
         this.toasterService.pop('success', 'Updated candidate author');
         return result;
@@ -137,7 +132,7 @@ export class CandidateManagementService {
   }
 
   public updateComment(candidate: Candidate, comment: PAComment): Observable<Candidate> {
-    return this.http.put<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/comments/${comment.id}`, comment).pipe(
+    return this.http.put<Candidate>(`${this.candidateEndpoint}/${candidate.id}/comments/${comment.id}`, comment).pipe(
       map(result => {
         this.toasterService.pop('success', 'Updated candidate comment');
         return result;
@@ -150,7 +145,7 @@ export class CandidateManagementService {
   }
 
   public updateRatingCandidateComment(candidate: Candidate, comment: PAComment, rating: RatingModelRequest): Observable<Candidate> {
-    return this.http.put<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/comments/${comment.id}/ratings`, rating).pipe(
+    return this.http.put<Candidate>(`${this.candidateEndpoint}/${candidate.id}/comments/${comment.id}/ratings`, rating).pipe(
       map(result => {
         this.toasterService.pop('success', 'Updated candidate comment rating');
         return result;
@@ -163,7 +158,7 @@ export class CandidateManagementService {
   }
 
   public updateEvidence(candidate: Candidate, evidence: PAEvidence): Observable<Candidate> {
-    return this.http.put<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/evidences/${evidence.id}`, evidence).pipe(
+    return this.http.put<Candidate>(`${this.candidateEndpoint}/${candidate.id}/evidences/${evidence.id}`, evidence).pipe(
       map(result => {
         this.toasterService.pop('success', 'Updated issue evidence');
         return result;
@@ -176,7 +171,7 @@ export class CandidateManagementService {
   }
 
   public updateRatingCandidateEvidence(candidate: Candidate, evidence: PAEvidence, rating: RatingModelRequest): Observable<Candidate> {
-    return this.http.put<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/evidences/${evidence.id}/ratings`, rating).pipe(
+    return this.http.put<Candidate>(`${this.candidateEndpoint}/${candidate.id}/evidences/${evidence.id}/ratings`, rating).pipe(
       map(result => {
         this.toasterService.pop('success', 'Updated candidate evidence rating');
         return result;
@@ -192,7 +187,7 @@ export class CandidateManagementService {
    * DELETE
    */
   public deleteCandidate(candidate: Candidate): Observable<Candidate> {
-    return this.http.delete<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}`).pipe(
+    return this.http.delete<Candidate>(`${this.candidateEndpoint}/${candidate.id}`).pipe(
       map(result => {
         this.toasterService.pop('success', 'Deleted candidate');
         return result;
@@ -205,7 +200,7 @@ export class CandidateManagementService {
   }
 
   public deleteAuthorCandidate(authorModel: AuthorModel, candidate: Candidate): Observable<Candidate> {
-    return this.http.delete<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/authors/${authorModel.userId}`).pipe(
+    return this.http.delete<Candidate>(`${this.candidateEndpoint}/${candidate.id}/authors/${authorModel.userId}`).pipe(
       map(result => {
         this.toasterService.pop('success', 'Deleted candidate author');
         return result;
@@ -218,7 +213,7 @@ export class CandidateManagementService {
   }
 
   public deleteComment(candidate: Candidate, comment: PAComment): Observable<Candidate> {
-    return this.http.delete<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/comments/${comment.id}`).pipe(
+    return this.http.delete<Candidate>(`${this.candidateEndpoint}/${candidate.id}/comments/${comment.id}`).pipe(
       map(result => {
         this.toasterService.pop('success', 'Deleted candidate comment');
         return result;
@@ -231,7 +226,7 @@ export class CandidateManagementService {
   }
 
   public deleteEvidence(candidate: Candidate, evidenceId: string): Observable<Candidate> {
-    return this.http.delete<Candidate>(this.repoEndpoint + this.serviceEndpoint + `/${candidate.id}/evidences/${evidenceId}`).pipe(
+    return this.http.delete<Candidate>(`${this.candidateEndpoint}/${candidate.id}/evidences/${evidenceId}`).pipe(
       map(result => {
         this.toasterService.pop('success', 'Deleted issue evidence');
         return result;

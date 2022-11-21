@@ -33,7 +33,7 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit, On
   candidate = false;
   treshold = true;
 
-  private arSubscription: Subscription = null;
+  private activeRouteSubscription: Subscription | null = null;
 
   constructor(
     private issueManagementService: IssueManagementService,
@@ -47,7 +47,7 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit, On
   ) { }
 
   ngOnInit(): void {
-    this.arSubscription = this.activeRoute.params.subscribe(params => {
+    this.activeRouteSubscription = this.activeRoute.params.subscribe(params => {
       let issueUri = `/issues/${params.name}`;
       switch(params.action) {
         case 'detail': {
@@ -91,7 +91,9 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit, On
   }
 
   ngOnDestroy() {
-    this.arSubscription.unsubscribe();
+    if (this.activeRouteSubscription != null) {
+      this.activeRouteSubscription.unsubscribe();
+    }
   }
 
   ngAfterViewInit(): void {

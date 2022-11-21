@@ -46,9 +46,9 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
   pattern = false;
   treshhold = true;
   treshholdSetting = 4.0;
-  confirmDialog: ConfirmData;
+  private _confirmDialog: ConfirmData;
 
-  private arSubscription: Subscription = null;
+  private activeRouteSubscription: Subscription | null = null;
 
   constructor(
     private router: Router,
@@ -62,7 +62,7 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
   ) { }
 
   ngOnInit(): void {
-    this.arSubscription = this.activeRoute.params.subscribe(params => {
+    this.activeRouteSubscription = this.activeRoute.params.subscribe(params => {
       let candidateUri = `/candidates/${params.name}`;
       switch (params.action) {
         case 'detail': {
@@ -71,7 +71,6 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
             this.candidate = result;
             this.contentToMarkdown();
             this.checkTreshhold();
-            this.setupPLChangeDialog();
           });
           break;
         }
@@ -81,7 +80,6 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
             this.contentToMarkdown();
             this.edit();
             this.checkTreshhold();
-            this.setupPLChangeDialog();
           });
           break;
         }
@@ -94,7 +92,6 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
           this.auth.user.subscribe(_user => {
             if (_user && !this.candidate.authors) this.candidate.authors = [new AuthorModel(_user.id, Author.OWNER, _user.name)];
           });
-          this.setupPLChangeDialog();
           break;
         }
         default: {
@@ -107,19 +104,21 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
   }
 
   ngOnDestroy(): void {
-    this.arSubscription.unsubscribe();
+    if (this.activeRouteSubscription != null) {
+      this.activeRouteSubscription.unsubscribe();
+    }
   }
 
   ngAfterViewInit(): void {
     this.setCommentSectionHeight();
   }
 
-  setupPLChangeDialog() {
-    this.confirmDialog = {
+  public get confirmDialog() {
+    return {
       title: `Change Pattern Language for Candidate ${this.candidate.name}`,
       text: 'If you change the language everything writen will be deleted and the'
         + ' new pattern schema will be used'
-    }
+    };
   }
 
   // CHANGE MARKDOWN
@@ -239,9 +238,6 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
     })
 
     this.candidateManagementService.createCandidate(this.candidate).subscribe(result => {
-      this.candidate = result;
-      this.contentToMarkdown();
-
       // call update for all additional authors
       for(let author of authorlist) {
         if(author.userId !== first_author) {
@@ -251,7 +247,6 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
         }
       }
 
-      this.disabled = true;
       this.router.navigate(['./candidate/detail', this.candidate.name]);
     })
   }
@@ -261,6 +256,7 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
       this.candidate = result;
       this.contentToMarkdown();
       this.disabled = true;
+      this.router.navigate(['./candidate/detail', this.candidate.name]);
     })
   }
 
