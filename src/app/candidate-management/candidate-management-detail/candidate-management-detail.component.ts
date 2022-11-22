@@ -46,7 +46,7 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
   pattern = false;
   treshhold = true;
   treshholdSetting = 4.0;
-  private _confirmDialog: ConfirmData;
+  private _confirmDialogData: ConfirmData;
 
   private activeRouteSubscription: Subscription | null = null;
 
@@ -104,16 +104,14 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
   }
 
   ngOnDestroy(): void {
-    if (this.activeRouteSubscription != null) {
-      this.activeRouteSubscription.unsubscribe();
-    }
+    this.activeRouteSubscription?.unsubscribe();
   }
 
   ngAfterViewInit(): void {
     this.setCommentSectionHeight();
   }
 
-  public get confirmDialog() {
+  public get confirmDialogData() {
     return {
       title: `Change Pattern Language for Candidate ${this.candidate.name}`,
       text: 'If you change the language everything writen will be deleted and the'

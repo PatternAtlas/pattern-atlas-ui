@@ -91,9 +91,7 @@ export class IssueManagementDetailComponent implements OnInit, AfterViewInit, On
   }
 
   ngOnDestroy() {
-    if (this.activeRouteSubscription != null) {
-      this.activeRouteSubscription.unsubscribe();
-    }
+    this.activeRouteSubscription?.unsubscribe();
   }
 
   ngAfterViewInit(): void {
