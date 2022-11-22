@@ -233,7 +233,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
 
   private showAndHandleLinkDialog() {
     const dialogRef = this.dialog.open(CreatePatternRelationComponent,
-      { data: { firstPattern: this.pattern, patterns: this.patterns } }
+      { data: { firstPattern: this.pattern, patterns: this.patterns, callerPatternId: this.patternId } }
     );
     const dialogSubscription = dialogRef.afterClosed().pipe(
       switchMap((edge) => {
