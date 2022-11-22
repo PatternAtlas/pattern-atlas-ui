@@ -88,6 +88,7 @@ export class CreatePatternRelationComponent implements OnInit {
     }
     const type = dialogResult.relationType ? dialogResult.relationType : null;
     const description = dialogResult.description ? dialogResult.description : null;
+    dialogResult.firstPattern.id = this.data.callerPatternId;
     switch (dialogResult.direction.name) {
       case PatternRelationDescriptorDirection.DirectedRight:
         return new DirectedEdgeModel(dialogResult.firstPattern, dialogResult.secondPattern, this.data.patternLanguage, description, type,
@@ -114,6 +115,7 @@ export class CreatePatternRelationComponent implements OnInit {
 export interface DialogData {
   relationType: string;
   description: string;
+  callerPatternId: string;
   firstPattern?: Pattern;
   secondPattern?: Pattern;
   preselectedEdgeDirection?: PatternRelationDescriptorDirection;
