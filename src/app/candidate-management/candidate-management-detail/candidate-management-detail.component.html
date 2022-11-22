@@ -16,7 +16,7 @@
             </pp-author-picker>
 
             <pp-pattern-language-picker class="detail-component" [disabled]="disabled"
-                [patternLanguageSelected]="candidate.patternLanguageId" [confirmDialog]="confirmDialog"
+                [patternLanguageSelected]="candidate.patternLanguageId" [confirmDialog]="confirmDialogData"
                 (patternLanguageSelectedChange)="patternLanguageSelectedChange($event)"></pp-pattern-language-picker>
 
             <!-- <pp-rating class="detail-component" [disabled]="!candidate.id" [upVotes]="candidate.upVotes" -->
@@ -59,13 +59,13 @@
                 <button mat-flat-button type="button" color="warn" (click)="cancelPattern()">Cancel</button>
             </div>
         </mat-card>
-        <pp-evidence-list [evidences]="candidate.evidences" [disabled]="!candidate.id"
+        <pp-evidence-list [evidences]="candidate?.evidences" [disabled]="candidate?.id == null"
             (createEvidenceEvent)="createEvidence($event)" (updateEvidenceEvent)="updateEvidence($event)"
             (deleteEvidenceEvent)="deleteEvidence($event)" (ratingEvent)="updateRatingEvidence($event)">
         </pp-evidence-list>
     </div>
     <pp-comment-list *ngIf="candidateHeight" class="right" [style.height.px]="candidateHeight"
-        [data]="candidate.comments" [disabled]="!candidate.id" (createCommentEvent)="createComment($event)"
+        [data]="candidate?.comments" [disabled]="candidate?.id == null" (createCommentEvent)="createComment($event)"
         (updateCommentEvent)="updateComment($event)" (deleteCommentEvent)="deleteComment($event)"
         (ratingEvent)="updateRatingComment($event)">
     </pp-comment-list>

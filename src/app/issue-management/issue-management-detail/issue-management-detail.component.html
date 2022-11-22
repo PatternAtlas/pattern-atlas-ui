@@ -61,13 +61,13 @@
                 </div>
             </form>
         </mat-card>
-        <pp-evidence-list [evidences]="issue.evidences" [disabled]="!issue.id" (createEvidenceEvent)="createEvidence($event)"
+        <pp-evidence-list [evidences]="issue?.evidences" [disabled]="issue?.id == null" (createEvidenceEvent)="createEvidence($event)"
             (updateEvidenceEvent)="updateEvidence($event)" (deleteEvidenceEvent)="deleteEvidence($event)"
             (ratingEvent)="updateRatingEvidence($event)">
         </pp-evidence-list>
     </div>
-    <pp-comment-list *ngIf="issueHeight" class="right" [style.height.px]="issueHeight" [data]="issue.comments"
-        [disabled]="!issue.id" (createCommentEvent)="createComment($event)" (updateCommentEvent)="updateComment($event)"
+    <pp-comment-list *ngIf="issueHeight" class="right" [style.height.px]="issueHeight" [data]="issue?.comments"
+        [disabled]="issue?.id == null" (createCommentEvent)="createComment($event)" (updateCommentEvent)="updateComment($event)"
         (deleteCommentEvent)="deleteComment($event)" (ratingEvent)="updateRatingComment($event)">
     </pp-comment-list>
 </div>

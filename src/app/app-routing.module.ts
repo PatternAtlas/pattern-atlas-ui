@@ -5,8 +5,6 @@ import { ToasterModule } from 'angular2-toaster';
 import { PageNotFoundComponent } from './core/component/page-not-found/page-not-found.component';
 import { AuthGuardService as AuthGuard } from './authentication/_services/auth-guard.service';
 import { PatternLanguageManagementResolverService } from './pattern-language-management/pattern-language-management/pattern-language-management-resolver.service'; // eslint-disable-line max-len
-import { UserRole } from './core/user-management';
-import { PrintHook } from '@angular/flex-layout';
 import { Privilege } from './core/user-management/_models/privilege.enum';
 import { globals } from './globals';
 /*
@@ -45,11 +43,11 @@ const routes: Routes = [
     loadChildren: () => import('./design-model-module/design-model.module').then(m => m.DesignModelModule),
   },
   {
-    path: 'candidate',
+    path: globals.pathConstants.candidate,
     loadChildren: () => import('./candidate-management/candidate-management.module').then(m => m.CandidateManagementModule),
   },
   {
-    path: 'issue',
+    path: globals.pathConstants.issue,
     loadChildren: () => import('./issue-management/issue-management.module').then(m => m.IssueManagementModule),
   },
   {
@@ -68,10 +66,7 @@ const routes: Routes = [
     path: 'oauth-callback',
     component: ProcessOauthCallbackComponent
   },
-  {
-    path: '**',
-    component: PageNotFoundComponent
-  },
+  { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({

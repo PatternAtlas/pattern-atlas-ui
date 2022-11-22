@@ -1,7 +1,7 @@
 <pp-action-button-bar [addButtonText]="'Add'" [goBackButton]="false" [reloadButton]="true" (addClicked)="new()"
     (reloadClicked)="getAll()" [firstAddPrivilegeName]="'ISSUE_CREATE'"></pp-action-button-bar>
 <div class="container-double">
-    <div class="left scrollable-double issue-list">
+    <div class="left scrollable-double issue-list" *ngIf="data?.length > 0">
         <!-- <button class="button-new" mat-raised-button color="accent" (click)="new()">New Issue</button> -->
         <mat-accordion multi="false" *ngFor="let issue of data">
             <mat-expansion-panel [expanded]="issue.id === activeIssue.id" (opened)="opened(issue)"

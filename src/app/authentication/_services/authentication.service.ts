@@ -52,7 +52,6 @@ export class AuthenticationService {
       } else if (token && !this.jwtHelper.isTokenExpired(token)) {
         this.getUserInfo();
         this.getRoles();
-        this.router.navigate(['/']);
 
       } else if (token && this.getRefreshToken() && this.jwtHelper.isTokenExpired(this.getAccessToken())) {
         this.refreshToken();
