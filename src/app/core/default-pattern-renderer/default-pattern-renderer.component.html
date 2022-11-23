@@ -28,12 +28,12 @@
       <div *ngIf="directedPatternRelations?.length > 0">
         <ng-container *ngFor="let relation of directedPatternRelations">
           <p class="horiz-centered">
-            <a [routerLink]="['..',relation.sourcePatternUri]">{{ relation?.sourcePatternName}}</a>
+            <a [routerLink]="['..',relation.sourcePatternId]">{{ relation?.sourcePatternName}}</a>
             <span *ngIf="relation?.type" class="horiz-centered">
                             <i class="material-icons">remove</i>{{relation?.type}}
                         </span>
             <i class="material-icons">trending_flat</i>
-            <a [routerLink]="['..', relation.targetPatternUri]">{{ relation?.targetPatternName}}</a>
+            <a [routerLink]="['..', relation.targetPatternId]">{{ relation?.targetPatternName}}</a>
             <i>{{relation?.description ? ': ' + relation?.description : ''}}</i>
           </p>
           <br/>
