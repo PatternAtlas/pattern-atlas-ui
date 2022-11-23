@@ -239,7 +239,7 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
       // call update for all additional authors
       for(let author of authorlist) {
         if(author.userId !== first_author) {
-          this.candidateManagementService.updateAuthorsCandidate(this.candidate, author).subscribe(result => {
+          this.candidateManagementService.updateAuthorsCandidate(result, author).subscribe(result => {
             this.candidate = result;
           })
         }
