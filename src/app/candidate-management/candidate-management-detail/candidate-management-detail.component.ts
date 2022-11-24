@@ -235,18 +235,18 @@ export class CandidateManagementDetailComponent implements OnInit, AfterViewInit
       if (_user) first_author = _user.id;
     })
 
-    this.candidateManagementService.createCandidate(this.candidate).subscribe(result => {
-      // call update for all additional authors
+    this.candidateManagementService.createCandidate(this.candidate).subscribe(createdCandidate => {
+      // call update for all additional authors using the newly created candidate
       for(let author of authorlist) {
         if(author.userId !== first_author) {
-          this.candidateManagementService.updateAuthorsCandidate(this.candidate, author).subscribe(result => {
-            this.candidate = result;
-          })
+          this.candidateManagementService.updateAuthorsCandidate(createdCandidate, author).subscribe(updatedCandidate => {
+            this.candidate = updatedCandidate;
+          });
         }
       }
 
       this.router.navigate(['./candidate/detail', this.candidate.name]);
-    })
+    });
   }
 
   update() {
