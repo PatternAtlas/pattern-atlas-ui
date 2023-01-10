@@ -20,8 +20,8 @@ import { PatternRelationDescriptorService } from '../service/pattern-relation-de
 import { ToasterService } from 'angular2-toaster';
 import { PatternService } from '../service/pattern.service';
 import Pattern from '../model/hal/pattern.model';
-import { CandidateManagementService } from '../candidate-management/_services/candidate-management.service';
-import { Candidate } from '../candidate-management/_models/candidate.model';
+import { CandidateManagementService } from '../candidate-management';
+import { Candidate } from '../candidate-management';
 import { FormControl } from '@angular/forms';
 import { globals } from '../../globals';
 import { PatternRelationDescriptorDirection } from '../model/pattern-relation-descriptor-direction.enum';
@@ -51,7 +51,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   filter: FormControl;
   private directedPatternRelations: Array<DirectedEdgeModel> = [];
   private undirectedPatternRelations: Array<UndirectedEdgeModel> = [];
-  private patternLinks: Array<UndirectedEdgeModel | DirectedEdgeModel>;
+  patternLinks: Array<UndirectedEdgeModel | DirectedEdgeModel>;
   subscriptions = new Subscription();
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -87,7 +87,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
     const $getDirectedEdges = this.getDirectedEdges();
     const $getUndirectedEdges = this.getUndirectedEdges();
     return forkJoin([$getDirectedEdges, $getUndirectedEdges]).pipe(
-      tap((edges) => {
+      tap(() => {
         this.patternLinks = [];
         this.patternLinks.push(...this.directedPatternRelations);
         this.patternLinks.push(...this.undirectedPatternRelations);
