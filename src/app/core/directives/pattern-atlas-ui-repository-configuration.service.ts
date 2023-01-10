@@ -6,13 +6,14 @@ import { map } from 'rxjs/operators';
 
 export enum UiFeatures {
   DESIGN_MODEL = 'designModel',
-  PATTERNCANDIDATE = 'patternCandidate',
-  PATTERNVIEWS = 'patternViews',
+  PATTERN_CANDIDATE = 'patternCandidate',
+  PATTERN_VIEWS = 'patternViews',
   ISSUE = 'issue',
   SHOW_SETTINGS = 'showSettings',
   EDITING = 'editing',
   AUTHENTICATION = 'authentication',
-  PLANQK_UI = 'planqkUi'
+  PLANQK_UI = 'planqkUi',
+  DEPLOYMENT_MODELLING = 'deploymentModelling'
 }
 
 export interface PatternAtlasUiConfiguration {
@@ -24,7 +25,8 @@ export interface PatternAtlasUiConfiguration {
     showSettings: boolean,
     editing: boolean,
     authentication: boolean,
-    planqkUi: boolean
+    planqkUi: boolean,
+    deploymentModelling: boolean,
   };
 }
 
@@ -51,7 +53,8 @@ const initialValues: PatternAtlasUiConfiguration = {
     showSettings: true,
     editing: true,
     authentication: true,
-    planqkUi: false
+    planqkUi: false,
+    deploymentModelling: false,
   },
 };
 
@@ -93,6 +96,8 @@ export class PatternAtlasUiRepositoryConfigurationService {
   }
 
   applyConfig(feature: UiFeatures, checked: boolean): Observable<string> {
+    this._configuration.features[feature] = checked;
+
     const url = environment.CONFIG_SERVER_URL + '/features/' + feature;
 
     return this.http.put<string>(

@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import {
   PatternAtlasUiConfiguration, PatternAtlasUiRepositoryConfigurationService, UiFeatures
 } from '../../directives/pattern-atlas-ui-repository-configuration.service';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ToasterService } from 'angular2-toaster';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'pp-feature-toggle-dialog',
@@ -19,8 +19,13 @@ export class FeatureToggleDialogComponent implements OnInit {
   constructor(
     private http: HttpClient, private toasterService: ToasterService,
     private configService: PatternAtlasUiRepositoryConfigurationService,
-    public dialogRef: MatDialogRef<FeatureToggleDialogComponent>
+    public dialogRef: MatDialogRef<FeatureToggleDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { isAdmin: boolean }
   ) {
+  }
+
+  public disabled(): boolean {
+    return !(this.config.features.showSettings || this.data.isAdmin);
   }
 
   ngOnInit(): void {
@@ -28,10 +33,10 @@ export class FeatureToggleDialogComponent implements OnInit {
   }
 
   toggleFeature(feature: UiFeatures, event: Event): void {
-    if (this.config.features.showSettings) {
+    if (this.config.features.showSettings || this.data.isAdmin) {
       this.configService.applyConfig(feature, event.target['checked']).subscribe(
         () => this.toasterService.pop('success', 'Successfully updated the config!'),
-        (error: HttpErrorResponse) =>
+        () =>
           this.toasterService.pop(
             'error', 'Error while saving config!'
           )

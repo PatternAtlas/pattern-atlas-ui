@@ -42,8 +42,8 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   patternLanguage: PatternLanguage;
   pattern: Pattern;
   patterns: Array<Pattern>;
-  private directedPatternRelations: Array<DirectedEdgeModel>;
-  private undirectedPatternRelations: Array<UndirectedEdgeModel>;
+  directedPatternRelations: Array<DirectedEdgeModel>;
+  undirectedPatternRelations: Array<UndirectedEdgeModel>;
   private viewContainerRef;
   private patternLanguageId: string;
   private patternId: string;
@@ -100,7 +100,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
       console.log('tried to get patterns before the pattern language object with the url was instanciated');
       return EMPTY;
     }
-    // check if pattern is specified via UUIID or URI and load it accordingly
+    // check if pattern is specified via UUID or URI and load it accordingly
     if (UriConverter.isUUID(this.patternId)) {
       return this.patternService.getPatternById(this.patternLanguage, this.patternId).pipe(
         tap(pattern => this.pattern = pattern),
@@ -216,7 +216,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
       tap((patternLanguage) => this.patternLanguage = patternLanguage),
       // load the rest: get our individual pattern and the links in parallel
       switchMap(() => forkJoin([this.getPatternObservable(), this.fillPatternSectionData(), this.getPatternLanguageLinks()])))
-      .subscribe(res => this.cdr.detectChanges());
+      .subscribe(() => this.cdr.detectChanges());
     this.subscriptions.add(subscription);
 
   }
@@ -240,7 +240,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
         return edge ? this.insertEdge(edge) : EMPTY;
       }))
       .subscribe(
-        data => {
+        () => {
           this.toasterService.pop('success', 'Created new Relation');
         }
       );
@@ -266,9 +266,6 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        this.pattern.iconUrl = result.icon;
-        this.pattern.name = result.name;
-        this.pattern.paperRef = result.paperRef;
         this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe();
       }
     });

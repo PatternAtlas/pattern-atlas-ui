@@ -22,6 +22,11 @@ class Pattern extends UriEntity {
   renderedContent: any;
   patternLanguageId: string;
   patternLanguageName: string;
+
+  // extension for deployment modelling
+  deploymentModelingBehaviorPattern: boolean;
+  deploymentModelingStructurePattern: boolean;
+
   _links: {
     self: HalLink;
     content: HalLink;

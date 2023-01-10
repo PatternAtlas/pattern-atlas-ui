@@ -12,7 +12,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from './authentication/_services/authentication.service';
 import { PrivilegeService } from './authentication/_services/privilege.service';
 import { globals } from './globals';
@@ -23,7 +23,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ToasterService } from 'angular2-toaster';
 import { MatDialog } from '@angular/material/dialog';
 import { FeatureToggleDialogComponent } from './core/component/feature-toggle-dialog/feature-toggle-dialog.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import { UserRole } from './core/user-management';
 
 @Component({
   selector: 'pp-root',
@@ -41,13 +41,14 @@ export class AppComponent implements OnInit {
   readonly pathConstants = globals.pathConstants;
   loading = true;
   planqkUi = false;
+  showFeatureFlag = false;
+  private isAdmin: boolean;
 
   constructor(public auth: AuthenticationService,
               public p: PrivilegeService,
               private toasterService: ToasterService,
               private configService: PatternAtlasUiRepositoryConfigurationService,
-              private dialog: MatDialog,
-              private cdr: ChangeDetectorRef, private router: Router, private route: ActivatedRoute) {
+              private dialog: MatDialog) {
   }
 
   login() {
@@ -63,33 +64,42 @@ export class AppComponent implements OnInit {
       () => {
         this.loading = false;
         this.planqkUi = this.configService.configuration.features[UiFeatures.PLANQK_UI];
+        this.updateShowFeatureDialogFlag();
       },
       (error: HttpErrorResponse) => {
         this.loading = false;
         this.planqkUi = true;
-        if(error.status === globals.statusCodeNotFound){
+
+        if (error.status === globals.statusCodeNotFound) {
           this.configService.getDefaultConfiguration();
-        }
-        else if (this.configService.configuration.features[UiFeatures.SHOW_SETTINGS]) {
+        } else if (this.configService.configuration.features[UiFeatures.SHOW_SETTINGS]) {
           console.log('default values applied');
         }
+        this.updateShowFeatureDialogFlag();
       }
     );
     this.auth.user.subscribe(_user => {
       if (_user) {
+        this.isAdmin = _user.role == UserRole.ADMIN;
         this.userName = _user.name;
         this.loggedIn = true;
+        this.updateShowFeatureDialogFlag();
       } else {
         this.userName = null;
         this.loggedIn = false;
+        this.updateShowFeatureDialogFlag();
       }
     })
   }
 
   openFeatureToggleDialog() {
-    this.dialog.open(FeatureToggleDialogComponent).afterClosed().subscribe(() => {
+    this.dialog.open(FeatureToggleDialogComponent, { data: { isAdmin: this.isAdmin } }).afterClosed().subscribe(() => {
       // reload page to trigger ShowOnFeatureDirectives which use the ngOnInit lifecycle hook
       window.location.reload();
     });
+  }
+
+  private updateShowFeatureDialogFlag() {
+    this.showFeatureFlag = !this.planqkUi || this.isAdmin;
   }
 }
