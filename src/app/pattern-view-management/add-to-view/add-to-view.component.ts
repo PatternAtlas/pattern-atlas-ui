@@ -242,7 +242,7 @@ export class AddToViewComponent {
 
   private getPatternsAndAddToTree(item: PatternLanguage, treenode, node) {
     this.patternService.getPatternsByUrl(item._links.patterns.href).subscribe((patterns) => {
-      const dummy = {
+      const dummy : Pattern = {
         id: this.LOAD_MORE,
         name: '',
         uri: '',
@@ -250,7 +250,9 @@ export class AddToViewComponent {
         renderedContent: null,
         _links: null,
         patternLanguageId: '',
-        patternLanguageName: ''
+        patternLanguageName: '',
+        deploymentModelingBehaviorPattern: false,
+        deploymentModelingStructurePattern: false
       };
       const childnodes = patterns.length > 0 ? patterns.map(it => new LoadmoreNode(it)) : [new LoadmoreNode(dummy)];
 
