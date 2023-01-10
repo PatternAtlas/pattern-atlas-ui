@@ -5,8 +5,8 @@
                           [iconEdit]="true"
                           [iconUrl]="pattern?.iconUrl" (iconEditClicked)="editIcon()">
     </pp-action-button-bar>
-      <button mat-stroked-button style="margin-left: 5px" color="primary" *ngIf="showActionButtons && isEditingEnabled"
-                     (click)="editIcon()" matTooltip="Edit"><i class="material-icons">mode_edit</i></button>
+    <button mat-stroked-button style="margin-left: 5px" color="primary" *ngIf="showActionButtons && isEditingEnabled"
+            (click)="editIcon()" matTooltip="Edit"><i class="material-icons">mode_edit</i></button>
   </mat-card-header>
 
   <span class="copyright" *ngIf="pattern?.paperRef"> <i class="material-icons">copyright</i>
@@ -19,61 +19,79 @@
   <div>
     <ng-template ppPatternProperty></ng-template>
   </div>
-  <mat-card *ngIf="!isLoading" class="section-card">
-    <mat-card-header>
-      <mat-card-subtitle style="display: flex;
-     align-items: flex-start;"><b>Relations to other Patterns</b></mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <div *ngIf="directedPatternRelations?.length > 0">
-        <ng-container *ngFor="let relation of directedPatternRelations">
-          <p class="horiz-centered">
-            <a [routerLink]="['..',relation.sourcePatternId]">{{ relation?.sourcePatternName}}</a>
-            <span *ngIf="relation?.type" class="horiz-centered">
+
+  <ng-container *ngIf="!isLoading">
+    <mat-card class="section-card">
+      <mat-card-header>
+        <mat-card-subtitle class="subtitle"><b>Relations to other Patterns</b></mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div *ngIf="directedPatternRelations?.length > 0">
+          <ng-container *ngFor="let relation of directedPatternRelations">
+            <p class="horiz-centered">
+              <a [routerLink]="['..',relation.sourcePatternId]">{{ relation?.sourcePatternName}}</a>
+              <span *ngIf="relation?.type" class="horiz-centered">
                             <i class="material-icons">remove</i>{{relation?.type}}
                         </span>
-            <i class="material-icons">trending_flat</i>
-            <a [routerLink]="['..', relation.targetPatternId]">{{ relation?.targetPatternName}}</a>
-            <i>{{relation?.description ? ': ' + relation?.description : ''}}</i>
-          </p>
-          <br/>
-        </ng-container>
-      </div>
-      <div *ngIf="undirectedPatternRelations?.length > 0">
-        <ng-container *ngFor="let relation of undirectedPatternRelations">
-          <p class="horiz-centered">
-            <a [routerLink]="['..', relation.pattern1Uri]">{{ relation?.pattern1Name}}</a>
-            <span *ngIf="!relation?.type"><i class="material-icons">compare_arrows</i></span>
-            <span *ngIf="relation?.type" class="horiz-centered"><i
-              class="material-icons flip">trending_flat</i>{{relation?.type}}
-              <i class="material-icons">trending_flat</i></span>
-            <a [routerLink]="['..',relation.pattern2Uri]">{{ relation?.pattern2Name}}</a>
-            <i>{{relation?.description ? ': ' + relation?.description : ''}}</i>
-          </p>
-          <br/>
-        </ng-container>
-      </div>
-      <div *ngIf="undirectedPatternRelations?.length === 0 && directedPatternRelations?.length === 0">
-        <p> No links found for this pattern.</p>
-      </div>
-      <mat-card-actions>
-        <div style="display: flex; align-items: center;">
-          <button (click)="addLink()"
-                  *ngIf="isEditingEnabled"
-                  color="primary"
-                  mat-stroked-button
-                  matTooltip="Add Relation"
-                  style="margin-left: 5px">
-            <i class="material-icons">trending_flat</i>
-            <i class="material-icons" style="height: 2em;
-    font-size: smaller;  ">add</i>
-          </button>
+              <i class="material-icons">trending_flat</i>
+              <a [routerLink]="['..', relation.targetPatternId]">{{ relation?.targetPatternName}}</a>
+              <i>{{relation?.description ? ': ' + relation?.description : ''}}</i>
+            </p>
+            <br/>
+          </ng-container>
         </div>
-      </mat-card-actions>
-    </mat-card-content>
+        <div *ngIf="undirectedPatternRelations?.length > 0">
+          <ng-container *ngFor="let relation of undirectedPatternRelations">
+            <p class="horiz-centered">
+              <a [routerLink]="['..', relation.pattern1Uri]">{{ relation?.pattern1Name}}</a>
+              <span *ngIf="!relation?.type"><i class="material-icons">compare_arrows</i></span>
+              <span *ngIf="relation?.type" class="horiz-centered"><i
+                class="material-icons flip">trending_flat</i>{{relation?.type}}
+                <i class="material-icons">trending_flat</i></span>
+              <a [routerLink]="['..',relation.pattern2Uri]">{{ relation?.pattern2Name}}</a>
+              <i>{{relation?.description ? ': ' + relation?.description : ''}}</i>
+            </p>
+            <br/>
+          </ng-container>
+        </div>
+        <div *ngIf="undirectedPatternRelations?.length === 0 && directedPatternRelations?.length === 0">
+          <p> No links found for this pattern.</p>
+        </div>
+        <mat-card-actions>
+          <div style="display: flex; align-items: center;">
+            <button (click)="addLink()"
+                    *ngIf="isEditingEnabled"
+                    color="primary"
+                    mat-stroked-button
+                    matTooltip="Add Relation"
+                    style="margin-left: 5px">
+              <i class="material-icons">trending_flat</i>
+              <i class="material-icons" style="height: 2em;
+    font-size: smaller;  ">add</i>
+            </button>
+          </div>
+        </mat-card-actions>
+      </mat-card-content>
+    </mat-card>
 
-  </mat-card>
-
+    <mat-card class="section-card" *patternAtlasUiShowOnFeature="UiFeatures.DEPLOYMENT_MODELLING">
+      <mat-card-header>
+        <mat-card-subtitle class="'subtitle'"><b>Usage in Deployment Modelling</b></mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          <input type="checkbox" disabled id="structurePattern" [checked]="pattern?.deploymentModelingStructurePattern">
+          <label for="structurePattern">Pattern can be used as a <b>Component Pattern</b> to represent a structural element
+            in a deployment model</label>
+        </p>
+        <p>
+          <input type="checkbox" disabled id="behaviorPattern" [checked]="pattern?.deploymentModelingBehaviorPattern">
+          <label for="behaviorPattern">Pattern can be used as a <b>Behavior Pattern</b> to describe an element's behavior in
+            a deployment model</label>
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </ng-container>
 </mat-card>
 <pp-creative-license-footer *ngIf="pattern && patternLanguage"
                             [patternLanguage]="patternLanguage"></pp-creative-license-footer>

@@ -2,19 +2,29 @@
 <div mat-dialog-content>
   <mat-form-field>
     <mat-label>Adjust Pattern Name</mat-label>
-    <input matInput placeholder={{data.pattern.name}} [(ngModel)]="data.name">
+    <input matInput placeholder={{data.pattern.name}} [(ngModel)]="data.pattern.name">
   </mat-form-field>
   <mat-form-field>
     <mat-label>Adjust Icon URL</mat-label>
-    <input matInput placeholder={{data.pattern.iconUrl}} [(ngModel)]="data.icon">
+    <input matInput placeholder={{data.pattern.iconUrl}} [(ngModel)]="data.pattern.iconUrl">
   </mat-form-field>
   <mat-form-field>
     <mat-label>Adjust Paper Reference</mat-label>
-    <input matInput placeholder={{data.pattern.patternRef}} [(ngModel)]="data.paperRef">
+    <input matInput placeholder={{data.pattern.patternRef}} [(ngModel)]="data.pattern.paperRef">
   </mat-form-field>
 
+  <div *patternAtlasUiShowOnFeature="UiFeatures.DEPLOYMENT_MODELLING">
+    <mat-checkbox [(ngModel)]="data.pattern.deploymentModelingBehaviorPattern">
+      Behavior Pattern
+    </mat-checkbox>
+    <br>
+    <mat-checkbox [(ngModel)]="data.pattern.deploymentModelingStructurePattern">
+      Component Pattern
+    </mat-checkbox>
+  </div>
+
 </div>
-<mat-dialog-actions align="end">
+<mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+  <button mat-button [mat-dialog-close]="data">Ok</button>
 </mat-dialog-actions>
