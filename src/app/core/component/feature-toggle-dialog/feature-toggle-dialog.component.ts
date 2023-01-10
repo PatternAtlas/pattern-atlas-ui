@@ -33,7 +33,7 @@ export class FeatureToggleDialogComponent implements OnInit {
   }
 
   toggleFeature(feature: UiFeatures, event: Event): void {
-    if (this.config.features.showSettings) {
+    if (this.config.features.showSettings || this.data.isAdmin) {
       this.configService.applyConfig(feature, event.target['checked']).subscribe(
         () => this.toasterService.pop('success', 'Successfully updated the config!'),
         () =>

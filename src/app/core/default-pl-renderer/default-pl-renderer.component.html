@@ -20,12 +20,12 @@
 
 <mat-progress-spinner *ngIf="isLoadingPatternData" mode="indeterminate"></mat-progress-spinner>
 <div>
-  <div *patternAtlasUiHideOnFeature="UiFeatures.PATTERNCANDIDATE">
+  <div *patternAtlasUiHideOnFeature="UiFeatures.PATTERN_CANDIDATE">
     <pp-card-renderer *ngIf="!graphVisible && patterns && patternsForCardsView"
                         [uriEntities]="this.patternsForCardsView"
                         [showLinks]="false"></pp-card-renderer>
   </div>
-  <div *patternAtlasUiShowOnFeature="UiFeatures.PATTERNCANDIDATE">
+  <div *patternAtlasUiShowOnFeature="UiFeatures.PATTERN_CANDIDATE">
     <mat-tab-group *ngIf="!graphVisible" mat-align-tabs="start">
       <mat-tab label="Patterns">
         <pp-card-renderer *ngIf="patterns && patternsForCardsView"
@@ -39,8 +39,8 @@
   </div>
   <!-- setup graph child including emit methods -->
   <pp-graph-display *ngIf="graphVisible && patterns && !isLoadingLinkData" [data]="{
-                patterns: this.patterns, edges: this.patternLinks,
-                patternLanguage: this.patternLanguage, patternContainer: null
+                patterns: this.patterns, edges: this.patternLinks, copyOfLinks: [],
+                patternLanguage: this.patternLanguage, patternContainer: null, patternLanguages: []
             }" (addedEdge)="handleLinkAddedInGraphEditor($event)" (removedEdge)="handleLinkRemovedInGraphEditor($event)"
                     [showPatternLanguageName]="false">
   </pp-graph-display>

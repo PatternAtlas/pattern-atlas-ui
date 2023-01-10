@@ -16,13 +16,13 @@
          name="patternCandidate"
          [checked]="config.features.patternCandidate"
          [disabled]="disabled()"
-         (change)="toggleFeature(UiFeatures.PATTERNCANDIDATE, $event)">
+         (change)="toggleFeature(UiFeatures.PATTERN_CANDIDATE, $event)">
   <label for="patternCandidate">Pattern Candidate</label>
   <br>
   <input type="checkbox" [(ngModel)]="config.features.patternViews" id="patternViews" name="patternViews"
          [checked]="config.features.patternViews"
          [disabled]="disabled()"
-         (change)="toggleFeature(UiFeatures.PATTERNVIEWS, $event)">
+         (change)="toggleFeature(UiFeatures.PATTERN_VIEWS, $event)">
   <label for="patternViews">Pattern Views</label>
   <br>
   <input type="checkbox" [(ngModel)]="config.features.editing" id="editing" name="editing"

@@ -6,8 +6,8 @@ import { map } from 'rxjs/operators';
 
 export enum UiFeatures {
   DESIGN_MODEL = 'designModel',
-  PATTERNCANDIDATE = 'patternCandidate',
-  PATTERNVIEWS = 'patternViews',
+  PATTERN_CANDIDATE = 'patternCandidate',
+  PATTERN_VIEWS = 'patternViews',
   ISSUE = 'issue',
   SHOW_SETTINGS = 'showSettings',
   EDITING = 'editing',
