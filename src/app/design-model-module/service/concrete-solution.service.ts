@@ -22,7 +22,7 @@ import { environment } from '../../../environments/environment';
 @Injectable()
 export class ConcreteSolutionService {
 
-  private readonly repoEndpoint = environment.API_URL + '/design-models';
+  private readonly repoEndpoint = environment.API_URL + '/designModels';
 
   constructor(private httpClient: HttpClient) {
   }

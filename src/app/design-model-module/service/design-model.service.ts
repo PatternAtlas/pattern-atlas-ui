@@ -37,7 +37,7 @@ import { environment } from '../../../environments/environment';
 export class DesignModelService implements GraphDataService, GraphDataSavePatternService {
 
   private readonly repoEndpoint = environment.API_URL;
-  private readonly designModelsEndpoint = this.repoEndpoint + '/design-models';
+  private readonly designModelsEndpoint = this.repoEndpoint + '/designModels';
   private designModelLinks;
   private edgeTypes = new BehaviorSubject<string[]>([]);
 

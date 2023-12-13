@@ -1,6 +1,6 @@
 {
   "features": {
-    "designModel": false,
+    "designModel": true,
     "patternCandidate": true,
     "patternViews": true,
     "issue": true,

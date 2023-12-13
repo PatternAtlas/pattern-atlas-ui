@@ -14,6 +14,7 @@ import { DesignModelResponse } from '../../model/hal/design-model-response';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DesignModel } from '../../model/hal/design-model';
 import { DeleteConfirmationDialogComponent } from '../../../core/component/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import {toBase64String} from '@angular/compiler/src/output/source_map';
 
 @Component({
   selector: 'pp-design-model-management',
@@ -38,7 +39,8 @@ export class DesignModelManagementComponent implements OnInit {
   }
 
   private getData(): Observable<DesignModelResponse> {
-    return this.designModelService.getDesignModels().pipe(tap((modelResponse) => {
+    return this.designModelService.getDesignModels()
+      .pipe(tap((modelResponse) => {
       this.designModelResponse = modelResponse;
     }));
   }

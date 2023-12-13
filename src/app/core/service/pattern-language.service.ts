@@ -40,23 +40,15 @@ export class PatternLanguageService implements GraphDataService {
   }
 
   getPatternLanguages(): Observable<Array<PatternLanguageModel>> {
-    return this.getPatternLanguageResult()
-      .pipe(
-        map((result: PatternLanguages) => {
-          return result._embedded ? result._embedded.patternLanguageModels : [];
-        })
-      );
+    return this.getPatternLanguageResult();
   }
 
   public getPatternLanguagesSchemas(): Observable<PatternLanguageSchemaModel[]> {
-    return this.http.get<any>(this.repoEndpoint + '/patternLanguages/patternSchemas').pipe(
-      map(result => result._embedded ? result._embedded.patternLanguageSchemaModels : []
-      )
-    );
+    return this.http.get<Array<PatternLanguageSchemaModel>>(this.repoEndpoint + '/pattern-languages/pattern-schemas');
   }
 
-  public getPatternLanguageResult(): Observable<PatternLanguages> {
-    return this.http.get<PatternLanguages>(this.repoEndpoint + '/patternLanguages');
+  public getPatternLanguageResult(): Observable<Array<PatternLanguageModel>> {
+    return this.http.get<Array<PatternLanguageModel>>(this.repoEndpoint + '/pattern-languages');
   }
 
   getPatternLanguageByUrl(url: string): Observable<PatternLanguage> {
@@ -66,17 +58,17 @@ export class PatternLanguageService implements GraphDataService {
   }
 
   getPatternLanguageByEncodedUri(encodedUri: string): Observable<PatternLanguage> {
-    const url = this.repoEndpoint + '/patternLanguages/findByUri?encodedUri=' + encodedUri;
+    const url = this.repoEndpoint + '/pattern-languages/findByUri?encodedUri=' + encodedUri;
     return this.http.get<PatternLanguage>(url);
   }
 
   getPatternLanguageById(id: string): Observable<PatternLanguage> {
-    const url = this.repoEndpoint + '/patternLanguages/' + id;
+    const url = this.repoEndpoint + '/pattern-languages/' + id;
     return this.http.get<PatternLanguage>(url);
   }
 
   savePatternLanguage(patternLanguage: PatternLanguage): Observable<HttpResponse<any>> {
-    return this.http.post<HttpResponse<any>>(this.repoEndpoint + '/patternLanguages', patternLanguage, { observe: 'response' });
+    return this.http.post<HttpResponse<any>>(this.repoEndpoint + '/pattern-languages', patternLanguage, { observe: 'response' });
   }
 
   getDirectedEdges(patternLanguage: PatternLanguage): Observable<Embedded<DirectedEdesResponse>> {
@@ -96,7 +88,7 @@ export class PatternLanguageService implements GraphDataService {
   }
 
   getPatternLanguageByID(patternLanguageId: string): Observable<PatternLanguage> {
-    const url = this.repoEndpoint + '/patternLanguages/' + patternLanguageId;
+    const url = this.repoEndpoint + '/pattern-languages/' + patternLanguageId;
     return this.http.get<PatternLanguage>(url);
   }
 
@@ -117,7 +109,7 @@ export class PatternLanguageService implements GraphDataService {
   }
 
   deletePatternLanguage(patternLanguageId: string) {
-    const url = this.repoEndpoint + '/patternLanguages/' + patternLanguageId;
+    const url = this.repoEndpoint + '/pattern-languages/' + patternLanguageId;
     return this.http.delete(url);
   }
 }
