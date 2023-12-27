@@ -17,9 +17,6 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { EMPTY, forkJoin, Observable, Subscription } from 'rxjs';
 import { PatternRelationDescriptorService } from '../service/pattern-relation-descriptor.service';
 import { DirectedEdgeModel } from '../model/hal/directed-edge.model';
-import { Embedded } from '../model/hal/embedded';
-import { DirectedEdesResponse } from '../model/hal/directed-edes-response.interface';
-import { UndirectedEdgesResponse } from '../model/hal/undirected-edes-response.interface';
 import { UndirectedEdgeModel } from '../model/hal/undirected-edge.model';
 import { globals } from '../../globals';
 import { UriConverter } from '../util/uri-converter';
@@ -28,6 +25,7 @@ import {
   PatternAtlasUiRepositoryConfigurationService, UiFeatures
 } from '../directives/pattern-atlas-ui-repository-configuration.service';
 import { PrivilegeService } from '../../authentication/_services/privilege.service';
+import PatternModel from '../model/pattern.model';
 
 @Component({
   selector: 'pp-default-pattern-renderer',
@@ -40,8 +38,8 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
   isLoadingLinks = true;
   isEditingEnabled = false;
   patternLanguage: PatternLanguage;
-  pattern: Pattern;
-  patterns: Array<Pattern>;
+  pattern: PatternModel;
+  patterns: Array<PatternModel>;
   directedPatternRelations: Array<DirectedEdgeModel>;
   undirectedPatternRelations: Array<UndirectedEdgeModel>;
   private viewContainerRef;
@@ -84,7 +82,7 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
 
   addLink() {
     if (!this.patterns || this.patterns.length === 0) {
-      let patternSubscription = this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href).subscribe((patterns) => {
+      let patternSubscription = this.patternService.getPatternsByPatternLanguageId(this.patternLanguage.id).subscribe((patterns) => {
         this.patterns = patterns;
         this.patterns.sort((p1, p2) => p1.name.localeCompare(p2.name));
         this.showAndHandleLinkDialog();
@@ -95,24 +93,24 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
     }
   }
 
-  getPatternData(): Observable<Pattern> {
+  getPatternData(): Observable<PatternModel> {
     if (!this.patternLanguage) {
       console.log('tried to get patterns before the pattern language object with the url was instanciated');
       return EMPTY;
     }
     // check if pattern is specified via UUID or URI and load it accordingly
     if (UriConverter.isUUID(this.patternId)) {
-      return this.patternService.getPatternById(this.patternLanguage, this.patternId).pipe(
+      return this.patternService.getPatternByPatternLanguageId(this.patternLanguage.id, this.patternId).pipe(
         tap(pattern => this.pattern = pattern),
         switchMap(() => this.getPatternSectionContent()));
     } else {
-      return this.patternService.getPatternByEncodedUri(this.patternId).pipe(
+      return this.patternService.getPatternByEncodedUri(encodeURI(this.pattern.uri)).pipe(
         tap(pattern => this.pattern = pattern),
         switchMap(() => this.getPatternSectionContent()));
     }
   }
 
-  getPatternSectionContent(): Observable<Pattern> {
+  getPatternSectionContent(): Observable<PatternModel> {
     const content = this.patternService.getPatternContentByPattern(this.pattern);
     const renderedContent = this.patternService.getPatternRenderedContentByPattern(this.pattern);
     return forkJoin([content, renderedContent]).pipe(
@@ -167,31 +165,22 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
     this.subscriptions.add(changeSubscription);
   }
 
-  private getDirectedEdges(): Observable<Embedded<DirectedEdesResponse>> {
+  private getDirectedEdges(): Observable<Array<DirectedEdgeModel>> {
     if (!this.patternLanguage) {
       return EMPTY;
     }
-    return this.patternLanguageService.getDirectedEdges(this.patternLanguage).pipe(
-      tap((edges) => {
-        this.directedPatternRelations = edges && edges._embedded ?
-          edges._embedded.directedEdgeModels.filter(edge => edge.sourcePatternId === this.patternId ||
-            edge.targetPatternId === this.patternId) : [];
-      }));
+    return this.patternLanguageService.getDirectedEdges(this.patternLanguage);
   }
 
-  private getUndirectedEdges(): Observable<Embedded<UndirectedEdgesResponse>> {
+  private getUndirectedEdges(): Observable<Array<UndirectedEdgeModel>> {
     if (!this.patternLanguage) {
       return EMPTY;
     }
-    return this.patternLanguageService.getUndirectedEdges(this.patternLanguage).pipe(
-      tap((edges) => {
-        this.undirectedPatternRelations = edges && edges._embedded ?
-          edges._embedded.undirectedEdgeModels.filter(edge => edge.pattern1Id === this.patternId || edge.pattern2Id === this.patternId) : [];
-      }));
+    return this.patternLanguageService.getUndirectedEdges(this.patternLanguage);
   }
 
   private savePattern(section: string, previousContent: any, instance: MarkdownPatternSectionContentComponent) {
-    const updateSubscription = this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe(
+    const updateSubscription = this.patternService.updatePattern(this.pattern).subscribe(
       data => {
         this.pattern.renderedContent[section] = data.body.renderedContent[section];
         instance.changeText(this.pattern.renderedContent[section]);
@@ -266,15 +255,12 @@ export class DefaultPatternRendererComponent implements AfterViewInit, OnDestroy
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        this.patternService.updatePattern(this.pattern._links.self.href, this.pattern).subscribe();
+        this.patternService.updatePattern(this.pattern).subscribe();
       }
     });
   }
 
-  private getPatternObservable(): Observable<Pattern> {
-    return UriConverter.isUUID(this.patternId) ?
-      this.patternService.getPatternById(this.patternLanguage, this.patternId) :
-      this.patternService.getPatternByEncodedUri(this.patternId).pipe(
-        tap(pattern => this.pattern = pattern));
+  private getPatternObservable(): Observable<PatternModel> {
+    return this.patternService.getPatternByPatternLanguageId(this.patternLanguage.id, this.patternId);
   }
 }

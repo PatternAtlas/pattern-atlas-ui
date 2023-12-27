@@ -21,6 +21,7 @@ import { PatternResponse } from '../model/hal/pattern-response.interface';
 import PatternLanguage from '../model/hal/pattern-language.model';
 import { Edge } from '../model/hal/edge.model';
 import { environment } from '../../../environments/environment';
+import PatternModel from '../model/pattern.model';
 
 @Injectable()
 export class PatternService {
@@ -30,9 +31,9 @@ export class PatternService {
   constructor(private http: HttpClient) {
   }
 
-  public getPatternByEncodedUri(encodedUri: string): Observable<Pattern> {
+  public getPatternByEncodedUri(encodedUri: string): Observable<PatternModel> {
     const url = this.repoEndpoint + '/patterns/search/findByUri?encodedUri=' + encodedUri;
-    return this.http.get<Pattern>(url);
+    return this.http.get<PatternModel>(url);
   }
 
   getPatternsByUrl(patternsUrl: string): Observable<Array<Pattern>> {
@@ -43,20 +44,20 @@ export class PatternService {
     );
   }
 
-  getPatternContentByPattern(pattern: Pattern): Observable<{ content: any }> {
-    return this.http.get<{ content: any }>(pattern._links.content.href);
+  getPatternContentByPattern(pattern: PatternModel): Observable<{ content: any }> {
+    return this.http.get<{ content: any }>(this.repoEndpoint + '/pattern-languages/' + pattern.patternLanguageId + '/patterns/' + pattern.id + '/content');
   }
 
-  getPatternRenderedContentByPattern(pattern: Pattern): Observable<{ renderedContent: any }> {
-    return this.http.get<{ renderedContent: any }>(pattern._links.renderedContent.href);
+  getPatternRenderedContentByPattern(pattern: PatternModel): Observable<{ renderedContent: any }> {
+    return this.http.get<{ renderedContent: any }>(this.repoEndpoint + '/pattern-languages/' + pattern.patternLanguageId + '/patterns/' + pattern.id + '/rendered-content');
   }
 
   savePattern(url: string, pattern: any): Observable<any> {
     return this.http.post<Pattern>(url, pattern, { observe: 'response' });
   }
 
-  updatePattern(url: string, pattern: any): Observable<any> {
-    return this.http.put<Pattern>(url, pattern, { observe: 'response' });
+  updatePattern(pattern: PatternModel): Observable<any> {
+    return this.http.put<Pattern>(this.repoEndpoint + '/pattern-languages/' + pattern.patternLanguageId + '/patterns/' + pattern.id, pattern, { observe: 'response' });
   }
 
   deletePattern(url: string): Observable<any> {
@@ -67,18 +68,14 @@ export class PatternService {
     return this.http.get<Array<Edge>>(url);
   }
 
-  getPatternById(patternLanguage: PatternLanguage, patternId: string): Observable<Pattern> {
-    return this.http.get <Pattern>(
-      (patternLanguage._links.patterns ?
-        patternLanguage._links.patterns.href + '/' + patternId :
-        this.repoEndpoint + '/patternLanguages/' + patternLanguage.id + '/patterns/' + patternId));
+  getPatternByPatternLanguageId(patternLanguageId: string, patternId: string): Observable<PatternModel> {
+    return this.http.get <PatternModel>(
+      this.repoEndpoint + '/pattern-languages/' + patternLanguageId + '/patterns/' + patternId
+    );
   }
 
-  getPatternsById(patternLanguageId: string): Observable<Array<Pattern>> {
-    return this.http.get <PatternResponse>(this.repoEndpoint + '/patternLanguages/' + patternLanguageId + '/patterns/').pipe(
-      map(result => {
-        return <Array<Pattern>>(result && result._embedded ? result._embedded.patternModels : [])
-      }));
+  getPatternsByPatternLanguageId(patternLanguageId: string): Observable<Array<PatternModel>> {
+    return this.http.get <Array<PatternModel>>(this.repoEndpoint + '/pattern-languages/' + patternLanguageId + '/patterns');
   }
 
   getPatternByUrl(href: string): Observable<PatternResponse> {

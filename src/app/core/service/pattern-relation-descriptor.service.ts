@@ -9,6 +9,7 @@ import PatternLanguage from '../model/hal/pattern-language.model';
 import { CreateUndirectedEdgeRequest } from '../model/hal/create-undirected-edge-request';
 import { CreateDirectedEdgeRequest } from '../model/hal/create-directed-edge-request';
 import { PatternResponse } from '../model/hal/pattern-response.interface';
+import PatternModel from '../model/pattern.model';
 
 @Injectable({
   providedIn: 'root'
@@ -50,7 +51,7 @@ export class PatternRelationDescriptorService {
       this.getDirectedEdgeByUrl(url) : this.getUndirectedEdgeByUrl(url);
   }
 
-  getEdgesForPattern(pattern: PatternResponse): Observable<EdgeWithType[]> {
+  getEdgesForPattern(pattern: PatternModel): Observable<EdgeWithType[]> {
     if (!pattern) {
       return of(null);
     }

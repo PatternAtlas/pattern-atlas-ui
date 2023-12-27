@@ -28,6 +28,7 @@ import { PatternViewService } from '../../service/pattern-view.service';
 import {
   PatternAtlasUiRepositoryConfigurationService, UiFeatures
 } from '../../directives/pattern-atlas-ui-repository-configuration.service';
+import PatternModel from '../../model/pattern.model';
 
 // file deepcode ignore no-any: out of scope, this should be done another time
 
@@ -409,8 +410,8 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   }
 
   private getEdgesForPattern(): void {
-    this.patternService.getPatternByUrl(this.currentPattern._links.self.href).pipe(
-      switchMap((pattern: PatternResponse) => {
+    this.patternService.getPatternByPatternLanguageId(this.currentPattern.patternLanguageId, this.currentPattern.id).pipe(
+      switchMap((pattern: PatternModel) => {
         return this.patternRelationDescriptionService.getEdgesForPattern(pattern);
       }))
       .subscribe(edges => {

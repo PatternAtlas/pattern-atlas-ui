@@ -64,7 +64,7 @@ export class MdEditorComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.patternService.getPatternsById(this.data.patternLanguageId).subscribe(res => this.patterns = res);
+    this.patternService.getPatternsByPatternLanguageId(this.data.patternLanguageId).subscribe(res => this.patterns = res);
     this.selectedPatternForm = this._fb.group({
       selectedPattern: ['', []]
     });

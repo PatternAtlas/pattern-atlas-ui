@@ -306,31 +306,25 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   }
 
   loadPatternsCandidatesAndLinks(): Observable<any> {
-    return forkJoin([this.loadPatterns(), this.loadCandidates(), this.getPatternLinks()]);
+    return forkJoin([this.loadPatterns(), this.getPatternLinks()]);
   }
 
-  private getDirectedEdges(): Observable<Embedded<DirectedEdesResponse>> {
+  private getDirectedEdges(): Observable<Array<DirectedEdgeModel>> {
     if (!this.patternLanguage) {
       return EMPTY;
     }
-    return this.patternLanguageService.getDirectedEdges(this.patternLanguage).pipe(
-      tap((edges) => {
-        this.directedPatternRelations = edges._embedded ? edges._embedded.directedEdgeModels : [];
-      }));
+    return this.patternLanguageService.getDirectedEdges(this.patternLanguage);
   }
 
-  private getUndirectedEdges(): Observable<Embedded<UndirectedEdgesResponse>> {
+  private getUndirectedEdges(): Observable<Array<UndirectedEdgeModel>> {
     if (!this.patternLanguage) {
       return EMPTY;
     }
-    return this.patternLanguageService.getUndirectedEdges(this.patternLanguage).pipe(
-      tap((edges) => {
-        this.undirectedPatternRelations = edges._embedded ? edges._embedded.undirectedEdgeModels : [];
-      }));
+    return this.patternLanguageService.getUndirectedEdges(this.patternLanguage);
   }
 
   private loadPatterns(): Observable<any[]> {
-    return this.patternService.getPatternsByUrl(this.patternLanguage._links.patterns.href).pipe(
+    return this.patternService.getPatternsByPatternLanguageId(this.patternLanguage.id).pipe(
       tap(patterns => {
         this.patterns = patterns;
         this.patternsForCardsView = this.patterns;

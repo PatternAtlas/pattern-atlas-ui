@@ -12,21 +12,25 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-class Pattern {
+class PatternModel {
   id: string;
   uri: string;
   name: string;
+  iconUrl?: string;
+  paperRef?: string;
+  content: any;
+  renderedContent: any;
+  patternLanguageId: string;
+  patternLanguageName: string;
 
-  sectionsProperties: Map<string, string[]>;
-  sectionPropertiesRendered: Map<string, string[]>;
+  // extension for deployment modelling
+  deploymentModelingBehaviorPattern: boolean;
+  deploymentModelingStructurePattern: boolean;
 
-  constructor(id: string, uri: string = null, name: string = null, sectionProperties: Map<string, string[]> = null) {
-    this.name = name;
-    this.uri = uri;
+  constructor(id: string, patternLanguageId: string) {
     this.id = id;
-    this.sectionsProperties = sectionProperties;
-    this.sectionPropertiesRendered = sectionProperties;
+    this.patternLanguageId = patternLanguageId;
   }
 }
 
-export default Pattern;
+export default PatternModel;
