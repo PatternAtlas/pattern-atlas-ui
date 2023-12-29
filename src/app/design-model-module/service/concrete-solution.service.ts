@@ -29,7 +29,7 @@ export class ConcreteSolutionService {
 
   getConcreteSolutionSet(uuid: string) {
     return this.httpClient.get<HalCollectionResponse>(this.repoEndpoint + '/' + uuid + '/concrete-solutions').pipe(
-      map(response => response._embedded.concreteSolutions)
+      map(response => response._embedded.concreteSolutionModels)
     );
   }
 

@@ -5,7 +5,7 @@
 
 
 <div class="container">
-  <mat-card *ngFor="let designModel of designModelResponse?._embedded?.designModels"
+  <mat-card *ngFor="let designModel of designModelResponse?._embedded?.designModelModels"
             class="landing-card">
     <mat-card-header>
       <img mat-card-avatar (click)="navigate(designModel)" [src]="designModel?.logo || '//via.placeholder.com/50x50'"

@@ -3,7 +3,7 @@ import { DesignModel } from './design-model';
 
 export interface DesignModelResponse {
   _embedded: {
-    designModels: DesignModel[]
+    designModelModels: DesignModel[]
   };
   _links: {
     self: HalLink;
