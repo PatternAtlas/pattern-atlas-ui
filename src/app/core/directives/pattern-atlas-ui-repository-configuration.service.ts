@@ -70,7 +70,6 @@ export class PatternAtlasUiRepositoryConfigurationService {
   }
 
   get configuration(): PatternAtlasUiConfiguration {
-    console.log(this._configuration)
     return this._configuration;
   }
 
