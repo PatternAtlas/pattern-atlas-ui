@@ -44,16 +44,18 @@ interface EtcdNode {
   createdIndex: number;
 }
 
+const IS_LOCALHOST = window.location?.hostname === 'localhost';
+
 const initialValues: PatternAtlasUiConfiguration = {
   features: {
     designModel: false,
-    patternCandidate: true,
+    patternCandidate: IS_LOCALHOST ? true : false,
     patternViews: false,
-    issue: true,
-    showSettings: true,
-    editing: true,
-    authentication: true,
-    planqkUi: false,
+    issue: IS_LOCALHOST ? true : false,
+    showSettings: IS_LOCALHOST ? true : false,
+    editing: IS_LOCALHOST ? true : false,
+    authentication: IS_LOCALHOST ? true : false,
+    planqkUi: IS_LOCALHOST ? false : true,
     deploymentModelling: false,
   },
 };
