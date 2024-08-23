@@ -1,0 +1,173 @@
+<ng-container>
+<button mat-icon-button class="close-button" (click)="close(null)">
+  <mat-icon class="close-icon" >close</mat-icon>
+</button>
+<div>
+<h1 mat-dialog-title ><span class="title" (click)="openLink()">{{algoName}}</span>
+	<button class="header-button" (click)="hideOptionalNodes()" mat-raised-button >
+		<i class="material-icons"></i> {{hideOptionalNodeText}}
+	</button>
+</h1>
+</div>
+<hr>
+<network-graph #graphWrapper
+    (onClickedNode)="handleNodeClickedEvent2($event)"
+	(onRemovedEdge)="handleEdgeRemovedEvent($event)"
+	(onAddedEdge)="handleEdgeAddedEvent($event)"
+	[ppGraphEventEmmiter]
+    classes=" highlighted-edge low-opacity-node low-opacity-edge optional-node"
+    mode="layout"
+    style="width: 100%; height: 100%"
+    zoom="both">
+<svg #svg slot="graph">
+<style>
+.title {
+}
+
+.title:hover { 
+opacity: 0.9;
+color: blue;
+cursor: pointer;
+}
+
+.header-button {
+align: end;
+float: right;
+}
+
+.close-button{
+  float: right;
+  top:-24px;
+  right:-24px;
+}
+
+.close-button:hover{
+opacity: 0.9;
+color: red;
+cursor: pointer;
+}
+
+.node {
+fill: aliceblue;
+opacity: 0.95;
+cursor: move;
+}
+
+.optional-node {
+fill: #999999;
+}
+
+svg {
+background-color: white;
+}
+
+.node-action {
+cursor: pointer;
+}
+
+.link-handle {
+display: none;
+cursor: pointer;
+fill: black;
+opacity: 0.15;
+transition: opacity 0.25s ease-out;
+}
+
+.node.hovered {
+fill: rgb(63, 81, 181);
+opacity: 0.9;
+color: white;
+}
+
+.edge-group .link-handle {
+display: initial;
+}
+
+.low-opacity-edge {
+stroke: grey;
+}
+
+.link-handle:hover {
+opacity: 0.7;
+}
+
+.hovered .link-handle {
+display: initial;
+}
+
+.text {
+fill: black;
+font-size: 6pt;
+text-overflow: ellipsis;
+word-break: break-word;
+
+}
+
+.textnumber {
+    fill: blue;
+    font-size: 12pt;
+    text-overflow: ellipsis;
+	opacity: 0.1;
+
+  }
+
+.patternlanguage-name {
+font-size: 5pt;
+
+}
+
+.cursive {
+font-style: italic;
+}
+
+.low-opacity-node {
+opacity: 0.1;
+}
+
+.low-opacity-edge {
+opacity: 0.1;
+}
+</style>
+<defs>
+
+<g data-template-type="node" id="default">
+<!-- x and y values describe the position of the upper left corner -->
+<rect data-click="nodeclick" data-link-handles="edges" height="50" rx="5" ry="5"
+   style="stroke:black;stroke-width:1;"
+   width="170"
+   x="-60" y="-25">
+</rect>
+<!-- set both height and width values to define a maximum value for them -->
+<image height="35" width="35" x="-55" y="-17.5" data-click="iconUrl" data-href="iconUrl"></image>
+<image data-click="info2" data-content="patternLanguageId" width="10" x="95"
+                   xlink:href="assets/Info_Simple_bw.svg" class="node-action"
+                   y="-20"/>
+<text class="text" data-click="title" data-content="title" dominant-baseline="middle"
+   height="50" text-anchor="middle" style="font-weight: bold"
+   width="120"
+   x="45"
+   y="0">
+</text>
+<text class="textnumber" data-click="level" data-content="level" dominant-baseline="middle"
+                  height="50" text-anchor="middle" style="font-weight: bold"
+                  width="120"
+                  x="45"
+                  y="-13">
+</text>
+<g class="concrete-solutions-container" transform="translate(-60,25)"></g>
+</g>
+
+<g data-line-attachement-point="-9 0" data-template-type="marker"
+data-link-handles="none" id="arrow">
+<path d="M -9 -4 L 0 0 L -9 4 z"/>
+</g>
+</defs>
+</svg>
+</network-graph>
+<!--hr>
+<div mat-dialog-actions>
+	<button mat-dialog-close class="action-button-with-margin" mat-raised-button >
+		<i class="material-icons"></i> close
+	</button>
+</div-->
+</ng-container>

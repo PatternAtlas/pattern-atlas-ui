@@ -12,6 +12,37 @@
     <input matInput placeholder="Type to filter" [formControl]="filter">
     <mat-icon matSuffix>filter_list</mat-icon>
   </mat-form-field>
+  
+  <mat-form-field class="algo-selector-class" appearance="outline" [floatLabel]="'always'" *ngIf="graphVisible && isQuantumComputingPatternLanguage">
+	<mat-label>Select an Algorithm</mat-label>
+	<mat-select [(value)]="selectedAlgorithm" (selectionChange)="addAlgoPatterns()">
+		<mat-option>None</mat-option>
+		<mat-option *ngFor="let algorithm of AlgorithmDataIds" [value]="algorithm.name">
+            {{algorithm.name}}
+        </mat-option>
+	</mat-select>
+  </mat-form-field>
+  
+  <button class="action-button-with-margin" (click)="showAlgoPatterns()" *ngIf="graphVisible && isQuantumComputingPatternLanguage"
+          color="accent" mat-raised-button>
+    <i class="material-icons">zoom_in</i> Show selected Algorithm
+  </button>
+  <button class="action-button-with-margin" (click)="openAddPatternDialog()" *ngIf="graphVisible && isQuantumComputingPatternLanguage"
+          color="accent" mat-raised-button>
+    <i class="material-icons">add_box</i> Add Algorithm
+  </button>
+  <button class="action-button-with-margin" (click)="openDeleteAlgorithmDialog()" *ngIf="graphVisible && isQuantumComputingPatternLanguage"
+          color="accent" mat-raised-button>
+    <i class="material-icons">indeterminate_check_box</i> Delete Algorithm
+  </button>
+  <!--button class="action-button-with-margin" (click)="exportToJson()" *ngIf="graphVisible && isQuantumComputingPatternLanguage"
+          color="accent" mat-raised-button>
+    <i class="material-icons">file_download</i>
+  </button-->
+  <button class="action-button-with-margin" (click)="openTextmatcherDialog()" *ngIf="graphVisible && isQuantumComputingPatternLanguage"
+          color="accent" mat-raised-button>
+    <i class="material-icons">extension</i> Textmatcher
+  </button>
   <button class="action-button-with-margin" (click)="reloadGraph()" *ngIf="graphVisible"
           color="accent" mat-raised-button>
     <i class="material-icons">autorenew</i> Reformat
@@ -42,7 +73,9 @@
                 patterns: this.patterns, edges: this.patternLinks, copyOfLinks: [],
                 patternLanguage: this.patternLanguage, patternContainer: null, patternLanguages: []
             }" (addedEdge)="handleLinkAddedInGraphEditor($event)" (removedEdge)="handleLinkRemovedInGraphEditor($event)"
-                    [showPatternLanguageName]="false">
+                    [showPatternLanguageName]="false" [AlgorithmData] = "AlgoData" [showAlgoPopups] = "showAlgoPopups" 
+					(resetAlgorithmValue)="resetSelectedAlgorithm()" (resetButtonClicked) = "resetButtonValue($event)" 
+					(addedAlgorithm) = "addNewAlgorithm($event)" [addAlgorithmDialog] = "addAlgorithmDialog">
   </pp-graph-display>
 
 </div>

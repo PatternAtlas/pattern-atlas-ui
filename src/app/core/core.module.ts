@@ -96,6 +96,11 @@ import { DeleteConfirmationDialogComponent } from './component/delete-confirmati
 import { EditUrlDialogComponent } from './component/edit-url-dialog/edit-url-dialog.component';
 import { FeatureToggleDialogComponent } from './component/feature-toggle-dialog/feature-toggle-dialog.component';
 import { PatternAtlasUiFeatureToggleModule } from './directives/pattern-atlas-ui-feature-toggle.module';
+import { DialoggraphComponent } from './component/dialoggraph/dialoggraph.component';
+import { CreateAlgorithmComponent } from './component/create-algorithm/create-algorithm.component';
+import { TextmatcherComponent } from './component/textmatcher/textmatcher.component';
+import { MatTableModule } from '@angular/material/table';
+import { DeleteAlgorithmComponent } from './component/delete-algorithm/delete-algorithm.component';
 
 @NgModule({
   imports: [
@@ -130,6 +135,7 @@ import { PatternAtlasUiFeatureToggleModule } from './directives/pattern-atlas-ui
     MatChipsModule,
     MatCheckboxModule,
     MatSnackBarModule,
+	MatTableModule,
     PatternAtlasUiFeatureToggleModule
   ],
   exports: [
@@ -203,7 +209,11 @@ import { PatternAtlasUiFeatureToggleModule } from './directives/pattern-atlas-ui
     SelectPatternDialogComponent,
     DeleteConfirmationDialogComponent,
     EditUrlDialogComponent,
-    FeatureToggleDialogComponent
+    FeatureToggleDialogComponent,
+    DialoggraphComponent,
+    CreateAlgorithmComponent,
+    TextmatcherComponent,
+    DeleteAlgorithmComponent
   ],
   entryComponents: [
     DefaultPlRendererComponent,
@@ -221,7 +231,10 @@ import { PatternAtlasUiFeatureToggleModule } from './directives/pattern-atlas-ui
     EvidenceDialogComponent,
     CommentDialogComponent,
     DiscussDialogComponent,
-    FeatureToggleDialogComponent
+    FeatureToggleDialogComponent,
+	DialoggraphComponent,
+	CreateAlgorithmComponent,
+	TextmatcherComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

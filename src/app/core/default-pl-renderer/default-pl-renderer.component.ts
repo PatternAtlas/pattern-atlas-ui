@@ -19,6 +19,7 @@ import { CreatePatternRelationComponent } from '../component/create-pattern-rela
 import { PatternRelationDescriptorService } from '../service/pattern-relation-descriptor.service';
 import { ToasterService } from 'angular2-toaster';
 import { PatternService } from '../service/pattern.service';
+import { AlgoStateService } from '../service/algo-state.service'
 import Pattern from '../model/hal/pattern.model';
 import { CandidateManagementService } from '../candidate-management';
 import { Candidate } from '../candidate-management';
@@ -26,6 +27,11 @@ import { FormControl } from '@angular/forms';
 import { globals } from '../../globals';
 import { PatternRelationDescriptorDirection } from '../model/pattern-relation-descriptor-direction.enum';
 import { UiFeatures } from '../directives/pattern-atlas-ui-repository-configuration.service';
+
+import { saveAs } from "file-saver";
+import * as jsonData from '../../../assets/AlgoData.json';
+import { TextmatcherComponent } from '../component/textmatcher/textmatcher.component';
+import { DeleteAlgorithmComponent } from '../component/delete-algorithm/delete-algorithm.component';
 
 @Component({
   selector: 'pp-default-pl-renderer',
@@ -53,6 +59,15 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   private undirectedPatternRelations: Array<UndirectedEdgeModel> = [];
   patternLinks: Array<UndirectedEdgeModel | DirectedEdgeModel>;
   subscriptions = new Subscription();
+  
+  AlgoData = [];                   // current selected algorithm data
+  selectedAlgorithm = 'None';
+  AlgorithmDataIds = [];           // complete algorithm data
+  showAlgoPopups = false;
+  addAlgorithmDialog = false;
+  jdata: any = jsonData;
+  previousTextmatcherData = [];
+  isQuantumComputingPatternLanguage = false;
 
   constructor(private activatedRoute: ActivatedRoute,
               private cdr: ChangeDetectorRef,
@@ -64,10 +79,171 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
               private d3Service: D3Service,
               private router: Router,
               private componentFactoryResolver: ComponentFactoryResolver,
+			  private algoStateService: AlgoStateService,
               private toasterService: ToasterService) {
   }
+  
+  openTextmatcherDialog(){
+	  const dialogRef = this.dialog.open(TextmatcherComponent, {
+		    width: "1000px",
+			data: {
+				data: this.AlgorithmDataIds,
+				prev: this.previousTextmatcherData,
+		    },
+	  });
+	  
+	  dialogRef.afterClosed().subscribe(result => {
+		  if((result != null) && (result != undefined)) {	
+		      this.selectedAlgorithm = result.algoname;
+			  this.addAlgoPatterns();
+			  this.previousTextmatcherData = [];
+			  this.previousTextmatcherData.push(result.prev);
+			  //this.showAlgoPatterns(); uncomment if popup should show immediately
+          }
+      });		  
+  }
+  
+  //only deleting one at the time possible
+  openDeleteAlgorithmDialog(){
+	  const dialogRef = this.dialog.open(DeleteAlgorithmComponent, {
+		    width: "1000px",
+			data: {
+				algorithms: this.AlgorithmDataIds,
+		    },
+	  });
+	  
+	  dialogRef.afterClosed().subscribe(result => {
+		  if((result != null) && (result != undefined) && (result.length > 0)) {
+			  result.forEach(algorithm => {
+				  this.AlgorithmDataIds = this.AlgorithmDataIds.filter(algids => algids.name !== algorithm.name);
+			  });
+			  //persistent in db speichern nach löschen
+			  this.algoStateService.saveAlgorithmData2(this.AlgorithmDataIds, this.patternLanguageId);
+          }
+      });	
+	  
+  }
+  
+  exportToJson() {
+	  let exportData = this.AlgorithmDataIds;
+	  return saveAs(new Blob([JSON.stringify(exportData, null, 2)], { type: 'JSON' }), 'AlgoData.json');
+	  
+  }
 
+  showAlgoPatterns() {
+	  //console.log("inside showalgopatterns im default pl renderer");
+	  if((this.selectedAlgorithm == 'None')||(this.selectedAlgorithm == undefined)){
+		  this.showAlgoPopups = false;
+	  }else{
+		  this.showAlgoPopups = true;
+	  }
+  }
+  
+  addAlgoPatterns() {
+	  //console.log("inside addalgopatterns im default pl renderer");
+	  this.AlgoData = []
+	  if ((this.selectedAlgorithm == 'None')||(this.selectedAlgorithm == undefined)) {	  
+		  this.AlgoData = [].concat(this.AlgoData);
+	  } else {
+		  //console.log("currentAlgorithm gets data");
+		  const currentAlgorithm = this.AlgorithmDataIds.find(({name}) => name === this.selectedAlgorithm);
+		  this.AlgoData.push(currentAlgorithm);
+	  }
+  }
+  
+  resetSelectedAlgorithm(){
+	  // auf undefined setzen falls wieder probleme damit auftauchen
+	  //this.selectedAlgorithm = 'None';
+	  this.selectedAlgorithm = undefined;
+  }
+  
+  resetButtonValue(value){
+	  if(value){
+		  this.algoStateService.saveAlgoState(this.selectedAlgorithm);
+	  }else{
+		  this.algoStateService.clearAlgoState();
+	  }
+	  this.showAlgoPopups = false;
+  }
+  
+  openAddPatternDialog(){
+	  this.addAlgorithmDialog = true;
+  }
+  
+  addNewAlgorithm(newalgorithm){
+	  if(newalgorithm != null){
+		  this.AlgorithmDataIds.push(newalgorithm);
+		  //persistent in db speichern nach hinzufügen
+		  this.algoStateService.saveAlgorithmData2(this.AlgorithmDataIds, this.patternLanguageId);
+	  }
+	  this.addAlgorithmDialog = false;
+  }
+  
+  initializeAlgorithmPatternIds3(){
+	  this.algoStateService.getAlgorithmData2(this.patternLanguageId).subscribe(data => {
+		  this.AlgorithmDataIds = data.algodata;
+		  let state = this.algoStateService.getAlgoState();
+		  if((state != null) && (state != undefined) && (state != "")){
+			this.selectedAlgorithm = state;
+			this.graphVisible = true;
+			this.addAlgoPatterns();
+			this.showAlgoPatterns();
+		  }
+	  });
+  }
+  
+  //old datastorage via json file
+  initializeAlgorithmPatternIds2(){
+	  //let url = './AlgoData.json';
+	  //this.http.get(url).subscribe(res => {
+		//  console.log(res);
+          //this.AlgorithmDataIds = res;
+    //});
+	//console.log("json data");
+	//console.log(this.jdata.default);
+	//this.AlgorithmDataIds = this.jdata.default;
+	if(this.algoStateService.getAlgorithmData() != null){
+		this.AlgorithmDataIds = this.algoStateService.getAlgorithmData();
+	}else{
+		this.AlgorithmDataIds = this.jdata.default;
+	}
+  }
+  
+  initializeAlgorithmPatternIds() {
+	  //optional patterns have to be in both arrays!
+	  const QuantumAnnealingData = {name: "Quantum Annealing", 
+	                                data: ["312bc9d3-26c0-40ae-b90b-56effd136c0d", "bcd4c7a1-3c92-4f8c-a530-72b8b95d3750", "482714a7-8409-4165-93fe-72b02c2ae99c", 
+							  "2229a430-fe92-4411-9d72-d10dd1d8da14", "3d1f3991-df47-4d42-8f9a-e6dcf4e3ccec"],
+							        href: "https://platform.planqk.de/algorithms/786e1ff5-991e-428d-a538-b8b99bc3d175/"};
+	  this.AlgorithmDataIds.push(QuantumAnnealingData);
+	  const ReverseAnnealingData = {name: "Reverse Annealing",
+	                                data: ["312bc9d3-26c0-40ae-b90b-56effd136c0d", "bcd4c7a1-3c92-4f8c-a530-72b8b95d3750", "482714a7-8409-4165-93fe-72b02c2ae99c", 
+	  "2229a430-fe92-4411-9d72-d10dd1d8da14", "3d1f3991-df47-4d42-8f9a-e6dcf4e3ccec", "dd15032b-ce2b-40b6-80ac-97623255b531", "bc795a9b-7977-4e01-b513-f9f5aba38aa7", 
+	  "b657ea73-63c0-4800-a69d-a91925e19ac6", "3ea9e187-e91b-4852-84eb-b35b5c480892"],
+	                                optional: ["3ea9e187-e91b-4852-84eb-b35b5c480892"],
+									href: "https://platform.planqk.de/algorithms/fadafc8b-5388-4768-8804-5fc22cf04a20/"};
+	  this.AlgorithmDataIds.push(ReverseAnnealingData);
+	  const Qaoa = {name: "Quantum Approximate Optimization Algorithm",
+					data: ["bcd4c7a1-3c92-4f8c-a530-72b8b95d3750", "dd15032b-ce2b-40b6-80ac-97623255b531", "bc795a9b-7977-4e01-b513-f9f5aba38aa7", 
+	  "b657ea73-63c0-4800-a69d-a91925e19ac6", "3ea9e187-e91b-4852-84eb-b35b5c480892", "da93f915-7f4c-49df-99d0-80d91f26a337"],
+	                optional: ["3ea9e187-e91b-4852-84eb-b35b5c480892"],
+					href: "https://platform.planqk.de/algorithms/fae60bca-d2b6-4aa2-88b7-58caace34179/"};
+	  this.AlgorithmDataIds.push(Qaoa);
+	  const Deutsch = {name: "Deutsch Algorithm",
+					   data: ["312bc9d3-26c0-40ae-b90b-56effd136c0d", "bcd4c7a1-3c92-4f8c-a530-72b8b95d3750", "482714a7-8409-4165-93fe-72b02c2ae99c", 
+	  "3d1f3991-df47-4d42-8f9a-e6dcf4e3ccec" ,"1cc7e9d6-ab37-412e-8afa-604a25de296e", "3f3fabf0-7fa7-4b43-a74a-46a7ac2c55ee", "d4f7c247-e2bb-4301-ad06-f758fa58f2dc", 
+	  "2229a430-fe92-4411-9d72-d10dd1d8da14"],
+	                   href: "https://platform.planqk.de/algorithms/533c90a5-5fbb-487b-b64d-a8f331aafb10/"};
+	  this.AlgorithmDataIds.push(Deutsch);
+	  const test = {name: "test",
+					   data: ["312bc9d3-26c0-40ae-b90b-56effd136c0d", "bcd4c7a1-3c92-4f8c-a530-72b8b95d3750", "1a5e3708-da39-4356-ab3f-115264da6390"]};
+	  this.AlgorithmDataIds.push(test);
+	  //console.log("Complete Algorithm Data for initial values");
+	  //console.log(this.AlgorithmDataIds);
+  }
+  
   ngOnInit() {
+	//this.algoStateService.clearAlgorithmData();
     this.loadData();
     this.filter = new FormControl('');
     const filterSubscription = this.filter.valueChanges.subscribe((filterText: string) => {
@@ -77,6 +253,24 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
       this.patternsForCardsView = this.patterns.filter(pattern => pattern.name.toLowerCase().includes(filterText.toLowerCase()));
     });
     this.subscriptions.add(filterSubscription);
+	
+	//only trigger extension for quantum computing patterns!
+	if(this.patternLanguageId === "af7780d5-1f97-4536-8da7-4194b093ab1d"){
+		
+		//get default values (in case database conection not possible)
+		this.initializeAlgorithmPatternIds();
+		//this.initializeAlgorithmPatternIds2();
+		let state = this.algoStateService.getAlgoState();
+		if((state != null) && (state != undefined) && (state != "")){
+			this.selectedAlgorithm = state;
+			this.graphVisible = true;
+			this.addAlgoPatterns();
+			this.showAlgoPatterns();
+		}
+		//get database values (overwrite default values)
+		this.initializeAlgorithmPatternIds3();
+		this.isQuantumComputingPatternLanguage = true;
+	}
   }
 
   detectChanges() {
