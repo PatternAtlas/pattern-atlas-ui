@@ -9,9 +9,9 @@ import { Observable } from 'rxjs';
 export class AlgoStateService {
 
   //localstorage maybe not necessary anymore
-  private variableToStore: string = "AlgoState";
-  private variableForAlgoData: string = "AlgoDataVar";
-  private tmpstore: string = "";
+  private variableToStore = 'AlgoState';
+  private variableForAlgoData = 'AlgoDataVar';
+  private tmpstore = '';
   
   private repoEndpoint = environment.API_URL;
   
@@ -31,7 +31,7 @@ export class AlgoStateService {
 
   clearAlgoState() {
     //localStorage.removeItem(this.variableToStore);
-	this.tmpstore = "";
+    this.tmpstore = '';
   }
   
   //
@@ -46,10 +46,10 @@ export class AlgoStateService {
 	  const url = this.repoEndpoint + '/patternForAlgorithm/' + patternLanguageId + '/saveData';
 		
 	  this.http.post<any>(url, data, { observe: 'response' }).subscribe(response => {
-		    console.log("response after save: ");
-			console.log(response);
-			console.log(response.status);
-		});
+		    console.log('response after save: ');
+      console.log(response);
+      console.log(response.status);
+    });
   }
   
   //

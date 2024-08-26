@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatButtonModule} from '@angular/material/button';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
 
 import { HttpClient } from '@angular/common/http';
 
@@ -30,7 +30,7 @@ export class CreateAlgorithmComponent implements OnInit {
 
   ngOnInit(): void {
 	  
-	  let href = "https://platform.planqk.de/qc-catalog/algorithms/fae60bca-d2b6-4aa2-88b7-58caace34179";
+	  let href = 'https://platform.planqk.de/qc-catalog/algorithms/fae60bca-d2b6-4aa2-88b7-58caace34179';
 	  this.http.get(href).subscribe(data => {
 		  this.infos = data;
 	  });
@@ -39,10 +39,10 @@ export class CreateAlgorithmComponent implements OnInit {
   
   closeDialog() {
 	  if(this.res.length > 0){
-		  const result = { name: this.name, patterns: this.res , optional: this.opt, href: this.planqkref};
+		  const result = { name: this.name, patterns: this.res , optional: this.opt, href: this.planqkref };
 		  this.dialogRef.close(result);
 	  } else {
-		  alert("no patterns selected!");
+		  alert('no patterns selected!');
 	  }
   }
 

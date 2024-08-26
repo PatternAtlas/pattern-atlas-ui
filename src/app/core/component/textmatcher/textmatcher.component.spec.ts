@@ -10,7 +10,7 @@ describe('TextmatcherComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ TextmatcherComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

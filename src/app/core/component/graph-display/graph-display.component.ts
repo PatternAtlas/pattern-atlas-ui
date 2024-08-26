@@ -216,23 +216,23 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
         this.triggerRerendering(true);
       });
     }
-	if(this.addAlgorithmDialog){
-		this.openCreateAlgorithm();
-	}
-	if((this.AlgorithmData != null)||(this.AlgorithmData != undefined)){
-		if(this.AlgorithmData.length > 0){
-			if(this.graphNativeElement != undefined){
-				this.generateEdgeInformation();
-				this.showAlgorithmNode();
-			}else{
-				this.waitForNativeGraph = true;
-			}
-		}else{
-			if(this.graphNativeElement != undefined){
-				this.backgroundClicked();
-			}
-		}
-	}
+    if(this.addAlgorithmDialog){
+      this.openCreateAlgorithm();
+    }
+    if((this.AlgorithmData != null)||(this.AlgorithmData != undefined)){
+      if(this.AlgorithmData.length > 0){
+        if(this.graphNativeElement != undefined){
+          this.generateEdgeInformation();
+          this.showAlgorithmNode();
+        }else{
+          this.waitForNativeGraph = true;
+        }
+      }else{
+        if(this.graphNativeElement != undefined){
+          this.backgroundClicked();
+        }
+      }
+    }
   }
 
   /**
@@ -358,12 +358,12 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   backgroundClicked() {
     this.highlightedNodeIds = [];
     this.highlightedEdgeIds = [];
-	this.nodes.forEach(node => node.level = undefined);
+    this.nodes.forEach(node => node.level = undefined);
     this.clickedNodeId = null;
     this.selectedPattern = null;
     this.graphNativeElement.completeRender();
     this.patternClicked = false;
-	this.resetAlgorithmValue.emit();
+    this.resetAlgorithmValue.emit();
   }
 
   public updateSideMenu() {
@@ -481,13 +481,13 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
     this.triggerRerendering();
     this.graphNativeElement.zoomToBoundingBox(true);
 	
-	// falls storage beim initialisieren einen Werte enthaelt
-	if(this.waitForNativeGraph){
-		console.log("hier rein falls etwas im storage ist");
-		this.waitForNativeGraph = false;
-		this.generateEdgeInformation();
-		this.showAlgorithmNode();
-	}
+    // falls storage beim initialisieren einen Werte enthaelt
+    if(this.waitForNativeGraph){
+      console.log('hier rein falls etwas im storage ist');
+      this.waitForNativeGraph = false;
+      this.generateEdgeInformation();
+      this.showAlgorithmNode();
+    }
 
   }
 
@@ -497,17 +497,17 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
   
   private generateEdgeInformation(): void {
     this.AlgorithmData[0].data.forEach(nodeid => {
-		this.cpattern = this.patterns.find(pat => pat.id === nodeid);
-		this.patternService.getPatternByUrl(this.cpattern._links.self.href).pipe(
-			switchMap((pattern: PatternResponse) => {
-				return this.patternRelationDescriptionService.getEdgesForPattern(pattern);
-			})).subscribe(edges => {
-				this.edgeInformation.push({
-					edges: edges,
-					nodeid: nodeid,
-				});
-				//this.cdr.detectChanges();
-			});
+      this.cpattern = this.patterns.find(pat => pat.id === nodeid);
+      this.patternService.getPatternByUrl(this.cpattern._links.self.href).pipe(
+        switchMap((pattern: PatternResponse) => {
+          return this.patternRelationDescriptionService.getEdgesForPattern(pattern);
+        })).subscribe(edges => {
+        this.edgeInformation.push({
+          edges: edges,
+          nodeid: nodeid,
+        });
+        //this.cdr.detectChanges();
+      });
 			
 	  });
   }
@@ -518,23 +518,24 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
 	  this.highlightedNodeIds = [];
 	  //this.edgeInformation = [];
 	  this.edgesToReverse = [];
-  this.AlgorithmData[0].data.forEach(element => {
-		this.highlightedNodeIds.push(element);
-		const outgoingLinks = Array.from(this.graph.nativeElement.getEdgesByTarget(element));
-		const ingoingLinks = Array.from(this.graph.nativeElement.getEdgesBySource(element));
-		const tooManyEdges = [].concat(outgoingLinks).concat(ingoingLinks);
-		this.highlightedEdgeIds = this.highlightedEdgeIds.concat(tooManyEdges);
+    this.AlgorithmData[0].data.forEach(element => {
+      this.highlightedNodeIds.push(element);
+      const outgoingLinks = Array.from(this.graph.nativeElement.getEdgesByTarget(element));
+      const ingoingLinks = Array.from(this.graph.nativeElement.getEdgesBySource(element));
+      const tooManyEdges = [].concat(outgoingLinks).concat(ingoingLinks);
+      this.highlightedEdgeIds = this.highlightedEdgeIds.concat(tooManyEdges);
 	  });
-	  this.highlightedEdgeIds = this.highlightedEdgeIds.filter( edge => (this.highlightedNodeIds.includes(edge["source"])) && (this.highlightedNodeIds.includes(edge["target"])));
+	  this.highlightedEdgeIds = this.highlightedEdgeIds.filter(
+      edge => (this.highlightedNodeIds.includes(edge['source'])) && (this.highlightedNodeIds.includes(edge['target'])));
 	  this.highlightedEdgeIds = this.highlightedEdgeIds.filter((item, index) => this.highlightedEdgeIds.indexOf(item) === index);
 	  
 	  this.edgesToReverse = JSON.parse(JSON.stringify(this.highlightedEdgeIds));
 	
-	  this.highlightedEdgeIds = this.highlightedEdgeIds.map( edge => edge["id"] ? edge["id"] : edgeId(edge["id"]));
+	  this.highlightedEdgeIds = this.highlightedEdgeIds.map( edge => edge['id'] ? edge['id'] : edgeId(edge['id']));
 	  
-      this.triggerRerendering();
+    this.triggerRerendering();
 	  if(this.showAlgoPopups){
-		this.openGraphDialog();
+      this.openGraphDialog();
 	  }
   }
   
@@ -542,44 +543,45 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
 	  //deepcopy
 	  const currentNodes = JSON.parse(JSON.stringify(this.highlightedNodeIds));
 	  const nodecopy = JSON.parse(JSON.stringify(this.nodes));
-	  let linkproperty = "";
+	  let linkproperty = '';
 	  if(this.AlgorithmData[0].hasOwnProperty('href')){
 		  linkproperty = this.AlgorithmData[0].href;
 	  }
 	  
 	  const dialogRef = this.matDialog.open(DialoggraphComponent, {
 		    autoFocus: false,
-			data: {
+      data: {
 		    nodes: nodecopy,
-			highlightedNodes: currentNodes,
-			edges: this.edgesToReverse,
-			edgeInformation: this.edgeInformation,
-			optionalNodeIds: this.AlgorithmData[0].optional,
-			name: this.AlgorithmData[0].name,
-			href: linkproperty,
-		},
-		height: '70%',
-		width: '100%'
+        highlightedNodes: currentNodes,
+        edges: this.edgesToReverse,
+        edgeInformation: this.edgeInformation,
+        optionalNodeIds: this.AlgorithmData[0].optional,
+        name: this.AlgorithmData[0].name,
+        href: linkproperty,
+      },
+      height: '70%',
+      width: '100%'
 	  });
 	  
 	  dialogRef.afterClosed().subscribe(result => {
 		  if(result != null && result != undefined) {
 			  console.log(result);
 			  this.resetButtonClicked.emit(true);
-			  this.router.navigate(['./../..', 'pattern-languages', result.node.patternLanguageId, result.node.uri], { relativeTo: this.activatedRoute});					   
+			  this.router.navigate(
+          ['./../..', 'pattern-languages', result.node.patternLanguageId, result.node.uri], { relativeTo: this.activatedRoute });					   
 		  }else{
 			  this.resetButtonClicked.emit(false);
 		  }
-		  console.log("closed dialog");
+		  console.log('closed dialog');
 	  });
   }
   
   private openCreateAlgorithm() {
 	  const dialogRef2 = this.matDialog.open(CreateAlgorithmComponent, {
-		    width: "1000px",
-			data: {
+		    width: '1000px',
+      data: {
 		    patterns: this.patterns,
-		},
+      },
 	  });
 	  
 	  dialogRef2.afterClosed().subscribe(result => {
@@ -596,24 +598,24 @@ export class GraphDisplayComponent implements AfterContentInit, OnChanges {
 					  newAlgorithmPatternIds.push(optpattern.id);
 				  }
 			  });
-			  let newhref = "";
+			  let newhref = '';
 			  if((result.href != null) && (result.href != undefined)){
 				  newhref = result.href;
 			  }
-			  this.addedAlgorithm.emit({name: result.name, data: newAlgorithmPatternIds, optional: newOptionalAlgorithmPatternIds, href: newhref});
+			  this.addedAlgorithm.emit({ name: result.name, data: newAlgorithmPatternIds, optional: newOptionalAlgorithmPatternIds, href: newhref });
 		  }else{
 			  this.addedAlgorithm.emit(null);
 		  }
-		  console.log("closed creation dialog");
+		  console.log('closed creation dialog');
 	  });
   }
 
   private showInfoForClickedNode(node): void {
 
     this.clickedNodeId = node.id;
-	console.log(node);
-	console.log(node.id);
-	console.log(node.title);
+    console.log(node);
+    console.log(node.id);
+    console.log(node.title);
     const outgoingLinks = Array.from(this.graph.nativeElement.getEdgesByTarget(node.id));
     const ingoingLinks = Array.from(this.graph.nativeElement.getEdgesBySource(node.id));
 

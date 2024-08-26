@@ -135,7 +135,7 @@ import { DeleteAlgorithmComponent } from './component/delete-algorithm/delete-al
     MatChipsModule,
     MatCheckboxModule,
     MatSnackBarModule,
-	MatTableModule,
+    MatTableModule,
     PatternAtlasUiFeatureToggleModule
   ],
   exports: [
@@ -232,9 +232,9 @@ import { DeleteAlgorithmComponent } from './component/delete-algorithm/delete-al
     CommentDialogComponent,
     DiscussDialogComponent,
     FeatureToggleDialogComponent,
-	DialoggraphComponent,
-	CreateAlgorithmComponent,
-	TextmatcherComponent
+    DialoggraphComponent,
+    CreateAlgorithmComponent,
+    TextmatcherComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

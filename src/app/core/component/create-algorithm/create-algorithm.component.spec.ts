@@ -10,7 +10,7 @@ describe('CreateAlgorithmComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ CreateAlgorithmComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

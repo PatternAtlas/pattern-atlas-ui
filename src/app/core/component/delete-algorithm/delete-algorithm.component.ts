@@ -1,8 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatButtonModule} from '@angular/material/button';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'pp-delete-algorithm',
@@ -27,7 +27,7 @@ export class DeleteAlgorithmComponent implements OnInit {
 		  const result = this.res;
 		  this.dialogRef.close(result);
 	  } else {
-		  alert("no algorithm selected!");
+		  alert('no algorithm selected!');
 	  }
   }
 

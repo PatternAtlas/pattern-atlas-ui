@@ -10,7 +10,7 @@ describe('DialoggraphComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ DialoggraphComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -10,7 +10,7 @@ describe('DeleteAlgorithmComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ DeleteAlgorithmComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
