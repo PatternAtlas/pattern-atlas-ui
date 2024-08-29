@@ -1,5 +1,4 @@
 # PatternAtlas
-This is an extension of the original [Patternatlas UI](https://github.com/PatternAtlas/pattern-atlas-ui).
 
 ## License
 
