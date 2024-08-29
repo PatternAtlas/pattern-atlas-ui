@@ -1,0 +1,34 @@
+<button mat-icon-button class="close-button" [mat-dialog-close]="true">
+	<mat-icon class="close-icon" >close</mat-icon>
+</button>
+<div mat-dialog-content>
+	<mat-form-field>
+		<mat-label>Algorithm Name</mat-label>
+        <input matInput [(ngModel)]="name" cdkFocusInitial>
+	</mat-form-field>
+	<mat-form-field>
+		<mat-label>Select Patterns</mat-label>
+		<mat-select [(value)]="res" multiple>
+			<mat-option *ngFor="let pattern of patterns" [value]="pattern">{{pattern.name}}</mat-option>
+		</mat-select>
+	</mat-form-field>
+	<mat-form-field>
+		<mat-label>Select Optional Patterns</mat-label>
+		<mat-select [(value)]="opt" multiple>
+			<mat-option *ngFor="let pattern of patterns" [value]="pattern">{{pattern.name}}</mat-option>
+		</mat-select>
+	</mat-form-field>
+	<mat-form-field>
+		<mat-label>href to PlanQK website</mat-label>
+        <input matInput [(ngModel)]="planqkref">
+	</mat-form-field>
+</div>
+<div mat-dialog-actions>
+	<button class="action-button-with-margin" (click)="closeDialog()" color="accent" mat-raised-button>
+		<i class="material-icons"></i> create Algorithm
+	</button>
+	<button mat-dialog-close class="action-button-with-margin" mat-raised-button >
+		<i class="material-icons"></i> close
+	</button>
+</div>
+

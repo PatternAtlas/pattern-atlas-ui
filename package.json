@@ -28,12 +28,15 @@
     "@angular/router": "9.1.2",
     "@auth0/angular-jwt": "^4.0.0",
     "@covalent/text-editor": "3.0.0-beta.1-2",
+    "@types/file-saver": "^2.0.5",
     "@ustutt/grapheditor-webcomponent": "0.5.4",
     "angular2-prettyjson": "3.0.1",
     "angular2-toaster": "8.0.0",
     "antlr4": "^4.8.0",
     "core-js": "2.6.3",
     "d3": "^5.9.2",
+    "file-saver": "^2.0.5",
+    "keyword-extractor": "0.0.25",
     "lodash": "^4.17.21",
     "madr": "2.1.2",
     "markdown-it": "10.0.0",
@@ -78,7 +81,8 @@
     "stylelint": "^13.5.0",
     "stylelint-config-sass-guidelines": "^7.0.0",
     "ts-node": "~8.0.1",
-    "typescript": "~3.7.7"
+    "typescript": "~3.7.7",
+    "yarn-audit-fix": "^10.0.1"
   },
   "browser": {
     "fs": false

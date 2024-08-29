@@ -6,6 +6,7 @@
           color="accent" mat-raised-button>
     <i class="material-icons">autorenew</i> Reformat
   </button>
+  
 </pp-action-button-bar>
 
 <div class="container" *ngIf="!isLoading && !graphVisible">
@@ -73,6 +74,7 @@
                   (removedEdge)="handleLinkRemovedInGraphEditor($event)"
                   (updatedGraphEvent)="addPatternFromGraphToView($event)"
                   [showPatternLanguageName]="true"
-                  [showViewRelations]="true"></pp-graph-display>
+                  [showViewRelations]="true">
+				  </pp-graph-display>
 
 

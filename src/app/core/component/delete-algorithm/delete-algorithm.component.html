@@ -1,0 +1,19 @@
+<button mat-icon-button class="close-button" [mat-dialog-close]="true">
+	<mat-icon class="close-icon" >close</mat-icon>
+</button>
+<div mat-dialog-content>
+	<mat-form-field>
+		<mat-label>Select algorithms to delete</mat-label>
+		<mat-select [(value)]="res" multiple cdkFocusInitial>
+			<mat-option *ngFor="let alg of algorithms" [value]="alg">{{alg.name}}</mat-option>
+		</mat-select>
+	</mat-form-field>
+</div>
+<div mat-dialog-actions>
+	<button class="action-button-with-margin" (click)="closeDialog()" color="accent" mat-raised-button>
+		<i class="material-icons"></i> delete Algorithm
+	</button>
+	<button mat-dialog-close class="action-button-with-margin" mat-raised-button >
+		<i class="material-icons"></i> close
+	</button>
+</div>

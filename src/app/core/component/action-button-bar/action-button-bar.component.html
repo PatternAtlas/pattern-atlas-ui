@@ -7,12 +7,12 @@
   <span class="action-button-with-margin"><b>{{this.displayText}}</b></span>
 
   <ng-content></ng-content>
-
+  
   <button (click)="reloadButtonClicked()" *ngIf="reloadButton" class="action-button-with-margin" color="accent"
           mat-raised-button>
     <i class="material-icons">autorenew</i> Reload
   </button>
-
+  
   <ng-container *patternAtlasUiShowOnFeature="UiFeatures.EDITING">
     <button (click)="addButtonClicked()" *ngIf="firstAddButton" class="action-button-with-margin" color="accent"
             mat-raised-button>

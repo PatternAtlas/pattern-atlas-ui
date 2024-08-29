@@ -106,6 +106,12 @@
     </mat-accordion>
 
   </mat-sidenav>
+  
+  <!-- falls ich noch ein sidepanel brauche kommt es hier rein -->
+  <mat-sidenav [opened]="false" position="start" fixedInViewport="true" mode="over" class="sidemenu">quantum
+  </mat-sidenav>
+
+  
   <mat-progress-spinner *ngIf="isLoading"></mat-progress-spinner>
   <mat-sidenav-content>
     <network-graph #graphWrapper
@@ -172,6 +178,13 @@
             word-break: break-word;
 
           }
+		  
+		  .textnumber {
+            fill: blue;
+            font-size: 12pt;
+            text-overflow: ellipsis;
+
+          }
 
           .patternlanguage-name {
             font-size: 5pt;
@@ -211,6 +224,12 @@
                   width="120"
                   x="20"
                   y="0">
+            </text>
+			<text class="textnumber" data-click="level" data-content="level" dominant-baseline="middle"
+                  height="50" text-anchor="middle" style="font-weight: bold"
+                  width="120"
+                  x="45"
+                  y="-13">
             </text>
             <text class="text cursive" data-click="patternLanguageName" *ngIf="showPatternLanguageName"
                   data-content="patternLanguageName"
