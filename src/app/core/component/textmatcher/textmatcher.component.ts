@@ -4,7 +4,7 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
@@ -47,46 +47,56 @@ export class TextmatcherComponent implements OnInit {
 
   
 	ngOnInit(): void {
+		this.showMatchingResults = false;
+		this.showRephrasedInput = false;
+	  
+		if (this.data.prev.length > 0) {
+		  // Step 1: Filter out entries with null cosineSimilarity
+		  const filteredFullTableData = this.data.prev[0].fulltabledata.filter(
+			(r: any) => r.cosineSimilarity != null
+		  );
+	  
+		  this.resultAlgorithm = this.data.prev[0].resultAlgorithm;
+		  this.fulltabledata = filteredFullTableData;
+		  this.tabledata = new MatTableDataSource(
+			this.fulltabledata.slice(0, this.selectednumber)
+		  );
+		  this.columnsToDisplay = this.data.prev[0].columnsToDisplay;
+		  this.rephrasedInput = this.data.prev[0].rephrasedInput;
+		  this.selectednumber = this.data.prev[0].selectedNumber;
+	  
+		  // Initialize inputfield with previous value if available
+		  if (this.data.prev[0].inputfieldvalue != '') {
+			this.inputfield = new FormControl(this.data.prev[0].inputfieldvalue);
+		  } else {
+			this.inputfield = new FormControl('');
+		  }
+	  
+		  this.showMatchingResults = true;
+		  if (this.rephrasedInput != '') {
+			this.showRephrasedInput = true;
+		  }
+		} else {
+		  this.inputfield = new FormControl('');
+		}
+	  
 		
-	  this.showMatchingResults = false;
-	  this.showRephrasedInput = false;
-
-	  if(this.data.prev.length > 0) {
-	    this.resultAlgorithm = this.data.prev[0].resultAlgorithm;
-	    this.tabledata = this.data.prev[0].tabledata;
-	    this.fulltabledata = this.data.prev[0].fulltabledata;
-	    this.columnsToDisplay = this.data.prev[0].columnsToDisplay;
-	    this.rephrasedInput = this.data.prev[0].rephrasedInput;
-	    this.selectednumber = this.data.prev[0].selectedNumber;
-			
-	    if (this.data.prev[0].inputfieldvalue != ''){
-	      this.inputfield = new FormControl(this.data.prev[0].inputfieldvalue);
-	    }else{
-	      this.inputfield = new FormControl('');
-	    }
-	    this.showMatchingResults = true;
-	    if(this.rephrasedInput != ''){
-	      this.showRephrasedInput = true;
-	    }
-	  }else{
-	    this.inputfield = new FormControl('');
+		// Existing HTTP call to fetch algorithms
+		this.http.get("http://localhost:6626/atlas/algorithms").subscribe((algodata: any) => {
+		  algodata.content.forEach((algorithm: any) => {
+				if(algorithm.id === "3c7722e2-09c3-4667-9a0d-a45d3ddc42ae"){
+				algorithm.applicationAreas = ["Search", "clauses Problems", "Computers", "satisfiable"];
+				}
+			  
+			this.infos.push({ name: algorithm.name, data: algorithm });
+		  });
+		});
+	  
+		console.log("Die Daten:", this.data);
+		console.log(this.infos);
 	  }
-		
-		
-	  let href = 'https://platform.planqk.de/algorithms/fae60bca-d2b6-4aa2-88b7-58caace34179';
-	  this.data.data.forEach(algorithm => {
-	    if((algorithm.href !== '')&&(algorithm.href != null)){
-	      let splitarray = algorithm.href.split('platform.planqk.de');
-	      let datahref = splitarray[0] + 'platform.planqk.de/qc-catalog' + splitarray[1];
-	      this.http.get(datahref).subscribe(algodata => {
-	        this.infos.push({ name: algorithm.name, data: algodata });
-	      });
-	    }else{
-	      //do something if no href
-	    }
-	  });
-		
-	}
+	  
+	
 	
 	checkboxClicked(event){
 	  if(this.checked){
@@ -144,43 +154,62 @@ export class TextmatcherComponent implements OnInit {
 		    };
 	}
 
-	extractInformation(isRake){
-	  let datatosend = { input: this.inputfield.value, algodata: this.infos };
-	  let url = 'http://localhost:1985/api/matcher/';
-	  if(isRake){
-	    url = url + 'rake/';
-	  }
+	extractInformation(isRake: boolean) {
+		const datatosend = { input: this.inputfield.value, algodata: this.infos };
+		let url = 'http://localhost:1985/api/matcher/';
 		
-	  if(this.checked){
-	    url = url + 'openai';
+		if (isRake) {
+		  url += 'rake/';
+		}
+	  
+		if (this.checked) {
+		  url += 'openai';
+		}
+	  
+		// Reset rephrased input
+		this.rephrasedInput = '';
+		this.showRephrasedInput = false;
+	  
+		this.http.post<any>(url, datatosend).subscribe(resultdata => {
+		  // Step 1: Filter out results with null or undefined cosineSimilarity
+		  const filteredResults = resultdata.result.filter(
+			(r: any) => r.cosineSimilarity != null
+		  );
+	  
+		  // Step 2: Assign filtered data to fulltabledata
+		  this.fulltabledata = filteredResults;
+	  
+		  // Step 3: Update tabledata with the sliced data based on selectednumber
+		  this.tabledata.data = this.fulltabledata.slice(0, this.selectednumber);
+		  
+		  console.log('Filtered tabledata:', this.fulltabledata);
+	  
+		  // Step 4: Handle rephrased input if available
+		  if (resultdata.hasOwnProperty('rephrasedInput')) {
+			this.rephrasedInput = resultdata.rephrasedInput;
+			this.showRephrasedInput = true;
+		  }
+	  
+		  // Step 5: Determine the algorithm with the highest cosineSimilarity
+		  if (this.fulltabledata.length > 0) {
+			const maximumkey = this.fulltabledata.reduce((prev: any, current: any) => {
+			  return prev.cosineSimilarity > current.cosineSimilarity ? prev : current;
+			});
+	  
+			if (maximumkey.cosineSimilarity > 0) {
+			  this.showMatchingResults = true;
+			  this.resultAlgorithm = maximumkey;
+			} else {
+			  this.showMatchingResults = false;
+			  console.log('No similarities found!');
+			}
+		  } else {
+			this.showMatchingResults = false;
+			console.log('No data available after filtering.');
+		  }
+		}, error => {
+		  console.error('Error during information extraction:', error);
+		  this.showMatchingResults = false;
+		});
 	  }
-	  this.rephrasedInput = '';
-	  this.showRephrasedInput = false;
-		
-	  this.http.post<any>(url, datatosend).subscribe(resultdata => {
-	    this.tabledata.data = resultdata.result;
-	    this.fulltabledata = this.tabledata.data;
-	    console.log('tabledata:');
-	    console.log(this.fulltabledata);
-	    this.tabledata.data = this.fulltabledata.slice(0, this.selectednumber);
-			
-	    if(resultdata.hasOwnProperty('rephrasedInput')){
-	      this.rephrasedInput = resultdata.rephrasedInput;
-	      this.showRephrasedInput = true;
-	    }
-			
-	    const maximumkey = this.fulltabledata.reduce(function(prev, current) {
-	      return (prev.cosineSimilarity > current.cosineSimilarity) ? prev : current;
-	    });
-			
-	    if(maximumkey.cosineSimilarity > 0){
-	      this.showMatchingResults = true;
-	      this.resultAlgorithm = maximumkey;
-	    }else{
-	      this.showMatchingResults = false;
-	      console.log('no similarities found!');
-	    }
-	  });
-	}
-
 }
