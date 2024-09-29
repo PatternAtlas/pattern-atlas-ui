@@ -1,19 +1,27 @@
 <button mat-icon-button class="close-button" (click)="closeDialog2()">
-	<mat-icon class="close-icon" >close</mat-icon>
+	<mat-icon class="close-icon">close</mat-icon>
 </button>
+
 <div mat-dialog-content>
 	<mat-form-field id="type-field" class="action-button-with-margin" [floatLabel]="'always'">
 		<mat-label>Input the known Information</mat-label>
 		<textarea matInput placeholder="Type in information" [formControl]="inputfield" cdkFocusInitial></textarea>
-    </mat-form-field>
+	</mat-form-field>
 </div>
+
 <div mat-dialog-content *ngIf="showRephrasedInput">
-	<p>Rephrased input: {{rephrasedInput}} </p>
+	<p>Rephrased input: {{rephrasedInput}}</p>
 </div>
+
 <div mat-dialog-content *ngIf="showMatchingResults">
-	<p>The best matching algorithm with cosine similarity is <span class="resultLink"(click)="openLink()">{{resultAlgorithm.name}}</span>. </p>
-	<p>The Cosine Similarity is <span class="similarityvalue">{{resultAlgorithm.cosineSimilarity}}</span> </p>  
+	<p>The best matching algorithm with cosine similarity is 
+		<span class="resultLink" (click)="openLink()">{{resultAlgorithm.name}}</span>.
+	</p>
+	<p>The Cosine Similarity is 
+		<span class="similarityvalue">{{resultAlgorithm.cosineSimilarity}}</span>
+	</p>
 </div>
+
 <div>
 	<mat-form-field *ngIf="showMatchingResults">
 		<mat-label>Number of displayed algorithms</mat-label>
@@ -22,11 +30,14 @@
 		</mat-select>
 	</mat-form-field>
 </div>
+
 <div>
 	<mat-table #table [dataSource]="tabledata" *ngIf="showMatchingResults">
 		<ng-container matColumnDef="name">
 			<mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-			<mat-cell *matCellDef="let result"> <span class="resultLink"(click)="openLink2(result.name)">{{result.name}}</span> </mat-cell>
+			<mat-cell *matCellDef="let result"> 
+				<span class="resultLink" (click)="openLink2(result.name)">{{result.name}}</span>
+			</mat-cell>
 		</ng-container>
 		<ng-container matColumnDef="cosineSimilarity">
 			<mat-header-cell *matHeaderCellDef> Cosine similarity </mat-header-cell>
@@ -36,38 +47,57 @@
 		<mat-row *matRowDef="let row; columns: columnsToDisplay"></mat-row>
 	</mat-table>
 </div>
+
 <div mat-dialog-actions>
-	<button class="action-button-with-margin" (click)="closeDialog2()" mat-raised-button >
+	<button class="action-button-with-margin" (click)="closeDialog2()" mat-raised-button>
 		<i class="material-icons"></i> close
 	</button>
-    <button class="action-button-with-margin" (click)="extractInformation(false) "mat-raised-button>
+
+	<button class="action-button-with-margin" (click)="extractInformation(false)" mat-raised-button>
 		<i class="material-icons"></i> start textmatching
 	</button>
-	<button class="action-button-with-margin" (click)="extractInformation(true) "mat-raised-button>
+
+	<button class="action-button-with-margin" (click)="extractInformation(true)" mat-raised-button>
 		<i class="material-icons"></i> start textmatching with rake
 	</button>
-    <section class="testsection">
-	<input type="checkbox" class="example-margin" [checked]="checked" (change)="checkboxClicked($event)">rephrase Problem using OpenAI
+
+	<section class="testsection">
+		<input type="checkbox" class="example-margin" [checked]="checked" (change)="checkboxClicked($event)">
+		rephrase Problem using OpenAI
 	</section>
+
+	<!-- New buttons for Aggregate and Deploy -->
+	<button class="action-button-with-margin" (click)="aggregateSolutions()" mat-raised-button>
+		Aggregate Solutions
+	</button>
+
+	<button class="action-button-with-margin" [disabled]="!isAggregationComplete" (click)="deploySolution()" mat-raised-button>
+		Deploy Solution
+	</button>
 </div>
+
+<!-- Styling -->
 <style>
 .resultLink {
-cursor: pointer;
-color: blue;
+	cursor: pointer;
+	color: blue;
 }
 
 .resultLink:hover {
-opacity: 0.9;
-color: pink;
-text-decoration: underline;
+	opacity: 0.9;
+	color: pink;
+	text-decoration: underline;
 }
 
 .similarityvalue {
-color: red;
+	color: red;
 }
 
 .example-margin:hover {
-color: blue;
+	color: blue;
 }
 
+.action-button-with-margin {
+	margin-right: 10px;
+}
 </style>
