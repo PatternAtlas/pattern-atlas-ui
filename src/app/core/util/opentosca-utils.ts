@@ -53,7 +53,7 @@ export async function uploadCSARToContainer(
       };
 
       // upload the CSAR
-      await fetch(opentoscaEndpoint, {
+      await fetch(opentoscaEndpoint + '/csars', {
         method: "POST",
         body: JSON.stringify(body),
         headers: { "Content-Type": "application/json" },
@@ -104,7 +104,7 @@ async function getBuildPlanForCSAR(opentoscaEndpoint, csarName) {
   const deployedCSARs = responseJson.csars;
   if (deployedCSARs === undefined) {
     // no CSARs available
-    return { success: false };
+    return { success: false, url: null };
   }
   console.log("Retrieved all currently deployed CSARs: ", deployedCSARs);
 
@@ -120,7 +120,7 @@ async function getBuildPlanForCSAR(opentoscaEndpoint, csarName) {
   }
 
   // unable to find CSAR
-  return { success: false };
+  return { success: false, url: null };
 }
 
 /**
@@ -141,7 +141,7 @@ async function getBuildPlanUrl(csarUrl) {
       "Unable to find service template in CSAR at URL: %s",
       csarUrl
     );
-    return { success: false };
+    return { success: false, url: null };
   }
 
   const buildPlansUrl =
@@ -151,7 +151,7 @@ async function getBuildPlanUrl(csarUrl) {
 
   if (!responseJson.plans || responseJson.plans.length !== 1) {
     console.error("Unable to find build plan at URL: %s", buildPlansUrl);
-    return { success: false };
+    return { success: false, url: null };
   }
 
   return { success: true, url: responseJson.plans[0]._links.self.href };
