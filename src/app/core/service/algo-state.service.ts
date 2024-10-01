@@ -14,7 +14,7 @@ export class AlgoStateService {
   private tmpstore = '';
   
   private repoEndpoint = environment.API_URL;
-  private qcAtlasEndpoint = "http://localhost:6626/atlas/algorithms"
+  private qcAtlasEndpoint = 'http://localhost:6626/atlas/algorithms'
   
   constructor(private http: HttpClient) {
   }
@@ -65,12 +65,12 @@ export class AlgoStateService {
   }
 
   async getAlgorithmData3() {
-    const url = "http://localhost:6626/atlas/algorithms";
+    const url = 'http://localhost:6626/atlas/algorithms';
     return await this.http.get<any>(url).toPromise();
   }
 
   async getAlgorithmData4() {
-    const url = "http://localhost:6626/atlas/algorithms/3c7722e2-09c3-4667-9a0d-a45d3ddc42ae/application-areas";
+    const url = 'http://localhost:6626/atlas/algorithms/3c7722e2-09c3-4667-9a0d-a45d3ddc42ae/application-areas';
     return await this.http.get<any>(url).toPromise();
   }
   

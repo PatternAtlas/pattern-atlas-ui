@@ -14,7 +14,7 @@ import $ from 'jquery';
 export function performAjax(targetUrl, dataToSend) {
   return new Promise(function (resolve, reject) {
     $.ajax({
-      type: "POST",
+      type: 'POST',
       url: targetUrl,
       data: dataToSend,
       processData: false,

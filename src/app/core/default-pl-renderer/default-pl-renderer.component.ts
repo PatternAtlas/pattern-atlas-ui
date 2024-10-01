@@ -85,13 +85,13 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   }
   
   async openTextmatcherDialog(){
-   let result = await this.algoStateService.getAlgorithmData3();
-   let applicationAreas = await this.algoStateService.getAlgorithmData4();
-    console.log("hhhhhhhhhh")
+    let result = await this.algoStateService.getAlgorithmData3();
+    let applicationAreas = await this.algoStateService.getAlgorithmData4();
+    console.log('hhhhhhhhhh')
     console.log(result.content)
     for(let i = 0; i< result.content.length; i++){
-      if(result.content[i].id === "3c7722e2-09c3-4667-9a0d-a45d3ddc42ae"){
-      result.content[i].applicationAreas = "Satisfiable";
+      if(result.content[i].id === '3c7722e2-09c3-4667-9a0d-a45d3ddc42ae'){
+        result.content[i].applicationAreas = 'Satisfiable';
       }
     }
     let r = result.content;

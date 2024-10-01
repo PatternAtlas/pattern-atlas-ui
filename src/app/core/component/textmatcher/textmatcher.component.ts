@@ -13,8 +13,8 @@ import * as consts from '../../util/constants';
 import { environment } from 'src/environments/environment';
 
 
-const QUANTME_NAMESPACE_PULL = "http://quantil.org/quantme/pull";
-const OPENTOSCA_NAMESPACE_NODETYPE = "http://opentosca.org/nodetypes";
+const QUANTME_NAMESPACE_PULL = 'http://quantil.org/quantme/pull';
+const OPENTOSCA_NAMESPACE_NODETYPE = 'http://opentosca.org/nodetypes';
 
 @Component({
   selector: 'pp-textmatcher',
@@ -93,7 +93,7 @@ export class TextmatcherComponent implements OnInit {
       //this.filter.setValue('');
     }
     this.graphVisible = newValueGraphVisible;
-    console.log("graoh visile")
+    console.log('graoh visile')
     console.log(newValueGraphVisible)
     // if user toggled to early, we will retrigger
     // this.toggleBeforeDataLoaded = this.isLoadingLinkData && this.isLoadingPatternData;
@@ -132,17 +132,17 @@ export class TextmatcherComponent implements OnInit {
     }
 
     // HTTP call to fetch algorithms
-    this.http.get(environment.atlas + "/algorithms").subscribe((algodata: any) => {
+    this.http.get(environment.atlas + '/algorithms').subscribe((algodata: any) => {
       algodata.content.forEach((algorithm: any) => {
-        if (algorithm.id === "3c7722e2-09c3-4667-9a0d-a45d3ddc42ae") {
-          algorithm.applicationAreas = ["variables", "boolean Problems", "formula", "computers", "logic", "assignment"];
+        if (algorithm.id === '3c7722e2-09c3-4667-9a0d-a45d3ddc42ae') {
+          algorithm.applicationAreas = ['variables', 'boolean Problems', 'formula', 'computers', 'logic', 'assignment'];
         }
 
         this.infos.push({ name: algorithm.name, data: algorithm });
       });
     });
 
-    console.log("Received Data:", this.data);
+    console.log('Received Data:', this.data);
     console.log(this.infos);
   }
 
@@ -254,7 +254,7 @@ export class TextmatcherComponent implements OnInit {
   aggregateSolutions() {
     this.isAggregating = true; // Show progress bar
     this.progressValue = 0;
-    console.log("Aggregation process started...");
+    console.log('Aggregation process started...');
 
     if (this.fulltabledata && this.fulltabledata.length > 0) {
       const totalSteps = this.fulltabledata.length; // Total number of steps to complete
@@ -267,22 +267,22 @@ export class TextmatcherComponent implements OnInit {
       const matchingAlgorithm = this.data.algorithms.find(algorithm => algorithm.name === firstEntry.name);
 
       if (matchingAlgorithm) {
-        console.log("Matching algorithm found:", matchingAlgorithm);
+        console.log('Matching algorithm found:', matchingAlgorithm);
 
         // Make the first request to get implementations
         const implementationsUrl = atlasEndpoint + `/algorithms/${matchingAlgorithm.id}/implementations`;
         this.http.get<any>(implementationsUrl).subscribe(implementations => {
-          console.log("Implementations:", implementations);
+          console.log('Implementations:', implementations);
 
           // For each implementation, get implementation packages
           implementations.content.forEach(implementation => {
             const packagesUrl = atlasEndpoint +`/algorithms/${matchingAlgorithm.id}/implementations/${implementation.id}/implementation-packages`;
             this.http.get<any>(packagesUrl).subscribe(packages => {
-              console.log("Implementation Packages:", packages);
+              console.log('Implementation Packages:', packages);
 
               // Filter packages where the description contains some word of the input field
               const inputKeywords = this.inputfield.value ? this.inputfield.value.split(' ') : [];
-              console.log("Input Keywords:", inputKeywords);
+              console.log('Input Keywords:', inputKeywords);
 
               const filteredPackages = packages.content.filter(pkg => {
                 return inputKeywords.some(keyword => pkg.description.toLowerCase().includes(keyword.toLowerCase()));
@@ -310,7 +310,7 @@ export class TextmatcherComponent implements OnInit {
                     //this.isAggregating = false;
                   }
                 }, error => {
-                  console.error("Error fetching file content:", error);
+                  console.error('Error fetching file content:', error);
                   completedSteps++; // Count as completed even if it fails
                   this.progressValue = Math.round((completedSteps / totalSteps) * 100);
                   if (completedSteps === totalSteps) {
@@ -319,7 +319,7 @@ export class TextmatcherComponent implements OnInit {
                 });
               });
             }, error => {
-              console.error("Error fetching implementation packages:", error);
+              console.error('Error fetching implementation packages:', error);
               completedSteps++; // Count as completed even if it fails
               this.progressValue = Math.round((completedSteps / totalSteps) * 100);
               if (completedSteps === totalSteps) {
@@ -328,16 +328,16 @@ export class TextmatcherComponent implements OnInit {
             });
           });
         }, error => {
-          console.error("Error fetching implementations:", error);
+          console.error('Error fetching implementations:', error);
           this.isAggregating = false; // Hide progress bar on error
         });
 
       } else {
-        console.log("No matching algorithm found for the first entry.");
+        console.log('No matching algorithm found for the first entry.');
         this.isAggregating = false; // Hide progress bar if no matching algorithm
       }
     } else {
-      console.log("No data available to aggregate.");
+      console.log('No data available to aggregate.');
       this.isAggregating = false; // Hide progress bar if no data
     }
   }
@@ -358,33 +358,33 @@ export class TextmatcherComponent implements OnInit {
         // Make sure to properly wait for the file content to be fetched
         try {
           const fileContent = await this.http.get(this.deploymentFileContentUrl, { responseType: 'blob' }).toPromise();
-          console.log("File content fetched successfully:", fileContent);
+          console.log('File content fetched successfully:', fileContent);
 
-          const idwinery = firstEntryName.replaceAll("_", "") + generateRandomString();
+          const idwinery = firstEntryName.replaceAll('_', '') + generateRandomString();
           const opentoscaEndpoint = environment.openToscaContainer;
-          console.log("ID Winery:", idwinery);
+          console.log('ID Winery:', idwinery);
 
           // First, create the service template with the new activity id
           const serviceTemplate = await createServiceTemplate(idwinery, QUANTME_NAMESPACE_PULL);
-          console.log("Service Template created:", serviceTemplate);
+          console.log('Service Template created:', serviceTemplate);
 
           // Create the nodetype to add it to the created service template
-          await createNodeType(idwinery + "Container", OPENTOSCA_NAMESPACE_NODETYPE);
-          await updateNodeType(idwinery + "Container", OPENTOSCA_NAMESPACE_NODETYPE);
+          await createNodeType(idwinery + 'Container', OPENTOSCA_NAMESPACE_NODETYPE);
+          await updateNodeType(idwinery + 'Container', OPENTOSCA_NAMESPACE_NODETYPE);
 
           // Update the service template with the created node type
           const updatedServiceTemplate = await updateServiceTemplate(idwinery, QUANTME_NAMESPACE_PULL);
-          console.log("Service Template updated:", updatedServiceTemplate);
+          console.log('Service Template updated:', updatedServiceTemplate);
 
           // Finally, create the deployment model containing the implementation
-          const versionUrl = wineryEndpoint + "servicetemplates/" + updatedServiceTemplate;
+          const versionUrl = wineryEndpoint + 'servicetemplates/' + updatedServiceTemplate;
           const deploymentModelUrlResult = await createDeploymentModel(
             fileContent,
             wineryEndpoint,
-            idwinery + "_DA",
-            "http://opentosca.org/artifacttemplates",
-            "{http://opentosca.org/artifacttypes}DockerContainerArtifact",
-            "service",
+            idwinery + '_DA',
+            'http://opentosca.org/artifacttemplates',
+            '{http://opentosca.org/artifacttypes}DockerContainerArtifact',
+            'service',
             versionUrl
           );
 
@@ -394,17 +394,17 @@ export class TextmatcherComponent implements OnInit {
             wineryEndpoint + `/servicetemplates/http%253A%252F%252Fquantil.org%252Fquantme%252Fpull/${idwinery}/?csar`,
             wineryEndpoint
           );
-          console.log("Deployment Model URL Result:", deploymentModelUrlResult);
+          console.log('Deployment Model URL Result:', deploymentModelUrlResult);
 
-          console.log("Solution deployed successfully!");
+          console.log('Solution deployed successfully!');
         } catch (error) {
-          console.error("Error during solution deployment:", error);
+          console.error('Error during solution deployment:', error);
         }
       } else {
-        console.error("No fulltabledata available to deploy.");
+        console.error('No fulltabledata available to deploy.');
       }
     } else {
-      console.error("Aggregation process not completed, cannot deploy the solution.");
+      console.error('Aggregation process not completed, cannot deploy the solution.');
     }
   }
 

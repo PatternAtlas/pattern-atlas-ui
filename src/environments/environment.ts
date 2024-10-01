@@ -45,15 +45,15 @@ export const environment = {
       : 'http://localhost:2379/v2/keys',
   defaultFeatures: 'assets/settings_features/default_features.json',
   openToscaContainer: window['env'] && window['env']['OPENTOSCA_CONTAINER_HOST_NAME'] && window['env']['OPENTOSCA_CONTAINER_PORT']
-  ? `${urlScheme}://${window['env']['OPENTOSCA_CONTAINER_HOST_NAME']}:${window['env']['OPENTOSCA_CONTAINER_PORT']}`
-  : 'http://localhost:1337',
+    ? `${urlScheme}://${window['env']['OPENTOSCA_CONTAINER_HOST_NAME']}:${window['env']['OPENTOSCA_CONTAINER_PORT']}`
+    : 'http://localhost:1337',
   winery: window['env'] && window['env']['WINERY_HOST_NAME'] && window['env']['WINERY_PORT']
-  ? `${urlScheme}://${window['env']['WINERY_HOST_NAME']}:${window['env']['WINERY_PORT']}/winery`
-  : 'http://localhost:8093/winery',
+    ? `${urlScheme}://${window['env']['WINERY_HOST_NAME']}:${window['env']['WINERY_PORT']}/winery`
+    : 'http://localhost:8093/winery',
   textMatcher: window['env'] && window['env']['TEXT_MATCHING_HOST_NAME'] && window['env']['TEXT_MATCHING_PORT']
-  ? `${urlScheme}://${window['env']['TEXT_MATCHING_HOST_NAME']}:${window['env']['TEXT_MATCHING_PORT']}`: 'http://localhost:1985',
+    ? `${urlScheme}://${window['env']['TEXT_MATCHING_HOST_NAME']}:${window['env']['TEXT_MATCHING_PORT']}`: 'http://localhost:1985',
   atlas: window['env'] && window['env']['ATLAS_HOST_NAME'] && window['env']['ATLAS_PORT']
-  ? `${urlScheme}://${window['env']['ATLAS_HOST_NAME']}:${window['env']['ATLAS_PORT']}/atlas`:'http://localhost:6626/atlas'
+    ? `${urlScheme}://${window['env']['ATLAS_HOST_NAME']}:${window['env']['ATLAS_PORT']}/atlas`:'http://localhost:6626/atlas'
 };
 
 /*
