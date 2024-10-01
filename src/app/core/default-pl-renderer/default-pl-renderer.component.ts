@@ -68,6 +68,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
   jdata: any = jsonData;
   previousTextmatcherData = [];
   isQuantumComputingPatternLanguage = false;
+  algorithms = [];
 
   constructor(private activatedRoute: ActivatedRoute,
               private cdr: ChangeDetectorRef,
@@ -83,12 +84,26 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
               private toasterService: ToasterService) {
   }
   
-  openTextmatcherDialog(){
+  async openTextmatcherDialog(){
+    let result = await this.algoStateService.getAlgorithmData3();
+    let applicationAreas = await this.algoStateService.getAlgorithmData4();
+    console.log('hhhhhhhhhh')
+    console.log(result.content)
+    for(let i = 0; i< result.content.length; i++){
+      if(result.content[i].id === '3c7722e2-09c3-4667-9a0d-a45d3ddc42ae'){
+        result.content[i].applicationAreas = 'Satisfiable';
+      }
+    }
+    let r = result.content;
+
+    console.log(result.content)
+    console.log(r);
 	  const dialogRef = this.dialog.open(TextmatcherComponent, {
 		    width: '1000px',
       data: {
         data: this.AlgorithmDataIds,
         prev: this.previousTextmatcherData,
+        algorithms: r
 		    },
 	  });
 	  
@@ -112,7 +127,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
 		    },
 	  });
 	  
-	  dialogRef.afterClosed().subscribe(result => {
+	  dialogRef.afterClosed().subscribe(async result => {
 		  if((result != null) && (result != undefined) && (result.length > 0)) {
 			  result.forEach(algorithm => {
 				  this.AlgorithmDataIds = this.AlgorithmDataIds.filter(algids => algids.name !== algorithm.name);
@@ -190,6 +205,7 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
         this.showAlgoPatterns();
 		  }
 	  });
+    
   }
   
   //old datastorage via json file
@@ -207,6 +223,8 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
     }else{
       this.AlgorithmDataIds = this.jdata.default;
     }
+
+
   }
   
   initializeAlgorithmPatternIds() {
@@ -238,9 +256,10 @@ export class DefaultPlRendererComponent implements OnInit, OnDestroy {
         'd4f7c247-e2bb-4301-ad06-f758fa58f2dc', '2229a430-fe92-4411-9d72-d10dd1d8da14'],
 	    href: 'https://platform.planqk.de/algorithms/533c90a5-5fbb-487b-b64d-a8f331aafb10/' };
 	  this.AlgorithmDataIds.push(Deutsch);
-	  const test = { name: 'test',
-					   data: ['312bc9d3-26c0-40ae-b90b-56effd136c0d', 'bcd4c7a1-3c92-4f8c-a530-72b8b95d3750', '1a5e3708-da39-4356-ab3f-115264da6390'] };
-	  this.AlgorithmDataIds.push(test);
+	  const Grover = { name: 'Grover',
+					   data: ['312bc9d3-26c0-40ae-b90b-56effd136c0d', '2229a430-fe92-4411-9d72-d10dd1d8da14', '1cc7e9d6-ab37-412e-8afa-604a25de296e', '96b4d28a-a5ce-4c96-85df-d42587b13c57', 'b8c2dca0-563a-432d-adfd-8bd15ef0dfb8'] };
+
+	  this.AlgorithmDataIds.push(Grover);
 	  //console.log("Complete Algorithm Data for initial values");
 	  //console.log(this.AlgorithmDataIds);
   }

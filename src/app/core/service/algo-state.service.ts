@@ -14,6 +14,7 @@ export class AlgoStateService {
   private tmpstore = '';
   
   private repoEndpoint = environment.API_URL;
+  private qcAtlasEndpoint = 'http://localhost:6626/atlas/algorithms'
   
   constructor(private http: HttpClient) {
   }
@@ -62,6 +63,17 @@ export class AlgoStateService {
 	  const url = this.repoEndpoint + '/patternForAlgorithm/' + patternLanguageId;
 	  return this.http.get<any>(url);
   }
+
+  async getAlgorithmData3() {
+    const url = 'http://localhost:6626/atlas/algorithms';
+    return await this.http.get<any>(url).toPromise();
+  }
+
+  async getAlgorithmData4() {
+    const url = 'http://localhost:6626/atlas/algorithms/3c7722e2-09c3-4667-9a0d-a45d3ddc42ae/application-areas';
+    return await this.http.get<any>(url).toPromise();
+  }
+  
   
   clearAlgorithmData() {
     localStorage.removeItem(this.variableForAlgoData);
@@ -72,3 +84,7 @@ export class AlgoStateService {
   }
   
 }
+function getAlgorithmData3() {
+  throw new Error('Function not implemented.');
+}
+

@@ -1,73 +1,117 @@
 <button mat-icon-button class="close-button" (click)="closeDialog2()">
-	<mat-icon class="close-icon" >close</mat-icon>
+    <mat-icon class="close-icon">close</mat-icon>
 </button>
+
 <div mat-dialog-content>
-	<mat-form-field id="type-field" class="action-button-with-margin" [floatLabel]="'always'">
-		<mat-label>Input the known Information</mat-label>
-		<textarea matInput placeholder="Type in information" [formControl]="inputfield" cdkFocusInitial></textarea>
+    <mat-form-field id="type-field" class="action-button-with-margin" [floatLabel]="'always'">
+        <mat-label>Describe your context</mat-label>
+        <textarea 
+            matInput 
+            placeholder="Type in information" 
+            [formControl]="inputfield" 
+            cdkFocusInitial
+            class="styled-textarea"></textarea>
     </mat-form-field>
+
+    <div *ngIf="showRephrasedInput">
+        <p>Rephrased input: {{rephrasedInput}}</p>
+    </div>
+
+    <div *ngIf="showMatchingResults">
+        <p>The best matching algorithm with cosine similarity is
+            <span class="resultLink" (click)="openLink()">{{resultAlgorithm.name}}</span>.
+        </p>
+        <p>The Cosine Similarity is
+            <span class="similarityvalue">{{resultAlgorithm.cosineSimilarity}}</span>
+        </p>
+    </div>
+
+    <div *ngIf="showMatchingResults">
+        <mat-table #table [dataSource]="tabledata">
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                <mat-cell *matCellDef="let result">
+                    <span class="resultLink" (click)="openLink2(result.name)">{{result.name}}</span>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="cosineSimilarity">
+                <mat-header-cell *matHeaderCellDef> Cosine similarity </mat-header-cell>
+                <mat-cell *matCellDef="let result"> {{result.cosineSimilarity}} </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: columnsToDisplay"></mat-row>
+        </mat-table>
+    </div>
+
+    <!-- Progress bar for aggregation -->
+    <mat-progress-bar *ngIf="isAggregating" mode="determinate" [value]="progressValue"></mat-progress-bar>
+    <p *ngIf="isAggregating">Aggregation in progress... {{ progressValue }}%</p>
 </div>
-<div mat-dialog-content *ngIf="showRephrasedInput">
-	<p>Rephrased input: {{rephrasedInput}} </p>
-</div>
-<div mat-dialog-content *ngIf="showMatchingResults">
-	<p>The best matching algorithm with cosine similarity is <span class="resultLink"(click)="openLink()">{{resultAlgorithm.name}}</span>. </p>
-	<p>The Cosine Similarity is <span class="similarityvalue">{{resultAlgorithm.cosineSimilarity}}</span> </p>  
-</div>
-<div>
-	<mat-form-field *ngIf="showMatchingResults">
-		<mat-label>Number of displayed algorithms</mat-label>
-		<mat-select [(value)]="selectednumber" (selectionChange)="numberChanged()">
-			<mat-option *ngFor="let number of numbers" [value]="number">{{number}}</mat-option>
-		</mat-select>
-	</mat-form-field>
-</div>
-<div>
-	<mat-table #table [dataSource]="tabledata" *ngIf="showMatchingResults">
-		<ng-container matColumnDef="name">
-			<mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-			<mat-cell *matCellDef="let result"> <span class="resultLink"(click)="openLink2(result.name)">{{result.name}}</span> </mat-cell>
-		</ng-container>
-		<ng-container matColumnDef="cosineSimilarity">
-			<mat-header-cell *matHeaderCellDef> Cosine similarity </mat-header-cell>
-			<mat-cell *matCellDef="let result"> {{result.cosineSimilarity}} </mat-cell>
-		</ng-container>
-		<mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
-		<mat-row *matRowDef="let row; columns: columnsToDisplay"></mat-row>
-	</mat-table>
-</div>
+
 <div mat-dialog-actions>
-	<button class="action-button-with-margin" (click)="closeDialog2()" mat-raised-button >
-		<i class="material-icons"></i> close
-	</button>
-    <button class="action-button-with-margin" (click)="extractInformation(false) "mat-raised-button>
-		<i class="material-icons"></i> start textmatching
-	</button>
-	<button class="action-button-with-margin" (click)="extractInformation(true) "mat-raised-button>
-		<i class="material-icons"></i> start textmatching with rake
-	</button>
-    <section class="testsection">
-	<input type="checkbox" class="example-margin" [checked]="checked" (change)="checkboxClicked($event)">rephrase Problem using OpenAI
-	</section>
+    <button class="action-button-with-margin" (click)="extractInformation(false)" mat-raised-button>
+        <i class="material-icons"></i> Identify Patterns
+    </button>
+
+    <button class="action-button-with-margin" *ngIf="fulltabledata && fulltabledata.length > 0"
+        (click)="openGraphDialog()" mat-raised-button>
+        Show Pattern Graph
+    </button>
+
+    <button class="action-button-with-margin" *ngIf="fulltabledata && fulltabledata.length > 0" (click)="aggregateSolutions()" mat-raised-button>
+        Aggregate Solutions
+    </button>
+
+    <button class="action-button-with-margin" *ngIf="isAggregationComplete && (fulltabledata && fulltabledata.length > 0)" (click)="deploySolution()"
+        mat-raised-button>
+        Deploy Solution
+    </button>
 </div>
+
+<!-- Styling -->
 <style>
-.resultLink {
-cursor: pointer;
-color: blue;
-}
+    .resultLink {
+        cursor: pointer;
+        color: blue;
+    }
 
-.resultLink:hover {
-opacity: 0.9;
-color: pink;
-text-decoration: underline;
-}
+    .resultLink:hover {
+        opacity: 0.9;
+        color: pink;
+        text-decoration: underline;
+    }
 
-.similarityvalue {
-color: red;
-}
+    .similarityvalue {
+        color: red;
+    }
 
-.example-margin:hover {
-color: blue;
-}
+    .example-margin:hover {
+        color: blue;
+    }
 
+    .action-button-with-margin {
+        margin-right: 10px;
+    }
+
+    .styled-textarea {
+        height: 100px;
+        border-radius: 5px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        transition: border-color 0.3s;
+    }
+
+    .styled-textarea:focus {
+        border-color: #3f51b5;
+        outline: none;
+    }
+
+    .graph-container {
+        width: 100%;
+        height: 400px;
+        overflow: auto;
+        border: 1px solid #ccc;
+        margin-top: 20px;
+        padding: 10px;
+    }
 </style>
