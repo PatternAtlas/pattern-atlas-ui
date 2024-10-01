@@ -84,7 +84,7 @@ module.exports = {
         'max-classes-per-file': 'off',
 
         // ORIGINAL tslint.json -> "max-line-length": [true, 140],
-        'max-len': ['error', {code: 160}],
+        // 'max-len': ['error', {code: 160}],
 
         // ORIGINAL tslint.json -> "member-access": false,
         '@typescript-eslint/explicit-member-accessibility': 'off',
